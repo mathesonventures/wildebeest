@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+
+  Project:     $Xmeta.project.identity.id$
+               $Xmeta.project.identity.title$
+               $Xmeta.project.identity.url$
+  Version:     $XName$
+
+  Template:    $Name:  $ / templates / Project Meta Information /
+                 Project Descriptor
+
+  Copyright (c) $Xmeta.project.copyright.years$, $Xmeta.project.copyright.owner$
+  All rights reserved
+
+  Title:       $Xmeta.file.title: Project Descriptor $
+  Description: $Xmeta.file.description: Provides general information about the project. $
+
+-->
+<project>
+
+	<type>proprietary</type>
+
+	<identity>
+		<organization>
+			<id>MV</id>
+			<name>Matheson Ventures</name>
+		</organization>
+		<name>STM</name>
+		<title>State Machine</title>
+		<url>http://mv.com/products/stm</url>
+	</identity>
+
+	<copyright>
+		<years>2013</years>
+		<owner>Matheson Ventures Pte Ltd</owner>
+	</copyright>
+
+	<version>
+		<major>1</major>
+		<minor>0</minor>
+		<revision>0</revision>
+	</version>
+
+	<description>
+		<p>
+		</p>
+	</description>
+
+</project>
