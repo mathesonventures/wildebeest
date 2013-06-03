@@ -1,16 +1,23 @@
 package co.mv.stm.impl;
 
+import co.mv.stm.model.Assertion;
+import co.mv.stm.model.AssertionResponse;
+import co.mv.stm.model.AssertionResult;
+import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.Resource;
+import co.mv.stm.model.ResourceInstance;
 import co.mv.stm.model.State;
 import co.mv.stm.model.Transition;
+import co.mv.stm.model.impl.ImmutableAssertionResult;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseResource implements Resource
 {
-	public BaseResource()
+	protected BaseResource()
 	{
-		this.setStates(new ArrayList<State>());
+		List<State> states = new ArrayList<State>();
+		this.setStates(states);
 	}
 	
 	// <editor-fold desc="States" defaultstate="collapsed">
@@ -84,4 +91,29 @@ public abstract class BaseResource implements Resource
 	}
 
 	// </editor-fold>
+
+	@Override public List<AssertionResult> assertState(
+		ResourceInstance instance) throws IndeterminateStateException
+	{
+		if (instance == null) { throw new IllegalArgumentException("instance"); }
+
+		List<AssertionResult> results = new ArrayList<AssertionResult>();
+		
+		State state = this.currentState(instance);
+		
+		if (state != null)
+		{
+			for(Assertion assertion : state.getAssertions())
+			{
+				AssertionResponse response = assertion.apply(instance);
+				
+				results.add(new ImmutableAssertionResult(
+					assertion.getAssertionId(),
+					response.getResult(),
+					response.getMessage()));
+			}
+		}
+		
+		return results;
+	}
 }

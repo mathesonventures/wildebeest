@@ -21,6 +21,10 @@ import java.util.UUID;
 
 public class MySqlDatabaseResource extends BaseResource implements Resource
 {
+	public MySqlDatabaseResource()
+	{
+		super();
+	}
 
 	//
 	// Properties
@@ -141,14 +145,11 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 	// Behaviour
 	//
 
-	@Override public UUID currentState(ResourceInstance instance) throws IndeterminateStateException
+	@Override public State currentState(ResourceInstance instance) throws IndeterminateStateException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		MySqlDatabaseResourceInstance db = ModelExtensions.As(instance, MySqlDatabaseResourceInstance.class);
-		if (db == null)
-		{
-			throw new IllegalArgumentException("instance must be a DatabaseResourceInstance");
-		}
+		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseResourceInstance"); }
 
 		UUID declaredStateId = null;
 		
@@ -204,14 +205,14 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 		}
 		
 		// If we found a declared state, check that the state is actually defined
-		UUID result = null;
+		State result = null;
 		if (declaredStateId != null)
 		{
 			for (State check : this.getStates())
 			{
 				if (declaredStateId.equals(check.getStateId()))
 				{
-					result = declaredStateId;
+					result = check;
 					break;
 				}
 			}
@@ -226,11 +227,6 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 		}
 		
 		return result;
-	}
-
-	@Override public List<AssertionResult> assertState(ResourceInstance instance) throws IndeterminateStateException
-	{
-		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override public void transitionTo(

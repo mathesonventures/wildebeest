@@ -1,6 +1,9 @@
 package co.mv.stm.model.impl;
 
+import co.mv.stm.model.Assertion;
 import co.mv.stm.model.State;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ImmutableState implements State
@@ -9,6 +12,7 @@ public class ImmutableState implements State
 		UUID stateId)
 	{
 		this.setStateId(stateId);
+		this.setAssertions(new ArrayList<Assertion>());
 	}
 	
 	public ImmutableState(
@@ -17,6 +21,25 @@ public class ImmutableState implements State
 	{
 		this.setStateId(stateId);
 		this.setLabel(label);
+		this.setAssertions(new ArrayList<Assertion>());
+	}
+
+	public ImmutableState(
+		UUID stateId,
+		List<Assertion> assertions)
+	{
+		this.setStateId(stateId);
+		this.setAssertions(assertions);
+	}
+	
+	public ImmutableState(
+		UUID stateId,
+		String label,
+		List<Assertion> assertions)
+	{
+		this.setStateId(stateId);
+		this.setLabel(label);
+		this.setAssertions(assertions);
 	}
 
 	// <editor-fold desc="StateId" defaultstate="collapsed">
@@ -89,6 +112,42 @@ public class ImmutableState implements State
 
 	public boolean hasLabel() {
 		return m_label_set;
+	}
+
+	// </editor-fold>
+	
+	// <editor-fold desc="Assertions" defaultstate="collapsed">
+
+	private List<Assertion> m_assertions = null;
+	private boolean m_assertions_set = false;
+
+	public List<Assertion> getAssertions() {
+		if(!m_assertions_set) {
+			throw new IllegalStateException("assertions not set.  Use the HasAssertions() method to check its state before accessing it.");
+		}
+		return m_assertions;
+	}
+
+	private void setAssertions(List<Assertion> value) {
+		if(value == null) {
+			throw new IllegalArgumentException("assertions cannot be null");
+		}
+		boolean changing = !m_assertions_set || m_assertions != value;
+		if(changing) {
+			m_assertions_set = true;
+			m_assertions = value;
+		}
+	}
+
+	private void clearAssertions() {
+		if(m_assertions_set) {
+			m_assertions_set = true;
+			m_assertions = null;
+		}
+	}
+
+	private boolean hasAssertions() {
+		return m_assertions_set;
 	}
 
 	// </editor-fold>

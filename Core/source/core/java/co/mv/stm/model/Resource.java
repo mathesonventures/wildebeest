@@ -50,10 +50,9 @@ public interface Resource
 	//
 	
 	/**
-	 * Identifies and returns the identity of the defined state that the supplied resource instance currently appears to
-	 * be in, or is declared to be in.  Note that this does not guarantee that the resource is valid as compared to the
-	 * state that it is identified to be in.  To verify that the resource is valid for the current state, use
-	 * assertState().
+	 * Identifies and returns the defined state that the supplied resource instance currently appears to be in, or is
+	 * declared to be in.  Note that this does not guarantee that the resource is valid as compared to the state that it
+	 * is identified to be in.  To verify that the resource is valid for the current state, use assertState().
 	 * 
 	 * If the resource does not exist at all, then this method returns null.
 	 * 
@@ -62,12 +61,12 @@ public interface Resource
 	 * is considered to be an indeterminate state.
 	 * 
 	 * @param       instance                    the {@link ResourceInstance} to get the current state of
-	 * @return                                  the identity of the defined state that the resource currently appears to
-	 *                                          be in, or is declared to be in.
+	 * @return                                  the defined state that the resource currently appears to be in, or is
+	 *                                          declared to be in.
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
 	 * @since                                   1.0.0
 	 */
-	UUID currentState(ResourceInstance instance) throws IndeterminateStateException;
+	State currentState(ResourceInstance instance) throws IndeterminateStateException;
 	
 	/**
 	 * Applies the {@link Assertion}'s for this {@link Resource} and returns a collection of the results of those
