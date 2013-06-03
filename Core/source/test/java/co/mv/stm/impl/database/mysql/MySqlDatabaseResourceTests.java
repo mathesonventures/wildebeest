@@ -1,8 +1,6 @@
-package co.mv.stm.impl.database;
+package co.mv.stm.impl.database.mysql;
 
 import co.zd.helium.fixture.MySqlDatabaseFixture;
-import co.mv.stm.impl.database.mysql.MySqlDatabaseResource;
-import co.mv.stm.impl.database.mysql.MySqlDatabaseResourceInstance;
 import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.impl.ImmutableState;
 import java.util.UUID;

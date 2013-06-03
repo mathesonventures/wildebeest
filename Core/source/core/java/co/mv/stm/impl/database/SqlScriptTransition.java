@@ -69,16 +69,15 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 
 	// </editor-fold>
 	
-	@Override
-	public void perform(ResourceInstance instance) throws TransitionFaultException
+	@Override public void perform(ResourceInstance instance) throws TransitionFaultException
 	{
-		MySqlDatabaseResourceInstance db = ModelExtensions.As(instance, MySqlDatabaseResourceInstance.class);
-
-		DataSource ds = db.getAppDataSource();
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		DatabaseResourceInstance db = ModelExtensions.As(instance, DatabaseResourceInstance.class);
+		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseResourceInstance"); }
 
 		try
 		{
-			DatabaseHelper.execute(ds, this.getSql());
+			DatabaseHelper.execute(db.getAppDataSource(), this.getSql());
 		}
 		catch(SQLException e)
 		{

@@ -18,7 +18,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
-import javax.sql.DataSource;
 
 public class MySqlDatabaseResource extends BaseResource implements Resource
 {
@@ -157,7 +156,7 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		if (schemaExists(db.getInfoDataSource(), db.getSchemaName()))
+		if (MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
 		{
 			String stateTableName = db.hasStateTableName() ? db.getStateTableName() : Constants.DefaultStateTableName;
 
@@ -242,50 +241,5 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 			TransitionNotPossibleException
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
-	}
-	
-	private static boolean schemaExists(
-		DataSource informationSchemaDataSource,
-		String schemaName)
-	{
-		if (informationSchemaDataSource == null) { throw new IllegalArgumentException("informationSchemaDataSource"); }
-		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
-		if ("".equals(schemaName)) { throw new IllegalArgumentException("schemaName cannot be empty"); }
-		
-		boolean result = false;
-		
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try
-		{
-			conn = informationSchemaDataSource.getConnection();
-			ps = conn.prepareStatement("SELECT * FROM SCHEMATA WHERE SCHEMA_NAME = ?;");
-			ps.setString(1, schemaName);
-			
-			rs = ps.executeQuery();
-		
-			result = rs.next();
-		}
-		catch(SQLException e)
-		{
-			throw new FaultException(e);
-		}
-		finally
-		{
-			try
-			{
-				DatabaseHelper.release(rs);
-				DatabaseHelper.release(ps);
-				DatabaseHelper.release(conn);
-			}
-			catch(SQLException e)
-			{
-				throw new FaultException(e);
-			}
-		}
-		
-		return result;
 	}
 }

@@ -37,6 +37,13 @@ public interface Resource
 	 * @return                                  the states that have been defined for this Resource.
 	 */
 	List<State> getStates();
+	
+	/**
+	 * Gets the transitions that have been defined for this Resource.
+	 * 
+	 * @return                                  the transitions that have been defined for this Resource.
+	 */
+	List<Transition> getTransitions();
 
 	//
 	// Behaviour

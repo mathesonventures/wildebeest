@@ -116,9 +116,6 @@ public abstract class BaseTransition implements Transition
 
 	private void setFromStateId(
 		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("fromStateId cannot be null");
-		}
 		boolean changing = !m_fromStateId_set || m_fromStateId != value;
 		if(changing) {
 			m_fromStateId_set = true;
