@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class SqlScriptTransition extends BaseTransition implements Transition
 {
-	protected SqlScriptTransition(
+	public SqlScriptTransition(
 		UUID transitionId,
 		UUID toStateId,
 		String sql)
@@ -21,7 +21,7 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 		this.setSql(sql);
 	}
 	
-	protected SqlScriptTransition(
+	public SqlScriptTransition(
 		UUID transitionId,
 		UUID fromStateId,
 		UUID toStateId,

@@ -3,6 +3,7 @@ package co.mv.stm.impl.database;
 import co.mv.stm.impl.database.mysql.MySqlDatabaseResourceInstance;
 import co.mv.stm.impl.BaseAssertion;
 import co.mv.stm.model.Assertion;
+import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.AssertionFaultException;
 import co.mv.stm.model.AssertionResponse;
 import co.mv.stm.model.AssertionType;
@@ -69,10 +70,7 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		MySqlDatabaseResourceInstance db = ModelExtensions.As(instance, MySqlDatabaseResourceInstance.class);
-		if (db == null)
-		{
-			throw new IllegalArgumentException("instance must be a DatabaseResourceInstance");
-		}
+		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseResourceInstance"); }
 
 		AssertionResponse result = null;
 		
@@ -104,7 +102,7 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 				{
 					result = new ImmutableAssertionResponse(
 						false,
-						String.format("Expected to find no rows, but found %d", rowCount));
+						String.format("Expected to find no rows but found %d", rowCount));
 				}
 			}
 			finally

@@ -18,6 +18,7 @@
             <mvnpackage groupId="mysql" artifactId="mysql-connector-java" version="5.1.22" groups="clc,clr,tlr" />
             <!-- <jpkpackage feed="mv" id="MV.Protium.System" version="1.*" groups="clr,tlr" /> -->
 
+            <mvnpackage groupId="junit" artifactId="junit" version="4.11" groups="tlc,tlr" />
             <mvnpackage groupId="log4j" artifactId="log4j" version="1.2.17" groups="tlc,tlr" />
             <mvnpackage groupId="ZD" artifactId="ZD.Protium.System" version="0.0.0.30" groups="tlc,tlr" />
             <mvnpackage groupId="ZD" artifactId="ZD.Helium.UnitTest.MySql" version="0.0.0.17" groups="tlc,tlr" />

@@ -1,6 +1,6 @@
-package co.mv.stm.impl.database;
+package co.mv.stm.impl.database.mysql;
 
-import co.mv.stm.impl.database.mysql.MySqlDatabaseResourceInstance;
+import co.mv.stm.impl.database.SqlScriptTransition;
 import co.mv.stm.model.TransitionFailedException;
 import co.zd.helium.fixture.MySqlDatabaseFixture;
 import java.util.UUID;
@@ -29,17 +29,10 @@ public class SqlScriptTransitionTests
 			"");
 		f.setUp();
 		
-		StringBuilder sql = new StringBuilder();
-		sql.append("CREATE TABLE  `RealmTypeRef` (").append("\n")
-			.append("  `RealmTypeRcd` char(2) NOT NULL,").append("\n")
-			.append("  `Name` varchar(10) NOT NULL,").append("\n")
-			.append("  PRIMARY KEY (`RealmTypeRcd`)").append("\n")
-			.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;").append("\n");
-
 		SqlScriptTransition tr = new SqlScriptTransition(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
-			sql.toString());
+			MySqlElementFixtures.realmTypeRefCreateTableStatement());
 		
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			"127.0.0.1",
@@ -64,7 +57,6 @@ public class SqlScriptTransitionTests
 		//
 		// Assert Results
 		//
-		
 		
 	}
 }
