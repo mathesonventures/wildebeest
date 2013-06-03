@@ -1,15 +1,14 @@
 package co.mv.stm.impl.database;
 
-import co.mv.stm.impl.database.mysql.MySqlDatabaseResourceInstance;
 import co.mv.stm.impl.BaseTransition;
 import co.mv.stm.model.ModelExtensions;
 import co.mv.stm.model.ResourceInstance;
 import co.mv.stm.model.Transition;
+import co.mv.stm.model.TransitionFailedException;
 import co.mv.stm.model.TransitionFaultException;
 import co.mv.stm.model.TransitionType;
 import java.sql.SQLException;
 import java.util.UUID;
-import javax.sql.DataSource;
 
 public class SqlScriptTransition extends BaseTransition implements Transition
 {
@@ -69,7 +68,7 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 
 	// </editor-fold>
 	
-	@Override public void perform(ResourceInstance instance) throws TransitionFaultException
+	@Override public void perform(ResourceInstance instance) throws TransitionFailedException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		DatabaseResourceInstance db = ModelExtensions.As(instance, DatabaseResourceInstance.class);
