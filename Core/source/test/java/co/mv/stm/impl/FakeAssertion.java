@@ -1,4 +1,4 @@
-package co.mv.stm.impl.database.mysql;
+package co.mv.stm.impl;
 
 import co.mv.stm.impl.BaseAssertion;
 import co.mv.stm.model.Assertion;

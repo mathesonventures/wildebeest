@@ -4,6 +4,7 @@ import co.mv.stm.model.AssertionResult;
 import co.mv.stm.model.AssertionType;
 import co.zd.helium.fixture.MySqlDatabaseFixture;
 import co.mv.stm.model.IndeterminateStateException;
+import co.mv.stm.model.ResourceType;
 import co.mv.stm.model.State;
 import co.mv.stm.model.impl.ImmutableState;
 import java.util.List;
@@ -17,6 +18,10 @@ public class MySqlDatabaseResourceTests
 	{
 	}
 	
+	//
+	// currentState()
+	//
+	
 	@Test public void currentStateForNonExistentDatabaseSucceds() throws IndeterminateStateException
 	{
 		
@@ -24,7 +29,10 @@ public class MySqlDatabaseResourceTests
 		// Fixture Setup
 		//
 		
-		MySqlDatabaseResource resource = new MySqlDatabaseResource();
+		MySqlDatabaseResource resource = new MySqlDatabaseResource(
+			UUID.randomUUID(),
+			"Database");
+
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			"127.0.0.1",
 			3306,
@@ -68,7 +76,9 @@ public class MySqlDatabaseResourceTests
 		{
 			database.setUp();
 
-			MySqlDatabaseResource resource = new MySqlDatabaseResource();
+			MySqlDatabaseResource resource = new MySqlDatabaseResource(
+				UUID.randomUUID(),
+				"Database");
 			resource.getStates().add(new ImmutableState(knownStateId));
 
 			MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
@@ -120,7 +130,9 @@ public class MySqlDatabaseResourceTests
 			MySqlElementFixtures.stmStateInsertRow(UUID.randomUUID()));
 		database.setUp();
 
-		MySqlDatabaseResource resource = new MySqlDatabaseResource();
+		MySqlDatabaseResource resource = new MySqlDatabaseResource(
+			UUID.randomUUID(),
+			"Database");
 		
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			"127.0.0.1",
@@ -179,7 +191,9 @@ public class MySqlDatabaseResourceTests
 			MySqlElementFixtures.stmStateInsertRow(knownStateId));
 		database.setUp();
 
-		MySqlDatabaseResource resource = new MySqlDatabaseResource();
+		MySqlDatabaseResource resource = new MySqlDatabaseResource(
+			UUID.randomUUID(),
+			"Database");
 		
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			"127.0.0.1",
@@ -223,76 +237,5 @@ public class MySqlDatabaseResourceTests
 	@Test public void currentStateForDatabaseWithInvalidStateTableSchemaFaults()
 	{
 		throw new UnsupportedOperationException();
-	}
-	
-	@Test public void assertStateWithOneAssertionSuccessful() throws IndeterminateStateException
-	{
-		
-		//
-		// Fixture Setup
-		//
-		
-		UUID knownStateId = UUID.randomUUID();
-		
-		MySqlDatabaseFixture database = new MySqlDatabaseFixture(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
-			"stm",
-			MySqlElementFixtures.stmStateCreateTableStatement() +
-			MySqlElementFixtures.stmStateInsertRow(knownStateId));
-		
-		try
-		{
-
-			database.setUp();
-
-			MySqlDatabaseResource resource = new MySqlDatabaseResource();
-			State state = new ImmutableState(knownStateId);
-			UUID assertionId = UUID.randomUUID();
-			state.getAssertions().add(new FakeAssertion(
-				assertionId,
-				"Fake1",
-				0,
-				AssertionType.DatabaseRowExists,
-				true,
-				"Fake1 passed"));
-			resource.getStates().add(state);
-
-			MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-				"127.0.0.1",
-				3306,
-				"root",
-				"password",
-				database.getDatabaseName());
-
-			//
-			// Execute
-			//
-
-			List<AssertionResult> results = resource.assertState(instance);
-
-			//
-			// Assert Results
-			//
-
-			Assert.assertNotNull("results", results);
-			Assert.assertEquals("results.size", 1, results.size());
-			Assert.assertEquals("results[0].assertionId", assertionId, results.get(0).getAssertionId());
-			Assert.assertEquals("results[0].result", true, results.get(0).getResult());
-			Assert.assertEquals("results[0].message", "Fake1 passed", results.get(0).getMessage());
-			
-		}
-		finally
-		{
-		
-			//
-			// Fixture Tear-Down
-			//
-
-			database.tearDown();
-			
-		}
 	}
 }

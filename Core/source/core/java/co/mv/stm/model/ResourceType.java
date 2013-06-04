@@ -3,7 +3,8 @@ package co.mv.stm.model;
 public enum ResourceType
 {
 	Database("DB", "Database"),
-	FileSystem("FS", "File System");
+	FileSystem("FS", "File System"),
+	MySqlDatabase("MY", "MySQL Database");
 	
 	ResourceType(
 		String resourceTypeRcd,

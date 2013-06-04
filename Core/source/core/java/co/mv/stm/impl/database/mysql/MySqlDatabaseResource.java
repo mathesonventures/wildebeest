@@ -3,7 +3,6 @@ package co.mv.stm.impl.database.mysql;
 import co.mv.stm.impl.BaseResource;
 import co.mv.stm.impl.database.DatabaseHelper;
 import co.mv.stm.model.AssertionFailedException;
-import co.mv.stm.model.AssertionResult;
 import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.ModelExtensions;
 import co.mv.stm.model.Resource;
@@ -16,130 +15,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.UUID;
 
 public class MySqlDatabaseResource extends BaseResource implements Resource
 {
-	public MySqlDatabaseResource()
+	public MySqlDatabaseResource(
+		UUID resourceId,
+		String name)
 	{
-		super();
+		super(resourceId, name, ResourceType.MySqlDatabase);
 	}
-
-	//
-	// Properties
-	//
-	
-	// <editor-fold desc="ResourceId" defaultstate="collapsed">
-
-	private UUID m_resourceId = null;
-	private boolean m_resourceId_set = false;
-
-	public UUID getResourceId() {
-		if(!m_resourceId_set) {
-			throw new IllegalStateException("resourceId not set.  Use the HasResourceId() method to check its state before accessing it.");
-		}
-		return m_resourceId;
-	}
-
-	private void setResourceId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("resourceId cannot be null");
-		}
-		boolean changing = !m_resourceId_set || m_resourceId != value;
-		if(changing) {
-			m_resourceId_set = true;
-			m_resourceId = value;
-		}
-	}
-
-	private void clearResourceId() {
-		if(m_resourceId_set) {
-			m_resourceId_set = true;
-			m_resourceId = null;
-		}
-	}
-
-	private boolean hasResourceId() {
-		return m_resourceId_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="Name" defaultstate="collapsed">
-
-	private String m_name = null;
-	private boolean m_name_set = false;
-
-	public String getName() {
-		if(!m_name_set) {
-			throw new IllegalStateException("name not set.  Use the HasName() method to check its state before accessing it.");
-		}
-		return m_name;
-	}
-
-	private void setName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("name cannot be null");
-		}
-		boolean changing = !m_name_set || m_name != value;
-		if(changing) {
-			m_name_set = true;
-			m_name = value;
-		}
-	}
-
-	private void clearName() {
-		if(m_name_set) {
-			m_name_set = true;
-			m_name = null;
-		}
-	}
-
-	private boolean hasName() {
-		return m_name_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="ResourceType" defaultstate="collapsed">
-
-	private ResourceType m_resourceType = null;
-	private boolean m_resourceType_set = false;
-
-	public ResourceType getResourceType() {
-		if(!m_resourceType_set) {
-			throw new IllegalStateException("resourceType not set.  Use the HasResourceType() method to check its state before accessing it.");
-		}
-		return m_resourceType;
-	}
-
-	private void setResourceType(
-		ResourceType value) {
-		if(value == null) {
-			throw new IllegalArgumentException("resourceType cannot be null");
-		}
-		boolean changing = !m_resourceType_set || m_resourceType != value;
-		if(changing) {
-			m_resourceType_set = true;
-			m_resourceType = value;
-		}
-	}
-
-	private void clearResourceType() {
-		if(m_resourceType_set) {
-			m_resourceType_set = true;
-			m_resourceType = null;
-		}
-	}
-
-	private boolean hasResourceType() {
-		return m_resourceType_set;
-	}
-
-	// </editor-fold>
 	
 	//
 	// Behaviour
