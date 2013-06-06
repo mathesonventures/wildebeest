@@ -2,7 +2,6 @@ package co.mv.stm.impl.database.mysql;
 
 import co.mv.stm.impl.BaseResource;
 import co.mv.stm.impl.database.DatabaseHelper;
-import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.ModelExtensions;
 import co.mv.stm.model.Resource;
@@ -10,7 +9,6 @@ import co.mv.stm.model.ResourceInstance;
 import co.mv.stm.model.ResourceType;
 import co.mv.stm.model.FaultException;
 import co.mv.stm.model.State;
-import co.mv.stm.model.TransitionNotPossibleException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -112,15 +110,5 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 		}
 		
 		return result;
-	}
-
-	@Override public void transitionTo(
-		ResourceInstance instance,
-		UUID targetStateId) throws
-			IndeterminateStateException,
-			AssertionFailedException,
-			TransitionNotPossibleException
-	{
-		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

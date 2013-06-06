@@ -13,6 +13,13 @@ public class FakeResource extends BaseResource
 {
 	public FakeResource(
 		UUID resourceId,
+		String name)
+	{
+		super(resourceId, name, ResourceType.Database);
+	}
+
+	public FakeResource(
+		UUID resourceId,
 		String name,
 		State currentState)
 	{
@@ -65,20 +72,6 @@ public class FakeResource extends BaseResource
 		FakeResourceInstance fake = ModelExtensions.As(instance, FakeResourceInstance.class);
 		if (fake == null) { throw new IllegalArgumentException("instance must be of type FakeResourceInstance"); }
 
-		return this.getCurrentState();
-	}
-
-	@Override public void transitionTo(
-		ResourceInstance instance,
-		UUID targetStateId) throws
-			IndeterminateStateException,
-			AssertionFailedException,
-			TransitionNotPossibleException
-	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		FakeResourceInstance fake = ModelExtensions.As(instance, FakeResourceInstance.class);
-		if (fake == null) { throw new IllegalArgumentException("instance must be of type FakeResourceInstance"); }
-
-		throw new UnsupportedOperationException("Not supported yet.");
+		return this.hasCurrentState() ? this.getCurrentState() : null;
 	}
 }

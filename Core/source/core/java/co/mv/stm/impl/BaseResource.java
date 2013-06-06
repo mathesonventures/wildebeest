@@ -1,6 +1,7 @@
 package co.mv.stm.impl;
 
 import co.mv.stm.model.Assertion;
+import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.AssertionResponse;
 import co.mv.stm.model.AssertionResult;
 import co.mv.stm.model.IndeterminateStateException;
@@ -9,6 +10,8 @@ import co.mv.stm.model.ResourceInstance;
 import co.mv.stm.model.ResourceType;
 import co.mv.stm.model.State;
 import co.mv.stm.model.Transition;
+import co.mv.stm.model.TransitionFailedException;
+import co.mv.stm.model.TransitionNotPossibleException;
 import co.mv.stm.model.impl.ImmutableAssertionResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -238,5 +241,91 @@ public abstract class BaseResource implements Resource
 		}
 		
 		return results;
+	}
+	
+	@Override public void transition(
+		ResourceInstance instance,
+		UUID targetStateId) throws
+			IndeterminateStateException,
+			AssertionFailedException,
+			TransitionNotPossibleException,
+			TransitionFailedException
+	{
+		if (instance == null) { throw new IllegalArgumentException("instance"); }
+		
+		State currentState = this.currentState(instance);
+		List<UUID> workList = new ArrayList<UUID>();
+		
+		List<List<Transition>> paths = new ArrayList<List<Transition>>();
+		List<Transition> thisPath = new ArrayList<Transition>();
+		
+		findPaths(this, paths, thisPath, null, targetStateId);
+		
+		if (paths.size() != 1)
+		{
+			throw new RuntimeException("multiple possible paths found");
+		}
+		
+		List<Transition> path = paths.get(0);
+		
+		for (Transition transition : path)
+		{
+			// Transition to the next state
+			transition.perform(instance);
+			
+			// Assert the new state
+			this.assertState(instance);
+		}
+	}
+	
+	private State stateForId(UUID stateId)
+	{
+		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
+		
+		State result = null;
+		
+		for (State check : this.getStates())
+		{
+			if (stateId.equals(check.getStateId()))
+			{
+				result = check;
+				break;
+			}
+		}
+		
+		return result;
+	}
+	
+	private static void findPaths(
+		BaseResource resource,
+		List<List<Transition>> paths,
+		List<Transition> thisPath,
+		UUID fromStateId,
+		UUID targetStateId)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource"); }
+		
+		// Have we reached the target state?
+		if ((fromStateId == null && targetStateId == null) ||
+			(fromStateId != null && fromStateId == targetStateId))
+		{
+			paths.add(thisPath);
+		}
+		
+		// If we have not reached the target state, keep traversing the graph
+		else
+		{
+			for (Transition transition : resource.getTransitions())
+			{
+				if ((!transition.hasFromStateId() && fromStateId == null) ||
+					(transition.hasFromStateId() && transition.getFromStateId() == fromStateId))
+				{
+					State toState = resource.stateForId(transition.getToStateId());
+					List<Transition> thisPathCopy = new ArrayList<Transition>(thisPath);
+					thisPathCopy.add(transition);
+					findPaths(resource, paths, thisPathCopy, toState.getStateId(), targetStateId);
+				}
+			}
+		}
 	}
 }

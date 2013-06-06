@@ -121,11 +121,12 @@ public interface Resource
 	 *                                          exactly one.
 	 * @since                                   1.0.0
 	 */
-	void transitionTo(
+	void transition(
 		ResourceInstance instance,
 		UUID targetStateId) throws
 			IndeterminateStateException,
 			AssertionFailedException,
-			TransitionNotPossibleException;
+			TransitionNotPossibleException,
+			TransitionFailedException;
 	
 }
