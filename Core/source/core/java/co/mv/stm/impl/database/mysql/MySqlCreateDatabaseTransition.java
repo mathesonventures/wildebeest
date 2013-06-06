@@ -45,9 +45,15 @@ public class MySqlCreateDatabaseTransition extends BaseTransition implements Tra
 		
 		try
 		{
-			DatabaseHelper.execute(
-				db.getInfoDataSource(),
-				String.format("CREATE DATABASE `%s`;", db.getSchemaName()));
+			DatabaseHelper.execute(db.getInfoDataSource(), new StringBuilder()
+				.append("CREATE DATABASE `").append(db.getSchemaName()).append("`;").toString());
+			
+			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
+				.append("CREATE TABLE `StmState`(`StateId` char(36) NOT NULL, PRIMARY KEY (`StateId`));").toString());
+			
+			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
+				.append("INSERT INTO `StmState`(StateId) VALUES('").append(this.getToStateId().toString())
+				.append("');").toString());
 		}
 		catch (SQLException e)
 		{

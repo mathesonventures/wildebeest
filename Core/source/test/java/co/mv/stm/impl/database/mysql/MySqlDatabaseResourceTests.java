@@ -1,13 +1,9 @@
 package co.mv.stm.impl.database.mysql;
 
-import co.mv.stm.model.AssertionResult;
-import co.mv.stm.model.AssertionType;
 import co.zd.helium.fixture.MySqlDatabaseFixture;
 import co.mv.stm.model.IndeterminateStateException;
-import co.mv.stm.model.ResourceType;
 import co.mv.stm.model.State;
 import co.mv.stm.model.impl.ImmutableState;
-import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
