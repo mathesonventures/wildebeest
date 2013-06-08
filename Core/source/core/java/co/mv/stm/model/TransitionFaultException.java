@@ -6,4 +6,10 @@ public class TransitionFaultException extends RuntimeException
 	{
 		super(cause);
 	}
+	
+	public TransitionFaultException(
+		String message)
+	{
+		super(message);
+	}
 }

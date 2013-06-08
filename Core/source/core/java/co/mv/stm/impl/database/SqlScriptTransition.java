@@ -77,6 +77,10 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 		try
 		{
 			DatabaseHelper.execute(db.getAppDataSource(), this.getSql());
+			
+			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
+				.append("UPDATE StmState SET StateId = '").append(this.getToStateId().toString())
+				.append("';").toString());
 		}
 		catch(SQLException e)
 		{

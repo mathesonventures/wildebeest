@@ -11,6 +11,7 @@ import co.mv.stm.model.ResourceType;
 import co.mv.stm.model.State;
 import co.mv.stm.model.Transition;
 import co.mv.stm.model.TransitionFailedException;
+import co.mv.stm.model.TransitionFaultException;
 import co.mv.stm.model.TransitionNotPossibleException;
 import co.mv.stm.model.impl.ImmutableAssertionResult;
 import java.util.ArrayList;
@@ -218,8 +219,7 @@ public abstract class BaseResource implements Resource
 
 	// </editor-fold>
 
-	@Override public List<AssertionResult> assertState(
-		ResourceInstance instance) throws IndeterminateStateException
+	@Override public List<AssertionResult> assertState(ResourceInstance instance) throws IndeterminateStateException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
 
@@ -254,12 +254,13 @@ public abstract class BaseResource implements Resource
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
 		
 		State currentState = this.currentState(instance);
+		UUID currentStateId = currentState == null ? null : currentState.getStateId();
 		List<UUID> workList = new ArrayList<UUID>();
 		
 		List<List<Transition>> paths = new ArrayList<List<Transition>>();
 		List<Transition> thisPath = new ArrayList<Transition>();
 		
-		findPaths(this, paths, thisPath, null, targetStateId);
+		findPaths(this, paths, thisPath, currentStateId, targetStateId);
 		
 		if (paths.size() != 1)
 		{
@@ -272,6 +273,16 @@ public abstract class BaseResource implements Resource
 		{
 			// Transition to the next state
 			transition.perform(instance);
+
+			// Basic state check
+			State state = this.currentState(instance);
+			if (!state.getStateId().equals(transition.getToStateId()))
+			{
+				throw new TransitionFaultException(String.format(
+					"state expected to be %s after transition but is %s",
+					transition.getToStateId(),
+					state.getStateId()));
+			}
 			
 			// Assert the new state
 			this.assertState(instance);

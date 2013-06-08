@@ -1,5 +1,6 @@
 package co.mv.stm.impl.database.mysql;
 
+import co.mv.stm.impl.database.DatabaseHelper;
 import co.mv.stm.impl.database.SqlScriptTransition;
 import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.IndeterminateStateException;
@@ -8,6 +9,7 @@ import co.mv.stm.model.TransitionFailedException;
 import co.mv.stm.model.TransitionNotPossibleException;
 import co.mv.stm.model.TransitionType;
 import co.mv.stm.model.impl.ImmutableState;
+import java.sql.SQLException;
 import java.util.UUID;
 import org.junit.Test;
 
@@ -17,7 +19,8 @@ public class IntegrationTests
 		IndeterminateStateException,
 		AssertionFailedException,
 		TransitionNotPossibleException,
-		TransitionFailedException
+		TransitionFailedException,
+		SQLException
 	{
 	
 		//
@@ -71,6 +74,7 @@ public class IntegrationTests
 		//
 		
 		resource.transition(instance, populated.getStateId());
+		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP DATABASE stm_test;");
 		
 		//
 		// Assert Results

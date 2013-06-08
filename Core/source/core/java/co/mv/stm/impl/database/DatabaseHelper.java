@@ -32,6 +32,41 @@ public class DatabaseHelper
 		}
 	}
 	
+	public static Object querySingle(
+		DataSource dataSource,
+		String sql) throws SQLException
+	{
+		if (dataSource == null) { throw new IllegalArgumentException("dataSource"); }
+		if (sql == null) { throw new IllegalArgumentException("sql"); }
+		if ("".equals(sql)) { throw new IllegalArgumentException("sql cannot be empty"); }
+		
+		Object result = null;
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			conn = dataSource.getConnection();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			if (rs.next())
+			{
+				result = rs.getObject(1);
+			}
+		}
+		finally
+		{
+			DatabaseHelper.release(rs);
+			DatabaseHelper.release(ps);
+			DatabaseHelper.release(conn);
+		}
+		
+		return result;
+	}
+	
 	public static void release(Connection conn) throws SQLException
 	{
 		if (conn != null)
