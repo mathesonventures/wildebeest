@@ -53,6 +53,11 @@ public class MySqlProperties
 			result.setPassword(password);
 		}
 		
+		System.out.println("mySql.hostName: " + result.getHostName());
+		System.out.println("mySql.port: " + result.getPort());
+		System.out.println("mySql.username: " + result.getUsername());
+		System.out.println("mySql.password: " + result.getPassword());
+
 		return result;
 	}
 	
