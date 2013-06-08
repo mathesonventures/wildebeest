@@ -73,5 +73,7 @@ public class FakeTransition extends BaseTransition
 		if (fake == null) { throw new IllegalArgumentException("instance must of type FakeResource"); }
 	
 		fake.setTag(this.getTag());
+		
+		fake.setStateId(this.getToStateId());
 	}
 }

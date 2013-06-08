@@ -20,11 +20,13 @@ public class SqlScriptTransitionTests
 		// Fixture Setup
 		//
 		
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+		
 		MySqlDatabaseFixture f = new MySqlDatabaseFixture(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			"stm_test",
 			MySqlElementFixtures.stmStateCreateTableStatement());
 		f.setUp();

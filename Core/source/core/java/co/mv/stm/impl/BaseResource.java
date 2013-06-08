@@ -276,12 +276,13 @@ public abstract class BaseResource implements Resource
 
 			// Basic state check
 			State state = this.currentState(instance);
-			if (!state.getStateId().equals(transition.getToStateId()))
+			UUID stateId = state == null ? null : state.getStateId();
+			if (!transition.getToStateId().equals(stateId))
 			{
 				throw new TransitionFaultException(String.format(
 					"state expected to be %s after transition but is %s",
 					transition.getToStateId(),
-					state.getStateId()));
+					stateId));
 			}
 			
 			// Assert the new state
@@ -289,7 +290,7 @@ public abstract class BaseResource implements Resource
 		}
 	}
 	
-	private State stateForId(UUID stateId)
+	protected State stateForId(UUID stateId)
 	{
 		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
 		

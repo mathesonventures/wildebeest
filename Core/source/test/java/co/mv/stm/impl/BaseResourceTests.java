@@ -1,5 +1,6 @@
 package co.mv.stm.impl;
 
+import co.mv.stm.model.Assertion;
 import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.AssertionResult;
 import co.mv.stm.model.AssertionType;
@@ -28,14 +29,13 @@ public class BaseResourceTests
 		//
 		// Fixture Setup
 		//
+				
+		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 		
-		UUID knownStateId = UUID.randomUUID();
-		
-		State state = new ImmutableState(knownStateId);
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource", state);
+		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
 		
-		FakeResourceInstance instance = new FakeResourceInstance();
+		FakeResourceInstance instance = new FakeResourceInstance(state.getStateId());
 
 		//
 		// Execute
@@ -59,21 +59,21 @@ public class BaseResourceTests
 		// Fixture Setup
 		//
 		
-		UUID knownStateId = UUID.randomUUID();
+		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 		
-		State state = new ImmutableState(knownStateId);
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource", state);
-		UUID assertionId = UUID.randomUUID();
-		state.getAssertions().add(new FakeAssertion(
-			assertionId,
+		State state = new ImmutableState(UUID.randomUUID());
+		resource.getStates().add(state);
+		
+		Assertion assertion1 = new FakeAssertion(
+			UUID.randomUUID(),
 			"Fake1",
 			0,
 			AssertionType.DatabaseRowExists,
 			true,
-			"Fake1 passed"));
-		resource.getStates().add(state);
+			"Fake1 passed");
+		state.getAssertions().add(assertion1);
 		
-		FakeResourceInstance instance = new FakeResourceInstance();
+		FakeResourceInstance instance = new FakeResourceInstance(state.getStateId());
 
 		//
 		// Execute
@@ -87,7 +87,8 @@ public class BaseResourceTests
 
 		Assert.assertNotNull("results", results);
 		Assert.assertEquals("results.size", 1, results.size());
-		AssertExtensions.assertAssertionResult(assertionId, true, "Fake1 passed", results.get(0), "results[0]");
+		AssertExtensions.assertAssertionResult(
+			assertion1.getAssertionId(), true, "Fake1 passed", results.get(0), "results[0]");
 	}
 	
 	@Test public void assertStateWithMultipleAssertionsSuccessful() throws IndeterminateStateException
@@ -97,10 +98,10 @@ public class BaseResourceTests
 		// Fixture Setup
 		//
 		
-		UUID knownStateId = UUID.randomUUID();
-		
-		State state = new ImmutableState(knownStateId);
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource", state);
+		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+
+		State state = new ImmutableState(UUID.randomUUID());
+		resource.getStates().add(state);
 
 		UUID assertion1Id = UUID.randomUUID();
 		state.getAssertions().add(new FakeAssertion(
@@ -119,10 +120,8 @@ public class BaseResourceTests
 			AssertionType.DatabaseRowExists,
 			false,
 			"Fake2 failed"));
-
-		resource.getStates().add(state);
 		
-		FakeResourceInstance instance = new FakeResourceInstance();
+		FakeResourceInstance instance = new FakeResourceInstance(state.getStateId());
 
 		//
 		// Execute
@@ -149,10 +148,10 @@ public class BaseResourceTests
 		throw new UnsupportedOperationException();
 	}
 
-//	@Ignore @Test public void assertStateStateForFaultingAssertion()
-//	{
-//		throw new UnsupportedOperationException();
-//	}
+	@Ignore @Test public void assertStateStateForFaultingAssertion()
+	{
+		throw new UnsupportedOperationException();
+	}
 	
 	//
 	// transitionTo()
@@ -261,7 +260,7 @@ public class BaseResourceTests
 		// Assert Results
 		//
 		
-		Assert.assertEquals("instance.tag", "bup", instance.getTag());
+		Assert.assertEquals("instance.tag", "bar", instance.getTag());
 		
 	}
 	

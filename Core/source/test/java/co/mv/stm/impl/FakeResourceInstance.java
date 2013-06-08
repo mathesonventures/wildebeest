@@ -1,9 +1,56 @@
 package co.mv.stm.impl;
 
 import co.mv.stm.model.ResourceInstance;
+import java.util.UUID;
 
 public class FakeResourceInstance implements ResourceInstance
 {
+	public FakeResourceInstance()
+	{
+	}
+	
+	public FakeResourceInstance(UUID stateId)
+	{
+		this.setStateId(stateId);
+	}
+	
+	// <editor-fold desc="StateId" defaultstate="collapsed">
+
+	private UUID m_stateId = null;
+	private boolean m_stateId_set = false;
+
+	public UUID getStateId() {
+		if(!m_stateId_set) {
+			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
+		}
+		return m_stateId;
+	}
+
+	public void setStateId(
+		UUID value) {
+		if(value == null) {
+			throw new IllegalArgumentException("stateId cannot be null");
+		}
+		boolean changing = !m_stateId_set || m_stateId != value;
+		if(changing) {
+			m_stateId_set = true;
+			m_stateId = value;
+		}
+	}
+
+	public void clearStateId() {
+		if(m_stateId_set) {
+			m_stateId_set = true;
+			m_stateId = null;
+		}
+	}
+
+	public boolean hasStateId() {
+		return m_stateId_set;
+	}
+
+	// </editor-fold>
+	
 	// <editor-fold desc="Tag" defaultstate="collapsed">
 
 	private String m_tag = null;

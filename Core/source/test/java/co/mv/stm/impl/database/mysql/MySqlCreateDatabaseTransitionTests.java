@@ -59,7 +59,13 @@ public class MySqlCreateDatabaseTransitionTests
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
-		MySqlDatabaseFixture f = new MySqlDatabaseFixture("127.0.0.1", 3306, "root", "password", "stm_test", "");
+		MySqlDatabaseFixture f = new MySqlDatabaseFixture(
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
+			"stm_test",
+			"");
 		f.setUp();
 		
 		MySqlCreateDatabaseTransition tr = new MySqlCreateDatabaseTransition(
