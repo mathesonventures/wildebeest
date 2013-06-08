@@ -908,6 +908,11 @@
 
 		<mkdir dir="${target.test.report}/data" />
 
+<echo message="mySql.hostName: ${mySql.hostName}" />
+<echo message="mySql.port: ${mySql.port}" />
+<echo message="mySql.username: ${mySql.username}" />
+<echo message="mySql.password: ${mySql.password}" />
+
 		<junit fork="no"
 			showoutput="true"
 			printsummary="true">

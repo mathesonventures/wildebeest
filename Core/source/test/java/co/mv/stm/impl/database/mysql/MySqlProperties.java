@@ -1,7 +1,11 @@
 package co.mv.stm.impl.database.mysql;
 
+import org.apache.log4j.Logger;
+
 public class MySqlProperties
 {
+	private static Logger LOG = Logger.getLogger(MySqlProperties.class);
+	
 	private MySqlProperties()
 	{
 	}
@@ -18,6 +22,7 @@ public class MySqlProperties
 		}
 		else
 		{
+			LOG.debug("System mySql.hostName: " + hostName);
 			result.setHostName(hostName);
 		}
 		
@@ -28,6 +33,7 @@ public class MySqlProperties
 		}
 		else
 		{
+			LOG.debug("System mySql.port: " + portRaw);
 			result.setPort(Integer.parseInt(portRaw));
 		}
 
@@ -39,6 +45,7 @@ public class MySqlProperties
 		}
 		else
 		{
+			LOG.debug("System mySql.username: " + username);
 			result.setUsername(username);
 		}
 
@@ -50,13 +57,16 @@ public class MySqlProperties
 		}
 		else
 		{
+			LOG.debug("System mySql.password: " + password);
 			result.setPassword(password);
 		}
 		
-		System.out.println("mySql.hostName: " + result.getHostName());
-		System.out.println("mySql.port: " + result.getPort());
-		System.out.println("mySql.username: " + result.getUsername());
-		System.out.println("mySql.password: " + result.getPassword());
+		LOG.debug(String.format(
+			"MySqlProperties { hostName: %s; port: %d; username: %s; password: %s; }",
+			result.getHostName(),
+			result.getPort(),
+			result.getUsername(),
+			result.getPassword()));
 
 		return result;
 	}

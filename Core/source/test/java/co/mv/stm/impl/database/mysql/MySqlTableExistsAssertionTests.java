@@ -1,5 +1,6 @@
 package co.mv.stm.impl.database.mysql;
 
+import co.mv.stm.impl.AssertExtensions;
 import co.mv.stm.impl.FakeResourceInstance;
 import co.mv.stm.impl.database.DatabaseHelper;
 import co.mv.stm.impl.database.SqlScriptTransition;
