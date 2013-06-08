@@ -37,10 +37,10 @@ public class SqlScriptTransitionTests
 			MySqlElementFixtures.realmTypeRefCreateTableStatement());
 		
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			f.getDatabaseName());
 		
 		//
