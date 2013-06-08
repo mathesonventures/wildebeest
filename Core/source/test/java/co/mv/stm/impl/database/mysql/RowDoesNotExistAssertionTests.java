@@ -6,6 +6,7 @@ import co.mv.stm.model.AssertionResponse;
 import co.zd.helium.fixture.MySqlDatabaseFixture;
 import java.util.UUID;
 import junit.framework.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class RowDoesNotExistAssertionTests
@@ -117,7 +118,7 @@ public class RowDoesNotExistAssertionTests
 		
 	}
 	
-	@Test public void applyForNonExistentTableFails()
+	@Ignore @Test public void applyForNonExistentTableFails()
 	{
 		throw new UnsupportedOperationException();
 	}

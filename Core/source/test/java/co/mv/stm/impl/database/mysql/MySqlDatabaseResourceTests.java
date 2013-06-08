@@ -6,6 +6,7 @@ import co.mv.stm.model.State;
 import co.mv.stm.model.impl.ImmutableState;
 import java.util.UUID;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MySqlDatabaseResourceTests
@@ -230,7 +231,7 @@ public class MySqlDatabaseResourceTests
 		
 	}
 	
-	@Test public void currentStateForDatabaseWithInvalidStateTableSchemaFaults()
+	@Ignore @Test public void currentStateForDatabaseWithInvalidStateTableSchemaFaults()
 	{
 		throw new UnsupportedOperationException();
 	}

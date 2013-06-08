@@ -26,7 +26,7 @@ public class SqlScriptTransitionTests
 			"root",
 			"password",
 			"stm_test",
-			"");
+			MySqlElementFixtures.stmStateCreateTableStatement());
 		f.setUp();
 		
 		SqlScriptTransition tr = new SqlScriptTransition(
