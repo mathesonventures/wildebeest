@@ -1,4 +1,4 @@
-package co.mv.stm.model;
+package co.mv.stm;
 
 /**
  * The response from an {@link Assertion}'s {@link Assertion#apply()} method.

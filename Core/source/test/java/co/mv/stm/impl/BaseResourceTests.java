@@ -1,15 +1,14 @@
 package co.mv.stm.impl;
 
-import co.mv.stm.model.Assertion;
-import co.mv.stm.model.AssertionFailedException;
-import co.mv.stm.model.AssertionResult;
-import co.mv.stm.model.AssertionType;
-import co.mv.stm.model.IndeterminateStateException;
-import co.mv.stm.model.State;
-import co.mv.stm.model.Transition;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionNotPossibleException;
-import co.mv.stm.model.impl.ImmutableState;
+import co.mv.stm.Assertion;
+import co.mv.stm.AssertionFailedException;
+import co.mv.stm.AssertionResult;
+import co.mv.stm.AssertionType;
+import co.mv.stm.IndeterminateStateException;
+import co.mv.stm.State;
+import co.mv.stm.Transition;
+import co.mv.stm.TransitionFailedException;
+import co.mv.stm.TransitionNotPossibleException;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;

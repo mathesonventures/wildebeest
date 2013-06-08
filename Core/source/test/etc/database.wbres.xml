@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<resource id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" name="MV AAA Database">
+
+	<states>
+
+		<state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" label="Database created">
+			<assertions>
+				<assertion
+					id="19b64fb6-f95f-4221-bc64-303f62a3eda8"
+					name="Database exists"
+					type="MySqlDatabaseExists">
+					<databaseName>MV.AAA</databaseName>
+				</assertion>
+			</assertions>
+		</state>
+
+		<state id="363568f1-aaed-4a50-bea0-9ddee713cc11" label="Schema loaded">
+			<assertions>
+				<assertion
+					id="3808ba63-f055-4bf7-88fe-023546e6ed16"
+					name="RealmTypeRef exiss"
+					type="MySqlTableExists">
+					<databaseName>RealmTypeRef</databaseName>
+				</assertion>
+				<assertion
+					id="54c78eca-9eda-4983-b9a5-0dcb1be686ff"
+					name="Realm exiss"
+					type="MySqlTableExists">
+					<databaseName>Realm</databaseName>
+				</assertion>
+			</assertions>
+		</state>
+
+		<state id="61ee5deb-aee7-4508-9d9c-1e749e2f7fab" label="RealmTypeRef data loaded">
+		</state>
+
+	</states>
+
+	<transitions>
+
+		<transition
+			id="6b21e1e3-ff3a-44b3-84ec-e21fb01c0110"
+			toStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"
+			type="MySqlCreateDatabase">
+			<databaseName>MV.AAA</databaseName>
+		</transition>
+
+		<transition
+			id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
+			fromStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"
+			toStateId="363568f1-aaed-4a50-bea0-9ddee713cc11"
+			type="SqlScript">
+			<sql><![CDATA[
+
+TODO: SQL
+
+			]]></sql>
+		</transition>
+
+		<transition
+			id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
+			fromStateId="363568f1-aaed-4a50-bea0-9ddee713cc11"
+			toStateId="61ee5deb-aee7-4508-9d9c-1e749e2f7fab"
+			type="SqlScript">
+			<sql><![CDATA[
+
+TODO: SQL
+
+			]]></sql>
+		</transition>
+
+	</transitions>
+
+</resource>

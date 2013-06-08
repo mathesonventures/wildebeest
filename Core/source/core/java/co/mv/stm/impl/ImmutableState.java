@@ -1,7 +1,7 @@
-package co.mv.stm.model.impl;
+package co.mv.stm.impl;
 
-import co.mv.stm.model.Assertion;
-import co.mv.stm.model.State;
+import co.mv.stm.Assertion;
+import co.mv.stm.State;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

@@ -1,7 +1,7 @@
 package co.mv.stm.impl;
 
-import co.mv.stm.model.AssertionResponse;
-import co.mv.stm.model.AssertionResult;
+import co.mv.stm.AssertionResponse;
+import co.mv.stm.AssertionResult;
 import java.util.UUID;
 import org.junit.Assert;
 

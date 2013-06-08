@@ -1,6 +1,6 @@
 package co.mv.stm.impl;
 
-import co.mv.stm.model.ResourceInstance;
+import co.mv.stm.ResourceInstance;
 import java.util.UUID;
 
 public class FakeResourceInstance implements ResourceInstance

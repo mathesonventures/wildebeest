@@ -5,9 +5,9 @@
 package co.mv.stm.impl.database.mysql;
 
 import co.mv.stm.impl.database.DatabaseHelper;
-import co.mv.stm.model.AssertionFaultException;
-import co.mv.stm.model.FaultException;
-import co.mv.stm.model.impl.ImmutableAssertionResponse;
+import co.mv.stm.AssertionFaultException;
+import co.mv.stm.FaultException;
+import co.mv.stm.impl.ImmutableAssertionResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

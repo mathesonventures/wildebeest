@@ -1,4 +1,4 @@
-package co.mv.stm.model;
+package co.mv.stm;
 
 import java.util.List;
 import java.util.UUID;

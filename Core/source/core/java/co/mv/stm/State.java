@@ -1,5 +1,6 @@
-package co.mv.stm.model;
+package co.mv.stm;
 
+import co.mv.stm.Assertion;
 import java.util.List;
 import java.util.UUID;
 

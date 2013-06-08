@@ -1,11 +1,11 @@
 package co.mv.stm.impl.database.mysql;
 
 import co.mv.stm.impl.BaseAssertion;
-import co.mv.stm.model.AssertionResponse;
-import co.mv.stm.model.AssertionType;
-import co.mv.stm.model.ModelExtensions;
-import co.mv.stm.model.ResourceInstance;
-import co.mv.stm.model.impl.ImmutableAssertionResponse;
+import co.mv.stm.AssertionResponse;
+import co.mv.stm.AssertionType;
+import co.mv.stm.ModelExtensions;
+import co.mv.stm.ResourceInstance;
+import co.mv.stm.impl.ImmutableAssertionResponse;
 import java.util.UUID;
 
 public class MySqlDatabaseDoesNotExistAssertion extends BaseAssertion

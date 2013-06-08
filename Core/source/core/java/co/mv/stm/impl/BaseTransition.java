@@ -1,7 +1,7 @@
 package co.mv.stm.impl;
 
-import co.mv.stm.model.Transition;
-import co.mv.stm.model.TransitionType;
+import co.mv.stm.Transition;
+import co.mv.stm.TransitionType;
 import java.util.UUID;
 
 public abstract class BaseTransition implements Transition

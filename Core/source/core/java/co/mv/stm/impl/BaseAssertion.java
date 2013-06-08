@@ -1,7 +1,7 @@
 package co.mv.stm.impl;
 
-import co.mv.stm.model.Assertion;
-import co.mv.stm.model.AssertionType;
+import co.mv.stm.Assertion;
+import co.mv.stm.AssertionType;
 import java.util.UUID;
 
 public abstract class BaseAssertion implements Assertion

@@ -1,10 +1,10 @@
 package co.mv.stm.impl;
 
-import co.mv.stm.model.IndeterminateStateException;
-import co.mv.stm.model.ModelExtensions;
-import co.mv.stm.model.ResourceInstance;
-import co.mv.stm.model.ResourceType;
-import co.mv.stm.model.State;
+import co.mv.stm.IndeterminateStateException;
+import co.mv.stm.ModelExtensions;
+import co.mv.stm.ResourceInstance;
+import co.mv.stm.ResourceType;
+import co.mv.stm.State;
 import java.util.UUID;
 
 public class FakeResource extends BaseResource

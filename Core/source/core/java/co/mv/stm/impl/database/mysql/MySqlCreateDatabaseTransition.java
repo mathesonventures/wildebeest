@@ -2,12 +2,12 @@ package co.mv.stm.impl.database.mysql;
 
 import co.mv.stm.impl.BaseTransition;
 import co.mv.stm.impl.database.DatabaseHelper;
-import co.mv.stm.model.ModelExtensions;
-import co.mv.stm.model.ResourceInstance;
-import co.mv.stm.model.Transition;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionFaultException;
-import co.mv.stm.model.TransitionType;
+import co.mv.stm.ModelExtensions;
+import co.mv.stm.ResourceInstance;
+import co.mv.stm.Transition;
+import co.mv.stm.TransitionFailedException;
+import co.mv.stm.TransitionFaultException;
+import co.mv.stm.TransitionType;
 import java.sql.SQLException;
 import java.util.UUID;
 

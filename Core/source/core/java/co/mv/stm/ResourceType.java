@@ -1,4 +1,4 @@
-package co.mv.stm.model;
+package co.mv.stm;
 
 public enum ResourceType
 {
