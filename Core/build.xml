@@ -912,6 +912,11 @@
 			showoutput="true"
 			printsummary="true">
 
+			<sysproperty key="mySql.hostName" value="${mySql.hostName}" />
+			<sysproperty key="mySql.port" value="${mySql.port}" />
+			<sysproperty key="mySql.username" value="${mySql.username}" />
+			<sysproperty key="mySql.password" value="${mySql.password}" />
+
 			<classpath>
 				<path refid="test.app.run.path" />
 			</classpath>
