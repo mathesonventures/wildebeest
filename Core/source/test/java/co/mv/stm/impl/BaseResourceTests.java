@@ -12,6 +12,7 @@ import co.mv.stm.model.impl.ImmutableState;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BaseResourceTests
@@ -86,7 +87,7 @@ public class BaseResourceTests
 
 		Assert.assertNotNull("results", results);
 		Assert.assertEquals("results.size", 1, results.size());
-		assertAssertionResult(assertionId, true, "Fake1 passed", results.get(0), "results[0]");
+		AssertExtensions.assertAssertionResult(assertionId, true, "Fake1 passed", results.get(0), "results[0]");
 	}
 	
 	@Test public void assertStateWithMultipleAssertionsSuccessful() throws IndeterminateStateException
@@ -135,23 +136,23 @@ public class BaseResourceTests
 
 		Assert.assertNotNull("results", results);
 		Assert.assertEquals("results.size", 2, results.size());
-		assertAssertionResult(assertion1Id, true, "Fake1 passed", results.get(0), "results[0]");
-		assertAssertionResult(assertion2Id, false, "Fake2 failed", results.get(1), "results[1]");
+		AssertExtensions.assertAssertionResult(assertion1Id, true, "Fake1 passed", results.get(0), "results[0]");
+		AssertExtensions.assertAssertionResult(assertion2Id, false, "Fake2 failed", results.get(1), "results[1]");
 	}
 
 	/**
 	 * Verifies that when the internal call to currentState() results in an IndeterminateStateException, assertState
 	 * handles that properly.
 	 */
-	@Test public void assertStateForResourceIndeterminateState()
+	@Ignore @Test public void assertStateForResourceIndeterminateState()
 	{
 		throw new UnsupportedOperationException();
 	}
 
-	@Test public void assertStateStateForFaultingAssertion()
-	{
-		throw new UnsupportedOperationException();
-	}
+//	@Ignore @Test public void assertStateStateForFaultingAssertion()
+//	{
+//		throw new UnsupportedOperationException();
+//	}
 	
 	//
 	// transitionTo()
@@ -350,36 +351,18 @@ public class BaseResourceTests
 		
 	}
 	
-	@Test public void transitionFromStateToState()
+	@Ignore @Test public void transitionFromStateToState()
 	{
 		throw new UnsupportedOperationException();
 	}
 	
-	@Test public void transitionFromStateToDeepState()
+	@Ignore @Test public void transitionFromStateToDeepState()
 	{
 		throw new UnsupportedOperationException();
 	}
 	
-	@Test public void transitionWithCircularDependencyFails()
+	@Ignore @Test public void transitionWithCircularDependencyFails()
 	{
 		throw  new UnsupportedOperationException();
-	}
-	
-	public static void assertAssertionResult(
-		UUID expectedAssertionId,
-		boolean expectedResult,
-		String expectedMessage,
-		AssertionResult actual,
-		String name)
-	{
-		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId"); }
-		if (expectedMessage == null) { throw new IllegalArgumentException("expectedMessage"); }
-		if (actual == null) { throw new IllegalArgumentException("actual"); }
-		if (name == null) { throw new IllegalArgumentException("name"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be blank"); }
-
-		Assert.assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
-		Assert.assertEquals(name + ".result", expectedResult, actual.getResult());
-		Assert.assertEquals(name + ".message", expectedMessage, actual.getMessage());
 	}
 }
