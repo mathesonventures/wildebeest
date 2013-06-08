@@ -25,16 +25,18 @@ public class MySqlDatabaseResourceTests
 		//
 		// Fixture Setup
 		//
-		
+
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+
 		MySqlDatabaseResource resource = new MySqlDatabaseResource(
 			UUID.randomUUID(),
 			"Database");
 
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			"non_existent_schema");
 
 		//
@@ -58,13 +60,15 @@ public class MySqlDatabaseResourceTests
 		// Fixture Setup
 		//
 		
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+
 		UUID knownStateId = UUID.randomUUID();
 		
 		MySqlDatabaseFixture database = new MySqlDatabaseFixture(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			"stm",
 			MySqlElementFixtures.stmStateCreateTableStatement() +
 			MySqlElementFixtures.stmStateInsertRow(knownStateId));
@@ -79,10 +83,10 @@ public class MySqlDatabaseResourceTests
 			resource.getStates().add(new ImmutableState(knownStateId));
 
 			MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-				"127.0.0.1",
-				3306,
-				"root",
-				"password",
+				mySqlProperties.getHostName(),
+				mySqlProperties.getPort(),
+				mySqlProperties.getUsername(),
+				mySqlProperties.getPassword(),
 				database.getDatabaseName());
 
 			//
@@ -116,11 +120,13 @@ public class MySqlDatabaseResourceTests
 		// Fixture Setup
 		//
 		
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+		
 		MySqlDatabaseFixture database = new MySqlDatabaseFixture(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			"stm",
 			MySqlElementFixtures.stmStateCreateTableStatement() +
 			MySqlElementFixtures.stmStateInsertRow(UUID.randomUUID()) +
@@ -132,10 +138,10 @@ public class MySqlDatabaseResourceTests
 			"Database");
 		
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			database.getDatabaseName());
 
 		//
@@ -176,13 +182,15 @@ public class MySqlDatabaseResourceTests
 		// Fixture Setup
 		//
 		
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+		
 		UUID knownStateId = UUID.randomUUID();
 		
 		MySqlDatabaseFixture database = new MySqlDatabaseFixture(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			"stm",
 			MySqlElementFixtures.stmStateCreateTableStatement() +
 			MySqlElementFixtures.stmStateInsertRow(knownStateId));
@@ -193,10 +201,10 @@ public class MySqlDatabaseResourceTests
 			"Database");
 		
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			database.getDatabaseName());
 
 		//

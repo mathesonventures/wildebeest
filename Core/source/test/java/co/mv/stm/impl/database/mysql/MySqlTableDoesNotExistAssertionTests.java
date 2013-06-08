@@ -27,35 +27,41 @@ public class MySqlTableDoesNotExistAssertionTests
 		 SQLException
 	 {
 		 
-		 //
-		 // Fixture Setup
-		 //
+		//
+		// Fixture Setup
+		//
 		 
-		 MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
+		MySqlProperties mySqlProperties = MySqlProperties.get();
 		 
-		 // Created
-		 State created = new ImmutableState(UUID.randomUUID());
-		 resource.getStates().add(created);
+		MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
 		 
-		 // Schema Loaded
-		 State schemaLoaded = new ImmutableState(UUID.randomUUID());
-		 resource.getStates().add(schemaLoaded);
+		// Created
+		State created = new ImmutableState(UUID.randomUUID());
+		resource.getStates().add(created);
 		 
-		 // Transition -> created
-		 Transition tran1 = new MySqlCreateDatabaseTransition(
-			 UUID.randomUUID(), TransitionType.DatabaseSqlScript, created.getStateId());
-		 resource.getTransitions().add(tran1);
+		// Schema Loaded
+		State schemaLoaded = new ImmutableState(UUID.randomUUID());
+		resource.getStates().add(schemaLoaded);
 		 
-		 // Transition created -> schemaLoaded
-		 Transition tran2 = new SqlScriptTransition(
-			 UUID.randomUUID(),
-			 created.getStateId(),
-			 schemaLoaded.getStateId(),
-			 MySqlElementFixtures.realmTypeRefCreateTableStatement());
-		 resource.getTransitions().add(tran2);
+		// Transition -> created
+		Transition tran1 = new MySqlCreateDatabaseTransition(
+			UUID.randomUUID(), TransitionType.DatabaseSqlScript, created.getStateId());
+		resource.getTransitions().add(tran1);
+		 
+		// Transition created -> schemaLoaded
+		Transition tran2 = new SqlScriptTransition(
+			UUID.randomUUID(),
+			created.getStateId(),
+			schemaLoaded.getStateId(),
+			MySqlElementFixtures.realmTypeRefCreateTableStatement());
+		resource.getTransitions().add(tran2);
 
-		 MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			 "127.0.0.1", 3306, "root", "password", "stm_test");
+		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
+			"stm_test");
 		 
 		resource.transition(instance, schemaLoaded.getStateId());
 		
@@ -93,7 +99,9 @@ public class MySqlTableDoesNotExistAssertionTests
 		 //
 		 // Fixture Setup
 		 //
-		 
+
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+
 		 MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
 		 
 		 // Created
@@ -105,8 +113,12 @@ public class MySqlTableDoesNotExistAssertionTests
 			 UUID.randomUUID(), TransitionType.DatabaseSqlScript, created.getStateId());
 		 resource.getTransitions().add(tran1);
 		 
-		 MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			 "127.0.0.1", 3306, "root", "password", "stm_test");
+		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
+			"stm_test");
 		 
 		resource.transition(instance, created.getStateId());
 		
@@ -136,12 +148,18 @@ public class MySqlTableDoesNotExistAssertionTests
 	 @Test public void applyForNonExistentDatabaseFails()
 	 {
 		 
-		 //
-		 // Fixture Setup
-		 //
+		//
+		// Fixture Setup
+		//
 		 
-		 MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			 "127.0.0.1", 3306, "root", "password", "stm_test");
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+		 
+		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
+			"stm_test");
 		 
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),

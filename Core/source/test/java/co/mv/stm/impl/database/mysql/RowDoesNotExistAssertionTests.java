@@ -18,20 +18,22 @@ public class RowDoesNotExistAssertionTests
 		// Fixture Setup
 		//
 		
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+		
 		MySqlDatabaseFixture f = new MySqlDatabaseFixture(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			"stm_test",
 			MySqlElementFixtures.realmTypeRefCreateTableStatement());
 		f.setUp();
 		
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			f.getDatabaseName());
 		
 		RowDoesNotExistAssertion assertion = new RowDoesNotExistAssertion(
@@ -71,21 +73,23 @@ public class RowDoesNotExistAssertionTests
 		// Fixture Setup
 		//
 		
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+		
 		MySqlDatabaseFixture f = new MySqlDatabaseFixture(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			"stm_test",
 			MySqlElementFixtures.realmTypeRefCreateTableStatement() +
 			MySqlElementFixtures.realmTypeRefInsertUserBaseRow());
 		f.setUp();
 		
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			f.getDatabaseName());
 		
 		RowDoesNotExistAssertion assertion = new RowDoesNotExistAssertion(

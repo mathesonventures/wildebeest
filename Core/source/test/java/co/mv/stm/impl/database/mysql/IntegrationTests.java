@@ -27,6 +27,8 @@ public class IntegrationTests
 		// Fixture Setup
 		//
 
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+		
 		// Resource
 		MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
 		
@@ -63,10 +65,10 @@ public class IntegrationTests
 			MySqlElementFixtures.realmTypeRefInsertUserBaseRow()));
 
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			"stm_test");
 		
 		//
@@ -79,7 +81,6 @@ public class IntegrationTests
 		//
 		// Assert Results
 		//
-		
 		
 	}
 }

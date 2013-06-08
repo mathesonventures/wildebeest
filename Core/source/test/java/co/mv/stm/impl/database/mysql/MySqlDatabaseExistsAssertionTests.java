@@ -26,21 +26,27 @@ public class MySqlDatabaseExistsAssertionTests
 		 SQLException
 	 {
 		 
-		 //
-		 // Fixture Setup
-		 //
+		//
+		// Fixture Setup
+		//
+
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+
+		MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
 		 
-		 MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
+		State created = new ImmutableState(UUID.randomUUID());
+		resource.getStates().add(created);
 		 
-		 State created = new ImmutableState(UUID.randomUUID());
-		 resource.getStates().add(created);
+		Transition tran1 = new MySqlCreateDatabaseTransition(
+			UUID.randomUUID(), TransitionType.DatabaseSqlScript, created.getStateId());
+		resource.getTransitions().add(tran1);
 		 
-		 Transition tran1 = new MySqlCreateDatabaseTransition(
-			 UUID.randomUUID(), TransitionType.DatabaseSqlScript, created.getStateId());
-		 resource.getTransitions().add(tran1);
-		 
-		 MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			 "127.0.0.1", 3306, "root", "password", "stm_test");
+		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
+			"stm_test");
 		 
 		resource.transition(instance, created.getStateId());
 		
@@ -77,9 +83,15 @@ public class MySqlDatabaseExistsAssertionTests
 		//
 		// Fixture Setup
 		//
+
+		MySqlProperties mySqlProperties = MySqlProperties.get();
 		 
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			"127.0.0.1", 3306, "root", "password", "stm_test");
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
+			"stm_test");
 		
 		MySqlDatabaseExistsAssertion assertion = new MySqlDatabaseExistsAssertion(
 			UUID.randomUUID(),
@@ -107,7 +119,7 @@ public class MySqlDatabaseExistsAssertionTests
 		//
 		// Fixture Setup
 		//
-		 
+
 		MySqlDatabaseExistsAssertion assertion = new MySqlDatabaseExistsAssertion(
 			UUID.randomUUID(),
 			"Database does not exist",
@@ -144,7 +156,7 @@ public class MySqlDatabaseExistsAssertionTests
 		//
 		// Fixture Setup
 		//
-		 
+
 		MySqlDatabaseExistsAssertion assertion = new MySqlDatabaseExistsAssertion(
 			UUID.randomUUID(),
 			"Database does not exist",

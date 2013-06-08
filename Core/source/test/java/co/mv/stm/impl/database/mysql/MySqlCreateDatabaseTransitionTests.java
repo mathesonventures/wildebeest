@@ -20,6 +20,8 @@ public class MySqlCreateDatabaseTransitionTests
 		// Fixture Setup
 		//
 		
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+		
 		MySqlCreateDatabaseTransition tr = new MySqlCreateDatabaseTransition(
 			UUID.randomUUID(),
 			TransitionType.DatabaseSqlScript,
@@ -27,10 +29,10 @@ public class MySqlCreateDatabaseTransitionTests
 			UUID.randomUUID());
 
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			"stm_test");
 
 		//
@@ -55,6 +57,8 @@ public class MySqlCreateDatabaseTransitionTests
 		// Fixture Setup
 		//
 
+		MySqlProperties mySqlProperties = MySqlProperties.get();
+		
 		MySqlDatabaseFixture f = new MySqlDatabaseFixture("127.0.0.1", 3306, "root", "password", "stm_test", "");
 		f.setUp();
 		
@@ -65,10 +69,10 @@ public class MySqlCreateDatabaseTransitionTests
 			UUID.randomUUID());
 
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
-			"127.0.0.1",
-			3306,
-			"root",
-			"password",
+			mySqlProperties.getHostName(),
+			mySqlProperties.getPort(),
+			mySqlProperties.getUsername(),
+			mySqlProperties.getPassword(),
 			f.getDatabaseName());
 
 		//
