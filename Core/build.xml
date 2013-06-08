@@ -936,20 +936,6 @@
 
 		</junit>
 
-        <junitreport
-            todir="${target.test.report}">
-
-            <fileset dir="${target.test.report}/data">
-                <include name="*.xml" />
-            </fileset>
-
-            <report
-				styledir="${ant.home}/x17_sft_helium_basic/junit"
-				format="noframes"
-				todir="${target.test.report}"/>
-
-        </junitreport>
-
 	</target>
 
 	<target
