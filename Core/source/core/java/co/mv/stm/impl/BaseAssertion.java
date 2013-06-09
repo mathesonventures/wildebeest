@@ -1,7 +1,6 @@
 package co.mv.stm.impl;
 
 import co.mv.stm.Assertion;
-import co.mv.stm.AssertionType;
 import java.util.UUID;
 
 public abstract class BaseAssertion implements Assertion
@@ -9,13 +8,11 @@ public abstract class BaseAssertion implements Assertion
 	protected BaseAssertion(
 		UUID assertionId,
 		String name,
-		int seqNum,
-		AssertionType assertionType)
+		int seqNum)
 	{
 		this.setAssertionId(assertionId);
 		this.setName(name);
 		this.setSeqNum(seqNum);
-		this.setAssertionType(assertionType);
 	}
 	
 	// <editor-fold desc="AssertionId" defaultstate="collapsed">
@@ -122,43 +119,6 @@ public abstract class BaseAssertion implements Assertion
 
 	private boolean hasSeqNum() {
 		return m_seqNum_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="AssertionType" defaultstate="collapsed">
-
-	private AssertionType m_assertionType = null;
-	private boolean m_assertionType_set = false;
-
-	public AssertionType getAssertionType() {
-		if(!m_assertionType_set) {
-			throw new IllegalStateException("assertionType not set.  Use the HasAssertionType() method to check its state before accessing it.");
-		}
-		return m_assertionType;
-	}
-
-	private void setAssertionType(
-		AssertionType value) {
-		if(value == null) {
-			throw new IllegalArgumentException("assertionType cannot be null");
-		}
-		boolean changing = !m_assertionType_set || m_assertionType != value;
-		if(changing) {
-			m_assertionType_set = true;
-			m_assertionType = value;
-		}
-	}
-
-	private void clearAssertionType() {
-		if(m_assertionType_set) {
-			m_assertionType_set = true;
-			m_assertionType = null;
-		}
-	}
-
-	private boolean hasAssertionType() {
-		return m_assertionType_set;
 	}
 
 	// </editor-fold>

@@ -3,7 +3,6 @@ package co.mv.stm.impl;
 import co.mv.stm.Assertion;
 import co.mv.stm.AssertionFailedException;
 import co.mv.stm.AssertionResult;
-import co.mv.stm.AssertionType;
 import co.mv.stm.IndeterminateStateException;
 import co.mv.stm.State;
 import co.mv.stm.Transition;
@@ -67,7 +66,6 @@ public class BaseResourceTests
 			UUID.randomUUID(),
 			"Fake1",
 			0,
-			AssertionType.DatabaseRowExists,
 			true,
 			"Fake1 passed");
 		state.getAssertions().add(assertion1);
@@ -107,7 +105,6 @@ public class BaseResourceTests
 			assertion1Id,
 			"Fake1",
 			0,
-			AssertionType.DatabaseRowExists,
 			true,
 			"Fake1 passed"));
 		
@@ -116,7 +113,6 @@ public class BaseResourceTests
 			assertion2Id,
 			"Fake2",
 			1,
-			AssertionType.DatabaseRowExists,
 			false,
 			"Fake2 failed"));
 		

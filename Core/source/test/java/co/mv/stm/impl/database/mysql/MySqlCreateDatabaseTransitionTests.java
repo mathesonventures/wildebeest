@@ -2,7 +2,6 @@ package co.mv.stm.impl.database.mysql;
 
 import co.mv.stm.impl.database.DatabaseHelper;
 import co.mv.stm.TransitionFailedException;
-import co.mv.stm.TransitionType;
 import co.zd.helium.fixture.MySqlDatabaseFixture;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -24,7 +23,6 @@ public class MySqlCreateDatabaseTransitionTests
 		
 		MySqlCreateDatabaseTransition tr = new MySqlCreateDatabaseTransition(
 			UUID.randomUUID(),
-			TransitionType.DatabaseSqlScript,
 			null,
 			UUID.randomUUID());
 
@@ -70,7 +68,6 @@ public class MySqlCreateDatabaseTransitionTests
 		
 		MySqlCreateDatabaseTransition tr = new MySqlCreateDatabaseTransition(
 			UUID.randomUUID(),
-			TransitionType.DatabaseSqlScript,
 			null,
 			UUID.randomUUID());
 

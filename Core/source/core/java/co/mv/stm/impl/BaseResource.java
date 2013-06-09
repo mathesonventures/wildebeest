@@ -7,7 +7,6 @@ import co.mv.stm.AssertionResult;
 import co.mv.stm.IndeterminateStateException;
 import co.mv.stm.Resource;
 import co.mv.stm.ResourceInstance;
-import co.mv.stm.ResourceType;
 import co.mv.stm.State;
 import co.mv.stm.Transition;
 import co.mv.stm.TransitionFailedException;
@@ -22,12 +21,10 @@ public abstract class BaseResource implements Resource
 {
 	protected BaseResource(
 		UUID resourceId,
-		String name,
-		ResourceType resourceType)
+		String name)
 	{
 		this.setResourceId(resourceId);
 		this.setName(name);
-		this.setResourceType(resourceType);
 		this.setStates(new ArrayList<State>());
 		this.setTransitions(new ArrayList<Transition>());
 	}
@@ -110,43 +107,6 @@ public abstract class BaseResource implements Resource
 
 	// </editor-fold>
 
-	// <editor-fold desc="ResourceType" defaultstate="collapsed">
-
-	private ResourceType m_resourceType = null;
-	private boolean m_resourceType_set = false;
-
-	public ResourceType getResourceType() {
-		if(!m_resourceType_set) {
-			throw new IllegalStateException("resourceType not set.  Use the HasResourceType() method to check its state before accessing it.");
-		}
-		return m_resourceType;
-	}
-
-	private void setResourceType(
-		ResourceType value) {
-		if(value == null) {
-			throw new IllegalArgumentException("resourceType cannot be null");
-		}
-		boolean changing = !m_resourceType_set || m_resourceType != value;
-		if(changing) {
-			m_resourceType_set = true;
-			m_resourceType = value;
-		}
-	}
-
-	private void clearResourceType() {
-		if(m_resourceType_set) {
-			m_resourceType_set = true;
-			m_resourceType = null;
-		}
-	}
-
-	private boolean hasResourceType() {
-		return m_resourceType_set;
-	}
-
-	// </editor-fold>
-	
 	// <editor-fold desc="States" defaultstate="collapsed">
 
 	private List<State> m_states = null;

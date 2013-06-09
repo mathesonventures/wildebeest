@@ -6,8 +6,6 @@ public interface Transition
 {
 	UUID getTransitionId();
 	
-	TransitionType getTransitionType();
-	
 	UUID getFromStateId();
 	
 	boolean hasFromStateId();

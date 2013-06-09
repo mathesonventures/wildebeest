@@ -6,7 +6,6 @@ import co.mv.stm.IndeterminateStateException;
 import co.mv.stm.ModelExtensions;
 import co.mv.stm.Resource;
 import co.mv.stm.ResourceInstance;
-import co.mv.stm.ResourceType;
 import co.mv.stm.FaultException;
 import co.mv.stm.State;
 import java.sql.Connection;
@@ -21,7 +20,7 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 		UUID resourceId,
 		String name)
 	{
-		super(resourceId, name, ResourceType.MySqlDatabase);
+		super(resourceId, name);
 	}
 	
 	//

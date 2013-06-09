@@ -2,7 +2,6 @@ package co.mv.stm.impl.database.mysql;
 
 import co.mv.stm.impl.BaseAssertion;
 import co.mv.stm.AssertionResponse;
-import co.mv.stm.AssertionType;
 import co.mv.stm.ModelExtensions;
 import co.mv.stm.ResourceInstance;
 import co.mv.stm.impl.ImmutableAssertionResponse;
@@ -15,7 +14,7 @@ public class MySqlDatabaseDoesNotExistAssertion extends BaseAssertion
 		String name,
 		int seqNum)
 	{
-		super(assertionId, name, seqNum, AssertionType.DatabaseRowDoesNotExist);
+		super(assertionId, name, seqNum);
 	}
 
 	@Override public AssertionResponse apply(ResourceInstance instance)

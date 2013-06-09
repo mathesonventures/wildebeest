@@ -2,7 +2,6 @@ package co.mv.stm.impl;
 
 import co.mv.stm.Assertion;
 import co.mv.stm.AssertionResponse;
-import co.mv.stm.AssertionType;
 import co.mv.stm.ResourceInstance;
 import java.util.UUID;
 
@@ -12,11 +11,10 @@ public class FakeAssertion extends BaseAssertion implements Assertion
 		UUID assertionId,
 		String name,
 		int seqNum,
-		AssertionType assertionType,
 		boolean result,
 		String message)
 	{
-		super(assertionId, name, seqNum, assertionType);
+		super(assertionId, name, seqNum);
 		
 		this.setResult(result);
 		this.setMessage(message);

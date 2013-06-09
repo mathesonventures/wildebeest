@@ -1,29 +1,24 @@
 package co.mv.stm.impl;
 
 import co.mv.stm.Transition;
-import co.mv.stm.TransitionType;
 import java.util.UUID;
 
 public abstract class BaseTransition implements Transition
 {
 	public BaseTransition(
 		UUID transitionId,
-		TransitionType transitionType,
 		UUID toStateId)
 	{
 		this.setTransitionId(transitionId);
-		this.setTransitionType(transitionType);
 		this.setToStateId(toStateId);
 	}
 	
 	public BaseTransition(
 		UUID transitionId,
-		TransitionType transitionType,
 		UUID fromStateId,
 		UUID toStateId)
 	{
 		this.setTransitionId(transitionId);
-		this.setTransitionType(transitionType);
 		this.setFromStateId(fromStateId);
 		this.setToStateId(toStateId);
 	}
@@ -61,43 +56,6 @@ public abstract class BaseTransition implements Transition
 
 	private boolean hasTransitionId() {
 		return m_transitionId_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="TransitionType" defaultstate="collapsed">
-
-	private TransitionType m_transitionType = null;
-	private boolean m_transitionType_set = false;
-
-	public TransitionType getTransitionType() {
-		if(!m_transitionType_set) {
-			throw new IllegalStateException("transitionType not set.  Use the HasTransitionType() method to check its state before accessing it.");
-		}
-		return m_transitionType;
-	}
-
-	private void setTransitionType(
-		TransitionType value) {
-		if(value == null) {
-			throw new IllegalArgumentException("transitionType cannot be null");
-		}
-		boolean changing = !m_transitionType_set || m_transitionType != value;
-		if(changing) {
-			m_transitionType_set = true;
-			m_transitionType = value;
-		}
-	}
-
-	private void clearTransitionType() {
-		if(m_transitionType_set) {
-			m_transitionType_set = true;
-			m_transitionType = null;
-		}
-	}
-
-	private boolean hasTransitionType() {
-		return m_transitionType_set;
 	}
 
 	// </editor-fold>

@@ -7,7 +7,6 @@ import co.mv.stm.ResourceInstance;
 import co.mv.stm.Transition;
 import co.mv.stm.TransitionFailedException;
 import co.mv.stm.TransitionFaultException;
-import co.mv.stm.TransitionType;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -15,19 +14,17 @@ public class MySqlCreateDatabaseTransition extends BaseTransition implements Tra
 {
 	public MySqlCreateDatabaseTransition(
 		UUID transitionId,
-		TransitionType transitionType,
 		UUID toStateId)
 	{
-		super(transitionId, transitionType, toStateId);
+		super(transitionId, toStateId);
 	}
 	
 	public MySqlCreateDatabaseTransition(
 		UUID transitionId,
-		TransitionType transitionType,
 		UUID fromStateId,
 		UUID toStateId)
 	{
-		super(transitionId, transitionType, fromStateId, toStateId);
+		super(transitionId, fromStateId, toStateId);
 	}
 
 	@Override public void perform(ResourceInstance instance) throws TransitionFailedException

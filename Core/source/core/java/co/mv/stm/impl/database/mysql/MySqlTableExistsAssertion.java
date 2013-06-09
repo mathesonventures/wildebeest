@@ -1,17 +1,10 @@
 package co.mv.stm.impl.database.mysql;
 
 import co.mv.stm.impl.BaseAssertion;
-import co.mv.stm.impl.database.DatabaseHelper;
-import co.mv.stm.AssertionFaultException;
 import co.mv.stm.AssertionResponse;
-import co.mv.stm.AssertionType;
 import co.mv.stm.ModelExtensions;
 import co.mv.stm.ResourceInstance;
 import co.mv.stm.impl.ImmutableAssertionResponse;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.UUID;
 
 public class MySqlTableExistsAssertion extends BaseAssertion
@@ -22,7 +15,7 @@ public class MySqlTableExistsAssertion extends BaseAssertion
 		int seqNum,
 		String tableName)
 	{
-		super(assertionId, name, seqNum, AssertionType.DatabaseRowDoesNotExist);
+		super(assertionId, name, seqNum);
 		
 		this.setTableName(tableName);
 	}

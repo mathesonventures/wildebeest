@@ -3,7 +3,6 @@ package co.mv.stm.impl;
 import co.mv.stm.ModelExtensions;
 import co.mv.stm.ResourceInstance;
 import co.mv.stm.TransitionFailedException;
-import co.mv.stm.TransitionType;
 import java.util.UUID;
 
 public class FakeTransition extends BaseTransition
@@ -14,7 +13,7 @@ public class FakeTransition extends BaseTransition
 		UUID toStateId,
 		String tag)
 	{
-		super(transitionId, TransitionType.DatabaseSqlScript, fromStateId, toStateId);
+		super(transitionId, fromStateId, toStateId);
 		
 		this.setTag(tag);
 	}
@@ -24,7 +23,7 @@ public class FakeTransition extends BaseTransition
 		UUID toStateId,
 		String tag)
 	{
-		super(transitionId, TransitionType.DatabaseSqlScript, toStateId);
+		super(transitionId, toStateId);
 		
 		this.setTag(tag);
 	}

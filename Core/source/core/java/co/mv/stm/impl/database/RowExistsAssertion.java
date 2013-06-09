@@ -3,10 +3,8 @@ package co.mv.stm.impl.database;
 import co.mv.stm.impl.database.mysql.MySqlDatabaseResourceInstance;
 import co.mv.stm.impl.BaseAssertion;
 import co.mv.stm.Assertion;
-import co.mv.stm.AssertionFailedException;
 import co.mv.stm.AssertionFaultException;
 import co.mv.stm.AssertionResponse;
-import co.mv.stm.AssertionType;
 import co.mv.stm.ModelExtensions;
 import co.mv.stm.ResourceInstance;
 import co.mv.stm.impl.ImmutableAssertionResponse;
@@ -25,7 +23,7 @@ public class RowExistsAssertion extends BaseAssertion implements Assertion
 		int seqNum,
 		String sql)
 	{
-		super(assertionId, name, seqNum, AssertionType.DatabaseRowExists);
+		super(assertionId, name, seqNum);
 		this.setSql(sql);
 	}
 	

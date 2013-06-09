@@ -3,7 +3,6 @@ package co.mv.stm.impl;
 import co.mv.stm.IndeterminateStateException;
 import co.mv.stm.ModelExtensions;
 import co.mv.stm.ResourceInstance;
-import co.mv.stm.ResourceType;
 import co.mv.stm.State;
 import java.util.UUID;
 
@@ -13,7 +12,7 @@ public class FakeResource extends BaseResource
 		UUID resourceId,
 		String name)
 	{
-		super(resourceId, name, ResourceType.Database);
+		super(resourceId, name);
 	}
 
 	@Override public State currentState(

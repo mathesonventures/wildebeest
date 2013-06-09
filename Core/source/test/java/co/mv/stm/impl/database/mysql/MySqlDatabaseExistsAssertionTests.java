@@ -10,7 +10,6 @@ import co.mv.stm.State;
 import co.mv.stm.Transition;
 import co.mv.stm.TransitionFailedException;
 import co.mv.stm.TransitionNotPossibleException;
-import co.mv.stm.TransitionType;
 import co.mv.stm.impl.ImmutableState;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -39,7 +38,7 @@ public class MySqlDatabaseExistsAssertionTests
 		resource.getStates().add(created);
 		 
 		Transition tran1 = new MySqlCreateDatabaseTransition(
-			UUID.randomUUID(), TransitionType.DatabaseSqlScript, created.getStateId());
+			UUID.randomUUID(), created.getStateId());
 		resource.getTransitions().add(tran1);
 		 
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(

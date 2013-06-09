@@ -6,7 +6,6 @@ import co.mv.stm.ResourceInstance;
 import co.mv.stm.Transition;
 import co.mv.stm.TransitionFailedException;
 import co.mv.stm.TransitionFaultException;
-import co.mv.stm.TransitionType;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -17,7 +16,7 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 		UUID toStateId,
 		String sql)
 	{
-		super(transitionId, TransitionType.DatabaseSqlScript, toStateId);
+		super(transitionId, toStateId);
 		this.setSql(sql);
 	}
 	
@@ -27,7 +26,7 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 		UUID toStateId,
 		String sql)
 	{
-		super(transitionId, TransitionType.DatabaseSqlScript, fromStateId, toStateId);
+		super(transitionId, fromStateId, toStateId);
 		this.setSql(sql);
 	}
 	

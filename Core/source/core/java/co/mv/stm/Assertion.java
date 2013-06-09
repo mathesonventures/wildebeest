@@ -12,7 +12,5 @@ public interface Assertion
 	
 	int getSeqNum();
 	
-	AssertionType getAssertionType();
-	
 	AssertionResponse apply(ResourceInstance instance);
 }

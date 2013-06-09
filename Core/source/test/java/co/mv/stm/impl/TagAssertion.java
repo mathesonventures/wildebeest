@@ -1,7 +1,6 @@
 package co.mv.stm.impl;
 
 import co.mv.stm.AssertionResponse;
-import co.mv.stm.AssertionType;
 import co.mv.stm.ModelExtensions;
 import co.mv.stm.ResourceInstance;
 import java.util.UUID;
@@ -14,7 +13,7 @@ public class TagAssertion extends BaseAssertion
 		int seqNum,
 		String tag)
 	{
-		super(assertionId, name, seqNum, AssertionType.DatabaseRowExists);
+		super(assertionId, name, seqNum);
 		
 		this.setTag(tag);
 	}

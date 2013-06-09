@@ -25,13 +25,6 @@ public interface Resource
 	String getName();
 	
 	/**
-	 * Gets the type of this Resource.
-	 * 
-	 * @return                                  the type of this Resource.
-	 */
-	ResourceType getResourceType();
-	
-	/**
 	 * Gets the states that have been defined for this Resource.
 	 * 
 	 * @return                                  the states that have been defined for this Resource.
