@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<resource id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" name="MV AAA Database">
+<resource id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" type="MySqlDatabse" name="MV AAA Database">
 
 	<states>
 

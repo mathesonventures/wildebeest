@@ -5,4 +5,6 @@ import co.mv.stm.Assertion;
 public interface AssertionBuilder
 {
 	Assertion build();
+	
+	void reset();
 }
