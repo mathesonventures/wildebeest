@@ -240,11 +240,18 @@ public class DomResourceLoader implements ResourceLoader
 						State state = buildState(stateXe);
 						resource.getStates().add(state);
 						
-						for (int asrIndex = 0; asrIndex < stateXe.getChildNodes().getLength(); asrIndex ++)
+						for (int stChildIndex = 0; stChildIndex < stateXe.getChildNodes().getLength(); stChildIndex ++)
 						{
-							Element asrXe = (Element)stateXe.getChildNodes().item(asrIndex);
-							Assertion asr = buildAssertion(this.getAssertionBuilders(), asrXe);
-							state.getAssertions().add(asr);
+							Element stChildXe = (Element)stateXe.getChildNodes().item(stChildIndex);
+							if (ELT_ASSERTIONS.equals(stChildXe.getTagName()))
+							{
+								for (int asrIndex = 0; asrIndex < stChildXe.getChildNodes().getLength(); asrIndex ++)
+								{
+									Element asrXe = (Element)stChildXe.getChildNodes().item(asrIndex);
+									Assertion asr = buildAssertion(this.getAssertionBuilders(), asrXe, asrIndex);
+									state.getAssertions().add(asr);
+								}
+							}
 						}
 					}
 				}
@@ -281,15 +288,15 @@ public class DomResourceLoader implements ResourceLoader
 	}
 	
 	private static State buildState(
-		Element stateXe)
+		Element element)
 	{
-		if (stateXe == null) { throw new IllegalArgumentException("stateXe"); }
+		if (element == null) { throw new IllegalArgumentException("element"); }
 
-		UUID id = UUID.fromString(stateXe.getAttribute(ATT_STATE_ID));
+		UUID id = UUID.fromString(element.getAttribute(ATT_STATE_ID));
 		String label = null;
-		if (stateXe.hasAttribute(ATT_STATE_LABEL))
+		if (element.hasAttribute(ATT_STATE_LABEL))
 		{
-			label = stateXe.getAttribute(ATT_STATE_LABEL);
+			label = element.getAttribute(ATT_STATE_LABEL);
 		}
 		
 		State result = null;
@@ -308,44 +315,45 @@ public class DomResourceLoader implements ResourceLoader
 	
 	private static Assertion buildAssertion(
 		Map<String, AssertionBuilder> assertionBuilders,
-		Element assertionXe)
+		Element element,
+		int seqNum)
 	{
 		if (assertionBuilders == null) { throw new IllegalArgumentException("assertionBuilders cannot be null"); }
-		if (assertionXe == null) { throw new IllegalArgumentException("assertionXe cannot be null"); }
+		if (element == null) { throw new IllegalArgumentException("element cannot be null"); }
 		
-		String type = assertionXe.getAttribute(ATT_ASSERTION_TYPE);
-		UUID id = UUID.fromString(assertionXe.getAttribute(ATT_ASSERTION_ID));
-		String name = assertionXe.getAttribute(ATT_ASSERTION_NAME);
+		String type = element.getAttribute(ATT_ASSERTION_TYPE);
+		UUID id = UUID.fromString(element.getAttribute(ATT_ASSERTION_ID));
+		String name = element.getAttribute(ATT_ASSERTION_NAME);
 		
 		DomAssertionBuilder builder = (DomAssertionBuilder)assertionBuilders.get(type);
 		builder.reset();
-		builder.setElement(assertionXe);
-		return builder.build(id, name);
+		builder.setElement(element);
+		return builder.build(id, name, seqNum);
 	}
 	
 	private static Transition buildTransition(
 		Map<String, TransitionBuilder> transitionBuilders,
-		Element transitionXe)
+		Element element)
 	{
 		if (transitionBuilders == null) { throw new IllegalArgumentException("transitionBuilders cannot be null"); }
-		if (transitionXe == null) { throw new IllegalArgumentException("transitionXe cannot be null"); }
+		if (element == null) { throw new IllegalArgumentException("element cannot be null"); }
 		
-		String type = transitionXe.getAttribute(ATT_TRANSITION_TYPE);
-		UUID id = UUID.fromString(transitionXe.getAttribute(ATT_TRANSITION_ID));
+		String type = element.getAttribute(ATT_TRANSITION_TYPE);
+		UUID id = UUID.fromString(element.getAttribute(ATT_TRANSITION_ID));
 		UUID fromStateId = null;
-		if (transitionXe.hasAttribute(ATT_TRANSITION_FROM_STATE_ID))
+		if (element.hasAttribute(ATT_TRANSITION_FROM_STATE_ID))
 		{
-			fromStateId = UUID.fromString(transitionXe.getAttribute(ATT_TRANSITION_FROM_STATE_ID));
+			fromStateId = UUID.fromString(element.getAttribute(ATT_TRANSITION_FROM_STATE_ID));
 		}
 		UUID toStateId = null;
-		if (transitionXe.hasAttribute(ATT_TRANSITION_TO_STATE_ID))
+		if (element.hasAttribute(ATT_TRANSITION_TO_STATE_ID))
 		{
-			toStateId = UUID.fromString(transitionXe.getAttribute(ATT_TRANSITION_TO_STATE_ID));
+			toStateId = UUID.fromString(element.getAttribute(ATT_TRANSITION_TO_STATE_ID));
 		}
 		
 		DomTransitionBuilder builder = (DomTransitionBuilder)transitionBuilders.get(type);
 		builder.reset();
-		builder.setElement(transitionXe);
+		builder.setElement(element);
 		return builder.build(id, fromStateId, toStateId);
 	}
 }

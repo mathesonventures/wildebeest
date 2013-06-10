@@ -100,6 +100,24 @@ public class XmlBuilder
 		return this;
 	}
 	
+	public XmlBuilder openElement(
+		String name,
+		String attr1Name, String attr1Value,
+		String attr2Name, String attr2Value,
+		String attr3Name, String attr3Value,
+		String attr4Name, String attr4Value)
+	{
+		this.getStringBuilder()
+			.append("<").append(name).append(" ")
+			.append(attr1Name).append("=\"").append(attr1Value).append("\" ")
+			.append(attr2Name).append("=\"").append(attr2Value).append("\" ")
+			.append(attr3Name).append("=\"").append(attr3Value).append("\" ")
+			.append(attr4Name).append("=\"").append(attr4Value).append("\"")
+			.append(">");
+		
+		return this;
+	}
+	
 	public XmlBuilder closeElement(String name)
 	{
 		this.getStringBuilder().append("</").append(name).append(">");

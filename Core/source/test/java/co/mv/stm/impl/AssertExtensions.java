@@ -1,5 +1,6 @@
 package co.mv.stm.impl;
 
+import co.mv.stm.Assertion;
 import co.mv.stm.AssertionResponse;
 import co.mv.stm.AssertionResult;
 import co.mv.stm.Resource;
@@ -60,6 +61,45 @@ public class AssertExtensions
 		
 		Assert.assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
 		Assert.assertFalse("name.label expected to be unset", actual.hasLabel());
+	}
+	
+	public static void assertAssertion(
+		UUID expectedAssertionId,
+		String expectedName,
+		int expectedSeqNum,
+		Assertion actual,
+		String name)
+	{
+		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId cannot be null"); }
+		if (expectedName == null) { throw new IllegalArgumentException("expectedName cannot be null"); }
+		if ("".equals(expectedName)) { throw new IllegalArgumentException("expectedName cannot be empty"); }
+		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
+		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
+		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+
+		Assert.assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
+		Assert.assertEquals(name + ".name", expectedName, actual.getName());
+		Assert.assertEquals(name + ".seqNum", expectedSeqNum, actual.getSeqNum());
+	}
+	
+	public static void assertFakeAssertion(
+		UUID expectedAssertionId,
+		String expectedName,
+		int expectedSeqNum,
+		String expectedTag,
+		FakeAssertion actual,
+		String name)
+	{
+		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId cannot be null"); }
+		if (expectedName == null) { throw new IllegalArgumentException("expectedName cannot be null"); }
+		if ("".equals(expectedName)) { throw new IllegalArgumentException("expectedName cannot be empty"); }
+		if (expectedTag == null) { throw new IllegalArgumentException("expectedTag cannot be null"); }
+		if ("".equals(expectedTag)) { throw new IllegalArgumentException("expectedTag cannot be empty"); }
+		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
+		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
+		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+
+		Assert.assertEquals(name + ".tag", expectedTag, actual.getTag());
 	}
 	
 	public static void assertTransition(

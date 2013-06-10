@@ -66,11 +66,11 @@ public class BaseResourceTests
 			UUID.randomUUID(),
 			"Fake1",
 			0,
-			true,
-			"Fake1 passed");
+			"Foo");
 		state.getAssertions().add(assertion1);
 		
 		FakeResourceInstance instance = new FakeResourceInstance(state.getStateId());
+		instance.setTag("Foo");
 
 		//
 		// Execute
@@ -85,7 +85,7 @@ public class BaseResourceTests
 		Assert.assertNotNull("results", results);
 		Assert.assertEquals("results.size", 1, results.size());
 		AssertExtensions.assertAssertionResult(
-			assertion1.getAssertionId(), true, "Fake1 passed", results.get(0), "results[0]");
+			assertion1.getAssertionId(), true, "Tag is \"Foo\"", results.get(0), "results[0]");
 	}
 	
 	@Test public void assertStateWithMultipleAssertionsSuccessful() throws IndeterminateStateException
@@ -105,18 +105,17 @@ public class BaseResourceTests
 			assertion1Id,
 			"Fake1",
 			0,
-			true,
-			"Fake1 passed"));
+			"Foo"));
 		
 		UUID assertion2Id = UUID.randomUUID();
 		state.getAssertions().add(new FakeAssertion(
 			assertion2Id,
 			"Fake2",
 			1,
-			false,
-			"Fake2 failed"));
+			"Bar"));
 		
 		FakeResourceInstance instance = new FakeResourceInstance(state.getStateId());
+		instance.setTag("Foo");
 
 		//
 		// Execute
@@ -130,8 +129,12 @@ public class BaseResourceTests
 
 		Assert.assertNotNull("results", results);
 		Assert.assertEquals("results.size", 2, results.size());
-		AssertExtensions.assertAssertionResult(assertion1Id, true, "Fake1 passed", results.get(0), "results[0]");
-		AssertExtensions.assertAssertionResult(assertion2Id, false, "Fake2 failed", results.get(1), "results[1]");
+		AssertExtensions.assertAssertionResult(
+			assertion1Id, true, "Tag is \"Foo\"",
+			results.get(0), "results[0]");
+		AssertExtensions.assertAssertionResult(
+			assertion2Id, false, "Tag expected to be \"Bar\" but was \"Foo\"",
+			results.get(1), "results[1]");
 	}
 
 	/**

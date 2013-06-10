@@ -2,97 +2,83 @@ package co.mv.stm.impl;
 
 import co.mv.stm.Assertion;
 import co.mv.stm.AssertionResponse;
+import co.mv.stm.ModelExtensions;
 import co.mv.stm.ResourceInstance;
 import java.util.UUID;
 
 public class FakeAssertion extends BaseAssertion implements Assertion
 {
-	protected FakeAssertion(
+	public FakeAssertion(
 		UUID assertionId,
 		String name,
 		int seqNum,
-		boolean result,
-		String message)
+		String tag)
 	{
 		super(assertionId, name, seqNum);
 		
-		this.setResult(result);
-		this.setMessage(message);
+		this.setTag(tag);
 	}
+	
+	// <editor-fold desc="Tag" defaultstate="collapsed">
 
-	// <editor-fold desc="Result" defaultstate="collapsed">
+	private String m_tag = null;
+	private boolean m_tag_set = false;
 
-	private boolean m_result = false;
-	private boolean m_result_set = false;
-
-	public boolean getResult() {
-		if(!m_result_set) {
-			throw new IllegalStateException("result not set.  Use the HasResult() method to check its state before accessing it.");
+	public String getTag() {
+		if(!m_tag_set) {
+			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
 		}
-		return m_result;
+		return m_tag;
 	}
 
-	private void setResult(
-		boolean value) {
-		boolean changing = !m_result_set || m_result != value;
-		if(changing) {
-			m_result_set = true;
-			m_result = value;
-		}
-	}
-
-	private void clearResult() {
-		if(m_result_set) {
-			m_result_set = true;
-			m_result = false;
-		}
-	}
-
-	private boolean hasResult() {
-		return m_result_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="Message" defaultstate="collapsed">
-
-	private String m_message = null;
-	private boolean m_message_set = false;
-
-	public String getMessage() {
-		if(!m_message_set) {
-			throw new IllegalStateException("message not set.  Use the HasMessage() method to check its state before accessing it.");
-		}
-		return m_message;
-	}
-
-	private void setMessage(
+	public void setTag(
 		String value) {
 		if(value == null) {
-			throw new IllegalArgumentException("message cannot be null");
+			throw new IllegalArgumentException("tag cannot be null");
 		}
-		boolean changing = !m_message_set || m_message != value;
+		boolean changing = !m_tag_set || m_tag != value;
 		if(changing) {
-			m_message_set = true;
-			m_message = value;
+			m_tag_set = true;
+			m_tag = value;
 		}
 	}
 
-	private void clearMessage() {
-		if(m_message_set) {
-			m_message_set = true;
-			m_message = null;
+	public void clearTag() {
+		if(m_tag_set) {
+			m_tag_set = true;
+			m_tag = null;
 		}
 	}
 
-	private boolean hasMessage() {
-		return m_message_set;
+	public boolean hasTag() {
+		return m_tag_set;
 	}
 
 	// </editor-fold>
 
 	@Override public AssertionResponse apply(ResourceInstance instance)
 	{
-		return new ImmutableAssertionResponse(this.getResult(), this.getMessage());
+		if (instance == null) { throw new IllegalArgumentException("instance cannt be null"); }
+		FakeResourceInstance fake = ModelExtensions.As(instance, FakeResourceInstance.class);
+		if (fake == null) { throw new IllegalArgumentException("instance must be a FakeResourceInstance"); }
+		
+		boolean result = this.getTag().equals(fake.getTag());
+		
+		AssertionResponse response = null;
+		
+		if (result)
+		{
+			response = new ImmutableAssertionResponse(
+				result,
+				String.format("Tag is \"%s\"", this.getTag()));
+		}
+		else
+		{
+			response = new ImmutableAssertionResponse(
+				result,
+				String.format("Tag expected to be \"%s\" but was \"%s\"", this.getTag(), fake.getTag()));
+		}
+		
+		return response;
 	}
 }
