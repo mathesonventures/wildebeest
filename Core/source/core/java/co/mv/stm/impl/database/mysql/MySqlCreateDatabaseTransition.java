@@ -14,13 +14,6 @@ public class MySqlCreateDatabaseTransition extends BaseTransition implements Tra
 {
 	public MySqlCreateDatabaseTransition(
 		UUID transitionId,
-		UUID toStateId)
-	{
-		super(transitionId, toStateId);
-	}
-	
-	public MySqlCreateDatabaseTransition(
-		UUID transitionId,
 		UUID fromStateId,
 		UUID toStateId)
 	{

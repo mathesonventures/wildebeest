@@ -13,15 +13,6 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 {
 	public SqlScriptTransition(
 		UUID transitionId,
-		UUID toStateId,
-		String sql)
-	{
-		super(transitionId, toStateId);
-		this.setSql(sql);
-	}
-	
-	public SqlScriptTransition(
-		UUID transitionId,
 		UUID fromStateId,
 		UUID toStateId,
 		String sql)

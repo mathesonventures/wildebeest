@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
-<resource id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" type="MySqlDatabse" name="MV AAA Database">
+<resource type="MySqlDatabse" id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" name="MV AAA Database">
 
 	<states>
 
 		<state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" label="Database created">
 			<assertions>
 				<assertion
+					type="MySqlDatabaseExists"
 					id="19b64fb6-f95f-4221-bc64-303f62a3eda8"
-					name="Database exists"
-					type="MySqlDatabaseExists">
+					name="Database exists">
 					<databaseName>MV.AAA</databaseName>
 				</assertion>
 			</assertions>
@@ -17,15 +17,15 @@
 		<state id="363568f1-aaed-4a50-bea0-9ddee713cc11" label="Schema loaded">
 			<assertions>
 				<assertion
+					type="MySqlTableExists"
 					id="3808ba63-f055-4bf7-88fe-023546e6ed16"
-					name="RealmTypeRef exiss"
-					type="MySqlTableExists">
+					name="RealmTypeRef exiss">
 					<databaseName>RealmTypeRef</databaseName>
 				</assertion>
 				<assertion
+					type="MySqlTableExists"
 					id="54c78eca-9eda-4983-b9a5-0dcb1be686ff"
-					name="Realm exiss"
-					type="MySqlTableExists">
+					name="Realm exiss">
 					<databaseName>Realm</databaseName>
 				</assertion>
 			</assertions>
@@ -39,17 +39,17 @@
 	<transitions>
 
 		<transition
+			type="MySqlCreateDatabase"
 			id="6b21e1e3-ff3a-44b3-84ec-e21fb01c0110"
-			toStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"
-			type="MySqlCreateDatabase">
+			toStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7">
 			<databaseName>MV.AAA</databaseName>
 		</transition>
 
 		<transition
+			type="SqlScript"
 			id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
 			fromStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"
-			toStateId="363568f1-aaed-4a50-bea0-9ddee713cc11"
-			type="SqlScript">
+			toStateId="363568f1-aaed-4a50-bea0-9ddee713cc11">
 			<sql><![CDATA[
 
 TODO: SQL
@@ -58,10 +58,10 @@ TODO: SQL
 		</transition>
 
 		<transition
+			type="SqlScript"
 			id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
 			fromStateId="363568f1-aaed-4a50-bea0-9ddee713cc11"
-			toStateId="61ee5deb-aee7-4508-9d9c-1e749e2f7fab"
-			type="SqlScript">
+			toStateId="61ee5deb-aee7-4508-9d9c-1e749e2f7fab">
 			<sql><![CDATA[
 
 TODO: SQL

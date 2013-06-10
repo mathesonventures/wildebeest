@@ -7,20 +7,18 @@ public abstract class BaseTransition implements Transition
 {
 	public BaseTransition(
 		UUID transitionId,
-		UUID toStateId)
-	{
-		this.setTransitionId(transitionId);
-		this.setToStateId(toStateId);
-	}
-	
-	public BaseTransition(
-		UUID transitionId,
 		UUID fromStateId,
 		UUID toStateId)
 	{
 		this.setTransitionId(transitionId);
-		this.setFromStateId(fromStateId);
-		this.setToStateId(toStateId);
+		if (fromStateId !=  null)
+		{
+			this.setFromStateId(fromStateId);
+		}
+		if (toStateId != null)
+		{
+			this.setToStateId(toStateId);
+		}
 	}
 	
 	// <editor-fold desc="TransitionId" defaultstate="collapsed">
@@ -125,7 +123,7 @@ public abstract class BaseTransition implements Transition
 		}
 	}
 
-	private boolean hasToStateId() {
+	public boolean hasToStateId() {
 		return m_toStateId_set;
 	}
 

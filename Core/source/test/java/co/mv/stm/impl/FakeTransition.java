@@ -18,16 +18,6 @@ public class FakeTransition extends BaseTransition
 		this.setTag(tag);
 	}
 	
-	public FakeTransition(
-		UUID transitionId,
-		UUID toStateId,
-		String tag)
-	{
-		super(transitionId, toStateId);
-		
-		this.setTag(tag);
-	}
-	
 	// <editor-fold desc="Tag" defaultstate="collapsed">
 
 	private String m_tag = null;

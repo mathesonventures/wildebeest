@@ -12,5 +12,7 @@ public interface Transition
 	
 	UUID getToStateId();
 	
+	boolean hasToStateId();
+	
 	void perform(ResourceInstance instance) throws TransitionFailedException;
 }

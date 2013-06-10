@@ -33,6 +33,7 @@ public class SqlScriptTransitionTests
 		
 		SqlScriptTransition tr = new SqlScriptTransition(
 			UUID.randomUUID(),
+			null,
 			UUID.randomUUID(),
 			MySqlElementFixtures.realmTypeRefCreateTableStatement());
 		

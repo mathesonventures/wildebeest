@@ -1,4 +1,4 @@
-package co.mv.stm.service.impl.dom;
+package co.mv.stm.service.dom;
 
 public class XmlBuilder
 {
@@ -74,6 +74,18 @@ public class XmlBuilder
 	
 	public XmlBuilder openElement(
 		String name,
+		String attr1Name, String attr1Value)
+	{
+		this.getStringBuilder()
+			.append("<").append(name).append(" ")
+			.append(attr1Name).append("=\"").append(attr1Value).append("\"")
+			.append(">");
+		
+		return this;
+	}
+	
+	public XmlBuilder openElement(
+		String name,
 		String attr1Name, String attr1Value,
 		String attr2Name, String attr2Value,
 		String attr3Name, String attr3Value)
@@ -92,6 +104,13 @@ public class XmlBuilder
 	{
 		this.getStringBuilder().append("</").append(name).append(">");
 
+		return this;
+	}
+	
+	public XmlBuilder text(String text)
+	{
+		this.getStringBuilder().append(text);
+		
 		return this;
 	}
 	

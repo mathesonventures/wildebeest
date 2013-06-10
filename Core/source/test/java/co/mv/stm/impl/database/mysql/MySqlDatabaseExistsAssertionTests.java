@@ -38,7 +38,7 @@ public class MySqlDatabaseExistsAssertionTests
 		resource.getStates().add(created);
 		 
 		Transition tran1 = new MySqlCreateDatabaseTransition(
-			UUID.randomUUID(), created.getStateId());
+			UUID.randomUUID(), null, created.getStateId());
 		resource.getTransitions().add(tran1);
 		 
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(

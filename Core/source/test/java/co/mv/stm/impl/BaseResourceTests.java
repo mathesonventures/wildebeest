@@ -174,7 +174,7 @@ public class BaseResourceTests
 		
 		// Transition 1
 		UUID transition1Id = UUID.randomUUID();
-		Transition tran1 = new FakeTransition(transition1Id, state1Id, "foo");
+		Transition tran1 = new FakeTransition(transition1Id, null, state1Id, "foo");
 		resource.getTransitions().add(tran1);
 		
 		// Instance
@@ -228,7 +228,7 @@ public class BaseResourceTests
 		
 		// Transition null -> State1
 		UUID transition1Id = UUID.randomUUID();
-		Transition tran1 = new FakeTransition(transition1Id, state1Id, "foo");
+		Transition tran1 = new FakeTransition(transition1Id, null, state1Id, "foo");
 		resource.getTransitions().add(tran1);
 		
 		// Transition State1 -> State2
@@ -305,7 +305,7 @@ public class BaseResourceTests
 		
 		// Transition null -> State1
 		UUID transition1Id = UUID.randomUUID();
-		Transition tran1 = new FakeTransition(transition1Id, state1Id, "state1");
+		Transition tran1 = new FakeTransition(transition1Id, null, state1Id, "state1");
 		resource.getTransitions().add(tran1);
 		
 		// Transition State1 -> StateB2

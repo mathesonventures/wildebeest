@@ -46,6 +46,7 @@ public class IntegrationTests
 		// Transition: to Created
 		resource.getTransitions().add(new MySqlCreateDatabaseTransition(
 			UUID.randomUUID(),
+			null,
 			created.getStateId()));
 		
 		// Transition: Created to Initial Schema
