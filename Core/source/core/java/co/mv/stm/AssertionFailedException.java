@@ -24,6 +24,11 @@ public class AssertionFailedException extends Exception
 	private UUID m_stateId = null;
 	private boolean m_stateId_set = false;
 
+	public AssertionFailedException()
+	{
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
 	public UUID getStateId() {
 		if(!m_stateId_set) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");

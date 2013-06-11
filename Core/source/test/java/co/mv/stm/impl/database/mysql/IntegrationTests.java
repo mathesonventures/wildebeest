@@ -14,7 +14,7 @@ import org.junit.Test;
 
 public class IntegrationTests
 {
-	@Test public void createDatabaseeAddTableInsertRows() throws
+	@Test public void createDatabaseAddTableInsertRows() throws
 		IndeterminateStateException,
 		AssertionFailedException,
 		TransitionNotPossibleException,

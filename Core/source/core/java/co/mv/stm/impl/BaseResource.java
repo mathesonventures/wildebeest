@@ -12,7 +12,6 @@ import co.mv.stm.Transition;
 import co.mv.stm.TransitionFailedException;
 import co.mv.stm.TransitionFaultException;
 import co.mv.stm.TransitionNotPossibleException;
-import co.mv.stm.impl.ImmutableAssertionResult;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -202,7 +201,7 @@ public abstract class BaseResource implements Resource
 		
 		return results;
 	}
-	
+
 	@Override public void transition(
 		ResourceInstance instance,
 		UUID targetStateId) throws
@@ -246,7 +245,16 @@ public abstract class BaseResource implements Resource
 			}
 			
 			// Assert the new state
-			this.assertState(instance);
+			List<AssertionResult> assertionResults = this.assertState(instance);
+
+			// If any assertions failed, throw
+			for(AssertionResult assertionResult : assertionResults)
+			{
+				if (!assertionResult.getResult())
+				{
+					throw new AssertionFailedException(state.getStateId(), assertionResults);
+				}
+			}
 		}
 	}
 	
@@ -279,7 +287,7 @@ public abstract class BaseResource implements Resource
 		
 		// Have we reached the target state?
 		if ((fromStateId == null && targetStateId == null) ||
-			(fromStateId != null && fromStateId == targetStateId))
+			(fromStateId != null && fromStateId.equals(targetStateId)))
 		{
 			paths.add(thisPath);
 		}
@@ -290,7 +298,7 @@ public abstract class BaseResource implements Resource
 			for (Transition transition : resource.getTransitions())
 			{
 				if ((!transition.hasFromStateId() && fromStateId == null) ||
-					(transition.hasFromStateId() && transition.getFromStateId() == fromStateId))
+					(transition.hasFromStateId() && transition.getFromStateId().equals(fromStateId)))
 				{
 					State toState = resource.stateForId(transition.getToStateId());
 					List<Transition> thisPathCopy = new ArrayList<Transition>(thisPath);

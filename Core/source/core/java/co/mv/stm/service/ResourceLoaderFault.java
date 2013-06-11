@@ -6,4 +6,9 @@ public class ResourceLoaderFault extends RuntimeException
 	{
 		super(cause);
 	}
+	
+	public ResourceLoaderFault(String message)
+	{
+		super(message);
+	}
 }

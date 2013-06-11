@@ -43,6 +43,9 @@ public class MySqlCreateDatabaseTransitionTests
 		// Assert Results
 		//
 
+		//
+		// Tear-Down
+		//
 		
 		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP Database `stm_test`");
 		

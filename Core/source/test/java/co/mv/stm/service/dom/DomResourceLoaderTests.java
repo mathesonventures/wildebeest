@@ -1,6 +1,5 @@
 package co.mv.stm.service.dom;
 
-import co.mv.stm.service.dom.DomResourceLoader;
 import co.mv.stm.Resource;
 import co.mv.stm.impl.AssertExtensions;
 import co.mv.stm.impl.FakeAssertion;
@@ -13,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import junit.framework.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class DomResourceLoaderTests

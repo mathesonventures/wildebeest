@@ -1,5 +1,7 @@
 package co.mv.stm.service.dom;
 
+import java.util.UUID;
+
 public class XmlBuilder
 {
 	public XmlBuilder()
@@ -47,6 +49,27 @@ public class XmlBuilder
 	public XmlBuilder processingInstruction()
 	{
 		this.getStringBuilder().append("<?xml version=\"1.0\"?>");
+		
+		return this;
+	}
+	
+	public XmlBuilder element(String name)
+	{
+		this.getStringBuilder().append("<").append(name).append(" />");
+		
+		return this;
+	}
+	
+	public XmlBuilder element(
+		String name,
+		String attr1Name, String attr1Value,
+		String attr2Name, String attr2Value)
+	{
+		this.getStringBuilder()
+			.append("<").append(name).append(" ")
+			.append(attr1Name).append("=\"").append(attr1Value).append("\" ")
+			.append(attr2Name).append("=\"").append(attr2Value).append("\"")
+			.append(" />");
 		
 		return this;
 	}
@@ -125,11 +148,171 @@ public class XmlBuilder
 		return this;
 	}
 	
+	public XmlBuilder openCdata()
+	{
+		this.getStringBuilder().append("<![CDATA[");
+
+		return this;
+	}
+	
+	public XmlBuilder closeCdata()
+	{
+		this.getStringBuilder().append("]]>");
+
+		return this;
+	}
+	
 	public XmlBuilder text(String text)
 	{
 		this.getStringBuilder().append(text);
 		
 		return this;
+	}
+	
+	public XmlBuilder openResource(
+		UUID resourceId,
+		String type,
+		String name)
+	{
+		if (resourceId == null) { throw new IllegalArgumentException("resourceId"); }
+		if (type == null) { throw new IllegalArgumentException("type"); }
+		if ("".equals(type)) { throw new IllegalArgumentException("type cannot be empty"); }
+		if (name == null) { throw new IllegalArgumentException("name"); }
+		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+		
+		return this.openElement("resource", "id", resourceId.toString(), "type", type, "name", name);
+	}
+	
+	public XmlBuilder closeResource()
+	{
+		return this.closeElement("resource");
+	}
+	
+	public XmlBuilder openStates()
+	{
+		return this.openElement("states");
+	}
+	
+	public XmlBuilder closeStates()
+	{
+		return this.closeElement("states");
+	}
+	
+	public XmlBuilder state(
+		UUID stateId,
+		String label)
+	{
+		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
+		if (label == null) { throw new IllegalArgumentException("label"); }
+		if ("".equals(label)) { throw new IllegalArgumentException("label cannot be empty"); }
+		
+		this.element("state", "id", stateId.toString(), "label", label);
+		
+		return this;
+	}
+	
+	public XmlBuilder openState(
+		UUID stateId,
+		String label)
+	{
+		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
+		if (label == null) { throw new IllegalArgumentException("label"); }
+		if ("".equals(label)) { throw new IllegalArgumentException("label cannot be empty"); }
+		
+		return this.openElement("state", "id", stateId.toString(), "label", label);
+	}
+	
+	public XmlBuilder closeState()
+	{
+		return this.closeElement("state");
+	}
+	
+	public XmlBuilder openAssertions()
+	{
+		return this.openElement("assertions");
+	}
+	
+	public XmlBuilder closeAssertions()
+	{
+		return this.closeElement("assertions");
+	}
+	
+	public XmlBuilder openAssertion(
+		String type,
+		UUID assertionId,
+		String name)
+	{
+		if (type == null) { throw new IllegalArgumentException("type cannot be null"); }
+		if ("".equals(type)) { throw new IllegalArgumentException("type cannot be empty"); }
+		if (assertionId == null) { throw new IllegalArgumentException("assertionId cannot be null"); }
+		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
+		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+	
+		return this.openElement(
+			"assertion",
+			"type", type,
+			"id", assertionId.toString(),
+			"name", name);
+	}
+	
+	public XmlBuilder closeAssertion()
+	{
+		return this.closeElement("assertion");
+	}
+	
+	public XmlBuilder openTransitions()
+	{
+		return this.openElement("transitions");
+	}
+	
+	public XmlBuilder closeTransitions()
+	{
+		return this.closeElement("transitions");
+	}
+	
+	public XmlBuilder openTransition(
+		String type,
+		UUID transitionId,
+		UUID fromStateId,
+		UUID toStateId)
+	{
+		if (type == null) { throw new IllegalArgumentException("type cannot be null"); }
+		if ("".equals(type)) { throw new IllegalArgumentException("type cannot be empty"); }
+		if (transitionId == null) { throw new IllegalArgumentException("transitionId cannot be null"); }
+		if (fromStateId == null && toStateId == null)
+		{
+			throw new IllegalArgumentException("at least one of fromStateId and toStateId must be provided");
+		}
+
+		if (fromStateId != null && toStateId != null)
+		{
+			this.openElement("transition",
+				"type", type,
+				"id", transitionId.toString(),
+				"fromStateId", fromStateId.toString(),
+				"toStateId", toStateId.toString());
+		}
+		else if (fromStateId != null)
+		{
+			this.openElement("transition",
+				"type", type,
+				"id", transitionId.toString(),
+				"fromStateId", fromStateId.toString());
+		}
+		else if (toStateId != null)
+		{
+			this.openElement("transition",
+				"type", type,
+				"id", transitionId.toString(),
+				"toStateId", toStateId.toString());
+		}
+		
+		return this;
+	}
+	
+	public XmlBuilder closeTransition()
+	{
+		return this.closeElement("transition");
 	}
 	
 	@Override public String toString()
