@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
+	co.mv.stm.impl.database.mysql.MySqlCreateDatabaseTransitionTests.class,
 	co.mv.stm.impl.database.mysql.MySqlDatabaseResourceTests.class,
 	co.mv.stm.impl.database.mysql.RowDoesNotExistAssertionTests.class,
 	co.mv.stm.impl.database.mysql.MySqlTableDoesNotExistAssertionTests.class,
@@ -24,6 +25,6 @@ import org.junit.runners.Suite;
 	co.mv.stm.impl.database.mysql.IntegrationTests.class,
 	co.mv.stm.impl.database.mysql.SqlScriptTransitionTests.class,
 })
-public class MySqlTestSuite
+public class UnitTestSuite
 {
 }

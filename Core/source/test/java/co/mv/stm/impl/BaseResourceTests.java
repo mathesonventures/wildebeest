@@ -212,36 +212,30 @@ public class BaseResourceTests
 		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 
 		// State 1
-		UUID state1Id = UUID.randomUUID();
-		State state1 = new ImmutableState(state1Id);
+		State state1 = new ImmutableState(UUID.randomUUID(), "State 1");
 		state1.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "foo"));
 		resource.getStates().add(state1);
 
 		// State 2
-		UUID state2Id = UUID.randomUUID();
-		State state2 = new ImmutableState(state2Id);
+		State state2 = new ImmutableState(UUID.randomUUID(), "State 2");
 		state2.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "bar"));
 		resource.getStates().add(state2);
 
 		// State 3
-		UUID state3Id = UUID.randomUUID();
-		State state3 = new ImmutableState(state3Id);
+		State state3 = new ImmutableState(UUID.randomUUID(), "State 3");
 		state3.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "bup"));
 		resource.getStates().add(state3);
 		
 		// Transition null -> State1
-		UUID transition1Id = UUID.randomUUID();
-		Transition tran1 = new FakeTransition(transition1Id, null, state1Id, "foo");
+		Transition tran1 = new FakeTransition(UUID.randomUUID(), null, state1.getStateId(), "foo");
 		resource.getTransitions().add(tran1);
 		
 		// Transition State1 -> State2
-		UUID transition2Id = UUID.randomUUID();
-		Transition tran2 = new FakeTransition(transition2Id, state1Id, state2Id, "bar");
+		Transition tran2 = new FakeTransition(UUID.randomUUID(), state1.getStateId(), state2.getStateId(), "bar");
 		resource.getTransitions().add(tran2);
 		
 		// Transition State2 -> State3
-		UUID transition3Id = UUID.randomUUID();
-		Transition tran3 = new FakeTransition(transition3Id, state2Id, state3Id, "bar");
+		Transition tran3 = new FakeTransition(UUID.randomUUID(), state2.getStateId(), state3.getStateId(), "bup");
 		resource.getTransitions().add(tran3);
 		
 		
@@ -252,13 +246,13 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.transition(instance, state3Id);
+		resource.transition(instance, state3.getStateId());
 		
 		//
 		// Assert Results
 		//
 		
-		Assert.assertEquals("instance.tag", "bar", instance.getTag());
+		Assert.assertEquals("instance.tag", "bup", instance.getTag());
 		
 	}
 	

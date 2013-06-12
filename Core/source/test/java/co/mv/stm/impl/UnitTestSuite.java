@@ -8,6 +8,6 @@ import org.junit.runners.Suite;
 {
 	co.mv.stm.impl.BaseResourceTests.class
 })
-public class CoreTestSuite
+public class UnitTestSuite
 {
 }
