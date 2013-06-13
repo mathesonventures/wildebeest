@@ -38,7 +38,7 @@ public class MySqlTableExistsAssertionTests
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(created);
-		 
+
 		// Schema Loaded
 		State schemaLoaded = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(schemaLoaded);
@@ -56,12 +56,14 @@ public class MySqlTableExistsAssertionTests
 			MySqlElementFixtures.realmTypeRefCreateTableStatement());
 		resource.getTransitions().add(tran2);
 
+		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+		
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			"stm_test");
+			databaseName);
 		 
 		resource.transition(instance, schemaLoaded.getStateId());
 		
@@ -77,7 +79,7 @@ public class MySqlTableExistsAssertionTests
 		
 		AssertionResponse response = assertion.apply(instance);
 		
-		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP DATABASE stm_test;");
+		dropDatabase(instance, databaseName);
 
 		//
 		// Assert Results
@@ -258,5 +260,12 @@ public class MySqlTableExistsAssertionTests
 
 		Assert.assertEquals("caught.message", "instance must be a MySqlDatabaseResourceInstance", caught.getMessage());
 		
-	 }
+	}
+
+	private void dropDatabase(
+		MySqlDatabaseResourceInstance instance,
+		String databaseName) throws SQLException
+	{
+		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP DATABASE `" + databaseName + "`;");
+	}
 }
