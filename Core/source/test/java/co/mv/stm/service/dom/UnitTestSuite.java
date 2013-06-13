@@ -8,6 +8,6 @@ import org.junit.runners.Suite;
 {
 	DomResourceLoaderTests.class
 })
-public class DomTestSuite
+public class UnitTestSuite
 {
 }

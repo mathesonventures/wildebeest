@@ -40,13 +40,15 @@ public class MySqlDatabaseExistsAssertionTests
 		Transition tran1 = new MySqlCreateDatabaseTransition(
 			UUID.randomUUID(), null, created.getStateId());
 		resource.getTransitions().add(tran1);
-		 
+
+		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			"stm_test");
+			databaseName);
 		 
 		resource.transition(instance, created.getStateId());
 		
@@ -60,15 +62,15 @@ public class MySqlDatabaseExistsAssertionTests
 		//
 		
 		AssertionResponse response = assertion.apply(instance);
-		
-		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP DATABASE stm_test;");
+
+		MySqlUtil.dropDatabase(instance, databaseName);
 
 		//
 		// Assert Results
 		//
 
 		Assert.assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(true, "Database stm_test exists", response, "response");
+		AssertExtensions.assertAssertionResponse(true, "Database " + databaseName + " exists", response, "response");
 		
 	 }
 	 

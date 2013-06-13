@@ -26,12 +26,14 @@ public class MySqlCreateDatabaseTransitionTests
 			null,
 			UUID.randomUUID());
 
+		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			"stm_test");
+			databaseName);
 
 		//
 		// Execute
@@ -46,8 +48,8 @@ public class MySqlCreateDatabaseTransitionTests
 		//
 		// Tear-Down
 		//
-		
-		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP Database `stm_test`");
+
+		MySqlUtil.dropDatabase(instance, databaseName);
 		
 	}
 

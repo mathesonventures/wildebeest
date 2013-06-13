@@ -79,7 +79,7 @@ public class MySqlTableExistsAssertionTests
 		
 		AssertionResponse response = assertion.apply(instance);
 		
-		dropDatabase(instance, databaseName);
+		MySqlUtil.dropDatabase(instance, databaseName);
 
 		//
 		// Assert Results
@@ -114,13 +114,15 @@ public class MySqlTableExistsAssertionTests
 		Transition tran1 = new MySqlCreateDatabaseTransition(
 			UUID.randomUUID(), null, created.getStateId());
 		resource.getTransitions().add(tran1);
-		 
+
+		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			"stm_test");
+			databaseName);
 		 
 		resource.transition(instance, created.getStateId());
 		
@@ -135,8 +137,8 @@ public class MySqlTableExistsAssertionTests
 		//
 		
 		AssertionResponse response = assertion.apply(instance);
-		
-		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP DATABASE stm_test;");
+
+		MySqlUtil.dropDatabase(instance, databaseName);
 
 		//
 		// Assert Results
@@ -156,12 +158,14 @@ public class MySqlTableExistsAssertionTests
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
+		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+		
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			"stm_test");
+			databaseName);
 		 
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),
@@ -180,8 +184,10 @@ public class MySqlTableExistsAssertionTests
 		//
 
 		Assert.assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(false, "Database stm_test does not exist", response, "response");
-		
+		AssertExtensions.assertAssertionResponse(
+			false, "Database " + databaseName + " does not exist",
+			response, "response");
+
 	 }
 	 
 	 @Test public void applyForNullInstanceFails()
@@ -260,12 +266,5 @@ public class MySqlTableExistsAssertionTests
 
 		Assert.assertEquals("caught.message", "instance must be a MySqlDatabaseResourceInstance", caught.getMessage());
 		
-	}
-
-	private void dropDatabase(
-		MySqlDatabaseResourceInstance instance,
-		String databaseName) throws SQLException
-	{
-		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP DATABASE `" + databaseName + "`;");
 	}
 }

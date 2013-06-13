@@ -32,7 +32,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 		 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
-		 
+
 		MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
 		 
 		// Created
@@ -56,12 +56,14 @@ public class MySqlTableDoesNotExistAssertionTests
 			MySqlElementFixtures.realmTypeRefCreateTableStatement());
 		resource.getTransitions().add(tran2);
 
+		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			"stm_test");
+			databaseName);
 		 
 		resource.transition(instance, schemaLoaded.getStateId());
 		
@@ -75,9 +77,16 @@ public class MySqlTableDoesNotExistAssertionTests
 		// Execute
 		//
 		
-		AssertionResponse response = assertion.apply(instance);
+		AssertionResponse response = null;
 		
-		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP DATABASE stm_test;");
+		try
+		{
+			response = assertion.apply(instance);
+		}
+		finally
+		{
+			MySqlUtil.dropDatabase(instance, databaseName);
+		}
 
 		//
 		// Assert Results
@@ -102,23 +111,25 @@ public class MySqlTableDoesNotExistAssertionTests
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		 MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
-		 
-		 // Created
-		 State created = new ImmutableState(UUID.randomUUID());
-		 resource.getStates().add(created);
-		 
-		 // Transition -> created
-		 Transition tran1 = new MySqlCreateDatabaseTransition(
-			 UUID.randomUUID(), null, created.getStateId());
-		 resource.getTransitions().add(tran1);
-		 
+		MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
+
+		// Created
+		State created = new ImmutableState(UUID.randomUUID());
+		resource.getStates().add(created);
+
+		// Transition -> created
+		Transition tran1 = new MySqlCreateDatabaseTransition(
+			UUID.randomUUID(), null, created.getStateId());
+		resource.getTransitions().add(tran1);
+		
+		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			"stm_test");
+			databaseName);
 		 
 		resource.transition(instance, created.getStateId());
 		
@@ -132,9 +143,16 @@ public class MySqlTableDoesNotExistAssertionTests
 		// Execute
 		//
 		
-		AssertionResponse response = assertion.apply(instance);
+		AssertionResponse response = null;
 		
-		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP DATABASE stm_test;");
+		try
+		{
+			response = assertion.apply(instance);
+		}
+		finally
+		{
+			MySqlUtil.dropDatabase(instance, databaseName);
+		}
 
 		//
 		// Assert Results
@@ -145,7 +163,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 	 }
 	 
-	 @Test public void applyForNonExistentDatabaseFails()
+	 @Test public void applyForNonExistentDatabaseFails() throws SQLException
 	 {
 		 
 		//
@@ -153,13 +171,15 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 		 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
-		 
+	
+		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			"stm_test");
+			databaseName);
 		 
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
@@ -178,8 +198,10 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 
 		Assert.assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(false, "Database stm_test does not exist", response, "response");
-		
+		AssertExtensions.assertAssertionResponse(
+			false, "Database " + databaseName + " does not exist",
+			response, "response");
+
 	 }
 	 
 	 @Test public void applyForNullInstanceFails()
