@@ -282,6 +282,14 @@ public class DomResourceLoader implements ResourceLoader
 		String name = resourceXe.getAttribute(ATT_RESOURCE_NAME);
 
 		DomResourceBuilder builder = (DomResourceBuilder)resourceBuilders.get(type);
+		
+		if (builder == null)
+		{
+			throw new ResourceLoaderFault(String.format(
+				"resource builder of type %s not found",
+				type));
+		}
+		
 		builder.reset();
 		builder.setElement(resourceXe);
 		return builder.build(id, name);
@@ -326,6 +334,14 @@ public class DomResourceLoader implements ResourceLoader
 		String name = element.getAttribute(ATT_ASSERTION_NAME);
 		
 		DomAssertionBuilder builder = (DomAssertionBuilder)assertionBuilders.get(type);
+		
+		if (builder == null)
+		{
+			throw new ResourceLoaderFault(String.format(
+				"assertion builder of type %s not found",
+				type));
+		}
+		
 		builder.reset();
 		builder.setElement(element);
 		return builder.build(id, name, seqNum);
@@ -352,6 +368,14 @@ public class DomResourceLoader implements ResourceLoader
 		}
 		
 		DomTransitionBuilder builder = (DomTransitionBuilder)transitionBuilders.get(type);
+		
+		if (builder == null)
+		{
+			throw new ResourceLoaderFault(String.format(
+				"transition builder of type %s not found",
+				type));
+		}
+		
 		builder.reset();
 		builder.setElement(element);
 		return builder.build(id, fromStateId, toStateId);

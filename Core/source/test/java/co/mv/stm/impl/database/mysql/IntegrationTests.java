@@ -1,6 +1,5 @@
 package co.mv.stm.impl.database.mysql;
 
-import co.mv.stm.impl.database.DatabaseHelper;
 import co.mv.stm.impl.database.SqlScriptTransition;
 import co.mv.stm.AssertionFailedException;
 import co.mv.stm.IndeterminateStateException;
@@ -63,19 +62,27 @@ public class IntegrationTests
 			populated.getStateId(),
 			MySqlElementFixtures.realmTypeRefInsertUserBaseRow()));
 
+		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			"stm_test");
+			databaseName);
 		
 		//
 		// Execute
 		//
 		
-		resource.transition(instance, populated.getStateId());
-		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP DATABASE stm_test;");
+		try
+		{
+			resource.transition(instance, populated.getStateId());
+		}
+		finally
+		{
+			MySqlUtil.dropDatabase(instance, databaseName);
+		}
 		
 		//
 		// Assert Results

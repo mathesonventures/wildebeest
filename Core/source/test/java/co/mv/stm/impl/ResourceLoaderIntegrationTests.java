@@ -10,22 +10,10 @@ import co.mv.stm.impl.database.mysql.MySqlDatabaseResource;
 import co.mv.stm.impl.database.mysql.MySqlDatabaseResourceInstance;
 import co.mv.stm.impl.database.mysql.MySqlElementFixtures;
 import co.mv.stm.impl.database.mysql.MySqlProperties;
-import co.mv.stm.service.AssertionBuilder;
-import co.mv.stm.service.ResourceBuilder;
-import co.mv.stm.service.TransitionBuilder;
+import co.mv.stm.service.dom.DomPlugins;
 import co.mv.stm.service.dom.DomResourceLoader;
 import co.mv.stm.service.dom.XmlBuilder;
-import co.mv.stm.service.dom.database.RowExistsDomAssertionBuilder;
-import co.mv.stm.service.dom.database.SqlScriptDomTransitionBuilder;
-import co.mv.stm.service.dom.mysql.MySqlCreateDatabaseDomTransitionBuilder;
-import co.mv.stm.service.dom.mysql.MySqlDatabaseDoesNotExistDomAssertionBuilder;
-import co.mv.stm.service.dom.mysql.MySqlDatabaseDomResourceBuilder;
-import co.mv.stm.service.dom.mysql.MySqlDatabaseExistsDomAssertionBuilder;
-import co.mv.stm.service.dom.mysql.MySqlTableDoesNotExistDomAssertionBuilder;
-import co.mv.stm.service.dom.mysql.MySqlTableExistsDomAssertionBuilder;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -77,7 +65,7 @@ public class ResourceLoaderIntegrationTests
 					.closeState()
 					.openState(initialReferenceDataLoadedStateId, "Initial reference data loaded")
 						.openAssertions()
-							.openAssertion("RowExistsAssertion", rowExistsAssertionId, "UserBase RealmTypeRef exists")
+							.openAssertion("RowExists", rowExistsAssertionId, "UserBase RealmTypeRef exists")
 								.openElement("sql").openCdata()
 									.text("SELECT * FROM RealmTypeRef WHERE RealmTypeRcd = 'UB';")
 								.closeCdata().closeElement("sql")
@@ -101,24 +89,10 @@ public class ResourceLoaderIntegrationTests
 				.closeTransitions()
 			.closeResource();
 
-		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
-		resourceBuilders.put("MySqlDatabase", new MySqlDatabaseDomResourceBuilder());
-		
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
-		assertionBuilders.put("RowExistsAssertion", new RowExistsDomAssertionBuilder());
-		assertionBuilders.put("MySqlDatabaseDoesNotExist", new MySqlDatabaseDoesNotExistDomAssertionBuilder());
-		assertionBuilders.put("MySqlDatabaseExists", new MySqlDatabaseExistsDomAssertionBuilder());
-		assertionBuilders.put("MySqlTableDoesNotExist", new MySqlTableDoesNotExistDomAssertionBuilder());
-		assertionBuilders.put("MySqlTableExists", new MySqlTableExistsDomAssertionBuilder());
-		
-		Map<String, TransitionBuilder> transitionBuilders = new HashMap<String, TransitionBuilder>();
-		transitionBuilders.put("MySqlCreateDatabase", new MySqlCreateDatabaseDomTransitionBuilder());
-		transitionBuilders.put("SqlScript", new SqlScriptDomTransitionBuilder());
-		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			resourceBuilders,
-			assertionBuilders,
-			transitionBuilders,
+			DomPlugins.resourceBuilders(),
+			DomPlugins.assertionBuilders(),
+			DomPlugins.transitionBuilders(),
 			resourceXml.toString());
 
 		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
