@@ -1,8 +1,7 @@
 package co.mv.stm.impl.database.mysql;
 
-import co.mv.stm.impl.AssertExtensions;
-import co.mv.stm.impl.FakeResourceInstance;
-import co.mv.stm.impl.database.DatabaseHelper;
+import co.mv.stm.AssertExtensions;
+import co.mv.stm.impl.FakeInstance;
 import co.mv.stm.AssertionFailedException;
 import co.mv.stm.AssertionResponse;
 import co.mv.stm.IndeterminateStateException;
@@ -43,7 +42,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		 
 		String databaseName = MySqlElementFixtures.databaseName("StmTest");
 		
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -90,7 +89,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 
 		String databaseName = MySqlElementFixtures.databaseName("StmTest");
 
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -168,7 +167,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 			"Database does not exist",
 			0);
 		
-		FakeResourceInstance instance = new FakeResourceInstance();
+		FakeInstance instance = new FakeInstance();
 		
 		//
 		// Execute
@@ -191,7 +190,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		// Assert Results
 		//
 
-		Assert.assertEquals("caught.message", "instance must be a MySqlDatabaseResourceInstance", caught.getMessage());
+		Assert.assertEquals("caught.message", "instance must be a MySqlDatabaseInstance", caught.getMessage());
 		
 	 }
 }

@@ -1,12 +1,12 @@
 package co.mv.stm.impl.database;
 
-import co.mv.stm.impl.database.mysql.MySqlDatabaseResourceInstance;
+import co.mv.stm.impl.database.mysql.MySqlDatabaseInstance;
 import co.mv.stm.impl.BaseAssertion;
 import co.mv.stm.Assertion;
 import co.mv.stm.AssertionFaultException;
 import co.mv.stm.AssertionResponse;
 import co.mv.stm.ModelExtensions;
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.Instance;
 import co.mv.stm.impl.ImmutableAssertionResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -64,11 +64,11 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 
 	// </editor-fold>
 	
-	@Override public AssertionResponse apply(ResourceInstance instance)
+	@Override public AssertionResponse apply(Instance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		MySqlDatabaseResourceInstance db = ModelExtensions.As(instance, MySqlDatabaseResourceInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseResourceInstance"); }
+		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
+		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseInstance"); }
 
 		AssertionResponse result = null;
 		

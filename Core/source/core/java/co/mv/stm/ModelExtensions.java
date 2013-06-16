@@ -3,7 +3,7 @@ package co.mv.stm;
 public class ModelExtensions
 {
 	public static <T> T As(
-		ResourceInstance instance,
+		Instance instance,
 		Class<T> type)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }

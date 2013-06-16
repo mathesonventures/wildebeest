@@ -2,7 +2,7 @@ package co.mv.stm.impl;
 
 import co.mv.stm.AssertionResponse;
 import co.mv.stm.ModelExtensions;
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.Instance;
 import java.util.UUID;
 
 public class TagAssertion extends BaseAssertion
@@ -55,11 +55,11 @@ public class TagAssertion extends BaseAssertion
 
 	// </editor-fold>
 
-	@Override public AssertionResponse apply(ResourceInstance instance)
+	@Override public AssertionResponse apply(Instance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		FakeResourceInstance fake = ModelExtensions.As(instance, FakeResourceInstance.class);
-		if (fake == null) { throw new IllegalArgumentException("instance must be a FakeResourceInstance"); }
+		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
+		if (fake == null) { throw new IllegalArgumentException("instance must be a FakeInstance"); }
 		
 		AssertionResponse response = null;
 		

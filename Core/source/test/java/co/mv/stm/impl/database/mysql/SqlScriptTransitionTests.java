@@ -37,7 +37,7 @@ public class SqlScriptTransitionTests
 			UUID.randomUUID(),
 			MySqlElementFixtures.realmTypeRefCreateTableStatement());
 		
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),

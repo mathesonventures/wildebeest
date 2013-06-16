@@ -32,7 +32,7 @@ public class MySqlDatabaseResourceTests
 			UUID.randomUUID(),
 			"Database");
 
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -82,7 +82,7 @@ public class MySqlDatabaseResourceTests
 				"Database");
 			resource.getStates().add(new ImmutableState(knownStateId));
 
-			MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+			MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 				mySqlProperties.getHostName(),
 				mySqlProperties.getPort(),
 				mySqlProperties.getUsername(),
@@ -137,7 +137,7 @@ public class MySqlDatabaseResourceTests
 			UUID.randomUUID(),
 			"Database");
 		
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -200,7 +200,7 @@ public class MySqlDatabaseResourceTests
 			UUID.randomUUID(),
 			"Database");
 		
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),

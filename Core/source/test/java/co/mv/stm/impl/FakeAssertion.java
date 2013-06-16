@@ -3,7 +3,7 @@ package co.mv.stm.impl;
 import co.mv.stm.Assertion;
 import co.mv.stm.AssertionResponse;
 import co.mv.stm.ModelExtensions;
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.Instance;
 import java.util.UUID;
 
 public class FakeAssertion extends BaseAssertion implements Assertion
@@ -56,11 +56,11 @@ public class FakeAssertion extends BaseAssertion implements Assertion
 
 	// </editor-fold>
 
-	@Override public AssertionResponse apply(ResourceInstance instance)
+	@Override public AssertionResponse apply(Instance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannt be null"); }
-		FakeResourceInstance fake = ModelExtensions.As(instance, FakeResourceInstance.class);
-		if (fake == null) { throw new IllegalArgumentException("instance must be a FakeResourceInstance"); }
+		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
+		if (fake == null) { throw new IllegalArgumentException("instance must be a FakeInstance"); }
 		
 		boolean result = this.getTag().equals(fake.getTag());
 		

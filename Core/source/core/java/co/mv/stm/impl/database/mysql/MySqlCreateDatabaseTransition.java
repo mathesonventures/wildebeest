@@ -3,7 +3,7 @@ package co.mv.stm.impl.database.mysql;
 import co.mv.stm.impl.BaseTransition;
 import co.mv.stm.impl.database.DatabaseHelper;
 import co.mv.stm.ModelExtensions;
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.Instance;
 import co.mv.stm.Transition;
 import co.mv.stm.TransitionFailedException;
 import co.mv.stm.TransitionFaultException;
@@ -20,11 +20,11 @@ public class MySqlCreateDatabaseTransition extends BaseTransition implements Tra
 		super(transitionId, fromStateId, toStateId);
 	}
 
-	@Override public void perform(ResourceInstance instance) throws TransitionFailedException
+	@Override public void perform(Instance instance) throws TransitionFailedException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		MySqlDatabaseResourceInstance db = ModelExtensions.As(instance, MySqlDatabaseResourceInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseResourceInstance"); }
+		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
+		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
 
 		if (MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
 		{

@@ -281,7 +281,7 @@ public class DomResourceLoader implements ResourceLoader
 		UUID id = UUID.fromString(resourceXe.getAttribute(ATT_RESOURCE_ID));
 		String name = resourceXe.getAttribute(ATT_RESOURCE_NAME);
 
-		DomResourceBuilder builder = (DomResourceBuilder)resourceBuilders.get(type);
+		ResourceBuilder builder = resourceBuilders.get(type);
 		
 		if (builder == null)
 		{
@@ -291,7 +291,7 @@ public class DomResourceLoader implements ResourceLoader
 		}
 		
 		builder.reset();
-		builder.setElement(resourceXe);
+		((DomBuilder)builder).setElement(resourceXe);
 		return builder.build(id, name);
 	}
 	
@@ -333,7 +333,7 @@ public class DomResourceLoader implements ResourceLoader
 		UUID id = UUID.fromString(element.getAttribute(ATT_ASSERTION_ID));
 		String name = element.getAttribute(ATT_ASSERTION_NAME);
 		
-		DomAssertionBuilder builder = (DomAssertionBuilder)assertionBuilders.get(type);
+		AssertionBuilder builder = assertionBuilders.get(type);
 		
 		if (builder == null)
 		{
@@ -343,7 +343,7 @@ public class DomResourceLoader implements ResourceLoader
 		}
 		
 		builder.reset();
-		builder.setElement(element);
+		((DomBuilder)builder).setElement(element);
 		return builder.build(id, name, seqNum);
 	}
 	
@@ -367,7 +367,7 @@ public class DomResourceLoader implements ResourceLoader
 			toStateId = UUID.fromString(element.getAttribute(ATT_TRANSITION_TO_STATE_ID));
 		}
 		
-		DomTransitionBuilder builder = (DomTransitionBuilder)transitionBuilders.get(type);
+		TransitionBuilder builder = transitionBuilders.get(type);
 		
 		if (builder == null)
 		{
@@ -377,7 +377,7 @@ public class DomResourceLoader implements ResourceLoader
 		}
 		
 		builder.reset();
-		builder.setElement(element);
+		((DomBuilder)builder).setElement(element);
 		return builder.build(id, fromStateId, toStateId);
 	}
 }

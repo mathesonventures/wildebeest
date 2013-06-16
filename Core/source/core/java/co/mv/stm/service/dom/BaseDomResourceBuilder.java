@@ -1,9 +1,7 @@
 package co.mv.stm.service.dom;
 
-public abstract class BaseDomResourceBuilder extends BaseDomBuilder implements DomResourceBuilder
+import co.mv.stm.service.ResourceBuilder;
+
+public abstract class BaseDomResourceBuilder extends BaseDomBuilder implements ResourceBuilder
 {
-	@Override public void reset()
-	{
-		this.clearElement();
-	}
 }

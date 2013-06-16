@@ -28,7 +28,7 @@ public class MySqlCreateDatabaseTransitionTests
 
 		String databaseName = MySqlElementFixtures.databaseName("StmTest");
 
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -76,7 +76,7 @@ public class MySqlCreateDatabaseTransitionTests
 			null,
 			UUID.randomUUID());
 
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),

@@ -1,5 +1,6 @@
 package co.mv.stm.impl;
 
+import co.mv.stm.AssertExtensions;
 import co.mv.stm.AssertionFailedException;
 import co.mv.stm.IndeterminateStateException;
 import co.mv.stm.Resource;
@@ -7,7 +8,7 @@ import co.mv.stm.TransitionFailedException;
 import co.mv.stm.TransitionNotPossibleException;
 import co.mv.stm.impl.database.DatabaseHelper;
 import co.mv.stm.impl.database.mysql.MySqlDatabaseResource;
-import co.mv.stm.impl.database.mysql.MySqlDatabaseResourceInstance;
+import co.mv.stm.impl.database.mysql.MySqlDatabaseInstance;
 import co.mv.stm.impl.database.mysql.MySqlElementFixtures;
 import co.mv.stm.impl.database.mysql.MySqlProperties;
 import co.mv.stm.service.dom.DomPlugins;
@@ -95,7 +96,7 @@ public class ResourceLoaderIntegrationTests
 			DomPlugins.transitionBuilders(),
 			resourceXml.toString());
 
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			MySqlProperties.get().getHostName(),
 			MySqlProperties.get().getPort(),
 			MySqlProperties.get().getUsername(),

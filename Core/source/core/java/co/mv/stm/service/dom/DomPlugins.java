@@ -1,12 +1,14 @@
 package co.mv.stm.service.dom;
 
 import co.mv.stm.service.AssertionBuilder;
+import co.mv.stm.service.InstanceBuilder;
 import co.mv.stm.service.ResourceBuilder;
 import co.mv.stm.service.TransitionBuilder;
 import co.mv.stm.service.dom.database.RowExistsDomAssertionBuilder;
 import co.mv.stm.service.dom.mysql.MySqlCreateDatabaseDomTransitionBuilder;
 import co.mv.stm.service.dom.mysql.MySqlDatabaseDoesNotExistDomAssertionBuilder;
 import co.mv.stm.service.dom.database.SqlScriptDomTransitionBuilder;
+import co.mv.stm.service.dom.mysql.MySqlDatabaseDomInstanceBuilder;
 import co.mv.stm.service.dom.mysql.MySqlDatabaseDomResourceBuilder;
 import co.mv.stm.service.dom.mysql.MySqlDatabaseExistsDomAssertionBuilder;
 import co.mv.stm.service.dom.mysql.MySqlTableDoesNotExistDomAssertionBuilder;
@@ -45,6 +47,15 @@ public class DomPlugins
 		result.put("SqlScript", new SqlScriptDomTransitionBuilder());
 		result.put("MySqlCreateDatabase", new MySqlCreateDatabaseDomTransitionBuilder());
 
+		return result;
+	}
+	
+	public static Map<String, InstanceBuilder> instanceBuilders()
+	{
+		Map<String, InstanceBuilder> result = new HashMap<String, InstanceBuilder>();
+		
+		result.put("MySqlDatabase", new MySqlDatabaseDomInstanceBuilder());
+		
 		return result;
 	}
 }

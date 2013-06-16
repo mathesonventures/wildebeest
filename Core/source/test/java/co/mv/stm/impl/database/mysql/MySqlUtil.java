@@ -6,7 +6,7 @@ import java.sql.SQLException;
 public class MySqlUtil
 {
 	public static void dropDatabase(
-		MySqlDatabaseResourceInstance instance,
+		MySqlDatabaseInstance instance,
 		String databaseName) throws SQLException
 	{
 		DatabaseHelper.execute(instance.getInfoDataSource(), "DROP DATABASE `" + databaseName + "`;");

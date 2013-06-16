@@ -20,7 +20,7 @@ import java.sql.SQLException;
 public class MySqlDatabaseHelper
 {
 	public static boolean schemaExists(
-		MySqlDatabaseResourceInstance instance,
+		MySqlDatabaseInstance instance,
 		String schemaName)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
@@ -65,7 +65,7 @@ public class MySqlDatabaseHelper
 	}
 	
 	public static boolean tableExists(
-		MySqlDatabaseResourceInstance instance,
+		MySqlDatabaseInstance instance,
 		String schemaName,
 		String tableName)
 	{

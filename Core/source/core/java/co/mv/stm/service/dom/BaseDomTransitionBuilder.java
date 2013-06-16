@@ -1,9 +1,7 @@
 package co.mv.stm.service.dom;
 
-public abstract class BaseDomTransitionBuilder extends BaseDomBuilder implements DomTransitionBuilder
+import co.mv.stm.service.TransitionBuilder;
+
+public abstract class BaseDomTransitionBuilder extends BaseDomBuilder implements TransitionBuilder
 {
-	@Override public void reset()
-	{
-		this.clearElement();
-	}
 }

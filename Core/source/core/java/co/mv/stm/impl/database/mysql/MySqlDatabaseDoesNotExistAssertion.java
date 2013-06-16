@@ -3,7 +3,7 @@ package co.mv.stm.impl.database.mysql;
 import co.mv.stm.impl.BaseAssertion;
 import co.mv.stm.AssertionResponse;
 import co.mv.stm.ModelExtensions;
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.Instance;
 import co.mv.stm.impl.ImmutableAssertionResponse;
 import java.util.UUID;
 
@@ -17,11 +17,11 @@ public class MySqlDatabaseDoesNotExistAssertion extends BaseAssertion
 		super(assertionId, name, seqNum);
 	}
 
-	@Override public AssertionResponse apply(ResourceInstance instance)
+	@Override public AssertionResponse apply(Instance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		MySqlDatabaseResourceInstance db = ModelExtensions.As(instance, MySqlDatabaseResourceInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseResourceInstance"); }
+		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
+		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
 		
 		AssertionResponse result = null;
 		

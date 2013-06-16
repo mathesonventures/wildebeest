@@ -1,7 +1,7 @@
 package co.mv.stm.service.dom;
 
+import co.mv.stm.AssertExtensions;
 import co.mv.stm.Resource;
-import co.mv.stm.impl.AssertExtensions;
 import co.mv.stm.impl.FakeAssertion;
 import co.mv.stm.impl.FakeResource;
 import co.mv.stm.impl.FakeTransition;

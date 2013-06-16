@@ -40,4 +40,9 @@ public abstract class BaseDomBuilder implements DomBuilder
 	}
 
 	// </editor-fold>
+	
+	@Override public void reset()
+	{
+		this.clearElement();
+	}
 }

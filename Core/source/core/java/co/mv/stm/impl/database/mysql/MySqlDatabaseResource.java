@@ -5,7 +5,7 @@ import co.mv.stm.impl.database.DatabaseHelper;
 import co.mv.stm.IndeterminateStateException;
 import co.mv.stm.ModelExtensions;
 import co.mv.stm.Resource;
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.Instance;
 import co.mv.stm.FaultException;
 import co.mv.stm.State;
 import java.sql.Connection;
@@ -27,11 +27,11 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 	// Behaviour
 	//
 
-	@Override public State currentState(ResourceInstance instance) throws IndeterminateStateException
+	@Override public State currentState(Instance instance) throws IndeterminateStateException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		MySqlDatabaseResourceInstance db = ModelExtensions.As(instance, MySqlDatabaseResourceInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseResourceInstance"); }
+		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
+		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseInstance"); }
 
 		UUID declaredStateId = null;
 		

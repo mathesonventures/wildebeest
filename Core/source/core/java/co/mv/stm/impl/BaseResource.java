@@ -6,7 +6,7 @@ import co.mv.stm.AssertionResponse;
 import co.mv.stm.AssertionResult;
 import co.mv.stm.IndeterminateStateException;
 import co.mv.stm.Resource;
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.Instance;
 import co.mv.stm.State;
 import co.mv.stm.Transition;
 import co.mv.stm.TransitionFailedException;
@@ -178,7 +178,7 @@ public abstract class BaseResource implements Resource
 
 	// </editor-fold>
 
-	@Override public List<AssertionResult> assertState(ResourceInstance instance) throws IndeterminateStateException
+	@Override public List<AssertionResult> assertState(Instance instance) throws IndeterminateStateException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
 
@@ -203,7 +203,7 @@ public abstract class BaseResource implements Resource
 	}
 
 	@Override public void transition(
-		ResourceInstance instance,
+		Instance instance,
 		UUID targetStateId) throws
 			IndeterminateStateException,
 			AssertionFailedException,

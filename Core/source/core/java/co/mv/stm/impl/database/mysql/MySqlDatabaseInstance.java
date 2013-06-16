@@ -1,13 +1,13 @@
 package co.mv.stm.impl.database.mysql;
 
-import co.mv.stm.impl.database.DatabaseResourceInstance;
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.impl.database.DatabaseInstance;
+import co.mv.stm.Instance;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import javax.sql.DataSource;
 
-public class MySqlDatabaseResourceInstance implements ResourceInstance, DatabaseResourceInstance
+public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 {
-	public MySqlDatabaseResourceInstance(
+	public MySqlDatabaseInstance(
 		String hostName,
 		int port,
 		String adminUsername,

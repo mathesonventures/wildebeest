@@ -53,13 +53,13 @@ public interface Resource
 	 * the resource declares itself to be in state "A", but no such state has been defined for the resource, then this
 	 * is considered to be an indeterminate state.
 	 * 
-	 * @param       instance                    the {@link ResourceInstance} to get the current state of
+	 * @param       instance                    the {@link Instance} to get the current state of
 	 * @return                                  the defined state that the resource currently appears to be in, or is
 	 *                                          declared to be in.
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
 	 * @since                                   1.0.0
 	 */
-	State currentState(ResourceInstance instance) throws IndeterminateStateException;
+	State currentState(Instance instance) throws IndeterminateStateException;
 	
 	/**
 	 * Applies the {@link Assertion}'s for this {@link Resource} and returns a collection of the results of those
@@ -69,14 +69,14 @@ public interface Resource
 	 * the current state cannot be determined, then an {@link IndeterminateException} is thrown.  See the
 	 * {@code currentState()} method for more details.
 	 * 
-	 * @param       instance                    the {@link ResourceInstance} to assert the current state of
+	 * @param       instance                    the {@link Instance} to assert the current state of
 	 * @return                                  a {@link java.util.List} of the {@link AssertionResult}s
 	 *                                          that were generated for the Assertions for this Resource's current
 	 *                                          state.
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
 	 * @since                                   1.0.0
 	 */
-	List<AssertionResult> assertState(ResourceInstance instance) throws IndeterminateStateException;
+	List<AssertionResult> assertState(Instance instance) throws IndeterminateStateException;
 	
 	/**
 	 * Transitions the resource from it's current state to the specified target state.  The transition process is as
@@ -104,7 +104,7 @@ public interface Resource
 	 * If exactly one path cannot be found that will enable transition from the current state to the target state, then
 	 * a TransitionNotPossibleException is thrown.
 	 * 
-	 * @param       instance                    the {@link ResourceInstance} to transition
+	 * @param       instance                    the {@link Instance} to transition
 	 * @param       targetStateId               the ID of the state to which the {@link Resource} should be transitioned
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly at
 	 *                                          the commencement of the transition, and at each intermediate state and
@@ -115,7 +115,7 @@ public interface Resource
 	 * @since                                   1.0.0
 	 */
 	void transition(
-		ResourceInstance instance,
+		Instance instance,
 		UUID targetStateId) throws
 			IndeterminateStateException,
 			AssertionFailedException,

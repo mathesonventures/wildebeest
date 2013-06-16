@@ -2,11 +2,8 @@ package co.mv.stm.cli;
 
 import co.mv.stm.IndeterminateStateException;
 import co.mv.stm.Resource;
-import co.mv.stm.ResourceInstance;
-import co.mv.stm.service.AssertionBuilder;
-import co.mv.stm.service.ResourceBuilder;
+import co.mv.stm.Instance;
 import co.mv.stm.service.ResourceLoaderFault;
-import co.mv.stm.service.TransitionBuilder;
 import co.mv.stm.service.dom.DomPlugins;
 import co.mv.stm.service.dom.DomResourceLoader;
 import java.io.BufferedReader;
@@ -14,11 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class WildebeestCommand
 {
@@ -235,7 +228,7 @@ public class WildebeestCommand
 				resourceXml);
 			Resource resource = loader.load();
 			
-			ResourceInstance instance = null;
+			Instance instance = null;
 			try
 			{
 				resource.currentState(instance);

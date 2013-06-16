@@ -1,15 +1,15 @@
 package co.mv.stm.impl;
 
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.Instance;
 import java.util.UUID;
 
-public class FakeResourceInstance implements ResourceInstance
+public class FakeInstance implements Instance
 {
-	public FakeResourceInstance()
+	public FakeInstance()
 	{
 	}
 	
-	public FakeResourceInstance(UUID stateId)
+	public FakeInstance(UUID stateId)
 	{
 		this.setStateId(stateId);
 	}

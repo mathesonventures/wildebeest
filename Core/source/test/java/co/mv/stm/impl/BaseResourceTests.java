@@ -1,5 +1,6 @@
 package co.mv.stm.impl;
 
+import co.mv.stm.AssertExtensions;
 import co.mv.stm.Assertion;
 import co.mv.stm.AssertionFailedException;
 import co.mv.stm.AssertionResult;
@@ -33,7 +34,7 @@ public class BaseResourceTests
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
 		
-		FakeResourceInstance instance = new FakeResourceInstance(state.getStateId());
+		FakeInstance instance = new FakeInstance(state.getStateId());
 
 		//
 		// Execute
@@ -69,7 +70,7 @@ public class BaseResourceTests
 			"Foo");
 		state.getAssertions().add(assertion1);
 		
-		FakeResourceInstance instance = new FakeResourceInstance(state.getStateId());
+		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
 		//
@@ -114,7 +115,7 @@ public class BaseResourceTests
 			1,
 			"Bar"));
 		
-		FakeResourceInstance instance = new FakeResourceInstance(state.getStateId());
+		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
 		//
@@ -181,7 +182,7 @@ public class BaseResourceTests
 		resource.getTransitions().add(tran1);
 		
 		// Instance
-		FakeResourceInstance instance = new FakeResourceInstance();
+		FakeInstance instance = new FakeInstance();
 		
 		//
 		// Execute
@@ -240,7 +241,7 @@ public class BaseResourceTests
 		
 		
 		// Instance
-		FakeResourceInstance instance = new FakeResourceInstance();
+		FakeInstance instance = new FakeInstance();
 		
 		//
 		// Execute
@@ -326,7 +327,7 @@ public class BaseResourceTests
 		resource.getTransitions().add(tran5);
 		
 		// Instance
-		FakeResourceInstance instance = new FakeResourceInstance();
+		FakeInstance instance = new FakeInstance();
 		
 		//
 		// Execute

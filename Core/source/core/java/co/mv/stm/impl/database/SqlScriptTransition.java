@@ -2,7 +2,7 @@ package co.mv.stm.impl.database;
 
 import co.mv.stm.impl.BaseTransition;
 import co.mv.stm.ModelExtensions;
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.Instance;
 import co.mv.stm.Transition;
 import co.mv.stm.TransitionFailedException;
 import co.mv.stm.TransitionFaultException;
@@ -58,11 +58,11 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 
 	// </editor-fold>
 	
-	@Override public void perform(ResourceInstance instance) throws TransitionFailedException
+	@Override public void perform(Instance instance) throws TransitionFailedException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		DatabaseResourceInstance db = ModelExtensions.As(instance, DatabaseResourceInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseResourceInstance"); }
+		DatabaseInstance db = ModelExtensions.As(instance, DatabaseInstance.class);
+		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseInstance"); }
 
 		try
 		{

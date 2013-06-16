@@ -5,4 +5,6 @@ import org.w3c.dom.Element;
 public interface DomBuilder
 {
 	void setElement(Element element);
+	
+	void reset();
 }

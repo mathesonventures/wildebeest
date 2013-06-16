@@ -1,6 +1,5 @@
 package co.mv.stm.service.dom;
 
-import co.mv.stm.service.dom.BaseDomResourceBuilder;
 import co.mv.stm.Resource;
 import co.mv.stm.impl.FakeResource;
 import java.util.UUID;

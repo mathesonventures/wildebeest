@@ -1,11 +1,8 @@
-package co.mv.stm.impl;
+package co.mv.stm;
 
-import co.mv.stm.Assertion;
-import co.mv.stm.AssertionResponse;
-import co.mv.stm.AssertionResult;
-import co.mv.stm.Resource;
-import co.mv.stm.State;
-import co.mv.stm.Transition;
+import co.mv.stm.impl.FakeAssertion;
+import co.mv.stm.impl.FakeTransition;
+import co.mv.stm.impl.database.mysql.MySqlDatabaseInstance;
 import java.util.UUID;
 import org.junit.Assert;
 
@@ -183,5 +180,49 @@ public class AssertExtensions
 		Assert.assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
 		Assert.assertEquals(name + ".result", expectedResult, actual.getResult());
 		Assert.assertEquals(name + ".message", expectedMessage, actual.getMessage());
+	}
+	
+	public static void assertInstance(
+		Class expectedClass,
+		Instance actual,
+		String name)
+	{
+		if (expectedClass == null) { throw new IllegalArgumentException("expectedClass cannot be null"); }
+		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
+		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
+		if ("".equals(name)) {throw new IllegalArgumentException("name cannot be blank"); }
+		
+		Assert.assertEquals("actual.class", expectedClass, actual.getClass());
+	}
+	
+	public static void assertMySqlDatabaseInstance(
+		String expectedHostName,
+		int expectedPort,
+		String expectedAdminUsername,
+		String expectedAdminPassword,
+		String expectedSchemaName,
+		Instance actual,
+		String name)
+	{
+		if (expectedHostName == null) { throw new IllegalArgumentException("expectedHostName cannot be null"); }
+		if ("".equals(expectedHostName)) { throw new IllegalArgumentException("expectedHostName cannot be empty"); }
+		if (expectedAdminUsername == null) { throw new IllegalArgumentException("expectedAdminUsername cannot be null"); }
+		if ("".equals(expectedAdminUsername)) { throw new IllegalArgumentException("expectedAdminUsername cannot be empty"); }
+		if (expectedAdminPassword == null) { throw new IllegalArgumentException("expectedAdminPassword cannot be null"); }
+		if ("".equals(expectedAdminPassword)) { throw new IllegalArgumentException("expectedAdminPassword cannot be empty"); }
+		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
+		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
+		if ("".equals(name)) {throw new IllegalArgumentException("name cannot be blank"); }
+		
+		AssertExtensions.assertInstance(MySqlDatabaseInstance.class, actual, name);
+		
+		MySqlDatabaseInstance db = (MySqlDatabaseInstance)actual;
+		
+		Assert.assertEquals("hostName", expectedHostName, db.getHostName());
+		Assert.assertEquals("port", expectedPort, db.getPort());
+		Assert.assertEquals("adminUsername", expectedAdminUsername, db.getAdminUsername());
+		Assert.assertEquals("adminPassword", expectedAdminPassword, db.getAdminPassword());
+		Assert.assertEquals("schemaName", expectedSchemaName, db.getSchemaName());
+		
 	}
 }

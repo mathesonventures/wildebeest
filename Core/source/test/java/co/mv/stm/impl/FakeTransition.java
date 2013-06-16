@@ -1,7 +1,7 @@
 package co.mv.stm.impl;
 
 import co.mv.stm.ModelExtensions;
-import co.mv.stm.ResourceInstance;
+import co.mv.stm.Instance;
 import co.mv.stm.TransitionFailedException;
 import java.util.UUID;
 
@@ -55,10 +55,10 @@ public class FakeTransition extends BaseTransition
 
 	// </editor-fold>
 	
-	@Override public void perform(ResourceInstance instance) throws TransitionFailedException
+	@Override public void perform(Instance instance) throws TransitionFailedException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		FakeResourceInstance fake = ModelExtensions.As(instance, FakeResourceInstance.class);
+		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
 		if (fake == null) { throw new IllegalArgumentException("instance must of type FakeResource"); }
 	
 		fake.setTag(this.getTag());

@@ -1,9 +1,7 @@
 package co.mv.stm.service.dom;
 
-public abstract class BaseDomAssertionBuilder extends BaseDomBuilder implements DomAssertionBuilder
+import co.mv.stm.service.AssertionBuilder;
+
+public abstract class BaseDomAssertionBuilder extends BaseDomBuilder implements AssertionBuilder
 {
-	@Override public void reset()
-	{
-		this.clearElement();
-	}
 }

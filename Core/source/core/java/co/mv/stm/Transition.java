@@ -14,5 +14,5 @@ public interface Transition
 	
 	boolean hasToStateId();
 	
-	void perform(ResourceInstance instance) throws TransitionFailedException;
+	void perform(Instance instance) throws TransitionFailedException;
 }

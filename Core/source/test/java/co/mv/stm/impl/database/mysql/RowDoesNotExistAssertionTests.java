@@ -29,7 +29,7 @@ public class RowDoesNotExistAssertionTests
 			MySqlElementFixtures.realmTypeRefCreateTableStatement());
 		f.setUp();
 		
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -85,7 +85,7 @@ public class RowDoesNotExistAssertionTests
 			MySqlElementFixtures.realmTypeRefInsertUserBaseRow());
 		f.setUp();
 		
-		MySqlDatabaseResourceInstance instance = new MySqlDatabaseResourceInstance(
+		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),

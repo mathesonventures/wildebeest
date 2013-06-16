@@ -12,5 +12,5 @@ public interface Assertion
 	
 	int getSeqNum();
 	
-	AssertionResponse apply(ResourceInstance instance);
+	AssertionResponse apply(Instance instance);
 }
