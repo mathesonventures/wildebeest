@@ -1,8 +1,10 @@
-package co.mv.stm.model.mysql;
+package co.mv.stm.model.database;
 
-import co.mv.stm.model.database.RowDoesNotExistAssertion;
 import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.AssertionResponse;
+import co.mv.stm.model.mysql.MySqlDatabaseInstance;
+import co.mv.stm.model.mysql.MySqlElementFixtures;
+import co.mv.stm.model.mysql.MySqlProperties;
 import co.zd.helium.fixture.MySqlDatabaseFixture;
 import java.util.UUID;
 import junit.framework.Assert;
