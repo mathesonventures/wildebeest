@@ -6,6 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
+	DomInstanceLoaderTests.class,
 	DomResourceLoaderTests.class
 })
 public class UnitTestSuite

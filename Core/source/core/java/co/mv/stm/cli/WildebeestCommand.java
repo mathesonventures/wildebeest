@@ -1,8 +1,8 @@
 package co.mv.stm.cli;
 
-import co.mv.stm.IndeterminateStateException;
-import co.mv.stm.Resource;
-import co.mv.stm.Instance;
+import co.mv.stm.model.IndeterminateStateException;
+import co.mv.stm.model.Resource;
+import co.mv.stm.model.Instance;
 import co.mv.stm.service.ResourceLoaderFault;
 import co.mv.stm.service.dom.DomPlugins;
 import co.mv.stm.service.dom.DomResourceLoader;

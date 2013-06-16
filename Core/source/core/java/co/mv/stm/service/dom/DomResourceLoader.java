@@ -1,10 +1,10 @@
 package co.mv.stm.service.dom;
 
-import co.mv.stm.Assertion;
-import co.mv.stm.Resource;
-import co.mv.stm.State;
-import co.mv.stm.Transition;
-import co.mv.stm.impl.ImmutableState;
+import co.mv.stm.model.Assertion;
+import co.mv.stm.model.Resource;
+import co.mv.stm.model.State;
+import co.mv.stm.model.Transition;
+import co.mv.stm.model.base.ImmutableState;
 import co.mv.stm.service.AssertionBuilder;
 import co.mv.stm.service.ResourceBuilder;
 import co.mv.stm.service.ResourceLoader;

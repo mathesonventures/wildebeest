@@ -1,7 +1,7 @@
 package co.mv.stm.service.dom;
 
-import co.mv.stm.Assertion;
-import co.mv.stm.impl.FakeAssertion;
+import co.mv.stm.model.Assertion;
+import co.mv.stm.model.base.FakeAssertion;
 import java.util.UUID;
 
 public class DomFakeAssertionBuilder extends BaseDomAssertionBuilder

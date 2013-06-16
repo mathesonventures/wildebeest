@@ -1,7 +1,7 @@
 package co.mv.stm.service.dom.mysql;
 
-import co.mv.stm.Instance;
-import co.mv.stm.impl.database.mysql.MySqlDatabaseInstance;
+import co.mv.stm.model.Instance;
+import co.mv.stm.model.mysql.MySqlDatabaseInstance;
 import co.mv.stm.service.InstanceLoaderFault;
 import co.mv.stm.service.dom.BaseDomInstanceBuilder;
 import javax.xml.xpath.XPath;

@@ -1,7 +1,7 @@
 package co.mv.stm.service.dom.mysql;
 
-import co.mv.stm.Assertion;
-import co.mv.stm.impl.database.mysql.MySqlTableExistsAssertion;
+import co.mv.stm.model.Assertion;
+import co.mv.stm.model.mysql.MySqlTableExistsAssertion;
 import co.mv.stm.service.ResourceLoaderFault;
 import co.mv.stm.service.dom.BaseDomAssertionBuilder;
 import java.util.UUID;

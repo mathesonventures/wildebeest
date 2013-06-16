@@ -1,6 +1,6 @@
 package co.mv.stm.service;
 
-import co.mv.stm.Instance;
+import co.mv.stm.model.Instance;
 
 public interface InstanceLoader
 {

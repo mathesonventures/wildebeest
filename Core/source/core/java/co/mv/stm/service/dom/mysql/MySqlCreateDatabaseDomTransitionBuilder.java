@@ -1,7 +1,7 @@
 package co.mv.stm.service.dom.mysql;
 
-import co.mv.stm.Transition;
-import co.mv.stm.impl.database.mysql.MySqlCreateDatabaseTransition;
+import co.mv.stm.model.Transition;
+import co.mv.stm.model.mysql.MySqlCreateDatabaseTransition;
 import co.mv.stm.service.dom.BaseDomTransitionBuilder;
 import java.util.UUID;
 

@@ -1,6 +1,6 @@
 package co.mv.stm.service.dom;
 
-import co.mv.stm.Instance;
+import co.mv.stm.model.Instance;
 import co.mv.stm.service.InstanceBuilder;
 import co.mv.stm.service.InstanceLoader;
 import co.mv.stm.service.ResourceLoaderFault;

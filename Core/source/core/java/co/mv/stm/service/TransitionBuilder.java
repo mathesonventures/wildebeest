@@ -1,6 +1,6 @@
 package co.mv.stm.service;
 
-import co.mv.stm.Transition;
+import co.mv.stm.model.Transition;
 import java.util.UUID;
 
 public interface TransitionBuilder

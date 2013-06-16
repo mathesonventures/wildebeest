@@ -1,10 +1,10 @@
 package co.mv.stm.service.dom;
 
 import co.mv.stm.AssertExtensions;
-import co.mv.stm.Resource;
-import co.mv.stm.impl.FakeAssertion;
-import co.mv.stm.impl.FakeResource;
-import co.mv.stm.impl.FakeTransition;
+import co.mv.stm.model.Resource;
+import co.mv.stm.model.base.FakeAssertion;
+import co.mv.stm.model.base.FakeResource;
+import co.mv.stm.model.base.FakeTransition;
 import co.mv.stm.service.AssertionBuilder;
 import co.mv.stm.service.ResourceBuilder;
 import co.mv.stm.service.TransitionBuilder;

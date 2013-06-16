@@ -1,7 +1,7 @@
 package co.mv.stm.service.dom;
 
-import co.mv.stm.Transition;
-import co.mv.stm.impl.FakeTransition;
+import co.mv.stm.model.Transition;
+import co.mv.stm.model.base.FakeTransition;
 import java.util.UUID;
 
 public class DomFakeTransitionBuilder extends BaseDomTransitionBuilder

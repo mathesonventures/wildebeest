@@ -1,6 +1,6 @@
 package co.mv.stm.service;
 
-import co.mv.stm.Resource;
+import co.mv.stm.model.Resource;
 
 public interface ResourceLoader
 {

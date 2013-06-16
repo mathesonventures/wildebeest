@@ -1,6 +1,6 @@
 package co.mv.stm.service;
 
-import co.mv.stm.Assertion;
+import co.mv.stm.model.Assertion;
 import java.util.UUID;
 
 public interface AssertionBuilder

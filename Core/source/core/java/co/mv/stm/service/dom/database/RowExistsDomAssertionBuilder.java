@@ -1,7 +1,7 @@
 package co.mv.stm.service.dom.database;
 
-import co.mv.stm.Assertion;
-import co.mv.stm.impl.database.RowExistsAssertion;
+import co.mv.stm.model.Assertion;
+import co.mv.stm.model.database.RowExistsAssertion;
 import co.mv.stm.service.dom.BaseDomAssertionBuilder;
 import java.util.UUID;
 

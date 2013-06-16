@@ -1,8 +1,15 @@
 package co.mv.stm;
 
-import co.mv.stm.impl.FakeAssertion;
-import co.mv.stm.impl.FakeTransition;
-import co.mv.stm.impl.database.mysql.MySqlDatabaseInstance;
+import co.mv.stm.model.Transition;
+import co.mv.stm.model.Assertion;
+import co.mv.stm.model.Instance;
+import co.mv.stm.model.AssertionResult;
+import co.mv.stm.model.Resource;
+import co.mv.stm.model.State;
+import co.mv.stm.model.AssertionResponse;
+import co.mv.stm.model.base.FakeAssertion;
+import co.mv.stm.model.base.FakeTransition;
+import co.mv.stm.model.mysql.MySqlDatabaseInstance;
 import java.util.UUID;
 import org.junit.Assert;
 

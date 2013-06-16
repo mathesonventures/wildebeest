@@ -1,7 +1,7 @@
 package co.mv.stm.service.dom.database;
 
-import co.mv.stm.Transition;
-import co.mv.stm.impl.database.SqlScriptTransition;
+import co.mv.stm.model.Transition;
+import co.mv.stm.model.database.SqlScriptTransition;
 import co.mv.stm.service.ResourceLoaderFault;
 import co.mv.stm.service.dom.BaseDomTransitionBuilder;
 import java.util.UUID;
