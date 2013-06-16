@@ -22,7 +22,12 @@ import org.junit.Test;
 public class IntegrationTests
 {
 	private static final UUID ResourceId = UUID.randomUUID();
-	private static final UUID CreatedStateId = UUID.randomUUID();
+	private static final UUID StateIdCreated = UUID.randomUUID();
+	private static final UUID StateIdSchemaLoaded = UUID.randomUUID();
+	private static final UUID StateIdReferenceDataLoaded = UUID.randomUUID();
+	private static final UUID TransitionIdCreateDatabase = UUID.randomUUID();
+	private static final UUID TransitionIdLoadInitialSchema = UUID.randomUUID();
+	private static final UUID TransitionIdLoadReferenceData = UUID.randomUUID();
 
 	@Test public void createDatabaseAddTableInsertRows() throws
 		IndeterminateStateException,
@@ -199,7 +204,7 @@ public class IntegrationTests
 		
 		try
 		{
-			resource.transition(instance, CreatedStateId);
+			resource.transition(instance, StateIdReferenceDataLoaded);
 		}
 		finally
 		{
@@ -215,15 +220,42 @@ public class IntegrationTests
 			.processingInstruction()
 			.openResource(ResourceId, "MySqlDatabase", "Database")
 				.openStates()
-					.openState(CreatedStateId, "Created")
+					.openState(StateIdCreated, "Created")
 						.openAssertions()
 							.openAssertion("MySqlDatabaseExists", UUID.randomUUID(), "Database exists")
 							.closeAssertion()
 						.closeAssertions()
 					.closeState()
+					.openState(StateIdSchemaLoaded, "Schema Loaded")
+						.openAssertions()
+							.openAssertion("MySqlTableExists", UUID.randomUUID(), "Table exists")
+								.openElement("tableName").text("realmTypeRef").closeElement("tableName")
+							.closeAssertion()
+						.closeAssertions()
+					.closeState()
+					.openState(StateIdReferenceDataLoaded, "Reference Data Loaded")
+						.openAssertions()
+							.openAssertion("RowExists", UUID.randomUUID(), "RealmTypeRef UB exists")
+								.openElement("sql").openCdata()
+									.text("SELECT RealmTypeRcd FROM RealmTypeRef WHERE RealmTypeRcd = 'UB';")
+								.closeCdata().closeElement("sql")
+							.closeAssertion()
+						.closeAssertions()
+					.closeState()
 				.closeStates()
 				.openTransitions()
-					.openTransition("MySqlCreateDatabase", ResourceId, null, CreatedStateId)
+					.openTransition("MySqlCreateDatabase", TransitionIdCreateDatabase, null, StateIdCreated)
+					.closeTransition()
+					.openTransition("SqlScript", TransitionIdLoadInitialSchema, StateIdCreated, StateIdSchemaLoaded)
+						.openElement("sql").openCdata()
+							.text(MySqlElementFixtures.realmTypeRefCreateTableStatement())
+						.closeCdata().closeElement("sql")
+					.closeTransition()
+					.openTransition("SqlScript", TransitionIdLoadReferenceData, StateIdSchemaLoaded,
+						StateIdReferenceDataLoaded)
+						.openElement("sql").openCdata()
+							.text(MySqlElementFixtures.realmTypeRefInsertUserBaseRow())
+						.closeCdata().closeElement("sql")
 					.closeTransition()
 				.closeTransitions()
 			.closeResource();
