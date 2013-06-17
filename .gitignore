@@ -5,3 +5,4 @@
 /Core/*.swp
 /Core/source/test/etc/*.swp
 /Core/nbproject/private
+/Core/source/test/etc/integration_test_fixtures/mysql_database/*.swp

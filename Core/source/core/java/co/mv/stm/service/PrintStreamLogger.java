@@ -2,6 +2,7 @@ package co.mv.stm.service;
 
 import co.mv.stm.model.Assertion;
 import co.mv.stm.model.AssertionResponse;
+import co.mv.stm.model.Transition;
 import java.io.PrintStream;
 
 public class PrintStreamLogger implements Logger
@@ -64,12 +65,56 @@ public class PrintStreamLogger implements Logger
 	
 		if (response.getResult())
 		{
-			this.getStream().println("Assertion " + assertion.getName() + " passed: " + response.getMessage());
+			this.getStream().println(String.format(
+				"Assertion \"%s\" passed: %s",
+				assertion.getName(),
+				response.getMessage()));
 		}
 		
 		else
 		{
-			this.getStream().println("Assertion " + assertion.getName() + " failed: " + response.getMessage());
+			this.getStream().println(String.format(
+				"Assertion \"%s\" failed: %s",
+				assertion.getName(),
+				response.getMessage()));
 		}
+	}
+	
+	@Override public void transitionStart(Transition transition)
+	{
+		if (transition == null) { throw new IllegalArgumentException("transition cannot be null"); }
+		
+		if (transition.hasFromStateId())
+		{
+			if (transition.hasToStateId())
+			{
+				this.getStream().println(String.format(
+					"Starting transition \"%s\" from state \"%s\" to \"%s\"",
+					"TODO",
+					transition.getFromStateId().toString(),
+					transition.getToStateId().toString()));
+			}
+			else
+			{
+				this.getStream().println(String.format(
+					"Starting transition \"%s\" from state \"%s\" to non-existent",
+					"TODO",
+					transition.getFromStateId().toString()));
+			}
+		}
+		else
+		{
+			this.getStream().println(String.format(
+				"Starting transition \"%s\" from non-existent to \"%s\"",
+				"TODO",
+				transition.getToStateId().toString()));
+		}
+	}
+	
+	@Override public void transitionComplete(Transition transition)
+	{
+		if (transition == null) { throw new IllegalArgumentException("transition cannot be null"); }
+		
+		this.getStream().println("Transition complete");
 	}
 }

@@ -28,7 +28,7 @@ public class IntegrationTests
 			"transition",
 			"--resource=integration_test_fixtures/mysql_database/database.wbresource.xml",
 			"--instance=integration_test_fixtures/mysql_database/staging_db.wbinstance.xml",
-			"--targetState=Ref Data Loaded"
+			"--targetState=UserBase Schema Loaded"
 		};
 		Logger logger = new PrintStreamLogger(System.out);
 

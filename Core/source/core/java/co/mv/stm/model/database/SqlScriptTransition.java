@@ -66,8 +66,19 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 
 		try
 		{
-			DatabaseHelper.execute(db.getAppDataSource(), this.getSql());
-			
+			// Strip out any comments, and split the block of SQL into individual statements
+			String sql = this.getSql().replaceAll("/\\*.*?\\*/", "");
+			String[] statements = sql.split(";");
+
+			// Execute each statement
+			for(String statement : statements)
+			{
+				if (!"".equals(statement.trim()))
+				{
+					DatabaseHelper.execute(db.getAppDataSource(), statement);
+				}
+			}
+
 			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
 				.append("UPDATE StmState SET StateId = '").append(this.getToStateId().toString())
 				.append("';").toString());

@@ -240,7 +240,9 @@ public abstract class BaseResource implements Resource
 		for (Transition transition : path)
 		{
 			// Transition to the next state
+			logger.transitionStart(transition);
 			transition.perform(instance);
+			logger.transitionComplete(transition);
 
 			// Basic state check
 			State state = this.currentState(instance);
