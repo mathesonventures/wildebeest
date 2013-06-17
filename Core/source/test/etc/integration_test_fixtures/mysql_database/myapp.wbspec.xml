@@ -1,0 +1,10 @@
+<spec>
+	<resources>
+		<resource definition="database.wbresource.xml">
+			<compatibleStates>
+				<state name="Initial Schema" />
+				<state id="00f1c875-ac60-4441-aea3-6d75a74d852b" />
+			</compatibleStates>
+		</resource>
+	</resources>
+</spec>

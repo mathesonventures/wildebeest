@@ -93,7 +93,7 @@ public class IntegrationTests
 		
 		try
 		{
-			resource.transition(instance, populated.getStateId());
+			resource.transition(null, instance, populated.getStateId());
 		}
 		finally
 		{
@@ -204,7 +204,7 @@ public class IntegrationTests
 		
 		try
 		{
-			resource.transition(instance, StateIdReferenceDataLoaded);
+			resource.transition(null, instance, StateIdReferenceDataLoaded);
 		}
 		finally
 		{

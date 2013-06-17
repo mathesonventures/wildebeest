@@ -49,7 +49,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName);
 		 
-		resource.transition(instance, created.getStateId());
+		resource.transition(null, instance, created.getStateId());
 		
 		MySqlDatabaseDoesNotExistAssertion assertion = new MySqlDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),

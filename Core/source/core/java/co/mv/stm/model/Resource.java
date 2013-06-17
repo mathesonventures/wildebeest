@@ -1,5 +1,6 @@
 package co.mv.stm.model;
 
+import co.mv.stm.service.Logger;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,6 +70,7 @@ public interface Resource
 	 * the current state cannot be determined, then an {@link IndeterminateException} is thrown.  See the
 	 * {@code currentState()} method for more details.
 	 * 
+	 * @param       logger                      an optional Logger service to log the activity of the assert operation.
 	 * @param       instance                    the {@link Instance} to assert the current state of
 	 * @return                                  a {@link java.util.List} of the {@link AssertionResult}s
 	 *                                          that were generated for the Assertions for this Resource's current
@@ -76,7 +78,9 @@ public interface Resource
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
 	 * @since                                   1.0.0
 	 */
-	List<AssertionResult> assertState(Instance instance) throws IndeterminateStateException;
+	List<AssertionResult> assertState(
+		Logger logger,
+		Instance instance) throws IndeterminateStateException;
 	
 	/**
 	 * Transitions the resource from it's current state to the specified target state.  The transition process is as
@@ -104,6 +108,7 @@ public interface Resource
 	 * If exactly one path cannot be found that will enable transition from the current state to the target state, then
 	 * a TransitionNotPossibleException is thrown.
 	 * 
+	 * @param       logger                      an optional Logger service to log the activity of the assert operation.
 	 * @param       instance                    the {@link Instance} to transition
 	 * @param       targetStateId               the ID of the state to which the {@link Resource} should be transitioned
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly at
@@ -115,6 +120,7 @@ public interface Resource
 	 * @since                                   1.0.0
 	 */
 	void transition(
+		Logger logger,
 		Instance instance,
 		UUID targetStateId) throws
 			IndeterminateStateException,
@@ -122,4 +128,9 @@ public interface Resource
 			TransitionNotPossibleException,
 			TransitionFailedException;
 	
+	/**
+	 * Looks for a state with the supplied label, and if one exists returns it's StateId.  If no such state exists, then
+	 * null is returned.
+	 */
+	UUID stateIdForLabel(String label);
 }

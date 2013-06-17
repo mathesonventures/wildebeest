@@ -64,7 +64,7 @@ public class MySqlTableDoesNotExistAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName);
 		 
-		resource.transition(instance, schemaLoaded.getStateId());
+		resource.transition(null, instance, schemaLoaded.getStateId());
 		
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
@@ -130,7 +130,7 @@ public class MySqlTableDoesNotExistAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName);
 		 
-		resource.transition(instance, created.getStateId());
+		resource.transition(null, instance, created.getStateId());
 		
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),

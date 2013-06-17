@@ -12,6 +12,7 @@ import co.mv.stm.model.Transition;
 import co.mv.stm.model.TransitionFailedException;
 import co.mv.stm.model.TransitionFaultException;
 import co.mv.stm.model.TransitionNotPossibleException;
+import co.mv.stm.service.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -178,7 +179,9 @@ public abstract class BaseResource implements Resource
 
 	// </editor-fold>
 
-	@Override public List<AssertionResult> assertState(Instance instance) throws IndeterminateStateException
+	@Override public List<AssertionResult> assertState(
+		Logger logger,
+		Instance instance) throws IndeterminateStateException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
 
@@ -192,6 +195,11 @@ public abstract class BaseResource implements Resource
 			{
 				AssertionResponse response = assertion.apply(instance);
 				
+				if (logger != null)
+				{
+					logger.assertionComplete(assertion, response);
+				}
+				
 				results.add(new ImmutableAssertionResult(
 					assertion.getAssertionId(),
 					response.getResult(),
@@ -203,6 +211,7 @@ public abstract class BaseResource implements Resource
 	}
 
 	@Override public void transition(
+		Logger logger,
 		Instance instance,
 		UUID targetStateId) throws
 			IndeterminateStateException,
@@ -245,7 +254,9 @@ public abstract class BaseResource implements Resource
 			}
 			
 			// Assert the new state
-			List<AssertionResult> assertionResults = this.assertState(instance);
+			List<AssertionResult> assertionResults = this.assertState(
+				logger,
+				instance);
 
 			// If any assertions failed, throw
 			for(AssertionResult assertionResult : assertionResults)
@@ -308,4 +319,23 @@ public abstract class BaseResource implements Resource
 			}
 		}
 	}
+	
+	@Override public UUID stateIdForLabel(String label)
+	{
+		if (label == null) { throw new IllegalArgumentException("label cannot be null"); }
+		if ("".equals(label)) { throw new IllegalArgumentException("label cannot be empty"); }
+		
+		State result = null;
+		
+		for (State check : this.getStates())
+		{
+			if (label.equals(check.getLabel()))
+			{
+				result = check;
+			}
+		}
+		
+		return result == null ? null : result.getStateId();
+	}
+
 }

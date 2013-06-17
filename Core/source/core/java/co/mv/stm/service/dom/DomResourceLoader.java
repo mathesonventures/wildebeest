@@ -1,6 +1,7 @@
 package co.mv.stm.service.dom;
 
 import co.mv.stm.model.Assertion;
+import co.mv.stm.model.ModelExtensions;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.State;
 import co.mv.stm.model.Transition;
@@ -230,38 +231,50 @@ public class DomResourceLoader implements ResourceLoader
 
 			for (int i = 0; i < resourceXe.getChildNodes().getLength(); i ++)
 			{
-				Element childXe = (Element)resourceXe.getChildNodes().item(i);
+				Element childXe =  ModelExtensions.As(resourceXe.getChildNodes().item(i), Element.class);
 
-				if (ELT_STATES.equals(childXe.getTagName()))
+				if (childXe != null && ELT_STATES.equals(childXe.getTagName()))
 				{
 					for (int stateIndex = 0; stateIndex < childXe.getChildNodes().getLength(); stateIndex ++)
 					{
-						Element stateXe = (Element)childXe.getChildNodes().item(stateIndex);
-						State state = buildState(stateXe);
-						resource.getStates().add(state);
-						
-						for (int stChildIndex = 0; stChildIndex < stateXe.getChildNodes().getLength(); stChildIndex ++)
+						Element stateXe = ModelExtensions.As(childXe.getChildNodes().item(stateIndex), Element.class);
+						if (stateXe != null)
 						{
-							Element stChildXe = (Element)stateXe.getChildNodes().item(stChildIndex);
-							if (ELT_ASSERTIONS.equals(stChildXe.getTagName()))
+							State state = buildState(stateXe);
+							resource.getStates().add(state);
+
+							for (int stChildIndex = 0; stChildIndex < stateXe.getChildNodes().getLength(); stChildIndex ++)
 							{
-								for (int asrIndex = 0; asrIndex < stChildXe.getChildNodes().getLength(); asrIndex ++)
+								Element stChildXe = ModelExtensions.As(stateXe.getChildNodes().item(stChildIndex),
+									Element.class);
+								if (stChildXe != null && ELT_ASSERTIONS.equals(stChildXe.getTagName()))
 								{
-									Element asrXe = (Element)stChildXe.getChildNodes().item(asrIndex);
-									Assertion asr = buildAssertion(this.getAssertionBuilders(), asrXe, asrIndex);
-									state.getAssertions().add(asr);
+									for (int asrIndex = 0; asrIndex < stChildXe.getChildNodes().getLength(); asrIndex ++)
+									{
+										Element asrXe = ModelExtensions.As(stChildXe.getChildNodes().item(asrIndex),
+											Element.class);
+										if (asrXe != null)
+										{
+											Assertion asr = buildAssertion(this.getAssertionBuilders(), asrXe, asrIndex);
+											state.getAssertions().add(asr);
+										}
+									}
 								}
 							}
 						}
 					}
 				}
 				
-				if (ELT_TRANSITIONS.equals(childXe.getTagName()))
+				if (childXe != null && ELT_TRANSITIONS.equals(childXe.getTagName()))
 				{
 					for (int tranIndex = 0; tranIndex < childXe.getChildNodes().getLength(); tranIndex ++)
 					{
-						Element transitionXe = (Element)childXe.getChildNodes().item(tranIndex);
-						resource.getTransitions().add(buildTransition(this.getTransitionBuilders(), transitionXe));
+						Element transitionXe = ModelExtensions.As(childXe.getChildNodes().item(tranIndex),
+							Element.class);
+						if (transitionXe != null)
+						{
+							resource.getTransitions().add(buildTransition(this.getTransitionBuilders(), transitionXe));
+						}
 					}
 				}
 			}

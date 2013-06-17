@@ -40,7 +40,7 @@ public class BaseResourceTests
 		// Execute
 		//
 
-		List<AssertionResult> results = resource.assertState(instance);
+		List<AssertionResult> results = resource.assertState(null, instance);
 
 		//
 		// Assert Results
@@ -77,7 +77,7 @@ public class BaseResourceTests
 		// Execute
 		//
 
-		List<AssertionResult> results = resource.assertState(instance);
+		List<AssertionResult> results = resource.assertState(null, instance);
 
 		//
 		// Assert Results
@@ -122,7 +122,7 @@ public class BaseResourceTests
 		// Execute
 		//
 
-		List<AssertionResult> results = resource.assertState(instance);
+		List<AssertionResult> results = resource.assertState(null, instance);
 
 		//
 		// Assert Results
@@ -188,7 +188,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.transition(instance, state1Id);
+		resource.transition(null, instance, state1Id);
 		
 		//
 		// Assert Results
@@ -247,7 +247,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.transition(instance, state3.getStateId());
+		resource.transition(null, instance, state3.getStateId());
 		
 		//
 		// Assert Results
@@ -333,7 +333,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.transition(instance, stateB3Id);
+		resource.transition(null, instance, stateB3Id);
 		
 		//
 		// Assert Results

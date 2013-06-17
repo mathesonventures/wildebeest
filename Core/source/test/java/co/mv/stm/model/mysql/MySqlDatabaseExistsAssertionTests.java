@@ -49,7 +49,7 @@ public class MySqlDatabaseExistsAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName);
 		 
-		resource.transition(instance, created.getStateId());
+		resource.transition(null, instance, created.getStateId());
 		
 		MySqlDatabaseExistsAssertion assertion = new MySqlDatabaseExistsAssertion(
 			UUID.randomUUID(),

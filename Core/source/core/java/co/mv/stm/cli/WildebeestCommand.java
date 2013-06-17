@@ -1,9 +1,15 @@
 package co.mv.stm.cli;
 
+import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.Instance;
+import co.mv.stm.model.TransitionFailedException;
+import co.mv.stm.model.TransitionNotPossibleException;
+import co.mv.stm.service.InstanceLoaderFault;
+import co.mv.stm.service.Logger;
 import co.mv.stm.service.ResourceLoaderFault;
+import co.mv.stm.service.dom.DomInstanceLoader;
 import co.mv.stm.service.dom.DomPlugins;
 import co.mv.stm.service.dom.DomResourceLoader;
 import java.io.BufferedReader;
@@ -54,6 +60,43 @@ public class WildebeestCommand
 
 	private boolean hasCommand() {
 		return m_command_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="Resource" defaultstate="collapsed">
+
+	private String m_resource = null;
+	private boolean m_resource_set = false;
+
+	public String getResource() {
+		if(!m_resource_set) {
+			throw new IllegalStateException("resource not set.  Use the HasResource() method to check its state before accessing it.");
+		}
+		return m_resource;
+	}
+
+	private void setResource(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("resource cannot be null");
+		}
+		boolean changing = !m_resource_set || m_resource != value;
+		if(changing) {
+			m_resource_set = true;
+			m_resource = value;
+		}
+	}
+
+	private void clearResource() {
+		if(m_resource_set) {
+			m_resource_set = true;
+			m_resource = null;
+		}
+	}
+
+	private boolean hasResource() {
+		return m_resource_set;
 	}
 
 	// </editor-fold>
@@ -178,27 +221,31 @@ public class WildebeestCommand
 		if ("state".equals(command))
 		{
 			this.setCommand(CommandType.State);
+			String resource = WildebeestCommand.getArg(args, "r", "resource");
 			String instance = WildebeestCommand.getArg(args, "i", "instance");
 
-			if (isNullOrWhiteSpace(instance))
+			if (isNullOrWhiteSpace(resource) || isNullOrWhiteSpace(instance))
 			{
 				throw new RuntimeException("args missing");
 			}
 			
+			this.setResource(resource);
 			this.setInstance(instance);
 		}
 		
 		else if ("transition".equals(command))
 		{
 			this.setCommand(CommandType.Transition);
+			String resource = WildebeestCommand.getArg(args, "r", "resource");
 			String instance = WildebeestCommand.getArg(args, "i", "instance");
 			String targetState = WildebeestCommand.getArg(args, "t", "targetState");
 
-			if (isNullOrWhiteSpace(instance) || isNullOrWhiteSpace(targetState))
+			if (isNullOrWhiteSpace(resource) || isNullOrWhiteSpace(instance) || isNullOrWhiteSpace(targetState))
 			{
 				throw new RuntimeException("args missing");
 			}
 			
+			this.setResource(resource);
 			this.setInstance(instance);
 			
 			UUID targetStateId = null;
@@ -214,21 +261,86 @@ public class WildebeestCommand
 		}
 	}
 	
-	public void run()
+	public Resource loadResource()
 	{
-		if (this.getCommand() == CommandType.State)
+		// Load Resource
+		File resourceFile = new File(this.getResource());
+		String resourceXml;
+		try
 		{
-			File resourceFile = new File(this.getInstance());
-			String resourceXml = readAllText(resourceFile);
-			
-			DomResourceLoader loader = new DomResourceLoader(
+			resourceXml = readAllText(resourceFile);
+		}
+		catch (FileNotFoundException ex)
+		{
+			throw new ResourceLoaderFault(String.format(
+				"Resource file %s does not exist",
+				resourceFile.getAbsolutePath()));
+		}
+		catch (IOException ex)
+		{
+			throw new ResourceLoaderFault(String.format(
+				"There was a problem reading resource file %s",
+				resourceFile.getAbsolutePath()));
+		}
+
+		Resource resource = null;
+		if (resourceXml != null)
+		{
+			DomResourceLoader resourceLoader = new DomResourceLoader(
 				DomPlugins.resourceBuilders(),
 				DomPlugins.assertionBuilders(),
 				DomPlugins.transitionBuilders(),
 				resourceXml);
-			Resource resource = loader.load();
+			resource = resourceLoader.load();
+		}
+
+		return resource;
+	}
+	
+	public Instance loadInstance()
+	{
+		// Load Instance
+		File instanceFile = new File(this.getInstance());
+		String instanceXml;
+		try
+		{
+			instanceXml = readAllText(instanceFile);
+		}
+		catch (FileNotFoundException ex)
+		{
+			throw new InstanceLoaderFault(String.format(
+				"Instance file %s does not exist",
+				instanceFile.getAbsolutePath()));
+		}
+		catch (IOException ex)
+		{
+			throw new ResourceLoaderFault(String.format(
+				"There was a problem reading instance file %s",
+				instanceFile.getAbsolutePath()));
+		}
+
+		Instance instance = null;
+		if (instanceXml != null)
+		{
+			DomInstanceLoader instanceLoader = new DomInstanceLoader(
+				DomPlugins.instanceBuilders(),
+				instanceXml);
+			instance = instanceLoader.load();
+		}
+		
+		return instance;
+	}
+	
+	public void run(Logger logger)
+	{
+		if (logger == null) { throw new IllegalArgumentException("logger"); }
+
+		if (this.getCommand() == CommandType.State)
+		{
+			Resource resource = this.loadResource();
+			Instance instance = this.loadInstance();
 			
-			Instance instance = null;
+			// Perform transition
 			try
 			{
 				resource.currentState(instance);
@@ -241,6 +353,40 @@ public class WildebeestCommand
 		
 		if (this.getCommand() == CommandType.Transition)
 		{
+			Resource resource = this.loadResource();
+			Instance instance = this.loadInstance();
+			UUID targetStateId = this.hasTargetStateId() ? this.getTargetStateId() :
+				resource.stateIdForLabel(this.getTargetStateLabel());
+			
+			if (targetStateId == null)
+			{
+				throw new RuntimeException("no target state identified");
+			}
+			
+			if (resource != null && instance != null && targetStateId != null)
+			{
+				// Perform transition
+				try
+				{
+					resource.transition(logger, instance, targetStateId);
+				}
+				catch (IndeterminateStateException ex)
+				{
+					// TODO: Write to stream
+				}
+				catch (AssertionFailedException ex)
+				{
+					// TODO: Write to stream
+				}
+				catch (TransitionNotPossibleException ex)
+				{
+					// TODO: Write to stream
+				}
+				catch (TransitionFailedException ex)
+				{
+					// TODO: Write to stream
+				}
+			}
 		}
 	}
 	
@@ -282,14 +428,23 @@ public class WildebeestCommand
 		return value == null ||	"".equals(value.trim());
 	}
 	
-	private static String readAllText(File file)
+	private static String readAllText(File file) throws FileNotFoundException, IOException
 	{
-		StringBuilder sb = new StringBuilder();
+		if (file == null) { throw new IllegalArgumentException("file cannt be null"); }
+		if (!file.isFile())
+		{
+			throw new IllegalArgumentException(String.format(
+				"%s is not a plain file",
+				file.getAbsolutePath()));
+		}
+	
+		String result = null;
 		
 		BufferedReader br = null;
 		try
 		{
-			br = new BufferedReader(new FileReader("file.txt"));
+			StringBuilder sb = new StringBuilder();
+			br = new BufferedReader(new FileReader(file));
 			String line = br.readLine();
 			while (line != null)
 			{
@@ -297,14 +452,7 @@ public class WildebeestCommand
 				sb.append("\n");
 				line = br.readLine();
 			}
-		}
-		catch(FileNotFoundException e)
-		{
-			throw new ResourceLoaderFault(e);
-		}
-		catch (IOException e)
-		{
-			throw new ResourceLoaderFault(e);
+			result = sb.toString();
 		}
 		finally
 		{
@@ -321,6 +469,6 @@ public class WildebeestCommand
 			}
 		}
 		
-		return sb.toString();
+		return result;
 	}
 }

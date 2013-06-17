@@ -3,17 +3,17 @@ package co.mv.stm.model;
 public class ModelExtensions
 {
 	public static <T> T As(
-		Instance instance,
+		Object value,
 		Class<T> type)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
+		if (value == null) { throw new IllegalArgumentException("value"); }
 		if (type == null) { throw new IllegalArgumentException("type"); }
 		
 		T result = null;
 		
-		if (type.isAssignableFrom(instance.getClass()))
+		if (type.isAssignableFrom(value.getClass()))
 		{
-			result = (T)instance;
+			result = (T)value;
 		}
 		
 		return result;

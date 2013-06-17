@@ -149,7 +149,7 @@ public class ResourceLoaderIntegrationTests
 		
 		try
 		{
-			resource.transition(instance, initialReferenceDataLoadedStateId);
+			resource.transition(null, instance, initialReferenceDataLoadedStateId);
 		}
 		finally
 		{

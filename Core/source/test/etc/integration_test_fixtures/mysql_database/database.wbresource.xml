@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<resource type="MySqlDatabse" id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" name="MV AAA Database">
+<resource type="MySqlDatabase" id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" name="MV AAA Database">
 
 	<states>
 
-		<state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" label="Database created">
+		<state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" label="Database Created">
 			<assertions>
 				<assertion
 					type="MySqlDatabaseExists"
@@ -14,7 +14,7 @@
 			</assertions>
 		</state>
 
-		<state id="363568f1-aaed-4a50-bea0-9ddee713cc11" label="Schema loaded">
+		<state id="363568f1-aaed-4a50-bea0-9ddee713cc11" label="Schema Loaded">
 			<assertions>
 				<assertion
 					type="MySqlTableExists"
@@ -31,7 +31,7 @@
 			</assertions>
 		</state>
 
-		<state id="61ee5deb-aee7-4508-9d9c-1e749e2f7fab" label="RealmTypeRef data loaded">
+		<state id="61ee5deb-aee7-4508-9d9c-1e749e2f7fab" label="Ref Data Loaded">
 		</state>
 
 	</states>
