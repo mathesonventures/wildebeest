@@ -26,9 +26,9 @@ public class IntegrationTests
 		String[] args = new String[]
 		{
 			"transition",
-			"--resource=integration_test_fixtures/mysql_database/database.wbresource.xml",
-			"--instance=integration_test_fixtures/mysql_database/staging_db.wbinstance.xml",
-			"--targetState=UserBase Schema Loaded"
+			"--resource:integration_test_fixtures/mysql_database/database.wbresource.xml",
+			"--instance:integration_test_fixtures/mysql_database/staging_db.wbinstance.xml",
+			"--targetState:UserBase Schema Loaded"
 		};
 		Logger logger = new PrintStreamLogger(System.out);
 

@@ -129,6 +129,13 @@ public interface Resource
 			TransitionFailedException;
 	
 	/**
+	 * Finds and returns the state with the supplied ID.  If no such state exists, null is returned.
+	 * @param stateId
+	 * @return 
+	 */
+	State stateForId(UUID stateId);
+	
+	/**
 	 * Looks for a state with the supplied label, and if one exists returns it's StateId.  If no such state exists, then
 	 * null is returned.
 	 */

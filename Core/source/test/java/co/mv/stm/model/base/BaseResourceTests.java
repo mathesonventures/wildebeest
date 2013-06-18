@@ -9,6 +9,7 @@ import co.mv.stm.model.State;
 import co.mv.stm.model.Transition;
 import co.mv.stm.model.TransitionFailedException;
 import co.mv.stm.model.TransitionNotPossibleException;
+import co.mv.stm.service.PrintStreamLogger;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;
@@ -40,7 +41,7 @@ public class BaseResourceTests
 		// Execute
 		//
 
-		List<AssertionResult> results = resource.assertState(null, instance);
+		List<AssertionResult> results = resource.assertState(new PrintStreamLogger(System.out), instance);
 
 		//
 		// Assert Results
@@ -77,7 +78,7 @@ public class BaseResourceTests
 		// Execute
 		//
 
-		List<AssertionResult> results = resource.assertState(null, instance);
+		List<AssertionResult> results = resource.assertState(new PrintStreamLogger(System.out), instance);
 
 		//
 		// Assert Results
@@ -122,7 +123,7 @@ public class BaseResourceTests
 		// Execute
 		//
 
-		List<AssertionResult> results = resource.assertState(null, instance);
+		List<AssertionResult> results = resource.assertState(new PrintStreamLogger(System.out), instance);
 
 		//
 		// Assert Results
@@ -188,7 +189,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.transition(null, instance, state1Id);
+		resource.transition(new PrintStreamLogger(System.out), instance, state1Id);
 		
 		//
 		// Assert Results
@@ -239,7 +240,6 @@ public class BaseResourceTests
 		Transition tran3 = new FakeTransition(UUID.randomUUID(), state2.getStateId(), state3.getStateId(), "bup");
 		resource.getTransitions().add(tran3);
 		
-		
 		// Instance
 		FakeInstance instance = new FakeInstance();
 		
@@ -247,7 +247,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.transition(null, instance, state3.getStateId());
+		resource.transition(new PrintStreamLogger(System.out), instance, state3.getStateId());
 		
 		//
 		// Assert Results
@@ -333,7 +333,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.transition(null, instance, stateB3Id);
+		resource.transition(new PrintStreamLogger(System.out), instance, stateB3Id);
 		
 		//
 		// Assert Results
@@ -351,6 +351,48 @@ public class BaseResourceTests
 	@Ignore @Test public void transitionFromStateToDeepState()
 	{
 		throw new UnsupportedOperationException();
+	}
+	
+	@Test public void transitionToSameState() throws IndeterminateStateException, AssertionFailedException, TransitionNotPossibleException, TransitionFailedException
+	{
+		
+		//
+		// Fixture Setup
+		//
+
+		// The resource
+		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+
+		// State 1
+		UUID state1Id = UUID.randomUUID();
+		State state = new ImmutableState(state1Id);
+		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "foo"));
+		resource.getStates().add(state);
+		
+		// Transition 1
+		UUID transition1Id = UUID.randomUUID();
+		Transition tran1 = new FakeTransition(transition1Id, null, state1Id, "foo");
+		resource.getTransitions().add(tran1);
+		
+		// Instance
+		FakeInstance instance = new FakeInstance();
+		
+		PrintStreamLogger logger = new PrintStreamLogger(System.out);
+		
+		resource.transition(logger, instance, state1Id);
+		
+		//
+		// Execute
+		//
+		
+		resource.transition(logger, instance, state1Id);
+		
+		//
+		// Assert Results
+		//
+		
+		Assert.assertEquals("instance.tag", "foo", instance.getTag());
+		
 	}
 	
 	@Ignore @Test public void transitionWithCircularDependencyFails()

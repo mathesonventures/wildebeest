@@ -10,6 +10,7 @@ import co.mv.stm.model.TransitionNotPossibleException;
 import co.mv.stm.AssertExtensions;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.base.ImmutableState;
+import co.mv.stm.service.PrintStreamLogger;
 import co.mv.stm.service.dom.DomInstanceLoader;
 import co.mv.stm.service.dom.DomPlugins;
 import co.mv.stm.service.dom.DomResourceLoader;
@@ -93,7 +94,7 @@ public class IntegrationTests
 		
 		try
 		{
-			resource.transition(null, instance, populated.getStateId());
+			resource.transition(new PrintStreamLogger(System.out), instance, populated.getStateId());
 		}
 		finally
 		{
@@ -204,7 +205,7 @@ public class IntegrationTests
 		
 		try
 		{
-			resource.transition(null, instance, StateIdReferenceDataLoaded);
+			resource.transition(new PrintStreamLogger(System.out), instance, StateIdReferenceDataLoaded);
 		}
 		finally
 		{

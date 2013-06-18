@@ -151,4 +151,16 @@ public class ImmutableState implements State
 	}
 
 	// </editor-fold>
+	
+	@Override public String getDisplayName()
+	{
+		if (this.hasLabel())
+		{
+			return this.getLabel();
+		}
+		else
+		{
+			return this.getStateId().toString();
+		}
+	}
 }

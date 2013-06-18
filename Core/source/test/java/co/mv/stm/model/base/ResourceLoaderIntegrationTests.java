@@ -6,11 +6,12 @@ import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.TransitionFailedException;
 import co.mv.stm.model.TransitionNotPossibleException;
-import co.mv.stm.model.database.DatabaseHelper;
 import co.mv.stm.model.mysql.MySqlDatabaseResource;
 import co.mv.stm.model.mysql.MySqlDatabaseInstance;
 import co.mv.stm.model.mysql.MySqlElementFixtures;
 import co.mv.stm.model.mysql.MySqlProperties;
+import co.mv.stm.model.mysql.MySqlUtil;
+import co.mv.stm.service.PrintStreamLogger;
 import co.mv.stm.service.dom.DomPlugins;
 import co.mv.stm.service.dom.DomResourceLoader;
 import co.mv.stm.service.dom.XmlBuilder;
@@ -96,12 +97,14 @@ public class ResourceLoaderIntegrationTests
 			DomPlugins.transitionBuilders(),
 			resourceXml.toString());
 
+		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			MySqlProperties.get().getHostName(),
 			MySqlProperties.get().getPort(),
 			MySqlProperties.get().getUsername(),
 			MySqlProperties.get().getPassword(),
-			"StmTest");
+			databaseName);
 		
 		//
 		// Execute - Load
@@ -149,17 +152,11 @@ public class ResourceLoaderIntegrationTests
 		
 		try
 		{
-			resource.transition(null, instance, initialReferenceDataLoadedStateId);
+			resource.transition(new PrintStreamLogger(System.out), instance, initialReferenceDataLoadedStateId);
 		}
 		finally
 		{
-		
-			//
-			// Tear-Down
-			//
-
-			DatabaseHelper.execute(instance.getInfoDataSource(), "DROP Database StmTest");
-			
+			MySqlUtil.dropDatabase(instance, databaseName);
 		}
 
 	}

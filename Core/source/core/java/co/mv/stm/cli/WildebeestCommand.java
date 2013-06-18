@@ -4,10 +4,12 @@ import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.Instance;
+import co.mv.stm.model.State;
 import co.mv.stm.model.TransitionFailedException;
 import co.mv.stm.model.TransitionNotPossibleException;
 import co.mv.stm.service.InstanceLoaderFault;
 import co.mv.stm.service.Logger;
+import co.mv.stm.service.PrintStreamLogger;
 import co.mv.stm.service.ResourceLoaderFault;
 import co.mv.stm.service.dom.DomInstanceLoader;
 import co.mv.stm.service.dom.DomPlugins;
@@ -25,6 +27,7 @@ public class WildebeestCommand
 	{
 		WildebeestCommand wb = new WildebeestCommand();
 		wb.parse(args);
+		wb.run(new PrintStreamLogger(System.out));
 	}
 	
 	// <editor-fold desc="Command" defaultstate="collapsed">
@@ -343,7 +346,16 @@ public class WildebeestCommand
 			// Perform transition
 			try
 			{
-				resource.currentState(instance);
+				State state = resource.currentState(instance);
+				
+				if (state == null)
+				{
+					System.out.println("Current state: non-existent");
+				}
+				else
+				{
+					System.out.println("Current state: " + state.getStateId().toString());
+				}
 			}
 			catch (IndeterminateStateException ex)
 			{
@@ -401,8 +413,8 @@ public class WildebeestCommand
 		if (longName == null) { throw new IllegalArgumentException("longName cannot be null"); }
 		if ("".equals(longName)) { throw new IllegalArgumentException("longName cannot be empty"); }
 		
-		shortName = "-" + shortName + "=";
-		longName = "--" + longName + "=";
+		shortName = "-" + shortName + ":";
+		longName = "--" + longName + ":";
 		
 		String result = null;
 		

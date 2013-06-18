@@ -10,6 +10,7 @@ import co.mv.stm.model.Transition;
 import co.mv.stm.model.TransitionFailedException;
 import co.mv.stm.model.TransitionNotPossibleException;
 import co.mv.stm.model.base.ImmutableState;
+import co.mv.stm.service.PrintStreamLogger;
 import java.sql.SQLException;
 import java.util.UUID;
 import junit.framework.Assert;
@@ -49,7 +50,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName);
 		 
-		resource.transition(null, instance, created.getStateId());
+		resource.transition(new PrintStreamLogger(System.out), instance, created.getStateId());
 		
 		MySqlDatabaseDoesNotExistAssertion assertion = new MySqlDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),

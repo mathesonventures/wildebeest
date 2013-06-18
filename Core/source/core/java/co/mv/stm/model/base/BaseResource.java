@@ -183,6 +183,7 @@ public abstract class BaseResource implements Resource
 		Logger logger,
 		Instance instance) throws IndeterminateStateException
 	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
 
 		List<AssertionResult> results = new ArrayList<AssertionResult>();
@@ -219,6 +220,7 @@ public abstract class BaseResource implements Resource
 			TransitionNotPossibleException,
 			TransitionFailedException
 	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
 		
 		State currentState = this.currentState(instance);
@@ -240,9 +242,9 @@ public abstract class BaseResource implements Resource
 		for (Transition transition : path)
 		{
 			// Transition to the next state
-			logger.transitionStart(transition);
+			logger.transitionStart(this, transition);
 			transition.perform(instance);
-			logger.transitionComplete(transition);
+			logger.transitionComplete(this, transition);
 
 			// Basic state check
 			State state = this.currentState(instance);
@@ -269,24 +271,6 @@ public abstract class BaseResource implements Resource
 				}
 			}
 		}
-	}
-	
-	protected State stateForId(UUID stateId)
-	{
-		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
-		
-		State result = null;
-		
-		for (State check : this.getStates())
-		{
-			if (stateId.equals(check.getStateId()))
-			{
-				result = check;
-				break;
-			}
-		}
-		
-		return result;
 	}
 	
 	private static void findPaths(
@@ -322,6 +306,24 @@ public abstract class BaseResource implements Resource
 		}
 	}
 	
+	@Override public State stateForId(UUID stateId)
+	{
+		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
+		
+		State result = null;
+		
+		for(State check : this.getStates())
+		{
+			if (stateId.equals(check.getStateId()))
+			{
+				result = check;
+				break;
+			}
+		}
+		
+		return result;
+	}
+
 	@Override public UUID stateIdForLabel(String label)
 	{
 		if (label == null) { throw new IllegalArgumentException("label cannot be null"); }
@@ -339,5 +341,4 @@ public abstract class BaseResource implements Resource
 		
 		return result == null ? null : result.getStateId();
 	}
-
 }

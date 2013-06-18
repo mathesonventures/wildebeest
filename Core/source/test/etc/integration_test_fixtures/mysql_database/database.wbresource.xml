@@ -146,6 +146,26 @@ CREATE TABLE  `AuthAudit` (
 			type="SqlScript"
 			id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
 			fromStateId="363568f1-aaed-4a50-bea0-9ddee713cc11"
+			toStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7">
+			<sql><![CDATA[
+
+DROP TABLE AuthAudit;
+DROP TABLE AuthAuditResultRef;
+
+DROP TABLE UserAccount;
+DROP TABLE UserAccountStatusRef;
+
+DROP TABLE Realm;
+DROP TABLE RealmTypeRef;
+DROP Table RealmStatusRef;
+
+			]]></sql>
+		</transition>
+		
+		<transition
+			type="SqlScript"
+			id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
+			fromStateId="363568f1-aaed-4a50-bea0-9ddee713cc11"
 			toStateId="61ee5deb-aee7-4508-9d9c-1e749e2f7fab">
 			<sql><![CDATA[
 
