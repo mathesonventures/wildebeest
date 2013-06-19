@@ -5,8 +5,8 @@ import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.Instance;
 import co.mv.stm.model.State;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionNotPossibleException;
+import co.mv.stm.model.MigrationFailedException;
+import co.mv.stm.model.MigrationNotPossibleException;
 import co.mv.stm.service.InstanceLoaderFault;
 import co.mv.stm.service.Logger;
 import co.mv.stm.service.PrintStreamLogger;
@@ -236,9 +236,9 @@ public class WildebeestCommand
 			this.setInstance(instance);
 		}
 		
-		else if ("transition".equals(command))
+		else if ("migrate".equals(command))
 		{
-			this.setCommand(CommandType.Transition);
+			this.setCommand(CommandType.Migration);
 			String resource = WildebeestCommand.getArg(args, "r", "resource");
 			String instance = WildebeestCommand.getArg(args, "i", "instance");
 			String targetState = WildebeestCommand.getArg(args, "t", "targetState");
@@ -292,7 +292,7 @@ public class WildebeestCommand
 			DomResourceLoader resourceLoader = new DomResourceLoader(
 				DomPlugins.resourceBuilders(),
 				DomPlugins.assertionBuilders(),
-				DomPlugins.transitionBuilders(),
+				DomPlugins.migrationBuilders(),
 				resourceXml);
 			resource = resourceLoader.load();
 		}
@@ -343,7 +343,7 @@ public class WildebeestCommand
 			Resource resource = this.loadResource();
 			Instance instance = this.loadInstance();
 			
-			// Perform transition
+			// Perform migration
 			try
 			{
 				State state = resource.currentState(instance);
@@ -363,7 +363,7 @@ public class WildebeestCommand
 			}
 		}
 		
-		if (this.getCommand() == CommandType.Transition)
+		if (this.getCommand() == CommandType.Migration)
 		{
 			Resource resource = this.loadResource();
 			Instance instance = this.loadInstance();
@@ -377,10 +377,10 @@ public class WildebeestCommand
 			
 			if (resource != null && instance != null && targetStateId != null)
 			{
-				// Perform transition
+				// Perform migration
 				try
 				{
-					resource.transition(logger, instance, targetStateId);
+					resource.migrate(logger, instance, targetStateId);
 				}
 				catch (IndeterminateStateException ex)
 				{
@@ -390,11 +390,11 @@ public class WildebeestCommand
 				{
 					// TODO: Write to stream
 				}
-				catch (TransitionNotPossibleException ex)
+				catch (MigrationNotPossibleException ex)
 				{
 					// TODO: Write to stream
 				}
-				catch (TransitionFailedException ex)
+				catch (MigrationFailedException ex)
 				{
 					// TODO: Write to stream
 				}

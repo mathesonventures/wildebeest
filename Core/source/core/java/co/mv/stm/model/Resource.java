@@ -33,11 +33,11 @@ public interface Resource
 	List<State> getStates();
 	
 	/**
-	 * Gets the transitions that have been defined for this Resource.
+	 * Gets the migrations that have been defined for this Resource.
 	 * 
-	 * @return                                  the transitions that have been defined for this Resource.
+	 * @return                                  the migrations that have been defined for this Resource.
 	 */
-	List<Transition> getTransitions();
+	List<Migration> getMigrations();
 
 	//
 	// Behaviour
@@ -83,7 +83,7 @@ public interface Resource
 		Instance instance) throws IndeterminateStateException;
 	
 	/**
-	 * Transitions the resource from it's current state to the specified target state.  The transition process is as
+	 * Migrates the resource from it's current state to the specified target state.  The migration process is as
 	 * follows:
 	 * 
 	 * <ul>
@@ -96,37 +96,37 @@ public interface Resource
 	 * target state itself.
 	 * <li>For every state in the series of intermediate states (including the target state):
 	 * <ul>
-	 * <li>Apply the transition to take the resource from the current state to the next state in the series</li>
+	 * <li>Apply the migration to take the resource from the current state to the next state in the series</li>
 	 * <li>Verify that the resource is valid for the new state by applying {@link #assertState()}</li>
-	 * <li>If at any state the resource is found not to be valid, then the transition is aborted with an
+	 * <li>If at any state the resource is found not to be valid, then the migration is aborted with an
 	 * AssertionFailedException which conveys the state that failed validation, along with the full set of
 	 * AssertionResults that were generated.</li>
 	 * </ul>
 	 * </li>
 	 * </ul>
 	 * 
-	 * If exactly one path cannot be found that will enable transition from the current state to the target state, then
-	 * a TransitionNotPossibleException is thrown.
+	 * If exactly one path cannot be found that will enable migration from the current state to the target state, then
+	 * a MigrationNotPossibleException is thrown.
 	 * 
 	 * @param       logger                      an optional Logger service to log the activity of the assert operation.
-	 * @param       instance                    the {@link Instance} to transition
-	 * @param       targetStateId               the ID of the state to which the {@link Resource} should be transitioned
+	 * @param       instance                    the {@link Instance} to migration
+	 * @param       targetStateId               the ID of the state to which the {@link Resource} should be migrated
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly at
-	 *                                          the commencement of the transition, and at each intermediate state and
-	 *                                          at the final state of the transition process.
-	 * @exception   TransitionNotPossibleException
+	 *                                          the commencement of the migration, and at each intermediate state and
+	 *                                          at the final state of the migration process.
+	 * @exception   MigrationNotPossibleException
 	 *                                          when the number of from the current state to the target state is not
 	 *                                          exactly one.
 	 * @since                                   1.0.0
 	 */
-	void transition(
+	void migrate(
 		Logger logger,
 		Instance instance,
 		UUID targetStateId) throws
 			IndeterminateStateException,
 			AssertionFailedException,
-			TransitionNotPossibleException,
-			TransitionFailedException;
+			MigrationNotPossibleException,
+			MigrationFailedException;
 	
 	/**
 	 * Finds and returns the state with the supplied ID.  If no such state exists, null is returned.

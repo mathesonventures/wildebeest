@@ -6,9 +6,9 @@ import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.AssertionResult;
 import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.State;
-import co.mv.stm.model.Transition;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionNotPossibleException;
+import co.mv.stm.model.Migration;
+import co.mv.stm.model.MigrationFailedException;
+import co.mv.stm.model.MigrationNotPossibleException;
 import co.mv.stm.service.PrintStreamLogger;
 import java.util.List;
 import java.util.UUID;
@@ -154,14 +154,14 @@ public class BaseResourceTests
 	}
 	
 	//
-	// transitionTo()
+	// migrate()
 	//
 
-	@Test public void transitionFromNullToFirstState() throws
+	@Test public void migrateFromNullToFirstState() throws
 		IndeterminateStateException,
 		AssertionFailedException,
-		TransitionNotPossibleException,
-		TransitionFailedException
+		MigrationNotPossibleException,
+		MigrationFailedException
 	{
 		
 		//
@@ -177,10 +177,10 @@ public class BaseResourceTests
 		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "foo"));
 		resource.getStates().add(state);
 		
-		// Transition 1
-		UUID transition1Id = UUID.randomUUID();
-		Transition tran1 = new FakeTransition(transition1Id, null, state1Id, "foo");
-		resource.getTransitions().add(tran1);
+		// Migration 1
+		UUID migration1Id = UUID.randomUUID();
+		Migration tran1 = new FakeMigration(migration1Id, null, state1Id, "foo");
+		resource.getMigrations().add(tran1);
 		
 		// Instance
 		FakeInstance instance = new FakeInstance();
@@ -189,7 +189,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.transition(new PrintStreamLogger(System.out), instance, state1Id);
+		resource.migrate(new PrintStreamLogger(System.out), instance, state1Id);
 		
 		//
 		// Assert Results
@@ -199,11 +199,11 @@ public class BaseResourceTests
 		
 	}
 	
-	@Test public void transitionFromNullToDeepState() throws
+	@Test public void migrateFromNullToDeepState() throws
 		IndeterminateStateException,
 		AssertionFailedException,
-		TransitionNotPossibleException,
-		TransitionFailedException
+		MigrationNotPossibleException,
+		MigrationFailedException
 	{
 		
 		//
@@ -228,17 +228,17 @@ public class BaseResourceTests
 		state3.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "bup"));
 		resource.getStates().add(state3);
 		
-		// Transition null -> State1
-		Transition tran1 = new FakeTransition(UUID.randomUUID(), null, state1.getStateId(), "foo");
-		resource.getTransitions().add(tran1);
+		// Migrate null -> State1
+		Migration tran1 = new FakeMigration(UUID.randomUUID(), null, state1.getStateId(), "foo");
+		resource.getMigrations().add(tran1);
 		
-		// Transition State1 -> State2
-		Transition tran2 = new FakeTransition(UUID.randomUUID(), state1.getStateId(), state2.getStateId(), "bar");
-		resource.getTransitions().add(tran2);
+		// Migrate State1 -> State2
+		Migration tran2 = new FakeMigration(UUID.randomUUID(), state1.getStateId(), state2.getStateId(), "bar");
+		resource.getMigrations().add(tran2);
 		
-		// Transition State2 -> State3
-		Transition tran3 = new FakeTransition(UUID.randomUUID(), state2.getStateId(), state3.getStateId(), "bup");
-		resource.getTransitions().add(tran3);
+		// Migrate State2 -> State3
+		Migration tran3 = new FakeMigration(UUID.randomUUID(), state2.getStateId(), state3.getStateId(), "bup");
+		resource.getMigrations().add(tran3);
 		
 		// Instance
 		FakeInstance instance = new FakeInstance();
@@ -247,7 +247,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.transition(new PrintStreamLogger(System.out), instance, state3.getStateId());
+		resource.migrate(new PrintStreamLogger(System.out), instance, state3.getStateId());
 		
 		//
 		// Assert Results
@@ -257,11 +257,11 @@ public class BaseResourceTests
 		
 	}
 	
-	@Test public void transitionFromNullToDeepStateWithMultipleBranches() throws
+	@Test public void migrateFromNullToDeepStateWithMultipleBranches() throws
 		IndeterminateStateException,
 		AssertionFailedException,
-		TransitionNotPossibleException,
-		TransitionFailedException
+		MigrationNotPossibleException,
+		MigrationFailedException
 	{
 		
 		//
@@ -301,30 +301,30 @@ public class BaseResourceTests
 		stateC3.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "stateC3"));
 		resource.getStates().add(stateC3);
 		
-		// Transition null -> State1
-		UUID transition1Id = UUID.randomUUID();
-		Transition tran1 = new FakeTransition(transition1Id, null, state1Id, "state1");
-		resource.getTransitions().add(tran1);
+		// Migrate null -> State1
+		UUID migration1Id = UUID.randomUUID();
+		Migration migration1 = new FakeMigration(migration1Id, null, state1Id, "state1");
+		resource.getMigrations().add(migration1);
 		
-		// Transition State1 -> StateB2
-		UUID transition2Id = UUID.randomUUID();
-		Transition tran2 = new FakeTransition(transition2Id, state1Id, stateB2Id, "stateB2");
-		resource.getTransitions().add(tran2);
+		// Migrate State1 -> StateB2
+		UUID migration2Id = UUID.randomUUID();
+		Migration migration2 = new FakeMigration(migration2Id, state1Id, stateB2Id, "stateB2");
+		resource.getMigrations().add(migration2);
 		
-		// Transition StateB2 -> StateB3
-		UUID transition3Id = UUID.randomUUID();
-		Transition tran3 = new FakeTransition(transition3Id, stateB2Id, stateB3Id, "stateB3");
-		resource.getTransitions().add(tran3);
+		// Migrate StateB2 -> StateB3
+		UUID migration3Id = UUID.randomUUID();
+		Migration migration3 = new FakeMigration(migration3Id, stateB2Id, stateB3Id, "stateB3");
+		resource.getMigrations().add(migration3);
 		
-		// Transition State1 -> StateC2
-		UUID transition4Id = UUID.randomUUID();
-		Transition tran4 = new FakeTransition(transition4Id, state1Id, stateC2Id, "stateC2");
-		resource.getTransitions().add(tran4);
+		// Migrate State1 -> StateC2
+		UUID migration4Id = UUID.randomUUID();
+		Migration migration4 = new FakeMigration(migration4Id, state1Id, stateC2Id, "stateC2");
+		resource.getMigrations().add(migration4);
 		
-		// Transition StateC2 -> StateC3
-		UUID transition5Id = UUID.randomUUID();
-		Transition tran5 = new FakeTransition(transition5Id, stateC2Id, stateC3Id, "stateC3");
-		resource.getTransitions().add(tran5);
+		// Migrate StateC2 -> StateC3
+		UUID migration5Id = UUID.randomUUID();
+		Migration migration5 = new FakeMigration(migration5Id, stateC2Id, stateC3Id, "stateC3");
+		resource.getMigrations().add(migration5);
 		
 		// Instance
 		FakeInstance instance = new FakeInstance();
@@ -333,7 +333,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.transition(new PrintStreamLogger(System.out), instance, stateB3Id);
+		resource.migrate(new PrintStreamLogger(System.out), instance, stateB3Id);
 		
 		//
 		// Assert Results
@@ -343,17 +343,17 @@ public class BaseResourceTests
 		
 	}
 	
-	@Ignore @Test public void transitionFromStateToState()
+	@Ignore @Test public void migrateFromStateToState()
 	{
 		throw new UnsupportedOperationException();
 	}
 	
-	@Ignore @Test public void transitionFromStateToDeepState()
+	@Ignore @Test public void migrateFromStateToDeepState()
 	{
 		throw new UnsupportedOperationException();
 	}
 	
-	@Test public void transitionToSameState() throws IndeterminateStateException, AssertionFailedException, TransitionNotPossibleException, TransitionFailedException
+	@Test public void migrateToSameState() throws IndeterminateStateException, AssertionFailedException, MigrationNotPossibleException, MigrationFailedException
 	{
 		
 		//
@@ -369,23 +369,23 @@ public class BaseResourceTests
 		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "foo"));
 		resource.getStates().add(state);
 		
-		// Transition 1
-		UUID transition1Id = UUID.randomUUID();
-		Transition tran1 = new FakeTransition(transition1Id, null, state1Id, "foo");
-		resource.getTransitions().add(tran1);
+		// Migration 1
+		UUID migration1Id = UUID.randomUUID();
+		Migration tran1 = new FakeMigration(migration1Id, null, state1Id, "foo");
+		resource.getMigrations().add(tran1);
 		
 		// Instance
 		FakeInstance instance = new FakeInstance();
 		
 		PrintStreamLogger logger = new PrintStreamLogger(System.out);
 		
-		resource.transition(logger, instance, state1Id);
+		resource.migrate(logger, instance, state1Id);
 		
 		//
 		// Execute
 		//
 		
-		resource.transition(logger, instance, state1Id);
+		resource.migrate(logger, instance, state1Id);
 		
 		//
 		// Assert Results
@@ -395,7 +395,7 @@ public class BaseResourceTests
 		
 	}
 	
-	@Ignore @Test public void transitionWithCircularDependencyFails()
+	@Ignore @Test public void migrateWithCircularDependencyFails()
 	{
 		throw  new UnsupportedOperationException();
 	}

@@ -2,14 +2,14 @@ package co.mv.stm.model.mysql;
 
 import co.mv.stm.AssertExtensions;
 import co.mv.stm.model.base.FakeInstance;
-import co.mv.stm.model.database.SqlScriptTransition;
+import co.mv.stm.model.database.SqlScriptMigration;
 import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.AssertionResponse;
 import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.State;
-import co.mv.stm.model.Transition;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionNotPossibleException;
+import co.mv.stm.model.Migration;
+import co.mv.stm.model.MigrationFailedException;
+import co.mv.stm.model.MigrationNotPossibleException;
 import co.mv.stm.model.base.ImmutableState;
 import co.mv.stm.service.PrintStreamLogger;
 import java.sql.SQLException;
@@ -22,8 +22,8 @@ public class MySqlTableExistsAssertionTests
 	 @Test public void applyForExistingTableSucceeds() throws
 		 IndeterminateStateException,
 		 AssertionFailedException,
-		 TransitionNotPossibleException,
-		 TransitionFailedException,
+		 MigrationNotPossibleException,
+		 MigrationFailedException,
 		 SQLException
 	 {
 		 
@@ -43,18 +43,18 @@ public class MySqlTableExistsAssertionTests
 		State schemaLoaded = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(schemaLoaded);
 		 
-		// Transition -> created
-		Transition tran1 = new MySqlCreateDatabaseTransition(
+		// Migrate -> created
+		Migration migration1 = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(), null, created.getStateId());
-		resource.getTransitions().add(tran1);
+		resource.getMigrations().add(migration1);
 		 
-		// Transition created -> schemaLoaded
-		Transition tran2 = new SqlScriptTransition(
+		// Migrate created -> schemaLoaded
+		Migration migration2 = new SqlScriptMigration(
 			UUID.randomUUID(),
 			created.getStateId(),
 			schemaLoaded.getStateId(),
 			MySqlElementFixtures.realmTypeRefCreateTableStatement());
-		resource.getTransitions().add(tran2);
+		resource.getMigrations().add(migration2);
 
 		String databaseName = MySqlElementFixtures.databaseName("StmTest");
 		
@@ -65,7 +65,7 @@ public class MySqlTableExistsAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName);
 		 
-		resource.transition(new PrintStreamLogger(System.out), instance, schemaLoaded.getStateId());
+		resource.migrate(new PrintStreamLogger(System.out), instance, schemaLoaded.getStateId());
 		
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),
@@ -93,8 +93,8 @@ public class MySqlTableExistsAssertionTests
 	 @Test public void applyForNonExistentTableFails() throws
 		 IndeterminateStateException,
 		 AssertionFailedException,
-		 TransitionNotPossibleException,
-		 TransitionFailedException,
+		 MigrationNotPossibleException,
+		 MigrationFailedException,
 		 SQLException
 	 {
 		 
@@ -110,10 +110,10 @@ public class MySqlTableExistsAssertionTests
 		State created = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(created);
 		 
-		// Transition -> created
-		Transition tran1 = new MySqlCreateDatabaseTransition(
+		// Migrate -> created
+		Migration migration1 = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(), null, created.getStateId());
-		resource.getTransitions().add(tran1);
+		resource.getMigrations().add(migration1);
 
 		String databaseName = MySqlElementFixtures.databaseName("StmTest");
 
@@ -124,7 +124,7 @@ public class MySqlTableExistsAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName);
 		 
-		resource.transition(new PrintStreamLogger(System.out), instance, created.getStateId());
+		resource.migrate(new PrintStreamLogger(System.out), instance, created.getStateId());
 		
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),

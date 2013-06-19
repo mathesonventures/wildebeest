@@ -1,17 +1,16 @@
 package co.mv.stm.model.mysql;
 
-import co.mv.stm.model.database.DatabaseHelper;
-import co.mv.stm.model.TransitionFailedException;
+import co.mv.stm.model.MigrationFailedException;
 import co.zd.helium.fixture.MySqlDatabaseFixture;
 import java.sql.SQLException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class MySqlCreateDatabaseTransitionTests
+public class MySqlCreateDatabaseMigrationTests
 {
 	@Test public void performForNonExistantDatabaseSucceeds() throws
-		TransitionFailedException,
+		MigrationFailedException,
 		SQLException
 	{
 		
@@ -21,7 +20,7 @@ public class MySqlCreateDatabaseTransitionTests
 		
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
-		MySqlCreateDatabaseTransition tr = new MySqlCreateDatabaseTransition(
+		MySqlCreateDatabaseMigration tr = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			null,
 			UUID.randomUUID());
@@ -71,7 +70,7 @@ public class MySqlCreateDatabaseTransitionTests
 			"");
 		f.setUp();
 		
-		MySqlCreateDatabaseTransition tr = new MySqlCreateDatabaseTransition(
+		MySqlCreateDatabaseMigration tr = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			null,
 			UUID.randomUUID());
@@ -87,15 +86,15 @@ public class MySqlCreateDatabaseTransitionTests
 		// Execute
 		//
 
-		TransitionFailedException caught = null;
+		MigrationFailedException caught = null;
 		
 		try
 		{
 			tr.perform(instance);
 			
-			Assert.fail("TransitionFailedException expected");
+			Assert.fail("MigrationFailedException expected");
 		}
-		catch (TransitionFailedException e)
+		catch (MigrationFailedException e)
 		{
 			caught = e;
 		}

@@ -6,9 +6,9 @@ import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.AssertionResponse;
 import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.State;
-import co.mv.stm.model.Transition;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionNotPossibleException;
+import co.mv.stm.model.Migration;
+import co.mv.stm.model.MigrationFailedException;
+import co.mv.stm.model.MigrationNotPossibleException;
 import co.mv.stm.model.base.ImmutableState;
 import co.mv.stm.service.PrintStreamLogger;
 import java.sql.SQLException;
@@ -21,8 +21,8 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 	 @Test public void applyForExistingDatabaseFails() throws
 		 IndeterminateStateException,
 		 AssertionFailedException,
-		 TransitionNotPossibleException,
-		 TransitionFailedException,
+		 MigrationNotPossibleException,
+		 MigrationFailedException,
 		 SQLException
 	 {
 		 
@@ -37,9 +37,9 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		State created = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(created);
 		 
-		Transition tran1 = new MySqlCreateDatabaseTransition(
+		Migration tran1 = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(), null, created.getStateId());
-		resource.getTransitions().add(tran1);
+		resource.getMigrations().add(tran1);
 		 
 		String databaseName = MySqlElementFixtures.databaseName("StmTest");
 		
@@ -50,7 +50,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName);
 		 
-		resource.transition(new PrintStreamLogger(System.out), instance, created.getStateId());
+		resource.migrate(new PrintStreamLogger(System.out), instance, created.getStateId());
 		
 		MySqlDatabaseDoesNotExistAssertion assertion = new MySqlDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
@@ -77,8 +77,8 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 	 @Test public void applyForNonExistentDatabaseSucceeds() throws
 		 IndeterminateStateException,
 		 AssertionFailedException,
-		 TransitionNotPossibleException,
-		 TransitionFailedException,
+		 MigrationNotPossibleException,
+		 MigrationFailedException,
 		 SQLException
 	 {
 		 

@@ -4,7 +4,7 @@ import co.mv.stm.model.Assertion;
 import co.mv.stm.model.AssertionResponse;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.State;
-import co.mv.stm.model.Transition;
+import co.mv.stm.model.Migration;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -85,36 +85,36 @@ public class PrintStreamLogger implements Logger
 		}
 	}
 	
-	@Override public void transitionStart(
+	@Override public void migrationStart(
 		Resource resource,
-		Transition transition)
+		Migration migration)
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (transition == null) { throw new IllegalArgumentException("transition cannot be null"); }
+		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
 
-		State fromState = transition.hasFromStateId() ? resource.stateForId(transition.getFromStateId()) : null;
-		State toState = transition.hasToStateId() ? resource.stateForId(transition.getToStateId()) : null;
+		State fromState = migration.hasFromStateId() ? resource.stateForId(migration.getFromStateId()) : null;
+		State toState = migration.hasToStateId() ? resource.stateForId(migration.getToStateId()) : null;
 		
 		if (fromState != null)
 		{
 			if (toState != null)
 			{
 				logLine(this.getStream(), String.format(
-					"Transitioning from state \"%s\" to \"%s\"",
+					"Migrating from state \"%s\" to \"%s\"",
 					fromState.getDisplayName(),
 					toState.getDisplayName()));
 			}
 			else
 			{
 				logLine(this.getStream(), String.format(
-					"Transitioning from state \"%s\" to non-existent",
+					"Migrating from state \"%s\" to non-existent",
 					fromState.getDisplayName()));
 			}
 		}
 		else if (toState != null)
 		{
 				logLine(this.getStream(), String.format(
-					"Transitioning from non-existent to \"%s\"",
+					"Migrating from non-existent to \"%s\"",
 					toState.getDisplayName()));
 		}
 		else
@@ -123,14 +123,14 @@ public class PrintStreamLogger implements Logger
 		}
 	}
 	
-	@Override public void transitionComplete(
+	@Override public void migrationComplete(
 		Resource resource,
-		Transition transition)
+		Migration migration)
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (transition == null) { throw new IllegalArgumentException("transition cannot be null"); }
+		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
 		
-		logLine(this.getStream(), "Transition complete");
+		logLine(this.getStream(), "Migration complete");
 	}
 	
 	private static void logLine(

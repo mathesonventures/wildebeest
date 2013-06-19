@@ -2,9 +2,9 @@ package co.mv.stm.model;
 
 import java.util.UUID;
 
-public interface Transition
+public interface Migration
 {
-	UUID getTransitionId();
+	UUID getMigrationId();
 	
 	UUID getFromStateId();
 	
@@ -14,5 +14,5 @@ public interface Transition
 	
 	boolean hasToStateId();
 	
-	void perform(Instance instance) throws TransitionFailedException;
+	void perform(Instance instance) throws MigrationFailedException;
 }

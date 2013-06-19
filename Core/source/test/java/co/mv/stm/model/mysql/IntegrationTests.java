@@ -1,12 +1,12 @@
 package co.mv.stm.model.mysql;
 
-import co.mv.stm.model.database.SqlScriptTransition;
+import co.mv.stm.model.database.SqlScriptMigration;
 import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.Instance;
 import co.mv.stm.model.State;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionNotPossibleException;
+import co.mv.stm.model.MigrationFailedException;
+import co.mv.stm.model.MigrationNotPossibleException;
 import co.mv.stm.AssertExtensions;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.base.ImmutableState;
@@ -26,15 +26,15 @@ public class IntegrationTests
 	private static final UUID StateIdCreated = UUID.randomUUID();
 	private static final UUID StateIdSchemaLoaded = UUID.randomUUID();
 	private static final UUID StateIdReferenceDataLoaded = UUID.randomUUID();
-	private static final UUID TransitionIdCreateDatabase = UUID.randomUUID();
-	private static final UUID TransitionIdLoadInitialSchema = UUID.randomUUID();
-	private static final UUID TransitionIdLoadReferenceData = UUID.randomUUID();
+	private static final UUID MigrationIdCreateDatabase = UUID.randomUUID();
+	private static final UUID MigrationIdLoadInitialSchema = UUID.randomUUID();
+	private static final UUID MigrationIdLoadReferenceData = UUID.randomUUID();
 
 	@Test public void createDatabaseAddTableInsertRows() throws
 		IndeterminateStateException,
 		AssertionFailedException,
-		TransitionNotPossibleException,
-		TransitionFailedException,
+		MigrationNotPossibleException,
+		MigrationFailedException,
 		SQLException
 	{
 	
@@ -59,21 +59,21 @@ public class IntegrationTests
 		State populated = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(populated);
 		
-		// Transition: to Created
-		resource.getTransitions().add(new MySqlCreateDatabaseTransition(
+		// Migration: to Created
+		resource.getMigrations().add(new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			null,
 			created.getStateId()));
 		
-		// Transition: Created to Initial Schema
-		resource.getTransitions().add(new SqlScriptTransition(
+		// Migration: Created to Initial Schema
+		resource.getMigrations().add(new SqlScriptMigration(
 			UUID.randomUUID(),
 			created.getStateId(),
 			initialSchema.getStateId(),
 			MySqlElementFixtures.realmTypeRefCreateTableStatement()));
 		
-		// Transition: Initial Schema to Populated
-		resource.getTransitions().add(new SqlScriptTransition(
+		// Migration: Initial Schema to Populated
+		resource.getMigrations().add(new SqlScriptMigration(
 			UUID.randomUUID(),
 			initialSchema.getStateId(),
 			populated.getStateId(),
@@ -94,7 +94,7 @@ public class IntegrationTests
 		
 		try
 		{
-			resource.transition(new PrintStreamLogger(System.out), instance, populated.getStateId());
+			resource.migrate(new PrintStreamLogger(System.out), instance, populated.getStateId());
 		}
 		finally
 		{
@@ -117,7 +117,7 @@ public class IntegrationTests
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
-			DomPlugins.transitionBuilders(),
+			DomPlugins.migrationBuilders(),
 			resource().toString());
 		
 		//
@@ -162,7 +162,7 @@ public class IntegrationTests
 
 	}
 	
-	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws IndeterminateStateException, AssertionFailedException, TransitionNotPossibleException, TransitionFailedException, SQLException
+	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws IndeterminateStateException, AssertionFailedException, MigrationNotPossibleException, MigrationFailedException, SQLException
 	{
 		
 		//
@@ -173,7 +173,7 @@ public class IntegrationTests
 		DomResourceLoader resourceLoader = new DomResourceLoader(
 			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
-			DomPlugins.transitionBuilders(),
+			DomPlugins.migrationBuilders(),
 			resource().toString());
 		
 		// Execute
@@ -205,7 +205,7 @@ public class IntegrationTests
 		
 		try
 		{
-			resource.transition(new PrintStreamLogger(System.out), instance, StateIdReferenceDataLoaded);
+			resource.migrate(new PrintStreamLogger(System.out), instance, StateIdReferenceDataLoaded);
 		}
 		finally
 		{
@@ -244,21 +244,21 @@ public class IntegrationTests
 						.closeAssertions()
 					.closeState()
 				.closeStates()
-				.openTransitions()
-					.openTransition("MySqlCreateDatabase", TransitionIdCreateDatabase, null, StateIdCreated)
-					.closeTransition()
-					.openTransition("SqlScript", TransitionIdLoadInitialSchema, StateIdCreated, StateIdSchemaLoaded)
+				.openMigrations()
+					.openMigration("MySqlCreateDatabase", MigrationIdCreateDatabase, null, StateIdCreated)
+					.closeMigration()
+					.openMigration("SqlScript", MigrationIdLoadInitialSchema, StateIdCreated, StateIdSchemaLoaded)
 						.openElement("sql").openCdata()
 							.text(MySqlElementFixtures.realmTypeRefCreateTableStatement())
 						.closeCdata().closeElement("sql")
-					.closeTransition()
-					.openTransition("SqlScript", TransitionIdLoadReferenceData, StateIdSchemaLoaded,
+					.closeMigration()
+					.openMigration("SqlScript", MigrationIdLoadReferenceData, StateIdSchemaLoaded,
 						StateIdReferenceDataLoaded)
 						.openElement("sql").openCdata()
 							.text(MySqlElementFixtures.realmTypeRefInsertUserBaseRow())
 						.closeCdata().closeElement("sql")
-					.closeTransition()
-				.closeTransitions()
+					.closeMigration()
+				.closeMigrations()
 			.closeResource();
 		
 		return resourceXml;

@@ -3,7 +3,7 @@ package co.mv.stm.service;
 import co.mv.stm.model.Assertion;
 import co.mv.stm.model.AssertionResponse;
 import co.mv.stm.model.Resource;
-import co.mv.stm.model.Transition;
+import co.mv.stm.model.Migration;
 
 public interface Logger
 {
@@ -11,11 +11,11 @@ public interface Logger
 	
 	void assertionComplete(Assertion assertion, AssertionResponse response);
 	
-	void transitionStart(
+	void migrationStart(
 		Resource resource,
-		Transition transition);
+		Migration migration);
 	
-	void transitionComplete(
+	void migrationComplete(
 		Resource resource,
-		Transition transition);
+		Migration migration);
 }

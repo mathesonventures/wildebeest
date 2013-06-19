@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class IntegrationTests
 {
-	@Test public void loadFromFilesAndTransition() throws SQLException
+	@Test public void loadFromFilesAndMigrate() throws SQLException
 	{
 		
 		//
@@ -25,7 +25,7 @@ public class IntegrationTests
 		WildebeestCommand wb = new WildebeestCommand();
 		String[] args = new String[]
 		{
-			"transition",
+			"migrate",
 			"--resource:integration_test_fixtures/mysql_database/database.wbresource.xml",
 			"--instance:integration_test_fixtures/mysql_database/staging_db.wbinstance.xml",
 			"--targetState:UserBase Schema Loaded"
@@ -36,7 +36,7 @@ public class IntegrationTests
 		wb.parse(args);
 
 		// Assert Results
-		Assert.assertEquals("wb.command", CommandType.Transition, wb.getCommand());
+		Assert.assertEquals("wb.command", CommandType.Migration, wb.getCommand());
 		Assert.assertEquals(
 			"wb.resource",
 			"integration_test_fixtures/mysql_database/database.wbresource.xml",

@@ -4,13 +4,13 @@ import co.mv.stm.model.Assertion;
 import co.mv.stm.model.ModelExtensions;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.State;
-import co.mv.stm.model.Transition;
+import co.mv.stm.model.Migration;
 import co.mv.stm.model.base.ImmutableState;
 import co.mv.stm.service.AssertionBuilder;
 import co.mv.stm.service.ResourceBuilder;
 import co.mv.stm.service.ResourceLoader;
 import co.mv.stm.service.ResourceLoaderFault;
-import co.mv.stm.service.TransitionBuilder;
+import co.mv.stm.service.MigrationBuilder;
 import java.io.StringReader;
 import java.util.Map;
 import java.util.UUID;
@@ -35,21 +35,21 @@ public class DomResourceLoader implements ResourceLoader
 		private static final String ATT_ASSERTION_TYPE = "type";
 		private static final String ATT_ASSERTION_ID = "id";
 		private static final String ATT_ASSERTION_NAME = "name";
-	private static final String ELT_TRANSITIONS = "transitions";
-		private static final String ATT_TRANSITION_TYPE = "type";
-		private static final String ATT_TRANSITION_ID = "id";
-		private static final String ATT_TRANSITION_FROM_STATE_ID = "fromStateId";
-		private static final String ATT_TRANSITION_TO_STATE_ID = "toStateId";
+	private static final String ELT_MIGRATIONS = "migrations";
+		private static final String ATT_MIGRATION_TYPE = "type";
+		private static final String ATT_MIGRATION_ID = "id";
+		private static final String ATT_MIGRATION_FROM_STATE_ID = "fromStateId";
+		private static final String ATT_MIGRATION_TO_STATE_ID = "toStateId";
 	
 	public DomResourceLoader(
 		Map<String, ResourceBuilder> resourceBuilders,
 		Map<String, AssertionBuilder> assertionBuilders,
-		Map<String, TransitionBuilder> transitionBuilders,
+		Map<String, MigrationBuilder> migrationBuilders,
 		String resourceXml)
 	{
 		this.setResourceBuilders(resourceBuilders);
 		this.setAssertionBuilders(assertionBuilders);
-		this.setTransitionBuilders(transitionBuilders);
+		this.setMigrationBuilders(migrationBuilders);
 		this.setResourceXml(resourceXml);
 	}
 
@@ -125,38 +125,38 @@ public class DomResourceLoader implements ResourceLoader
 
 	// </editor-fold>
 
-	// <editor-fold desc="TransitionBuilders" defaultstate="collapsed">
+	// <editor-fold desc="MigrationBuilders" defaultstate="collapsed">
 
-	private Map<String, TransitionBuilder> m_transitionBuilders = null;
-	private boolean m_transitionBuilders_set = false;
+	private Map<String, MigrationBuilder> m_migrationBuilders = null;
+	private boolean m_migrationBuilders_set = false;
 
-	private Map<String, TransitionBuilder> getTransitionBuilders() {
-		if(!m_transitionBuilders_set) {
-			throw new IllegalStateException("transitionBuilders not set.  Use the HasTransitionBuilders() method to check its state before accessing it.");
+	private Map<String, MigrationBuilder> getMigrationBuilders() {
+		if(!m_migrationBuilders_set) {
+			throw new IllegalStateException("migrationBuilders not set.  Use the HasMigrationBuilders() method to check its state before accessing it.");
 		}
-		return m_transitionBuilders;
+		return m_migrationBuilders;
 	}
 
-	private void setTransitionBuilders(Map<String, TransitionBuilder> value) {
+	private void setMigrationBuilders(Map<String, MigrationBuilder> value) {
 		if(value == null) {
-			throw new IllegalArgumentException("transitionBuilders cannot be null");
+			throw new IllegalArgumentException("migrationBuilders cannot be null");
 		}
-		boolean changing = !m_transitionBuilders_set || m_transitionBuilders != value;
+		boolean changing = !m_migrationBuilders_set || m_migrationBuilders != value;
 		if(changing) {
-			m_transitionBuilders_set = true;
-			m_transitionBuilders = value;
+			m_migrationBuilders_set = true;
+			m_migrationBuilders = value;
 		}
 	}
 
-	private void clearTransitionBuilders() {
-		if(m_transitionBuilders_set) {
-			m_transitionBuilders_set = true;
-			m_transitionBuilders = null;
+	private void clearMigrationBuilders() {
+		if(m_migrationBuilders_set) {
+			m_migrationBuilders_set = true;
+			m_migrationBuilders = null;
 		}
 	}
 
-	private boolean hasTransitionBuilders() {
-		return m_transitionBuilders_set;
+	private boolean hasMigrationBuilders() {
+		return m_migrationBuilders_set;
 	}
 
 	// </editor-fold>
@@ -265,15 +265,15 @@ public class DomResourceLoader implements ResourceLoader
 					}
 				}
 				
-				if (childXe != null && ELT_TRANSITIONS.equals(childXe.getTagName()))
+				if (childXe != null && ELT_MIGRATIONS.equals(childXe.getTagName()))
 				{
 					for (int tranIndex = 0; tranIndex < childXe.getChildNodes().getLength(); tranIndex ++)
 					{
-						Element transitionXe = ModelExtensions.As(childXe.getChildNodes().item(tranIndex),
+						Element migrationXe = ModelExtensions.As(childXe.getChildNodes().item(tranIndex),
 							Element.class);
-						if (transitionXe != null)
+						if (migrationXe != null)
 						{
-							resource.getTransitions().add(buildTransition(this.getTransitionBuilders(), transitionXe));
+							resource.getMigrations().add(buildMigration(this.getMigrationBuilders(), migrationXe));
 						}
 					}
 				}
@@ -360,32 +360,32 @@ public class DomResourceLoader implements ResourceLoader
 		return builder.build(id, name, seqNum);
 	}
 	
-	private static Transition buildTransition(
-		Map<String, TransitionBuilder> transitionBuilders,
+	private static Migration buildMigration(
+		Map<String, MigrationBuilder> migrationBuilders,
 		Element element)
 	{
-		if (transitionBuilders == null) { throw new IllegalArgumentException("transitionBuilders cannot be null"); }
+		if (migrationBuilders == null) { throw new IllegalArgumentException("migrationBuilders cannot be null"); }
 		if (element == null) { throw new IllegalArgumentException("element cannot be null"); }
 		
-		String type = element.getAttribute(ATT_TRANSITION_TYPE);
-		UUID id = UUID.fromString(element.getAttribute(ATT_TRANSITION_ID));
+		String type = element.getAttribute(ATT_MIGRATION_TYPE);
+		UUID id = UUID.fromString(element.getAttribute(ATT_MIGRATION_ID));
 		UUID fromStateId = null;
-		if (element.hasAttribute(ATT_TRANSITION_FROM_STATE_ID))
+		if (element.hasAttribute(ATT_MIGRATION_FROM_STATE_ID))
 		{
-			fromStateId = UUID.fromString(element.getAttribute(ATT_TRANSITION_FROM_STATE_ID));
+			fromStateId = UUID.fromString(element.getAttribute(ATT_MIGRATION_FROM_STATE_ID));
 		}
 		UUID toStateId = null;
-		if (element.hasAttribute(ATT_TRANSITION_TO_STATE_ID))
+		if (element.hasAttribute(ATT_MIGRATION_TO_STATE_ID))
 		{
-			toStateId = UUID.fromString(element.getAttribute(ATT_TRANSITION_TO_STATE_ID));
+			toStateId = UUID.fromString(element.getAttribute(ATT_MIGRATION_TO_STATE_ID));
 		}
 		
-		TransitionBuilder builder = transitionBuilders.get(type);
+		MigrationBuilder builder = migrationBuilders.get(type);
 		
 		if (builder == null)
 		{
 			throw new ResourceLoaderFault(String.format(
-				"transition builder of type %s not found",
+				"migration builder of type %s not found",
 				type));
 		}
 		

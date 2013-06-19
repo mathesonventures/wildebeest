@@ -4,10 +4,10 @@ import co.mv.stm.AssertExtensions;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.base.FakeAssertion;
 import co.mv.stm.model.base.FakeResource;
-import co.mv.stm.model.base.FakeTransition;
+import co.mv.stm.model.base.FakeMigration;
 import co.mv.stm.service.AssertionBuilder;
 import co.mv.stm.service.ResourceBuilder;
-import co.mv.stm.service.TransitionBuilder;
+import co.mv.stm.service.MigrationBuilder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -38,12 +38,12 @@ public class DomResourceLoaderTests
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
-		Map<String, TransitionBuilder> transitionBuilders = new HashMap<String, TransitionBuilder>();
+		Map<String, MigrationBuilder> migrationBuilders = new HashMap<String, MigrationBuilder>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			transitionBuilders,
+			migrationBuilders,
 			resourceXml.toString());
 
 		//
@@ -63,8 +63,8 @@ public class DomResourceLoaderTests
 		// States
 		Assert.assertEquals("resource.states.size", 0, resource.getStates().size());
 		
-		// Transitions
-		Assert.assertEquals("resource.transitions.size", 0, resource.getTransitions().size());
+		// Migrations
+		Assert.assertEquals("resource.migration.size", 0, resource.getMigrations().size());
 		
 	}
 	
@@ -94,12 +94,12 @@ public class DomResourceLoaderTests
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
-		Map<String, TransitionBuilder> transitionBuilders = new HashMap<String, TransitionBuilder>();
+		Map<String, MigrationBuilder> migrationBuilders = new HashMap<String, MigrationBuilder>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			transitionBuilders,
+			migrationBuilders,
 			resourceXml.toString());
 
 		//
@@ -120,8 +120,8 @@ public class DomResourceLoaderTests
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
 		AssertExtensions.assertState(stateId, "Foo", resource.getStates().get(0), "state[0]");
 		
-		// Transitions
-		Assert.assertEquals("resource.transitions.size", 0, resource.getTransitions().size());
+		// Migrations
+		Assert.assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
 		
 	}
 	
@@ -151,12 +151,12 @@ public class DomResourceLoaderTests
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
-		Map<String, TransitionBuilder> transitionBuilders = new HashMap<String, TransitionBuilder>();
+		Map<String, MigrationBuilder> migrationBuilders = new HashMap<String, MigrationBuilder>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			transitionBuilders,
+			migrationBuilders,
 			resourceXml.toString());
 
 		//
@@ -177,8 +177,8 @@ public class DomResourceLoaderTests
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
 		AssertExtensions.assertState(stateId, resource.getStates().get(0), "state[0]");
 		
-		// Transitions
-		Assert.assertEquals("resource.transitions.size", 0, resource.getTransitions().size());
+		// Migrations
+		Assert.assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
 		
 	}
 	
@@ -210,12 +210,12 @@ public class DomResourceLoaderTests
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
-		Map<String, TransitionBuilder> transitionBuilders = new HashMap<String, TransitionBuilder>();
+		Map<String, MigrationBuilder> migrationBuilders = new HashMap<String, MigrationBuilder>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			transitionBuilders,
+			migrationBuilders,
 			resourceXml.toString());
 
 		//
@@ -237,8 +237,8 @@ public class DomResourceLoaderTests
 		AssertExtensions.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
 		AssertExtensions.assertState(state2Id, "Bar", resource.getStates().get(1), "state[1]");
 		
-		// Transitions
-		Assert.assertEquals("resource.transitions.size", 0, resource.getTransitions().size());
+		// Migrations
+		Assert.assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
 		
 	}
 	
@@ -280,12 +280,12 @@ public class DomResourceLoaderTests
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
 		assertionBuilders.put("Fake", new DomFakeAssertionBuilder());
 		
-		Map<String, TransitionBuilder> transitionBuilders = new HashMap<String, TransitionBuilder>();
+		Map<String, MigrationBuilder> migrationBuilders = new HashMap<String, MigrationBuilder>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			transitionBuilders,
+			migrationBuilders,
 			resourceXml.toString());
 
 		//
@@ -315,8 +315,8 @@ public class DomResourceLoaderTests
 			(FakeAssertion)resource.getStates().get(0).getAssertions().get(0),
 			"resource.states[0].assertions[0]");
 		
-		// Transitions
-		Assert.assertEquals("resource.transitions.size", 0, resource.getTransitions().size());
+		// Migrations
+		Assert.assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
 		
 	}
 	
@@ -365,12 +365,12 @@ public class DomResourceLoaderTests
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
 		assertionBuilders.put("Fake", new DomFakeAssertionBuilder());
 		
-		Map<String, TransitionBuilder> transitionBuilders = new HashMap<String, TransitionBuilder>();
+		Map<String, MigrationBuilder> migrationBuilders = new HashMap<String, MigrationBuilder>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			transitionBuilders,
+			migrationBuilders,
 			resourceXml.toString());
 
 		//
@@ -404,12 +404,12 @@ public class DomResourceLoaderTests
 			(FakeAssertion)resource.getStates().get(0).getAssertions().get(1),
 			"resource.states[0].assertions[1]");
 		
-		// Transitions
-		Assert.assertEquals("resource.transitions.size", 0, resource.getTransitions().size());
+		// Migrations
+		Assert.assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
 		
 	}
 	
-	@Test public void loadResourceForTransitionWithFromStateId()
+	@Test public void loadResourceForMigrationWithFromStateId()
 	{
 		
 		//
@@ -418,7 +418,7 @@ public class DomResourceLoaderTests
 		
 		UUID resourceId = UUID.randomUUID();
 		UUID state1Id = UUID.randomUUID();
-		UUID transitionId = UUID.randomUUID();
+		UUID migrationId = UUID.randomUUID();
 		
 		XmlBuilder resourceXml = new XmlBuilder();
 		resourceXml
@@ -430,14 +430,14 @@ public class DomResourceLoaderTests
 				.openElement("states")
 					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
 				.closeElement("states")
-				.openElement("transitions")
-					.openElement("transition",
+				.openElement("migrations")
+					.openElement("migration",
 						"type", "Fake",
-						"id", transitionId.toString(),
+						"id", migrationId.toString(),
 						"fromStateId", state1Id.toString())
 						.openElement("tag").text("Blah").closeElement("tag")
-					.closeElement("transition")
-				.closeElement("transitions")
+					.closeElement("migration")
+				.closeElement("migrations")
 			.closeElement("resource");
 
 		
@@ -446,13 +446,13 @@ public class DomResourceLoaderTests
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
 		
-		Map<String, TransitionBuilder> transitionBuilders = new HashMap<String, TransitionBuilder>();
-		transitionBuilders.put("Fake", new DomFakeTransitionBuilder());
+		Map<String, MigrationBuilder> migrationBuilders = new HashMap<String, MigrationBuilder>();
+		migrationBuilders.put("Fake", new DomFakeMigrationBuilder());
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			transitionBuilders,
+			migrationBuilders,
 			resourceXml.toString());
 
 		//
@@ -473,16 +473,16 @@ public class DomResourceLoaderTests
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
 		AssertExtensions.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
 		
-		// Transitions
-		Assert.assertEquals("resource.transitions.size", 1, resource.getTransitions().size());
-		AssertExtensions.assertFakeTransition(
-			transitionId, state1Id, null, "Blah",
-			(FakeTransition)resource.getTransitions().get(0),
-			"resource.transitions[0]");
+		// Migrations
+		Assert.assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
+		AssertExtensions.assertFakeMigration(
+			migrationId, state1Id, null, "Blah",
+			(FakeMigration)resource.getMigrations().get(0),
+			"resource.migrations[0]");
 		
 	}
 	
-	@Test public void loadResourceForTransitionWithToStateId()
+	@Test public void loadResourceForMigrationsWithToStateId()
 	{
 		
 		//
@@ -491,7 +491,7 @@ public class DomResourceLoaderTests
 		
 		UUID resourceId = UUID.randomUUID();
 		UUID state1Id = UUID.randomUUID();
-		UUID transitionId = UUID.randomUUID();
+		UUID migrationId = UUID.randomUUID();
 		
 		XmlBuilder resourceXml = new XmlBuilder();
 		resourceXml
@@ -503,14 +503,14 @@ public class DomResourceLoaderTests
 				.openElement("states")
 					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
 				.closeElement("states")
-				.openElement("transitions")
-					.openElement("transition",
+				.openElement("migrations")
+					.openElement("migration",
 						"type", "Fake",
-						"id", transitionId.toString(),
+						"id", migrationId.toString(),
 						"toStateId", state1Id.toString())
 						.openElement("tag").text("Blah").closeElement("tag")
-					.closeElement("transition")
-				.closeElement("transitions")
+					.closeElement("migration")
+				.closeElement("migrations")
 			.closeElement("resource");
 
 		
@@ -519,13 +519,13 @@ public class DomResourceLoaderTests
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
 		
-		Map<String, TransitionBuilder> transitionBuilders = new HashMap<String, TransitionBuilder>();
-		transitionBuilders.put("Fake", new DomFakeTransitionBuilder());
+		Map<String, MigrationBuilder> migrationBuilders = new HashMap<String, MigrationBuilder>();
+		migrationBuilders.put("Fake", new DomFakeMigrationBuilder());
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			transitionBuilders,
+			migrationBuilders,
 			resourceXml.toString());
 
 		//
@@ -546,16 +546,16 @@ public class DomResourceLoaderTests
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
 		AssertExtensions.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
 		
-		// Transitions
-		Assert.assertEquals("resource.transitions.size", 1, resource.getTransitions().size());
-		AssertExtensions.assertFakeTransition(
-			transitionId, null, state1Id, "Blah",
-			(FakeTransition)resource.getTransitions().get(0),
-			"resource.transitions[0]");
+		// Migrations
+		Assert.assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
+		AssertExtensions.assertFakeMigration(
+			migrationId, null, state1Id, "Blah",
+			(FakeMigration)resource.getMigrations().get(0),
+			"resource.migrations[0]");
 		
 	}
 	
-	@Test public void loadResourceForTransitionWithFromStateIdAndToStateId()
+	@Test public void loadResourceForMigrationsWithFromStateIdAndToStateId()
 	{
 		
 		//
@@ -565,7 +565,7 @@ public class DomResourceLoaderTests
 		UUID resourceId = UUID.randomUUID();
 		UUID state1Id = UUID.randomUUID();
 		UUID state2Id = UUID.randomUUID();
-		UUID transitionId = UUID.randomUUID();
+		UUID migrationId = UUID.randomUUID();
 		
 		XmlBuilder resourceXml = new XmlBuilder();
 		resourceXml
@@ -578,15 +578,15 @@ public class DomResourceLoaderTests
 					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
 					.openElement("state", "id", state2Id.toString(), "label", "Bar").closeElement("state")
 				.closeElement("states")
-				.openElement("transitions")
-					.openElement("transition",
+				.openElement("migrations")
+					.openElement("migration",
 						"type", "Fake",
-						"id", transitionId.toString(),
+						"id", migrationId.toString(),
 						"fromStateId", state1Id.toString(),
 						"toStateId", state2Id.toString())
 						.openElement("tag").text("Blah").closeElement("tag")
-					.closeElement("transition")
-				.closeElement("transitions")
+					.closeElement("migration")
+				.closeElement("migrations")
 			.closeElement("resource");
 
 		
@@ -595,13 +595,13 @@ public class DomResourceLoaderTests
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
 		
-		Map<String, TransitionBuilder> transitionBuilders = new HashMap<String, TransitionBuilder>();
-		transitionBuilders.put("Fake", new DomFakeTransitionBuilder());
+		Map<String, MigrationBuilder> migrationBuilders = new HashMap<String, MigrationBuilder>();
+		migrationBuilders.put("Fake", new DomFakeMigrationBuilder());
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			transitionBuilders,
+			migrationBuilders,
 			resourceXml.toString());
 
 		//
@@ -623,12 +623,12 @@ public class DomResourceLoaderTests
 		AssertExtensions.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
 		AssertExtensions.assertState(state2Id, "Bar", resource.getStates().get(1), "state[1]");
 		
-		// Transitions
-		Assert.assertEquals("resource.transitions.size", 1, resource.getTransitions().size());
-		AssertExtensions.assertFakeTransition(
-			transitionId, state1Id, state2Id, "Blah",
-			(FakeTransition)resource.getTransitions().get(0),
-			"resource.transitions[0]");
+		// Migrations
+		Assert.assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
+		AssertExtensions.assertFakeMigration(
+			migrationId, state1Id, state2Id, "Blah",
+			(FakeMigration)resource.getMigrations().get(0),
+			"resource.migrations[0]");
 		
 	}
 }

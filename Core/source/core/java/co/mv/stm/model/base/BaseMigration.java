@@ -1,16 +1,16 @@
 package co.mv.stm.model.base;
 
-import co.mv.stm.model.Transition;
+import co.mv.stm.model.Migration;
 import java.util.UUID;
 
-public abstract class BaseTransition implements Transition
+public abstract class BaseMigration implements Migration
 {
-	public BaseTransition(
-		UUID transitionId,
+	public BaseMigration(
+		UUID migrationId,
 		UUID fromStateId,
 		UUID toStateId)
 	{
-		this.setTransitionId(transitionId);
+		this.setMigrationId(migrationId);
 		if (fromStateId !=  null)
 		{
 			this.setFromStateId(fromStateId);
@@ -21,39 +21,39 @@ public abstract class BaseTransition implements Transition
 		}
 	}
 	
-	// <editor-fold desc="TransitionId" defaultstate="collapsed">
+	// <editor-fold desc="MigrationId" defaultstate="collapsed">
 
-	private UUID m_transitionId = null;
-	private boolean m_transitionId_set = false;
+	private UUID m_migrationId = null;
+	private boolean m_migrationId_set = false;
 
-	public UUID getTransitionId() {
-		if(!m_transitionId_set) {
-			throw new IllegalStateException("transitionId not set.  Use the HasTransitionId() method to check its state before accessing it.");
+	public UUID getMigrationId() {
+		if(!m_migrationId_set) {
+			throw new IllegalStateException("migrationId not set.  Use the HasMigrationId() method to check its state before accessing it.");
 		}
-		return m_transitionId;
+		return m_migrationId;
 	}
 
-	private void setTransitionId(
+	private void setMigrationId(
 		UUID value) {
 		if(value == null) {
-			throw new IllegalArgumentException("transitionId cannot be null");
+			throw new IllegalArgumentException("migrationId cannot be null");
 		}
-		boolean changing = !m_transitionId_set || m_transitionId != value;
+		boolean changing = !m_migrationId_set || m_migrationId != value;
 		if(changing) {
-			m_transitionId_set = true;
-			m_transitionId = value;
+			m_migrationId_set = true;
+			m_migrationId = value;
 		}
 	}
 
-	private void clearTransitionId() {
-		if(m_transitionId_set) {
-			m_transitionId_set = true;
-			m_transitionId = null;
+	private void clearMigrationId() {
+		if(m_migrationId_set) {
+			m_migrationId_set = true;
+			m_migrationId = null;
 		}
 	}
 
-	private boolean hasTransitionId() {
-		return m_transitionId_set;
+	private boolean hasMigrationId() {
+		return m_migrationId_set;
 	}
 
 	// </editor-fold>

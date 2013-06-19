@@ -8,10 +8,10 @@ import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.Resource;
 import co.mv.stm.model.Instance;
 import co.mv.stm.model.State;
-import co.mv.stm.model.Transition;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionFaultException;
-import co.mv.stm.model.TransitionNotPossibleException;
+import co.mv.stm.model.Migration;
+import co.mv.stm.model.MigrationFailedException;
+import co.mv.stm.model.MigrationFaultException;
+import co.mv.stm.model.MigrationNotPossibleException;
 import co.mv.stm.service.Logger;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public abstract class BaseResource implements Resource
 		this.setResourceId(resourceId);
 		this.setName(name);
 		this.setStates(new ArrayList<State>());
-		this.setTransitions(new ArrayList<Transition>());
+		this.setMigrations(new ArrayList<Migration>());
 	}
 
 	//
@@ -143,38 +143,38 @@ public abstract class BaseResource implements Resource
 
 	// </editor-fold>
 	
-	// <editor-fold desc="Transitions" defaultstate="collapsed">
+	// <editor-fold desc="Migrations" defaultstate="collapsed">
 
-	private List<Transition> m_transitions = null;
-	private boolean m_transitions_set = false;
+	private List<Migration> m_migrations = null;
+	private boolean m_migrations_set = false;
 
-	@Override public List<Transition> getTransitions() {
-		if(!m_transitions_set) {
-			throw new IllegalStateException("transitions not set.  Use the HasTransitions() method to check its state before accessing it.");
+	public List<Migration> getMigrations() {
+		if(!m_migrations_set) {
+			throw new IllegalStateException("migrations not set.  Use the HasMigrations() method to check its state before accessing it.");
 		}
-		return m_transitions;
+		return m_migrations;
 	}
 
-	private void setTransitions(List<Transition> value) {
+	private void setMigrations(List<Migration> value) {
 		if(value == null) {
-			throw new IllegalArgumentException("transitions cannot be null");
+			throw new IllegalArgumentException("migrations cannot be null");
 		}
-		boolean changing = !m_transitions_set || m_transitions != value;
+		boolean changing = !m_migrations_set || m_migrations != value;
 		if(changing) {
-			m_transitions_set = true;
-			m_transitions = value;
+			m_migrations_set = true;
+			m_migrations = value;
 		}
 	}
 
-	private void clearTransitions() {
-		if(m_transitions_set) {
-			m_transitions_set = true;
-			m_transitions = null;
+	private void clearMigrations() {
+		if(m_migrations_set) {
+			m_migrations_set = true;
+			m_migrations = null;
 		}
 	}
 
-	public boolean hasTransitions() {
-		return m_transitions_set;
+	public boolean hasMigrations() {
+		return m_migrations_set;
 	}
 
 	// </editor-fold>
@@ -211,14 +211,14 @@ public abstract class BaseResource implements Resource
 		return results;
 	}
 
-	@Override public void transition(
+	@Override public void migrate(
 		Logger logger,
 		Instance instance,
 		UUID targetStateId) throws
 			IndeterminateStateException,
 			AssertionFailedException,
-			TransitionNotPossibleException,
-			TransitionFailedException
+			MigrationNotPossibleException,
+			MigrationFailedException
 	{
 		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
@@ -227,8 +227,8 @@ public abstract class BaseResource implements Resource
 		UUID currentStateId = currentState == null ? null : currentState.getStateId();
 		List<UUID> workList = new ArrayList<UUID>();
 		
-		List<List<Transition>> paths = new ArrayList<List<Transition>>();
-		List<Transition> thisPath = new ArrayList<Transition>();
+		List<List<Migration>> paths = new ArrayList<List<Migration>>();
+		List<Migration> thisPath = new ArrayList<Migration>();
 		
 		findPaths(this, paths, thisPath, currentStateId, targetStateId);
 		
@@ -237,23 +237,23 @@ public abstract class BaseResource implements Resource
 			throw new RuntimeException("multiple possible paths found");
 		}
 		
-		List<Transition> path = paths.get(0);
+		List<Migration> path = paths.get(0);
 		
-		for (Transition transition : path)
+		for (Migration migration : path)
 		{
-			// Transition to the next state
-			logger.transitionStart(this, transition);
-			transition.perform(instance);
-			logger.transitionComplete(this, transition);
+			// Migrate to the next state
+			logger.migrationStart(this, migration);
+			migration.perform(instance);
+			logger.migrationComplete(this, migration);
 
 			// Basic state check
 			State state = this.currentState(instance);
 			UUID stateId = state == null ? null : state.getStateId();
-			if (!transition.getToStateId().equals(stateId))
+			if (!migration.getToStateId().equals(stateId))
 			{
-				throw new TransitionFaultException(String.format(
-					"state expected to be %s after transition but is %s",
-					transition.getToStateId(),
+				throw new MigrationFaultException(String.format(
+					"state expected to be %s after migration but is %s",
+					migration.getToStateId(),
 					stateId));
 			}
 			
@@ -275,8 +275,8 @@ public abstract class BaseResource implements Resource
 	
 	private static void findPaths(
 		BaseResource resource,
-		List<List<Transition>> paths,
-		List<Transition> thisPath,
+		List<List<Migration>> paths,
+		List<Migration> thisPath,
 		UUID fromStateId,
 		UUID targetStateId)
 	{
@@ -292,14 +292,14 @@ public abstract class BaseResource implements Resource
 		// If we have not reached the target state, keep traversing the graph
 		else
 		{
-			for (Transition transition : resource.getTransitions())
+			for (Migration migration : resource.getMigrations())
 			{
-				if ((!transition.hasFromStateId() && fromStateId == null) ||
-					(transition.hasFromStateId() && transition.getFromStateId().equals(fromStateId)))
+				if ((!migration.hasFromStateId() && fromStateId == null) ||
+					(migration.hasFromStateId() && migration.getFromStateId().equals(fromStateId)))
 				{
-					State toState = resource.stateForId(transition.getToStateId());
-					List<Transition> thisPathCopy = new ArrayList<Transition>(thisPath);
-					thisPathCopy.add(transition);
+					State toState = resource.stateForId(migration.getToStateId());
+					List<Migration> thisPathCopy = new ArrayList<Migration>(thisPath);
+					thisPathCopy.add(migration);
 					findPaths(resource, paths, thisPathCopy, toState.getStateId(), targetStateId);
 				}
 			}

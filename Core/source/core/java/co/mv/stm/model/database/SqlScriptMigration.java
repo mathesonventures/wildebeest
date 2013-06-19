@@ -1,23 +1,23 @@
 package co.mv.stm.model.database;
 
-import co.mv.stm.model.base.BaseTransition;
+import co.mv.stm.model.base.BaseMigration;
 import co.mv.stm.model.ModelExtensions;
 import co.mv.stm.model.Instance;
-import co.mv.stm.model.Transition;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionFaultException;
+import co.mv.stm.model.Migration;
+import co.mv.stm.model.MigrationFailedException;
+import co.mv.stm.model.MigrationFaultException;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class SqlScriptTransition extends BaseTransition implements Transition
+public class SqlScriptMigration extends BaseMigration implements Migration
 {
-	public SqlScriptTransition(
-		UUID transitionId,
+	public SqlScriptMigration(
+		UUID migrationId,
 		UUID fromStateId,
 		UUID toStateId,
 		String sql)
 	{
-		super(transitionId, fromStateId, toStateId);
+		super(migrationId, fromStateId, toStateId);
 		this.setSql(sql);
 	}
 	
@@ -58,7 +58,7 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 
 	// </editor-fold>
 	
-	@Override public void perform(Instance instance) throws TransitionFailedException
+	@Override public void perform(Instance instance) throws MigrationFailedException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		DatabaseInstance db = ModelExtensions.As(instance, DatabaseInstance.class);
@@ -85,7 +85,7 @@ public class SqlScriptTransition extends BaseTransition implements Transition
 		}
 		catch(SQLException e)
 		{
-			throw new TransitionFaultException(e);
+			throw new MigrationFaultException(e);
 		}
 	}
 }

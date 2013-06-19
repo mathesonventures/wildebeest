@@ -4,8 +4,8 @@ import co.mv.stm.AssertExtensions;
 import co.mv.stm.model.AssertionFailedException;
 import co.mv.stm.model.IndeterminateStateException;
 import co.mv.stm.model.Resource;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionNotPossibleException;
+import co.mv.stm.model.MigrationFailedException;
+import co.mv.stm.model.MigrationNotPossibleException;
 import co.mv.stm.model.mysql.MySqlDatabaseResource;
 import co.mv.stm.model.mysql.MySqlDatabaseInstance;
 import co.mv.stm.model.mysql.MySqlElementFixtures;
@@ -22,11 +22,11 @@ import org.junit.Test;
 
 public class ResourceLoaderIntegrationTests
 {
-	@Test public void loadAndTransitionMySqlResourceFromXml() throws
+	@Test public void loadAndMigrateMySqlResourceFromXml() throws
 		IndeterminateStateException,
 		AssertionFailedException,
-		TransitionNotPossibleException,
-		TransitionFailedException,
+		MigrationNotPossibleException,
+		MigrationFailedException,
 		SQLException
 	{
 		
@@ -43,9 +43,9 @@ public class ResourceLoaderIntegrationTests
 		UUID initialReferenceDataLoadedStateId = UUID.randomUUID();
 			UUID rowExistsAssertionId = UUID.randomUUID();
 		
-		UUID createDatabaseTransitionId = UUID.randomUUID();
-		UUID loadSchemaTransitionId = UUID.randomUUID();
-		UUID insertRefDataTransitionId = UUID.randomUUID();
+		UUID createDatabaseMigrationId = UUID.randomUUID();
+		UUID loadSchemaMigrationId = UUID.randomUUID();
+		UUID insertRefDataMigrationId = UUID.randomUUID();
 		
 		XmlBuilder resourceXml = new XmlBuilder();
 		resourceXml
@@ -75,26 +75,26 @@ public class ResourceLoaderIntegrationTests
 						.closeAssertions()
 					.closeState()
 				.closeStates()
-				.openTransitions()
-					.openTransition("MySqlCreateDatabase", createDatabaseTransitionId, null, databaseCreatedStateId)
-					.closeTransition()
-					.openTransition("SqlScript", loadSchemaTransitionId, databaseCreatedStateId, initialSchemaCreatedStateId)
+				.openMigrations()
+					.openMigration("MySqlCreateDatabase", createDatabaseMigrationId, null, databaseCreatedStateId)
+					.closeMigration()
+					.openMigration("SqlScript", loadSchemaMigrationId, databaseCreatedStateId, initialSchemaCreatedStateId)
 						.openElement("sql").openCdata()
 							.text(MySqlElementFixtures.realmTypeRefCreateTableStatement())
 						.closeCdata().closeElement("sql")
-					.closeTransition()
-					.openTransition("SqlScript", insertRefDataTransitionId, initialSchemaCreatedStateId, initialReferenceDataLoadedStateId)
+					.closeMigration()
+					.openMigration("SqlScript", insertRefDataMigrationId, initialSchemaCreatedStateId, initialReferenceDataLoadedStateId)
 						.openElement("sql").openCdata()
 							.text(MySqlElementFixtures.realmTypeRefInsertUserBaseRow())
 						.closeCdata().closeElement("sql")
-					.closeTransition()
-				.closeTransitions()
+					.closeMigration()
+				.closeMigrations()
 			.closeResource();
 
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
-			DomPlugins.transitionBuilders(),
+			DomPlugins.migrationBuilders(),
 			resourceXml.toString());
 
 		String databaseName = MySqlElementFixtures.databaseName("StmTest");
@@ -134,25 +134,25 @@ public class ResourceLoaderIntegrationTests
 			initialReferenceDataLoadedStateId, "Initial reference data loaded",
 			resource.getStates().get(2), "state[2]");
 		
-		// Transitions
-		Assert.assertEquals("resource.transitions.size", 3, resource.getTransitions().size());
-		AssertExtensions.assertTransition(
-			createDatabaseTransitionId, null, databaseCreatedStateId,
-			resource.getTransitions().get(0), "resource.transitions[0]");
-		AssertExtensions.assertTransition(
-			loadSchemaTransitionId, databaseCreatedStateId, initialSchemaCreatedStateId,
-			resource.getTransitions().get(1), "resource.transitions[1]");
-		AssertExtensions.assertTransition(
-			insertRefDataTransitionId, initialSchemaCreatedStateId, initialReferenceDataLoadedStateId,
-			resource.getTransitions().get(2), "resource.transitions[2]");
+		// Migrations
+		Assert.assertEquals("resource.migrations.size", 3, resource.getMigrations().size());
+		AssertExtensions.assertMigration(
+			createDatabaseMigrationId, null, databaseCreatedStateId,
+			resource.getMigrations().get(0), "resource.migrations[0]");
+		AssertExtensions.assertMigration(
+			loadSchemaMigrationId, databaseCreatedStateId, initialSchemaCreatedStateId,
+			resource.getMigrations().get(1), "resource.migrations[1]");
+		AssertExtensions.assertMigration(
+			insertRefDataMigrationId, initialSchemaCreatedStateId, initialReferenceDataLoadedStateId,
+			resource.getMigrations().get(2), "resource.migrations[2]");
 		
 		//
-		// Execute - Transition
+		// Execute - Migrate
 		//
 		
 		try
 		{
-			resource.transition(new PrintStreamLogger(System.out), instance, initialReferenceDataLoadedStateId);
+			resource.migrate(new PrintStreamLogger(System.out), instance, initialReferenceDataLoadedStateId);
 		}
 		finally
 		{

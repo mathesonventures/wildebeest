@@ -27,15 +27,15 @@
 
 	</states>
 
-	<transitions>
+	<migrations>
 
-		<transition
+		<migration
 			type="MySqlCreateDatabase"
 			id="6b21e1e3-ff3a-44b3-84ec-e21fb01c0110"
 			toStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7">
-		</transition>
+		</migration>
 
-		<transition
+		<migration
 			type="SqlScript"
 			id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
 			fromStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"
@@ -140,9 +140,9 @@ CREATE TABLE  `AuthAudit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 			]]></sql>
-		</transition>
+		</migration>
 
-		<transition
+		<migration
 			type="SqlScript"
 			id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
 			fromStateId="363568f1-aaed-4a50-bea0-9ddee713cc11"
@@ -160,9 +160,9 @@ DROP TABLE RealmTypeRef;
 DROP Table RealmStatusRef;
 
 			]]></sql>
-		</transition>
+		</migration>
 		
-		<transition
+		<migration
 			type="SqlScript"
 			id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
 			fromStateId="363568f1-aaed-4a50-bea0-9ddee713cc11"
@@ -190,8 +190,8 @@ CREATE TABLE  `UserBaseUserAccount` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 			]]></sql>
-		</transition>
+		</migration>
 
-	</transitions>
+	</migrations>
 
 </resource>

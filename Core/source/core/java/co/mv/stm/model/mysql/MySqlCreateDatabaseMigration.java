@@ -1,26 +1,26 @@
 package co.mv.stm.model.mysql;
 
-import co.mv.stm.model.base.BaseTransition;
+import co.mv.stm.model.base.BaseMigration;
 import co.mv.stm.model.database.DatabaseHelper;
 import co.mv.stm.model.ModelExtensions;
 import co.mv.stm.model.Instance;
-import co.mv.stm.model.Transition;
-import co.mv.stm.model.TransitionFailedException;
-import co.mv.stm.model.TransitionFaultException;
+import co.mv.stm.model.Migration;
+import co.mv.stm.model.MigrationFailedException;
+import co.mv.stm.model.MigrationFaultException;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class MySqlCreateDatabaseTransition extends BaseTransition implements Transition
+public class MySqlCreateDatabaseMigration extends BaseMigration implements Migration
 {
-	public MySqlCreateDatabaseTransition(
-		UUID transitionId,
+	public MySqlCreateDatabaseMigration(
+		UUID migrationId,
 		UUID fromStateId,
 		UUID toStateId)
 	{
-		super(transitionId, fromStateId, toStateId);
+		super(migrationId, fromStateId, toStateId);
 	}
 
-	@Override public void perform(Instance instance) throws TransitionFailedException
+	@Override public void perform(Instance instance) throws MigrationFailedException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
@@ -28,8 +28,8 @@ public class MySqlCreateDatabaseTransition extends BaseTransition implements Tra
 
 		if (MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
 		{
-			throw new TransitionFailedException(
-				this.getTransitionId(),
+			throw new MigrationFailedException(
+				this.getMigrationId(),
 				String.format("database \"%s\" already exists",	db.getSchemaName()));
 		}
 		
@@ -47,7 +47,7 @@ public class MySqlCreateDatabaseTransition extends BaseTransition implements Tra
 		}
 		catch (SQLException e)
 		{
-			throw new TransitionFaultException(e);
+			throw new MigrationFaultException(e);
 		}
 	}
 }

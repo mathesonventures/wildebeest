@@ -260,25 +260,25 @@ public class XmlBuilder
 		return this.closeElement("assertion");
 	}
 	
-	public XmlBuilder openTransitions()
+	public XmlBuilder openMigrations()
 	{
-		return this.openElement("transitions");
+		return this.openElement("migrations");
 	}
 	
-	public XmlBuilder closeTransitions()
+	public XmlBuilder closeMigrations()
 	{
-		return this.closeElement("transitions");
+		return this.closeElement("migrations");
 	}
 	
-	public XmlBuilder openTransition(
+	public XmlBuilder openMigration(
 		String type,
-		UUID transitionId,
+		UUID migrationId,
 		UUID fromStateId,
 		UUID toStateId)
 	{
 		if (type == null) { throw new IllegalArgumentException("type cannot be null"); }
 		if ("".equals(type)) { throw new IllegalArgumentException("type cannot be empty"); }
-		if (transitionId == null) { throw new IllegalArgumentException("transitionId cannot be null"); }
+		if (migrationId == null) { throw new IllegalArgumentException("migrationId cannot be null"); }
 		if (fromStateId == null && toStateId == null)
 		{
 			throw new IllegalArgumentException("at least one of fromStateId and toStateId must be provided");
@@ -286,33 +286,33 @@ public class XmlBuilder
 
 		if (fromStateId != null && toStateId != null)
 		{
-			this.openElement("transition",
+			this.openElement("migration",
 				"type", type,
-				"id", transitionId.toString(),
+				"id", migrationId.toString(),
 				"fromStateId", fromStateId.toString(),
 				"toStateId", toStateId.toString());
 		}
 		else if (fromStateId != null)
 		{
-			this.openElement("transition",
+			this.openElement("migration",
 				"type", type,
-				"id", transitionId.toString(),
+				"id", migrationId.toString(),
 				"fromStateId", fromStateId.toString());
 		}
 		else if (toStateId != null)
 		{
-			this.openElement("transition",
+			this.openElement("migration",
 				"type", type,
-				"id", transitionId.toString(),
+				"id", migrationId.toString(),
 				"toStateId", toStateId.toString());
 		}
 		
 		return this;
 	}
 	
-	public XmlBuilder closeTransition()
+	public XmlBuilder closeMigration()
 	{
-		return this.closeElement("transition");
+		return this.closeElement("migration");
 	}
 	
 	@Override public String toString()

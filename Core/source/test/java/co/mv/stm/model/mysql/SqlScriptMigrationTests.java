@@ -1,19 +1,19 @@
 package co.mv.stm.model.mysql;
 
-import co.mv.stm.model.database.SqlScriptTransition;
-import co.mv.stm.model.TransitionFailedException;
+import co.mv.stm.model.database.SqlScriptMigration;
+import co.mv.stm.model.MigrationFailedException;
 import co.zd.helium.fixture.MySqlDatabaseFixture;
 import java.util.UUID;
 import org.junit.Test;
 
-public class SqlScriptTransitionTests
+public class SqlScriptMigrationTests
 {
-	public SqlScriptTransitionTests()
+	public SqlScriptMigrationTests()
 	{
 	}
 	
 	@Test
-	public void performSuccessfully() throws TransitionFailedException
+	public void performSuccessfully() throws MigrationFailedException
 	{
 		
 		//
@@ -31,7 +31,7 @@ public class SqlScriptTransitionTests
 			MySqlElementFixtures.stmStateCreateTableStatement());
 		f.setUp();
 		
-		SqlScriptTransition tr = new SqlScriptTransition(
+		SqlScriptMigration migration = new SqlScriptMigration(
 			UUID.randomUUID(),
 			null,
 			UUID.randomUUID(),
@@ -50,7 +50,7 @@ public class SqlScriptTransitionTests
 
 		try
 		{
-			tr.perform(instance);
+			migration.perform(instance);
 		}
 		finally
 		{

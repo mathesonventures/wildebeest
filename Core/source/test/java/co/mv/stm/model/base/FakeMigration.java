@@ -2,18 +2,18 @@ package co.mv.stm.model.base;
 
 import co.mv.stm.model.ModelExtensions;
 import co.mv.stm.model.Instance;
-import co.mv.stm.model.TransitionFailedException;
+import co.mv.stm.model.MigrationFailedException;
 import java.util.UUID;
 
-public class FakeTransition extends BaseTransition
+public class FakeMigration extends BaseMigration
 {
-	public FakeTransition(
-		UUID transitionId,
+	public FakeMigration(
+		UUID migrationId,
 		UUID fromStateId,
 		UUID toStateId,
 		String tag)
 	{
-		super(transitionId, fromStateId, toStateId);
+		super(migrationId, fromStateId, toStateId);
 		
 		this.setTag(tag);
 	}
@@ -55,7 +55,7 @@ public class FakeTransition extends BaseTransition
 
 	// </editor-fold>
 	
-	@Override public void perform(Instance instance) throws TransitionFailedException
+	@Override public void perform(Instance instance) throws MigrationFailedException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);

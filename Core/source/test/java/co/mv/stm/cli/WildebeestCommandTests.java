@@ -26,50 +26,50 @@ public class WildebeestCommandTests
 		Assert.assertEquals("wb.instance", "bar", wb.getInstance());
 	}
 	
-	@Test public void parseForValidTransitionCommandByLabelWithLongArgsSucceeds()
+	@Test public void parseForValidMigrateCommandByLabelWithLongArgsSucceeds()
 	{
 		WildebeestCommand wb = new WildebeestCommand();
-		wb.parse(new String[] { "transition", "--resource:foo", "--instance:bar", "--targetState:created" });
+		wb.parse(new String[] { "migrate", "--resource:foo", "--instance:bar", "--targetState:created" });
 		
-		Assert.assertEquals("wb.command", CommandType.Transition, wb.getCommand());
+		Assert.assertEquals("wb.command", CommandType.Migration, wb.getCommand());
 		Assert.assertEquals("wb.resource", "foo", wb.getResource());
 		Assert.assertEquals("wb.instance", "bar", wb.getInstance());
 		Assert.assertEquals("wb.targetStateLabel", "created", wb.getTargetStateLabel());
 	}
 
-	@Test public void parseForValidTransitionCommandByLabelWithShortArgsSucceeds()
+	@Test public void parseForValidMigrateCommandByLabelWithShortArgsSucceeds()
 	{
 		WildebeestCommand wb = new WildebeestCommand();
-		wb.parse(new String[] { "transition", "-r:foo", "-i:bar", "-t:created" });
+		wb.parse(new String[] { "migrate", "-r:foo", "-i:bar", "-t:created" });
 		
-		Assert.assertEquals("wb.command", CommandType.Transition, wb.getCommand());
+		Assert.assertEquals("wb.command", CommandType.Migration, wb.getCommand());
 		Assert.assertEquals("wb.resource", "foo", wb.getResource());
 		Assert.assertEquals("wb.instance", "bar", wb.getInstance());
 		Assert.assertEquals("wb.targetStateLabel", "created", wb.getTargetStateLabel());
 	}
 	
-	@Test public void parseForValidTransitionCommandByIdWithLongArgsSucceeds()
+	@Test public void parseForValidMigrateCommandByIdWithLongArgsSucceeds()
 	{
 		UUID targetStateId = UUID.randomUUID();
 
 		WildebeestCommand wb = new WildebeestCommand();
-		wb.parse(new String[] { "transition", "--resource:foo", "--instance:bar",
+		wb.parse(new String[] { "migrate", "--resource:foo", "--instance:bar",
 			"--targetState:" + targetStateId.toString() });
 		
-		Assert.assertEquals("wb.command", CommandType.Transition, wb.getCommand());
+		Assert.assertEquals("wb.command", CommandType.Migration, wb.getCommand());
 		Assert.assertEquals("wb.resource", "foo", wb.getResource());
 		Assert.assertEquals("wb.instance", "bar", wb.getInstance());
 		Assert.assertEquals("wb.targetStateId", targetStateId, wb.getTargetStateId());
 	}
 
-	@Test public void parseForValidTransitionCommandByIdWithShortArgsSucceeds()
+	@Test public void parseForValidMigrateCommandByIdWithShortArgsSucceeds()
 	{
 		UUID targetStateId = UUID.randomUUID();
 
 		WildebeestCommand wb = new WildebeestCommand();
-		wb.parse(new String[] { "transition", "-r:foo", "-i:bar", "-t:" + targetStateId.toString() });
+		wb.parse(new String[] { "migrate", "-r:foo", "-i:bar", "-t:" + targetStateId.toString() });
 		
-		Assert.assertEquals("wb.command", CommandType.Transition, wb.getCommand());
+		Assert.assertEquals("wb.command", CommandType.Migration, wb.getCommand());
 		Assert.assertEquals("wb.resource", "foo", wb.getResource());
 		Assert.assertEquals("wb.instance", "bar", wb.getInstance());
 		Assert.assertEquals("wb.targetStateId", targetStateId, wb.getTargetStateId());

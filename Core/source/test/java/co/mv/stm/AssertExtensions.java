@@ -1,6 +1,6 @@
 package co.mv.stm;
 
-import co.mv.stm.model.Transition;
+import co.mv.stm.model.Migration;
 import co.mv.stm.model.Assertion;
 import co.mv.stm.model.Instance;
 import co.mv.stm.model.AssertionResult;
@@ -8,7 +8,7 @@ import co.mv.stm.model.Resource;
 import co.mv.stm.model.State;
 import co.mv.stm.model.AssertionResponse;
 import co.mv.stm.model.base.FakeAssertion;
-import co.mv.stm.model.base.FakeTransition;
+import co.mv.stm.model.base.FakeMigration;
 import co.mv.stm.model.mysql.MySqlDatabaseInstance;
 import java.util.UUID;
 import org.junit.Assert;
@@ -106,19 +106,19 @@ public class AssertExtensions
 		Assert.assertEquals(name + ".tag", expectedTag, actual.getTag());
 	}
 	
-	public static void assertTransition(
-		UUID expectedTransitionId,
+	public static void assertMigration(
+		UUID expectedMigrationId,
 		UUID expectedFromStateId,
 		UUID expectedToStateId,
-		Transition actual,
+		Migration actual,
 		String name)
 	{
-		if (expectedTransitionId == null) { throw new IllegalArgumentException("expectedTransitionId cannot be null"); }
+		if (expectedMigrationId == null) { throw new IllegalArgumentException("expectedMigrationId cannot be null"); }
 		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
-		Assert.assertEquals(name + ".transitionId", expectedTransitionId, actual.getTransitionId());
+		Assert.assertEquals(name + ".migrationId", expectedMigrationId, actual.getMigrationId());
 
 		if (expectedFromStateId == null)
 		{
@@ -139,19 +139,19 @@ public class AssertExtensions
 		}
 	}
 	
-	public static void assertFakeTransition(
-		UUID expectedTransitionId,
+	public static void assertFakeMigration(
+		UUID expectedMigrationId,
 		UUID expectedFromStateId,
 		UUID expectedToStateId,
 		String expectedTag,
-		FakeTransition actual,
+		FakeMigration actual,
 		String name)
 	{
 		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
-		AssertExtensions.assertTransition(expectedTransitionId, expectedFromStateId, expectedToStateId, actual, name);
+		AssertExtensions.assertMigration(expectedMigrationId, expectedFromStateId, expectedToStateId, actual, name);
 		
 		Assert.assertEquals(name + ".tag", expectedTag, actual.getTag());
 	}
