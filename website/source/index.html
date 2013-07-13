@@ -1,0 +1,116 @@
+<html>
+
+<head>
+
+	<title>Wildebeest - Very, very easy migrations</title>
+	<link href="bootstrap.min.css" rel="stylesheet">
+	<link href="fontawesome/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="wb_fonts.css" type="text/css">
+	<link rel="stylesheet" href="wb_formatting.css" type="text/css">
+	<link rel="stylesheet" href="wb_leadin.css" type="text/css">
+	<link rel="stylesheet" href="clouds.css" type="text/css">
+	<link rel="stylesheet" href="fonts/open_sans.css" type="text/css">
+
+	<style type="text/css">
+
+		#title div {
+			margin: auto;
+		}
+
+	</style>
+
+	<script src="jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="jquery.path.js" type="text/javascript" charset="utf-8"></script>
+	<script src="clouds.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+	<div id="sky" role="banner"></div>
+
+	<div id="clouds"></div>
+
+	<div id="siteTitle">
+		<div id="main">wildebeest</div>
+		<div id="sub">migration framework</div>
+	</div>
+
+	<div id="beests"></div>
+
+	<div style="position: absolute; left: 0px; top: 0px; width: 100%; height: 220px; clip: rect(auto, auto, auto, auto);">
+		<img id="sun" src="assets/hd_sun.png" style="position: absolute; width: 174px; height: 174px; z-index: 5; left: -200px; top: -200px;">
+	</div>
+
+	<div id="earth"></div>
+	<div id="soil"></div>
+
+	<div id="leadIn">
+		<div class="container" style="padding: 40px;">
+			<div class="row">
+				<div class="span6">
+					<h1>about wildebeest</h1>
+					<p>Wildebeest is a migration framework designed to solve the problem of reliably migrating stateful
+						system resources such as databases or file structures as a system evolves.</p>
+				</div>
+				<div class="span3">
+					<h1>current features</h1>
+					<ul>
+						<li>Linux, Windows and OSX command-line-interface</li>
+						<li>Support for managing MySql databases as WB resources</li>
+					</ul>
+				</div>
+				<div class="span3">
+					<h1>roadmap</h1>
+					<ul>
+						<li>Support for managing SQL-Server databases as WB resources</li>
+						<li>Support for managing file system structures as WB resources</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="main" class="container" style="padding: 40px;">
+
+		<div class="row">
+			<div class="span12">
+				<h1>Getting Started</h1>
+				<h2>Modeling Resources</h2>
+				<p>In Wildebeest you model a resource by defining all the possible states in which it may exist, and
+					the transitions that change the resource from one state to another.  Different types of
+					transitions may be needed to move between states.</p>
+				<p>TODO: Diagram</p>
+				<p>Note that Wildebeest considers the resource not existing at all to be a state as well which is
+					referred to as "non-existent".  To create a resource we transition it from non-existent to some
+					state.  To destroy a resource we can also transition it from some defined state to non-existent.</p>
+				<p>Typically the series of states will be a linear progression like in this example, but there some
+					interesting situations that can be handled elegantly by creating multiple possible paths through the
+					graph.</p>
+				<p>At any given state we can define a set of assertions that must hold true for the state to be
+					considered valid.  Every time Wildebeest migrates your resource to a new state, it checks all of the
+					assertions at that new state to make sure that the migration was successful.  If any assertions
+					fail, then Wildebeest will stop the migration process.</p>
+				<p>Resources are defined in XML with either *.wbresource.xml or *.wbr as the file extension.  See below
+					for more examples of resource definitions.</p>
+				<h2>Instance</h2>
+				<p>Having defined a resource, you can use that resource definition to create or migrate many instances
+					of the resource.  The information that defines a given instance of a resource is defined in a file
+					with the suffix *.wbinstance.xml or *.wbi.</p>
+				<h2>Command-Line</h2>
+				<p>Wildebeest includes a command-line interface called wb.</p>
+				<p>To migrate an instance of a resource to a new state, we use the migrate command:</p>
+			</div>
+		</div>
+
+		<hr>
+
+		<div id="footer">
+			<p>Copyright &copy; 2013, Brendon Matheson</p>
+		</div>
+
+	</div>
+
+</body>
+
+</html>

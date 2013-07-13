@@ -1,0 +1,13 @@
+
+		@font-face {
+		    font-family: alexandria;
+		    src: url('fonts/AlexandriaFLF.ttf');
+			font-weight: normal;
+		}
+
+		@font-face {
+		    font-family: alexandria;
+		    src: url('fonts/AlexandriaFLF-Bold.ttf');
+			font-weight: bold;
+		}
+

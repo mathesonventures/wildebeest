@@ -1,0 +1,58 @@
+
+		#sky {
+			background: url(assets/hd_bg_sky.png);
+			height: 220px;
+		}
+
+		#clouds {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 220px;
+			clip: rect(auto, auto, auto, auto);
+		}
+
+		#siteTitle {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width:;
+			height: 220px;
+			z-index: 10;
+			font-family: alexandria;
+			padding-left: 50px;
+			margin-top: 70px;
+		}
+
+		#beests {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 220px;
+			clip: rect(auto, auto, auto, auto);
+		}
+
+		#siteTitle #main {
+			font-size: 40pt;
+			color: #664433;
+			margin-bottom: 20px;
+		}
+
+		#siteTitle #sub {
+			font-size: 20pt;
+			font-weight: bold;
+			color: #666666;
+		}
+
+		#earth {
+			background: url(assets/hd_bg_earth.png);
+			height: 50px;
+		}
+
+		#soil {
+			background-color: #8d7463;
+			height: 5px;
+		}
+
