@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.UUID;
 
 public class WildebeestCommand
@@ -218,6 +219,11 @@ public class WildebeestCommand
 	public void parse(String[] args)
 	{
 		if(args == null) { throw new IllegalArgumentException("args cannot be null"); }
+		
+		if (args.length == 0)
+		{
+			WildebeestCommand.printUsage(System.out);
+		}
 		
 		String command = args[0];
 		
@@ -482,5 +488,15 @@ public class WildebeestCommand
 		}
 		
 		return result;
+	}
+	
+	private static void printUsage(PrintStream out)
+	{
+		if (out == null) { throw new IllegalArgumentException("out"); }
+		
+		out.println("Usage: wb command [options]");
+		out.println("");
+		out.println("Valid commands: state; migrate;");
+		out.println("");
 	}
 }
