@@ -32,8 +32,7 @@
 			generateCloud(2, true, true);
 			generateCloud(2, true, false);
 
-			//generateBeest();
-			generateBeests();
+			generateHerds();
 
 		}
 
@@ -117,35 +116,40 @@
 
 		var nextBeestId = 0;
 
-		function generateBeests()
+		function generateHerds()
 		{
-/*
-			var last = 0;
-			for (var i = 0; i < 10; i ++)
-			{
-				var next = Math.random() * 5000;
-				setTimeout(function() { generateBeest() }, last + next);
-				last += next;
-			}
-*/
-			generateHerd(m_beestSource, m_beestTarget, 0.5);
-
+			generateHerd(
+				function()
+				{
+					return window.innerWidth + 500;
+				},
+				-500,
+				4,
+				0.7);
 		}
-
-		var m_beestSource = window.innerWidth;
-		var m_beestTarget = 200;
 
 		function generateHerd(
 			beestSource,
 			beestTarget,
+			pixelsPerSecond,
 			initialAdjust)
 		{
+			console.log("generateHerd { " +
+				"beestSource: " + beestSource() + "; " +
+				"beestTarget: " + beestTarget + "; " +
+				"pixelsPerSecond: " + pixelsPerSecond + "; " +
+				"initialAdjust: " + initialAdjust + "; " +
+				"}");
 
-			// Choose herd size
 			var herdSize = next(3, 9);
-console.log("herdSize: " + herdSize);
+			var firstRight = beestTarget + (beestSource() * initialAdjust);
+			var lastRight = firstRight;
+			var dur = (lastRight - beestTarget) / pixelsPerSecond * 1000;
 
-			var lastRight = beestSource * initialAdjust;
+console.log(
+	"herdSize: " + herdSize + "; " +
+	"lastRight: " + lastRight + "; " +
+	"dur: " + dur + "; ");
 
 			for(var i = 0; i < herdSize; i++)
 			{
@@ -154,7 +158,7 @@ console.log("herdSize: " + herdSize);
 				var nextLeft = 0;
 
 				var beest = null;
-				if (i == 0 || chance(0.75))
+				if (i == 0 || chance(0.70))
 				{
 					nextLeft = lastRight + next(5, 20);
 					beest = makeBeestHtml(beestId, beestSprite, nextLeft);
@@ -167,23 +171,45 @@ console.log("herdSize: " + herdSize);
 					lastRight = nextLeft + 16;
 				}
 
-				var targetLeft = beestTarget + nextLeft - beestSource;
+				var targetLeft = beestTarget + nextLeft - firstRight;
+
+console.log(
+	"beestTarget: " + beestTarget + "; " +
+	"nextLeft: " + nextLeft + "; " +
+	"firstRight: " + firstRight + "; " +
+	"targetLeft: " + targetLeft + "; ");
 
 				$("#beests").prepend(beest);
-				$("#beest" + beestId).animate({left: targetLeft + "px"}, 180000 * initialAdjust, "linear");
+				$("#beest" + beestId).animate(
+					{ left: targetLeft + "px" },
+					dur * initialAdjust,
+					"linear",
+					function()
+					{
+					});
 			}
+
+			var nextHerdDelay = next(20000, dur);
+console.log("nextHerdDelay: " + nextHerdDelay);
 
 			setTimeout(
 				function()
 				{
-					generateHerd(beestSource, beestTarget, 1.0);
+					generateHerd(beestSource, beestTarget, pixelsPerSecond, 1.0);
 				},
-				next(20000, 200000));
+				nextHerdDelay);
 		}
 
 		function next(min, max)
 		{
-			return min + Math.floor(Math.random() * (max - min + 1));
+			if (min < max)
+			{
+				return min + Math.floor(Math.random() * (max - min + 1));
+			}
+			else
+			{
+				return max;
+			}
 		}
 
 		function chance(percentage)
