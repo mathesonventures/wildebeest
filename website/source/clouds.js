@@ -189,7 +189,7 @@ console.log(
 					});
 			}
 
-			var nextHerdDelay = next(20000, dur);
+			var nextHerdDelay = next(20000, dur * 0.8);
 console.log("nextHerdDelay: " + nextHerdDelay);
 
 			setTimeout(
