@@ -75,53 +75,198 @@
 
 		<div class="row">
 			<div class="span12">
-				<h1>Getting Started</h1>
-				<h2>Modeling Resources</h2>
-				<p>In Wildebeest you model a resource by defining all the possible states in which it may exist, and the
-					actions to migrate the resource from one state to another.  Different types of migrations may be
-					needed to move between states.</p>
+
+				<h1>Introduction</h1>
+
+				<p>Wildebeest models stateful resources as directed graphs where each node represents a particular state for the resource, and migrations provide the pathways from state to state.  Resource descriptors are expressed in XML files with the extension *.wbr.  For example you might create a resource called database.wbr. which defines the states and migrations for managing your application's database.</p>
+				<p>Having defined a resource, you may want to create many instances of it.  For example you may want to have an instance of the database for your application for each developer in your team.  You may also have multiple staging, testing and production instances to maintain.</p>
+				<p>A Wildbeest <strong>resource descriptor</strong> is abstract in that it does not include details such as database server hostname and port.  These details are separated into an <strong>instance descriptor</strong> which is also expressed in XML and uses the file extension *.wbi.  For example you might have database-staging.wbi and database-production.wbi descriptors that can be used to manage different instances of your database.wbr resource.</p>
+				<p>Wildbeest is driven by command-line.  For example to migrate a resource to a state called "Initial Schema Loaded" we would issue a command like this:</p>
+				<pre class="code">wb migrate --resource:database.wbr --instance:staging.wbi --targetState:"Core Schema Loaded"</pre> 
+				<p>Wildebeest reports progress as it migrates between steps, and asserts at each step:</p>
+				<pre class="code">wb migrate --resource:database.wbr --instance:staging.wbi --targetState:"Core Schema Loaded"
+
+2013-06-09T17:57:24 - Wildebeest is migrating
+2013-06-09T17:57:24 - Migrating from non-existent to "Database Created"
+2013-06-09T17:57:24 - Migration complete
+2013-06-09T17:57:24 - Assertion "Database exists" passed: Database ProductCatalogueStaging exists
+2013-06-09T17:57:24 - Migrating from state "Database Created" to "Core Schema Loaded"
+2013-06-09T17:57:24 - Migration complete
+2013-06-09T17:57:24 - Assertion "ProductType table exists" passed: Table ProductType exists
+2013-06-09T17:57:24 - Assertion "Product table exists" passed: Table Product exists</pre>
+				<p>Wildebeest will soon support other interface options including an embedded APIs for Java and .NET, and continuous integration server plugins.</p>
+				<p>In the next section you'll learn more about how resources and instances are defined, and see the full set of commands that Wildebeest provides.  Later you'll see the specifics on the plugins for managing MySQL databases as Wildebeest resources.</p>
+
+
+				<h1>Modeling Resources</h1>
+
+				<p>In Wildebeest you model a resource by defining all the possible states in which it may exist, and the actions to migrate the resource from one state to another.  Different types of migrations may be needed to move between states.  You can visualize the definition of a resource as nodes that represents the states in which the resource may exist, with migrations providing the pathways between states.</p>
 				<div class="pictureBox">
 					<img src="assets/diag_01_01_modeling_resources.png" width="900" height="300" />
 				</div>
-				<p>Note that Wildebeest considers the resource not existing at all to be a state as well which is
-					referred to as "non-existent".  To create a resource we transition it from non-existent to some
-					state.  To destroy a resource we can also transition it from some defined state to
-					non-existent.</p>
-				<p>Resources are defined in XML with either *.wbresource.xml or *.wbr as the file extension.  See below
-					for more examples of resource definitions.</p>
-				<p>To migrate our resource to the "Initial Schema Created" state, we would issue the migrate
-					command:</p>
-				<p>TODO: Migration command example</p>
-				<p>At any time, Wildebeest can check the current state of the resource for you using the state
-					command:</p>
-				<p>TODO: Example</p>
-				<p>Typically the series of states will be a linear progression like in this example, but there some
-					interesting use cases that can be handled elegantly by creating multiple possible paths through the
-					graph.</p>
-				<p>At any given state we can define a set of assertions that must hold true for the state to be
-					considered valid.  in Wildebeest the act of applying the assertions for a state is referred to as
-					"verifying" the state.  Wildebeest will verify the current state before attempting any migration,
-					and will abort the migraiton if the current state is found to be invalid.  Wildebeest also
-					verifies the new state after performing a migration, and will report to you if the new state is
-					found to be invalid.</p>
+				<p>Note that Wildebeest considers the resource not existing at all to be a state as well which is referred to as "non-existent".  To create a resource we transition it from non-existent to some state.  To destroy a resource we can also transition it from some defined state to non-existent.</p>
+				<p>Typically the series of states will be a linear progression like in this example, but there some interesting use cases that can be handled elegantly by creating multiple possible paths through the graph.</p>
+				<p>Resources are defined in XML with either *.wbresource.xml or *.wbr as the file extension.  The descriptor for the resource shown above is as follows:</p>
+				<pre class="code">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;resource type=&quot;MySqlDatabase&quot; id=&quot;0d39b8fb-5b5c-48cd-845c-9c4d55f94303&quot; name=&quot;Product Catalogue Database&quot;&gt;
+    &lt;states&gt;
+        &lt;state id=&quot;199b7cc1-3cc6-48ca-b012-a70d05d5b5e7&quot; label=&quot;Database Created&quot; /&gt;
+        &lt;state id=&quot;363568f1-aaed-4a50-bea0-9ddee713cc11&quot; label=&quot;Core Schema Loaded&quot; /&gt;
+    &lt;/states&gt;
+    &lt;migrations&gt;
+        &lt;migration
+            type=&quot;MySqlCreateDatabase&quot;
+            id=&quot;6b21e1e3-ff3a-44b3-84ec-e21fb01c0110&quot;
+            toStateId=&quot;199b7cc1-3cc6-48ca-b012-a70d05d5b5e7&quot;&gt;
+        &lt;/migration&gt;
+        &lt;migration
+            type=&quot;SqlScript&quot;
+            id=&quot;8b57f16d-c690-4f10-b68f-6f1ee75fe32b&quot;
+            fromStateId=&quot;199b7cc1-3cc6-48ca-b012-a70d05d5b5e7&quot;
+            toStateId=&quot;363568f1-aaed-4a50-bea0-9ddee713cc11&quot;&gt;
+            &lt;sql&gt;&lt;![CDATA[
+/* ProductType */
+CREATE TABLE  `ProductType` (
+  `ProductTypeCode` char(2) NOT NULL,
+  `Name` varchar(10) NOT NULL,
+  PRIMARY KEY (`ProductTypeCode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO
+    ProductType(ProductTypeCode, Name)
+VALUES
+    (&apos;HW&apos;, &apos;Hardware&apos;),
+    (&apos;SW&apos;, &apos;Software&apos;);
+/* Product */
+CREATE TABLE  `Product` (
+  `ProductId` char(36) NOT NULL,
+  `ProductTypeCode` char(2) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Description` varchar(4000) NOT NULL,
+  PRIMARY KEY (`ProductId`),
+  KEY `FK_Product_ProductTypeCode` (`ProductTypeCode`),
+  CONSTRAINT `FK_Product_ProductTypeCode` FOREIGN KEY (`ProductTypeCode`) REFERENCES `ProductType` (`ProductTypeCode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            ]]&gt;&lt;/sql&gt;
+        &lt;/migration&gt;
+        &lt;migration
+            type=&quot;SqlScript&quot;
+            id=&quot;8b57f16d-c690-4f10-b68f-6f1ee75fe32b&quot;
+            fromStateId=&quot;363568f1-aaed-4a50-bea0-9ddee713cc11&quot;
+            toStateId=&quot;199b7cc1-3cc6-48ca-b012-a70d05d5b5e7&quot;&gt;
+            &lt;sql&gt;&lt;![CDATA[
+DROP TABLE Product;
+DROP TABLE ProductType;
+            ]]&gt;&lt;/sql&gt;
+        &lt;/migration&gt;
+        
+    &lt;/migrations&gt;
+&lt;/resource&gt;</pre>
+				<p>At any given state we can define a set of assertions that must hold true for the state to be considered valid.  in Wildebeest the act of applying the assertions for a state is referred to as "verifying" the state.  Wildebeest will verify the current state before attempting any migration, and will abort the migration if the current state is found to be invalid.  Wildebeest also verifies the new state after performing a migration, and will report to you if the new state is found to be invalid.</p>
 				<div class="pictureBox">
 					<img src="assets/diag_01_02_assertions.png" width="900" height="300" />
 				</div>
+				<p>Wildebeest offers various types of assertions such as MySqlDatabaseExists and DatabaseRowExists.  These are all described in the reference section below.  After adding the assertions shown in the diagram above, the states in our resource descriptor would now look like this:</p>
+				<pre class="code">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;resource type=&quot;MySqlDatabase&quot; id=&quot;0d39b8fb-5b5c-48cd-845c-9c4d55f94303&quot; name=&quot;Product Catalogue Database&quot;&gt;
+    &lt;states&gt;
+        &lt;state id=&quot;199b7cc1-3cc6-48ca-b012-a70d05d5b5e7&quot; label=&quot;Database Created&quot;&gt;
+            &lt;assertions&gt;
+                &lt;assertion type=&quot;MySqlDatabaseExists&quot; id=&quot;19b64fb6-f95f-4221-bc64-303f62a3eda8&quot; name=&quot;Database exists&quot; /&gt;
+            &lt;/assertions&gt;
+        &lt;/state&gt;
+        &lt;state id=&quot;363568f1-aaed-4a50-bea0-9ddee713cc11&quot; label=&quot;Core Schema Loaded&quot;&gt;
+            &lt;assertions&gt;
+                &lt;assertion type=&quot;MySqlTableExists&quot; id=&quot;3808ba63-f055-4bf7-88fe-023546e6ed16&quot; name=&quot;ProductType table exists&quot;&gt;
+                    &lt;tableName&gt;ProductType&lt;/tableName&gt;
+                &lt;/assertion&gt;
+                &lt;assertion type=&quot;MySqlTableExists&quot; id=&quot;54c78eca-9eda-4983-b9a5-0dcb1be686ff&quot; name=&quot;Product table exists&quot;&gt;
+                    &lt;tableName&gt;Product&lt;/tableName&gt;
+                &lt;/assertion&gt;
+            &lt;/assertions&gt;
+        &lt;/state&gt;
+    &lt;/states&gt;
+    &lt;migrations&gt;
+ 
+    ...
+ 
+    &lt;/migrations&gt;
+&lt;/resource&gt;</pre>
 
-				<h2>Instance</h2>
-				<p>Having defined a resource, you can use that resource definition to create or migrate many instances
-					of the resource.  The information that defines a given instance of a resource is defined in a file
-					with the suffix *.wbinstance.xml or *.wbi.</p>
-				<h2>Command-Line</h2>
+				<h1>Instance</h1>
+
+				<p>Having defined a resource, you can use that resource definition to create or migrate many instances of the resource.  The information that defines a given instance of a resource is defined in a file with the suffix *.wbinstance.xml or *.wbi.  Each type of resource requires different information to be specified.  The following instance descriptor is for a MySQL database:</p>
+				<pre class="code">&lt;instance type=&quot;MySqlDatabase&quot;&gt;
+    &lt;hostName&gt;10.12.48.27&lt;/hostName&gt;
+    &lt;port&gt;3306&lt;/port&gt;
+    &lt;adminUsername&gt;root&lt;/adminUsername&gt;
+    &lt;adminPassword&gt;password&lt;/adminPassword&gt;
+    &lt;schemaName&gt;ProductCatalogueStaging&lt;/schemaName&gt;
+&lt;/instance&gt;</pre>
+
+
+				<h1>Command-Line</h1>
+
+				<h2>Introduction</h2>
 				<p>Wildebeest includes a command-line interface called wb.</p>
+
+				<h2>Migrate</h2>
 				<p>To migrate an instance of a resource to a new state, we use the migrate command:</p>
+				<pre class="code">wb migrate --resource:database.wbr --instance:staging.wbi --targetState:"Core Schema Loaded"
+ 
+2013-06-09T19:05:10 - Wildebeest is migrating
+2013-06-09T19:05:10 - Migrating from non-existent to "Database Created"
+2013-06-09T19:05:10 - Migration complete
+2013-06-09T19:05:10 - Assertion "Database exists" passed: Database ProductCatalogueStaging exists
+2013-06-09T19:05:10 - Migrating from state "Database Created" to "Core Schema Loaded"
+2013-06-09T19:05:11 - Migration complete
+2013-06-09T19:05:11 - Assertion "ProductType table exists" passed: Table ProductType exists
+2013-06-09T19:05:11 - Assertion "Product table exists" passed: Table Product exists</pre>
+				<p>The wb program supports short switches, so the same migrate command can be expressed like this:</p>
+				<pre class="code">wb migrate -r:database.wbr -i:staging.wbi -t:"Core Schema Loaded"
+ 
+2013-06-09T19:28:25 - Wildebeest is migrating
+2013-06-09T19:28:25 - Migrating from non-existent to "Database Created"
+2013-06-09T19:28:26 - Migration complete
+2013-06-09T19:28:26 - Assertion "Database exists" passed: Database ProductCatalogueStaging exists
+2013-06-09T19:28:26 - Migrating from state "Database Created" to "Core Schema Loaded"
+2013-06-09T19:28:26 - Migration complete
+2013-06-09T19:28:26 - Assertion "ProductType table exists" passed: Table ProductType exists
+2013-06-09T19:28:26 - Assertion "Product table exists" passed: Table Product exists</pre>
+				<p>The migrate command allows the target state to be specified either using it's label, or using it's ID.  Labels are optional for states, so if a state does not have a label you can migrate to it using it's ID.  Note that if the state specified by ID has a label, then Wildebeest will show that label when reporting progress:</p>
+				<pre class="code">wb migrate -r:database.wbr -i:staging.wbi -t:363568f1-aaed-4a50-bea0-9ddee713cc11
+ 
+2013-06-09T19:30:09 - Wildebeest migrate -r:database.wbr -i:staging.wbi -t:363568f1-aaed-4a50-bea0-9ddee713cc11
+2013-06-09T19:30:09 - Migrating from non-existent to "Database Created"
+2013-06-09T19:30:10 - Migration complete
+2013-06-09T19:30:10 - Assertion "Database exists" passed: Database ProductCatalogueStaging exists
+2013-06-09T19:30:10 - Migrating from state "Database Created" to "Core Schema Loaded"
+2013-06-09T19:30:10 - Migration complete
+2013-06-09T19:30:10 - Assertion "ProductType table exists" passed: Table ProductType exists
+2013-06-09T19:30:10 - Assertion "Product table exists" passed: Table Product exists</pre>
+
+				<h2>State</h2>
+
+				<p>Using wb you can also check on the current state of a resource using the state command:</p>
+				<pre class="code">wb state -r:database.wbr -i:staging.wbi
+ 
+2013-06-09T19:47:08 - Wildebeest is checking state
+2013-06-09T19:47:08 - Current state: Core Schema Loaded
+2013-06-09T19:49:11 - Assertion "ProductType table exists" passed: Table ProductType exists
+2013-06-09T19:49:11 - Assertion "Product table exists" passed: Table Product exists</pre>
+				<p>As you can see, the state command also verifies the resource.  If the resource is found not to be valid according to the assertions for the current state, Wildebeest will let you know:</p>
+				<pre class="code">wb state -r:database.wbr -i:staging.wbi
+ 
+2013-06-09T19:49:10 - Wildebeest is checking state
+2013-06-09T19:49:11 - Current state: Core Schema Loaded
+2013-06-09T19:49:11 - Assertion "ProductType table exists" passed: Table ProductType exists
+2013-06-09T19:49:11 - Assertion "Product table exists" failed: Table Product does not exist</pre>
 			</div>
 		</div>
 
 		<hr>
 
 		<div id="footer">
-			<p>Copyright &copy; 2013, Brendon Matheson</p>
+			<p>Copyright &copy; 2013, <a href="http://zendigital.co/">Zen Digital Co Inc</a></p>
 		</div>
 
 	</div>

@@ -20,13 +20,19 @@
 	}
 
 	#main h1 {
-		font-size: 28pt;
+		font-size: 34pt;
+		margin-top: 40px;
+		margin-bottom: 40px;
+	}
+
+	#main h2 {
+		font-size: 22pt;
 	}
 
 	div.pictureBox {
 		margin-top: 30px;
 		margin-bottom: 30px;
-		background-color: #7ea676;
+		background-color: #ddecd9;
 		padding: 30px;
 		text-align: center;
 	}
