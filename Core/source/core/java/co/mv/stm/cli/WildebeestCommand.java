@@ -268,6 +268,11 @@ public class WildebeestCommand
 				this.setTargetStateLabel(targetState);
 			}
 		}
+		
+		else
+		{
+			WildebeestCommand.printUsage(System.out);
+		}
 	}
 	
 	public Resource loadResource()
@@ -340,12 +345,14 @@ public class WildebeestCommand
 		return instance;
 	}
 	
-	public void run(Logger logger)
+	public void run(PrintStreamLogger logger)
 	{
 		if (logger == null) { throw new IllegalArgumentException("logger"); }
 
 		if (this.getCommand() == CommandType.State)
 		{
+			logger.logLine("Wildebeest is checking state");
+			
 			Resource resource = this.loadResource();
 			Instance instance = this.loadInstance();
 			
@@ -356,11 +363,20 @@ public class WildebeestCommand
 				
 				if (state == null)
 				{
-					System.out.println("Current state: non-existent");
+					logger.logLine("Current state: non-existent");
 				}
 				else
 				{
-					System.out.println("Current state: " + state.getStateId().toString());
+					if (state.hasLabel())
+					{
+						logger.logLine("Current state: " + state.getLabel());
+					}
+					else
+					{
+						logger.logLine("Current state: " + state.getStateId().toString());
+					}
+					
+					resource.assertState(logger, instance);
 				}
 			}
 			catch (IndeterminateStateException ex)
@@ -371,6 +387,8 @@ public class WildebeestCommand
 		
 		if (this.getCommand() == CommandType.Migration)
 		{
+			logger.logLine("Wildebeest is migrating");
+
 			Resource resource = this.loadResource();
 			Instance instance = this.loadInstance();
 			UUID targetStateId = this.hasTargetStateId() ? this.getTargetStateId() :

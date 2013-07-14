@@ -133,6 +133,13 @@ public class PrintStreamLogger implements Logger
 		logLine(this.getStream(), "Migration complete");
 	}
 	
+	public void logLine(String message)
+	{
+		if (message == null) { throw new IllegalArgumentException("message cannot be null"); }
+		
+		logLine(this.getStream(), message);
+	}
+	
 	private static void logLine(
 		PrintStream out,
 		String message)
@@ -140,7 +147,7 @@ public class PrintStreamLogger implements Logger
 		if (out == null) { throw new IllegalArgumentException("out cannot be null"); }
 		if (message == null) { throw new IllegalArgumentException("message cannot be null"); }
 		
-		DateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss");
+		DateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		out.print(f.format(new Date()));
 		out.print(" - ");
 		out.println(message);
