@@ -23,3 +23,11 @@
 		font-size: 28pt;
 	}
 
+	div.pictureBox {
+		margin-top: 30px;
+		margin-bottom: 30px;
+		background-color: #7ea676;
+		padding: 30px;
+		text-align: center;
+	}
+

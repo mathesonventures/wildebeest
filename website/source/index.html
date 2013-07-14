@@ -77,22 +77,37 @@
 			<div class="span12">
 				<h1>Getting Started</h1>
 				<h2>Modeling Resources</h2>
-				<p>In Wildebeest you model a resource by defining all the possible states in which it may exist, and
-					the transitions that change the resource from one state to another.  Different types of
-					transitions may be needed to move between states.</p>
-				<p>TODO: Diagram</p>
+				<p>In Wildebeest you model a resource by defining all the possible states in which it may exist, and the
+					actions to migrate the resource from one state to another.  Different types of migrations may be
+					needed to move between states.</p>
+				<div class="pictureBox">
+					<img src="assets/diag_01_01_modeling_resources.png" width="900" height="300" />
+				</div>
 				<p>Note that Wildebeest considers the resource not existing at all to be a state as well which is
 					referred to as "non-existent".  To create a resource we transition it from non-existent to some
-					state.  To destroy a resource we can also transition it from some defined state to non-existent.</p>
-				<p>Typically the series of states will be a linear progression like in this example, but there some
-					interesting situations that can be handled elegantly by creating multiple possible paths through the
-					graph.</p>
-				<p>At any given state we can define a set of assertions that must hold true for the state to be
-					considered valid.  Every time Wildebeest migrates your resource to a new state, it checks all of the
-					assertions at that new state to make sure that the migration was successful.  If any assertions
-					fail, then Wildebeest will stop the migration process.</p>
+					state.  To destroy a resource we can also transition it from some defined state to
+					non-existent.</p>
 				<p>Resources are defined in XML with either *.wbresource.xml or *.wbr as the file extension.  See below
 					for more examples of resource definitions.</p>
+				<p>To migrate our resource to the "Initial Schema Created" state, we would issue the migrate
+					command:</p>
+				<p>TODO: Migration command example</p>
+				<p>At any time, Wildebeest can check the current state of the resource for you using the state
+					command:</p>
+				<p>TODO: Example</p>
+				<p>Typically the series of states will be a linear progression like in this example, but there some
+					interesting use cases that can be handled elegantly by creating multiple possible paths through the
+					graph.</p>
+				<p>At any given state we can define a set of assertions that must hold true for the state to be
+					considered valid.  in Wildebeest the act of applying the assertions for a state is referred to as
+					"verifying" the state.  Wildebeest will verify the current state before attempting any migration,
+					and will abort the migraiton if the current state is found to be invalid.  Wildebeest also
+					verifies the new state after performing a migration, and will report to you if the new state is
+					found to be invalid.</p>
+				<div class="pictureBox">
+					<img src="assets/diag_01_02_assertions.png" width="900" height="300" />
+				</div>
+
 				<h2>Instance</h2>
 				<p>Having defined a resource, you can use that resource definition to create or migrate many instances
 					of the resource.  The information that defines a given instance of a resource is defined in a file

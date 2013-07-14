@@ -1,5 +1,5 @@
 
-		var initDur = 1000;
+		var initDur = 2000;
 
 		$(document).ready(function() {
 			// Start it up -  the clouds!!
@@ -9,7 +9,8 @@
 			setTimeout("generateCloud(2);", (Math.random() * 30000));
 */
 
-			setTimeout("startAnim()", 1000);
+			setTimeout("startAnim()", 3000);
+			generateHerds();
 		});
 
 		function startAnim() {
@@ -31,9 +32,6 @@
 			generateCloud(1, true, false);
 			generateCloud(2, true, true);
 			generateCloud(2, true, false);
-
-			generateHerds();
-
 		}
 
 		var clouds = new Array();
@@ -189,7 +187,7 @@ console.log(
 					});
 			}
 
-			var nextHerdDelay = next(20000, dur * 0.8);
+			var nextHerdDelay = next(dur * 0.2, dur * 0.5);
 console.log("nextHerdDelay: " + nextHerdDelay);
 
 			setTimeout(
