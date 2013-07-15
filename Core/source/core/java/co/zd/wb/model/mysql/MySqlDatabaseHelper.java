@@ -1,0 +1,121 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.zd.wb.model.mysql;
+
+import co.zd.wb.model.database.DatabaseHelper;
+import co.zd.wb.model.AssertionFaultException;
+import co.zd.wb.model.FaultException;
+import co.zd.wb.model.base.ImmutableAssertionResponse;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/**
+ *
+ * @author brendonm
+ */
+public class MySqlDatabaseHelper
+{
+	public static boolean schemaExists(
+		MySqlDatabaseInstance instance,
+		String schemaName)
+	{
+		if (instance == null) { throw new IllegalArgumentException("instance"); }
+		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
+		if ("".equals(schemaName)) { throw new IllegalArgumentException("schemaName cannot be empty"); }
+		
+		boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			conn = instance.getInfoDataSource().getConnection();
+			ps = conn.prepareStatement("SELECT * FROM SCHEMATA WHERE SCHEMA_NAME = ?;");
+			ps.setString(1, schemaName);
+			
+			rs = ps.executeQuery();
+		
+			result = rs.next();
+		}
+		catch(SQLException e)
+		{
+			throw new FaultException(e);
+		}
+		finally
+		{
+			try
+			{
+				DatabaseHelper.release(rs);
+				DatabaseHelper.release(ps);
+				DatabaseHelper.release(conn);
+			}
+			catch(SQLException e)
+			{
+				throw new FaultException(e);
+			}
+		}
+		
+		return result;
+	}
+	
+	public static boolean tableExists(
+		MySqlDatabaseInstance instance,
+		String schemaName,
+		String tableName)
+	{
+		if (instance == null) { throw new IllegalArgumentException("instance"); }
+		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
+		if ("".equals(schemaName)) { throw new IllegalArgumentException("schemaName cannot be empty"); }
+		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
+		if ("".equals(tableName)) { throw new IllegalArgumentException("tableName cannot be empty"); }
+		
+		StringBuilder query = new StringBuilder();
+		query
+			.append("SELECT TABLE_NAME FROM TABLES ")
+			.append("WHERE ")
+				.append("TABLE_SCHEMA = ? AND ")
+				.append("TABLE_NAME = ?;");
+
+		boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try
+		{
+			conn = instance.getInfoDataSource().getConnection();
+			ps = conn.prepareStatement(query.toString());
+			ps.setString(1, instance.getSchemaName());
+			ps.setString(2, tableName);
+			rs = ps.executeQuery();
+
+			result = rs.next();
+		}
+		catch(SQLException e)
+		{
+			throw new FaultException(e);
+		}
+		finally
+		{
+			try
+			{
+				DatabaseHelper.release(rs);
+				DatabaseHelper.release(ps);
+				DatabaseHelper.release(conn);
+			}
+			catch (SQLException e)
+			{
+				throw new FaultException(e);
+			}
+		}
+		
+		return result;
+	}
+}

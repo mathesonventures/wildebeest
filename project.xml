@@ -22,17 +22,17 @@
 
 	<identity>
 		<organization>
-			<id>MV</id>
-			<name>Matheson Ventures</name>
+			<id>ZD</id>
+			<name>Zen Digital</name>
 		</organization>
-		<name>STM</name>
-		<title>State Machine</title>
-		<url>http://mv.com/products/stm</url>
+		<name>Wildebeest</name>
+		<title>Wildebeest</title>
+		<url>http://zendigital.co/wildebeest</url>
 	</identity>
 
 	<copyright>
 		<years>2013</years>
-		<owner>Matheson Ventures Pte Ltd</owner>
+		<owner>Zen Digital Co Inc</owner>
 	</copyright>
 
 	<version>

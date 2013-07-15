@@ -29,7 +29,7 @@
 		<java>
 			<source>1.5</source>
 			<target>1.5</target>
-			<mainclass>co.mv.stm.Main</mainclass>
+			<mainclass>co.zd.wb.cli.WildebeestCommand</mainclass>
 		</java>
 	</type>
 
