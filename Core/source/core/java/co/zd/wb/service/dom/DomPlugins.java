@@ -4,6 +4,7 @@ import co.zd.wb.service.AssertionBuilder;
 import co.zd.wb.service.InstanceBuilder;
 import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.MigrationBuilder;
+import co.zd.wb.service.dom.database.RowDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.database.RowExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlCreateDatabaseDomMigrationBuilder;
 import co.zd.wb.service.dom.mysql.MySqlDatabaseDoesNotExistDomAssertionBuilder;
@@ -32,6 +33,7 @@ public class DomPlugins
 		Map<String, AssertionBuilder> result = new HashMap<String, AssertionBuilder>();
 		
 		result.put("RowExists", new RowExistsDomAssertionBuilder());
+		result.put("RowDoesNotExist", new RowDoesNotExistDomAssertionBuilder());
 		result.put("MySqlDatabaseDoesNotExist", new MySqlDatabaseDoesNotExistDomAssertionBuilder());
 		result.put("MySqlDatabaseExists", new MySqlDatabaseExistsDomAssertionBuilder());
 		result.put("MySqlTableDoesNotExist", new MySqlTableDoesNotExistDomAssertionBuilder());

@@ -8,7 +8,6 @@ import co.zd.wb.model.State;
 import co.zd.wb.model.MigrationFailedException;
 import co.zd.wb.model.MigrationNotPossibleException;
 import co.zd.wb.service.InstanceLoaderFault;
-import co.zd.wb.service.Logger;
 import co.zd.wb.service.PrintStreamLogger;
 import co.zd.wb.service.ResourceLoaderFault;
 import co.zd.wb.service.dom.DomInstanceLoader;

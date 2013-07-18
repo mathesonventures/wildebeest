@@ -262,6 +262,158 @@ DROP TABLE ProductType;
 2013-06-09T19:49:11 - Current state: Core Schema Loaded
 2013-06-09T19:49:11 - Assertion "ProductType table exists" passed: Table ProductType exists
 2013-06-09T19:49:11 - Assertion "Product table exists" failed: Table Product does not exist</pre>
+
+				<h1>Reference</h1>
+
+				<h2>Database Resources</h2>
+
+				<table class="reference">
+					<tr>
+						<th style="width: 300px;">Name</th>
+						<th>Description</th>
+						<th style="width: 400px;">Examples</th>
+					</tr>
+					<tr>
+						<td><img src="assets/ref_assertion.png" title="Assertion" /> RowExists</td>
+						<td>
+							<p>Asserts that a query results in exactly one row.</p>
+						</td>
+						<td>
+							<pre class="code">&lt;assertion
+    type=&quot;RowExists&quot;
+    id=&quot;c1ea9cfb-bbf5-4262-8512-4bc13ebb05a4&quot;
+    name=&quot;ProductType HW exists&quot;&gt;
+    &lt;sql&gt;&lt;![CDATA[
+        SELECT * FROM ProductType WHERE ProductTypeCode = &apos;HW&apos;;
+    ]]&gt;&lt;/sql&gt;
+&lt;/assertion&gt; </pre>
+						</td>
+					</tr>
+					<tr>
+						<td><img src="assets/ref_assertion.png" title="Assertion" /> RowDoesNotExist</td>
+						<td>
+							<p>Asserts that a query results in zero rows.</p>
+						</td>
+						<td>
+							<pre class="code">&lt;assertion
+    type=&quot;RowDoesNotExist&quot;
+    id=&quot;c8b0941e-83bc-4151-83e3-8ca633735fbf&quot;
+    name=&quot;ProductType XY does not exist&quot;&gt;
+    &lt;sql&gt;&lt;![CDATA[
+        SELECT * FROM ProductType WHERE ProductTypeCode = &apos;XY&apos;;
+    ]]&gt;&lt;/sql&gt;
+&lt;/assertion&gt;</pre>
+						</td>
+					</tr>
+					<tr>
+						<td><img src="assets/ref_migration.png" title="Migration" /> SqlScript</td>
+						<td>
+							<p>Migrates a database resource from one state to another by applying a SQL script.</p>
+						</td>
+						<td>
+							<pre class="code">
+&lt;migration
+    type=&quot;SqlScript&quot;
+    id=&quot;8b57f16d-c690-4f10-b68f-6f1ee75fe32b&quot;
+    fromStateId=&quot;199b7cc1-3cc6-48ca-b012-a70d05d5b5e7&quot;
+    toStateId=&quot;363568f1-aaed-4a50-bea0-9ddee713cc11&quot;&gt;
+    &lt;sql&gt;&lt;![CDATA[
+
+/* ProductType */
+CREATE TABLE  `ProductType` (
+  `ProductTypeCode` char(2) NOT NULL,
+  `Name` varchar(10) NOT NULL,
+  PRIMARY KEY (`ProductTypeCode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO
+    ProductType(ProductTypeCode, Name)
+VALUES
+    (&apos;HW&apos;, &apos;Hardware&apos;),
+    (&apos;SW&apos;, &apos;Software&apos;);
+
+&lt;/migration&gt;
+</pre>
+						</td>
+					</tr>
+				</table>
+
+				<h2>MySQL Resources</h2>
+
+				<table class="reference">
+					<tr>
+						<th style="width: 300px;">Name</th>
+						<th>Description</th>
+						<th style="width: 400px;">Examples</th>
+					</tr>
+					<tr>
+						<td><img src="assets/ref_migration.png" title="Migration" /> MySqlCreateDatabase</td>
+						<td>
+							<p>Typically this will be the first transition in the definition of any MySQL resource managed by Wildebeest.  It creates a new schema.</p>
+							<p>This transition takes the name of the schema to create from the MySqlDatabaseInstance it is applied to.</p>
+						</td>
+						<td>
+							<pre class="code">&lt;transition
+    type=&quot;MySqlCreateDatabase&quot;
+    id=&quot;6b21e1e3-ff3a-44b3-84ec-e21fb01c0110&quot;
+    toStateId=&quot;199b7cc1-3cc6-48ca-b012-a70d05d5b5e7&quot;&gt;
+&lt;/transition&gt;</pre>
+						</td>
+					</tr>
+					<tr>
+						<td><img src="assets/ref_assertion.png" title="Assertion" /> MySqlDatabaseExists</td>
+						<td>
+							<p>Used to assert that the database described by the instance exists.</p>
+						</td>
+						<td>
+							<pre class="code">&lt;assertion
+    type=&quot;MySqlDatabaseExists&quot;
+    id=&quot;19b64fb6-f95f-4221-bc64-303f62a3eda8&quot;
+    name=&quot;Database exists&quot; /&gt;</pre>
+						</td>
+					</tr>
+					<tr>
+						<td><img src="assets/ref_assertion.png" title="Assertion" /> MySqlDatabaseDoesNotExist</td>
+						<td>
+							<p>Used to assert that database described by the instance does not exist.</p>
+						</td>
+						<td>
+							<pre class="code">&lt;assertion
+    type=&quot;MySqlDatabaseDoesNotExist&quot;
+    id=&quot;74204122-63fd-40f3-9b12-2b62e432a371&quot;
+    name=&quot;Database exists&quot; /&gt;</pre>
+						</td>
+					</tr>
+					<tr>
+						<td><img src="assets/ref_assertion.png" title="Assertion" /> MySqlTableExists</td>
+						<td>
+							<p>Used to assert that a specific table exists within the database.</p>
+						</td>
+						<td>
+							<pre class="code">&lt;assertion
+    type=&quot;MySqlTableExists&quot;
+    id=&quot;3808ba63-f055-4bf7-88fe-023546e6ed16&quot;
+    name=&quot;ProductType table exists&quot;&gt;
+        &lt;tableName&gt;ProductType&lt;/tableName&gt;
+&lt;/assertion&gt;</pre>
+						</td>
+					</tr>
+					<tr>
+						<td><img src="assets/ref_assertion.png" title="Assertion" /> MySqlTableDoesNotExists</td>
+						<td>
+							<p>Used to assert that a specific table does not exist within the database.</p>
+						</td>
+						<td>
+							<pre class="code">&lt;assertion
+    type=&quot;MySqlTableDoesNotExist&quot;
+    id=&quot;f112b36f-8312-4f8a-b7a5-e30d17be3c9b&quot;
+    name=&quot;ProductType table does not exist&quot;&gt;
+        &lt;tableName&gt;ProductType&lt;/tableName&gt;
+&lt;/assertion&gt;</pre>
+						</td>
+					</tr>
+				</table>
+
 			</div>
 		</div>
 

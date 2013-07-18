@@ -14,6 +14,21 @@
 				<assertion type="MySqlTableExists" id="3808ba63-f055-4bf7-88fe-023546e6ed16" name="ProductType table exists">
 					<tableName>ProductType</tableName>
 				</assertion>
+				<assertion type="RowExists" id="c1ea9cfb-bbf5-4262-8512-4bc13ebb05a4" name="ProductType HW exists">
+					<sql><![CDATA[
+						SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';
+					]]></sql>
+				</assertion>
+				<assertion type="RowExists" id="2d22dfc4-9f6d-4286-93e8-ded9aac0e047" name="ProductType SW exists">
+					<sql><![CDATA[
+						SELECT * FROM ProductType WHERE ProductTypeCode = 'SW';
+					]]></sql>
+				</assertion>
+				<assertion type="RowDoesNotExist" id="c8b0941e-83bc-4151-83e3-8ca633735fbf" name="ProductType XY does not exist">
+					<sql><![CDATA[
+						SELECT * FROM ProductType WHERE ProductTypeCode = 'XY';
+					]]></sql>
+				</assertion>
 				<assertion type="MySqlTableExists" id="54c78eca-9eda-4983-b9a5-0dcb1be686ff" name="Product table exists">
 					<tableName>Product</tableName>
 				</assertion>

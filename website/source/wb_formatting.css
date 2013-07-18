@@ -41,3 +41,8 @@
 		text-align: center;
 	}
 
+	table.reference th, table.reference td {
+		padding: 12px;
+		vertical-align: top;
+	}
+
