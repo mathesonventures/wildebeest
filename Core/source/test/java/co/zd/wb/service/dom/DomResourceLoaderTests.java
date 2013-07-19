@@ -1,6 +1,5 @@
 package co.zd.wb.service.dom;
 
-import co.zd.wb.service.dom.DomResourceLoader;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.model.Resource;
 import co.zd.wb.model.base.FakeAssertion;
@@ -32,7 +31,7 @@ public class DomResourceLoaderTests
 			.openElement("resource",
 				"id", resourceId.toString(),
 				"type", "Fake",
-				"name", "MV AAA Database")
+				"name", "Product Catalogue Database")
 			.closeElement("resource");
 
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
@@ -59,7 +58,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResource.class, resourceId, "MV AAA Database", resource, "resource");
+		AssertExtensions.assertResource(FakeResource.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		Assert.assertEquals("resource.states.size", 0, resource.getStates().size());
@@ -85,7 +84,7 @@ public class DomResourceLoaderTests
 			.openElement("resource",
 				"id", resourceId.toString(),
 				"type", "Fake",
-				"name", "MV AAA Database")
+				"name", "Product Catalogue Database")
 				.openElement("states")
 					.openElement("state", "id", stateId.toString(), "label", "Foo").closeElement("state")
 				.closeElement("states")
@@ -115,7 +114,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResource.class, resourceId, "MV AAA Database", resource, "resource");
+		AssertExtensions.assertResource(FakeResource.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -142,7 +141,7 @@ public class DomResourceLoaderTests
 			.openElement("resource",
 				"id", resourceId.toString(),
 				"type", "Fake",
-				"name", "MV AAA Database")
+				"name", "Product Catalogue Database")
 				.openElement("states")
 					.openElement("state", "id", stateId.toString()).closeElement("state")
 				.closeElement("states")
@@ -172,7 +171,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResource.class, resourceId, "MV AAA Database", resource, "resource");
+		AssertExtensions.assertResource(FakeResource.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -200,7 +199,7 @@ public class DomResourceLoaderTests
 			.openElement("resource",
 				"id", resourceId.toString(),
 				"type", "Fake",
-				"name", "MV AAA Database")
+				"name", "Product Catalogue Database")
 				.openElement("states")
 					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
 					.openElement("state", "id", state2Id.toString(), "label", "Bar").closeElement("state")
@@ -231,7 +230,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResource.class, resourceId, "MV AAA Database", resource, "resource");
+		AssertExtensions.assertResource(FakeResource.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		Assert.assertEquals("resource.states.size", 2, resource.getStates().size());
@@ -260,7 +259,7 @@ public class DomResourceLoaderTests
 			.openElement("resource",
 				"id", resourceId.toString(),
 				"type", "Fake",
-				"name", "MV AAA Database")
+				"name", "Product Catalogue Database")
 				.openElement("states")
 					.openElement("state", "id", stateId.toString(), "label", "Foo")
 						.openElement("assertions")
@@ -301,7 +300,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResource.class, resourceId, "MV AAA Database", resource, "resource");
+		AssertExtensions.assertResource(FakeResource.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -339,7 +338,7 @@ public class DomResourceLoaderTests
 			.openElement("resource",
 				"id", resourceId.toString(),
 				"type", "Fake",
-				"name", "MV AAA Database")
+				"name", "Product Catalogue Database")
 				.openElement("states")
 					.openElement("state", "id", stateId.toString(), "label", "Foo")
 						.openElement("assertions")
@@ -386,7 +385,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResource.class, resourceId, "MV AAA Database", resource, "resource");
+		AssertExtensions.assertResource(FakeResource.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -427,7 +426,7 @@ public class DomResourceLoaderTests
 			.openElement("resource",
 				"id", resourceId.toString(),
 				"type", "Fake",
-				"name", "MV AAA Database")
+				"name", "Product Catalogue Database")
 				.openElement("states")
 					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
 				.closeElement("states")
@@ -468,7 +467,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResource.class, resourceId, "MV AAA Database", resource, "resource");
+		AssertExtensions.assertResource(FakeResource.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -500,7 +499,7 @@ public class DomResourceLoaderTests
 			.openElement("resource",
 				"id", resourceId.toString(),
 				"type", "Fake",
-				"name", "MV AAA Database")
+				"name", "Product Catalogue Database")
 				.openElement("states")
 					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
 				.closeElement("states")
@@ -541,7 +540,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResource.class, resourceId, "MV AAA Database", resource, "resource");
+		AssertExtensions.assertResource(FakeResource.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -574,7 +573,7 @@ public class DomResourceLoaderTests
 			.openElement("resource",
 				"id", resourceId.toString(),
 				"type", "Fake",
-				"name", "MV AAA Database")
+				"name", "Product Catalogue Database")
 				.openElement("states")
 					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
 					.openElement("state", "id", state2Id.toString(), "label", "Bar").closeElement("state")
@@ -617,7 +616,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResource.class, resourceId, "MV AAA Database", resource, "resource");
+		AssertExtensions.assertResource(FakeResource.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		Assert.assertEquals("resource.states.size", 2, resource.getStates().size());

@@ -1,7 +1,5 @@
 package co.zd.wb.model.base;
 
-import co.zd.wb.model.base.BaseAssertion;
-import co.zd.wb.model.base.ImmutableAssertionResponse;
 import co.zd.wb.model.Assertion;
 import co.zd.wb.model.AssertionResponse;
 import co.zd.wb.model.ModelExtensions;

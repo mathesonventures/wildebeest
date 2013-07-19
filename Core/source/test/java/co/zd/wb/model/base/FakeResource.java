@@ -1,6 +1,5 @@
 package co.zd.wb.model.base;
 
-import co.zd.wb.model.base.BaseResource;
 import co.zd.wb.model.IndeterminateStateException;
 import co.zd.wb.model.ModelExtensions;
 import co.zd.wb.model.Instance;

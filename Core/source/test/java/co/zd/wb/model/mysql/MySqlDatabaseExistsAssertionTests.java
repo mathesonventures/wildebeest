@@ -1,9 +1,5 @@
 package co.zd.wb.model.mysql;
 
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
-import co.zd.wb.model.mysql.MySqlDatabaseResource;
-import co.zd.wb.model.mysql.MySqlCreateDatabaseMigration;
-import co.zd.wb.model.mysql.MySqlDatabaseExistsAssertion;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.model.base.FakeInstance;
 import co.zd.wb.model.AssertionFailedException;

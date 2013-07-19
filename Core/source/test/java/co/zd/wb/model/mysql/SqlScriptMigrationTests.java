@@ -1,6 +1,5 @@
 package co.zd.wb.model.mysql;
 
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
 import co.zd.wb.model.database.SqlScriptMigration;
 import co.zd.wb.model.MigrationFailedException;
 import co.zd.helium.fixture.MySqlDatabaseFixture;
@@ -36,7 +35,7 @@ public class SqlScriptMigrationTests
 			UUID.randomUUID(),
 			null,
 			UUID.randomUUID(),
-			MySqlElementFixtures.realmTypeRefCreateTableStatement());
+			MySqlElementFixtures.productCatalogueDatabase());
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),

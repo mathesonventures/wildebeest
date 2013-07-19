@@ -1,9 +1,5 @@
 package co.zd.wb.model.mysql;
 
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
-import co.zd.wb.model.mysql.MySqlDatabaseResource;
-import co.zd.wb.model.mysql.MySqlTableDoesNotExistAssertion;
-import co.zd.wb.model.mysql.MySqlCreateDatabaseMigration;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.model.base.FakeInstance;
 import co.zd.wb.model.database.SqlScriptMigration;
@@ -57,7 +53,7 @@ public class MySqlTableDoesNotExistAssertionTests
 			UUID.randomUUID(),
 			created.getStateId(),
 			schemaLoaded.getStateId(),
-			MySqlElementFixtures.realmTypeRefCreateTableStatement());
+			MySqlElementFixtures.productCatalogueDatabase());
 		resource.getMigrations().add(tran2);
 
 		String databaseName = MySqlElementFixtures.databaseName("StmTest");
@@ -73,9 +69,9 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"RealmTypeRef does not exists",
+			"ProductType does not exists",
 			0,
-			"RealmTypeRef");
+			"ProductType");
  
 		//
 		// Execute
@@ -97,7 +93,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 
 		Assert.assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(false, "Table RealmTypeRef exists", response, "response");
+		AssertExtensions.assertAssertionResponse(false, "Table ProductType exists", response, "response");
 		
 	 }
 	 
@@ -139,9 +135,9 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"RealmTypeRef does not exist",
+			"ProductType does not exist",
 			0,
-			"RealmTypeRef");
+			"ProductType");
  
 		//
 		// Execute
@@ -163,7 +159,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 
 		Assert.assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(true, "Table RealmTypeRef does not exist", response, "response");
+		AssertExtensions.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
 		
 	 }
 	 
@@ -187,9 +183,9 @@ public class MySqlTableDoesNotExistAssertionTests
 		 
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"RealmTypeRef Exists",
+			"ProductType Exists",
 			0,
-			"RealmTypeRef");
+			"ProductType");
  
 		//
 		// Execute

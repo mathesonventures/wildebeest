@@ -1,6 +1,5 @@
 package co.zd.wb.model.base;
 
-import co.zd.wb.model.base.ImmutableState;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.model.Assertion;
 import co.zd.wb.model.AssertionFailedException;
@@ -354,7 +353,11 @@ public class BaseResourceTests
 		throw new UnsupportedOperationException();
 	}
 	
-	@Test public void migrateToSameState() throws IndeterminateStateException, AssertionFailedException, MigrationNotPossibleException, MigrationFailedException
+	@Test public void migrateToSameState() throws
+		IndeterminateStateException,
+		AssertionFailedException,
+		MigrationNotPossibleException,
+		MigrationFailedException
 	{
 		
 		//

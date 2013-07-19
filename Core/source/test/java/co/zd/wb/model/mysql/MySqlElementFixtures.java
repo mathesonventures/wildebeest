@@ -34,22 +34,32 @@ public class MySqlElementFixtures
 		return sql.toString();
 	}
 	
-	public static String realmTypeRefCreateTableStatement()
+	public static String productCatalogueDatabase()
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("CREATE TABLE  `RealmTypeRef` (").append("\n")
-			.append("  `RealmTypeRcd` char(2) NOT NULL,").append("\n")
+		sql.append("CREATE TABLE  `ProductType` (").append("\n")
+			.append("  `ProductTypeCode` char(2) NOT NULL,").append("\n")
 			.append("  `Name` varchar(10) NOT NULL,").append("\n")
-			.append("  PRIMARY KEY (`RealmTypeRcd`)").append("\n")
+			.append("  PRIMARY KEY (`ProductTypeCode`)").append("\n")
 			.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;").append("\n");
 
+		sql.append("CREATE TABLE `Product` (").append("\n")
+			.append("  `ProductId` char(36) NOT NULL,").append("\n")
+			.append("  `ProductTypeCode` char(2) NOT NULL,").append("\n")
+			.append("  `Name` varchar(50) NOT NULL,").append("\n")
+			.append("  `Description` varchar(4000) NOT NULL,").append("\n")
+			.append("  PRIMARY KEY (`ProductId`),").append("\n")
+			.append("  KEY `FK_Product_ProductTypeCode` (`ProductTypeCode`),").append("\n")
+			.append("  CONSTRAINT `FK_Product_ProductTypeCode` FOREIGN KEY (`ProductTypeCode`) REFERENCES `ProductType` (`ProductTypeCode`)").append("\n")
+			.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;").append("\n");
+		
 		return sql.toString();
 	}
 	
-	public static String realmTypeRefInsertUserBaseRow()
+	public static String productTypeRows()
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("INSERT INTO `RealmTypeRef`(RealmTypeRcd, Name) VALUES('UB', 'UserBase');");
+		sql.append("INSERT INTO ProductType(ProductTypeCode, Name) VALUES('HW', 'Hardware'), ('SW', 'Software');");
 		return sql.toString();
 	}
 }

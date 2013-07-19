@@ -1,8 +1,5 @@
 package co.zd.wb.model.mysql;
 
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
-import co.zd.wb.model.mysql.MySqlDatabaseResource;
-import co.zd.wb.model.mysql.MySqlCreateDatabaseMigration;
 import co.zd.wb.model.database.SqlScriptMigration;
 import co.zd.wb.model.AssertionFailedException;
 import co.zd.wb.model.IndeterminateStateException;
@@ -11,6 +8,7 @@ import co.zd.wb.model.State;
 import co.zd.wb.model.MigrationFailedException;
 import co.zd.wb.model.MigrationNotPossibleException;
 import co.zd.wb.AssertExtensions;
+import co.zd.wb.ProductCatalogueResource;
 import co.zd.wb.model.Resource;
 import co.zd.wb.model.base.ImmutableState;
 import co.zd.wb.service.PrintStreamLogger;
@@ -25,14 +23,6 @@ import org.junit.Test;
 
 public class IntegrationTests
 {
-	private static final UUID ResourceId = UUID.randomUUID();
-	private static final UUID StateIdCreated = UUID.randomUUID();
-	private static final UUID StateIdSchemaLoaded = UUID.randomUUID();
-	private static final UUID StateIdReferenceDataLoaded = UUID.randomUUID();
-	private static final UUID MigrationIdCreateDatabase = UUID.randomUUID();
-	private static final UUID MigrationIdLoadInitialSchema = UUID.randomUUID();
-	private static final UUID MigrationIdLoadReferenceData = UUID.randomUUID();
-
 	@Test public void createDatabaseAddTableInsertRows() throws
 		IndeterminateStateException,
 		AssertionFailedException,
@@ -73,14 +63,14 @@ public class IntegrationTests
 			UUID.randomUUID(),
 			created.getStateId(),
 			initialSchema.getStateId(),
-			MySqlElementFixtures.realmTypeRefCreateTableStatement()));
+			MySqlElementFixtures.productCatalogueDatabase()));
 		
 		// Migration: Initial Schema to Populated
 		resource.getMigrations().add(new SqlScriptMigration(
 			UUID.randomUUID(),
 			initialSchema.getStateId(),
 			populated.getStateId(),
-			MySqlElementFixtures.realmTypeRefInsertUserBaseRow()));
+			MySqlElementFixtures.productTypeRows()));
 
 		String databaseName = MySqlElementFixtures.databaseName("StmTest");
 
@@ -117,12 +107,14 @@ public class IntegrationTests
 		// Fixture Setup
 		//
 		
+		ProductCatalogueResource prodCatResource = new ProductCatalogueResource();
+		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
 			DomPlugins.migrationBuilders(),
-			resource().toString());
-		
+			prodCatResource.getXmlBuilder().toString());
+
 		//
 		// Execute - load
 		//
@@ -165,19 +157,26 @@ public class IntegrationTests
 
 	}
 	
-	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws IndeterminateStateException, AssertionFailedException, MigrationNotPossibleException, MigrationFailedException, SQLException
+	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
+		IndeterminateStateException,
+		AssertionFailedException,
+		MigrationNotPossibleException,
+		MigrationFailedException,
+		SQLException
 	{
 		
 		//
 		// Resource
 		//
+
+		ProductCatalogueResource prodCatResource = new ProductCatalogueResource();
 		
 		// Fixture
 		DomResourceLoader resourceLoader = new DomResourceLoader(
 			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
 			DomPlugins.migrationBuilders(),
-			resource().toString());
+			prodCatResource.getXmlBuilder().toString());
 		
 		// Execute
 		Resource resource = resourceLoader.load();
@@ -208,7 +207,10 @@ public class IntegrationTests
 		
 		try
 		{
-			resource.migrate(new PrintStreamLogger(System.out), instance, StateIdReferenceDataLoaded);
+			resource.migrate(
+				new PrintStreamLogger(System.out),
+				instance,
+				ProductCatalogueResource.StateIdInitialReferenceDataLoaded);
 		}
 		finally
 		{
@@ -217,61 +219,16 @@ public class IntegrationTests
 		
 	}
 	
-	private static XmlBuilder resource()
-	{
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openResource(ResourceId, "MySqlDatabase", "Database")
-				.openStates()
-					.openState(StateIdCreated, "Created")
-						.openAssertions()
-							.openAssertion("MySqlDatabaseExists", UUID.randomUUID(), "Database exists")
-							.closeAssertion()
-						.closeAssertions()
-					.closeState()
-					.openState(StateIdSchemaLoaded, "Schema Loaded")
-						.openAssertions()
-							.openAssertion("MySqlTableExists", UUID.randomUUID(), "Table exists")
-								.openElement("tableName").text("realmTypeRef").closeElement("tableName")
-							.closeAssertion()
-						.closeAssertions()
-					.closeState()
-					.openState(StateIdReferenceDataLoaded, "Reference Data Loaded")
-						.openAssertions()
-							.openAssertion("RowExists", UUID.randomUUID(), "RealmTypeRef UB exists")
-								.openElement("sql").openCdata()
-									.text("SELECT RealmTypeRcd FROM RealmTypeRef WHERE RealmTypeRcd = 'UB';")
-								.closeCdata().closeElement("sql")
-							.closeAssertion()
-						.closeAssertions()
-					.closeState()
-				.closeStates()
-				.openMigrations()
-					.openMigration("MySqlCreateDatabase", MigrationIdCreateDatabase, null, StateIdCreated)
-					.closeMigration()
-					.openMigration("SqlScript", MigrationIdLoadInitialSchema, StateIdCreated, StateIdSchemaLoaded)
-						.openElement("sql").openCdata()
-							.text(MySqlElementFixtures.realmTypeRefCreateTableStatement())
-						.closeCdata().closeElement("sql")
-					.closeMigration()
-					.openMigration("SqlScript", MigrationIdLoadReferenceData, StateIdSchemaLoaded,
-						StateIdReferenceDataLoaded)
-						.openElement("sql").openCdata()
-							.text(MySqlElementFixtures.realmTypeRefInsertUserBaseRow())
-						.closeCdata().closeElement("sql")
-					.closeMigration()
-				.closeMigrations()
-			.closeResource();
-		
-		return resourceXml;
-	}
-	
 	private static void assertResource(Resource resource)
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource"); }
 		
-		AssertExtensions.assertResource(MySqlDatabaseResource.class, ResourceId, "Database", resource, "resource");
+		AssertExtensions.assertResource(
+			MySqlDatabaseResource.class,
+			ProductCatalogueResource.ResourceId,
+			"Product Catalogue Database",
+			resource,
+			"resource");
 	}
 	
 	private static XmlBuilder instance(

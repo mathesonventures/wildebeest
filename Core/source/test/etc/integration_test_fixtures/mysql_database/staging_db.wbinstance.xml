@@ -3,5 +3,5 @@
 	<port>3306</port>
 	<adminUsername>root</adminUsername>
 	<adminPassword>password</adminPassword>
-	<schemaName>MV.STM.IntegrationTest</schemaName>
+	<schemaName>ProductCatalogueStaging</schemaName>
 </instance>

@@ -1,6 +1,5 @@
 package co.zd.wb.model.mysql;
 
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
 import co.zd.wb.model.database.DatabaseHelper;
 import java.sql.SQLException;
 

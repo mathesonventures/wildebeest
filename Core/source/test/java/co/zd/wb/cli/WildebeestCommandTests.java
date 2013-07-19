@@ -1,7 +1,5 @@
 package co.zd.wb.cli;
 
-import co.zd.wb.cli.CommandType;
-import co.zd.wb.cli.WildebeestCommand;
 import java.util.UUID;
 import junit.framework.Assert;
 import org.junit.Test;

@@ -1,6 +1,5 @@
 package co.zd.wb.model.base;
 
-import co.zd.wb.model.base.BaseMigration;
 import co.zd.wb.model.ModelExtensions;
 import co.zd.wb.model.Instance;
 import co.zd.wb.model.MigrationFailedException;

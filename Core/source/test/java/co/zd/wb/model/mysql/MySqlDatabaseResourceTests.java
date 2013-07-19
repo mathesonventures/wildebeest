@@ -1,7 +1,5 @@
 package co.zd.wb.model.mysql;
 
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
-import co.zd.wb.model.mysql.MySqlDatabaseResource;
 import co.zd.helium.fixture.MySqlDatabaseFixture;
 import co.zd.wb.model.IndeterminateStateException;
 import co.zd.wb.model.State;

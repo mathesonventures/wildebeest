@@ -230,6 +230,5 @@ public class AssertExtensions
 		Assert.assertEquals("adminUsername", expectedAdminUsername, db.getAdminUsername());
 		Assert.assertEquals("adminPassword", expectedAdminPassword, db.getAdminPassword());
 		Assert.assertEquals("schemaName", expectedSchemaName, db.getSchemaName());
-		
 	}
 }

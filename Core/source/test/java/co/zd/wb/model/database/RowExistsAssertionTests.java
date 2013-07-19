@@ -1,6 +1,5 @@
 package co.zd.wb.model.database;
 
-import co.zd.wb.model.database.RowExistsAssertion;
 import co.zd.wb.model.AssertionResponse;
 import co.zd.wb.model.mysql.MySqlDatabaseInstance;
 import co.zd.wb.model.mysql.MySqlElementFixtures;
@@ -28,7 +27,7 @@ public class RowExistsAssertionTests
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
 			"stm_test",
-			MySqlElementFixtures.realmTypeRefCreateTableStatement());
+			MySqlElementFixtures.productCatalogueDatabase());
 		f.setUp();
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
@@ -40,9 +39,9 @@ public class RowExistsAssertionTests
 		
 		RowExistsAssertion assertion = new RowExistsAssertion(
 			UUID.randomUUID(),
-			"UserBase RealmTypeRef Exists",
+			"ProductType HW Exists",
 			0,
-			"SELECT * FROM RealmTypeRef WHERE RealmTypeRcd = 'UB';");
+			"SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';");
 		
 		//
 		// Execute
@@ -83,8 +82,8 @@ public class RowExistsAssertionTests
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
 			"stm_test",
-			MySqlElementFixtures.realmTypeRefCreateTableStatement() +
-			MySqlElementFixtures.realmTypeRefInsertUserBaseRow());
+			MySqlElementFixtures.productCatalogueDatabase() +
+			MySqlElementFixtures.productTypeRows());
 		f.setUp();
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
@@ -96,9 +95,9 @@ public class RowExistsAssertionTests
 		
 		RowExistsAssertion assertion = new RowExistsAssertion(
 			UUID.randomUUID(),
-			"UserBase RealmTypeRef Exists",
+			"ProductType HW Exists",
 			0,
-			"SELECT * FROM RealmTypeRef WHERE RealmTypeRcd = 'UB';");
+			"SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';");
 		
 		//
 		// Execute
