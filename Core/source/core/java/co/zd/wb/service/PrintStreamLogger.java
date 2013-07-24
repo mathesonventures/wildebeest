@@ -1,10 +1,14 @@
 package co.zd.wb.service;
 
 import co.zd.wb.model.Assertion;
+import co.zd.wb.model.AssertionFailedException;
 import co.zd.wb.model.AssertionResponse;
+import co.zd.wb.model.IndeterminateStateException;
 import co.zd.wb.model.Resource;
 import co.zd.wb.model.State;
 import co.zd.wb.model.Migration;
+import co.zd.wb.model.MigrationFailedException;
+import co.zd.wb.model.MigrationNotPossibleException;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -133,7 +137,31 @@ public class PrintStreamLogger implements Logger
 		logLine(this.getStream(), "Migration complete");
 	}
 	
-	public void logLine(String message)
+	@Override public void indeterminateState(
+		IndeterminateStateException e)
+	{
+		logLine("Indeterminate state: " + e.getMessage());
+	}
+	
+	@Override public void assertionFailed(
+		AssertionFailedException e)
+	{
+		logLine("Assertion failed: " + e.getMessage());
+	}
+
+	@Override public void migrationNotPossible(
+		MigrationNotPossibleException e)
+	{
+		logLine("Migration not possible: " + e.getMessage());
+	}
+	
+	@Override public void migrationFailed(
+		MigrationFailedException e)
+	{
+		logLine("Migration failed: " + e.getMessage());
+	}
+	
+	@Override public void logLine(String message)
 	{
 		if (message == null) { throw new IllegalArgumentException("message cannot be null"); }
 		

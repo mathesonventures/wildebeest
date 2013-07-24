@@ -10,7 +10,6 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
-	co.zd.wb.cli.WildebeestCommandTests.class,
 	co.zd.wb.model.base.BaseResourceTests.class,
 	co.zd.wb.model.database.RowDoesNotExistAssertionTests.class,
 	co.zd.wb.model.database.RowExistsAssertionTests.class,
