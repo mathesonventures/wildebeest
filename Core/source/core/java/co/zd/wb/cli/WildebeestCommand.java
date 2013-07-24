@@ -104,62 +104,35 @@ public class WildebeestCommand
 		
 		String command = args[0];
 		
-		switch (command)
+		if ("state".equals(command))
 		{
-			case "state":
+			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
+			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
+			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName))
 			{
-//				this.setCommand(CommandType.State);
-				String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
-				String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
-				if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName))
-				{
-					throw new RuntimeException("args missing");
-				}
+				throw new RuntimeException("args missing");
+			}
+
+			this.getInterface().state(resourceFileName, instanceFileName);
+		}
 				
-/*
-				this.setResource(resource);
-				this.setInstance(instance);
-*/
-				this.getInterface().state(resourceFileName, instanceFileName);
-				
-				break;
+		if ("migrate".equals(command))
+		{
+			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
+			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
+			String targetState = WildebeestCommand.getArg(args, "t", "targetState");
+			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) ||
+				isNullOrWhiteSpace(targetState))
+			{
+				throw new RuntimeException("args missing");
 			}
 				
-			case "migrate":
-			{
-//				this.setCommand(CommandType.Migration);
-				String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
-				String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
-				String targetState = WildebeestCommand.getArg(args, "t", "targetState");
-				if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) ||
-					isNullOrWhiteSpace(targetState))
-				{
-					throw new RuntimeException("args missing");
-				}
-				
-/*
-				this.setResource(resource);
-				this.setInstance(instance);
-				UUID targetStateId = null;
-				try
-				{
-					targetStateId = UUID.fromString(targetState);
-					this.setTargetStateId(targetStateId);
-				}
-				catch(IllegalArgumentException e)
-				{
-					this.setTargetStateLabel(targetState);
-				}
-*/
-				
-				this.getInterface().migrate(resourceFileName, instanceFileName, targetState);
-				
-				break;
-			}
-				
-			default:
+			this.getInterface().migrate(resourceFileName, instanceFileName, targetState);
+		}
+		
+		else
+		{
 				WildebeestCommand.printUsage(System.out);
-				break;
 		}
 	}
 
