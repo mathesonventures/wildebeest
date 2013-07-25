@@ -215,7 +215,7 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 		return m_schemaName;
 	}
 
-	private void setSchemaName(
+	public void setSchemaName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("schemaName cannot be null");

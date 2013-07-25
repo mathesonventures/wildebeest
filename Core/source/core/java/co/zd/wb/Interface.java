@@ -165,7 +165,20 @@ public class Interface
 
 		Resource resource = loadResource(resourceFile);
 		Instance instance = loadInstance(instanceFile);
-		
+
+		migrate(resource, instance, targetState);
+	}
+	
+	public void migrate(
+		Resource resource,
+		Instance instance,
+		String targetState)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (targetState == null) { throw new IllegalArgumentException("targetState cannot be null"); }
+		if ("".equals(targetState.trim())) { throw new IllegalArgumentException("targetState cannot be empty"); }
+
 		// Get the state
 		UUID targetStateId = null;
 		try

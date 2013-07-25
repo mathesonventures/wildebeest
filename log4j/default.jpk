@@ -1,0 +1,19 @@
+<jpk xmlns="http://mathesonventures.co/jpk">
+    
+    <feeds>
+        <feed name="mv" url="http://artifacts.mathesonventures.co/jpk" />
+    </feeds>
+ 
+    <dep xmlns="http://mathesonventures.co/jpk/dep">
+        <groups>
+            <group name="clc" />
+            <group name="clr" />
+            <group name="tlc" />
+            <group name="tlr" />
+        </groups>
+        <packages>
+            <mvnpackage groupId="log4j" artifactId="log4j" version="1.2.17" groups="clc,clr,tlc,tlr" />
+        </packages>
+    </dep>
+ 
+</jpk>

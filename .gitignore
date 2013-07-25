@@ -6,3 +6,7 @@
 /Core/source/test/etc/*.swp
 /Core/nbproject/private
 /Core/source/test/etc/integration_test_fixtures/mysql_database/*.swp
+/log4j/nbproject/private/
+/log4j/dist/
+/log4j/build/
+/log4j/target
