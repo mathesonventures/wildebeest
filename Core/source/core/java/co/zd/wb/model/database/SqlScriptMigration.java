@@ -80,7 +80,8 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 			}
 
 			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
-				.append("UPDATE StmState SET StateId = '").append(this.getToStateId().toString())
+				.append("UPDATE ").append(Extensions.getStateTableName(db))
+					.append(" SET StateId = '").append(this.getToStateId().toString())
 				.append("';").toString());
 		}
 		catch(SQLException e)

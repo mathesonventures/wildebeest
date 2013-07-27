@@ -399,7 +399,7 @@ public class BaseResourceTests
 		
 	}
 	
-	@Test public void migrateFromStateToNull() throws
+	@Ignore @Test public void migrateFromStateToNull() throws
 		IndeterminateStateException,
 		AssertionFailedException,
 		MigrationNotPossibleException,
@@ -443,7 +443,7 @@ public class BaseResourceTests
 		
 	}
 	
-	@Test public void migrateFromDeepStateToNull()
+	@Ignore @Test public void migrateFromDeepStateToNull()
 	{
 		throw new RuntimeException("not implemented");
 	}

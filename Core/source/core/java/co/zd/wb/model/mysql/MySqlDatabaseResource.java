@@ -1,5 +1,6 @@
 package co.zd.wb.model.mysql;
 
+import co.zd.wb.model.database.Extensions;
 import co.zd.wb.model.base.BaseResource;
 import co.zd.wb.model.database.DatabaseHelper;
 import co.zd.wb.model.IndeterminateStateException;
@@ -41,8 +42,8 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 
 		if (MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
 		{
-			String stateTableName = db.hasStateTableName() ? db.getStateTableName() : Constants.DefaultStateTableName;
-
+			String stateTableName = Extensions.getStateTableName(db);
+			
 			try
 			{
 				conn = db.getAppDataSource().getConnection();

@@ -28,7 +28,7 @@ public class SqlScriptMigrationTests
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
 			"stm_test",
-			MySqlElementFixtures.stmStateCreateTableStatement());
+			MySqlElementFixtures.stateCreateTableStatement());
 		f.setUp();
 		
 		SqlScriptMigration migration = new SqlScriptMigration(

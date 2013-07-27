@@ -5,5 +5,11 @@ import javax.sql.DataSource;
 
 public interface DatabaseInstance extends Instance
 {
+	String getStateTableName();
+	
+	void setStateTableName(String value);
+	
+	boolean hasStateTableName();
+	
 	DataSource getAppDataSource();
 }

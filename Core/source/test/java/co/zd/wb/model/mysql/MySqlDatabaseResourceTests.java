@@ -70,8 +70,8 @@ public class MySqlDatabaseResourceTests
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
 			"stm",
-			MySqlElementFixtures.stmStateCreateTableStatement() +
-			MySqlElementFixtures.stmStateInsertRow(knownStateId));
+			MySqlElementFixtures.stateCreateTableStatement() +
+			MySqlElementFixtures.stateInsertRow(knownStateId));
 		
 		try
 		{
@@ -128,9 +128,9 @@ public class MySqlDatabaseResourceTests
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
 			"stm",
-			MySqlElementFixtures.stmStateCreateTableStatement() +
-			MySqlElementFixtures.stmStateInsertRow(UUID.randomUUID()) +
-			MySqlElementFixtures.stmStateInsertRow(UUID.randomUUID()));
+			MySqlElementFixtures.stateCreateTableStatement() +
+			MySqlElementFixtures.stateInsertRow(UUID.randomUUID()) +
+			MySqlElementFixtures.stateInsertRow(UUID.randomUUID()));
 		database.setUp();
 
 		MySqlDatabaseResource resource = new MySqlDatabaseResource(
@@ -192,8 +192,8 @@ public class MySqlDatabaseResourceTests
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
 			"stm",
-			MySqlElementFixtures.stmStateCreateTableStatement() +
-			MySqlElementFixtures.stmStateInsertRow(knownStateId));
+			MySqlElementFixtures.stateCreateTableStatement() +
+			MySqlElementFixtures.stateInsertRow(knownStateId));
 		database.setUp();
 
 		MySqlDatabaseResource resource = new MySqlDatabaseResource(

@@ -1,5 +1,6 @@
 package co.zd.wb.model.mysql;
 
+import co.zd.wb.model.database.Extensions;
 import co.zd.wb.model.base.BaseMigration;
 import co.zd.wb.model.database.DatabaseHelper;
 import co.zd.wb.model.ModelExtensions;
@@ -39,10 +40,12 @@ public class MySqlCreateDatabaseMigration extends BaseMigration implements Migra
 				.append("CREATE DATABASE `").append(db.getSchemaName()).append("`;").toString());
 			
 			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
-				.append("CREATE TABLE `StmState`(`StateId` char(36) NOT NULL, PRIMARY KEY (`StateId`));").toString());
+				.append("CREATE TABLE `").append(Extensions.getStateTableName(db))
+					.append("`(`StateId` char(36) NOT NULL, PRIMARY KEY (`StateId`));").toString());
 			
 			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
-				.append("INSERT INTO `StmState`(StateId) VALUES('").append(this.getToStateId().toString())
+				.append("INSERT INTO `").append(Extensions.getStateTableName(db))
+					.append("`(StateId) VALUES('").append(this.getToStateId().toString())
 				.append("');").toString());
 		}
 		catch (SQLException e)

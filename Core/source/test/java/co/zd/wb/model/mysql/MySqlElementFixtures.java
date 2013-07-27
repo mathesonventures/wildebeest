@@ -13,23 +13,23 @@ public class MySqlElementFixtures
 		return baseDatabaseName + "_" + f.format(new Date());
 	}
 	
-	public static String stmStateCreateTableStatement()
+	public static String stateCreateTableStatement()
 	{
 		StringBuilder sql = new StringBuilder();
 		sql
-			.append("CREATE TABLE `StmState` (`StateId` char(36) NOT NULL, PRIMARY KEY (`StateId`)) ")
+			.append("CREATE TABLE `wb_state` (`StateId` char(36) NOT NULL, PRIMARY KEY (`StateId`)) ")
 				.append("ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 		
 		return sql.toString();
 	}
 	
-	public static String stmStateInsertRow(
+	public static String stateInsertRow(
 		UUID stateId)
 	{
 		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("INSERT INTO `StmState`(`StateId`) VALUES('").append(stateId.toString()).append("');");
+		sql.append("INSERT INTO `wb_state`(`StateId`) VALUES('").append(stateId.toString()).append("');");
 
 		return sql.toString();
 	}
