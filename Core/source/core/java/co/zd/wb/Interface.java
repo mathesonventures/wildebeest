@@ -141,8 +141,7 @@ public class Interface
 		{
 			throw new IllegalArgumentException("instanceFileName cannot be empty");
 		}
-		if (targetState == null) { throw new IllegalArgumentException("targetState cannot be null"); }
-		if ("".equals(targetState.trim()))
+		if (targetState != null && "".equals(targetState.trim()))
 		{
 			throw new IllegalArgumentException("targetState cannot be empty");
 		}
@@ -160,8 +159,10 @@ public class Interface
 	{
 		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
 		if (instanceFile == null) { throw new IllegalArgumentException("instanceFile cannot be null"); }
-		if (targetState == null) { throw new IllegalArgumentException("targetState cannot be null"); }
-		if ("".equals(targetState.trim())) { throw new IllegalArgumentException("targetState cannot be empty"); }
+		if (targetState != null && "".equals(targetState.trim()))
+		{
+			throw new IllegalArgumentException("targetState cannot be empty");
+		}
 
 		Resource resource = loadResource(resourceFile);
 		Instance instance = loadInstance(instanceFile);
@@ -176,23 +177,23 @@ public class Interface
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (targetState == null) { throw new IllegalArgumentException("targetState cannot be null"); }
-		if ("".equals(targetState.trim())) { throw new IllegalArgumentException("targetState cannot be empty"); }
+		if (targetState != null && "".equals(targetState.trim()))
+		{
+			throw new IllegalArgumentException("targetState cannot be empty");
+		}
 
 		// Get the state
 		UUID targetStateId = null;
-		try
+		if (targetState != null)
 		{
-			targetStateId = UUID.fromString(targetState);
-		}
-		catch(IllegalArgumentException e)
-		{
-			targetStateId = resource.stateIdForLabel(targetState);
-		}
-		
-		if (targetStateId == null)
-		{
-			throw new RuntimeException("no target state identified");
+			try
+			{
+				targetStateId = UUID.fromString(targetState);
+			}
+			catch(IllegalArgumentException e)
+			{
+				targetStateId = resource.stateIdForLabel(targetState);
+			}
 		}
 		
 		// Perform migration

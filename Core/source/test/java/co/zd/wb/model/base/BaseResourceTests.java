@@ -399,6 +399,55 @@ public class BaseResourceTests
 		
 	}
 	
+	@Test public void migrateFromStateToNull() throws
+		IndeterminateStateException,
+		AssertionFailedException,
+		MigrationNotPossibleException,
+		MigrationFailedException
+	{
+		
+		//
+		// Fixture Setup
+		//
+
+		// The resource
+		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+
+		// State 1
+		UUID state1Id = UUID.randomUUID();
+		State state = new ImmutableState(state1Id);
+		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "foo"));
+		resource.getStates().add(state);
+		
+		// Migration 1
+		UUID migration1Id = UUID.randomUUID();
+		Migration tran1 = new FakeMigration(migration1Id, null, state1Id, "foo");
+		resource.getMigrations().add(tran1);
+		
+		// Instance
+		FakeInstance instance = new FakeInstance();
+
+		resource.migrate(new PrintStreamLogger(System.out), instance, state1Id);
+
+		//
+		// Execute
+		//
+		
+		resource.migrate(new PrintStreamLogger(System.out), instance, null);
+		
+		//
+		// Assert Results
+		//
+		
+		Assert.assertEquals("instance.tag", "foo", instance.getTag());
+		
+	}
+	
+	@Test public void migrateFromDeepStateToNull()
+	{
+		throw new RuntimeException("not implemented");
+	}
+
 	@Ignore @Test public void migrateWithCircularDependencyFails()
 	{
 		throw  new UnsupportedOperationException();
