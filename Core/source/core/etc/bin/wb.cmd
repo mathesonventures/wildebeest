@@ -1,3 +1,19 @@
+REM Wildebeest Migration Framework
+REM Copyright 2013, Zen Digital Co Inc
+REM
+REM This file is part of Wildebeest
+REM
+REM Wildebeest is free software: you can redistribute it and/or modify it under
+REM the terms of the GNU General Public License v2 as published by the Free
+REM Software Foundation.
+REM
+REM Wildebeest is distributed in the hope that it will be useful, but WITHOUT ANY
+REM WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+REM A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+REM
+REM You should have received a copy of the GNU General Public License along with
+REM Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
+
 @echo off
 
 if "%WB_HOME%"=="" goto noWbHome
