@@ -20,13 +20,15 @@ import co.zd.wb.Interface;
 import co.zd.wb.model.Instance;
 import co.zd.wb.model.mysql.MySqlDatabaseInstance;
 import co.zd.wb.model.mysql.MySqlUtil;
+import co.zd.wb.model.sqlserver.SqlServerDatabaseInstance;
+import co.zd.wb.model.sqlserver.SqlServerUtil;
 import java.io.File;
 import java.sql.SQLException;
 import org.junit.Test;
 
-public class IntegrationTests
+public class CliIntegrationTests
 {
-	@Test public void loadFromFilesAndMigrate() throws SQLException
+	@Test public void loadFromFilesAndMigrateMySqlResource() throws SQLException
 	{
 		
 		//
@@ -59,5 +61,39 @@ public class IntegrationTests
 			MySqlUtil.dropDatabase(instanceT, instanceT.getSchemaName());
 		}
 
+	}
+	
+	@Test public void loadFromFilesAndMigrationSqlServerResource() throws SQLException
+	{
+		
+		//
+		// Setup
+		//
+		
+		WildebeestCommand wb = new WildebeestCommand();
+		String[] args = new String[]
+		{
+			"migrate",
+			"--resource:integration_test_fixtures/sqlserver_database/database.wbresource.xml",
+			"--instance:integration_test_fixtures/sqlserver_database/staging_db.wbinstance.xml",
+			"--targetState:Database Created"
+		};
+		
+		Instance instance = Interface.loadInstance(
+			new File("integration_test_fixtures/sqlserver_database/staging_db.wbinstance.xml"));
+		
+		//
+		// Execute
+		//
+		
+		try
+		{
+			wb.run(args);
+		}
+		finally
+		{
+			SqlServerDatabaseInstance instanceT = (SqlServerDatabaseInstance)instance;
+			SqlServerUtil.tryDropDatabase(instanceT);
+		}
 	}
 }

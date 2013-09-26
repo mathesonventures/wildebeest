@@ -24,9 +24,10 @@ import co.zd.wb.model.State;
 import co.zd.wb.model.MigrationFailedException;
 import co.zd.wb.model.MigrationNotPossibleException;
 import co.zd.wb.AssertExtensions;
-import co.zd.wb.ProductCatalogueResource;
+import co.zd.wb.ProductCatalogueMySqlDatabaseResource;
 import co.zd.wb.model.Resource;
 import co.zd.wb.model.base.ImmutableState;
+import co.zd.wb.model.database.DatabaseFixtureHelper;
 import co.zd.wb.service.PrintStreamLogger;
 import co.zd.wb.service.dom.DomInstanceLoader;
 import co.zd.wb.service.dom.DomPlugins;
@@ -88,14 +89,15 @@ public class IntegrationTests
 			populated.getStateId(),
 			MySqlElementFixtures.productTypeRows()));
 
-		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			databaseName);
+			databaseName,
+			null);
 		
 		//
 		// Execute
@@ -123,7 +125,7 @@ public class IntegrationTests
 		// Fixture Setup
 		//
 		
-		ProductCatalogueResource prodCatResource = new ProductCatalogueResource();
+		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			DomPlugins.resourceBuilders(),
@@ -152,7 +154,7 @@ public class IntegrationTests
 		// Fixture Setup
 		//
 		
-		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		DomInstanceLoader instanceLoader = new DomInstanceLoader(
 			DomPlugins.instanceBuilders(),
@@ -185,7 +187,7 @@ public class IntegrationTests
 		// Resource
 		//
 
-		ProductCatalogueResource prodCatResource = new ProductCatalogueResource();
+		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
 		
 		// Fixture
 		DomResourceLoader resourceLoader = new DomResourceLoader(
@@ -205,7 +207,7 @@ public class IntegrationTests
 		//
 		
 		// Fixture
-		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+		String databaseName = DatabaseFixtureHelper.databaseName();
 		
 		DomInstanceLoader instanceLoader = new DomInstanceLoader(
 			DomPlugins.instanceBuilders(),
@@ -226,7 +228,7 @@ public class IntegrationTests
 			resource.migrate(
 				new PrintStreamLogger(System.out),
 				instance,
-				ProductCatalogueResource.StateIdInitialReferenceDataLoaded);
+				ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded);
 		}
 		finally
 		{
@@ -241,7 +243,7 @@ public class IntegrationTests
 		
 		AssertExtensions.assertResource(
 			MySqlDatabaseResource.class,
-			ProductCatalogueResource.ResourceId,
+			ProductCatalogueMySqlDatabaseResource.ResourceId,
 			"Product Catalogue Database",
 			resource,
 			"resource");

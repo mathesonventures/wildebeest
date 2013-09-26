@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.model.mysql;
+package co.zd.wb.model.sqlserver;
 
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.model.base.FakeInstance;
@@ -33,7 +33,7 @@ import java.util.UUID;
 import junit.framework.Assert;
 import org.junit.Test;
 
-public class MySqlDatabaseDoesNotExistAssertionTests
+public class SqlServerDatabaseDoesNotExistAssertionTests
 {
 	 @Test public void applyForExistingDatabaseFails() throws
 		 IndeterminateStateException,
@@ -47,30 +47,31 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		// Fixture Setup
 		//
 
-		MySqlProperties mySqlProperties = MySqlProperties.get();
+		SqlServerProperties properties = SqlServerProperties.get();
 		 
-		MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
+		SqlServerDatabaseResource resource = new SqlServerDatabaseResource(UUID.randomUUID(), "Database");
 		 
 		State created = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(created);
 		 
-		Migration tran1 = new MySqlCreateDatabaseMigration(
+		Migration tran1 = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(), null, created.getStateId());
 		resource.getMigrations().add(tran1);
 		 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		
-		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
+		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
+			properties.getHostName(),
+			properties.hasInstanceName() ? properties.getInstanceName() : null,
+			properties.getPort(),
+			properties.getUsername(),
+			properties.getPassword(),
 			databaseName,
 			null);
 		 
 		resource.migrate(new PrintStreamLogger(System.out), instance, created.getStateId());
 		
-		MySqlDatabaseDoesNotExistAssertion assertion = new MySqlDatabaseDoesNotExistAssertion(
+		SqlServerDatabaseDoesNotExistAssertion assertion = new SqlServerDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
 			"Database does not exist",
 			0);
@@ -79,16 +80,22 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		// Execute
 		//
 		
-		AssertionResponse response = assertion.apply(instance);
+		try
+		{
+			AssertionResponse response = assertion.apply(instance);
 
-		MySqlUtil.dropDatabase(instance, databaseName);
+			//
+			// Assert Results
+			//
 
-		//
-		// Assert Results
-		//
-
-		Assert.assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(false, "Database " + databaseName + " exists", response, "response");
+			Assert.assertNotNull("response", response);
+			AssertExtensions.assertAssertionResponse(false, "Database " + databaseName + " exists", response, "response");
+			
+		}
+		finally
+		{
+			SqlServerUtil.tryDropDatabase(instance);
+		}
 		
 	 }
 	 
@@ -104,19 +111,20 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		// Fixture Setup
 		//
 
-		MySqlProperties mySqlProperties = MySqlProperties.get();
+		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
-		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
+		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
+			properties.getHostName(),
+			properties.hasInstanceName() ? properties.getInstanceName() : null,
+			properties.getPort(),
+			properties.getUsername(),
+			properties.getPassword(),
 			databaseName,
 			null);
 		
-		MySqlDatabaseDoesNotExistAssertion assertion = new MySqlDatabaseDoesNotExistAssertion(
+		SqlServerDatabaseDoesNotExistAssertion assertion = new SqlServerDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
 			"Database does not exist",
 			0);
@@ -145,7 +153,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		// Fixture Setup
 		//
 
-		MySqlDatabaseDoesNotExistAssertion assertion = new MySqlDatabaseDoesNotExistAssertion(
+		SqlServerDatabaseDoesNotExistAssertion assertion = new SqlServerDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
 			"Database does not exist",
 			0);
@@ -182,7 +190,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		// Fixture Setup
 		//
 		 
-		MySqlDatabaseDoesNotExistAssertion assertion = new MySqlDatabaseDoesNotExistAssertion(
+		SqlServerDatabaseDoesNotExistAssertion assertion = new SqlServerDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
 			"Database does not exist",
 			0);
@@ -210,7 +218,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		// Assert Results
 		//
 
-		Assert.assertEquals("caught.message", "instance must be a MySqlDatabaseInstance", caught.getMessage());
+		Assert.assertEquals("caught.message", "instance must be a SqlServerDatabaseInstance", caught.getMessage());
 		
 	 }
 }

@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.model.database;
+package co.zd.wb.model.mysql;
 
-import co.zd.wb.model.Instance;
-import javax.sql.DataSource;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public interface DatabaseInstance extends Instance
+@RunWith(Suite.class)
+@Suite.SuiteClasses(
 {
-	String getStateTableName();
-	
-	boolean hasStateTableName();
-	
-	DataSource getAppDataSource();
+	IntegrationTests.class
+})
+public class AllIntegrationTests
+{
 }

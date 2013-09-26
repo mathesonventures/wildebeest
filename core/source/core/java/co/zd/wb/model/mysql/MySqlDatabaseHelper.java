@@ -17,9 +17,7 @@
 package co.zd.wb.model.mysql;
 
 import co.zd.wb.model.database.DatabaseHelper;
-import co.zd.wb.model.AssertionFaultException;
 import co.zd.wb.model.FaultException;
-import co.zd.wb.model.base.ImmutableAssertionResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

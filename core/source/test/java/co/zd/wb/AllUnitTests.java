@@ -26,17 +26,10 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
-	co.zd.wb.model.base.BaseResourceTests.class,
-	co.zd.wb.model.database.RowDoesNotExistAssertionTests.class,
-	co.zd.wb.model.database.RowExistsAssertionTests.class,
-	co.zd.wb.model.mysql.MySqlCreateDatabaseMigrationTests.class,
-	co.zd.wb.model.mysql.MySqlDatabaseDoesNotExistAssertionTests.class,
-	co.zd.wb.model.mysql.MySqlDatabaseExistsAssertionTests.class,
-	co.zd.wb.model.mysql.MySqlDatabaseResourceTests.class,
-	co.zd.wb.model.mysql.MySqlTableDoesNotExistAssertionTests.class,
-	co.zd.wb.model.mysql.MySqlTableExistsAssertionTests.class,
-	co.zd.wb.service.dom.DomInstanceLoaderTests.class,
-	co.zd.wb.service.dom.DomResourceLoaderTests.class
+	co.zd.wb.model.base.AllUnitTests.class,
+	co.zd.wb.model.database.AllUnitTests.class,
+	co.zd.wb.model.mysql.AllUnitTests.class,
+	co.zd.wb.model.sqlserver.AllUnitTests.class,
 })
 public class AllUnitTests
 {

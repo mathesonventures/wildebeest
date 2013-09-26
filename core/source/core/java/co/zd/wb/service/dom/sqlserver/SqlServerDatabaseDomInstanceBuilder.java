@@ -14,33 +14,39 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom.mysql;
+package co.zd.wb.service.dom.sqlserver;
 
 import co.zd.wb.model.Instance;
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
+import co.zd.wb.model.sqlserver.SqlServerDatabaseInstance;
 import co.zd.wb.service.dom.BaseDomInstanceBuilder;
 
-public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
+public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
 	@Override public Instance build()
 	{
 		String hostName = this.getString("hostName");
+		String instanceName = this.getString("instanceName");
+		if (instanceName == "")
+		{
+			instanceName = null;
+		}
 		int port = this.getInteger("port");
 		String adminUsername = this.getString("adminUsername");
 		String adminPassword = this.getString("adminPassword");
-		String schemaName = this.getString("schemaName");
+		String databaseName = this.getString("databaseName");
 		String stateTableName = this.getString("stateTableName");
 		if (stateTableName == "")
 		{
 			stateTableName = null;
 		}
 
-		Instance result = new MySqlDatabaseInstance(
+		Instance result = new SqlServerDatabaseInstance(
 			hostName,
+			instanceName,
 			port,
 			adminUsername,
 			adminPassword,
-			schemaName,
+			databaseName,
 			stateTableName);
 		
 		return result;

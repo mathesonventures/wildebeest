@@ -17,12 +17,13 @@
 package co.zd.wb.model.base;
 
 import co.zd.wb.AssertExtensions;
-import co.zd.wb.ProductCatalogueResource;
+import co.zd.wb.ProductCatalogueMySqlDatabaseResource;
 import co.zd.wb.model.AssertionFailedException;
 import co.zd.wb.model.IndeterminateStateException;
 import co.zd.wb.model.Resource;
 import co.zd.wb.model.MigrationFailedException;
 import co.zd.wb.model.MigrationNotPossibleException;
+import co.zd.wb.model.database.DatabaseFixtureHelper;
 import co.zd.wb.model.mysql.MySqlDatabaseResource;
 import co.zd.wb.model.mysql.MySqlDatabaseInstance;
 import co.zd.wb.model.mysql.MySqlElementFixtures;
@@ -49,7 +50,7 @@ public class ResourceLoaderIntegrationTests
 		// Fixture Setup
 		//
 		
-		ProductCatalogueResource productCatalogueResource = new ProductCatalogueResource();
+		ProductCatalogueMySqlDatabaseResource productCatalogueResource = new ProductCatalogueMySqlDatabaseResource();
 
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			DomPlugins.resourceBuilders(),
@@ -57,14 +58,15 @@ public class ResourceLoaderIntegrationTests
 			DomPlugins.migrationBuilders(),
 			productCatalogueResource.getXmlBuilder().toString());
 
-		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			MySqlProperties.get().getHostName(),
 			MySqlProperties.get().getPort(),
 			MySqlProperties.get().getUsername(),
 			MySqlProperties.get().getPassword(),
-			databaseName);
+			databaseName,
+			null);
 		
 		//
 		// Execute - Load
@@ -85,31 +87,31 @@ public class ResourceLoaderIntegrationTests
 		// States
 		Assert.assertEquals("resource.states.size", 3, resource.getStates().size());
 		AssertExtensions.assertState(
-			ProductCatalogueResource.StateIdDatabaseCreated, "Database created",
+			ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated, "Database created",
 			resource.getStates().get(0), "state[0]");
 		AssertExtensions.assertState(
-			ProductCatalogueResource.StateIdCoreSchemaLoaded, "Core Schema Loaded",
+			ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded, "Core Schema Loaded",
 			resource.getStates().get(1), "state[1]");
 		AssertExtensions.assertState(
-			ProductCatalogueResource.StateIdInitialReferenceDataLoaded, "Reference Data Loaded",
+			ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded, "Reference Data Loaded",
 			resource.getStates().get(2), "state[2]");
 		
 		// Migrations
 		Assert.assertEquals("resource.migrations.size", 3, resource.getMigrations().size());
 		AssertExtensions.assertMigration(
-			ProductCatalogueResource.MigrationIdCreateDatabase,
+			ProductCatalogueMySqlDatabaseResource.MigrationIdCreateDatabase,
 			null,
-			ProductCatalogueResource.StateIdDatabaseCreated,
+			ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated,
 			resource.getMigrations().get(0), "resource.migrations[0]");
 		AssertExtensions.assertMigration(
-			ProductCatalogueResource.MigrationIdLoadCoreSchema,
-			ProductCatalogueResource.StateIdDatabaseCreated,
-			ProductCatalogueResource.StateIdCoreSchemaLoaded,
+			ProductCatalogueMySqlDatabaseResource.MigrationIdLoadCoreSchema,
+			ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated,
+			ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded,
 			resource.getMigrations().get(1), "resource.migrations[1]");
 		AssertExtensions.assertMigration(
-			ProductCatalogueResource.MigrationIdLoadReferenceData,
-			ProductCatalogueResource.StateIdCoreSchemaLoaded,
-			ProductCatalogueResource.StateIdInitialReferenceDataLoaded,
+			ProductCatalogueMySqlDatabaseResource.MigrationIdLoadReferenceData,
+			ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded,
+			ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded,
 			resource.getMigrations().get(2), "resource.migrations[2]");
 		
 		//
@@ -121,7 +123,7 @@ public class ResourceLoaderIntegrationTests
 			resource.migrate(
 				new PrintStreamLogger(System.out),
 				instance,
-				ProductCatalogueResource.StateIdInitialReferenceDataLoaded);
+				ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded);
 		}
 		finally
 		{

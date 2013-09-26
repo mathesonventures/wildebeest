@@ -16,19 +16,10 @@
 
 package co.zd.wb.model.mysql;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 public class MySqlElementFixtures
 {
-	public static String databaseName(String baseDatabaseName)
-	{
-		DateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss");
-		return baseDatabaseName + "_" + f.format(new Date());
-	}
-	
 	public static String stateCreateTableStatement()
 	{
 		StringBuilder sql = new StringBuilder();

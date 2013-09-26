@@ -27,6 +27,7 @@ import co.zd.wb.model.Migration;
 import co.zd.wb.model.MigrationFailedException;
 import co.zd.wb.model.MigrationNotPossibleException;
 import co.zd.wb.model.base.ImmutableState;
+import co.zd.wb.model.database.DatabaseFixtureHelper;
 import co.zd.wb.service.PrintStreamLogger;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -72,14 +73,15 @@ public class MySqlTableExistsAssertionTests
 			MySqlElementFixtures.productCatalogueDatabase());
 		resource.getMigrations().add(migration2);
 
-		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+		String databaseName = DatabaseFixtureHelper.databaseName();
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			databaseName);
+			databaseName,
+			null);
 		 
 		resource.migrate(new PrintStreamLogger(System.out), instance, schemaLoaded.getStateId());
 		
@@ -131,14 +133,15 @@ public class MySqlTableExistsAssertionTests
 			UUID.randomUUID(), null, created.getStateId());
 		resource.getMigrations().add(migration1);
 
-		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			databaseName);
+			databaseName,
+			null);
 		 
 		resource.migrate(new PrintStreamLogger(System.out), instance, created.getStateId());
 		
@@ -174,14 +177,15 @@ public class MySqlTableExistsAssertionTests
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		String databaseName = MySqlElementFixtures.databaseName("StmTest");
+		String databaseName = DatabaseFixtureHelper.databaseName();
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			databaseName);
+			databaseName,
+			null);
 		 
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),

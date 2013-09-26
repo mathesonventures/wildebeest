@@ -53,7 +53,8 @@ public class MySqlDatabaseResourceTests
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			"non_existent_schema");
+			"non_existent_schema",
+			null);
 
 		//
 		// Execute
@@ -103,7 +104,8 @@ public class MySqlDatabaseResourceTests
 				mySqlProperties.getPort(),
 				mySqlProperties.getUsername(),
 				mySqlProperties.getPassword(),
-				database.getDatabaseName());
+				database.getDatabaseName(),
+			null);
 
 			//
 			// Execute
@@ -158,7 +160,8 @@ public class MySqlDatabaseResourceTests
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			database.getDatabaseName());
+			database.getDatabaseName(),
+			null);
 
 		//
 		// Execute
@@ -221,7 +224,8 @@ public class MySqlDatabaseResourceTests
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			database.getDatabaseName());
+			database.getDatabaseName(),
+			null);
 
 		//
 		// Execute

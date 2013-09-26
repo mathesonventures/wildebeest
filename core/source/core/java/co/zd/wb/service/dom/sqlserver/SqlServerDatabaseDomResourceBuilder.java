@@ -14,16 +14,17 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.model.database;
+package co.zd.wb.service.dom.sqlserver;
 
-import co.zd.wb.model.Instance;
-import javax.sql.DataSource;
+import co.zd.wb.model.Resource;
+import co.zd.wb.model.sqlserver.SqlServerDatabaseResource;
+import co.zd.wb.service.dom.BaseDomResourceBuilder;
+import java.util.UUID;
 
-public interface DatabaseInstance extends Instance
+public class SqlServerDatabaseDomResourceBuilder extends BaseDomResourceBuilder
 {
-	String getStateTableName();
-	
-	boolean hasStateTableName();
-	
-	DataSource getAppDataSource();
+	@Override public Resource build(UUID id, String name)
+	{
+		return new SqlServerDatabaseResource(id, name);
+	}
 }

@@ -14,21 +14,22 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.model.mysql;
+package co.zd.wb.model.sqlserver;
 
-import co.zd.wb.model.database.Extensions;
-import co.zd.wb.model.base.BaseMigration;
-import co.zd.wb.model.database.DatabaseHelper;
-import co.zd.wb.model.ModelExtensions;
 import co.zd.wb.model.Instance;
 import co.zd.wb.model.MigrationFailedException;
 import co.zd.wb.model.MigrationFaultException;
+import co.zd.wb.model.ModelExtensions;
+import co.zd.wb.model.base.BaseMigration;
+import co.zd.wb.model.database.DatabaseHelper;
+import co.zd.wb.model.database.Extensions;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class MySqlCreateDatabaseMigration extends BaseMigration
+public class SqlServerCreateDatabaseMigration extends BaseMigration
 {
-	public MySqlCreateDatabaseMigration(
+	public SqlServerCreateDatabaseMigration(
 		UUID migrationId,
 		UUID fromStateId,
 		UUID toStateId)
@@ -36,31 +37,36 @@ public class MySqlCreateDatabaseMigration extends BaseMigration
 		super(migrationId, fromStateId, toStateId);
 	}
 
-	@Override public void perform(Instance instance) throws MigrationFailedException
+	@Override public void perform(
+		Instance instance) throws MigrationFailedException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
+		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
 
-		if (MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
+		try
 		{
-			throw new MigrationFailedException(
-				this.getMigrationId(),
-				String.format("database \"%s\" already exists",	db.getSchemaName()));
+			DatabaseHelper.execute(db.getMasterDataSource(), new StringBuilder()
+				.append("CREATE DATABASE [").append(db.getDatabaseName()).append("];").toString());
+		}
+		catch(SQLServerException e)
+		{
+			throw new MigrationFailedException(this.getMigrationId(), e.getMessage());
+		}
+		catch (SQLException e)
+		{
+			throw new MigrationFaultException(e);
 		}
 		
 		try
-		{
-			DatabaseHelper.execute(db.getInfoDataSource(), new StringBuilder()
-				.append("CREATE DATABASE `").append(db.getSchemaName()).append("`;").toString());
+		{			
+			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
+				.append("CREATE TABLE [").append(Extensions.getStateTableName(db))
+					.append("](StateId uniqueidentifier NOT NULL);").toString());
 			
 			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
-				.append("CREATE TABLE `").append(Extensions.getStateTableName(db))
-					.append("`(`StateId` char(36) NOT NULL, PRIMARY KEY (`StateId`));").toString());
-			
-			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
-				.append("INSERT INTO `").append(Extensions.getStateTableName(db))
-					.append("`(StateId) VALUES('").append(this.getToStateId().toString())
+				.append("INSERT INTO [").append(Extensions.getStateTableName(db))
+					.append("](StateId) VALUES('").append(this.getToStateId().toString())
 				.append("');").toString());
 		}
 		catch (SQLException e)

@@ -1,0 +1,342 @@
+// Wildebeest Migration Framework
+// Copyright 2013, Zen Digital Co Inc
+//
+// This file is part of Wildebeest
+//
+// Wildebeest is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License v2 as published by the Free
+// Software Foundation.
+//
+// Wildebeest is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+// A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
+
+package co.zd.wb.model.sqlserver;
+
+import co.zd.wb.model.Instance;
+import co.zd.wb.model.database.DatabaseInstance;
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import javax.sql.DataSource;
+
+public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
+{
+	public SqlServerDatabaseInstance(
+		String hostName,
+		String instanceName,
+		int portNumber,
+		String adminUsername,
+		String adminPassword,
+		String databaseName,
+		String stateTableName)
+	{
+		if (stateTableName != null && stateTableName.trim().equals(""))
+		{
+			throw new IllegalArgumentException("stateTableName cannot be empty");
+		}
+		
+		this.setHostName(hostName);
+		if (instanceName != null)
+		{
+			this.setInstanceName(instanceName);
+		}
+		this.setPortNumber(portNumber);
+		this.setAdminUsername(adminUsername);
+		this.setAdminPassword(adminPassword);
+		this.setDatabaseName(databaseName);
+		if (stateTableName != null)
+		{
+			this.setStateTableName(stateTableName);
+		}
+	}
+
+	// <editor-fold desc="HostName" defaultstate="collapsed">
+
+	private String _hostName = null;
+	private boolean _hostName_set = false;
+
+	public String getHostName() {
+		if(!_hostName_set) {
+			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
+		}
+		return _hostName;
+	}
+
+	private void setHostName(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("hostName cannot be null");
+		}
+		boolean changing = !_hostName_set || _hostName != value;
+		if(changing) {
+			_hostName_set = true;
+			_hostName = value;
+		}
+	}
+
+	private void clearHostName() {
+		if(_hostName_set) {
+			_hostName_set = true;
+			_hostName = null;
+		}
+	}
+
+	private boolean hasHostName() {
+		return _hostName_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="InstanceName" defaultstate="collapsed">
+
+	private String _instanceName = null;
+	private boolean _instanceName_set = false;
+
+	private String getInstanceName() {
+		if(!_instanceName_set) {
+			throw new IllegalStateException("instanceName not set.  Use the HasInstanceName() method to check its state before accessing it.");
+		}
+		return _instanceName;
+	}
+
+	private void setInstanceName(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("instanceName cannot be null");
+		}
+		boolean changing = !_instanceName_set || _instanceName != value;
+		if(changing) {
+			_instanceName_set = true;
+			_instanceName = value;
+		}
+	}
+
+	private void clearInstanceName() {
+		if(_instanceName_set) {
+			_instanceName_set = true;
+			_instanceName = null;
+		}
+	}
+
+	private boolean hasInstanceName() {
+		return _instanceName_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="PortNumber" defaultstate="collapsed">
+
+	private int _portNumber = 0;
+	private boolean _portNumber_set = false;
+
+	public int getPortNumber() {
+		if(!_portNumber_set) {
+			throw new IllegalStateException("portNumber not set.  Use the HasPortNumber() method to check its state before accessing it.");
+		}
+		return _portNumber;
+	}
+
+	private void setPortNumber(
+		int value) {
+		boolean changing = !_portNumber_set || _portNumber != value;
+		if(changing) {
+			_portNumber_set = true;
+			_portNumber = value;
+		}
+	}
+
+	private void clearPortNumber() {
+		if(_portNumber_set) {
+			_portNumber_set = true;
+			_portNumber = 0;
+		}
+	}
+
+	private boolean hasPortNumber() {
+		return _portNumber_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="AdminUsername" defaultstate="collapsed">
+
+	private String _adminUsername = null;
+	private boolean _adminUsername_set = false;
+
+	public String getAdminUsername() {
+		if(!_adminUsername_set) {
+			throw new IllegalStateException("adminUsername not set.  Use the HasAdminUsername() method to check its state before accessing it.");
+		}
+		return _adminUsername;
+	}
+
+	private void setAdminUsername(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("adminUsername cannot be null");
+		}
+		boolean changing = !_adminUsername_set || _adminUsername != value;
+		if(changing) {
+			_adminUsername_set = true;
+			_adminUsername = value;
+		}
+	}
+
+	private void clearAdminUsername() {
+		if(_adminUsername_set) {
+			_adminUsername_set = true;
+			_adminUsername = null;
+		}
+	}
+
+	private boolean hasAdminUsername() {
+		return _adminUsername_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="AdminPassword" defaultstate="collapsed">
+
+	private String _adminPassword = null;
+	private boolean _adminPassword_set = false;
+
+	public String getAdminPassword() {
+		if(!_adminPassword_set) {
+			throw new IllegalStateException("adminPassword not set.  Use the HasAdminPassword() method to check its state before accessing it.");
+		}
+		return _adminPassword;
+	}
+
+	private void setAdminPassword(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("adminPassword cannot be null");
+		}
+		boolean changing = !_adminPassword_set || _adminPassword != value;
+		if(changing) {
+			_adminPassword_set = true;
+			_adminPassword = value;
+		}
+	}
+
+	private void clearAdminPassword() {
+		if(_adminPassword_set) {
+			_adminPassword_set = true;
+			_adminPassword = null;
+		}
+	}
+
+	private boolean hasAdminPassword() {
+		return _adminPassword_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="DatabaseName" defaultstate="collapsed">
+
+	private String _databaseName = null;
+	private boolean _databaseName_set = false;
+
+	public String getDatabaseName() {
+		if(!_databaseName_set) {
+			throw new IllegalStateException("databaseName not set.  Use the HasDatabaseName() method to check its state before accessing it.");
+		}
+		return _databaseName;
+	}
+
+	private void setDatabaseName(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("databaseName cannot be null");
+		}
+		boolean changing = !_databaseName_set || _databaseName != value;
+		if(changing) {
+			_databaseName_set = true;
+			_databaseName = value;
+		}
+	}
+
+	private void clearDatabaseName() {
+		if(_databaseName_set) {
+			_databaseName_set = true;
+			_databaseName = null;
+		}
+	}
+
+	private boolean hasDatabaseName() {
+		return _databaseName_set;
+	}
+
+	// </editor-fold>
+	
+	// <editor-fold desc="StateTableName" defaultstate="collapsed">
+
+	private String m_stateTableName = null;
+	private boolean m_stateTableName_set = false;
+
+	public String getStateTableName() {
+		if(!m_stateTableName_set) {
+			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
+		}
+		return m_stateTableName;
+	}
+
+	public void setStateTableName(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("stateTableName cannot be null");
+		}
+		boolean changing = !m_stateTableName_set || m_stateTableName != value;
+		if(changing) {
+			m_stateTableName_set = true;
+			m_stateTableName = value;
+		}
+	}
+
+	private void clearStateTableName() {
+		if(m_stateTableName_set) {
+			m_stateTableName_set = true;
+			m_stateTableName = null;
+		}
+	}
+
+	public boolean hasStateTableName() {
+		return m_stateTableName_set;
+	}
+
+	// </editor-fold>
+
+	public DataSource getMasterDataSource()
+	{
+		SQLServerDataSource result = new SQLServerDataSource();
+		result.setServerName(this.getHostName());
+		if (this.hasInstanceName())
+		{
+			result.setInstanceName(this.getInstanceName());
+		}
+		result.setPortNumber(this.getPortNumber());
+		result.setUser(this.getAdminUsername());
+		result.setPassword(this.getAdminPassword());
+		result.setDatabaseName("master");
+		
+		return result;
+	}
+
+	@Override public DataSource getAppDataSource()
+	{
+		SQLServerDataSource result = new SQLServerDataSource();
+		result.setServerName(this.getHostName());
+		if (this.hasInstanceName())
+		{
+			result.setInstanceName(this.getInstanceName());
+		}
+		result.setPortNumber(this.getPortNumber());
+		result.setUser(this.getAdminUsername());
+		result.setPassword(this.getAdminPassword());
+		result.setDatabaseName(this.getDatabaseName());
+		
+		return result;
+	}
+}
