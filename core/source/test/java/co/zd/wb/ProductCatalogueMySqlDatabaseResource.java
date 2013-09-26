@@ -21,7 +21,7 @@ import co.zd.wb.model.mysql.MySqlElementFixtures;
 import co.zd.wb.service.dom.XmlBuilder;
 import java.util.UUID;
 
-public class ProductCatalogueResource
+public class ProductCatalogueMySqlDatabaseResource
 {
 	public static final UUID ResourceId = UUID.fromString("199b7cc1-3cc6-48ca-b012-a70d05d5b5e7");
 	
@@ -40,7 +40,7 @@ public class ProductCatalogueResource
 	public static final UUID MigrationIdLoadCoreSchema = UUID.fromString("cbdc0cab-b2ca-432b-b1e1-64708b41d749");
 	public static final UUID MigrationIdLoadReferenceData = UUID.fromString("9e67ee1f-b123-46dc-99dc-768dffc90611");
 	
-	public ProductCatalogueResource()
+	public ProductCatalogueMySqlDatabaseResource()
 	{
 		this.setResourceId(ResourceId);
 		this.setStateIdDatabaseCreated(StateIdDatabaseCreated);

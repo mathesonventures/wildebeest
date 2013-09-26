@@ -58,7 +58,8 @@ public class SqlScriptMigrationTests
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			f.getDatabaseName());
+			f.getDatabaseName(),
+			null);
 		
 		//
 		// Execute

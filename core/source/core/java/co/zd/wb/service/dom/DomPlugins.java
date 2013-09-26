@@ -30,6 +30,11 @@ import co.zd.wb.service.dom.mysql.MySqlDatabaseDomResourceBuilder;
 import co.zd.wb.service.dom.mysql.MySqlDatabaseExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlTableDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlTableExistsDomAssertionBuilder;
+import co.zd.wb.service.dom.sqlserver.SqlServerCreateDatabaseDomMigrationBuilder;
+import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDoesNotExistDomAssertionBuilder;
+import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomInstanceBuilder;
+import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomResourceBuilder;
+import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseExistsDomAssertionBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,21 +45,29 @@ public class DomPlugins
 		Map<String, ResourceBuilder> result = new HashMap<String, ResourceBuilder>();
 		
 		result.put("MySqlDatabase", new MySqlDatabaseDomResourceBuilder());
+		result.put("SqlServerDatabase", new SqlServerDatabaseDomResourceBuilder());
 		
 		return result;
 	}
-	
+
 	public static Map<String, AssertionBuilder> assertionBuilders()
 	{
 		Map<String, AssertionBuilder> result = new HashMap<String, AssertionBuilder>();
 		
+		// Database
 		result.put("RowExists", new RowExistsDomAssertionBuilder());
 		result.put("RowDoesNotExist", new RowDoesNotExistDomAssertionBuilder());
+		
+		// MySql
 		result.put("MySqlDatabaseDoesNotExist", new MySqlDatabaseDoesNotExistDomAssertionBuilder());
 		result.put("MySqlDatabaseExists", new MySqlDatabaseExistsDomAssertionBuilder());
 		result.put("MySqlTableDoesNotExist", new MySqlTableDoesNotExistDomAssertionBuilder());
 		result.put("MySqlTableExists", new MySqlTableExistsDomAssertionBuilder());
 		
+		// SqlServer
+		result.put("SqlServerDatabaseDoesNotExist", new SqlServerDatabaseDoesNotExistDomAssertionBuilder());
+		result.put("SqlServerDatabaseExists", new SqlServerDatabaseExistsDomAssertionBuilder());
+
 		return result;
 	}
 	
@@ -62,8 +75,14 @@ public class DomPlugins
 	{
 		Map<String, MigrationBuilder> result = new HashMap<String, MigrationBuilder>();
 		
+		// Database
 		result.put("SqlScript", new SqlScriptDomMigrationBuilder());
+		
+		// MySql
 		result.put("MySqlCreateDatabase", new MySqlCreateDatabaseDomMigrationBuilder());
+		
+		// SqlServer
+		result.put("SqlServerCreateDatabase", new SqlServerCreateDatabaseDomMigrationBuilder());
 
 		return result;
 	}
@@ -73,6 +92,7 @@ public class DomPlugins
 		Map<String, InstanceBuilder> result = new HashMap<String, InstanceBuilder>();
 		
 		result.put("MySqlDatabase", new MySqlDatabaseDomInstanceBuilder());
+		result.put("SqlServerDatabase", new SqlServerDatabaseDomInstanceBuilder());
 		
 		return result;
 	}

@@ -16,14 +16,15 @@
 
 package co.zd.wb.model.database;
 
-import co.zd.wb.model.Instance;
-import javax.sql.DataSource;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public interface DatabaseInstance extends Instance
+@RunWith(Suite.class)
+@Suite.SuiteClasses(
 {
-	String getStateTableName();
-	
-	boolean hasStateTableName();
-	
-	DataSource getAppDataSource();
+	RowDoesNotExistAssertionTests.class,
+	RowExistsAssertionTests.class,
+})
+public class AllUnitTests
+{
 }

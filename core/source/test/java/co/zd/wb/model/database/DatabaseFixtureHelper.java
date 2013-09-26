@@ -14,16 +14,22 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.model.base;
+package co.zd.wb.model.database;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses(
+public class DatabaseFixtureHelper
 {
-	co.zd.wb.model.base.BaseResourceTests.class
-})
-public class UnitTestSuite
-{
+	public static String databaseName()
+	{
+		return databaseName("WbTest");
+	}
+	
+	public static String databaseName(String baseDatabaseName)
+	{
+		DateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss");
+		return baseDatabaseName + "_" + f.format(new Date());
+	}
 }

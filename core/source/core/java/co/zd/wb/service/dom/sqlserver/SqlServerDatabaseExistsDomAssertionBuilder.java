@@ -14,16 +14,17 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.model.database;
+package co.zd.wb.service.dom.sqlserver;
 
-import co.zd.wb.model.Instance;
-import javax.sql.DataSource;
+import co.zd.wb.model.Assertion;
+import co.zd.wb.model.sqlserver.SqlServerDatabaseExistsAssertion;
+import co.zd.wb.service.dom.BaseDomAssertionBuilder;
+import java.util.UUID;
 
-public interface DatabaseInstance extends Instance
+public class SqlServerDatabaseExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	String getStateTableName();
-	
-	boolean hasStateTableName();
-	
-	DataSource getAppDataSource();
+	@Override public Assertion build(UUID assertionId, String name, int seqNum)
+	{
+		return new SqlServerDatabaseExistsAssertion(assertionId, name, seqNum);
+	}
 }

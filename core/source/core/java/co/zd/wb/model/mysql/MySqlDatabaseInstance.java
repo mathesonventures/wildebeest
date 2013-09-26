@@ -28,13 +28,18 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 		int port,
 		String adminUsername,
 		String adminPassword,
-		String schemaName)
+		String schemaName,
+		String stateTableName)
 	{
 		this.setHostName(hostName);
 		this.setPort(port);
 		this.setAdminUsername(adminUsername);
 		this.setAdminPassword(adminPassword);
 		this.setSchemaName(schemaName);
+		if (stateTableName != null)
+		{
+			this.setStateTableName(stateTableName);
+		}
 	}
 	
 	// <editor-fold desc="HostName" defaultstate="collapsed">
@@ -182,43 +187,6 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 
 	// </editor-fold>
 	
-	// <editor-fold desc="StateTableName" defaultstate="collapsed">
-
-	private String m_stateTableName = null;
-	private boolean m_stateTableName_set = false;
-
-	public String getStateTableName() {
-		if(!m_stateTableName_set) {
-			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
-		}
-		return m_stateTableName;
-	}
-
-	public void setStateTableName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("stateTableName cannot be null");
-		}
-		boolean changing = !m_stateTableName_set || m_stateTableName != value;
-		if(changing) {
-			m_stateTableName_set = true;
-			m_stateTableName = value;
-		}
-	}
-
-	private void clearStateTableName() {
-		if(m_stateTableName_set) {
-			m_stateTableName_set = true;
-			m_stateTableName = null;
-		}
-	}
-
-	public boolean hasStateTableName() {
-		return m_stateTableName_set;
-	}
-
-	// </editor-fold>
-	
 	// <editor-fold desc="SchemaName" defaultstate="collapsed">
 
 	private String m_schemaName = null;
@@ -231,7 +199,7 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 		return m_schemaName;
 	}
 
-	public void setSchemaName(
+	private void setSchemaName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("schemaName cannot be null");
@@ -252,6 +220,43 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 
 	private boolean hasSchemaName() {
 		return m_schemaName_set;
+	}
+
+	// </editor-fold>
+	
+	// <editor-fold desc="StateTableName" defaultstate="collapsed">
+
+	private String m_stateTableName = null;
+	private boolean m_stateTableName_set = false;
+
+	public String getStateTableName() {
+		if(!m_stateTableName_set) {
+			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
+		}
+		return m_stateTableName;
+	}
+
+	private void setStateTableName(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("stateTableName cannot be null");
+		}
+		boolean changing = !m_stateTableName_set || m_stateTableName != value;
+		if(changing) {
+			m_stateTableName_set = true;
+			m_stateTableName = value;
+		}
+	}
+
+	private void clearStateTableName() {
+		if(m_stateTableName_set) {
+			m_stateTableName_set = true;
+			m_stateTableName = null;
+		}
+	}
+
+	public boolean hasStateTableName() {
+		return m_stateTableName_set;
 	}
 
 	// </editor-fold>
@@ -279,7 +284,7 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 	 * 
 	 * @return 
 	 */
-	public DataSource getAppDataSource()
+	@Override public DataSource getAppDataSource()
 	{
 		MysqlDataSource ds = new MysqlDataSource();
 		ds.setServerName(this.getHostName());

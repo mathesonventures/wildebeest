@@ -51,7 +51,8 @@ public class RowExistsAssertionTests
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			f.getDatabaseName());
+			f.getDatabaseName(),
+			null);
 		
 		RowExistsAssertion assertion = new RowExistsAssertion(
 			UUID.randomUUID(),
@@ -107,7 +108,8 @@ public class RowExistsAssertionTests
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			f.getDatabaseName());
+			f.getDatabaseName(),
+			null);
 		
 		RowExistsAssertion assertion = new RowExistsAssertion(
 			UUID.randomUUID(),

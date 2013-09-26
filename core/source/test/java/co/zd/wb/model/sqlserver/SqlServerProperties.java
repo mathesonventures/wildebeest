@@ -14,73 +14,86 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.model.mysql;
+package co.zd.wb.model.sqlserver;
 
 import org.apache.log4j.Logger;
 
-public class MySqlProperties
+public class SqlServerProperties
 {
-	private static Logger LOG = Logger.getLogger(MySqlProperties.class);
+	private static Logger LOG = Logger.getLogger(SqlServerProperties.class);
 	
-	private MySqlProperties()
+	private SqlServerProperties()
 	{
 	}
 	
-	public static MySqlProperties get()
+	public static SqlServerProperties get()
 	{
-		MySqlProperties result = new MySqlProperties();
+		SqlServerProperties result = new SqlServerProperties();
 		
 		// HostName
-		String hostName = System.getProperty("mySql.hostName");
+		String hostName = System.getProperty("sqlServer.hostName");
 		if (hostName == null)
 		{
 			result.setHostName("127.0.0.1");
 		}
 		else
 		{
-			LOG.debug("System mySql.hostName: " + hostName);
+			LOG.debug("System sqlServer.hostName: " + hostName);
 			result.setHostName(hostName);
 		}
 		
-		// Port
-		String portRaw = System.getProperty("mySql.port");
-		if (portRaw == null)
+		// InstanceName
+		String instanceName = System.getProperty("sqlServer.instanceName");
+		if (instanceName == null)
 		{
-			result.setPort(3306);
+			LOG.debug("System sqlServer.instanceName not set");
 		}
 		else
 		{
-			LOG.debug("System mySql.port: " + portRaw);
+			LOG.debug("System sqlServer.instanceName: " + instanceName);
+			result.setInstanceName(instanceName);
+		}
+		
+		// Port
+		String portRaw = System.getProperty("sqlServer.port");
+		if (portRaw == null)
+		{
+			result.setPort(1433);
+		}
+		else
+		{
+			LOG.debug("System sqlServer.port: " + portRaw);
 			result.setPort(Integer.parseInt(portRaw));
 		}
 
 		// Username
-		String username = System.getProperty("mySql.username");
+		String username = System.getProperty("sqlServer.username");
 		if (username == null)
 		{
-			result.setUsername("root");
+			result.setUsername("wb");
 		}
 		else
 		{
-			LOG.debug("System mySql.username: " + username);
+			LOG.debug("System sqlServer.username: " + username);
 			result.setUsername(username);
 		}
 
 		// Password
-		String password = System.getProperty("mySql.password");
+		String password = System.getProperty("sqlServer.password");
 		if (password == null)
 		{
 			result.setPassword("password");
 		}
 		else
 		{
-			LOG.debug("System mySql.password: " + password);
+			LOG.debug("System sqlServer.password: " + password);
 			result.setPassword(password);
 		}
 		
 		LOG.debug(String.format(
-			"MySqlProperties { hostName: %s; port: %d; username: %s; password: %s; }",
+			"SqlServerProperties { hostName: %s; instanceName: %s; port: %d; username: %s; password: %s; }",
 			result.getHostName(),
+			result.hasInstanceName() ? result.getInstanceName() : "",
 			result.getPort(),
 			result.getUsername(),
 			result.getPassword()));
@@ -90,14 +103,14 @@ public class MySqlProperties
 	
 	// <editor-fold desc="HostName" defaultstate="collapsed">
 
-	private String m_hostName = null;
-	private boolean m_hostName_set = false;
+	private String _hostName = null;
+	private boolean _hostName_set = false;
 
 	public String getHostName() {
-		if(!m_hostName_set) {
+		if(!_hostName_set) {
 			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
 		}
-		return m_hostName;
+		return _hostName;
 	}
 
 	private void setHostName(
@@ -105,22 +118,59 @@ public class MySqlProperties
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
 		}
-		boolean changing = !m_hostName_set || m_hostName != value;
+		boolean changing = !_hostName_set || _hostName != value;
 		if(changing) {
-			m_hostName_set = true;
-			m_hostName = value;
+			_hostName_set = true;
+			_hostName = value;
 		}
 	}
 
 	private void clearHostName() {
-		if(m_hostName_set) {
-			m_hostName_set = true;
-			m_hostName = null;
+		if(_hostName_set) {
+			_hostName_set = true;
+			_hostName = null;
 		}
 	}
 
 	private boolean hasHostName() {
-		return m_hostName_set;
+		return _hostName_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="InstanceName" defaultstate="collapsed">
+
+	private String _instanceName = null;
+	private boolean _instanceName_set = false;
+
+	public String getInstanceName() {
+		if(!_instanceName_set) {
+			throw new IllegalStateException("instanceName not set.  Use the HasInstanceName() method to check its state before accessing it.");
+		}
+		return _instanceName;
+	}
+
+	private void setInstanceName(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("instanceName cannot be null");
+		}
+		boolean changing = !_instanceName_set || _instanceName != value;
+		if(changing) {
+			_instanceName_set = true;
+			_instanceName = value;
+		}
+	}
+
+	private void clearInstanceName() {
+		if(_instanceName_set) {
+			_instanceName_set = true;
+			_instanceName = null;
+		}
+	}
+
+	public boolean hasInstanceName() {
+		return _instanceName_set;
 	}
 
 	// </editor-fold>
@@ -155,6 +205,43 @@ public class MySqlProperties
 
 	private boolean hasPort() {
 		return m_port_set;
+	}
+
+	// </editor-fold>
+	
+	// <editor-fold desc="DatabaseName" defaultstate="collapsed">
+
+	private String _databaseName = null;
+	private boolean _databaseName_set = false;
+
+	public String getDatabaseName() {
+		if(!_databaseName_set) {
+			throw new IllegalStateException("databaseName not set.  Use the HasDatabaseName() method to check its state before accessing it.");
+		}
+		return _databaseName;
+	}
+
+	private void setDatabaseName(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("databaseName cannot be null");
+		}
+		boolean changing = !_databaseName_set || _databaseName != value;
+		if(changing) {
+			_databaseName_set = true;
+			_databaseName = value;
+		}
+	}
+
+	private void clearDatabaseName() {
+		if(_databaseName_set) {
+			_databaseName_set = true;
+			_databaseName = null;
+		}
+	}
+
+	private boolean hasDatabaseName() {
+		return _databaseName_set;
 	}
 
 	// </editor-fold>

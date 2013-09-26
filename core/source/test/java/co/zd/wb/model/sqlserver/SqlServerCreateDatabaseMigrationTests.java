@@ -14,92 +14,91 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.model.mysql;
+package co.zd.wb.model.sqlserver;
 
 import co.zd.wb.model.MigrationFailedException;
-import co.zd.helium.fixture.MySqlDatabaseFixture;
 import co.zd.wb.model.database.DatabaseFixtureHelper;
 import java.sql.SQLException;
 import java.util.UUID;
-import org.junit.Assert;
+import junit.framework.Assert;
 import org.junit.Test;
 
-public class MySqlCreateDatabaseMigrationTests
+public class SqlServerCreateDatabaseMigrationTests
 {
 	@Test public void performForNonExistantDatabaseSucceeds() throws
-		MigrationFailedException,
-		SQLException
+		MigrationFailedException
 	{
 		
 		//
 		// Setup
 		//
 		
-		MySqlProperties mySqlProperties = MySqlProperties.get();
+		SqlServerProperties p = SqlServerProperties.get();
 		
-		MySqlCreateDatabaseMigration tr = new MySqlCreateDatabaseMigration(
+		SqlServerCreateDatabaseMigration m = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			null,
 			UUID.randomUUID());
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
-		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
+		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
+			p.getHostName(),
+			p.hasInstanceName() ? p.getInstanceName() : null,
+			p.getPort(),
+			p.getUsername(),
+			p.getPassword(),
 			databaseName,
 			null);
-
+		
 		//
 		// Execute
 		//
 		
-		tr.perform(instance);
+		try
+		{
+			m.perform(instance);
 		
-		//
-		// Verify
-		//
+			//
+			// Verify
+			//
 
-		//
-		// Tear-Down
-		//
-
-		MySqlUtil.dropDatabase(instance, databaseName);
-		
+			//
+			// Tear-Down
+			//
+			
+		}
+		finally
+		{
+			SqlServerUtil.tryDropDatabase(instance);
+		}
 	}
 
-	@Test public void performForExistantDatabaseFails()
+	@Test public void performForExistantDatabaseFails() throws SQLException
 	{
 		
 		//
 		// Fixture Setup
 		//
 
-		MySqlProperties mySqlProperties = MySqlProperties.get();
+		SqlServerProperties properties = SqlServerProperties.get();
+
+		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
+			properties.getHostName(),
+			properties.hasInstanceName() ? properties.getInstanceName() : null,
+			properties.getPort(),
+			properties.getUsername(),
+			properties.getPassword(),
+			DatabaseFixtureHelper.databaseName(),
+			null);
 		
-		MySqlDatabaseFixture f = new MySqlDatabaseFixture(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
-			"stm_test",
-			"");
-		f.setUp();
+		SqlServerUtil.createDatabase(instance);
 		
-		MySqlCreateDatabaseMigration tr = new MySqlCreateDatabaseMigration(
+		SqlServerCreateDatabaseMigration tr = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			null,
 			UUID.randomUUID());
 
-		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
-			f.getDatabaseName(),
-			null);
 
 		//
 		// Execute
@@ -119,7 +118,7 @@ public class MySqlCreateDatabaseMigrationTests
 		}
 		finally
 		{
-			f.tearDown();
+			SqlServerUtil.tryDropDatabase(instance);
 		}
 		
 		//
@@ -128,7 +127,7 @@ public class MySqlCreateDatabaseMigrationTests
 
 		Assert.assertEquals(
 			"caught.message",
-			String.format("database \"%s\" already exists",	f.getDatabaseName()),
+			String.format("Database '%s' already exists. Choose a different database name.",	instance.getDatabaseName()),
 			caught.getMessage());
 		
 	}

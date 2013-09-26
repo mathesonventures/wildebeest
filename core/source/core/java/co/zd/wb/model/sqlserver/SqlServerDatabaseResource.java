@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.model.mysql;
+package co.zd.wb.model.sqlserver;
 
 import co.zd.wb.model.database.Extensions;
 import co.zd.wb.model.base.BaseResource;
@@ -31,9 +31,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class MySqlDatabaseResource extends BaseResource implements Resource
+public class SqlServerDatabaseResource extends BaseResource implements Resource
 {
-	public MySqlDatabaseResource(
+	public SqlServerDatabaseResource(
 		UUID resourceId,
 		String name)
 	{
@@ -47,8 +47,8 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 	@Override public State currentState(Instance instance) throws IndeterminateStateException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
+		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
 
 		UUID declaredStateId = null;
 		
@@ -56,7 +56,7 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		if (MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
+		if (SqlServerDatabaseHelper.databaseExists(db))
 		{
 			String stateTableName = Extensions.getStateTableName(db);
 			
@@ -80,7 +80,7 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 				else
 				{
 					throw new IndeterminateStateException(String.format(
-						"The state tracking table \"%s\" was not found in the target schema",
+						"The state tracking table \"%s\" was not found in the target database",
 						stateTableName));
 				}
 			}
