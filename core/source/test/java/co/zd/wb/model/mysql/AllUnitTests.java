@@ -28,7 +28,7 @@ import org.junit.runners.Suite;
 	MySqlDatabaseResourceTests.class,
 	MySqlTableDoesNotExistAssertionTests.class,
 	MySqlTableExistsAssertionTests.class,
-	SqlScriptMigrationTests.class,
+	SqlScriptMigrationTests.class
 })
 public class AllUnitTests
 {

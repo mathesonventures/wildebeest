@@ -9,6 +9,31 @@
 			</assertions>
 		</state>
 
+		<state id="6096d6fc-2b04-45cf-88cf-9ab49629f50e" label="Core Schema Loaded">
+			<assertions>
+				<assertion type="SqlServerTableExists" id="397a6a63-15ab-412f-922b-2c020b372a9f" name="ProductType table exists">
+					<tableName>ProductType</tableName>
+				</assertion>
+				<assertion type="RowExists" id="b8b91f10-bb36-4cf0-8d06-a3c5a0c0391d" name="ProductType HW exists">
+					<sql><![CDATA[
+						SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';
+					]]></sql>
+				</assertion>
+				<assertion type="RowExists" id="72e36ad4-49b4-430d-a6bc-c0d12de4e398" name="ProductType SW exists">
+					<sql><![CDATA[
+						SELECT * FROM ProductType WHERE ProductTypeCode = 'SW';
+					]]></sql>
+				</assertion>
+				<assertion type="RowDoesNotExist" id="acdfdd19-7b8f-4bd7-bad7-58636e748079" name="ProductType XY does not exist">
+					<sql><![CDATA[
+						SELECT * FROM ProductType WHERE ProductTypeCode = 'XY';
+					]]></sql>
+				</assertion>
+				<assertion type="SqlServerTableExists" id="a7dcf592-4ee4-4452-81c3-e605c0ba1a7d" name="Product table exists">
+					<tableName>Product</tableName>
+				</assertion>
+			</assertions>
+		</state>
 	</states>
 
 	<migrations>
@@ -17,6 +42,53 @@
 			type="SqlServerCreateDatabase"
 			id="c6a1bd00-c632-4839-b6c7-d8578dd98ff0"
 			toStateId="b68fc5c0-35c9-49b8-b555-9e7634fe0de3">
+		</migration>
+
+		<migration
+			type="SqlScript"
+			id="3ba71bf8-6e6e-4c9e-ae98-dc0f2b1607fa"
+			fromStateId="b68fc5c0-35c9-49b8-b555-9e7634fe0de3"
+			toStateId="6096d6fc-2b04-45cf-88cf-9ab49629f50e">
+			<sql><![CDATA[
+
+SET ANSI_NULLS ON;
+
+SET QUOTED_IDENTIFIER ON;
+
+SET ANSI_PADDING ON;
+
+CREATE TABLE [dbo].[ProductType](
+	[ProductTypeCode] [char](2) NOT NULL,
+	[Name] [varchar](10) NOT NULL,
+ CONSTRAINT [PK_ProductType] PRIMARY KEY CLUSTERED 
+(
+	[ProductTypeCode] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY];
+
+INSERT INTO
+    ProductType(ProductTypeCode, Name)
+VALUES
+    ('HW', 'Hardware'),
+    ('SW', 'Software');
+
+CREATE TABLE [dbo].[Product](
+	[ProductId] [uniqueidentifier] NOT NULL,
+	[ProductTypeCode] [char](2) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+	[Description] [varchar](4000) NOT NULL,
+ CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED 
+(
+	[ProductId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY];
+
+ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FK_Product_ProductTypeCode] FOREIGN KEY([ProductTypeCode])
+REFERENCES [dbo].[ProductType] ([ProductTypeCode]);
+
+ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FK_Product_ProductTypeCode];
+
+			]]></sql>
 		</migration>
 
 	</migrations>

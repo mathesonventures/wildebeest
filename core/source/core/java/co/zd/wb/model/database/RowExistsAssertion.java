@@ -16,7 +16,6 @@
 
 package co.zd.wb.model.database;
 
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
 import co.zd.wb.model.base.BaseAssertion;
 import co.zd.wb.model.Assertion;
 import co.zd.wb.model.AssertionFaultException;
@@ -83,7 +82,7 @@ public class RowExistsAssertion extends BaseAssertion implements Assertion
 	@Override public AssertionResponse apply(Instance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
+		DatabaseInstance db = ModelExtensions.As(instance, DatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseInstance"); }
 
 		AssertionResponse result = null;

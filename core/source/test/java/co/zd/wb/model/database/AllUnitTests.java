@@ -23,7 +23,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses(
 {
 	RowDoesNotExistAssertionTests.class,
-	RowExistsAssertionTests.class,
+	RowExistsAssertionTests.class
 })
 public class AllUnitTests
 {

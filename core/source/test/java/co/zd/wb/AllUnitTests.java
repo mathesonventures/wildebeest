@@ -29,7 +29,7 @@ import org.junit.runners.Suite;
 	co.zd.wb.model.base.AllUnitTests.class,
 	co.zd.wb.model.database.AllUnitTests.class,
 	co.zd.wb.model.mysql.AllUnitTests.class,
-	co.zd.wb.model.sqlserver.AllUnitTests.class,
+	co.zd.wb.model.sqlserver.AllUnitTests.class
 })
 public class AllUnitTests
 {

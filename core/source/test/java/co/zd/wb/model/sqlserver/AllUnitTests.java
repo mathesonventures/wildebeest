@@ -25,6 +25,8 @@ import org.junit.runners.Suite;
 	SqlServerCreateDatabaseMigrationTests.class,
 	SqlServerDatabaseDoesNotExistAssertionTests.class,
 	SqlServerDatabaseExistsAssertionTests.class,
+	SqlServerTableDoesNotExistAssertionTests.class,
+	SqlServerTableExistsAssertionTests.class
 })
 public class AllUnitTests
 {

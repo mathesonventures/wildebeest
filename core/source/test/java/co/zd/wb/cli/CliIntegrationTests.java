@@ -76,7 +76,7 @@ public class CliIntegrationTests
 			"migrate",
 			"--resource:integration_test_fixtures/sqlserver_database/database.wbresource.xml",
 			"--instance:integration_test_fixtures/sqlserver_database/staging_db.wbinstance.xml",
-			"--targetState:Database Created"
+			"--targetState:Core Schema Loaded"
 		};
 		
 		Instance instance = Interface.loadInstance(

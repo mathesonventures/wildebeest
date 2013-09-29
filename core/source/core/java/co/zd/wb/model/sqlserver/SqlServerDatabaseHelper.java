@@ -72,4 +72,51 @@ public class SqlServerDatabaseHelper
 		
 		return result;
 	}
+	
+	public static boolean tableExists(
+		SqlServerDatabaseInstance instance,
+		String tableName)
+	{
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
+		if ("".equals(tableName.trim())) { throw new IllegalArgumentException("instance cannot be empty"); }
+		
+		boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			conn = instance.getAppDataSource().getConnection();
+			
+			ps = conn.prepareStatement(
+				"SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(?) AND TYPE IN (N'U')");
+			ps.setString(1, "[dbo].[" + tableName + "]");
+			
+			rs = ps.executeQuery();
+		
+			result = rs.next();
+		}
+		catch(SQLException e)
+		{
+			throw new FaultException(e);
+		}
+		finally
+		{
+			try
+			{
+				DatabaseHelper.release(rs);
+				DatabaseHelper.release(ps);
+				DatabaseHelper.release(conn);
+			}
+			catch(SQLException e)
+			{
+				throw new FaultException(e);
+			}
+		}
+		
+		return result;
+	}
 }
