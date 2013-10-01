@@ -90,6 +90,7 @@ public class SqlServerTableExistsAssertionTests
 			UUID.randomUUID(),
 			"ProductType Exists",
 			0,
+			"dbo",
 			"ProductType");
  
 		//
@@ -158,6 +159,7 @@ public class SqlServerTableExistsAssertionTests
 			UUID.randomUUID(),
 			"ProductType Exists",
 			0,
+			"dbo",
 			"ProductType");
  
 		//
@@ -208,6 +210,7 @@ public class SqlServerTableExistsAssertionTests
 			UUID.randomUUID(),
 			"ProductType Exists",
 			0,
+			"dbo",
 			"ProductType");
  
 		//
@@ -247,6 +250,7 @@ public class SqlServerTableExistsAssertionTests
 			UUID.randomUUID(),
 			"Database does not exist",
 			0,
+			"dbo",
 			"TableName");
 		
 		//
@@ -285,6 +289,7 @@ public class SqlServerTableExistsAssertionTests
 			UUID.randomUUID(),
 			"Database does not exist",
 			0,
+			"dbo",
 			"TableName");
 		
 		FakeInstance instance = new FakeInstance();

@@ -29,12 +29,51 @@ public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 		UUID assertionId,
 		String name,
 		int seqNum,
+		String schemaName,
 		String tableName)
 	{
 		super(assertionId, name, seqNum);
 		
+		this.setSchemaName(schemaName);
 		this.setTableName(tableName);
 	}
+
+	// <editor-fold desc="SchemaName" defaultstate="collapsed">
+
+	private String _schemaName = null;
+	private boolean _schemaName_set = false;
+
+	public String getSchemaName() {
+		if(!_schemaName_set) {
+			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
+		}
+		return _schemaName;
+	}
+
+	private void setSchemaName(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("schemaName cannot be null");
+		}
+		boolean changing = !_schemaName_set || _schemaName != value;
+		if(changing) {
+			_schemaName_set = true;
+			_schemaName = value;
+		}
+	}
+
+	private void clearSchemaName() {
+		if(_schemaName_set) {
+			_schemaName_set = true;
+			_schemaName = null;
+		}
+	}
+
+	private boolean hasSchemaName() {
+		return _schemaName_set;
+	}
+
+	// </editor-fold>
 	
 	// <editor-fold desc="TableName" defaultstate="collapsed">
 
@@ -88,7 +127,10 @@ public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 				String.format("Database %s does not exist", db.getDatabaseName()));
 		}
 		
-		else if (SqlServerDatabaseHelper.tableExists(db, this.getTableName()))
+		else if (SqlServerDatabaseHelper.tableExists(
+			db,
+			this.getSchemaName(),
+			this.getTableName()))
 		{
 			result = new ImmutableAssertionResponse(false, "Table " + this.getTableName() + " exists");
 		}

@@ -14,22 +14,20 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom.mysql;
+package co.zd.wb.service.dom.sqlserver;
 
-import co.zd.wb.model.Assertion;
-import co.zd.wb.model.mysql.MySqlTableExistsAssertion;
-import co.zd.wb.service.dom.BaseDomAssertionBuilder;
+import co.zd.wb.model.Migration;
+import co.zd.wb.model.sqlserver.SqlServerCreateSchemaMigration;
+import co.zd.wb.service.dom.BaseDomMigrationBuilder;
 import java.util.UUID;
 
-public class MySqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuilder
+public class SqlServerCreateSchemaDomMigrationBuilder extends BaseDomMigrationBuilder
 {
-	@Override public Assertion build(UUID assertionId, String name, int seqNum)
+	@Override public Migration build(UUID migrationId, UUID fromStateId, UUID toStateId)
 	{
-		// TableName - Mandatory
-		String tableName = this.getString("tableName");
+		// SchemaName: Mandatory
+		String schemaName = this.getString("schemaName");
 		
-		Assertion result  = new MySqlTableExistsAssertion(assertionId, name, seqNum, tableName);
-		
-		return result;
+		return new SqlServerCreateSchemaMigration(migrationId, fromStateId, toStateId, schemaName);
 	}
 }

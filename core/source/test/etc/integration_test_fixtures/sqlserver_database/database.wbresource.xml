@@ -12,6 +12,7 @@
 		<state id="6096d6fc-2b04-45cf-88cf-9ab49629f50e" label="Core Schema Loaded">
 			<assertions>
 				<assertion type="SqlServerTableExists" id="397a6a63-15ab-412f-922b-2c020b372a9f" name="ProductType table exists">
+					<schemaName>dbo</schemaName>
 					<tableName>ProductType</tableName>
 				</assertion>
 				<assertion type="RowExists" id="b8b91f10-bb36-4cf0-8d06-a3c5a0c0391d" name="ProductType HW exists">
@@ -30,6 +31,7 @@
 					]]></sql>
 				</assertion>
 				<assertion type="SqlServerTableExists" id="a7dcf592-4ee4-4452-81c3-e605c0ba1a7d" name="Product table exists">
+					<schemaName>dbo</schemaName>
 					<tableName>Product</tableName>
 				</assertion>
 			</assertions>

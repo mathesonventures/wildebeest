@@ -75,11 +75,14 @@ public class SqlServerDatabaseHelper
 	
 	public static boolean tableExists(
 		SqlServerDatabaseInstance instance,
+		String schemaName,
 		String tableName)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
-		if ("".equals(tableName.trim())) { throw new IllegalArgumentException("instance cannot be empty"); }
+		if ("".equals(tableName.trim())) { throw new IllegalArgumentException("tableName cannot be empty"); }
+		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
+		if ("".equals(schemaName.trim())) { throw new IllegalArgumentException("schemaName cannot be empty"); }
 		
 		boolean result = false;
 		
@@ -93,7 +96,7 @@ public class SqlServerDatabaseHelper
 			
 			ps = conn.prepareStatement(
 				"SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(?) AND TYPE IN (N'U')");
-			ps.setString(1, "[dbo].[" + tableName + "]");
+			ps.setString(1, "[" + schemaName + "].[" + tableName + "]");
 			
 			rs = ps.executeQuery();
 		
