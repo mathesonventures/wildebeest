@@ -37,6 +37,8 @@ import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomInstanceBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomResourceBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDropSchemaDomMigrationBuilder;
+import co.zd.wb.service.dom.sqlserver.SqlServerSchemaDoesNotExistDomAssertionBuilder;
+import co.zd.wb.service.dom.sqlserver.SqlServerSchemaExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerTableDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerTableExistsDomAssertionBuilder;
 import java.util.HashMap;
@@ -69,6 +71,8 @@ public class DomPlugins
 		result.put("MySqlTableExists", new MySqlTableExistsDomAssertionBuilder());
 		
 		// SqlServer
+		result.put("SqlServerSchemaDoesNotExist", new SqlServerSchemaDoesNotExistDomAssertionBuilder());
+		result.put("SqlServerSchemaExists", new SqlServerSchemaExistsDomAssertionBuilder());
 		result.put("SqlServerDatabaseDoesNotExist", new SqlServerDatabaseDoesNotExistDomAssertionBuilder());
 		result.put("SqlServerDatabaseExists", new SqlServerDatabaseExistsDomAssertionBuilder());
 		result.put("SqlServerTableDoesNotExist", new SqlServerTableDoesNotExistDomAssertionBuilder());
