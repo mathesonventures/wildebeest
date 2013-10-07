@@ -27,13 +27,17 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 {
 	public MySqlTableDoesNotExistAssertion(
 		UUID assertionId,
-		String name,
 		int seqNum,
 		String tableName)
 	{
-		super(assertionId, name, seqNum);
+		super(assertionId, seqNum);
 		
 		this.setTableName(tableName);
+	}
+	
+	@Override public String getDescription()
+	{
+		return String.format("Table '%s' does not exist", this.getTableName());
 	}
 	
 	// <editor-fold desc="TableName" defaultstate="collapsed">

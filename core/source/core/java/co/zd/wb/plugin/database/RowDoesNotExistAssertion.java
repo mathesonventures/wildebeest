@@ -34,13 +34,51 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 {
 	public RowDoesNotExistAssertion(
 		UUID assertionId,
-		String name,
+		String description,
 		int seqNum,
 		String sql)
 	{
-		super(assertionId, name, seqNum);
+		super(assertionId, seqNum);
+		this.setDescription(description);
 		this.setSql(sql);
 	}
+	
+	// <editor-fold desc="Description" defaultstate="collapsed">
+
+	private String _description = null;
+	private boolean _description_set = false;
+
+	public String getDescription() {
+		if(!_description_set) {
+			throw new IllegalStateException("description not set.  Use the HasDescription() method to check its state before accessing it.");
+		}
+		return _description;
+	}
+
+	private void setDescription(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("description cannot be null");
+		}
+		boolean changing = !_description_set || _description != value;
+		if(changing) {
+			_description_set = true;
+			_description = value;
+		}
+	}
+
+	private void clearDescription() {
+		if(_description_set) {
+			_description_set = true;
+			_description = null;
+		}
+	}
+
+	private boolean hasDescription() {
+		return _description_set;
+	}
+
+	// </editor-fold>
 	
 	// <editor-fold desc="Sql" defaultstate="collapsed">
 

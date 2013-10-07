@@ -78,7 +78,7 @@ public class PrintStreamLogger implements Logger
 	{
 		if (assertion == null) { throw new IllegalArgumentException("assertion cannot be null"); }
 
-		logLine(this.getStream(), String.format("Starting assertion: %s", assertion.getName()));
+		logLine(this.getStream(), String.format("Starting assertion: %s", assertion.getDescription()));
 	}
 
 	@Override public void assertionComplete(
@@ -92,7 +92,7 @@ public class PrintStreamLogger implements Logger
 		{
 			logLine(this.getStream(), String.format(
 				"Assertion \"%s\" passed: %s",
-				assertion.getName(),
+				assertion.getDescription(),
 				response.getMessage()));
 		}
 		
@@ -100,7 +100,7 @@ public class PrintStreamLogger implements Logger
 		{
 			logLine(this.getStream(), String.format(
 				"Assertion \"%s\" failed: %s",
-				assertion.getName(),
+				assertion.getDescription(),
 				response.getMessage()));
 		}
 	}

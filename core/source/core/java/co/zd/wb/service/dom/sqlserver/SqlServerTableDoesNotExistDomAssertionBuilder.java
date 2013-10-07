@@ -23,7 +23,7 @@ import java.util.UUID;
 
 public class SqlServerTableDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, String name, int seqNum)
+	@Override public Assertion build(UUID assertionId, int seqNum)
 	{
 		// SchemaName - Mandatory
 		String schemaName = this.getString("schemaName");
@@ -32,7 +32,6 @@ public class SqlServerTableDoesNotExistDomAssertionBuilder extends BaseDomAssert
 		
 		Assertion result = new SqlServerTableDoesNotExistAssertion(
 			assertionId,
-			name,
 			seqNum,
 			schemaName,
 			tableName);

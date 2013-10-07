@@ -16,10 +16,6 @@
 
 package co.zd.wb.plugin.mysql;
 
-import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.zd.wb.plugin.mysql.MySqlTableDoesNotExistAssertion;
-import co.zd.wb.plugin.mysql.MySqlDatabaseResource;
-import co.zd.wb.plugin.mysql.MySqlCreateDatabaseMigration;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.plugin.base.FakeInstance;
 import co.zd.wb.plugin.database.SqlScriptMigration;
@@ -91,7 +87,6 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"ProductType does not exists",
 			0,
 			"ProductType");
  
@@ -158,7 +153,6 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"ProductType does not exist",
 			0,
 			"ProductType");
  
@@ -207,7 +201,6 @@ public class MySqlTableDoesNotExistAssertionTests
 		 
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"ProductType Exists",
 			0,
 			"ProductType");
  
@@ -237,7 +230,6 @@ public class MySqlTableDoesNotExistAssertionTests
 		 
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0,
 			"TableName");
 		
@@ -275,7 +267,6 @@ public class MySqlTableDoesNotExistAssertionTests
 		 
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0,
 			"TableName");
 		

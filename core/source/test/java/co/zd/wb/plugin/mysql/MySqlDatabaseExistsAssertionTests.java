@@ -16,10 +16,6 @@
 
 package co.zd.wb.plugin.mysql;
 
-import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.zd.wb.plugin.mysql.MySqlDatabaseExistsAssertion;
-import co.zd.wb.plugin.mysql.MySqlDatabaseResource;
-import co.zd.wb.plugin.mysql.MySqlCreateDatabaseMigration;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.plugin.base.FakeInstance;
 import co.zd.wb.AssertionFailedException;
@@ -76,7 +72,6 @@ public class MySqlDatabaseExistsAssertionTests
 		
 		MySqlDatabaseExistsAssertion assertion = new MySqlDatabaseExistsAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0);
  
 		//
@@ -120,7 +115,6 @@ public class MySqlDatabaseExistsAssertionTests
 		
 		MySqlDatabaseExistsAssertion assertion = new MySqlDatabaseExistsAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0);
  
 		//
@@ -147,7 +141,6 @@ public class MySqlDatabaseExistsAssertionTests
 
 		MySqlDatabaseExistsAssertion assertion = new MySqlDatabaseExistsAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0);
 		
 		//
@@ -184,7 +177,6 @@ public class MySqlDatabaseExistsAssertionTests
 
 		MySqlDatabaseExistsAssertion assertion = new MySqlDatabaseExistsAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0);
 		
 		FakeInstance instance = new FakeInstance();

@@ -24,7 +24,7 @@ import java.util.UUID;
 
 public class RowDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, String name, int seqNum)
+	@Override public Assertion build(UUID assertionId, int seqNum)
 	{
 		String sql = this.getString("sql");
 
@@ -33,6 +33,6 @@ public class RowDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 			throw new ResourceLoaderFault("sql not found in RowExists");
 		}
 		
-		return new RowDoesNotExistAssertion(assertionId, name, seqNum, sql);
+		return new RowDoesNotExistAssertion(assertionId, "toremove", seqNum, sql);
 	}
 }

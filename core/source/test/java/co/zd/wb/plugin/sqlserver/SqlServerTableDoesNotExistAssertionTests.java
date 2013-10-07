@@ -16,10 +16,6 @@
 
 package co.zd.wb.plugin.sqlserver;
 
-import co.zd.wb.plugin.sqlserver.SqlServerTableDoesNotExistAssertion;
-import co.zd.wb.plugin.sqlserver.SqlServerCreateDatabaseMigration;
-import co.zd.wb.plugin.sqlserver.SqlServerDatabaseInstance;
-import co.zd.wb.plugin.sqlserver.SqlServerDatabaseResource;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.plugin.base.FakeInstance;
 import co.zd.wb.plugin.database.SqlScriptMigration;
@@ -92,7 +88,6 @@ public class SqlServerTableDoesNotExistAssertionTests
 		
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"ProductType does not exists",
 			0,
 			"dbo",
 			"ProductType");
@@ -161,7 +156,6 @@ public class SqlServerTableDoesNotExistAssertionTests
 		
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"ProductType does not exist",
 			0,
 			"dbo",
 			"ProductType");
@@ -212,7 +206,6 @@ public class SqlServerTableDoesNotExistAssertionTests
 		 
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"ProductType Exists",
 			0,
 			"dbo",
 			"ProductType");
@@ -243,7 +236,6 @@ public class SqlServerTableDoesNotExistAssertionTests
 		 
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0,
 			"dbo",
 			"TableName");
@@ -282,7 +274,6 @@ public class SqlServerTableDoesNotExistAssertionTests
 		 
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0,
 			"dbo",
 			"TableName");

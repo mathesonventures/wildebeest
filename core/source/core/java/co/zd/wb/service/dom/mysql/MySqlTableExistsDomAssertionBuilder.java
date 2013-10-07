@@ -23,12 +23,12 @@ import java.util.UUID;
 
 public class MySqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, String name, int seqNum)
+	@Override public Assertion build(UUID assertionId, int seqNum)
 	{
 		// TableName - Mandatory
 		String tableName = this.getString("tableName");
 		
-		Assertion result  = new MySqlTableExistsAssertion(assertionId, name, seqNum, tableName);
+		Assertion result  = new MySqlTableExistsAssertion(assertionId, seqNum, tableName);
 		
 		return result;
 	}

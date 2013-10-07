@@ -16,10 +16,6 @@
 
 package co.zd.wb.plugin.sqlserver;
 
-import co.zd.wb.plugin.sqlserver.SqlServerCreateDatabaseMigration;
-import co.zd.wb.plugin.sqlserver.SqlServerSchemaExistsAssertion;
-import co.zd.wb.plugin.sqlserver.SqlServerCreateSchemaMigration;
-import co.zd.wb.plugin.sqlserver.SqlServerDatabaseInstance;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.plugin.base.FakeInstance;
 import co.zd.wb.AssertionFailedException;
@@ -71,7 +67,6 @@ public class SqlServerSchemaExistsAssertionTests
 		 
 		SqlServerSchemaExistsAssertion schemaExists = new SqlServerSchemaExistsAssertion(
 			UUID.randomUUID(),
-			"prd Exists",
 			0,
 			"prd");
  
@@ -130,7 +125,6 @@ public class SqlServerSchemaExistsAssertionTests
 		
 		SqlServerSchemaExistsAssertion schemaExists = new SqlServerSchemaExistsAssertion(
 			UUID.randomUUID(),
-			"prd Exists",
 			0,
 			"prd");
  
@@ -180,7 +174,6 @@ public class SqlServerSchemaExistsAssertionTests
 		 
 		SqlServerSchemaExistsAssertion assertion = new SqlServerSchemaExistsAssertion(
 			UUID.randomUUID(),
-			"ProductType Exists",
 			0,
 			"prd");
  
@@ -219,7 +212,6 @@ public class SqlServerSchemaExistsAssertionTests
 		 
 		SqlServerSchemaExistsAssertion assertion = new SqlServerSchemaExistsAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0,
 			"prd");
 		
@@ -257,7 +249,6 @@ public class SqlServerSchemaExistsAssertionTests
 		 
 		SqlServerSchemaExistsAssertion assertion = new SqlServerSchemaExistsAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0,
 			"prd");
 		

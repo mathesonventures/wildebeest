@@ -23,8 +23,8 @@ import java.util.UUID;
 
 public class SqlServerDatabaseDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, String name, int seqNum)
+	@Override public Assertion build(UUID assertionId, int seqNum)
 	{
-		return new SqlServerDatabaseDoesNotExistAssertion(assertionId, name, seqNum);
+		return new SqlServerDatabaseDoesNotExistAssertion(assertionId, seqNum);
 	}
 }

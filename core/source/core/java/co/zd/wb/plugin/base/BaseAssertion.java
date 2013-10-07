@@ -23,11 +23,9 @@ public abstract class BaseAssertion implements Assertion
 {
 	protected BaseAssertion(
 		UUID assertionId,
-		String name,
 		int seqNum)
 	{
 		this.setAssertionId(assertionId);
-		this.setName(name);
 		this.setSeqNum(seqNum);
 	}
 	
@@ -68,43 +66,6 @@ public abstract class BaseAssertion implements Assertion
 
 	// </editor-fold>
 	
-	// <editor-fold desc="Name" defaultstate="collapsed">
-
-	private String m_name = null;
-	private boolean m_name_set = false;
-
-	public String getName() {
-		if(!m_name_set) {
-			throw new IllegalStateException("name not set.  Use the HasName() method to check its state before accessing it.");
-		}
-		return m_name;
-	}
-
-	private void setName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("name cannot be null");
-		}
-		boolean changing = !m_name_set || m_name != value;
-		if(changing) {
-			m_name_set = true;
-			m_name = value;
-		}
-	}
-
-	private void clearName() {
-		if(m_name_set) {
-			m_name_set = true;
-			m_name = null;
-		}
-	}
-
-	public boolean hasName() {
-		return m_name_set;
-	}
-
-	// </editor-fold>
-
 	// <editor-fold desc="SeqNum" defaultstate="collapsed">
 
 	private int m_seqNum = 0;

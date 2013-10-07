@@ -16,7 +16,6 @@
 
 package co.zd.wb.plugin.base;
 
-import co.zd.wb.plugin.base.ImmutableState;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.Assertion;
 import co.zd.wb.AssertionFailedException;
@@ -83,7 +82,6 @@ public class BaseResourceTests
 		
 		Assertion assertion1 = new FakeAssertion(
 			UUID.randomUUID(),
-			"Fake1",
 			0,
 			"Foo");
 		state.getAssertions().add(assertion1);
@@ -122,14 +120,12 @@ public class BaseResourceTests
 		UUID assertion1Id = UUID.randomUUID();
 		state.getAssertions().add(new FakeAssertion(
 			assertion1Id,
-			"Fake1",
 			0,
 			"Foo"));
 		
 		UUID assertion2Id = UUID.randomUUID();
 		state.getAssertions().add(new FakeAssertion(
 			assertion2Id,
-			"Fake2",
 			1,
 			"Bar"));
 		
@@ -191,7 +187,7 @@ public class BaseResourceTests
 		// State 1
 		UUID state1Id = UUID.randomUUID();
 		State state = new ImmutableState(state1Id);
-		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "foo"));
+		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state);
 		
 		// Migration 1
@@ -232,17 +228,17 @@ public class BaseResourceTests
 
 		// State 1
 		State state1 = new ImmutableState(UUID.randomUUID(), "State 1");
-		state1.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "foo"));
+		state1.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state1);
 
 		// State 2
 		State state2 = new ImmutableState(UUID.randomUUID(), "State 2");
-		state2.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "bar"));
+		state2.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "bar"));
 		resource.getStates().add(state2);
 
 		// State 3
 		State state3 = new ImmutableState(UUID.randomUUID(), "State 3");
-		state3.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "bup"));
+		state3.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "bup"));
 		resource.getStates().add(state3);
 		
 		// Migrate null -> State1
@@ -291,31 +287,31 @@ public class BaseResourceTests
 		// State 1
 		UUID state1Id = UUID.randomUUID();
 		State state1 = new ImmutableState(state1Id);
-		state1.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "state1"));
+		state1.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "state1"));
 		resource.getStates().add(state1);
 
 		// State B2
 		UUID stateB2Id = UUID.randomUUID();
 		State stateB2 = new ImmutableState(stateB2Id);
-		stateB2.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "stateB2"));
+		stateB2.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "stateB2"));
 		resource.getStates().add(stateB2);
 
 		// State B3
 		UUID stateB3Id = UUID.randomUUID();
 		State stateB3 = new ImmutableState(stateB3Id);
-		stateB3.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "stateB3"));
+		stateB3.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "stateB3"));
 		resource.getStates().add(stateB3);
 
 		// State C2
 		UUID stateC2Id = UUID.randomUUID();
 		State stateC2 = new ImmutableState(stateC2Id);
-		stateC2.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "stateC2"));
+		stateC2.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "stateC2"));
 		resource.getStates().add(stateC2);
 
 		// State C3
 		UUID stateC3Id = UUID.randomUUID();
 		State stateC3 = new ImmutableState(stateC3Id);
-		stateC3.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "stateC3"));
+		stateC3.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "stateC3"));
 		resource.getStates().add(stateC3);
 		
 		// Migrate null -> State1
@@ -387,7 +383,7 @@ public class BaseResourceTests
 		// State 1
 		UUID state1Id = UUID.randomUUID();
 		State state = new ImmutableState(state1Id);
-		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "foo"));
+		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state);
 		
 		// Migration 1
@@ -433,7 +429,7 @@ public class BaseResourceTests
 		// State 1
 		UUID state1Id = UUID.randomUUID();
 		State state = new ImmutableState(state1Id);
-		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), "Check tag", 0, "foo"));
+		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state);
 		
 		// Migration 1

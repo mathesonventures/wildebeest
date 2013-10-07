@@ -16,10 +16,6 @@
 
 package co.zd.wb.plugin.sqlserver;
 
-import co.zd.wb.plugin.sqlserver.SqlServerDatabaseDoesNotExistAssertion;
-import co.zd.wb.plugin.sqlserver.SqlServerCreateDatabaseMigration;
-import co.zd.wb.plugin.sqlserver.SqlServerDatabaseInstance;
-import co.zd.wb.plugin.sqlserver.SqlServerDatabaseResource;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.plugin.base.FakeInstance;
 import co.zd.wb.AssertionFailedException;
@@ -77,7 +73,6 @@ public class SqlServerDatabaseDoesNotExistAssertionTests
 		
 		SqlServerDatabaseDoesNotExistAssertion assertion = new SqlServerDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0);
  
 		//
@@ -130,7 +125,6 @@ public class SqlServerDatabaseDoesNotExistAssertionTests
 		
 		SqlServerDatabaseDoesNotExistAssertion assertion = new SqlServerDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0);
  
 		//
@@ -159,7 +153,6 @@ public class SqlServerDatabaseDoesNotExistAssertionTests
 
 		SqlServerDatabaseDoesNotExistAssertion assertion = new SqlServerDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0);
 		
 		//
@@ -196,7 +189,6 @@ public class SqlServerDatabaseDoesNotExistAssertionTests
 		 
 		SqlServerDatabaseDoesNotExistAssertion assertion = new SqlServerDatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
-			"Database does not exist",
 			0);
 		
 		FakeInstance instance = new FakeInstance();

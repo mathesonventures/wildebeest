@@ -16,8 +16,6 @@
 
 package co.zd.wb.plugin.base;
 
-import co.zd.wb.plugin.base.BaseAssertion;
-import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import co.zd.wb.Assertion;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.ModelExtensions;
@@ -28,13 +26,17 @@ public class FakeAssertion extends BaseAssertion implements Assertion
 {
 	public FakeAssertion(
 		UUID assertionId,
-		String name,
 		int seqNum,
 		String tag)
 	{
-		super(assertionId, name, seqNum);
+		super(assertionId, seqNum);
 		
 		this.setTag(tag);
+	}
+	
+	@Override public String getDescription()
+	{
+		return "Fake";
 	}
 	
 	// <editor-fold desc="Tag" defaultstate="collapsed">

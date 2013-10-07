@@ -35,7 +35,7 @@ public class Log4jLogger implements Logger
 	{
 		if (assertion == null) { throw new IllegalArgumentException("assertion cannot be null"); }
 
-		LOG.info(String.format("Starting assertion: %s", assertion.getName()));
+		LOG.info(String.format("Starting assertion: %s", assertion.getDescription()));
 	}
 
 	@Override public void assertionComplete(
@@ -49,7 +49,7 @@ public class Log4jLogger implements Logger
 		{
 			LOG.info(String.format(
 				"Assertion \"%s\" passed: %s",
-				assertion.getName(),
+				assertion.getDescription(),
 				response.getMessage()));
 		}
 		
@@ -57,7 +57,7 @@ public class Log4jLogger implements Logger
 		{
 			LOG.warn(String.format(
 				"Assertion \"%s\" failed: %s",
-				assertion.getName(),
+				assertion.getDescription(),
 				response.getMessage()));
 		}
 	}

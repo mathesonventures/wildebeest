@@ -23,14 +23,13 @@ import java.util.UUID;
 
 public class SqlServerSchemaExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, String name, int seqNum)
+	@Override public Assertion build(UUID assertionId, int seqNum)
 	{
 		// SchemaName - Mandatory
 		String schemaName = this.getString("schemaName");
 		
 		Assertion result = new SqlServerSchemaExistsAssertion(
 			assertionId,
-			name,
 			seqNum,
 			schemaName);
 		

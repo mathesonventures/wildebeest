@@ -27,15 +27,19 @@ public class SqlServerSchemaExistsAssertion extends BaseAssertion
 {
 	public SqlServerSchemaExistsAssertion(
 		UUID assertionId,
-		String name,
 		int seqNum,
 		String schemaName)
 	{
-		super(assertionId, name, seqNum);
+		super(assertionId, seqNum);
 		
 		this.setSchemaName(schemaName);
 	}
 
+	@Override public String getDescription()
+	{
+		return String.format("Schema '%s' exists", this.getSchemaName());
+	}
+	
 	// <editor-fold desc="SchemaName" defaultstate="collapsed">
 
 	private String _schemaName = null;

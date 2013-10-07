@@ -22,9 +22,7 @@ public interface Assertion
 {
 	UUID getAssertionId();
 	
-	String getName();
-	
-	boolean hasName();
+	String getDescription();
 	
 	int getSeqNum();
 	

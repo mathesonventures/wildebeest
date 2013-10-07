@@ -27,12 +27,16 @@ public class MySqlDatabaseDoesNotExistAssertion extends BaseAssertion
 {
 	public MySqlDatabaseDoesNotExistAssertion(
 		UUID assertionId,
-		String name,
 		int seqNum)
 	{
-		super(assertionId, name, seqNum);
+		super(assertionId, seqNum);
 	}
 
+	@Override public String getDescription()
+	{
+		return "Database does not exist";
+	}
+	
 	@Override public AssertionResponse apply(Instance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }

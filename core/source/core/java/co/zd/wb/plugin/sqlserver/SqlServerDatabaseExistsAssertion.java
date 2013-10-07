@@ -27,10 +27,14 @@ public class SqlServerDatabaseExistsAssertion extends BaseAssertion
 {
 	public SqlServerDatabaseExistsAssertion(
 		UUID assertionId,
-		String name,
 		int seqNum)
 	{
-		super(assertionId, name, seqNum);
+		super(assertionId, seqNum);
+	}
+	
+	@Override public String getDescription()
+	{
+		return "Database exists";
 	}
 	
 	@Override public AssertionResponse apply(Instance instance)

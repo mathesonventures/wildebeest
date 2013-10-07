@@ -78,20 +78,16 @@ public class AssertExtensions
 	
 	public static void assertAssertion(
 		UUID expectedAssertionId,
-		String expectedName,
 		int expectedSeqNum,
 		Assertion actual,
 		String name)
 	{
 		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId cannot be null"); }
-		if (expectedName == null) { throw new IllegalArgumentException("expectedName cannot be null"); }
-		if ("".equals(expectedName)) { throw new IllegalArgumentException("expectedName cannot be empty"); }
 		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
 		Assert.assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
-		Assert.assertEquals(name + ".name", expectedName, actual.getName());
 		Assert.assertEquals(name + ".seqNum", expectedSeqNum, actual.getSeqNum());
 	}
 	

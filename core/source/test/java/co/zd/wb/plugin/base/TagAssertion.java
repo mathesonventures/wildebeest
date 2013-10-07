@@ -16,8 +16,6 @@
 
 package co.zd.wb.plugin.base;
 
-import co.zd.wb.plugin.base.BaseAssertion;
-import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Instance;
@@ -27,13 +25,17 @@ public class TagAssertion extends BaseAssertion
 {
 	public TagAssertion(
 		UUID assertionId,
-		String name,
 		int seqNum,
 		String tag)
 	{
-		super(assertionId, name, seqNum);
+		super(assertionId, seqNum);
 		
 		this.setTag(tag);
+	}
+	
+	@Override public String getDescription()
+	{
+		return "Tag";
 	}
 	
 	// <editor-fold desc="Tag" defaultstate="collapsed">

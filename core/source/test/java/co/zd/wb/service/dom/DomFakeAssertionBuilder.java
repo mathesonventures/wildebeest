@@ -16,17 +16,16 @@
 
 package co.zd.wb.service.dom;
 
-import co.zd.wb.service.dom.BaseDomAssertionBuilder;
 import co.zd.wb.Assertion;
 import co.zd.wb.plugin.base.FakeAssertion;
 import java.util.UUID;
 
 public class DomFakeAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, String name, int seqNum)
+	@Override public Assertion build(UUID assertionId, int seqNum)
 	{
 		String tag = this.getElement().getChildNodes().item(0).getTextContent();
 		
-		return new FakeAssertion(assertionId, name, seqNum, tag);
+		return new FakeAssertion(assertionId, seqNum, tag);
 	}
 }

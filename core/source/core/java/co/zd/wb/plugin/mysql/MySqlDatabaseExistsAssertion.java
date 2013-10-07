@@ -27,10 +27,14 @@ public class MySqlDatabaseExistsAssertion extends BaseAssertion
 {
 	public MySqlDatabaseExistsAssertion(
 		UUID assertionId,
-		String name,
 		int seqNum)
 	{
-		super(assertionId, name, seqNum);
+		super(assertionId, seqNum);
+	}
+	
+	@Override public String getDescription()
+	{
+		return "Database exists";
 	}
 	
 	@Override public AssertionResponse apply(Instance instance)

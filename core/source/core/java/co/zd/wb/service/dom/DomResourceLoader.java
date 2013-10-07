@@ -373,7 +373,7 @@ public class DomResourceLoader implements ResourceLoader
 		
 		builder.reset();
 		((DomBuilder)builder).setElement(element);
-		return builder.build(id, name, seqNum);
+		return builder.build(id, seqNum);
 	}
 	
 	private static Migration buildMigration(
