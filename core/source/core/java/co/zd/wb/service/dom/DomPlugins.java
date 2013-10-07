@@ -36,6 +36,7 @@ import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDoesNotExistDomAssertionB
 import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomInstanceBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomResourceBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseExistsDomAssertionBuilder;
+import co.zd.wb.service.dom.sqlserver.SqlServerDropSchemaDomMigrationBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerTableDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerTableExistsDomAssertionBuilder;
 import java.util.HashMap;
@@ -89,6 +90,7 @@ public class DomPlugins
 		// SqlServer
 		result.put("SqlServerCreateDatabase", new SqlServerCreateDatabaseDomMigrationBuilder());
 		result.put("SqlServerCreateSchema", new SqlServerCreateSchemaDomMigrationBuilder());
+		result.put("SqlServerDropSchema", new SqlServerDropSchemaDomMigrationBuilder());
 
 		return result;
 	}
