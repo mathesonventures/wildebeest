@@ -16,8 +16,8 @@
 
 package co.zd.wb.service.dom.sqlserver;
 
-import co.zd.wb.model.Resource;
-import co.zd.wb.model.sqlserver.SqlServerDatabaseResource;
+import co.zd.wb.Resource;
+import co.zd.wb.plugin.sqlserver.SqlServerDatabaseResource;
 import co.zd.wb.service.dom.BaseDomResourceBuilder;
 import java.util.UUID;
 

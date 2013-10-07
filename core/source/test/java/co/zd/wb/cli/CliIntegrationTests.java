@@ -17,11 +17,11 @@
 package co.zd.wb.cli;
 
 import co.zd.wb.Interface;
-import co.zd.wb.model.Instance;
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
-import co.zd.wb.model.mysql.MySqlUtil;
-import co.zd.wb.model.sqlserver.SqlServerDatabaseInstance;
-import co.zd.wb.model.sqlserver.SqlServerUtil;
+import co.zd.wb.Instance;
+import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
+import co.zd.wb.plugin.mysql.MySqlUtil;
+import co.zd.wb.plugin.sqlserver.SqlServerDatabaseInstance;
+import co.zd.wb.plugin.sqlserver.SqlServerUtil;
 import java.io.File;
 import java.sql.SQLException;
 import org.junit.Test;

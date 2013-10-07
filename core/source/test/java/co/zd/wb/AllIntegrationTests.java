@@ -23,8 +23,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses(
 {
 	co.zd.wb.cli.AllIntegrationTests.class,
-	co.zd.wb.model.base.AllIntegrationTests.class,
-	co.zd.wb.model.mysql.AllIntegrationTests.class
+	co.zd.wb.plugin.base.AllIntegrationTests.class,
+	co.zd.wb.plugin.mysql.AllIntegrationTests.class
 })
 public class AllIntegrationTests
 {

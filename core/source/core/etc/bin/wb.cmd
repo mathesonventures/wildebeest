@@ -18,7 +18,7 @@ REM Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
 if "%WB_HOME%"=="" goto noWbHome
 
-java -classpath "%WB_HOME%\lib\ZD.Wildebeest.Core-1.0.0.1.jar;%WB_HOME%\lib\mysql-connector-java-5.1.22.jar;" co.zd.wb.cli.WildebeestCommand %1 %2 %3 %4
+java -classpath "%WB_HOME%\lib\ZD.Wildebeest.Core-1.0.0.3.jar;%WB_HOME%\lib\mysql-connector-java-5.1.22.jar;" co.zd.wb.cli.WildebeestCommand %1 %2 %3 %4
 
 goto exit
 

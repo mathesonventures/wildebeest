@@ -16,8 +16,8 @@
 
 package co.zd.wb.service.dom.mysql;
 
-import co.zd.wb.model.Migration;
-import co.zd.wb.model.mysql.MySqlCreateDatabaseMigration;
+import co.zd.wb.Migration;
+import co.zd.wb.plugin.mysql.MySqlCreateDatabaseMigration;
 import co.zd.wb.service.dom.BaseDomMigrationBuilder;
 import java.util.UUID;
 

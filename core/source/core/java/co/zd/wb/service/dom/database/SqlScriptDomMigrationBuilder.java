@@ -16,8 +16,8 @@
 
 package co.zd.wb.service.dom.database;
 
-import co.zd.wb.model.Migration;
-import co.zd.wb.model.database.SqlScriptMigration;
+import co.zd.wb.Migration;
+import co.zd.wb.plugin.database.SqlScriptMigration;
 import co.zd.wb.service.ResourceLoaderFault;
 import co.zd.wb.service.dom.BaseDomMigrationBuilder;
 import java.util.UUID;

@@ -16,16 +16,9 @@
 
 package co.zd.wb;
 
-import co.zd.wb.model.Migration;
-import co.zd.wb.model.Assertion;
-import co.zd.wb.model.Instance;
-import co.zd.wb.model.AssertionResult;
-import co.zd.wb.model.Resource;
-import co.zd.wb.model.State;
-import co.zd.wb.model.AssertionResponse;
-import co.zd.wb.model.base.FakeAssertion;
-import co.zd.wb.model.base.FakeMigration;
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
+import co.zd.wb.plugin.base.FakeAssertion;
+import co.zd.wb.plugin.base.FakeMigration;
+import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import java.util.UUID;
 import org.junit.Assert;
 

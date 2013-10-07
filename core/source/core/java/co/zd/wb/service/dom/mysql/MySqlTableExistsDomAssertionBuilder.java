@@ -16,8 +16,8 @@
 
 package co.zd.wb.service.dom.mysql;
 
-import co.zd.wb.model.Assertion;
-import co.zd.wb.model.mysql.MySqlTableExistsAssertion;
+import co.zd.wb.Assertion;
+import co.zd.wb.plugin.mysql.MySqlTableExistsAssertion;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
 import java.util.UUID;
 

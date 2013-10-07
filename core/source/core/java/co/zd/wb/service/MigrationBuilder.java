@@ -16,7 +16,7 @@
 
 package co.zd.wb.service;
 
-import co.zd.wb.model.Migration;
+import co.zd.wb.Migration;
 import java.util.UUID;
 
 public interface MigrationBuilder

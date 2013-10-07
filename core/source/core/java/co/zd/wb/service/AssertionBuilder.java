@@ -16,7 +16,7 @@
 
 package co.zd.wb.service;
 
-import co.zd.wb.model.Assertion;
+import co.zd.wb.Assertion;
 import java.util.UUID;
 
 public interface AssertionBuilder

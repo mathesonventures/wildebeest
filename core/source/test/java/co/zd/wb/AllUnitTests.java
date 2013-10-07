@@ -26,10 +26,10 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
-	co.zd.wb.model.base.AllUnitTests.class,
-	co.zd.wb.model.database.AllUnitTests.class,
-	co.zd.wb.model.mysql.AllUnitTests.class,
-	co.zd.wb.model.sqlserver.AllUnitTests.class
+	co.zd.wb.plugin.base.AllUnitTests.class,
+	co.zd.wb.plugin.database.AllUnitTests.class,
+	co.zd.wb.plugin.mysql.AllUnitTests.class,
+	co.zd.wb.plugin.sqlserver.AllUnitTests.class
 })
 public class AllUnitTests
 {

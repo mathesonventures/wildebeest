@@ -16,12 +16,12 @@
 
 package co.zd.wb.service.dom;
 
-import co.zd.wb.model.Assertion;
-import co.zd.wb.model.ModelExtensions;
-import co.zd.wb.model.Resource;
-import co.zd.wb.model.State;
-import co.zd.wb.model.Migration;
-import co.zd.wb.model.base.ImmutableState;
+import co.zd.wb.Assertion;
+import co.zd.wb.ModelExtensions;
+import co.zd.wb.Resource;
+import co.zd.wb.State;
+import co.zd.wb.Migration;
+import co.zd.wb.plugin.base.ImmutableState;
 import co.zd.wb.service.AssertionBuilder;
 import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.ResourceLoader;

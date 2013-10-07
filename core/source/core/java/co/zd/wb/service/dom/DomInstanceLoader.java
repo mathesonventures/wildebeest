@@ -16,7 +16,7 @@
 
 package co.zd.wb.service.dom;
 
-import co.zd.wb.model.Instance;
+import co.zd.wb.Instance;
 import co.zd.wb.service.InstanceBuilder;
 import co.zd.wb.service.InstanceLoader;
 import co.zd.wb.service.ResourceLoaderFault;

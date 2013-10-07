@@ -16,8 +16,8 @@
 
 package co.zd.wb.service.dom.database;
 
-import co.zd.wb.model.Assertion;
-import co.zd.wb.model.database.RowDoesNotExistAssertion;
+import co.zd.wb.Assertion;
+import co.zd.wb.plugin.database.RowDoesNotExistAssertion;
 import co.zd.wb.service.ResourceLoaderFault;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
 import java.util.UUID;

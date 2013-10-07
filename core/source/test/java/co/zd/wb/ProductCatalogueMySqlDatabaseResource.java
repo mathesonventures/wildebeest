@@ -17,7 +17,7 @@
 package co.zd.wb;
 
 import co.zd.protium.system.ArgumentNullException;
-import co.zd.wb.model.mysql.MySqlElementFixtures;
+import co.zd.wb.plugin.mysql.MySqlElementFixtures;
 import co.zd.wb.service.dom.XmlBuilder;
 import java.util.UUID;
 

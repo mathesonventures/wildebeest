@@ -16,8 +16,8 @@
 
 package co.zd.wb.service.dom.mysql;
 
-import co.zd.wb.model.Instance;
-import co.zd.wb.model.mysql.MySqlDatabaseInstance;
+import co.zd.wb.Instance;
+import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.service.dom.BaseDomInstanceBuilder;
 
 public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder

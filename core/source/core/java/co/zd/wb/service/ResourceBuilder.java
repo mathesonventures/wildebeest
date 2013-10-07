@@ -16,7 +16,7 @@
 
 package co.zd.wb.service;
 
-import co.zd.wb.model.Resource;
+import co.zd.wb.Resource;
 import java.util.UUID;
 
 public interface ResourceBuilder

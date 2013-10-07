@@ -16,8 +16,8 @@
 
 package co.zd.wb.service.dom.sqlserver;
 
-import co.zd.wb.model.Instance;
-import co.zd.wb.model.sqlserver.SqlServerDatabaseInstance;
+import co.zd.wb.Instance;
+import co.zd.wb.plugin.sqlserver.SqlServerDatabaseInstance;
 import co.zd.wb.service.dom.BaseDomInstanceBuilder;
 
 public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder

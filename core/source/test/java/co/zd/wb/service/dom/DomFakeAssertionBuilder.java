@@ -17,8 +17,8 @@
 package co.zd.wb.service.dom;
 
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
-import co.zd.wb.model.Assertion;
-import co.zd.wb.model.base.FakeAssertion;
+import co.zd.wb.Assertion;
+import co.zd.wb.plugin.base.FakeAssertion;
 import java.util.UUID;
 
 public class DomFakeAssertionBuilder extends BaseDomAssertionBuilder

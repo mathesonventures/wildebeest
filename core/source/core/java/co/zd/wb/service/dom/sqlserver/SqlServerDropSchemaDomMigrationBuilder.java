@@ -16,8 +16,8 @@
 
 package co.zd.wb.service.dom.sqlserver;
 
-import co.zd.wb.model.Migration;
-import co.zd.wb.model.sqlserver.SqlServerDropSchemaMigration;
+import co.zd.wb.Migration;
+import co.zd.wb.plugin.sqlserver.SqlServerDropSchemaMigration;
 import co.zd.wb.service.dom.BaseDomMigrationBuilder;
 import java.util.UUID;
 

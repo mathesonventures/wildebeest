@@ -16,7 +16,7 @@
 
 package co.zd.wb.service;
 
-import co.zd.wb.model.Resource;
+import co.zd.wb.Resource;
 
 public interface ResourceLoader
 {

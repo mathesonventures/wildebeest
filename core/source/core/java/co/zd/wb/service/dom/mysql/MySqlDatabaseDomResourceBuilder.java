@@ -16,8 +16,8 @@
 
 package co.zd.wb.service.dom.mysql;
 
-import co.zd.wb.model.Resource;
-import co.zd.wb.model.mysql.MySqlDatabaseResource;
+import co.zd.wb.Resource;
+import co.zd.wb.plugin.mysql.MySqlDatabaseResource;
 import co.zd.wb.service.dom.BaseDomResourceBuilder;
 import java.util.UUID;
 

@@ -16,7 +16,7 @@
 
 package co.zd.wb.service;
 
-import co.zd.wb.model.Instance;
+import co.zd.wb.Instance;
 
 public interface InstanceLoader
 {

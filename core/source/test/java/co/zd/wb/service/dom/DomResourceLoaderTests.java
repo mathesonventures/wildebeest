@@ -17,10 +17,10 @@
 package co.zd.wb.service.dom;
 
 import co.zd.wb.AssertExtensions;
-import co.zd.wb.model.Resource;
-import co.zd.wb.model.base.FakeAssertion;
-import co.zd.wb.model.base.FakeResource;
-import co.zd.wb.model.base.FakeMigration;
+import co.zd.wb.Resource;
+import co.zd.wb.plugin.base.FakeAssertion;
+import co.zd.wb.plugin.base.FakeResource;
+import co.zd.wb.plugin.base.FakeMigration;
 import co.zd.wb.service.AssertionBuilder;
 import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.MigrationBuilder;

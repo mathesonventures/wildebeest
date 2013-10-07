@@ -16,14 +16,14 @@
 
 package co.zd.wb.service;
 
-import co.zd.wb.model.Assertion;
-import co.zd.wb.model.AssertionFailedException;
-import co.zd.wb.model.AssertionResponse;
-import co.zd.wb.model.IndeterminateStateException;
-import co.zd.wb.model.Resource;
-import co.zd.wb.model.Migration;
-import co.zd.wb.model.MigrationFailedException;
-import co.zd.wb.model.MigrationNotPossibleException;
+import co.zd.wb.Assertion;
+import co.zd.wb.AssertionFailedException;
+import co.zd.wb.AssertionResponse;
+import co.zd.wb.IndeterminateStateException;
+import co.zd.wb.Resource;
+import co.zd.wb.Migration;
+import co.zd.wb.MigrationFailedException;
+import co.zd.wb.MigrationNotPossibleException;
 
 public interface Logger
 {
