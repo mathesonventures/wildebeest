@@ -20,6 +20,12 @@ import co.zd.wb.service.Logger;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The definition of a stateful resource to be managed by Wildebeest.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface Resource
 {
 	
@@ -30,28 +36,28 @@ public interface Resource
 	/**
 	 * Gets the ID of this Resource.
 	 * 
-	 * @return                                  the ID of this Resource.
+	 * @since                                   1.0
 	 */
 	UUID getResourceId();
 	
 	/**
 	 * Gets the Name of this Resource.
 	 * 
-	 * @return                                  the Name of this Resource.
+	 * @since                                   1.0
 	 */
 	String getName();
 	
 	/**
 	 * Gets the states that have been defined for this Resource.
 	 * 
-	 * @return                                  the states that have been defined for this Resource.
+	 * @since                                   1.0
 	 */
 	List<State> getStates();
 	
 	/**
 	 * Gets the migrations that have been defined for this Resource.
 	 * 
-	 * @return                                  the migrations that have been defined for this Resource.
+	 * @since                                   1.0
 	 */
 	List<Migration> getMigrations();
 
@@ -74,7 +80,7 @@ public interface Resource
 	 * @return                                  the defined state that the resource currently appears to be in, or is
 	 *                                          declared to be in.
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
-	 * @since                                   1.0.0
+	 * @since                                   1.0
 	 */
 	State currentState(Instance instance) throws IndeterminateStateException;
 	
@@ -92,7 +98,7 @@ public interface Resource
 	 *                                          that were generated for the Assertions for this Resource's current
 	 *                                          state.
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
-	 * @since                                   1.0.0
+	 * @since                                   1.0
 	 */
 	List<AssertionResult> assertState(
 		Logger logger,
@@ -133,7 +139,7 @@ public interface Resource
 	 * @exception   MigrationNotPossibleException
 	 *                                          when the number of from the current state to the target state is not
 	 *                                          exactly one.
-	 * @since                                   1.0.0
+	 * @since                                   1.0
 	 */
 	void migrate(
 		Logger logger,
@@ -146,14 +152,21 @@ public interface Resource
 	
 	/**
 	 * Finds and returns the state with the supplied ID.  If no such state exists, null is returned.
-	 * @param stateId
-	 * @return 
+	 * 
+	 * @param       stateId                     the ID of the state to find
+	 * @return                                  the State identified by the supplied ID if it could be found, or null
+	 *                                          otherwise
+	 * @since                                   1.0
 	 */
 	State stateForId(UUID stateId);
 	
 	/**
 	 * Looks for a state with the supplied label, and if one exists returns it's StateId.  If no such state exists, then
 	 * null is returned.
+	 * 
+	 * @param       label                       the label to search for
+	 * @return                                  the ID of the state that has the specified label
+	 * @since                                   1.0
 	 */
 	UUID stateIdForLabel(String label);
 }

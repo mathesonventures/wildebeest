@@ -20,13 +20,19 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Indicates that assertion failed for a resource, and provides the state for which assertion failed and the assertion
- * results.
+ * Indicates that the application of an Assertion to a resource Instance failed, and provides the state for the
+ * Assertion failed and the AssertionResult.
  * 
- * @author brendonm
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
  */
 public class AssertionFailedException extends Exception
 {
+	/**
+	 * Creates a new AssertionFailedException for the specified state and AssertionResult.
+	 * 
+	 * @since                                   1.0
+	 */
 	public AssertionFailedException(
 		UUID stateId,
 		List<AssertionResult> assertionResults)
@@ -40,11 +46,11 @@ public class AssertionFailedException extends Exception
 	private UUID m_stateId = null;
 	private boolean m_stateId_set = false;
 
-	public AssertionFailedException()
-	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
+	/**
+	 * Gets the ID of the State for which Assertion evaluation failed.
+	 * 
+	 * @since                                   1.0
+	 */
 	public UUID getStateId() {
 		if(!m_stateId_set) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
@@ -82,6 +88,11 @@ public class AssertionFailedException extends Exception
 	private List<AssertionResult> m_assertionResults = null;
 	private boolean m_assertionResults_set = false;
 
+	/**
+	 * Gets the result of the evaluation of the Assertion.
+	 * 
+	 * @since                                   1.0
+	 */
 	public List<AssertionResult> getAssertionResults() {
 		if(!m_assertionResults_set) {
 			throw new IllegalStateException("assertionResults not set.  Use the HasAssertionResults() method to check its state before accessing it.");

@@ -18,13 +18,41 @@ package co.zd.wb;
 
 import java.util.UUID;
 
+/**
+ * An Assertion represents a condition that can be checked to verify a specific part of a stateful resource.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface Assertion
 {
+	/**
+	 * Gets the unique ID of this Assertion.
+     * @since                                   1.0
+	 */
 	UUID getAssertionId();
 	
+	/**
+	 * Gets a description of this Assertion.
+	 *
+	 * @since                                   1.0
+	 */
 	String getDescription();
 	
+	/**
+	 * Gets the ordinal index of this Assertion within the container that owns it.
+	 *
+	 * @since                                   1.0
+	 */
 	int getSeqNum();
 	
+	/**
+	 * Evaluates this Assertion against the supplied resource instance.
+	 * 
+	 * @param       instance                    the instance to apply this Assertion to.
+	 * @return                                  an AssertionResponse indicating the outcome of applying this Assertion
+	 *                                          to the supplied Instance.
+	 * @since                                   1.0
+	 */
 	AssertionResponse apply(Instance instance);
 }

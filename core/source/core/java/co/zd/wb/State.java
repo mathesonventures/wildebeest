@@ -19,18 +19,46 @@ package co.zd.wb;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Represents an observable and verifiable state of a {@link Resource}/
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface State
 {
+	/**
+	 * Gets the ID of this State.
+	 * 
+	 * @since                                   1.0
+	 */
 	UUID getStateId();
 	
+	/**
+	 * Gets the label of this State, if it has one.
+	 * 
+	 * @since                                   1.0
+	 */
 	String getLabel();
 	
+	/**
+	 * Indicates whether or not this State has a label.
+	 * 
+	 * @state                                   1.0
+	 */
 	boolean hasLabel();
 	
+	/**
+	 * Gets the set of Assertions that should be used to verify this State.
+	 * 
+	 * @since                                   1.0
+	 */
 	List<Assertion> getAssertions();
 	
 	/**
 	 * Returns the label if the state has one, otherwise returns it's ID.
+	 * 
+	 * @since                                   1.0
 	 */
 	String getDisplayName();
 }

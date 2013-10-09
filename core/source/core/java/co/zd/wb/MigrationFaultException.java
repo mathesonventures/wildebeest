@@ -16,13 +16,31 @@
 
 package co.zd.wb;
 
+/**
+ * Indicates an unexpected error occurred during migration.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class MigrationFaultException extends RuntimeException
 {
+	/**
+	 * Creates a new MigrationFaultException with the supplied root cause.
+	 * 
+	 * @param       cause                       the root cause of the migration error
+	 * @since                                   1.0
+	 */
 	public MigrationFaultException(Exception cause)
 	{
 		super(cause);
 	}
 	
+	/**
+	 * Creates a new MigrationFaultException with the supplied message.
+	 * 
+	 * @param       message                     the migration error message
+	 * @since                                   1.0
+	 */
 	public MigrationFaultException(
 		String message)
 	{

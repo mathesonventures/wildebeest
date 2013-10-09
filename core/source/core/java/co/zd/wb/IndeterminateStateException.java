@@ -16,8 +16,20 @@
 
 package co.zd.wb;
 
+/**
+ * Indicates that Wildebeest was unable to determine the current state of specified resource Instance.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class IndeterminateStateException extends Exception
 {
+	/**
+	 * Creates a new IndeterminateStateException with the supplied message.
+	 * 
+	 * @param       message                     the message for the new exception.
+	 * @since                                   1.0
+	 */
 	public IndeterminateStateException(String message)
 	{
 		super(message);

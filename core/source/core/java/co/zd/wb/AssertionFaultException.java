@@ -18,8 +18,21 @@ package co.zd.wb;
 
 import java.util.UUID;
 
+/**
+ * Indicates that an unexpected error occurred while attempting to apply an Assertion.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class AssertionFaultException extends RuntimeException
 {
+	/**
+	 * Creates a new AssertionFaultException with the supplied ID and root cause.
+	 * 
+	 * @param       assertionId                 the ID of the Assertion that faulted
+	 * @param       cause                       the root cause of the fault
+	 * @since                                   1.0
+	 */
 	public AssertionFaultException(
 		UUID assertionId,
 		Exception cause)
@@ -32,6 +45,11 @@ public class AssertionFaultException extends RuntimeException
 	private UUID m_assertionId = null;
 	private boolean m_assertionId_set = false;
 
+	/**
+	 * Gets the ID of the Assertion that was faulted.
+	 * 
+	 * @since                                   1.0
+	 */
 	public UUID getAssertionId() {
 		if(!m_assertionId_set) {
 			throw new IllegalStateException("assertionId not set.  Use the HasAssertionId() method to check its state before accessing it.");

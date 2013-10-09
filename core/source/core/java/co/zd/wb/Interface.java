@@ -34,9 +34,18 @@ import java.util.UUID;
 /**
  * Provides a generic interface that can be adapted to different environments.  For example the WildebeestCommand
  * command-line interface delegates to Interface to drive commands.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
  */
 public class Interface
 {
+	/**
+	 * Creates a new Interface using the supplied {@link Logger}.
+	 * 
+	 * @param       logger                      the Logger that this Interface should use.
+	 * @since                                   1.0
+	 */
 	public Interface(Logger logger)
 	{
 		this.setLogger(logger);
@@ -79,6 +88,13 @@ public class Interface
 
 	// </editor-fold>
 
+	/**
+	 * Checks the state of an instance of a resource.
+	 * 
+	 * @param       resourceFileName            the filename of the descriptor for the resource
+	 * @param       instanceFileName            the filename of the descriptor for the instance
+	 * @since                                   1.0
+	 */
 	public void state(
 		String resourceFileName,
 		String instanceFileName)
@@ -99,6 +115,13 @@ public class Interface
 			new File(instanceFileName));
 	}
 	
+	/**
+	 * Checks the state of an instance of a resource.
+	 * 
+	 * @param       resourceFile                the descriptor file for the resource
+	 * @param       instanceFile                the descriptor file for the instance
+	 * @since                                   1.0
+	 */
 	public void state(
 		File resourceFile,
 		File instanceFile)
@@ -161,6 +184,15 @@ public class Interface
 		}
 	}
 	
+	/**
+	 * Migrates an instance of a resource to a particular state.
+	 * 
+	 * @param       resourceFileName            the filename of the descriptor for the resource
+	 * @param       instanceFileName            the filename of the descriptor for the instance
+	 * @param       targetState                 the name or unique ID of the state to which the instance should be
+	 *                                          migrated
+	 * @since                                   1.0
+	 */
 	public void migrate(
 		String resourceFileName,
 		String instanceFileName,
@@ -187,6 +219,15 @@ public class Interface
 			targetState);
 	}
 	
+	/**
+	 * Migrates an instance of a resource to a particular state.
+	 * 
+	 * @param       resourceFile                the descriptor file for the resource
+	 * @param       instanceFile                the descriptor file for the instance
+	 * @param       targetState                 the name or unique ID of the state to which the instance should be
+	 *                                          migrated
+	 * @since                                   1.0
+	 */
 	public void migrate(
 		File resourceFile,
 		File instanceFile,
@@ -229,6 +270,15 @@ public class Interface
 		}
 	}
 	
+	/**
+	 * Migrates an instance of a resource to a particular state.
+	 * 
+	 * @param       resource                    the resource
+	 * @param       instanceFile                the instance to be migrated
+	 * @param       targetState                 the name or unique ID of the state to which the instance should be
+	 *                                          migrated
+	 * @since                                   1.0
+	 */
 	public void migrate(
 		Resource resource,
 		Instance instance,
@@ -278,6 +328,15 @@ public class Interface
 		}
 	}
 	
+	/**
+	 * Deserializes a {@link Resource} from the specified descriptor file.
+	 * 
+	 * @param       resourceFile                the descriptor file from which the Resource should be deserialized
+	 * @return                                  a deserialized Resource object
+	 * @throws      MessagesException           containing any validation errors encountered while the Resource is
+	 *                                          being deserialized
+	 * @since                                   1.0
+	 */
 	public static Resource loadResource(
 		File resourceFile) throws MessagesException
 	{
@@ -316,6 +375,15 @@ public class Interface
 		return resource;
 	}
 	
+	/**
+	 * Deserializes an {@link Instance} from the specified descriptor file.
+	 * 
+	 * @param       instanceFile                the descriptor file from which the Instance should be deserialized
+	 * @return                                  a deserialized Resource object
+	 * @throws      MessagesException           containing any validation errors encountered while the Instance is
+	 *                                          being deserialized
+	 * @since                                   1.0
+	 */
 	public static Instance loadInstance(
 		File instanceFile) throws MessagesException
 	{

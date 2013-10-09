@@ -22,11 +22,22 @@ package co.zd.wb;
  * Note: this is not to be confused with an AssertionResult, which is created from an AssertionResponse but is returned
  * by aggregate functions such as {@link Resource#assertState()}
  * 
- * @author brendonm
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
  */
 public interface AssertionResponse
 {
+	/**
+	 * Gets the result, a boolean flag indicating whether or not the Assertion evaluation passed or failed.
+	 * 
+	 * @since                                   1.0
+	 */
 	boolean getResult();
 	
+	/**
+	 * Gets the message that was raised by the Assertion during evaluation.
+	 * 
+	 * @since                                   1.0
+	 */
 	String getMessage();
 }

@@ -16,8 +16,19 @@
 
 package co.zd.wb;
 
+/**
+ * Indicates that an unexpected error condition occurred.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class FaultException extends RuntimeException
 {
+	/**
+	 * Creates a new FaultException for the specified root cause.
+	 * 
+	 * @since                                   1.0
+	 */
 	public FaultException(Throwable cause)
 	{
 		super(cause);

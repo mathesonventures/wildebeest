@@ -18,8 +18,21 @@ package co.zd.wb;
 
 import java.util.UUID;
 
+/**
+ * Indicates that a Migration failed for some normal reason that should be presented to the user.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class MigrationFailedException extends Exception
 {
+	/**
+	 * Creates a new MigrationFailedException for the specified ID with the specified failure messages.
+	 * 
+	 * @param       migrationId                 the ID of the Migration that failed
+	 * @param       message                     the failure message
+	 * @since                                   1.0
+	 */
 	public MigrationFailedException(
 		UUID migrationId,
 		String message)
@@ -34,6 +47,11 @@ public class MigrationFailedException extends Exception
 	private UUID m_migrationId = null;
 	private boolean m_migrationId_set = false;
 
+	/**
+	 * Gets the ID of the Migration that failed
+	 * 
+	 * @since                                   1.0
+	 */
 	public UUID getMigrationId() {
 		if(!m_migrationId_set) {
 			throw new IllegalStateException("migrationId not set.  Use the HasMigrationId() method to check its state before accessing it.");
