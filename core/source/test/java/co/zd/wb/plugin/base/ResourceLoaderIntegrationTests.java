@@ -26,9 +26,9 @@ import co.zd.wb.MigrationNotPossibleException;
 import co.zd.wb.plugin.database.DatabaseFixtureHelper;
 import co.zd.wb.plugin.mysql.MySqlDatabaseResource;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.zd.wb.plugin.mysql.MySqlElementFixtures;
 import co.zd.wb.plugin.mysql.MySqlProperties;
 import co.zd.wb.plugin.mysql.MySqlUtil;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.PrintStreamLogger;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
@@ -43,7 +43,8 @@ public class ResourceLoaderIntegrationTests
 		AssertionFailedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
-		SQLException
+		SQLException,
+		MessagesException
 	{
 		
 		//

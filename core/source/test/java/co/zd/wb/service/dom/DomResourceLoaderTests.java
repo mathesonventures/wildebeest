@@ -22,6 +22,7 @@ import co.zd.wb.plugin.base.FakeAssertion;
 import co.zd.wb.plugin.base.FakeResource;
 import co.zd.wb.plugin.base.FakeMigration;
 import co.zd.wb.service.AssertionBuilder;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.MigrationBuilder;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ import org.junit.Test;
 
 public class DomResourceLoaderTests
 {
-	@Test public void loadResource()
+	@Test public void loadResource() throws MessagesException
 	{
 		
 		//
@@ -84,7 +85,7 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForStateWithLabel()
+	@Test public void loadResourceForStateWithLabel() throws MessagesException
 	{
 		
 		//
@@ -141,7 +142,7 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForStateWithNoLabel()
+	@Test public void loadResourceForStateWithNoLabel() throws MessagesException
 	{
 		
 		//
@@ -198,7 +199,7 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForMultipleStates()
+	@Test public void loadResourceForMultipleStates() throws MessagesException
 	{
 		
 		//
@@ -258,7 +259,7 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForStateWithOneAssertion()
+	@Test public void loadResourceForStateWithOneAssertion() throws MessagesException
 	{
 		
 		//
@@ -336,7 +337,7 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForStateWithMultipleAssertions()
+	@Test public void loadResourceForStateWithMultipleAssertions() throws MessagesException
 	{
 		
 		//
@@ -425,7 +426,7 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForMigrationWithFromStateId()
+	@Test public void loadResourceForMigrationWithFromStateId() throws MessagesException
 	{
 		
 		//
@@ -498,7 +499,7 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForMigrationsWithToStateId()
+	@Test public void loadResourceForMigrationsWithToStateId() throws MessagesException
 	{
 		
 		//
@@ -571,7 +572,7 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForMigrationsWithFromStateIdAndToStateId()
+	@Test public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws MessagesException
 	{
 		
 		//

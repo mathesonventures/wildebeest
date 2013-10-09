@@ -18,17 +18,36 @@ package co.zd.wb.service.dom.mysql;
 
 import co.zd.wb.Assertion;
 import co.zd.wb.plugin.mysql.MySqlTableDoesNotExistAssertion;
+import co.zd.wb.service.Messages;
+import co.zd.wb.service.MessagesException;
+import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
+import co.zd.wb.service.dom.TryGetResult;
 import java.util.UUID;
 
 public class MySqlTableDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, int seqNum)
+	@Override public Assertion build(
+		UUID assertionId,
+		int seqNum) throws MessagesException
 	{
-		// TableName - Mandatory
-		String tableName = this.getString("tableName");
+		TryGetResult<String> tableName = this.tryGetString("tableName");
 		
-		Assertion result = new MySqlTableDoesNotExistAssertion(assertionId, seqNum, tableName);
+		Messages messages = new Messages();
+		if (!tableName.hasValue())
+		{
+			V.elementMissing(messages, assertionId, "tableName", MySqlTableDoesNotExistAssertion.class);
+		}
+		
+		if (messages.size() > 0)
+		{
+			throw new MessagesException(messages);
+		}
+		
+		Assertion result = new MySqlTableDoesNotExistAssertion(
+			assertionId,
+			seqNum,
+			tableName.getValue());
 		
 		return result;
 	}

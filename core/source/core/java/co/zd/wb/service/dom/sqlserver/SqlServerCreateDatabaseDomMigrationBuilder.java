@@ -18,12 +18,16 @@ package co.zd.wb.service.dom.sqlserver;
 
 import co.zd.wb.Migration;
 import co.zd.wb.plugin.sqlserver.SqlServerCreateDatabaseMigration;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.BaseDomMigrationBuilder;
 import java.util.UUID;
 
 public class SqlServerCreateDatabaseDomMigrationBuilder extends BaseDomMigrationBuilder
 {
-	@Override public Migration build(UUID migrationId, UUID fromStateId, UUID toStateId)
+	@Override public Migration build(
+		UUID migrationId,
+		UUID fromStateId,
+		UUID toStateId) throws MessagesException
 	{
 		return new SqlServerCreateDatabaseMigration(migrationId, fromStateId, toStateId);
 	}

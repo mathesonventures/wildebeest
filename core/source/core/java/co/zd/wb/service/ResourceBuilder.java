@@ -21,7 +21,9 @@ import java.util.UUID;
 
 public interface ResourceBuilder
 {
-	Resource build(UUID id, String name);
+	Resource build(
+		UUID id,
+		String name) throws MessagesException;
 	
 	void reset();
 }

@@ -18,12 +18,15 @@ package co.zd.wb.service.dom.mysql;
 
 import co.zd.wb.Resource;
 import co.zd.wb.plugin.mysql.MySqlDatabaseResource;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.BaseDomResourceBuilder;
 import java.util.UUID;
 
 public class MySqlDatabaseDomResourceBuilder extends BaseDomResourceBuilder
 {
-	@Override public Resource build(UUID id, String name)
+	@Override public Resource build(
+		UUID id,
+		String name) throws MessagesException
 	{
 		return new MySqlDatabaseResource(id, name);
 	}

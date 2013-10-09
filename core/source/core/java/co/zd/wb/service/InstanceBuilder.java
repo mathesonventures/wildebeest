@@ -20,7 +20,7 @@ import co.zd.wb.Instance;
 
 public interface InstanceBuilder
 {
-	Instance build();
-	
+	Instance build() throws MessagesException;
+
 	void reset();
 }

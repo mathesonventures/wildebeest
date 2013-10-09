@@ -17,6 +17,7 @@
 package co.zd.wb.plugin.sqlserver;
 
 import co.zd.wb.Instance;
+import co.zd.wb.plugin.database.Constants;
 import co.zd.wb.plugin.database.DatabaseInstance;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import javax.sql.DataSource;
@@ -32,9 +33,9 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 		String databaseName,
 		String stateTableName)
 	{
-		if (stateTableName != null && stateTableName.trim().equals(""))
+		if (stateTableName == null || stateTableName.trim().equals(""))
 		{
-			throw new IllegalArgumentException("stateTableName cannot be empty");
+			stateTableName = Constants.DefaultStateTableName;
 		}
 		
 		this.setHostName(hostName);

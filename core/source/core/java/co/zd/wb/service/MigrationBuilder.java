@@ -21,7 +21,10 @@ import java.util.UUID;
 
 public interface MigrationBuilder
 {
-	Migration build(UUID migrationId, UUID fromStateId, UUID toStateId);
+	Migration build(
+		UUID migrationId,
+		UUID fromStateId,
+		UUID toStateId) throws MessagesException;
 	
 	void reset();
 }

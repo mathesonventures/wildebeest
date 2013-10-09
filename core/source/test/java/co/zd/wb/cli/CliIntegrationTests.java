@@ -22,13 +22,14 @@ import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.plugin.mysql.MySqlUtil;
 import co.zd.wb.plugin.sqlserver.SqlServerDatabaseInstance;
 import co.zd.wb.plugin.sqlserver.SqlServerUtil;
+import co.zd.wb.service.MessagesException;
 import java.io.File;
 import java.sql.SQLException;
 import org.junit.Test;
 
 public class CliIntegrationTests
 {
-	@Test public void loadFromFilesAndMigrateMySqlResource() throws SQLException
+	@Test public void loadFromFilesAndMigrateMySqlResource() throws SQLException, MessagesException
 	{
 		
 		//
@@ -63,7 +64,7 @@ public class CliIntegrationTests
 
 	}
 	
-	@Test public void loadFromFilesAndMigrationSqlServerResource() throws SQLException
+	@Test public void loadFromFilesAndMigrationSqlServerResource() throws SQLException, MessagesException
 	{
 		
 		//

@@ -21,9 +21,21 @@ import java.util.UUID;
 
 public interface AssertionBuilder
 {
+	/**
+	 * 
+	 * @param       assertionId                 the ID of the Assertion
+	 * @param       seqNum                      the ordinal sequence number of the Assertion within the set it belongs
+	 *                                          to.
+	 * @return                                  a deserialized Assertion instance
+	 * @throws      MessagesException           containing error messages if for any reason the deserialization could
+	 *                                          not be carried out
+	 */
 	Assertion build(
 		UUID assertionId,
-		int seqNum);
+		int seqNum) throws MessagesException;
 	
+	/**
+	 * Resets the AssertionBuilder, making it ready to build a new instance.
+	 */
 	void reset();
 }

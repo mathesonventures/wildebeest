@@ -18,12 +18,15 @@ package co.zd.wb.service.dom.mysql;
 
 import co.zd.wb.Assertion;
 import co.zd.wb.plugin.mysql.MySqlDatabaseExistsAssertion;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
 import java.util.UUID;
 
 public class MySqlDatabaseExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, int seqNum)
+	@Override public Assertion build(
+		UUID assertionId,
+		int seqNum) throws MessagesException
 	{
 		return new MySqlDatabaseExistsAssertion(assertionId, seqNum);
 	}

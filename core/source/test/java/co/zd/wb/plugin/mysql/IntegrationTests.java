@@ -16,9 +16,6 @@
 
 package co.zd.wb.plugin.mysql;
 
-import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.zd.wb.plugin.mysql.MySqlDatabaseResource;
-import co.zd.wb.plugin.mysql.MySqlCreateDatabaseMigration;
 import co.zd.wb.plugin.database.SqlScriptMigration;
 import co.zd.wb.AssertionFailedException;
 import co.zd.wb.IndeterminateStateException;
@@ -31,6 +28,7 @@ import co.zd.wb.ProductCatalogueMySqlDatabaseResource;
 import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.ImmutableState;
 import co.zd.wb.plugin.database.DatabaseFixtureHelper;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.PrintStreamLogger;
 import co.zd.wb.service.dom.DomInstanceLoader;
 import co.zd.wb.service.dom.DomPlugins;
@@ -121,7 +119,7 @@ public class IntegrationTests
 		
 	}
 	
-	@Test public void loadMySqlDatabaseResource()
+	@Test public void loadMySqlDatabaseResource() throws MessagesException
 	{
 		
 		//
@@ -150,7 +148,7 @@ public class IntegrationTests
 		
 	}
 	
-	@Test public void loadMySqlDatabaseInstance()
+	@Test public void loadMySqlDatabaseInstance() throws MessagesException
 	{
 		
 		//
@@ -183,7 +181,8 @@ public class IntegrationTests
 		AssertionFailedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
-		SQLException
+		SQLException,
+		MessagesException
 	{
 		
 		//

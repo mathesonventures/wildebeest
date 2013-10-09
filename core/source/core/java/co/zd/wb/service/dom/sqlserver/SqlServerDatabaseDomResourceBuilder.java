@@ -18,12 +18,15 @@ package co.zd.wb.service.dom.sqlserver;
 
 import co.zd.wb.Resource;
 import co.zd.wb.plugin.sqlserver.SqlServerDatabaseResource;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.BaseDomResourceBuilder;
 import java.util.UUID;
 
 public class SqlServerDatabaseDomResourceBuilder extends BaseDomResourceBuilder
 {
-	@Override public Resource build(UUID id, String name)
+	@Override public Resource build(
+		UUID id,
+		String name) throws MessagesException
 	{
 		return new SqlServerDatabaseResource(id, name);
 	}

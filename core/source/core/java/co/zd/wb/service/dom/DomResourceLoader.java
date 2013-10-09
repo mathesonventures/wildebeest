@@ -23,6 +23,8 @@ import co.zd.wb.State;
 import co.zd.wb.Migration;
 import co.zd.wb.plugin.base.ImmutableState;
 import co.zd.wb.service.AssertionBuilder;
+import co.zd.wb.service.Messages;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.ResourceLoader;
 import co.zd.wb.service.ResourceLoaderFault;
@@ -214,7 +216,7 @@ public class DomResourceLoader implements ResourceLoader
 
 	// </editor-fold>
 
-	@Override public Resource load()
+	@Override public Resource load() throws MessagesException
 	{
 		InputSource inputSource = new InputSource(new StringReader(this.getResourceXml()));
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -243,7 +245,9 @@ public class DomResourceLoader implements ResourceLoader
 
 		if (ELT_RESOURCE.equals(resourceXe.getTagName()))
 		{
-			resource = buildResource(this.getResourceBuilders(), resourceXe);
+			resource = buildResource(
+				this.getResourceBuilders(),
+				resourceXe);
 
 			for (int i = 0; i < resourceXe.getChildNodes().getLength(); i ++)
 			{
@@ -271,7 +275,10 @@ public class DomResourceLoader implements ResourceLoader
 											Element.class);
 										if (asrXe != null)
 										{
-											Assertion asr = buildAssertion(this.getAssertionBuilders(), asrXe, asrIndex);
+											Assertion asr = buildAssertion(
+												this.getAssertionBuilders(),
+												asrXe,
+												asrIndex);
 											state.getAssertions().add(asr);
 										}
 									}
@@ -289,7 +296,9 @@ public class DomResourceLoader implements ResourceLoader
 							Element.class);
 						if (migrationXe != null)
 						{
-							resource.getMigrations().add(buildMigration(this.getMigrationBuilders(), migrationXe));
+							resource.getMigrations().add(buildMigration(
+								this.getMigrationBuilders(),
+								migrationXe));
 						}
 					}
 				}
@@ -301,7 +310,7 @@ public class DomResourceLoader implements ResourceLoader
 	
 	private static Resource buildResource(
 		Map<String, ResourceBuilder> resourceBuilders,
-		Element resourceXe)
+		Element resourceXe) throws MessagesException
 	{
 		if (resourceBuilders == null) { throw new IllegalArgumentException("resourceBuilders cannot be null"); }
 		if (resourceXe == null) { throw new IllegalArgumentException("resourceXe cannot be null"); }
@@ -353,7 +362,7 @@ public class DomResourceLoader implements ResourceLoader
 	private static Assertion buildAssertion(
 		Map<String, AssertionBuilder> assertionBuilders,
 		Element element,
-		int seqNum)
+		int seqNum) throws MessagesException
 	{
 		if (assertionBuilders == null) { throw new IllegalArgumentException("assertionBuilders cannot be null"); }
 		if (element == null) { throw new IllegalArgumentException("element cannot be null"); }
@@ -378,7 +387,7 @@ public class DomResourceLoader implements ResourceLoader
 	
 	private static Migration buildMigration(
 		Map<String, MigrationBuilder> migrationBuilders,
-		Element element)
+		Element element) throws MessagesException
 	{
 		if (migrationBuilders == null) { throw new IllegalArgumentException("migrationBuilders cannot be null"); }
 		if (element == null) { throw new IllegalArgumentException("element cannot be null"); }
@@ -407,6 +416,9 @@ public class DomResourceLoader implements ResourceLoader
 		
 		builder.reset();
 		((DomBuilder)builder).setElement(element);
-		return builder.build(id, fromStateId, toStateId);
+		return builder.build(
+			id,
+			fromStateId,
+			toStateId);
 	}
 }

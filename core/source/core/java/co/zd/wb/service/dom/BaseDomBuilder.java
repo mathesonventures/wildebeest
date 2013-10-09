@@ -16,7 +16,6 @@
 
 package co.zd.wb.service.dom;
 
-import co.zd.wb.service.InstanceLoaderFault;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
@@ -108,29 +107,50 @@ public abstract class BaseDomBuilder implements DomBuilder
 		this.clearElement();
 	}
 	
-	protected String getString(String xpath)
+	/**
+	 * Attempts to retrieve the string value identified by the supplied xpath expression, relative to the Element held
+	 * by this builder.
+	 * @param       xpath                       the xpath to the element or attribute that contains the value to be
+	 *                                          returned.
+	 * @return                                  the value identified by the supplied xpath.
+	 */
+	protected TryGetResult<String> tryGetString(String xpath)
 	{
 		if (xpath == null) { throw new IllegalArgumentException("xpath"); }
 		if ("".equals(xpath)) { throw new IllegalArgumentException("xpath"); }
 		
-		String result = null;
+		TryGetResult<String> result = null;
 		
 		try
 		{
-			result = (String)this.getXPath().compile(xpath).evaluate(this.getElement());
+			result = new TryGetResult<String>((String)this.getXPath().compile(xpath).evaluate(this.getElement()));
 		}
 		catch (XPathExpressionException e)
 		{
-			throw new InstanceLoaderFault(e);
+			result = new TryGetResult<String>();
 		}
-		
+
 		return result;
 	}
 	
-	protected int getInteger(String xpath)
+	protected TryGetResult<Integer> tryGetInteger(String xpath)
 	{
-		String raw = this.getString(xpath);
+		TryGetResult<Integer> result = null;
+		TryGetResult<String> raw = this.tryGetString(xpath);
 		
-		return Integer.parseInt(raw);
+		if (raw.hasValue())
+		{
+			try
+			{
+				int value = Integer.parseInt(raw.getValue());
+				result = new TryGetResult<Integer>(value);
+			}
+			catch(Exception e)
+			{
+				result = new TryGetResult<Integer>();
+			}
+		}
+		
+		return result;
 	}
 }

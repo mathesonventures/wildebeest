@@ -20,5 +20,5 @@ import co.zd.wb.Resource;
 
 public interface ResourceLoader
 {
-	Resource load();
+	Resource load() throws MessagesException;
 }

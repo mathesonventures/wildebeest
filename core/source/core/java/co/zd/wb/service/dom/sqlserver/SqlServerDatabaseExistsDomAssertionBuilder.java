@@ -18,12 +18,15 @@ package co.zd.wb.service.dom.sqlserver;
 
 import co.zd.wb.Assertion;
 import co.zd.wb.plugin.sqlserver.SqlServerDatabaseExistsAssertion;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
 import java.util.UUID;
 
 public class SqlServerDatabaseExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, int seqNum)
+	@Override public Assertion build(
+		UUID assertionId,
+		int seqNum) throws MessagesException
 	{
 		return new SqlServerDatabaseExistsAssertion(assertionId, seqNum);
 	}

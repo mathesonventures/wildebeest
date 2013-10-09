@@ -20,5 +20,5 @@ import co.zd.wb.Instance;
 
 public interface InstanceLoader
 {
-	Instance load();
+	Instance load() throws MessagesException;
 }

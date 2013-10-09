@@ -18,16 +18,37 @@ package co.zd.wb.service.dom.sqlserver;
 
 import co.zd.wb.Migration;
 import co.zd.wb.plugin.sqlserver.SqlServerCreateSchemaMigration;
+import co.zd.wb.service.Messages;
+import co.zd.wb.service.MessagesException;
+import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomMigrationBuilder;
+import co.zd.wb.service.dom.TryGetResult;
 import java.util.UUID;
 
 public class SqlServerCreateSchemaDomMigrationBuilder extends BaseDomMigrationBuilder
 {
-	@Override public Migration build(UUID migrationId, UUID fromStateId, UUID toStateId)
+	@Override public Migration build(
+		UUID migrationId,
+		UUID fromStateId,
+		UUID toStateId) throws MessagesException
 	{
-		// SchemaName: Mandatory
-		String schemaName = this.getString("schemaName");
+		TryGetResult<String> schemaName = this.tryGetString("schemaName");
 		
-		return new SqlServerCreateSchemaMigration(migrationId, fromStateId, toStateId, schemaName);
+		Messages messages = new Messages();
+		if (!schemaName.hasValue())
+		{
+			V.elementMissing(messages, migrationId, "schemaName", SqlServerCreateSchemaMigration.class);
+		}
+		
+		if (messages.size() > 0)
+		{
+			throw new MessagesException(messages);
+		}
+		
+		return new SqlServerCreateSchemaMigration(
+			migrationId,
+			fromStateId,
+			toStateId,
+			schemaName.getValue());
 	}
 }

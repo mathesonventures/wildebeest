@@ -18,21 +18,40 @@ package co.zd.wb.service.dom.database;
 
 import co.zd.wb.Assertion;
 import co.zd.wb.plugin.database.RowDoesNotExistAssertion;
-import co.zd.wb.service.ResourceLoaderFault;
+import co.zd.wb.plugin.database.RowExistsAssertion;
+import co.zd.wb.service.Messages;
+import co.zd.wb.service.MessagesException;
+import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
+import co.zd.wb.service.dom.TryGetResult;
 import java.util.UUID;
 
 public class RowDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, int seqNum)
+	@Override public Assertion build(
+		UUID assertionId,
+		int seqNum) throws MessagesException
 	{
-		String sql = this.getString("sql");
+		TryGetResult<String> sql = this.tryGetString("sql");
+		TryGetResult<String> description = this.tryGetString("description");
 
-		if (sql == null)
+		// Validate
+		Messages messages = new Messages();
+		if (!sql.hasValue())
 		{
-			throw new ResourceLoaderFault("sql not found in RowExists");
+			V.elementMissing(messages, assertionId, "sql", RowExistsAssertion.class);
 		}
 		
-		return new RowDoesNotExistAssertion(assertionId, "toremove", seqNum, sql);
+		if (!description.hasValue())
+		{
+			V.elementMissing(messages, assertionId, "description", RowExistsAssertion.class);
+		}
+
+		if (messages.size() > 0)
+		{
+			throw new MessagesException(messages);
+		}
+		
+		return new RowDoesNotExistAssertion(assertionId, description.getValue(), seqNum, sql.getValue());
 	}
 }

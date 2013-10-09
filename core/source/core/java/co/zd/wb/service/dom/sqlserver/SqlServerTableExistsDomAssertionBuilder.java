@@ -18,23 +18,37 @@ package co.zd.wb.service.dom.sqlserver;
 
 import co.zd.wb.Assertion;
 import co.zd.wb.plugin.sqlserver.SqlServerTableExistsAssertion;
+import co.zd.wb.service.Messages;
+import co.zd.wb.service.MessagesException;
+import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
+import co.zd.wb.service.dom.TryGetResult;
 import java.util.UUID;
 
 public class SqlServerTableExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, int seqNum)
+	@Override public Assertion build(
+		UUID assertionId,
+		int seqNum) throws MessagesException
 	{
-		// SchemaName - Mandatory
-		String schemaName = this.getString("schemaName");
-		// TableName - Mandatory
-		String tableName = this.getString("tableName");
+		TryGetResult<String> schemaName = this.tryGetString("schemaName");
+		TryGetResult<String> tableName = this.tryGetString("tableName");
+
+		// Validation
+		Messages messages = new Messages();
+		if (!schemaName.hasValue()) { V.elementMissing(messages, assertionId, "schemaName", SqlServerTableExistsAssertion.class); }
+		if (!tableName.hasValue()) { V.elementMissing(messages, assertionId, "tableName", SqlServerTableExistsAssertion.class); }
+		
+		if (messages.size() > 0)
+		{
+			throw new MessagesException(messages);
+		}
 		
 		Assertion result = new SqlServerTableExistsAssertion(
 			assertionId,
 			seqNum,
-			schemaName,
-			tableName);
+			schemaName.getValue(),
+			tableName.getValue());
 		
 		return result;
 	}

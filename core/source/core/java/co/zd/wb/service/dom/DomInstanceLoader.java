@@ -19,6 +19,7 @@ package co.zd.wb.service.dom;
 import co.zd.wb.Instance;
 import co.zd.wb.service.InstanceBuilder;
 import co.zd.wb.service.InstanceLoader;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.ResourceLoaderFault;
 import java.io.StringReader;
 import java.util.Map;
@@ -120,7 +121,7 @@ public class DomInstanceLoader implements InstanceLoader
 
 	// </editor-fold>
 
-	@Override public Instance load()
+	@Override public Instance load() throws MessagesException
 	{
 		InputSource inputSource = new InputSource(new StringReader(this.getInstanceXml()));
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -149,7 +150,9 @@ public class DomInstanceLoader implements InstanceLoader
 
 		if (ELT_INSTANCE.equals(instanceXe.getTagName()))
 		{
-			instance = buildInstance(this.getInstanceBuilders(), instanceXe);
+			instance = buildInstance(
+				this.getInstanceBuilders(),
+				instanceXe);
 		}
 		
 		return instance;
@@ -157,7 +160,7 @@ public class DomInstanceLoader implements InstanceLoader
 	
 	private static Instance buildInstance(
 		Map<String, InstanceBuilder> instanceBuilders,
-		Element instanceXe)
+		Element instanceXe) throws MessagesException
 	{
 		if (instanceBuilders == null) { throw new IllegalArgumentException("instanceBuilders"); }
 		if (instanceXe == null) { throw new IllegalArgumentException("instanceXe"); }

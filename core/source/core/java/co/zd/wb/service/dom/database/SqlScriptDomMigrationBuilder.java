@@ -18,27 +18,37 @@ package co.zd.wb.service.dom.database;
 
 import co.zd.wb.Migration;
 import co.zd.wb.plugin.database.SqlScriptMigration;
-import co.zd.wb.service.ResourceLoaderFault;
+import co.zd.wb.service.Messages;
+import co.zd.wb.service.MessagesException;
+import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomMigrationBuilder;
+import co.zd.wb.service.dom.TryGetResult;
 import java.util.UUID;
 
 public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 {
-	@Override public Migration build(UUID migrationId, UUID fromStateId, UUID toStateId)
+	@Override public Migration build(
+		UUID migrationId,
+		UUID fromStateId,
+		UUID toStateId) throws MessagesException
 	{
 		Migration result = null;
 		
-		String sql = this.getString("sql");
+		TryGetResult<String> sql = this.tryGetString("sql");
 		
-		if (sql != null)
+		// Validation
+		Messages messages = new Messages();
+		if (!sql.hasValue())
 		{
-			result = new SqlScriptMigration(migrationId, fromStateId, toStateId, sql);
+			V.elementMissing(messages, migrationId, "sql", SqlScriptMigration.class);
 		}
 		
-		if (result == null)
+		if (messages.size() > 0)
 		{
-			throw new ResourceLoaderFault("could not build instance due to missing data");
+			throw new MessagesException(messages);
 		}
+
+		result = new SqlScriptMigration(migrationId, fromStateId, toStateId, sql.getValue());
 		
 		return result;
 	}

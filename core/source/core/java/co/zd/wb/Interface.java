@@ -18,6 +18,8 @@ package co.zd.wb;
 
 import co.zd.wb.service.InstanceLoaderFault;
 import co.zd.wb.service.Logger;
+import co.zd.wb.service.Messages;
+import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.ResourceLoaderFault;
 import co.zd.wb.service.dom.DomInstanceLoader;
 import co.zd.wb.service.dom.DomPlugins;
@@ -104,34 +106,58 @@ public class Interface
 		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
 		if (instanceFile == null) { throw new IllegalArgumentException("instanceFile cannot be null"); }
 		
-		Resource resource = loadResource(resourceFile);
-		Instance instance = loadInstance(instanceFile);
-		
+		// Load Resource
+		Resource resource = null;
 		try
 		{
-			State state = resource.currentState(instance);
+			resource = loadResource(resourceFile);
+		}
+		catch (MessagesException e)
+		{
+			this.getLogger().logLine("Unable to load the resource.");
+			logMessages(this.getLogger(), e.getMessages());
+		}
+		
+		// Load Instance
+		Instance instance = null;
+		try
+		{
+			instance = loadInstance(instanceFile);
+		}
+		catch (MessagesException e)
+		{
+			this.getLogger().logLine("Unable to load the instance.");
+			logMessages(this.getLogger(), e.getMessages());
+		}
 
-			if (state == null)
+		if (resource != null && instance != null)
+		{
+			try
 			{
-				this.getLogger().logLine("Current state: non-existent");
-			}
-			else
-			{
-				if (state.hasLabel())
+				State state = resource.currentState(instance);
+
+				if (state == null)
 				{
-					this.getLogger().logLine("Current state: " + state.getLabel());
+					this.getLogger().logLine("Current state: non-existent");
 				}
 				else
 				{
-					this.getLogger().logLine("Current state: " + state.getStateId().toString());
-				}
+					if (state.hasLabel())
+					{
+						this.getLogger().logLine("Current state: " + state.getLabel());
+					}
+					else
+					{
+						this.getLogger().logLine("Current state: " + state.getStateId().toString());
+					}
 
-				resource.assertState(this.getLogger(), instance);
+					resource.assertState(this.getLogger(), instance);
+				}
 			}
-		}
-		catch (IndeterminateStateException ex)
-		{
-			this.getLogger().indeterminateState(ex);
+			catch (IndeterminateStateException ex)
+			{
+				this.getLogger().indeterminateState(ex);
+			}
 		}
 	}
 	
@@ -173,10 +199,34 @@ public class Interface
 			throw new IllegalArgumentException("targetState cannot be empty");
 		}
 
-		Resource resource = loadResource(resourceFile);
-		Instance instance = loadInstance(instanceFile);
+		// Load Resource
+		Resource resource = null;
+		try
+		{
+			resource = loadResource(resourceFile);
+		}
+		catch (MessagesException e)
+		{
+			this.getLogger().logLine("Unable to load the resource.");
+			logMessages(this.getLogger(), e.getMessages());
+		}
+		
+		// Load Instance
+		Instance instance = null;
+		try
+		{
+			instance = loadInstance(instanceFile);
+		}
+		catch (MessagesException e)
+		{
+			this.getLogger().logLine("Unable to load the instance.");
+			logMessages(this.getLogger(), e.getMessages());
+		}
 
-		migrate(resource, instance, targetState);
+		if (resource != null && instance != null)
+		{
+			migrate(resource, instance, targetState);
+		}
 	}
 	
 	public void migrate(
@@ -228,8 +278,11 @@ public class Interface
 		}
 	}
 	
-	public static Resource loadResource(File resourceFile)
+	public static Resource loadResource(
+		File resourceFile) throws MessagesException
 	{
+		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
+		
 		// Load Resource
 		String resourceXml;
 		try
@@ -263,8 +316,11 @@ public class Interface
 		return resource;
 	}
 	
-	public static Instance loadInstance(File instanceFile)
+	public static Instance loadInstance(
+		File instanceFile) throws MessagesException
 	{
+		if (instanceFile == null) { throw new IllegalArgumentException("instanceFile"); }
+
 		// Load Instance
 		String instanceXml;
 		try
@@ -340,5 +396,18 @@ public class Interface
 		}
 		
 		return result;
+	}
+	
+	private static void logMessages(
+		Logger logger,
+		Messages messages)
+	{
+		if (logger == null) { throw new IllegalArgumentException("logger"); }
+		if (messages == null) { throw new IllegalArgumentException("messages"); }
+		
+		for (String message : messages.getMessages())
+		{
+			logger.logLine(message);
+		}
 	}
 }
