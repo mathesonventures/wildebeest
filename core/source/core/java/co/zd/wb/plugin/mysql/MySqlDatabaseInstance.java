@@ -31,6 +31,11 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 		String schemaName,
 		String stateTableName)
 	{
+		if (stateTableName != null && "".equals(stateTableName.trim()))
+		{
+			throw new IllegalArgumentException("stateTableName cannot be empty");
+		}
+		
 		this.setHostName(hostName);
 		this.setPort(port);
 		this.setAdminUsername(adminUsername);

@@ -19,9 +19,22 @@ package co.zd.wb.plugin.base;
 import co.zd.wb.Migration;
 import java.util.UUID;
 
+/**
+ * Provides a base implementation of {@link Migration}
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public abstract class BaseMigration implements Migration
 {
-	public BaseMigration(
+	/**
+	 * Creates a new BaseMigration instance.
+	 * 
+	 * @param       migrationId                 the ID for the new migration
+	 * @param       fromStateId                 the optional from state for the new migration
+	 * @param       toStateId                   the optional to state for the new migration
+	 */
+	protected BaseMigration(
 		UUID migrationId,
 		UUID fromStateId,
 		UUID toStateId)
@@ -42,7 +55,7 @@ public abstract class BaseMigration implements Migration
 	private UUID m_migrationId = null;
 	private boolean m_migrationId_set = false;
 
-	public UUID getMigrationId() {
+	@Override public UUID getMigrationId() {
 		if(!m_migrationId_set) {
 			throw new IllegalStateException("migrationId not set.  Use the HasMigrationId() method to check its state before accessing it.");
 		}
@@ -79,7 +92,7 @@ public abstract class BaseMigration implements Migration
 	private UUID m_fromStateId = null;
 	private boolean m_fromStateId_set = false;
 
-	public UUID getFromStateId() {
+	@Override public UUID getFromStateId() {
 		if(!m_fromStateId_set) {
 			throw new IllegalStateException("fromStateId not set.  Use the HasFromStateId() method to check its state before accessing it.");
 		}
@@ -113,7 +126,7 @@ public abstract class BaseMigration implements Migration
 	private UUID m_toStateId = null;
 	private boolean m_toStateId_set = false;
 
-	public UUID getToStateId() {
+	@Override public UUID getToStateId() {
 		if(!m_toStateId_set) {
 			throw new IllegalStateException("toStateId not set.  Use the HasToStateId() method to check its state before accessing it.");
 		}

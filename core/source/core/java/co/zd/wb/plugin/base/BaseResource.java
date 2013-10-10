@@ -33,8 +33,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Provides a base implementation of {@link Resource}
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public abstract class BaseResource implements Resource
 {
+	/**
+	 * Creates a new BaseResource instance.
+	 * 
+	 * @param       resourceId                  the ID of the new resource
+	 * @param       name                        the name of the new resource
+	 * @since                                   1.0
+	 */
 	protected BaseResource(
 		UUID resourceId,
 		String name)
@@ -54,7 +67,7 @@ public abstract class BaseResource implements Resource
 	private UUID m_resourceId = null;
 	private boolean m_resourceId_set = false;
 
-	public UUID getResourceId() {
+	@Override public UUID getResourceId() {
 		if(!m_resourceId_set) {
 			throw new IllegalStateException("resourceId not set.  Use the HasResourceId() method to check its state before accessing it.");
 		}
@@ -91,7 +104,7 @@ public abstract class BaseResource implements Resource
 	private String m_name = null;
 	private boolean m_name_set = false;
 
-	public String getName() {
+	@Override public String getName() {
 		if(!m_name_set) {
 			throw new IllegalStateException("name not set.  Use the HasName() method to check its state before accessing it.");
 		}
@@ -164,7 +177,7 @@ public abstract class BaseResource implements Resource
 	private List<Migration> m_migrations = null;
 	private boolean m_migrations_set = false;
 
-	public List<Migration> getMigrations() {
+	@Override public List<Migration> getMigrations() {
 		if(!m_migrations_set) {
 			throw new IllegalStateException("migrations not set.  Use the HasMigrations() method to check its state before accessing it.");
 		}
@@ -297,6 +310,8 @@ public abstract class BaseResource implements Resource
 		UUID targetStateId)
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource"); }
+		if (paths == null) { throw new IllegalArgumentException("paths"); }
+		if (thisPath == null) { throw new IllegalArgumentException("thisPath"); }
 		
 		// Have we reached the target state?
 		if ((fromStateId == null && targetStateId == null) ||

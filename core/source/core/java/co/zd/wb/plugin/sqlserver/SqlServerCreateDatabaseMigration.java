@@ -27,6 +27,12 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * A {@link Migration} that creates a new SQL-Server database.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerCreateDatabaseMigration extends BaseMigration
 {
 	public SqlServerCreateDatabaseMigration(

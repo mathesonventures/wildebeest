@@ -18,8 +18,20 @@ package co.zd.wb.plugin.base;
 
 import co.zd.wb.AssertionResponse;
 
+/**
+ * An {@link AssertionResponse} that cannot be modified after it's initial construction.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class ImmutableAssertionResponse implements AssertionResponse
 {
+	/**
+	 * Creates a new ImmutableAssertionResponse instance.
+	 * 
+	 * @param       result                      the result for the new AssertionResponse
+	 * @param       message                     the message for the new AssertionResponse
+	 */
 	public ImmutableAssertionResponse(
 		boolean result,
 		String message)
@@ -33,7 +45,7 @@ public class ImmutableAssertionResponse implements AssertionResponse
 	private boolean m_result = false;
 	private boolean m_result_set = false;
 
-	public boolean getResult() {
+	@Override public boolean getResult() {
 		if(!m_result_set) {
 			throw new IllegalStateException("result not set.  Use the HasResult() method to check its state before accessing it.");
 		}
@@ -67,7 +79,7 @@ public class ImmutableAssertionResponse implements AssertionResponse
 	private String m_message = null;
 	private boolean m_message_set = false;
 
-	public String getMessage() {
+	@Override public String getMessage() {
 		if(!m_message_set) {
 			throw new IllegalStateException("message not set.  Use the HasMessage() method to check its state before accessing it.");
 		}

@@ -22,8 +22,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * A {@link State} that cannot be modified after it's initial construction.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class ImmutableState implements State
 {
+	/**
+	 * Creates a new ImmutableState with the supplied ID.
+	 * 
+	 * @param       stateId                     the ID of the new state
+	 */
 	public ImmutableState(
 		UUID stateId)
 	{
@@ -31,6 +42,12 @@ public class ImmutableState implements State
 		this.setAssertions(new ArrayList<Assertion>());
 	}
 	
+	/**
+	 * Creates a new ImmutableState with an ID and a label.
+	 * 
+	 * @param       stateId                     the ID of the new state
+	 * @param       label                       the unique label of the new state
+	 */
 	public ImmutableState(
 		UUID stateId,
 		String label)
@@ -40,6 +57,12 @@ public class ImmutableState implements State
 		this.setAssertions(new ArrayList<Assertion>());
 	}
 
+	/**
+	 * Creates a new ImmutableState with the supplied ID and set of {@link Assertion}s.
+	 * 
+	 * @param       stateId                     the ID of the new state
+	 * @param       assertions                  the assertions that apply to this state
+	 */
 	public ImmutableState(
 		UUID stateId,
 		List<Assertion> assertions)
@@ -48,6 +71,13 @@ public class ImmutableState implements State
 		this.setAssertions(assertions);
 	}
 	
+	/**
+	 * Creates a new ImmutableState with an ID and a label, and with a set of {@link Assertion}s.
+	 * 
+	 * @param       stateId                     the ID of the new state
+	 * @param       label                       the unique label of the new state
+	 * @param       assertions                  the assertions that apply to this state
+	 */
 	public ImmutableState(
 		UUID stateId,
 		String label,
@@ -63,7 +93,7 @@ public class ImmutableState implements State
 	private UUID m_stateId = null;
 	private boolean m_stateId_set = false;
 
-	public UUID getStateId() {
+	@Override public UUID getStateId() {
 		if(!m_stateId_set) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
@@ -100,7 +130,7 @@ public class ImmutableState implements State
 	private String m_label = null;
 	private boolean m_label_set = false;
 
-	public String getLabel() {
+	@Override public String getLabel() {
 		if(!m_label_set) {
 			throw new IllegalStateException("label not set.  Use the HasLabel() method to check its state before accessing it.");
 		}
@@ -137,7 +167,7 @@ public class ImmutableState implements State
 	private List<Assertion> m_assertions = null;
 	private boolean m_assertions_set = false;
 
-	public List<Assertion> getAssertions() {
+	@Override public List<Assertion> getAssertions() {
 		if(!m_assertions_set) {
 			throw new IllegalStateException("assertions not set.  Use the HasAssertions() method to check its state before accessing it.");
 		}

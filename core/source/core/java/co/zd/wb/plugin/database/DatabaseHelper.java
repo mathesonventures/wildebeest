@@ -22,8 +22,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
+/**
+ * Provides a set of convenience methods for working with JDBC-accessed databases.
+ * 
+ * @author                                      Brendon Matheson
+ */
 public class DatabaseHelper
 {
+	/**
+	 * Executes a SQL statement against the database represented by the supplied DataSource.
+	 * 
+	 * @param       dataSource                  the DataSource that represents the database to work with
+	 * @param       sql                         the SQL statement to execute against the target database.
+	 * @throws      SQLException                may be thrown due to a mal-formed SQL statement, connectivity problem,
+	 *                                          or some other issue.
+	 */
 	public static void execute(
 		DataSource dataSource,
 		String sql) throws SQLException
@@ -48,6 +61,16 @@ public class DatabaseHelper
 		}
 	}
 	
+	/**
+	 * Executes a SQL query against the database represented by the supplied DataSource and returns the value from the
+	 * first column of the single resultant row as an Object.
+	 * 
+	 * @param       dataSource                  the DataSource that represents the database to work with
+	 * @param       sql                         the SQL query to execute against the target database
+	 * @return                                  the value from the first column of the single resultant row
+	 * @throws      SQLException                may be thrown due to a mal-formed SQL statement, connectivity problem,
+	 *                                          or some other issue.
+	 */
 	public static Object querySingle(
 		DataSource dataSource,
 		String sql) throws SQLException
@@ -72,6 +95,8 @@ public class DatabaseHelper
 			{
 				result = rs.getObject(1);
 			}
+			
+			// TODO: Fail if there is more than one row in the resultset.
 		}
 		finally
 		{
@@ -83,6 +108,13 @@ public class DatabaseHelper
 		return result;
 	}
 	
+	/**
+	 * If the supplied Connection reference is non-null, attempts to close that Connection.
+	 * 
+	 * @param       conn                        the Connection to be closed.  Ignored if null is supplied.
+	 * @throws      SQLException                may be thrown due to a state exception, connectivity problem, or some
+	 *                                          other issue.
+	 */
 	public static void release(Connection conn) throws SQLException
 	{
 		if (conn != null)
@@ -90,7 +122,14 @@ public class DatabaseHelper
 			conn.close();
 		}
 	}
-	
+
+	/**
+	 * If the supplied PreparedStatement reference is non-null, attempts to close that PreparedStatement.
+	 * 
+	 * @param       ps                          the PreparedStatement to be closed.  Ignored if null is supplied.
+	 * @throws      SQLException                may be thrown due to a state exception, connectivity problem or some
+	 *                                          other issue.
+	 */
 	public static void release(PreparedStatement ps) throws SQLException
 	{
 		if (ps != null)
@@ -99,6 +138,13 @@ public class DatabaseHelper
 		}
 	}
 	
+	/**
+	 * If the supplied ResultSet is non-null, attempts to close that ResultSet.
+	 * 
+	 * @param       rs                          the ResultSet to be closed.  Ignored if null is supplied.
+	 * @throws      SQLException                may be thrown due to a state exception, connectiivty problem or some
+	 *                                          other issue.
+	 */
 	public static void release(ResultSet rs) throws SQLException
 	{
 		if (rs != null)

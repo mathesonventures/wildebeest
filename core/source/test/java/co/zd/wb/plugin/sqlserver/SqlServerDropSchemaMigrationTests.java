@@ -16,10 +16,6 @@
 
 package co.zd.wb.plugin.sqlserver;
 
-import co.zd.wb.plugin.sqlserver.SqlServerDropSchemaMigration;
-import co.zd.wb.plugin.sqlserver.SqlServerCreateDatabaseMigration;
-import co.zd.wb.plugin.sqlserver.SqlServerCreateSchemaMigration;
-import co.zd.wb.plugin.sqlserver.SqlServerDatabaseInstance;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.plugin.database.DatabaseFixtureHelper;
 import java.sql.SQLException;

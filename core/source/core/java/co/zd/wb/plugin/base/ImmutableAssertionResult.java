@@ -19,8 +19,21 @@ package co.zd.wb.plugin.base;
 import co.zd.wb.AssertionResult;
 import java.util.UUID;
 
+/**
+ * An {@link AssertionResult} that cannot be modified after it's initial construction.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class ImmutableAssertionResult implements AssertionResult
 {
+	/**
+	 * Creates a new ImmutableAssertionResult for the specified assertion, with the supplied result value and message.
+	 * 
+	 * @param       assertionId                 the ID of the assertion that was applied to get this result
+	 * @param       result                      indicator whether the assertion succeeded or failed
+	 * @param       message                     the textual message describing the assertion result
+	 */
 	public ImmutableAssertionResult(
 		UUID assertionId,
 		boolean result,
@@ -36,7 +49,7 @@ public class ImmutableAssertionResult implements AssertionResult
 	private UUID m_assertionId = null;
 	private boolean m_assertionId_set = false;
 
-	public UUID getAssertionId() {
+	@Override public UUID getAssertionId() {
 		if(!m_assertionId_set) {
 			throw new IllegalStateException("assertionId not set.  Use the HasAssertionId() method to check its state before accessing it.");
 		}
@@ -73,7 +86,7 @@ public class ImmutableAssertionResult implements AssertionResult
 	private boolean m_result = false;
 	private boolean m_result_set = false;
 
-	public boolean getResult() {
+	@Override public boolean getResult() {
 		if(!m_result_set) {
 			throw new IllegalStateException("result not set.  Use the HasResult() method to check its state before accessing it.");
 		}
@@ -107,7 +120,7 @@ public class ImmutableAssertionResult implements AssertionResult
 	private String m_message = null;
 	private boolean m_message_set = false;
 
-	public String getMessage() {
+	@Override public String getMessage() {
 		if(!m_message_set) {
 			throw new IllegalStateException("message not set.  Use the HasMessage() method to check its state before accessing it.");
 		}

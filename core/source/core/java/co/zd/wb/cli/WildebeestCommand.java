@@ -21,14 +21,32 @@ import co.zd.wb.service.Logger;
 import co.zd.wb.service.PrintStreamLogger;
 import java.io.PrintStream;
 
+/**
+ * The Wildebeest command-line interface.  WildebeestCommand parses command-line invocations, and delegates to
+ * {@link co.zd.wb.Interface} to carry out the command.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class WildebeestCommand
 {
+	/**
+	 * The main entry point for the command-line interface.
+	 * 
+	 * @param       args                        the arguments supplied on the command-line invocation
+	 * @since                                   1.0
+	 */
 	public static void main(String[] args)
 	{
 		WildebeestCommand wb = new WildebeestCommand();
 		wb.run(args);
 	}
-	
+
+	/**
+	 * Creates a new WildebeestCommand instance.
+	 * 
+	 * @since                                   1.0
+	 */
 	public WildebeestCommand()
 	{
 		this.setLogger(new PrintStreamLogger(System.out));
@@ -109,6 +127,12 @@ public class WildebeestCommand
 
 	// </editor-fold>
 	
+	/**
+	 * Runs the command using the supplied command-line arguments.
+	 * 
+	 * @param       args                        the arguments supplied on the command-line invocation
+	 * @since                                   1.0
+	 */
 	public void run(String[] args)
 	{
 		if(args == null) { throw new IllegalArgumentException("args cannot be null"); }

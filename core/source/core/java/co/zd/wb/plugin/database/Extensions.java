@@ -16,13 +16,27 @@
 
 package co.zd.wb.plugin.database;
 
+/**
+ * Provides convenience methods for working with database resources.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class Extensions
 {
+	/**
+	 * Returns the state table name from the supplied instance if it has one.  Otherwise returns the default state table
+	 * name from {@link DatabaseConstants}.
+	 * 
+	 * @param       instance                    the {@link DatabaseInstance} for which the state table name should be
+	 *                                          determined
+	 * @return                                  the state table name for the supplied DatabaseInstance.
+	 */
 	public static String getStateTableName(
 		DatabaseInstance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		
-		return instance.hasStateTableName() ? instance.getStateTableName() : Constants.DefaultStateTableName;
+		return instance.hasStateTableName() ? instance.getStateTableName() : DatabaseConstants.DefaultStateTableName;
 	}
 }

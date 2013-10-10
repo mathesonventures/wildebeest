@@ -5,32 +5,35 @@
 
 		<state id="b68fc5c0-35c9-49b8-b555-9e7634fe0de3" label="Database Created">
 			<assertions>
-				<assertion type="SqlServerDatabaseExists" id="dc4bd5da-239a-4e00-8daf-adb8e4d1c2f9" name="Database exists" />
+				<assertion type="SqlServerDatabaseExists" id="dc4bd5da-239a-4e00-8daf-adb8e4d1c2f9" />
 			</assertions>
 		</state>
 
 		<state id="6096d6fc-2b04-45cf-88cf-9ab49629f50e" label="Core Schema Loaded">
 			<assertions>
-				<assertion type="SqlServerTableExists" id="397a6a63-15ab-412f-922b-2c020b372a9f" name="ProductType table exists">
+				<assertion type="SqlServerTableExists" id="397a6a63-15ab-412f-922b-2c020b372a9f">
 					<schemaName>dbo</schemaName>
 					<tableName>ProductType</tableName>
 				</assertion>
-				<assertion type="RowExists" id="b8b91f10-bb36-4cf0-8d06-a3c5a0c0391d" name="ProductType HW exists">
+				<assertion type="RowExists" id="b8b91f10-bb36-4cf0-8d06-a3c5a0c0391d">
+					<description>ProductType HW exists</description>
 					<sql><![CDATA[
 						SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';
 					]]></sql>
 				</assertion>
-				<assertion type="RowExists" id="72e36ad4-49b4-430d-a6bc-c0d12de4e398" name="ProductType SW exists">
+				<assertion type="RowExists" id="72e36ad4-49b4-430d-a6bc-c0d12de4e398">
+					<description>ProductType SW exists</description>
 					<sql><![CDATA[
 						SELECT * FROM ProductType WHERE ProductTypeCode = 'SW';
 					]]></sql>
 				</assertion>
-				<assertion type="RowDoesNotExist" id="acdfdd19-7b8f-4bd7-bad7-58636e748079" name="ProductType XY does not exist">
+				<assertion type="RowDoesNotExist" id="acdfdd19-7b8f-4bd7-bad7-58636e748079">
+					<description>ProductType XY does not exist</description>
 					<sql><![CDATA[
 						SELECT * FROM ProductType WHERE ProductTypeCode = 'XY';
 					]]></sql>
 				</assertion>
-				<assertion type="SqlServerTableExists" id="a7dcf592-4ee4-4452-81c3-e605c0ba1a7d" name="Product table exists">
+				<assertion type="SqlServerTableExists" id="a7dcf592-4ee4-4452-81c3-e605c0ba1a7d">
 					<schemaName>dbo</schemaName>
 					<tableName>Product</tableName>
 				</assertion>

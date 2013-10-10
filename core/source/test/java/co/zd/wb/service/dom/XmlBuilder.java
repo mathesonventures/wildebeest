@@ -255,20 +255,16 @@ public class XmlBuilder
 	
 	public XmlBuilder openAssertion(
 		String type,
-		UUID assertionId,
-		String name)
+		UUID assertionId)
 	{
 		if (type == null) { throw new IllegalArgumentException("type cannot be null"); }
 		if ("".equals(type)) { throw new IllegalArgumentException("type cannot be empty"); }
 		if (assertionId == null) { throw new IllegalArgumentException("assertionId cannot be null"); }
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 	
 		return this.openElement(
 			"assertion",
 			"type", type,
-			"id", assertionId.toString(),
-			"name", name);
+			"id", assertionId.toString());
 	}
 	
 	public XmlBuilder closeAssertion()

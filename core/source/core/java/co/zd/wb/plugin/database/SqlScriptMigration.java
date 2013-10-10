@@ -25,8 +25,25 @@ import co.zd.wb.MigrationFaultException;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * A {@link Migration} that performs a SQL script to transition between states.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class SqlScriptMigration extends BaseMigration implements Migration
 {
+	/**
+	 * Creates a new SqlScriptMigration.
+	 * 
+	 * @param       migrationId                 the ID of the migration
+	 * @param       fromStateId                 the ID of the source state that this migration applies to, or null if
+	 *                                          this migration transitions from the non-existent state.
+	 * @param       toStateId                   the ID of the target state that the migration applies to, or null if
+	 *                                          this migration transitions to the non-existent state.
+	 * @param       sql                         the SQL script that performs the migration from the fron-state to the
+	 *                                          to-state.
+	 */
 	public SqlScriptMigration(
 		UUID migrationId,
 		UUID fromStateId,
@@ -42,7 +59,7 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 	private String m_sql = null;
 	private boolean m_sql_set = false;
 
-	public String getSql() {
+	private String getSql() {
 		if(!m_sql_set) {
 			throw new IllegalStateException("sql not set.  Use the HasSql() method to check its state before accessing it.");
 		}

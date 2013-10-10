@@ -19,8 +19,20 @@ package co.zd.wb.plugin.base;
 import co.zd.wb.Assertion;
 import java.util.UUID;
 
+/**
+ * Provides a base implementation of {@link Assertion}
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public abstract class BaseAssertion implements Assertion
 {
+	/**
+	 * Creates a new BaseAssertion.
+	 * 
+	 * @param       assertionId                 the ID of the new Assertion
+	 * @param       seqNum                      the ordinal index of the new Assertion within its owning container
+	 */
 	protected BaseAssertion(
 		UUID assertionId,
 		int seqNum)
@@ -34,7 +46,7 @@ public abstract class BaseAssertion implements Assertion
 	private UUID m_assertionId = null;
 	private boolean m_assertionId_set = false;
 
-	public UUID getAssertionId() {
+	@Override public UUID getAssertionId() {
 		if(!m_assertionId_set) {
 			throw new IllegalStateException("assertionId not set.  Use the HasAssertionId() method to check its state before accessing it.");
 		}
@@ -71,7 +83,7 @@ public abstract class BaseAssertion implements Assertion
 	private int m_seqNum = 0;
 	private boolean m_seqNum_set = false;
 
-	public int getSeqNum() {
+	@Override public int getSeqNum() {
 		if(!m_seqNum_set) {
 			throw new IllegalStateException("seqNum not set.  Use the HasSeqNum() method to check its state before accessing it.");
 		}

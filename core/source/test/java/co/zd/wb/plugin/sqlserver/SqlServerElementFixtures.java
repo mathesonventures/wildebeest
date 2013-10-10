@@ -16,7 +16,7 @@
 
 package co.zd.wb.plugin.sqlserver;
 
-import co.zd.wb.plugin.database.Constants;
+import co.zd.wb.plugin.database.DatabaseConstants;
 import java.util.UUID;
 
 public class SqlServerElementFixtures
@@ -25,9 +25,9 @@ public class SqlServerElementFixtures
 	{
 		StringBuilder sql = new StringBuilder();
 		sql
-			.append("CREATE TABLE [dbo].[").append(Constants.DefaultStateTableName)
+			.append("CREATE TABLE [dbo].[").append(DatabaseConstants.DefaultStateTableName)
 				.append("]([StateId] [uniqueidentifier] NOT NULL,")
-				.append("CONSTRAINT [PK_").append(Constants.DefaultStateTableName)
+				.append("CONSTRAINT [PK_").append(DatabaseConstants.DefaultStateTableName)
 					.append("] PRIMARY KEY CLUSTERED([StateId] ASC) ")
 					.append("WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, ")
 					.append("IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ")
@@ -42,7 +42,7 @@ public class SqlServerElementFixtures
 		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("INSERT INTO [").append(Constants.DefaultStateTableName).append("]")
+		sql.append("INSERT INTO [").append(DatabaseConstants.DefaultStateTableName).append("]")
 			.append("([StateId]) VALUES('").append(stateId.toString()).append("');");
 
 		return sql.toString();

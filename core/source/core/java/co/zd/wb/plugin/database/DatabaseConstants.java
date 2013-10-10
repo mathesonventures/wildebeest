@@ -16,7 +16,16 @@
 
 package co.zd.wb.plugin.database;
 
-public class Constants
+/**
+ * Defines common constant values for use with database plugins to Wildebeest.
+ * 
+ * @author                                      Brendon Matheson
+ */
+public class DatabaseConstants
 {
+	/**
+	 * The default name for the state-tracking table in Wildebeest-managed databases.  This table name can be overridden
+	 * per-instance by supplying a StateTableName in the instance definition.
+	 */
 	public static final String DefaultStateTableName = "wb_state";
 }

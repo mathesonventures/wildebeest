@@ -53,7 +53,7 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			adminUsername.getValue(),
 			adminPassword.getValue(),
 			schemaName.getValue(),
-			stateTableName.hasValue() ? stateTableName.getValue() : "");
+			stateTableName.hasValue() ? stateTableName.getValue() : null);
 
 		return result;
 	}

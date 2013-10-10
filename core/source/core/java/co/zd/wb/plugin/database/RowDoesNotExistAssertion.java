@@ -30,8 +30,22 @@ import java.sql.SQLException;
 import java.util.UUID;
 import javax.sql.DataSource;
 
+/**
+ * An {@link Assertion} that verifies that a given SQL query does not yield any rows.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 {
+	/**
+	 * Creates a new RowDoesNotExistAssertion.
+	 * 
+	 * @param       assertionId                 the ID of the assertion
+	 * @param       description                 the description of the query that is being asserted
+	 * @param       seqNum                      the ordinal index of the assertion within it's containing set
+	 * @param       sql                         the query to be evaluated
+	 */
 	public RowDoesNotExistAssertion(
 		UUID assertionId,
 		String description,
@@ -48,7 +62,7 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 	private String _description = null;
 	private boolean _description_set = false;
 
-	public String getDescription() {
+	@Override public String getDescription() {
 		if(!_description_set) {
 			throw new IllegalStateException("description not set.  Use the HasDescription() method to check its state before accessing it.");
 		}
@@ -85,7 +99,7 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 	private String m_sql = null;
 	private boolean m_sql_set = false;
 
-	public String getSql() {
+	private String getSql() {
 		if(!m_sql_set) {
 			throw new IllegalStateException("sql not set.  Use the HasSql() method to check its state before accessing it.");
 		}

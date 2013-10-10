@@ -16,7 +16,6 @@
 
 package co.zd.wb.service.dom;
 
-import co.zd.wb.service.dom.BaseDomResourceBuilder;
 import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.FakeResource;
 import java.util.UUID;

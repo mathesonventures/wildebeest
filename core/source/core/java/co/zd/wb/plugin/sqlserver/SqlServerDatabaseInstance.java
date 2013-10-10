@@ -17,7 +17,7 @@
 package co.zd.wb.plugin.sqlserver;
 
 import co.zd.wb.Instance;
-import co.zd.wb.plugin.database.Constants;
+import co.zd.wb.plugin.database.DatabaseConstants;
 import co.zd.wb.plugin.database.DatabaseInstance;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import javax.sql.DataSource;
@@ -35,7 +35,7 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	{
 		if (stateTableName == null || stateTableName.trim().equals(""))
 		{
-			stateTableName = Constants.DefaultStateTableName;
+			stateTableName = DatabaseConstants.DefaultStateTableName;
 		}
 		
 		this.setHostName(hostName);

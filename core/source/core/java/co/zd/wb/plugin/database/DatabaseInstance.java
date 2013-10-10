@@ -19,11 +19,34 @@ package co.zd.wb.plugin.database;
 import co.zd.wb.Instance;
 import javax.sql.DataSource;
 
+/**
+ * A {@link Resource} {@link Instance} that is a database.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface DatabaseInstance extends Instance
 {
+	/**
+	 * Gets the name to use for the state tracking table in this database instance, if specified.  If not specified this
+	 * method throws an InvalidStateException.  Before calling getStateTableName(), call hasStateTableName() to check if
+	 * a state table name has been set.
+	 * 
+	 * @since                                   1.0
+	 */
 	String getStateTableName();
 	
+	/**
+	 * Returns whehter or not this instance has a state table name set.
+	 * 
+	 * @since                                   1.0
+	 */
 	boolean hasStateTableName();
 	
+	/**
+	 * Returns a DataSource for the database represented by this DatabaseInstance.
+	 * 
+	 * @since                                   1.0
+	 */
 	DataSource getAppDataSource();
 }

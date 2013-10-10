@@ -16,7 +16,6 @@
 
 package co.zd.wb.service.dom;
 
-import co.zd.wb.service.dom.BaseDomMigrationBuilder;
 import co.zd.wb.Migration;
 import co.zd.wb.plugin.base.FakeMigration;
 import java.util.UUID;

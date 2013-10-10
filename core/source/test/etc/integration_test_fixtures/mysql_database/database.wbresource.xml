@@ -5,31 +5,34 @@
 
 		<state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" label="Database Created">
 			<assertions>
-				<assertion type="MySqlDatabaseExists" id="19b64fb6-f95f-4221-bc64-303f62a3eda8" name="Database exists" />
+				<assertion type="MySqlDatabaseExists" id="19b64fb6-f95f-4221-bc64-303f62a3eda8" />
 			</assertions>
 		</state>
 
 		<state id="363568f1-aaed-4a50-bea0-9ddee713cc11" label="Core Schema Loaded">
 			<assertions>
-				<assertion type="MySqlTableExists" id="3808ba63-f055-4bf7-88fe-023546e6ed16" name="ProductType table exists">
+				<assertion type="MySqlTableExists" id="3808ba63-f055-4bf7-88fe-023546e6ed16">
 					<tableName>ProductType</tableName>
 				</assertion>
-				<assertion type="RowExists" id="c1ea9cfb-bbf5-4262-8512-4bc13ebb05a4" name="ProductType HW exists">
+				<assertion type="RowExists" id="c1ea9cfb-bbf5-4262-8512-4bc13ebb05a4">
+					<description>ProductType HW exists</description>
 					<sql><![CDATA[
 						SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';
 					]]></sql>
 				</assertion>
-				<assertion type="RowExists" id="2d22dfc4-9f6d-4286-93e8-ded9aac0e047" name="ProductType SW exists">
+				<assertion type="RowExists" id="2d22dfc4-9f6d-4286-93e8-ded9aac0e047">
+					<description>ProductType SW exists</description>
 					<sql><![CDATA[
 						SELECT * FROM ProductType WHERE ProductTypeCode = 'SW';
 					]]></sql>
 				</assertion>
-				<assertion type="RowDoesNotExist" id="c8b0941e-83bc-4151-83e3-8ca633735fbf" name="ProductType XY does not exist">
+				<assertion type="RowDoesNotExist" id="c8b0941e-83bc-4151-83e3-8ca633735fbf">
+					<description>ProductType XY does not exist</description>
 					<sql><![CDATA[
 						SELECT * FROM ProductType WHERE ProductTypeCode = 'XY';
 					]]></sql>
 				</assertion>
-				<assertion type="MySqlTableExists" id="54c78eca-9eda-4983-b9a5-0dcb1be686ff" name="Product table exists">
+				<assertion type="MySqlTableExists" id="54c78eca-9eda-4983-b9a5-0dcb1be686ff">
 					<tableName>Product</tableName>
 				</assertion>
 			</assertions>
