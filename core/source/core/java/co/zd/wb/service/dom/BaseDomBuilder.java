@@ -16,10 +16,13 @@
 
 package co.zd.wb.service.dom;
 
+import co.zd.wb.ModelExtensions;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public abstract class BaseDomBuilder implements DomBuilder
 {
@@ -121,11 +124,26 @@ public abstract class BaseDomBuilder implements DomBuilder
 		
 		TryGetResult<String> result = null;
 		
+		Node node = null;
 		try
 		{
-			result = new TryGetResult<String>((String)this.getXPath().compile(xpath).evaluate(this.getElement()));
+			node  = (Node)this.getXPath().compile(xpath).evaluate(this.getElement(), XPathConstants.NODE);
+			if (node != null)
+			{
+				Element element = ModelExtensions.As(node, Element.class);
+				
+				if (element != null)
+				{
+					String value = element.getTextContent();
+					result = new TryGetResult<String>(value);
+				}
+			}
 		}
 		catch (XPathExpressionException e)
+		{
+		}
+
+		if (result == null)
 		{
 			result = new TryGetResult<String>();
 		}
