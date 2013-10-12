@@ -20,6 +20,7 @@ import co.zd.wb.plugin.base.BaseAssertion;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Instance;
+import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
@@ -50,7 +51,14 @@ public class MySqlDatabaseExistsAssertion extends BaseAssertion
 		return "Database exists";
 	}
 	
-	@Override public AssertionResponse apply(Instance instance)
+	@Override public boolean canPerformOn(Resource resource)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		
+		return ModelExtensions.As(resource, MySqlDatabaseResource.class) != null;
+	}
+	
+	@Override public AssertionResponse perform(Instance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);

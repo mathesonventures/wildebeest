@@ -23,6 +23,8 @@ import co.zd.wb.ModelExtensions;
 import co.zd.wb.Instance;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationFaultException;
+import co.zd.wb.Resource;
+import co.zd.wb.plugin.database.DatabaseInstance;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -50,6 +52,13 @@ public class MySqlCreateDatabaseMigration extends BaseMigration
 		UUID toStateId)
 	{
 		super(migrationId, fromStateId, toStateId);
+	}
+	
+	@Override public boolean canPerformOn(Resource resource)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		
+		return ModelExtensions.As(resource, DatabaseInstance.class) != null;
 	}
 
 	@Override public void perform(Instance instance) throws MigrationFailedException

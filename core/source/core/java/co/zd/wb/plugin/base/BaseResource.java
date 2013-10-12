@@ -223,7 +223,7 @@ public abstract class BaseResource implements Resource
 		{
 			for(Assertion assertion : state.getAssertions())
 			{
-				AssertionResponse response = assertion.apply(instance);
+				AssertionResponse response = assertion.perform(instance);
 				
 				if (logger != null)
 				{

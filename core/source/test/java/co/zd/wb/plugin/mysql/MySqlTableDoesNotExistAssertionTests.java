@@ -98,7 +98,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 		try
 		{
-			response = assertion.apply(instance);
+			response = assertion.perform(instance);
 		}
 		finally
 		{
@@ -164,7 +164,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 		try
 		{
-			response = assertion.apply(instance);
+			response = assertion.perform(instance);
 		}
 		finally
 		{
@@ -208,7 +208,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		// Execute
 		//
 		
-		AssertionResponse response = assertion.apply(instance);
+		AssertionResponse response = assertion.perform(instance);
 
 		//
 		// Assert Results
@@ -241,7 +241,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(null);
+			AssertionResponse response = assertion.perform(null);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}
@@ -280,7 +280,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(instance);
+			AssertionResponse response = assertion.perform(instance);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}

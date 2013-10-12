@@ -64,6 +64,16 @@ public interface Migration
 	boolean hasToStateId();
 	
 	/**
+	 * Checks whether this {@link Migration} can be performed on the supplied {@link Resource}.
+	 * 
+	 * @param       resource                    the {@link Resource} to check.
+	 * @return                                  an indication of whether or not this Migration can be performed on the
+	 *                                          supplied Resource.
+	 * @since                                   1.1
+	 */
+	boolean canPerformOn(Resource resource);
+
+	/**
 	 * Performs the migration, transitioning the supplied Instance from this Migration's from state to it's to state.
 	 * 
 	 * @param       instance                    the instance to be migrated

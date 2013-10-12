@@ -78,7 +78,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		// Execute
 		//
 		
-		AssertionResponse response = assertion.apply(instance);
+		AssertionResponse response = assertion.perform(instance);
 
 		MySqlUtil.dropDatabase(instance, databaseName);
 
@@ -123,7 +123,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		// Execute
 		//
 		
-		AssertionResponse response = assertion.apply(instance);
+		AssertionResponse response = assertion.perform(instance);
 
 		//
 		// Assert Results
@@ -155,7 +155,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(null);
+			AssertionResponse response = assertion.perform(null);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}
@@ -193,7 +193,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(instance);
+			AssertionResponse response = assertion.perform(instance);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}

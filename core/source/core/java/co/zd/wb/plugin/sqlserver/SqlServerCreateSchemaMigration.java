@@ -20,6 +20,7 @@ import co.zd.wb.Instance;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationFaultException;
 import co.zd.wb.ModelExtensions;
+import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.BaseMigration;
 import co.zd.wb.plugin.database.DatabaseHelper;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -96,6 +97,13 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 	}
 
 	// </editor-fold>
+	
+	@Override public boolean canPerformOn(Resource resource)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		
+		return ModelExtensions.As(resource, SqlServerDatabaseInstance.class) != null;
+	}
 	
 	@Override public void perform(Instance instance) throws MigrationFailedException
 	{

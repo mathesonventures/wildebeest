@@ -100,7 +100,7 @@ public class SqlServerTableExistsAssertionTests
 		
 		try
 		{
-			response = assertion.apply(instance);
+			response = assertion.perform(instance);
 		}
 		finally
 		{
@@ -168,7 +168,7 @@ public class SqlServerTableExistsAssertionTests
 		
 		try
 		{
-			response = assertion.apply(instance);
+			response = assertion.perform(instance);
 		}
 		finally
 		{
@@ -218,7 +218,7 @@ public class SqlServerTableExistsAssertionTests
 		
 		try
 		{
-			response = assertion.apply(instance);
+			response = assertion.perform(instance);
 		}
 		finally
 		{
@@ -257,7 +257,7 @@ public class SqlServerTableExistsAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(null);
+			AssertionResponse response = assertion.perform(null);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}
@@ -297,7 +297,7 @@ public class SqlServerTableExistsAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(instance);
+			AssertionResponse response = assertion.perform(instance);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}

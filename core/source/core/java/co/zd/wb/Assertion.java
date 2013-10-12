@@ -47,6 +47,16 @@ public interface Assertion
 	int getSeqNum();
 	
 	/**
+	 * Checks whether this {@link Assertion} can be performed on the supplied {@link Resource}.
+	 * 
+	 * @param       resource                    the {@link Resource} to check.
+	 * @return                                  an indication of whether or not this Assertion can be performed on the
+	 *                                          supplied Resource.
+	 * @since                                   1.1
+	 */
+	boolean canPerformOn(Resource resource);
+
+	/**
 	 * Evaluates this Assertion against the supplied resource instance.
 	 * 
 	 * @param       instance                    the instance to apply this Assertion to.
@@ -54,5 +64,5 @@ public interface Assertion
 	 *                                          to the supplied Instance.
 	 * @since                                   1.0
 	 */
-	AssertionResponse apply(Instance instance);
+	AssertionResponse perform(Instance instance);
 }

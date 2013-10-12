@@ -78,7 +78,7 @@ public class SqlServerSchemaExistsAssertionTests
 		
 		try
 		{
-			response = schemaExists.apply(instance);
+			response = schemaExists.perform(instance);
 		}
 		finally
 		{
@@ -136,7 +136,7 @@ public class SqlServerSchemaExistsAssertionTests
 		
 		try
 		{
-			response = schemaExists.apply(instance);
+			response = schemaExists.perform(instance);
 		}
 		finally
 		{
@@ -185,7 +185,7 @@ public class SqlServerSchemaExistsAssertionTests
 		
 		try
 		{
-			response = assertion.apply(instance);
+			response = assertion.perform(instance);
 		}
 		finally
 		{
@@ -223,7 +223,7 @@ public class SqlServerSchemaExistsAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(null);
+			AssertionResponse response = assertion.perform(null);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}
@@ -262,7 +262,7 @@ public class SqlServerSchemaExistsAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(instance);
+			AssertionResponse response = assertion.perform(instance);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}

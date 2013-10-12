@@ -81,7 +81,7 @@ public class SqlServerDatabaseDoesNotExistAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(instance);
+			AssertionResponse response = assertion.perform(instance);
 
 			//
 			// Assert Results
@@ -131,7 +131,7 @@ public class SqlServerDatabaseDoesNotExistAssertionTests
 		// Execute
 		//
 		
-		AssertionResponse response = assertion.apply(instance);
+		AssertionResponse response = assertion.perform(instance);
 
 		//
 		// Assert Results
@@ -163,7 +163,7 @@ public class SqlServerDatabaseDoesNotExistAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(null);
+			AssertionResponse response = assertion.perform(null);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}
@@ -201,7 +201,7 @@ public class SqlServerDatabaseDoesNotExistAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(instance);
+			AssertionResponse response = assertion.perform(instance);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}

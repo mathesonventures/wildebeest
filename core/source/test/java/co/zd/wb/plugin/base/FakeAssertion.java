@@ -20,6 +20,7 @@ import co.zd.wb.Assertion;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Instance;
+import co.zd.wb.Resource;
 import java.util.UUID;
 
 public class FakeAssertion extends BaseAssertion implements Assertion
@@ -75,8 +76,15 @@ public class FakeAssertion extends BaseAssertion implements Assertion
 	}
 
 	// </editor-fold>
+	
+	@Override public boolean canPerformOn(Resource resource)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		
+		return ModelExtensions.As(resource, FakeResource.class) != null;
+	}
 
-	@Override public AssertionResponse apply(Instance instance)
+	@Override public AssertionResponse perform(Instance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannt be null"); }
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);

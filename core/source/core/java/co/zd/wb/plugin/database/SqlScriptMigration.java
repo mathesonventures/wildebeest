@@ -22,6 +22,7 @@ import co.zd.wb.Instance;
 import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationFaultException;
+import co.zd.wb.Resource;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -91,6 +92,13 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 
 	// </editor-fold>
 	
+	@Override public boolean canPerformOn(Resource resource)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		
+		return ModelExtensions.As(resource, DatabaseResource.class) != null;
+	}
+
 	@Override public void perform(Instance instance) throws MigrationFailedException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }

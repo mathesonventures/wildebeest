@@ -23,6 +23,7 @@ import co.zd.wb.State;
 import co.zd.wb.Migration;
 import co.zd.wb.plugin.base.ImmutableState;
 import co.zd.wb.service.AssertionBuilder;
+import co.zd.wb.service.Messages;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.ResourceLoader;
@@ -293,6 +294,17 @@ public class DomResourceLoader implements ResourceLoader
 												this.getAssertionBuilders(),
 												asrXe,
 												asrIndex);
+											
+											// Verify that this assertion can be used with the Resource.
+											if (!asr.canPerformOn(resource))
+											{
+												Messages messages = new Messages();
+												messages.addMessage(
+													"%s assertions cannot be applied to %s resources",
+													asr.getClass().getName(),
+													resource.getClass().getName());
+											}
+
 											state.getAssertions().add(asr);
 										}
 									}
@@ -310,9 +322,21 @@ public class DomResourceLoader implements ResourceLoader
 							Element.class);
 						if (migrationXe != null)
 						{
-							resource.getMigrations().add(buildMigration(
+							Migration migration = buildMigration(
 								this.getMigrationBuilders(),
-								migrationXe));
+								migrationXe);
+											
+							// Verify that this assertion can be used with the Resource.
+							if (!migration.canPerformOn(resource))
+							{
+								Messages messages = new Messages();
+								messages.addMessage(
+									"%s migrations cannot be applied to %s resources",
+									migration.getClass().getName(),
+									resource.getClass().getName());
+							}
+							
+							resource.getMigrations().add(migration);
 						}
 					}
 				}

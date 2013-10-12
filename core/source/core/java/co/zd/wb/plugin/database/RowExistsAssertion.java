@@ -22,6 +22,7 @@ import co.zd.wb.AssertionFaultException;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Instance;
+import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -131,7 +132,14 @@ public class RowExistsAssertion extends BaseAssertion implements Assertion
 
 	// </editor-fold>
 	
-	@Override public AssertionResponse apply(Instance instance)
+	@Override public boolean canPerformOn(Resource resource)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		
+		return ModelExtensions.As(resource, DatabaseResource.class) != null;
+	}
+	
+	@Override public AssertionResponse perform(Instance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		DatabaseInstance db = ModelExtensions.As(instance, DatabaseInstance.class);

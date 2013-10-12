@@ -16,10 +16,10 @@
 
 package co.zd.wb.plugin.base;
 
-import co.zd.wb.plugin.base.BaseMigration;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Instance;
 import co.zd.wb.MigrationFailedException;
+import co.zd.wb.Resource;
 import java.util.UUID;
 
 public class FakeMigration extends BaseMigration
@@ -71,6 +71,13 @@ public class FakeMigration extends BaseMigration
 	}
 
 	// </editor-fold>
+	
+	@Override public boolean canPerformOn(Resource resource)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		
+		return ModelExtensions.As(resource, FakeInstance.class) != null;
+	}
 	
 	@Override public void perform(Instance instance) throws MigrationFailedException
 	{

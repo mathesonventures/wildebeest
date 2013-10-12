@@ -81,7 +81,7 @@ public class SqlServerDatabaseExistsAssertionTests
 				UUID.randomUUID(),
 				0);
 
-			AssertionResponse response = assertion.apply(instance);
+			AssertionResponse response = assertion.perform(instance);
 
 			//
 			// Assert Results
@@ -128,7 +128,7 @@ public class SqlServerDatabaseExistsAssertionTests
 		// Execute
 		//
 		
-		AssertionResponse response = assertion.apply(instance);
+		AssertionResponse response = assertion.perform(instance);
 
 		//
 		// Assert Results
@@ -158,7 +158,7 @@ public class SqlServerDatabaseExistsAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(null);
+			AssertionResponse response = assertion.perform(null);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}
@@ -196,7 +196,7 @@ public class SqlServerDatabaseExistsAssertionTests
 		
 		try
 		{
-			AssertionResponse response = assertion.apply(instance);
+			AssertionResponse response = assertion.perform(instance);
 			
 			Assert.fail("IllegalArgumentException expected");
 		}

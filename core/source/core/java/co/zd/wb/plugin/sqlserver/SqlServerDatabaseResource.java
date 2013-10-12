@@ -25,6 +25,7 @@ import co.zd.wb.Resource;
 import co.zd.wb.Instance;
 import co.zd.wb.FaultException;
 import co.zd.wb.State;
+import co.zd.wb.plugin.database.DatabaseResource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +38,7 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       1.1
  */
-public class SqlServerDatabaseResource extends BaseResource implements Resource
+public class SqlServerDatabaseResource extends BaseResource implements DatabaseResource
 {
 	/**
 	 * Creates a new SqlServerDatabaseResource.

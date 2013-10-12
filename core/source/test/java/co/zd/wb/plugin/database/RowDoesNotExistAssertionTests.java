@@ -69,7 +69,7 @@ public class RowDoesNotExistAssertionTests
 		AssertionResponse response = null;
 		try
 		{
-			response = assertion.apply(instance);
+			response = assertion.perform(instance);
 		}
 		finally
 		{
@@ -126,7 +126,7 @@ public class RowDoesNotExistAssertionTests
 		AssertionResponse response = null;
 		try
 		{
-			response = assertion.apply(instance);
+			response = assertion.perform(instance);
 		}
 		finally
 		{
