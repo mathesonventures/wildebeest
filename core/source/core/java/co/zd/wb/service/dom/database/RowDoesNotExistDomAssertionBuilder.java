@@ -26,6 +26,12 @@ import co.zd.wb.service.dom.BaseDomAssertionBuilder;
 import co.zd.wb.service.dom.TryGetResult;
 import java.util.UUID;
 
+/**
+ * An {@link AssertionBuilder} that builds a {@link RowDoesNotExistAssertion} from a DOM {@link org.w3c.dom.Element}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class RowDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 {
 	@Override public Assertion build(

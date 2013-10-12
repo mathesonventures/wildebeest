@@ -30,6 +30,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
+/**
+ * An {@link InstanceBuilder} deserializes {@link Instance} descriptors from XML.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class DomInstanceLoader implements InstanceLoader
 {
 	private static String ELT_INSTANCE = "instance";
@@ -40,11 +46,18 @@ public class DomInstanceLoader implements InstanceLoader
 	private static String ELT_ADMIN_PASSWORD = "adminPassword";
 	private static String ELT_SCHEMA_NAME = "schemaName";
 	
+	/**
+	 * Creates a new DomInstanceLoader.
+	 * 
+	 * @param       instanceBuilders            the set of available {@link InstanceBuilder}s.
+	 * @param       instanceXml                 the XML representation of the {@link Instance} to be loaded.
+	 * @since                                   1.0
+	 */
 	public DomInstanceLoader(
-		Map<String, InstanceBuilder> instanceBuilder,
+		Map<String, InstanceBuilder> instanceBuilders,
 		String instanceXml)
 	{
-		this.setInstanceBuilders(instanceBuilder);
+		this.setInstanceBuilders(instanceBuilders);
 		this.setInstanceXml(instanceXml);
 	}
 

@@ -27,6 +27,12 @@ import co.zd.wb.Resource;
 import co.zd.wb.State;
 import co.zd.wb.service.Logger;
 
+/**
+ * A {@link Logger} that sends messages to Log4J.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class Log4jLogger implements Logger
 {
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Log4jLogger.class);

@@ -18,6 +18,12 @@ package co.zd.wb.service.dom;
 
 import co.zd.wb.service.MigrationBuilder;
 
+/**
+ * Base class for DOM-based {@link MigrationBuilder} implementations.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public abstract class BaseDomMigrationBuilder extends BaseDomBuilder implements MigrationBuilder
 {
 }

@@ -22,6 +22,13 @@ import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
 import java.util.UUID;
 
+/**
+ * An {@link AssertionBuilder} that builds a {@link SqlServerDatabaseDoesNotExistAssertion} from a DOM
+ * {@link org.w3c.dom.Element}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerDatabaseDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 {
 	@Override public Assertion build(

@@ -16,12 +16,31 @@
 
 package co.zd.wb.service.dom;
 
+/**
+ * The result from some try-get method.  A TryGetResult will contain a value if it was successful, or will be empty if
+ * the try-get was unsuccessful.
+ * 
+ * @param           <TValue>                    the type of value that this result conveys.
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class TryGetResult<TValue>
 {
+	/**
+	 * Creates a new empty TryGetResult.
+	 * 
+	 * @since                                   1.1
+	 */
 	public TryGetResult()
 	{
 	}
 
+	/**
+	 * Creates a new TryGetResult containing the supplied value.
+	 * 
+	 * @param       value                       the value for this TryGetResult.
+	 * @since                                   1.1
+	 */
 	public TryGetResult(TValue value)
 	{
 		this.setValue(value);
@@ -32,6 +51,12 @@ public class TryGetResult<TValue>
 	private TValue _value = null;
 	private boolean _value_set = false;
 
+	/**
+	 * Gets the value for this TryGetResult, or throws an IllegalStateException if this is an empty TryGetResult.
+	 * Call hasValue() before calling this method to check if the TryGetResult has a value.
+	 * 
+	 * @since                                   1.1
+	 */
 	public TValue getValue() {
 		if(!_value_set) {
 			throw new IllegalStateException("value not set.  Use the HasValue() method to check its state before accessing it.");
@@ -58,6 +83,11 @@ public class TryGetResult<TValue>
 		}
 	}
 
+	/**
+	 * Indicates if this TryGetResult has a value.
+	 * 
+	 * @since                                   1.1
+	 */
 	public boolean hasValue() {
 		return _value_set;
 	}

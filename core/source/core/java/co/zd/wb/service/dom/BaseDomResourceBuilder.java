@@ -18,6 +18,12 @@ package co.zd.wb.service.dom;
 
 import co.zd.wb.service.ResourceBuilder;
 
+/**
+ * Base class for DOM-based {@link ResourceBuilder} implementations.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public abstract class BaseDomResourceBuilder extends BaseDomBuilder implements ResourceBuilder
 {
 }

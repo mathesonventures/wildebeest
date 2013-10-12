@@ -23,7 +23,6 @@ import co.zd.wb.State;
 import co.zd.wb.Migration;
 import co.zd.wb.plugin.base.ImmutableState;
 import co.zd.wb.service.AssertionBuilder;
-import co.zd.wb.service.Messages;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.ResourceLoader;
@@ -39,6 +38,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
+/**
+ * An {@link ResourceBuilder} deserializes {@link Resource} descriptors from XML.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class DomResourceLoader implements ResourceLoader
 {
 	private static final String ELT_RESOURCE = "resource";
@@ -59,6 +64,15 @@ public class DomResourceLoader implements ResourceLoader
 		private static final String ATT_MIGRATION_FROM_STATE_ID = "fromStateId";
 		private static final String ATT_MIGRATION_TO_STATE_ID = "toStateId";
 	
+	/**
+	 * Creates a new DomResourceBuilder.
+	 * 
+	 * @param       resourceBuilders            the set of available {@link ResourceBuilder}s.
+	 * @param       assertionBuilders           the set of available {@link AssertionBuilder}s.
+	 * @param       migrationBuilders           the set of available {@link MigrationBuilder}s.
+	 * @param       resourceXml                 the XML representation of the {@link Resource} to be loaded.
+	 * @since                                   1.0
+	 */
 	public DomResourceLoader(
 		Map<String, ResourceBuilder> resourceBuilders,
 		Map<String, AssertionBuilder> assertionBuilders,

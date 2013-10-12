@@ -44,6 +44,12 @@ import co.zd.wb.service.dom.sqlserver.SqlServerTableExistsDomAssertionBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Provides the set of pre-configured core plugins that are supported by Wildebeest.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class DomPlugins
 {
 	public static Map<String, ResourceBuilder> resourceBuilders()

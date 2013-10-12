@@ -24,8 +24,19 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+/**
+ * Base class for DOM-based builders.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public abstract class BaseDomBuilder implements DomBuilder
 {
+	/**
+	 * Creates a new BaseDomBuilder.
+	 * 
+	 * @since                                   1.0
+	 */
 	protected BaseDomBuilder()
 	{
 		this.setXPath(XPathFactory.newInstance().newXPath());
@@ -36,14 +47,19 @@ public abstract class BaseDomBuilder implements DomBuilder
 	private Element m_element = null;
 	private boolean m_element_set = false;
 
-	public Element getElement() {
+	/**
+	 * Gets the root {@link org.w3c.dom.Element} that represents the item to be deserialized.
+	 * 
+	 * @since                                   1.0
+	 */
+	protected Element getElement() {
 		if(!m_element_set) {
 			throw new IllegalStateException("element not set.  Use the HasElement() method to check its state before accessing it.");
 		}
 		return m_element;
 	}
 
-	public void setElement(
+	@Override public void setElement(
 		Element value) {
 		if(value == null) {
 			throw new IllegalArgumentException("element cannot be null");
@@ -113,9 +129,12 @@ public abstract class BaseDomBuilder implements DomBuilder
 	/**
 	 * Attempts to retrieve the string value identified by the supplied xpath expression, relative to the Element held
 	 * by this builder.
-	 * @param       xpath                       the xpath to the element or attribute that contains the value to be
+	 * 
+	 * @param       xpath                       the xpath expression to the Element that contains the value to be
 	 *                                          returned.
-	 * @return                                  the value identified by the supplied xpath.
+	 * @return                                  a TryGetResult containing the value identified by the supplied xpath if
+	 *                                          it was able to be obtained, or an empty TryGetResult otherwise
+	 * @since                                   1.1
 	 */
 	protected TryGetResult<String> tryGetString(String xpath)
 	{
@@ -151,6 +170,16 @@ public abstract class BaseDomBuilder implements DomBuilder
 		return result;
 	}
 	
+	/**
+	 * Attempts to retrieve the integer value identified by the supplied xpath expression, relative to the Element held
+	 * by this builder.
+	 * 
+	 * @param       xpath                       the xpath expression to the Element that contains the value to be
+	 *                                          returned.
+	 * @return                                  a TryGetResult containing the value identified by the supplied xpath if
+	 *                                          it was able to be obtained, or an empty TryGetResult otherwise
+	 * @since                                   1.1
+	 */
 	protected TryGetResult<Integer> tryGetInteger(String xpath)
 	{
 		TryGetResult<Integer> result = null;

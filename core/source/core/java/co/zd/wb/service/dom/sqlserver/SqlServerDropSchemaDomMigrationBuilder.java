@@ -25,6 +25,12 @@ import co.zd.wb.service.dom.BaseDomMigrationBuilder;
 import co.zd.wb.service.dom.TryGetResult;
 import java.util.UUID;
 
+/**
+ * A {@link MigrationBuilder} that builds a {@link SqlServerDropSchemaMigration} from a DOM {@link org.w3c.dom.Element}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerDropSchemaDomMigrationBuilder extends BaseDomMigrationBuilder
 {
 	@Override public Migration build(

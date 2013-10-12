@@ -24,6 +24,12 @@ import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomInstanceBuilder;
 import co.zd.wb.service.dom.TryGetResult;
 
+/**
+ * An {@link InstanceBuilder} that builds a {@link MySqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
 	@Override public Instance build() throws MessagesException

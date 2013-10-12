@@ -22,6 +22,12 @@ import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.BaseDomResourceBuilder;
 import java.util.UUID;
 
+/**
+ * A {@link ResourceBuilder} that builds a {@link SqlServerDatabaseResource} from a DOM {@link org.w3c.dom.Element}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerDatabaseDomResourceBuilder extends BaseDomResourceBuilder
 {
 	@Override public Resource build(
