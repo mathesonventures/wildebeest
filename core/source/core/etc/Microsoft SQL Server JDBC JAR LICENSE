@@ -1,0 +1,10 @@
+This distribution of Wildebeest includes the Microsoft SQL Server JDBC driver
+JAR sqljdbc4.jar.  This library is copyright to Microsoft Corporation, and is
+not subject to the GNU GPLv2 license that applies to the Wildebeest code.
+
+The license terms under which this library is distributed and under which you
+may use it enumerated in the document
+http://msdn.microsoft.com/en-us/sqlserver/jj589698
+
+By using Wildebeest's SQL Server plugins which use sqljdbc4.jar, you are
+agreeing to the terms of that license.
