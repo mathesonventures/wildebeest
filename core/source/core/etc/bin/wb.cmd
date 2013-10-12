@@ -1,3 +1,5 @@
+@echo off
+
 REM Wildebeest Migration Framework
 REM Copyright 2013, Zen Digital Co Inc
 REM
@@ -14,11 +16,13 @@ REM
 REM You should have received a copy of the GNU General Public License along with
 REM Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-@echo off
-
 if "%WB_HOME%"=="" goto noWbHome
 
-java -classpath "%WB_HOME%\lib\ZD.Wildebeest.Core-1.0.0.3.jar;%WB_HOME%\lib\mysql-connector-java-5.1.22.jar;" co.zd.wb.cli.WildebeestCommand %1 %2 %3 %4
+SET WB_CLASSPATH=%WB_HOME%\lib\ZD.Wildebeest.Core-@meta.project.version.full.dotted@.jar
+SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\mysql-connector-java-5.1.22.jar
+SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\sqljdbc4.jar
+
+java -classpath "%WB_CLASSPATH%" co.zd.wb.cli.WildebeestCommand %1 %2 %3 %4
 
 goto exit
 
