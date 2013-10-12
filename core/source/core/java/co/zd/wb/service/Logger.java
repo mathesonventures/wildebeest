@@ -25,31 +25,96 @@ import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationNotPossibleException;
 
+/**
+ * An application-level logging interface for providing feedback on the progress of Wildebeest commands.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface Logger
 {
+	/**
+	 * Logs that an {@link Assertion} has been started.
+	 * 
+	 * @param       assertion                   the Assertion that has been started.
+	 * @since                                   1.0
+	 */
 	void assertionStart(Assertion assertion);
 	
-	void assertionComplete(Assertion assertion, AssertionResponse response);
+	/**
+	 * Logs that an {@link Assertion} has been completed.
+	 * 
+	 * @param       assertion                   the Assertion that has been completed.
+	 * @param       response                    the {@link AssertionResponse} from the Assertion.
+	 * @since                                   1.0
+	 */
+	void assertionComplete(
+		Assertion assertion,
+		AssertionResponse response);
 	
+	/**
+	 * Logs that a {@link Migration} has been started.
+	 * 
+	 * @param       resource                    the {@link Resource} that is being migrated.
+	 * @param       migration                   the {@link Migration} that has been started.
+	 * @since                                   1.0
+	 */
 	void migrationStart(
 		Resource resource,
 		Migration migration);
-	
+
+	/**
+	 * Logs that a [@link Migration} has been completed.
+	 * 
+	 * @param       resource                    the {@link Resource} that was migrated.
+	 * @param       migration                   the {@link Migration} that was applied.
+	 * @since                                   1.0
+	 */
 	void migrationComplete(
 		Resource resource,
 		Migration migration);
 	
+	/**
+	 * Logs that the state of a {@link Resource} could not be determined.
+	 * 
+	 * @param       e                           the @{link IndeterminateStateException} that was thrown.
+	 * @since                                   1.0
+	 */
 	void indeterminateState(
 		IndeterminateStateException e);
 	
+	/**
+	 * Logs that an {@link Assertion} failed.
+	 * 
+	 * @param       e                           the {@link AssertionFailedException} that was thrown.
+	 * @since                                   1.0
+	 */
 	void assertionFailed(
 		AssertionFailedException e);
 
+	/**
+	 * Logs that a requested migration is not possible because no path could be selected.
+	 * 
+	 * @param       e                           the {@link MigrationNotPossibleException} that was thrown.
+	 * @since                                   1.0
+	 */
 	void migrationNotPossible(
 		MigrationNotPossibleException e);
 	
+	/**
+	 * Logs that a requested migration failed.
+	 * 
+	 * @param       e                           the {@link MigrationFailedException} that was thrown.
+	 * @since                                   1.0
+	 */
 	void migrationFailed(
 		MigrationFailedException e);
 	
+	/**
+	 * Logs a plain text message.
+	 * 
+	 * @param       message                     the plain text message to be logged.
+	 * @since                                   1.0
+	 */
 	void logLine(String message);
 }

@@ -23,8 +23,21 @@ import co.zd.wb.Instance;
 import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
+/**
+ * An {@link Assertion} that verifies that a given table does not exist in a MySQL database.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 {
+	/**
+	 * Creates a new MySqlTableDoesNotExistAssertion.
+	 * 
+	 * @param       assertionId                 the ID of the new assertion.
+	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
+	 * @param       tableName                   the name of the table that this assertion will check for.
+	 */
 	public MySqlTableDoesNotExistAssertion(
 		UUID assertionId,
 		int seqNum,
@@ -45,6 +58,12 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 	private String m_tableName = null;
 	private boolean m_tableName_set = false;
 
+	/**
+	 * Gets the name of the table that this assertion will check for.
+	 * 
+	 * @return                                  the name of the table that this assertion will check for.
+	 * @since                                   1.0
+	 */
 	public String getTableName() {
 		if(!m_tableName_set) {
 			throw new IllegalStateException("tableName not set.  Use the HasTableName() method to check its state before accessing it.");
@@ -85,14 +104,14 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 		
 		AssertionResponse result = null;
 
-		if (!MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
+		if (!MySqlDatabaseHelper.schemaExists(db))
 		{
 			result = new ImmutableAssertionResponse(
 				false,
 				String.format("Database %s does not exist", db.getSchemaName()));
 		}
 		
-		else if (MySqlDatabaseHelper.tableExists(db, db.getSchemaName(), this.getTableName()))
+		else if (MySqlDatabaseHelper.tableExists(db, this.getTableName()))
 		{
 			result = new ImmutableAssertionResponse(false, "Table " + this.getTableName() + " exists");
 		}

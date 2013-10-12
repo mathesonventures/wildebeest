@@ -19,12 +19,42 @@ package co.zd.wb.service;
 import co.zd.wb.Migration;
 import java.util.UUID;
 
+
+/**
+ * A MigrationBuilder is a factory component for building instances of {@link Migration}s.  The build method takes the
+ * common properties of a Migration as parameters.
+ * 
+ * It's expected that MigrationBuilder's will typically be stateful, with additional properties or configuration
+ * information being supplied to them as properties.  The reset() method should be implemented to clear such additional
+ * state and restore the MigrationBuilder to a clean state ready to be re-used to build another Migration instance.  The
+ * framework will always call reset() before using an MigrationBuilder.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface MigrationBuilder
 {
+	/**
+	 * Builds a new {@link Migration}.
+	 * 
+	 * @param       migrationId                 the ID for the new {@link Migration}.
+	 * @param       fromStateId                 the source state for the new {@link Migration} or null to migrate from
+	 *                                          the non-existent state.
+	 * @param       toStateId                   the target state for the new {@link Migration} or null to migrate to
+	 *                                          the non-existent state.
+	 * @return                                  the new {@link Migration} instance.
+	 * @throws      MessagesException           if migration fails.
+	 * @since                                   1.1
+	 */
 	Migration build(
 		UUID migrationId,
 		UUID fromStateId,
 		UUID toStateId) throws MessagesException;
 	
+	/**
+	 * Resets the MigrationBuilder, making it ready to build a new instance.
+	 * 
+	 * @since                                   1.1
+	 */
 	void reset();
 }

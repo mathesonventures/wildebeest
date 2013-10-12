@@ -24,11 +24,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *
- * @author brendonm
+ * Functional helper methods for working with SQL Server databases.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
  */
 public class SqlServerDatabaseHelper
 {
+	/**
+	 * Returns an indication of whether or not the SQL Server database represented by the supplied instance exists.
+	 * 
+	 * @param       instance                    the SqlServerDatabseInstance to check.
+	 * @return                                  an indication of whether or not the SQL Server database exists
+	 * @since                                   1.1
+	 */
 	public static boolean databaseExists(SqlServerDatabaseInstance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
@@ -72,18 +81,24 @@ public class SqlServerDatabaseHelper
 		
 		return result;
 	}
-	
-	public static boolean tableExists(
+
+	/**
+	 * Returns an indication of whether or not the SQL Server database represented by the supplied instance contains
+	 * a given schema.
+	 * 
+	 * @param       instance                    the SqlServerDatabaseIntance to check.
+	 * @param       schemaName                  the name of the schema to check for.
+	 * @return                                  an indication of whether or not the schema exists.
+	 * @since                                   1.1
+	 */
+	public static boolean schemaExists(
 		SqlServerDatabaseInstance instance,
-		String schemaName,
-		String tableName)
+		String schemaName)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
 		if ("".equals(schemaName.trim())) { throw new IllegalArgumentException("schemaName cannot be empty"); }
-		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
-		if ("".equals(tableName.trim())) { throw new IllegalArgumentException("tableName cannot be empty"); }
-		
+
 		boolean result = false;
 		
 		Connection conn = null;
@@ -95,9 +110,9 @@ public class SqlServerDatabaseHelper
 			conn = instance.getAppDataSource().getConnection();
 			
 			ps = conn.prepareStatement(
-				"SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(?) AND TYPE IN (N'U')");
-			ps.setString(1, "[" + schemaName + "].[" + tableName + "]");
-			
+				"SELECT * FROM sys.schemas WHERE name = ?");
+			ps.setString(1, schemaName);
+	
 			rs = ps.executeQuery();
 		
 			result = rs.next();
@@ -123,14 +138,26 @@ public class SqlServerDatabaseHelper
 		return result;
 	}
 	
-	public static boolean schemaExists(
+	/**
+	 * Returns an indication of whether or not a SQL Server database schema contains a given table.
+	 * 
+	 * @param       instance                    the SqlServerDatabseInstance to check.
+	 * @param       schemaName                  the name of the schema that should contain the table.
+	 * @param       tableName                   the name of the table to check for.
+	 * @return                                  an indication of whether or not the table exists.
+	 * since                                    1.1
+	 */
+	public static boolean tableExists(
 		SqlServerDatabaseInstance instance,
-		String schemaName)
+		String schemaName,
+		String tableName)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
 		if ("".equals(schemaName.trim())) { throw new IllegalArgumentException("schemaName cannot be empty"); }
-
+		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
+		if ("".equals(tableName.trim())) { throw new IllegalArgumentException("tableName cannot be empty"); }
+		
 		boolean result = false;
 		
 		Connection conn = null;
@@ -142,9 +169,9 @@ public class SqlServerDatabaseHelper
 			conn = instance.getAppDataSource().getConnection();
 			
 			ps = conn.prepareStatement(
-				"SELECT * FROM sys.schemas WHERE name = ?");
-			ps.setString(1, schemaName);
-	
+				"SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(?) AND TYPE IN (N'U')");
+			ps.setString(1, "[" + schemaName + "].[" + tableName + "]");
+			
 			rs = ps.executeQuery();
 		
 			result = rs.next();

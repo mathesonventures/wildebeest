@@ -19,11 +19,33 @@ package co.zd.wb.service;
 import co.zd.wb.Resource;
 import java.util.UUID;
 
+/**
+ * A ResourceBuilder is a factory component for building {@link Resource}s.
+ * 
+ * It's expected that ResourceBuilders's will typically be stateful, with properties or configuration information being
+ * supplied to them as properties.  The reset() method should be implemented to clear such additional state and restore
+ * the ResourceBuilder to a clean state ready to be re-used to build a different Resource.  The framework will always
+ * call reset() before using an ResourceBuilder.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface ResourceBuilder
 {
+	/**
+	 * Builds and returns a new {@link Resource}.
+	 * 
+	 * @return                                  the newly built {@link Resource}.
+	 * @throws      MessagesException           contains any user-resolvable errors that occur when attempting to build
+	 *                                          the {@link Resource}.
+	 * @since                                   1.0
+	 */
 	Resource build(
 		UUID id,
 		String name) throws MessagesException;
-	
+
+	/**
+	 * Resets the ResourceBuilder, ready to build a new instance.
+	 */
 	void reset();
 }

@@ -16,13 +16,31 @@
 
 package co.zd.wb.service;
 
+/**
+ * Indicates that an unexpected system error occurred while loading a {@link Resource}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class ResourceLoaderFault extends RuntimeException
 {
+	/**
+	 * Creates a new ResourceLoaderFault with the supplied cause.
+	 * 
+	 * @param       cause                       the root cause of the fault.
+	 * @since                                   1.0
+	 */
 	public ResourceLoaderFault(Exception cause)
 	{
 		super(cause);
 	}
 	
+	/**
+	 * Creates a new ResourceLoaderFault with the supplied message.
+	 * 
+	 * @param       message                     the message for this fault.
+	 * @since                                   1.0
+	 */
 	public ResourceLoaderFault(String message)
 	{
 		super(message);

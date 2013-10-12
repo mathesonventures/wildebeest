@@ -31,8 +31,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * A {@link Resource} that is a MySQL database.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class MySqlDatabaseResource extends BaseResource implements Resource
 {
+	/**
+	 * Creates a new MySqlDatabaseResource.
+	 * 
+	 * @param       resourceId                  the ID of the resource.
+	 * @param       name                        the name of the resource.
+	 */
 	public MySqlDatabaseResource(
 		UUID resourceId,
 		String name)
@@ -56,7 +68,7 @@ public class MySqlDatabaseResource extends BaseResource implements Resource
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		if (MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
+		if (MySqlDatabaseHelper.schemaExists(db))
 		{
 			String stateTableName = Extensions.getStateTableName(db);
 			

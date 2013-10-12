@@ -31,8 +31,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * A {@link Resource} that is a SQL Server database.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerDatabaseResource extends BaseResource implements Resource
 {
+	/**
+	 * Creates a new SqlServerDatabaseResource.
+	 * 
+	 * @param       resourceId                  the ID of the new resource.
+	 * @param       name                        the name of the new resource.
+	 */
 	public SqlServerDatabaseResource(
 		UUID resourceId,
 		String name)
@@ -40,10 +52,6 @@ public class SqlServerDatabaseResource extends BaseResource implements Resource
 		super(resourceId, name);
 	}
 	
-	//
-	// Behaviour
-	//
-
 	@Override public State currentState(Instance instance) throws IndeterminateStateException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }

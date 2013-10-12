@@ -16,13 +16,31 @@
 
 package co.zd.wb.service;
 
+/**
+ * Indicates that an unexpected system error occurred while loading an Instance.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class InstanceLoaderFault extends RuntimeException
 {
+	/**
+	 * Creates a new InstanceLoaderFault with the supplied cause.
+	 * 
+	 * @param       cause                       the root cause of the fault.
+	 * @since                                   1.0
+	 */
 	public InstanceLoaderFault(Exception cause)
 	{
 		super(cause);
 	}
 	
+	/**
+	 * Creates a new InstanceLoaderFault with the supplied message.
+	 * 
+	 * @param       message                     the message for this fault.
+	 * @since                                   1.0
+	 */
 	public InstanceLoaderFault(String message)
 	{
 		super(message);

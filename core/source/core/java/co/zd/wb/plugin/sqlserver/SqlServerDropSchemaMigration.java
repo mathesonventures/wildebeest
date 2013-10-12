@@ -26,8 +26,22 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * A {@link Migration} that drops a schema from a {@link SqlServerDatabaseResource}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerDropSchemaMigration extends BaseMigration
 {
+	/**
+	 * Creates a new SqlServerDropSchemaMigration.
+	 * 
+	 * @param       migrationId                 the ID of the new migration.
+	 * @param       fromStateId                 the source state for this migration.
+	 * @param       toStateId                   the target state for this migration.
+	 * @param       schemaName                  the name of the schema to be dropped.
+	 */
 	public SqlServerDropSchemaMigration(
 		UUID migrationId,
 		UUID fromStateId,
@@ -44,6 +58,11 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 	private String _schemaName = null;
 	private boolean _schemaName_set = false;
 
+	/**
+	 * Returns the name of the schema to be dropped.
+	 * 
+	 * @since                                   1.1
+	 */
 	public String getSchemaName() {
 		if(!_schemaName_set) {
 			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");

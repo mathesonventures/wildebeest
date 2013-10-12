@@ -23,8 +23,21 @@ import co.zd.wb.Instance;
 import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
+/**
+ * An {@link Assertion} that verifies that a database exists.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class MySqlDatabaseExistsAssertion extends BaseAssertion
 {
+	/**
+	 * Creates a new MySqlDatabaseExistsAssertion.
+	 * 
+	 * @param       assertionId                 the ID of the new assertion.
+	 * @param       seqNum                      the ordinal index of the new assertion within it's containing set.
+	 * @since                                   1.0
+	 */
 	public MySqlDatabaseExistsAssertion(
 		UUID assertionId,
 		int seqNum)
@@ -45,7 +58,7 @@ public class MySqlDatabaseExistsAssertion extends BaseAssertion
 		
 		AssertionResponse result = null;
 		
-		if (MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
+		if (MySqlDatabaseHelper.schemaExists(db))
 		{
 			result = new ImmutableAssertionResponse(true, "Database " + db.getSchemaName() + " exists");
 		}

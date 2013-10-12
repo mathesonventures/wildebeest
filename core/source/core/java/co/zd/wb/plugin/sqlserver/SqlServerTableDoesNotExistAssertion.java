@@ -23,8 +23,22 @@ import co.zd.wb.Instance;
 import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
+/**
+ * An {@link Assertion} that verifies that a given table does not exist in a SQL Server database.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 {
+	/**
+	 * Creates a new SqlServerTableDoesNotExistAssertion.
+	 * 
+	 * @param       assertionId                 the ID for the new assertion.
+	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
+	 * @param       schemaName                  the name of the schema to check.
+	 * @param       tableName                   the name of the table to check.
+	 */
 	public SqlServerTableDoesNotExistAssertion(
 		UUID assertionId,
 		int seqNum,
@@ -47,6 +61,11 @@ public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 	private String _schemaName = null;
 	private boolean _schemaName_set = false;
 
+	/**
+	 * Gets the name of the schema to check.
+	 * 
+	 * @since                                   1.1
+	 */
 	public String getSchemaName() {
 		if(!_schemaName_set) {
 			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
@@ -84,6 +103,11 @@ public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 	private String m_tableName = null;
 	private boolean m_tableName_set = false;
 
+	/**
+	 * Gets the name of the table to check.
+	 * 
+	 * @since                                   1.1
+	 */
 	public String getTableName() {
 		if(!m_tableName_set) {
 			throw new IllegalStateException("tableName not set.  Use the HasTableName() method to check its state before accessing it.");

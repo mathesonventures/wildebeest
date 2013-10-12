@@ -35,6 +35,13 @@ import java.util.UUID;
  */
 public class SqlServerCreateDatabaseMigration extends BaseMigration
 {
+	/**
+	 * Creates a new SqlServerCreateDatabseMigration.
+	 * 
+	 * @param       migrationId                 the ID of the new migration.
+	 * @param       fromStateId                 the source state for this migration.
+	 * @param       toStateId                   the target state for this migration.
+	 */
 	public SqlServerCreateDatabaseMigration(
 		UUID migrationId,
 		UUID fromStateId,

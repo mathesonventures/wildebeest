@@ -19,8 +19,19 @@ package co.zd.wb.service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A container for messages raised during some operation.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class Messages
 {
+	/**
+	 * Creates a new Messages container.
+	 * 
+	 * @since                                   1.1
+	 */
 	public Messages()
 	{
 		this.setMessages(new ArrayList<String>());
@@ -31,6 +42,11 @@ public class Messages
 	private List<String> _messages = null;
 	private boolean _messages_set = false;
 
+	/**
+	 * Gets the set of messages that have been raised.
+	 * 
+	 * @since                                   1.1
+	 */
 	public List<String> getMessages() {
 		if(!_messages_set) {
 			throw new IllegalStateException("messages not set.  Use the HasMessages() method to check its state before accessing it.");
@@ -62,6 +78,12 @@ public class Messages
 
 	// </editor-fold>
 	
+	/**
+	 * Adds a plain-text message to the collection.
+	 * 
+	 * @param       message                     the message to add to the collection.
+	 * @since                                   1.1
+	 */
 	public void addMessage(String message)
 	{
 		if (message == null) { throw new IllegalArgumentException("message cannot be null"); }
@@ -70,6 +92,13 @@ public class Messages
 		this.getMessages().add(message);
 	}
 	
+	/**
+	 * Adds a message formatted with the supplied replacement values to the collection.
+	 * 
+	 * @param       message                     the message to add to the collection.
+	 * @param       args                        the replacement values to be used in the message.
+	 * @since                                   1.1
+	 */
 	public void addMessage(String format, Object... args)
 	{
 		if (format == null) { throw new IllegalArgumentException("format cannot be null"); }
@@ -79,6 +108,11 @@ public class Messages
 		this.addMessage(message);
 	}
 	
+	/**
+	 * Gets the number of messages in this collection.
+	 * 
+	 * @since                                   1.1
+	 */
 	public int size()
 	{
 		return this.getMessages().size();

@@ -19,9 +19,22 @@ package co.zd.wb.service;
 import co.zd.wb.Assertion;
 import java.util.UUID;
 
+/**
+ * An AssertionBuilder is a factory component for building instances of {@link Assertion}s.  The build method takes the
+ * common properties of an Assertion as parameters.
+ * 
+ * It's expected that AssertionBuilder's will typically be stateful, with additional properties or configuration
+ * information being supplied to them as properties.  The reset() method should be implemented to clear such additional
+ * state and restore the AssertionBuilder to a clean state ready to be re-used to build another Assertion instance.  The
+ * framework will always call reset() before using an AssertionBuilder.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface AssertionBuilder
 {
 	/**
+	 * Builds a new {@link Assertion}.
 	 * 
 	 * @param       assertionId                 the ID of the Assertion
 	 * @param       seqNum                      the ordinal sequence number of the Assertion within the set it belongs
@@ -29,6 +42,7 @@ public interface AssertionBuilder
 	 * @return                                  a deserialized Assertion instance
 	 * @throws      MessagesException           containing error messages if for any reason the deserialization could
 	 *                                          not be carried out
+	 * @since                                   1.0
 	 */
 	Assertion build(
 		UUID assertionId,
@@ -36,6 +50,8 @@ public interface AssertionBuilder
 	
 	/**
 	 * Resets the AssertionBuilder, making it ready to build a new instance.
+	 * 
+	 * @since                                   1.0
 	 */
 	void reset();
 }

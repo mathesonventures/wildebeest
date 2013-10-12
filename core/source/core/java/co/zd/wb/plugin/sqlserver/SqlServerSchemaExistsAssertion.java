@@ -23,8 +23,21 @@ import co.zd.wb.Instance;
 import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
+/**
+ * A {@link Assertion} that verifies that a given schema exists in a SQL Server database.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerSchemaExistsAssertion extends BaseAssertion
 {
+	/**
+	 * Creates a new SqlServerSchemaExistsAssertion.
+	 * 
+	 * @param       assertionId                 the ID of the new assertion.
+	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
+	 * @param       schemaName                  the name of the schema to check,
+	 */
 	public SqlServerSchemaExistsAssertion(
 		UUID assertionId,
 		int seqNum,
@@ -45,6 +58,11 @@ public class SqlServerSchemaExistsAssertion extends BaseAssertion
 	private String _schemaName = null;
 	private boolean _schemaName_set = false;
 
+	/**
+	 * Gets the name of the schema to check.
+	 * 
+	 * @since                                   1.1
+	 */
 	public String getSchemaName() {
 		if(!_schemaName_set) {
 			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");

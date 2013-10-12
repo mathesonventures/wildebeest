@@ -26,8 +26,24 @@ import co.zd.wb.MigrationFaultException;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * A {@link Migration} that creates a {@link MySqlDatabaseResource}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class MySqlCreateDatabaseMigration extends BaseMigration
 {
+	/**
+	 * Creates a new MySqlCreateDatabaseMigration.
+	 * 
+	 * @param       migrationId                 the ID of the new migration.
+	 * @param       fromStateId                 the source-state for the migration, or null if this migration
+	 *                                          transitions from the non-existent state.
+	 * @param       toStateId                   the target-state for the migration, or null if this migration
+	 *                                          transitions to the non-existent state.
+	 * @since                                   1.0
+	 */
 	public MySqlCreateDatabaseMigration(
 		UUID migrationId,
 		UUID fromStateId,
@@ -42,7 +58,7 @@ public class MySqlCreateDatabaseMigration extends BaseMigration
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
 
-		if (MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
+		if (MySqlDatabaseHelper.schemaExists(db))
 		{
 			throw new MigrationFailedException(
 				this.getMigrationId(),

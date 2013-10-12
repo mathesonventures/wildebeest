@@ -18,7 +18,21 @@ package co.zd.wb.service;
 
 import co.zd.wb.Resource;
 
+/**
+ * An ResourceLoader is responsible for the overall deserialization of a descriptor from some persistent representation
+ * to an {@link Resource} object.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface ResourceLoader
 {
+	/**
+	 * Loads an Resource according to the configuration of this ResourceLoader.
+	 * 
+	 * @return                                  the deserialized Resource.
+	 * @throws      MessagesException           if any user-resolvable errors occurred during deserialization.
+	 * @since                                   1.0
+	 */
 	Resource load() throws MessagesException;
 }

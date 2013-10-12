@@ -23,8 +23,22 @@ import co.zd.wb.Instance;
 import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
+
+/**
+ * An {@link Assertion} that verifies that a given table exists in a MySQL database.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class MySqlTableExistsAssertion extends BaseAssertion
 {
+	/**
+	 * Creates a new MySqlTableExistsAssertion.
+	 * 
+	 * @param       assertionId                 the ID of the new assertion.
+	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
+	 * @param       tableName                   the name of the table that this assertion will check for.
+	 */
 	public MySqlTableExistsAssertion(
 		UUID assertionId,
 		int seqNum,
@@ -45,6 +59,12 @@ public class MySqlTableExistsAssertion extends BaseAssertion
 	private String m_tableName = null;
 	private boolean m_tableName_set = false;
 
+	/**
+	 * Gets the name of the table that this assertion will check for.
+	 * 
+	 * @return                                  the name of the table that this assertion will check for.
+	 * @since                                   1.0
+	 */
 	public String getTableName() {
 		if(!m_tableName_set) {
 			throw new IllegalStateException("tableName not set.  Use the HasTableName() method to check its state before accessing it.");
@@ -85,14 +105,14 @@ public class MySqlTableExistsAssertion extends BaseAssertion
 		
 		AssertionResponse result = null;
 
-		if (!MySqlDatabaseHelper.schemaExists(db, db.getSchemaName()))
+		if (!MySqlDatabaseHelper.schemaExists(db))
 		{
 			result = new ImmutableAssertionResponse(
 				false,
 				String.format("Database %s does not exist", db.getSchemaName()));
 		}
 		
-		else if (MySqlDatabaseHelper.tableExists(db, db.getSchemaName(), this.getTableName()))
+		else if (MySqlDatabaseHelper.tableExists(db, this.getTableName()))
 		{
 			result = new ImmutableAssertionResponse(true, "Table " + this.getTableName() + " exists");
 		}

@@ -29,11 +29,20 @@ import java.util.UUID;
 /**
  * A Migration that creates a new schema in a SQL-Server database resource.
  * 
- * @author                              brendonm
- * @since                               1.1
+ * @author                                      brendonm
+ * @since                                       1.1
  */
 public class SqlServerCreateSchemaMigration extends BaseMigration
 {
+	/**
+	 * Creates a new SqlServerCreateSchemaMigration.
+	 * 
+	 * @param       migrationId                 the ID of the new migration.
+	 * @param       fromStateId                 the source state for this migration.
+	 * @param       toStateId                   the target state for this migration.
+	 * @param       schemaName                  the name for the new schema.
+	 * @since                                   1.1
+	 */
 	public SqlServerCreateSchemaMigration(
 		UUID migrationId,
 		UUID fromStateId,
@@ -50,6 +59,12 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 	private String _schemaName = null;
 	private boolean _schemaName_set = false;
 
+	/**
+	 * Returns the name for the new schema.
+	 * 
+	 * @return                                  the name for the new schema
+	 * @since                                   1.1
+	 */
 	public String getSchemaName() {
 		if(!_schemaName_set) {
 			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");

@@ -37,7 +37,7 @@ public interface DatabaseInstance extends Instance
 	String getStateTableName();
 	
 	/**
-	 * Returns whehter or not this instance has a state table name set.
+	 * Returns whether or not this instance has a state table name set.
 	 * 
 	 * @since                                   1.0
 	 */

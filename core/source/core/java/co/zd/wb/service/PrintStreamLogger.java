@@ -30,8 +30,20 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * A {@link Logger} that logs to a {@link java.io.PrintStream}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class PrintStreamLogger implements Logger
 {
+	/**
+	 * Creates a new PrintStreamLogger that uses the supplied {@link java.io.PrintStream}.
+	 * 
+	 * @param       stream                      the PrintStream that this logger should use.
+	 * @since                                   1.0
+	 */
 	public PrintStreamLogger(PrintStream stream)
 	{
 		this.setStream(stream);

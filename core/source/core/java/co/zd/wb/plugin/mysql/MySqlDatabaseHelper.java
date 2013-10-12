@@ -24,18 +24,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *
- * @author brendonm
+ * Functional helper methods for working with MySQL databases.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
  */
 public class MySqlDatabaseHelper
 {
+	/**
+	 * Returns a boolean flag indicating whether or not the database schema described by the supplied instance exists.
+	 * 
+	 * @param       instance                    the MySqlDatabaseInstance to check.
+	 * @return                                  a boolean flag indicating whether or not the specified database schema
+	 *                                          exists.
+	 * @since                                   1.0
+	 */
 	public static boolean schemaExists(
-		MySqlDatabaseInstance instance,
-		String schemaName)
+		MySqlDatabaseInstance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
-		if ("".equals(schemaName)) { throw new IllegalArgumentException("schemaName cannot be empty"); }
 		
 		boolean result = false;
 		
@@ -47,7 +54,7 @@ public class MySqlDatabaseHelper
 		{
 			conn = instance.getInfoDataSource().getConnection();
 			ps = conn.prepareStatement("SELECT * FROM SCHEMATA WHERE SCHEMA_NAME = ?;");
-			ps.setString(1, schemaName);
+			ps.setString(1, instance.getSchemaName());
 			
 			rs = ps.executeQuery();
 		
@@ -74,14 +81,20 @@ public class MySqlDatabaseHelper
 		return result;
 	}
 	
+	/**
+	 * Returns a boolean flag indicating whether or not a table exists for the database described by the supplied
+	 * instance.
+	 * 
+	 * @param       instance                    the MySqlDatabaseInstance to check.
+	 * @param       tableName                   the name of the table to check for.
+	 * @return                                  a boolean flag indicating whether or not the specified table exists.
+	 * @since                                   1.0
+	 */
 	public static boolean tableExists(
 		MySqlDatabaseInstance instance,
-		String schemaName,
 		String tableName)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
-		if ("".equals(schemaName)) { throw new IllegalArgumentException("schemaName cannot be empty"); }
 		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
 		if ("".equals(tableName)) { throw new IllegalArgumentException("tableName cannot be empty"); }
 		

@@ -23,8 +23,20 @@ import co.zd.wb.Instance;
 import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
+/**
+ * An {@link Assertion} that verifies that a SQL Server database does not exist.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerDatabaseDoesNotExistAssertion extends BaseAssertion
 {
+	/**
+	 * Creates a new SqlServerDatabaseDoesNotExistAssert.
+	 * 
+	 * @param       assertionId                 the ID of the new assertion.
+	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
+	 */
 	public SqlServerDatabaseDoesNotExistAssertion(
 		UUID assertionId,
 		int seqNum)

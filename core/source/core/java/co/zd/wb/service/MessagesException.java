@@ -16,8 +16,21 @@
 
 package co.zd.wb.service;
 
+/**
+ * Indicates that a process failed due to the reason or reasons described in the Messages collection held by this
+ * exception.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class MessagesException extends Exception
 {
+	/**
+	 * Creates a new MessagesException.
+	 * 
+	 * @param       messages                    the {@link Messages} collection for this exception.
+	 * @since                                   1.1
+	 */
 	public MessagesException(Messages messages)
 	{
 		this.setMessages(messages);
@@ -28,6 +41,11 @@ public class MessagesException extends Exception
 	private Messages _messages = null;
 	private boolean _messages_set = false;
 
+	/**
+	 * Gets the messages collection.
+	 * 
+	 * @since                                   1.1
+	 */
 	public Messages getMessages() {
 		if(!_messages_set) {
 			throw new IllegalStateException("messages not set.  Use the HasMessages() method to check its state before accessing it.");

@@ -21,10 +21,20 @@ import java.util.UUID;
 /**
  * Provides validation helper methods for DOM-based builders of all types.
  * 
- * @author brendonm
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
  */
 public class V
 {
+	/**
+	 * Adds a "required element" message to the messages collection.
+	 * 
+	 * @param       messages                    the Messages collection.
+	 * @param       itemId                      the ID of the item that is missing a required element.
+	 * @param       elementName                 the name of the required element that is missing.
+	 * @param       itemType                    the type of the item that is missing a required element.
+	 * @since                                   1.1
+	 */
 	public static void elementMissing(
 		Messages messages,
 		UUID itemId,

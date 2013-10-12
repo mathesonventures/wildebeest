@@ -21,8 +21,26 @@ import co.zd.wb.Instance;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import javax.sql.DataSource;
 
+/**
+ * A resource {@link Instance} that describes a MySQL database.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 {
+	/**
+	 * Creates a new MySqlDatabaseInstance.
+	 * 
+	 * @param       hostName                    the host name or IP address of the server.
+	 * @param       port                        the port number of the server.
+	 * @param       adminUsername               the username for a user that has permission to administer the database.
+	 * @param       adminPassword               the password for the admin user, in clear text.
+	 * @param       schemaName                  the name of the database schema for this instance of the resource.
+	 * @param       stateTableName              the name to give the state tracking table.  This is optional and null
+	 *                                          may be supplied.
+	 * @since                                   1.0
+	 */
 	public MySqlDatabaseInstance(
 		String hostName,
 		int port,
@@ -52,6 +70,11 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 	private String m_hostName = null;
 	private boolean m_hostName_set = false;
 
+	/**
+	 * Returns the host name of the server
+	 * 
+	 * @since                                   1.0
+	 */
 	public String getHostName() {
 		if(!m_hostName_set) {
 			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
@@ -89,6 +112,11 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 	private int m_port = 0;
 	private boolean m_port_set = false;
 
+	/**
+	 * Returns the port number of the server
+	 * 
+	 * @since                                   1.0
+	 */
 	public int getPort() {
 		if(!m_port_set) {
 			throw new IllegalStateException("port not set.  Use the HasPort() method to check its state before accessing it.");
@@ -123,6 +151,11 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 	private String m_adminUsername = null;
 	private boolean m_adminUsername_set = false;
 
+	/**
+	 * Gets the username of the administrative user on the server.
+	 * 
+	 * @since                                   1.0
+	 */
 	public String getAdminUsername() {
 		if(!m_adminUsername_set) {
 			throw new IllegalStateException("adminUsername not set.  Use the HasAdminUsername() method to check its state before accessing it.");
@@ -160,6 +193,11 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 	private String m_adminPassword = null;
 	private boolean m_adminPassword_set = false;
 
+	/**
+	 * Gets the password of the administrative user on the server.
+	 * 
+	 * @since                                   1.0
+	 */
 	public String getAdminPassword() {
 		if(!m_adminPassword_set) {
 			throw new IllegalStateException("adminPassword not set.  Use the HasAdminPassword() method to check its state before accessing it.");
@@ -197,6 +235,11 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 	private String m_schemaName = null;
 	private boolean m_schemaName_set = false;
 
+	/**
+	 * Returns the name of the database schema for this instance.
+	 * 
+	 * @since                                   1.0
+	 */
 	public String getSchemaName() {
 		if(!m_schemaName_set) {
 			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
@@ -234,7 +277,7 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 	private String m_stateTableName = null;
 	private boolean m_stateTableName_set = false;
 
-	public String getStateTableName() {
+	@Override public String getStateTableName() {
 		if(!m_stateTableName_set) {
 			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
 		}
@@ -260,16 +303,17 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 		}
 	}
 
-	public boolean hasStateTableName() {
+	@Override public boolean hasStateTableName() {
 		return m_stateTableName_set;
 	}
 
 	// </editor-fold>
 	
 	/**
-	 * Returns a DataSource pointing at the information schema in the target MySql database.
+	 * Returns a DataSource for the information schema in the target MySQL database.
 	 * 
-	 * @return 
+	 * @return                                  a DataSource for the information schema in the target MySQL server.
+	 * @since                                   1.0
 	 */
 	public DataSource getInfoDataSource()
 	{
@@ -284,10 +328,10 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 	}
 	
 	/**
-	 * Returns a DataSource pointing at the application schema that this Resource represents, in the target  MySql
-	 * database.
+	 * Returns a DataSource for the application schema that this instance represents, in the target MySQL server.
 	 * 
-	 * @return 
+	 * @return                                  a DataSource for the application schema in the target MySQL server.
+	 * @since                                   1.0
 	 */
 	@Override public DataSource getAppDataSource()
 	{

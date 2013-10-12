@@ -18,7 +18,21 @@ package co.zd.wb.service;
 
 import co.zd.wb.Instance;
 
+/**
+ * An InstanceLoader is responsible for the overall deserialization of an instance descriptor from some persistent
+ * representation to an {@link Instance} object.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface InstanceLoader
 {
+	/**
+	 * Loads an Instance according to the configuration of this InstanceLoader.
+	 * 
+	 * @return                                  the deserialized Instance.
+	 * @throws      MessagesException           if any user-resolvable errors occurred during deserialization.
+	 * @since                                   1.0
+	 */
 	Instance load() throws MessagesException;
 }

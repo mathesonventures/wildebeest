@@ -23,8 +23,20 @@ import co.zd.wb.Instance;
 import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
+/**
+ * An {@link Assertion} that verifies that a SQL Server database exists.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerDatabaseExistsAssertion extends BaseAssertion
 {
+	/**
+	 * Creates a new SqlServerDatabaseExistsAssertion.
+	 * 
+	 * @param       assertionId                 the ID of the new assertion.
+	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
+	 */
 	public SqlServerDatabaseExistsAssertion(
 		UUID assertionId,
 		int seqNum)

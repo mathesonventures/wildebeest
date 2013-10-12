@@ -22,8 +22,30 @@ import co.zd.wb.plugin.database.DatabaseInstance;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import javax.sql.DataSource;
 
+/**
+ * An {@link Instance} of a {@link SqlServerDatabaseResource}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.1
+ */
 public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 {
+	/**
+	 * Creates a new SqlServerDatabaseInstance.
+	 * 
+	 * @param       hostName                    the host name of the server for this instance.
+	 * @param       instanceName                the SQL Server instance name for this instance.  Null may be supplied
+	 *                                          where no instance name needs to be specified.
+	 * @param       portNumber                  the port number of the server for this instance.
+	 * @param       adminUsername               the username of the user that will be used to administer the database
+	 *                                          represented by this instance.
+	 * @param       adminPassword               the password of the user that will be used to administer the database
+	 *                                          represented by this instance.
+	 * @param       databaseName                the name of the database for this instance.
+	 * @param       stateTableName              the optional name for the state tracking table.  If null is supplied for
+	 *                                          this parameter, the default name will be used.
+	 * @since                                   1.1
+	 */
 	public SqlServerDatabaseInstance(
 		String hostName,
 		String instanceName,
@@ -58,6 +80,11 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	private String _hostName = null;
 	private boolean _hostName_set = false;
 
+	/**
+	 * Returns the host name of the server for this instance.
+	 * 
+	 * @since                                   1.1
+	 */
 	public String getHostName() {
 		if(!_hostName_set) {
 			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
@@ -132,6 +159,11 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	private int _portNumber = 0;
 	private boolean _portNumber_set = false;
 
+	/**
+	 * Returns the port number of the server for this instance.
+	 * 
+	 * @since                                   1.1
+	 */
 	public int getPortNumber() {
 		if(!_portNumber_set) {
 			throw new IllegalStateException("portNumber not set.  Use the HasPortNumber() method to check its state before accessing it.");
@@ -166,6 +198,11 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	private String _adminUsername = null;
 	private boolean _adminUsername_set = false;
 
+	/**
+	 * Returns the username of the user that will be used to administer the database represented by this instance.
+	 * 
+	 * @since                                   1.1
+	 */
 	public String getAdminUsername() {
 		if(!_adminUsername_set) {
 			throw new IllegalStateException("adminUsername not set.  Use the HasAdminUsername() method to check its state before accessing it.");
@@ -203,6 +240,11 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	private String _adminPassword = null;
 	private boolean _adminPassword_set = false;
 
+	/**
+	 * Returns the password of the user that will be used to administer the database represented by this instance.
+	 * 
+	 * @since                                   1.1
+	 */
 	public String getAdminPassword() {
 		if(!_adminPassword_set) {
 			throw new IllegalStateException("adminPassword not set.  Use the HasAdminPassword() method to check its state before accessing it.");
@@ -240,6 +282,11 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	private String _databaseName = null;
 	private boolean _databaseName_set = false;
 
+	/**
+	 * Returns the name of the database for this instance.
+	 * 
+	 * @since                                   1.1
+	 */
 	public String getDatabaseName() {
 		if(!_databaseName_set) {
 			throw new IllegalStateException("databaseName not set.  Use the HasDatabaseName() method to check its state before accessing it.");
@@ -277,14 +324,14 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	private String m_stateTableName = null;
 	private boolean m_stateTableName_set = false;
 
-	public String getStateTableName() {
+	@Override public String getStateTableName() {
 		if(!m_stateTableName_set) {
 			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
 		}
 		return m_stateTableName;
 	}
 
-	public void setStateTableName(
+	private void setStateTableName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateTableName cannot be null");
@@ -303,12 +350,17 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 		}
 	}
 
-	public boolean hasStateTableName() {
+	@Override public boolean hasStateTableName() {
 		return m_stateTableName_set;
 	}
 
 	// </editor-fold>
 
+	/**
+	 * Returns a DataSource for the master database in the target SQL Server instance.
+	 * 
+	 * @since                                   1.1
+	 */
 	public DataSource getMasterDataSource()
 	{
 		SQLServerDataSource result = new SQLServerDataSource();
@@ -325,6 +377,11 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 		return result;
 	}
 
+	/**
+	 * Returns a DataSource for the application database defined by this instance.
+	 * 
+	 * @since                                   1.1
+	 */
 	@Override public DataSource getAppDataSource()
 	{
 		SQLServerDataSource result = new SQLServerDataSource();
