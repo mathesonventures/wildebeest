@@ -29,6 +29,27 @@ import org.junit.Test;
 
 public class CliIntegrationTests
 {
+	@Test public void about()
+	{
+		
+		//
+		// Setup
+		//
+
+		WildebeestCommand wb = new WildebeestCommand();
+		String[] args = new String[]
+		{
+			"about"
+		};
+		
+		//
+		// Execute
+		//
+
+		wb.run(args);
+
+	}
+	
 	@Test public void loadFromFilesAndMigrateMySqlResource() throws SQLException, MessagesException
 	{
 		

@@ -16,6 +16,7 @@
 
 package co.zd.wb.cli;
 
+import co.zd.wb.About;
 import co.zd.wb.Interface;
 import co.zd.wb.service.Logger;
 import co.zd.wb.service.PrintStreamLogger;
@@ -146,10 +147,12 @@ public class WildebeestCommand
 		
 		if ("about".equals(command))
 		{
-
+			About about = new About();
+			this.getLogger().logLine(about.getProjectName() + " " + about.getVersionFullDotted());
+			this.getLogger().logLine(about.getCopyrightAssertion());
 		}
-		
-		if ("state".equals(command))
+
+		else if ("state".equals(command))
 		{
 			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
 			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
@@ -161,7 +164,7 @@ public class WildebeestCommand
 			this.getInterface().state(resourceFileName, instanceFileName);
 		}
 				
-		if ("migrate".equals(command))
+		else if ("migrate".equals(command))
 		{
 			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
 			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
