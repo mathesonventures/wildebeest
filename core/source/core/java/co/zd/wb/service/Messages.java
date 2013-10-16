@@ -23,14 +23,14 @@ import java.util.List;
  * A container for messages raised during some operation.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class Messages
 {
 	/**
 	 * Creates a new Messages container.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public Messages()
 	{
@@ -45,7 +45,7 @@ public class Messages
 	/**
 	 * Gets the set of messages that have been raised.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public List<String> getMessages() {
 		if(!_messages_set) {
@@ -82,7 +82,7 @@ public class Messages
 	 * Adds a plain-text message to the collection.
 	 * 
 	 * @param       message                     the message to add to the collection.
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public void addMessage(String message)
 	{
@@ -97,7 +97,7 @@ public class Messages
 	 * 
 	 * @param       message                     the message to add to the collection.
 	 * @param       args                        the replacement values to be used in the message.
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public void addMessage(String format, Object... args)
 	{
@@ -111,7 +111,7 @@ public class Messages
 	/**
 	 * Gets the number of messages in this collection.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public int size()
 	{

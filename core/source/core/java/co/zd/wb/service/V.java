@@ -22,7 +22,7 @@ import java.util.UUID;
  * Provides validation helper methods for DOM-based builders of all types.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class V
 {
@@ -33,7 +33,7 @@ public class V
 	 * @param       itemId                      the ID of the item that is missing a required element.
 	 * @param       elementName                 the name of the required element that is missing.
 	 * @param       itemType                    the type of the item that is missing a required element.
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public static void elementMissing(
 		Messages messages,

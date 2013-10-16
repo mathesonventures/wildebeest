@@ -144,6 +144,11 @@ public class WildebeestCommand
 		
 		String command = args[0];
 		
+		if ("about".equals(command))
+		{
+
+		}
+		
 		if ("state".equals(command))
 		{
 			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");

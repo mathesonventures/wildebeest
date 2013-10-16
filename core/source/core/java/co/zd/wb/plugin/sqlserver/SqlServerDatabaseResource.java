@@ -36,7 +36,7 @@ import java.util.UUID;
  * A {@link Resource} that is a SQL Server database.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerDatabaseResource extends BaseResource implements DatabaseResource
 {

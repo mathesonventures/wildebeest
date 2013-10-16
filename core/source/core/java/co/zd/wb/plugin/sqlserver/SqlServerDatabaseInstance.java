@@ -26,7 +26,7 @@ import javax.sql.DataSource;
  * An {@link Instance} of a {@link SqlServerDatabaseResource}.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 {
@@ -44,7 +44,7 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	 * @param       databaseName                the name of the database for this instance.
 	 * @param       stateTableName              the optional name for the state tracking table.  If null is supplied for
 	 *                                          this parameter, the default name will be used.
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public SqlServerDatabaseInstance(
 		String hostName,
@@ -83,7 +83,7 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	/**
 	 * Returns the host name of the server for this instance.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public String getHostName() {
 		if(!_hostName_set) {
@@ -162,7 +162,7 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	/**
 	 * Returns the port number of the server for this instance.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public int getPortNumber() {
 		if(!_portNumber_set) {
@@ -201,7 +201,7 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	/**
 	 * Returns the username of the user that will be used to administer the database represented by this instance.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public String getAdminUsername() {
 		if(!_adminUsername_set) {
@@ -243,7 +243,7 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	/**
 	 * Returns the password of the user that will be used to administer the database represented by this instance.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public String getAdminPassword() {
 		if(!_adminPassword_set) {
@@ -285,7 +285,7 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	/**
 	 * Returns the name of the database for this instance.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public String getDatabaseName() {
 		if(!_databaseName_set) {
@@ -359,7 +359,7 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	/**
 	 * Returns a DataSource for the master database in the target SQL Server instance.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public DataSource getMasterDataSource()
 	{
@@ -380,7 +380,7 @@ public class SqlServerDatabaseInstance implements Instance, DatabaseInstance
 	/**
 	 * Returns a DataSource for the application database defined by this instance.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	@Override public DataSource getAppDataSource()
 	{

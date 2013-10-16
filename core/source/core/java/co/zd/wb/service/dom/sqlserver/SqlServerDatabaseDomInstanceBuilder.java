@@ -28,7 +28,7 @@ import co.zd.wb.service.dom.TryGetResult;
  * An {@link InstanceBuilder} that builds a {@link SqlServerDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {

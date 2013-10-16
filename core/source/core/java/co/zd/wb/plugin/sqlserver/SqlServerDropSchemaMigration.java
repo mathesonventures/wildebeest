@@ -31,7 +31,7 @@ import java.util.UUID;
  * A {@link Migration} that drops a schema from a {@link SqlServerDatabaseResource}.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerDropSchemaMigration extends BaseMigration
 {
@@ -62,7 +62,7 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 	/**
 	 * Returns the name of the schema to be dropped.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public String getSchemaName() {
 		if(!_schemaName_set) {

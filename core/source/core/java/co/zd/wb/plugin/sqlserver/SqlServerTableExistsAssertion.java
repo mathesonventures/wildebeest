@@ -28,7 +28,7 @@ import java.util.UUID;
  * An {@link Assertion} that verifies that a given table exists in a SQL Server database.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerTableExistsAssertion extends BaseAssertion
 {
@@ -65,7 +65,7 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 	/**
 	 * Gets the name of the schema to check.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public String getSchemaName() {
 		if(!_schemaName_set) {
@@ -107,7 +107,7 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 	/**
 	 * Gets the name of the table to check
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public String getTableName() {
 		if(!m_tableName_set) {

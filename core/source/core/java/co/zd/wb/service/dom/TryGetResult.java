@@ -22,14 +22,14 @@ package co.zd.wb.service.dom;
  * 
  * @param           <TValue>                    the type of value that this result conveys.
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class TryGetResult<TValue>
 {
 	/**
 	 * Creates a new empty TryGetResult.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public TryGetResult()
 	{
@@ -39,7 +39,7 @@ public class TryGetResult<TValue>
 	 * Creates a new TryGetResult containing the supplied value.
 	 * 
 	 * @param       value                       the value for this TryGetResult.
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public TryGetResult(TValue value)
 	{
@@ -55,7 +55,7 @@ public class TryGetResult<TValue>
 	 * Gets the value for this TryGetResult, or throws an IllegalStateException if this is an empty TryGetResult.
 	 * Call hasValue() before calling this method to check if the TryGetResult has a value.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public TValue getValue() {
 		if(!_value_set) {
@@ -86,7 +86,7 @@ public class TryGetResult<TValue>
 	/**
 	 * Indicates if this TryGetResult has a value.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public boolean hasValue() {
 		return _value_set;

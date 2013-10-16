@@ -28,7 +28,7 @@ import java.util.UUID;
  * An {@link Assertion} that verifies that a SQL Server database exists.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerDatabaseExistsAssertion extends BaseAssertion
 {

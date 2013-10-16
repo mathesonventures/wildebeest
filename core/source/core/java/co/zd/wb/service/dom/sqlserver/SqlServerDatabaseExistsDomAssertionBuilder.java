@@ -27,7 +27,7 @@ import java.util.UUID;
  * {@link org.w3c.dom.Element}.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerDatabaseExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {

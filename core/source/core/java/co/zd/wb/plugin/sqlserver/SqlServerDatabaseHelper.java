@@ -27,7 +27,7 @@ import java.sql.SQLException;
  * Functional helper methods for working with SQL Server databases.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerDatabaseHelper
 {
@@ -36,7 +36,7 @@ public class SqlServerDatabaseHelper
 	 * 
 	 * @param       instance                    the SqlServerDatabseInstance to check.
 	 * @return                                  an indication of whether or not the SQL Server database exists
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public static boolean databaseExists(SqlServerDatabaseInstance instance)
 	{
@@ -89,7 +89,7 @@ public class SqlServerDatabaseHelper
 	 * @param       instance                    the SqlServerDatabaseIntance to check.
 	 * @param       schemaName                  the name of the schema to check for.
 	 * @return                                  an indication of whether or not the schema exists.
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public static boolean schemaExists(
 		SqlServerDatabaseInstance instance,
@@ -145,7 +145,7 @@ public class SqlServerDatabaseHelper
 	 * @param       schemaName                  the name of the schema that should contain the table.
 	 * @param       tableName                   the name of the table to check for.
 	 * @return                                  an indication of whether or not the table exists.
-	 * since                                    1.1
+	 * since                                    2.0
 	 */
 	public static boolean tableExists(
 		SqlServerDatabaseInstance instance,

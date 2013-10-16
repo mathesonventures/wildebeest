@@ -31,7 +31,7 @@ import java.util.UUID;
  * A Migration that creates a new schema in a SQL-Server database resource.
  * 
  * @author                                      brendonm
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerCreateSchemaMigration extends BaseMigration
 {
@@ -42,7 +42,7 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 	 * @param       fromStateId                 the source state for this migration.
 	 * @param       toStateId                   the target state for this migration.
 	 * @param       schemaName                  the name for the new schema.
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public SqlServerCreateSchemaMigration(
 		UUID migrationId,
@@ -64,7 +64,7 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 	 * Returns the name for the new schema.
 	 * 
 	 * @return                                  the name for the new schema
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public String getSchemaName() {
 		if(!_schemaName_set) {

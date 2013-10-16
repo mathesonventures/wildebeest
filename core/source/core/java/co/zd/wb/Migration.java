@@ -69,7 +69,7 @@ public interface Migration
 	 * @param       resource                    the {@link Resource} to check.
 	 * @return                                  an indication of whether or not this Migration can be performed on the
 	 *                                          supplied Resource.
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	boolean canPerformOn(Resource resource);
 

@@ -134,7 +134,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 	 *                                          returned.
 	 * @return                                  a TryGetResult containing the value identified by the supplied xpath if
 	 *                                          it was able to be obtained, or an empty TryGetResult otherwise
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	protected TryGetResult<String> tryGetString(String xpath)
 	{
@@ -178,7 +178,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 	 *                                          returned.
 	 * @return                                  a TryGetResult containing the value identified by the supplied xpath if
 	 *                                          it was able to be obtained, or an empty TryGetResult otherwise
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	protected TryGetResult<Integer> tryGetInteger(String xpath)
 	{

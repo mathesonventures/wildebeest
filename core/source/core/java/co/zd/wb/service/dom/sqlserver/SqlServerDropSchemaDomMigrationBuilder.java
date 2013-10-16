@@ -29,7 +29,7 @@ import java.util.UUID;
  * A {@link MigrationBuilder} that builds a {@link SqlServerDropSchemaMigration} from a DOM {@link org.w3c.dom.Element}.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerDropSchemaDomMigrationBuilder extends BaseDomMigrationBuilder
 {

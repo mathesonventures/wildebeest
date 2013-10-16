@@ -26,7 +26,7 @@ import java.util.UUID;
  * A {@link ResourceBuilder} that builds a {@link SqlServerDatabaseResource} from a DOM {@link org.w3c.dom.Element}.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerDatabaseDomResourceBuilder extends BaseDomResourceBuilder
 {

@@ -21,7 +21,7 @@ package co.zd.wb.service;
  * exception.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class MessagesException extends Exception
 {
@@ -29,7 +29,7 @@ public class MessagesException extends Exception
 	 * Creates a new MessagesException.
 	 * 
 	 * @param       messages                    the {@link Messages} collection for this exception.
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public MessagesException(Messages messages)
 	{
@@ -44,7 +44,7 @@ public class MessagesException extends Exception
 	/**
 	 * Gets the messages collection.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public Messages getMessages() {
 		if(!_messages_set) {

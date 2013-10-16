@@ -32,7 +32,7 @@ import java.util.UUID;
  * A {@link Migration} that creates a new SQL-Server database.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerCreateDatabaseMigration extends BaseMigration
 {

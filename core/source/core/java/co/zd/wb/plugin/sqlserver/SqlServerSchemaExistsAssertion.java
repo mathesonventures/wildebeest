@@ -28,7 +28,7 @@ import java.util.UUID;
  * A {@link Assertion} that verifies that a given schema exists in a SQL Server database.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.1
+ * @since                                       2.0
  */
 public class SqlServerSchemaExistsAssertion extends BaseAssertion
 {
@@ -62,7 +62,7 @@ public class SqlServerSchemaExistsAssertion extends BaseAssertion
 	/**
 	 * Gets the name of the schema to check.
 	 * 
-	 * @since                                   1.1
+	 * @since                                   2.0
 	 */
 	public String getSchemaName() {
 		if(!_schemaName_set) {
