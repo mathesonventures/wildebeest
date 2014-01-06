@@ -29,7 +29,7 @@ import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.plugin.mysql.MySqlProperties;
 import co.zd.wb.plugin.mysql.MySqlUtil;
 import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.PrintStreamLogger;
+import co.zd.wb.PrintStreamLogger;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
 import java.sql.SQLException;

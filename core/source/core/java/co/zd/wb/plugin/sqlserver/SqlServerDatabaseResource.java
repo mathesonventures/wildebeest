@@ -16,16 +16,17 @@
 
 package co.zd.wb.plugin.sqlserver;
 
-import co.zd.wb.plugin.database.Extensions;
-import co.zd.wb.plugin.base.BaseResource;
-import co.zd.wb.plugin.database.DatabaseHelper;
+import co.zd.wb.FaultException;
 import co.zd.wb.IndeterminateStateException;
+import co.zd.wb.Instance;
+import co.zd.wb.Logger;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
-import co.zd.wb.Instance;
-import co.zd.wb.FaultException;
 import co.zd.wb.State;
+import co.zd.wb.plugin.base.BaseResource;
+import co.zd.wb.plugin.database.DatabaseHelper;
 import co.zd.wb.plugin.database.DatabaseResource;
+import co.zd.wb.plugin.database.Extensions;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -135,5 +136,37 @@ public class SqlServerDatabaseResource extends BaseResource implements DatabaseR
 		}
 		
 		return result;
+	}
+
+	@Override public void setStateId(
+		Logger logger,
+		Instance instance,
+		UUID stateId)
+	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
+		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
+
+		// Ensure the state tracking table exists
+		try
+		{
+			SqlServerDatabaseHelper.createTableIfNotExists(db, Extensions.getStateTableName(db));
+		}
+		catch (SQLException e)
+		{
+			throw new FaultException(e);
+		}
+
+		// Set the state tracking row
+		try
+		{
+			SqlServerDatabaseHelper.setStateId(db, stateId);
+		}
+		catch (SQLException e)
+		{
+			throw new FaultException(e);
+		}
 	}
 }

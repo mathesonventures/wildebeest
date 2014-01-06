@@ -16,7 +16,7 @@
 
 package co.zd.wb;
 
-import co.zd.wb.service.Logger;
+import co.zd.wb.Logger;
 import java.util.List;
 import java.util.UUID;
 
@@ -149,6 +149,16 @@ public interface Resource
 			AssertionFailedException,
 			MigrationNotPossibleException,
 			MigrationFailedException;
+	
+	void jumpstate(
+		Logger logger,
+		Instance instance,
+		UUID targetStateId) throws AssertionFailedException;
+	
+	void setStateId(
+		Logger logger,
+		Instance instance,
+		UUID stateId);
 	
 	/**
 	 * Finds and returns the state with the supplied ID.  If no such state exists, null is returned.

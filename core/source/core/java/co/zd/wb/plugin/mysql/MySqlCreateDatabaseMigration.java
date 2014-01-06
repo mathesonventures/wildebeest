@@ -79,9 +79,7 @@ public class MySqlCreateDatabaseMigration extends BaseMigration
 			DatabaseHelper.execute(db.getInfoDataSource(), new StringBuilder()
 				.append("CREATE DATABASE `").append(db.getSchemaName()).append("`;").toString());
 			
-			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
-				.append("CREATE TABLE `").append(Extensions.getStateTableName(db))
-					.append("`(`StateId` char(36) NOT NULL, PRIMARY KEY (`StateId`));").toString());
+			MySqlDatabaseHelper.createTable(db, Extensions.getStateTableName(db));
 			
 			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
 				.append("INSERT INTO `").append(Extensions.getStateTableName(db))

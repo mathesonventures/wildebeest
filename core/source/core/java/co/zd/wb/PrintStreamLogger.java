@@ -14,17 +14,8 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service;
+package co.zd.wb;
 
-import co.zd.wb.Assertion;
-import co.zd.wb.AssertionFailedException;
-import co.zd.wb.AssertionResponse;
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.Resource;
-import co.zd.wb.State;
-import co.zd.wb.Migration;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationNotPossibleException;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -18,7 +18,7 @@ package co.zd.wb.plugin.mysql;
 
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.plugin.mysql.MySqlDatabaseResource;
-import co.zd.helium.fixture.MySqlDatabaseFixture;
+import co.mv.helium.testframework.MySqlDatabaseFixture;
 import co.zd.wb.IndeterminateStateException;
 import co.zd.wb.State;
 import co.zd.wb.plugin.base.ImmutableState;

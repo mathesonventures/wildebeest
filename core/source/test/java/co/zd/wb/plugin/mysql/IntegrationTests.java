@@ -29,7 +29,7 @@ import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.ImmutableState;
 import co.zd.wb.plugin.database.DatabaseFixtureHelper;
 import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.PrintStreamLogger;
+import co.zd.wb.PrintStreamLogger;
 import co.zd.wb.service.dom.DomInstanceLoader;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;

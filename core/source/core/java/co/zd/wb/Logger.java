@@ -14,16 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service;
-
-import co.zd.wb.Assertion;
-import co.zd.wb.AssertionFailedException;
-import co.zd.wb.AssertionResponse;
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.Resource;
-import co.zd.wb.Migration;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationNotPossibleException;
+package co.zd.wb;
 
 /**
  * An application-level logging interface for providing feedback on the progress of Wildebeest commands.

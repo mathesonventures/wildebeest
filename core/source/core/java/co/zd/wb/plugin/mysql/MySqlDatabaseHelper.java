@@ -18,10 +18,12 @@ package co.zd.wb.plugin.mysql;
 
 import co.zd.wb.plugin.database.DatabaseHelper;
 import co.zd.wb.FaultException;
+import co.zd.wb.plugin.database.Extensions;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 /**
  * Functional helper methods for working with MySQL databases.
@@ -140,5 +142,50 @@ public class MySqlDatabaseHelper
 		}
 		
 		return result;
+	}
+	
+	public static void createTable(
+		MySqlDatabaseInstance instance,
+		String tableName) throws SQLException
+	{
+		if (instance == null) { throw new IllegalArgumentException("instance"); }
+		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
+		if ("".equals(tableName)) { throw new IllegalArgumentException("tableName cannot be empty"); }
+		
+		DatabaseHelper.execute(instance.getAppDataSource(), new StringBuilder()
+			.append("CREATE TABLE `").append(Extensions.getStateTableName(instance))
+				.append("`(`StateId` char(36) NOT NULL, PRIMARY KEY (`StateId`));").toString());
+	}
+	
+	public static void createTableIfNotExists(
+		MySqlDatabaseInstance instance,
+		String tableName) throws SQLException
+	{
+		if (instance == null) { throw new IllegalArgumentException("instance"); }
+		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
+		if ("".equals(tableName)) { throw new IllegalArgumentException("tableName cannot be empty"); }
+		
+		DatabaseHelper.execute(instance.getAppDataSource(), new StringBuilder()
+			.append("CREATE TABLE IF NOT EXISTS `").append(Extensions.getStateTableName(instance))
+				.append("`(`StateId` char(36) NOT NULL, PRIMARY KEY (`StateId`));").toString());
+	}
+	
+	public static void setStateId(
+		MySqlDatabaseInstance instance,
+		UUID stateId) throws SQLException
+	{
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
+		
+		DatabaseHelper.execute(
+			instance.getAppDataSource(),
+			String.format("DELETE FROM %s;", Extensions.getStateTableName(instance)));
+
+		DatabaseHelper.execute(
+			instance.getAppDataSource(),
+			String.format(
+				"INSERT INTO %s(StateId) VALUES('%s');",
+				Extensions.getStateTableName(instance),
+				stateId));
 	}
 }

@@ -17,9 +17,11 @@
 package co.zd.wb.cli;
 
 import co.zd.wb.About;
+import co.zd.wb.Instance;
 import co.zd.wb.Interface;
-import co.zd.wb.service.Logger;
-import co.zd.wb.service.PrintStreamLogger;
+import co.zd.wb.Resource;
+import co.zd.wb.Logger;
+import co.zd.wb.PrintStreamLogger;
 import java.io.PrintStream;
 
 /**
@@ -174,13 +176,33 @@ public class WildebeestCommand
 			{
 				throw new RuntimeException("args missing");
 			}
-				
-			this.getInterface().migrate(resourceFileName, instanceFileName, targetState);
+
+			Resource resource = this.getInterface().tryLoadResource(resourceFileName);
+			Instance instance = this.getInterface().tryLoadInstance(instanceFileName);
+
+			this.getInterface().migrate(resource, instance, targetState);
+		}
+		
+		else if (("jumpstate").equals(command))
+		{
+			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
+			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
+			String targetState = WildebeestCommand.getArg(args, "t", "targetState");
+			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) ||
+				isNullOrWhiteSpace(targetState))
+			{
+				throw new RuntimeException("args missing");
+			}
+
+			Resource resource = this.getInterface().tryLoadResource(resourceFileName);
+			Instance instance = this.getInterface().tryLoadInstance(instanceFileName);
+
+			this.getInterface().jumpstate(resource, instance, targetState);
 		}
 		
 		else
 		{
-				WildebeestCommand.printUsage(System.out);
+			WildebeestCommand.printUsage(System.out);
 		}
 	}
 

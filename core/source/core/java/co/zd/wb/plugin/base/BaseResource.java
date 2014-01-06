@@ -28,7 +28,7 @@ import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationFaultException;
 import co.zd.wb.MigrationNotPossibleException;
-import co.zd.wb.service.Logger;
+import co.zd.wb.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -213,28 +213,39 @@ public abstract class BaseResource implements Resource
 		Instance instance) throws IndeterminateStateException
 	{
 		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+
+		State state = this.currentState(instance);
+		
+		List<AssertionResult> results = this.assertState(logger, instance, state);
+		
+		return results;
+	}
+	
+	private List<AssertionResult> assertState(
+		Logger logger,
+		Instance instance,
+		State state)
+	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (state == null) { throw new IllegalArgumentException("state cannot be null"); }
 
 		List<AssertionResult> results = new ArrayList<AssertionResult>();
 		
-		State state = this.currentState(instance);
-		
-		if (state != null)
+		for(Assertion assertion : state.getAssertions())
 		{
-			for(Assertion assertion : state.getAssertions())
+			AssertionResponse response = assertion.perform(instance);
+
+			if (logger != null)
 			{
-				AssertionResponse response = assertion.perform(instance);
-				
-				if (logger != null)
-				{
-					logger.assertionComplete(assertion, response);
-				}
-				
-				results.add(new ImmutableAssertionResult(
-					assertion.getAssertionId(),
-					response.getResult(),
-					response.getMessage()));
+				logger.assertionComplete(assertion, response);
 			}
+
+			results.add(new ImmutableAssertionResult(
+				assertion.getAssertionId(),
+				response.getResult(),
+				response.getMessage()));
 		}
 		
 		return results;
@@ -291,13 +302,45 @@ public abstract class BaseResource implements Resource
 				logger,
 				instance);
 
-			// If any assertions failed, throw
-			for(AssertionResult assertionResult : assertionResults)
+			throwIfFailed(migration.getToStateId(), assertionResults);
+		}
+	}
+	
+	@Override public void jumpstate(
+		Logger logger,
+		Instance instance,
+		UUID targetStateId) throws AssertionFailedException
+	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (targetStateId == null) { throw new IllegalArgumentException("targetStateId cannot be null"); }
+		
+		State targetState = this.stateForId(targetStateId);
+		
+		// Assert the new state
+		List<AssertionResult> assertionResults = this.assertState(
+			logger,
+			instance,
+			targetState);
+
+		throwIfFailed(targetState.getStateId(), assertionResults);
+		
+		this.setStateId(logger, instance, targetStateId);
+	}
+	
+	private static void throwIfFailed(
+		UUID stateId,
+		List<AssertionResult> assertionResults) throws AssertionFailedException
+	{
+		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
+		if (assertionResults == null) { throw new IllegalArgumentException("assertionResults cannot be null"); }
+		
+		// If any assertions failed, throw
+		for(AssertionResult assertionResult : assertionResults)
+		{
+			if (!assertionResult.getResult())
 			{
-				if (!assertionResult.getResult())
-				{
-					throw new AssertionFailedException(state.getStateId(), assertionResults);
-				}
+				throw new AssertionFailedException(stateId, assertionResults);
 			}
 		}
 	}

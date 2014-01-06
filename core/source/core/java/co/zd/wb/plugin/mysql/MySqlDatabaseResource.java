@@ -16,16 +16,17 @@
 
 package co.zd.wb.plugin.mysql;
 
-import co.zd.wb.plugin.database.Extensions;
-import co.zd.wb.plugin.base.BaseResource;
-import co.zd.wb.plugin.database.DatabaseHelper;
+import co.zd.wb.FaultException;
 import co.zd.wb.IndeterminateStateException;
+import co.zd.wb.Instance;
+import co.zd.wb.Logger;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
-import co.zd.wb.Instance;
-import co.zd.wb.FaultException;
 import co.zd.wb.State;
+import co.zd.wb.plugin.base.BaseResource;
+import co.zd.wb.plugin.database.DatabaseHelper;
 import co.zd.wb.plugin.database.DatabaseResource;
+import co.zd.wb.plugin.database.Extensions;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -53,10 +54,6 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 		super(resourceId, name);
 	}
 	
-	//
-	// Behaviour
-	//
-
 	@Override public State currentState(Instance instance) throws IndeterminateStateException
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
@@ -139,5 +136,37 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 		}
 		
 		return result;
+	}
+	
+	@Override public void setStateId(
+		Logger logger,
+		Instance instance,
+		UUID stateId)
+	{
+		if (logger == null) { throw new IllegalArgumentException("logger"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
+		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
+		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
+		
+		// Ensure the state tracking table exists
+		try
+		{
+			MySqlDatabaseHelper.createTableIfNotExists(db, Extensions.getStateTableName(db));
+		}
+		catch (SQLException e)
+		{
+			throw new FaultException(e);
+		}
+
+		// Set the state tracking row
+		try
+		{
+			MySqlDatabaseHelper.setStateId(db, stateId);
+		}
+		catch (SQLException e)
+		{
+			throw new FaultException(e);
+		}
 	}
 }

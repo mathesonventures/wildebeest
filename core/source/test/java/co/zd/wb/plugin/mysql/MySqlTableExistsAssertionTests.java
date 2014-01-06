@@ -28,7 +28,7 @@ import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationNotPossibleException;
 import co.zd.wb.plugin.base.ImmutableState;
 import co.zd.wb.plugin.database.DatabaseFixtureHelper;
-import co.zd.wb.service.PrintStreamLogger;
+import co.zd.wb.PrintStreamLogger;
 import java.sql.SQLException;
 import java.util.UUID;
 import junit.framework.Assert;

@@ -16,6 +16,7 @@
 
 package co.zd.wb.plugin.base;
 
+import co.mv.helium.testframework.Expect;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.Assertion;
 import co.zd.wb.AssertionFailedException;
@@ -25,10 +26,11 @@ import co.zd.wb.State;
 import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationNotPossibleException;
-import co.zd.wb.service.PrintStreamLogger;
+import co.zd.wb.StdoutLogger;
+import co.zd.wb.PrintStreamLogger;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -63,8 +65,8 @@ public class BaseResourceTests
 		// Assert Results
 		//
 
-		Assert.assertNotNull("results", results);
-		Assert.assertEquals("results.size", 0, results.size());
+		assertNotNull("results", results);
+		assertEquals("results.size", 0, results.size());
 			
 	}
 	
@@ -99,8 +101,8 @@ public class BaseResourceTests
 		// Assert Results
 		//
 
-		Assert.assertNotNull("results", results);
-		Assert.assertEquals("results.size", 1, results.size());
+		assertNotNull("results", results);
+		assertEquals("results.size", 1, results.size());
 		AssertExtensions.assertAssertionResult(
 			assertion1.getAssertionId(), true, "Tag is \"Foo\"", results.get(0), "results[0]");
 	}
@@ -142,8 +144,8 @@ public class BaseResourceTests
 		// Assert Results
 		//
 
-		Assert.assertNotNull("results", results);
-		Assert.assertEquals("results.size", 2, results.size());
+		assertNotNull("results", results);
+		assertEquals("results.size", 2, results.size());
 		AssertExtensions.assertAssertionResult(
 			assertion1Id, true, "Tag is \"Foo\"",
 			results.get(0), "results[0]");
@@ -208,7 +210,7 @@ public class BaseResourceTests
 		// Assert Results
 		//
 		
-		Assert.assertEquals("instance.tag", "foo", instance.getTag());
+		assertEquals("instance.tag", "foo", instance.getTag());
 		
 	}
 	
@@ -266,7 +268,7 @@ public class BaseResourceTests
 		// Assert Results
 		//
 		
-		Assert.assertEquals("instance.tag", "bup", instance.getTag());
+		assertEquals("instance.tag", "bup", instance.getTag());
 		
 	}
 	
@@ -352,7 +354,7 @@ public class BaseResourceTests
 		// Assert Results
 		//
 		
-		Assert.assertEquals("instance.tag", "stateB3", instance.getTag());
+		assertEquals("instance.tag", "stateB3", instance.getTag());
 		
 	}
 	
@@ -408,7 +410,7 @@ public class BaseResourceTests
 		// Assert Results
 		//
 		
-		Assert.assertEquals("instance.tag", "foo", instance.getTag());
+		assertEquals("instance.tag", "foo", instance.getTag());
 		
 	}
 	
@@ -452,7 +454,7 @@ public class BaseResourceTests
 		// Assert Results
 		//
 		
-		Assert.assertEquals("instance.tag", "foo", instance.getTag());
+		assertEquals("instance.tag", "foo", instance.getTag());
 		
 	}
 	
@@ -465,4 +467,74 @@ public class BaseResourceTests
 	{
 		throw  new UnsupportedOperationException();
 	}
+	
+	//
+	// jumpstate()
+	//
+	
+	@Ignore @Test public void jumpstateForAssertionFailThrows()
+	{
+		throw new RuntimeException("not implemented");
+	}
+	
+	@Ignore @Test public void jumpstateForNonExistentStateFails()
+	{
+		throw new RuntimeException("not implemented");
+	}
+	
+	@Ignore @Test public void jumpstateForExistentStateSucceeds()
+	{
+		throw new RuntimeException("not implemented");
+	}
+	
+	@Test public void jumpstateForNullLoggerThrows()
+	{
+		// The resource
+		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		
+		// Instance
+		final FakeInstance instance = new FakeInstance();
+
+		new Expect<IllegalArgumentException>()
+		{
+			@Override
+			public void invoke() throws Throwable
+			{
+				resource.jumpstate(null, instance, UUID.randomUUID());
+			}
+
+			@Override
+			public void verify(IllegalArgumentException te)
+			{
+				assertEquals("e.message", "logger cannot be null", te.getMessage());
+			}
+		}.perform();
+	}
+	
+	@Test public void jumpstateForNullInstanceThrows()
+	{
+		// The resource
+		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+
+		new Expect<IllegalArgumentException>()
+		{
+			@Override
+			public void invoke() throws Throwable
+			{
+				resource.jumpstate(new StdoutLogger(), null, UUID.randomUUID());
+			}
+
+			@Override
+			public void verify(IllegalArgumentException te)
+			{
+				assertEquals("e.message", "instance cannot be null", te.getMessage());
+			}
+		}.perform();
+	}
+	
+	@Ignore @Test public void jumpstateForNullTargetStateIdThrows()
+	{
+		throw new RuntimeException("not implemented");
+	}
+	
 }

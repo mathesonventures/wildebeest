@@ -21,7 +21,7 @@ import co.zd.wb.AssertionResponse;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.plugin.mysql.MySqlElementFixtures;
 import co.zd.wb.plugin.mysql.MySqlProperties;
-import co.zd.helium.fixture.MySqlDatabaseFixture;
+import co.mv.helium.testframework.MySqlDatabaseFixture;
 import java.util.UUID;
 import junit.framework.Assert;
 import org.junit.Ignore;

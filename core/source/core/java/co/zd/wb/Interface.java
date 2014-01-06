@@ -17,7 +17,6 @@
 package co.zd.wb;
 
 import co.zd.wb.service.InstanceLoaderFault;
-import co.zd.wb.service.Logger;
 import co.zd.wb.service.Messages;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.ResourceLoaderFault;
@@ -183,93 +182,7 @@ public class Interface
 			}
 		}
 	}
-	
-	/**
-	 * Migrates an instance of a resource to a particular state.
-	 * 
-	 * @param       resourceFileName            the filename of the descriptor for the resource
-	 * @param       instanceFileName            the filename of the descriptor for the instance
-	 * @param       targetState                 the name or unique ID of the state to which the instance should be
-	 *                                          migrated
-	 * @since                                   1.0
-	 */
-	public void migrate(
-		String resourceFileName,
-		String instanceFileName,
-		String targetState)
-	{
-		if (resourceFileName == null) { throw new IllegalArgumentException("resourceFileName cannot be null"); }
-		if ("".equals(resourceFileName.trim()))
-		{
-			throw new IllegalArgumentException("resourceFileName cannot be empty");
-		}
-		if (instanceFileName == null) { throw new IllegalArgumentException("instanceFileName cannot be null"); }
-		if ("".equals(instanceFileName.trim()))
-		{
-			throw new IllegalArgumentException("instanceFileName cannot be empty");
-		}
-		if (targetState != null && "".equals(targetState.trim()))
-		{
-			throw new IllegalArgumentException("targetState cannot be empty");
-		}
-		
-		this.migrate(
-			new File(resourceFileName),
-			new File(instanceFileName),
-			targetState);
-	}
-	
-	/**
-	 * Migrates an instance of a resource to a particular state.
-	 * 
-	 * @param       resourceFile                the descriptor file for the resource
-	 * @param       instanceFile                the descriptor file for the instance
-	 * @param       targetState                 the name or unique ID of the state to which the instance should be
-	 *                                          migrated
-	 * @since                                   1.0
-	 */
-	public void migrate(
-		File resourceFile,
-		File instanceFile,
-		String targetState)
-	{
-		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
-		if (instanceFile == null) { throw new IllegalArgumentException("instanceFile cannot be null"); }
-		if (targetState != null && "".equals(targetState.trim()))
-		{
-			throw new IllegalArgumentException("targetState cannot be empty");
-		}
 
-		// Load Resource
-		Resource resource = null;
-		try
-		{
-			resource = loadResource(resourceFile);
-		}
-		catch (MessagesException e)
-		{
-			this.getLogger().logLine("Unable to load the resource.");
-			logMessages(this.getLogger(), e.getMessages());
-		}
-		
-		// Load Instance
-		Instance instance = null;
-		try
-		{
-			instance = loadInstance(instanceFile);
-		}
-		catch (MessagesException e)
-		{
-			this.getLogger().logLine("Unable to load the instance.");
-			logMessages(this.getLogger(), e.getMessages());
-		}
-
-		if (resource != null && instance != null)
-		{
-			migrate(resource, instance, targetState);
-		}
-	}
-	
 	/**
 	 * Migrates an instance of a resource to a particular state.
 	 * 
@@ -291,19 +204,7 @@ public class Interface
 			throw new IllegalArgumentException("targetState cannot be empty");
 		}
 
-		// Get the state
-		UUID targetStateId = null;
-		if (targetState != null)
-		{
-			try
-			{
-				targetStateId = UUID.fromString(targetState);
-			}
-			catch(IllegalArgumentException e)
-			{
-				targetStateId = resource.stateIdForLabel(targetState);
-			}
-		}
+		UUID targetStateId = getTargetStateId(resource, targetState);
 		
 		// Perform migration
 		try
@@ -326,6 +227,102 @@ public class Interface
 		{
 			this.getLogger().migrationFailed(ex);
 		}
+	}
+	
+	public void jumpstate(
+		Resource resource,
+		Instance instance,
+		String targetState)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (targetState != null && "".equals(targetState.trim()))
+		{
+			throw new IllegalArgumentException("targetState cannot be empty");
+		}
+
+		UUID targetStateId = getTargetStateId(resource, targetState);
+
+		try
+		{
+			resource.jumpstate(this.getLogger(), instance, targetStateId);
+		}
+		catch (AssertionFailedException e)
+		{
+			this.getLogger().assertionFailed(e);
+		}
+	}
+	
+	private static UUID getTargetStateId(
+		Resource resource,
+		String targetState)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		if (targetState != null && "".equals(targetState.trim()))
+		{
+			throw new IllegalArgumentException("targetState cannot be empty");
+		}
+
+		UUID targetStateId = null;
+		if (targetState != null)
+		{
+			try
+			{
+				targetStateId = UUID.fromString(targetState);
+			}
+			catch(IllegalArgumentException e)
+			{
+				targetStateId = resource.stateIdForLabel(targetState);
+			}
+		}
+		
+		return targetStateId;
+	}
+	
+	public Resource tryLoadResource(
+		String resourceFileName)
+	{
+		// Load the resource
+		Resource resource = null;
+		try
+		{
+			resource = Interface.loadResource(new File(resourceFileName));
+		}
+		catch (MessagesException e)
+		{
+			this.getLogger().logLine("Unable to load the resource.");
+			Interface.logMessages(this.getLogger(), e.getMessages());
+		}
+
+		return resource;
+	}
+	
+	public Instance tryLoadInstance(
+		String instanceFileName)
+	{
+		// Load the instance
+		Instance instance = null;
+		try
+		{
+			instance = Interface.loadInstance(new File(instanceFileName));
+		}
+		catch (MessagesException e)
+		{
+			this.getLogger().logLine("Unable to load the instance.");
+			Interface.logMessages(this.getLogger(), e.getMessages());
+		}
+
+		return instance;
+	}
+	
+	public static Resource loadResource(
+		String resourceFileName) throws MessagesException
+	{
+		if (resourceFileName == null) { throw new IllegalArgumentException("resourceFileName"); }
+		
+		Resource resource = Interface.loadResource(new File(resourceFileName));
+
+		return resource;
 	}
 	
 	/**
@@ -375,6 +372,16 @@ public class Interface
 		return resource;
 	}
 	
+	public static Instance loadInstance(
+		String instanceFileName) throws MessagesException
+	{
+		if (instanceFileName == null) { throw new IllegalArgumentException("instanceFileName"); }
+		
+		Instance instance = Interface.loadInstance(new File(instanceFileName));
+
+		return instance;
+	}
+
 	/**
 	 * Deserializes an {@link Instance} from the specified descriptor file.
 	 * 
@@ -466,7 +473,7 @@ public class Interface
 		return result;
 	}
 	
-	private static void logMessages(
+	public static void logMessages(
 		Logger logger,
 		Messages messages)
 	{

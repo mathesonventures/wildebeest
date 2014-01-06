@@ -19,7 +19,7 @@ package co.zd.wb.plugin.mysql;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.plugin.database.SqlScriptMigration;
 import co.zd.wb.MigrationFailedException;
-import co.zd.helium.fixture.MySqlDatabaseFixture;
+import co.mv.helium.testframework.MySqlDatabaseFixture;
 import java.util.UUID;
 import org.junit.Test;
 
