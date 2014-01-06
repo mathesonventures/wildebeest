@@ -473,9 +473,44 @@ public class BaseResourceTests
 	// jumpstate()
 	//
 	
-	@Ignore @Test public void jumpstateForAssertionFailThrows()
+	@Test public void jumpstateForAssertionFailThrows()
 	{
-		throw new RuntimeException("not implemented");
+		
+		//
+		// Setup
+		//
+
+		// Resource
+		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		
+		// State 1
+		final UUID state1Id = UUID.randomUUID();
+		State state = new ImmutableState(state1Id);
+		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "Foo"));
+		resource.getStates().add(state);
+
+		// Instance
+		final FakeInstance instance = new FakeInstance();
+		instance.setTag("Bar");
+		
+		//
+		// Execute and Verify
+		//
+
+		new Expect<AssertionFailedException>()
+		{
+			@Override public void invoke() throws Throwable
+			{
+				resource.jumpstate(new PrintStreamLogger(System.out), instance, state1Id);
+			}
+
+			@Override public void verify(AssertionFailedException te)
+			{
+				assertEquals("te.assertionResults.size", 1, te.getAssertionResults().size());
+				assertEquals("te.assertionResults[0].message", "Tag not as expected", te.getAssertionResults().get(0).getMessage());
+			}
+		}.perform();
+
 	}
 	
 	@Test public void jumpstateForNonExistentStateFails() throws AssertionFailedException
