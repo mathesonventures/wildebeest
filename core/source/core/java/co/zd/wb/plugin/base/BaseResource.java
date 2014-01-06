@@ -23,6 +23,7 @@ import co.zd.wb.AssertionResult;
 import co.zd.wb.IndeterminateStateException;
 import co.zd.wb.Resource;
 import co.zd.wb.Instance;
+import co.zd.wb.JumpStateFailedException;
 import co.zd.wb.State;
 import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
@@ -309,13 +310,21 @@ public abstract class BaseResource implements Resource
 	@Override public void jumpstate(
 		Logger logger,
 		Instance instance,
-		UUID targetStateId) throws AssertionFailedException
+		UUID targetStateId) throws
+			AssertionFailedException,
+			JumpStateFailedException
 	{
 		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (targetStateId == null) { throw new IllegalArgumentException("targetStateId cannot be null"); }
 		
 		State targetState = this.stateForId(targetStateId);
+		
+		if (targetState == null)
+		{
+			throw new JumpStateFailedException("This resource does not have a state with ID " +
+				targetStateId.toString());
+		}
 		
 		// Assert the new state
 		List<AssertionResult> assertionResults = this.assertState(

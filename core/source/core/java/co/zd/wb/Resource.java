@@ -16,7 +16,6 @@
 
 package co.zd.wb;
 
-import co.zd.wb.Logger;
 import java.util.List;
 import java.util.UUID;
 
@@ -153,7 +152,9 @@ public interface Resource
 	void jumpstate(
 		Logger logger,
 		Instance instance,
-		UUID targetStateId) throws AssertionFailedException;
+		UUID targetStateId) throws
+			AssertionFailedException,
+			JumpStateFailedException;
 	
 	void setStateId(
 		Logger logger,

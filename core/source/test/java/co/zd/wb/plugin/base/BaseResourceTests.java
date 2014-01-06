@@ -22,6 +22,7 @@ import co.zd.wb.Assertion;
 import co.zd.wb.AssertionFailedException;
 import co.zd.wb.AssertionResult;
 import co.zd.wb.IndeterminateStateException;
+import co.zd.wb.JumpStateFailedException;
 import co.zd.wb.State;
 import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
@@ -422,7 +423,7 @@ public class BaseResourceTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 
 		// The resource
@@ -451,7 +452,7 @@ public class BaseResourceTests
 		resource.migrate(new PrintStreamLogger(System.out), instance, null);
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		assertEquals("instance.tag", "foo", instance.getTag());
@@ -477,9 +478,42 @@ public class BaseResourceTests
 		throw new RuntimeException("not implemented");
 	}
 	
-	@Ignore @Test public void jumpstateForNonExistentStateFails()
+	@Test public void jumpstateForNonExistentStateFails() throws AssertionFailedException
 	{
-		throw new RuntimeException("not implemented");
+		
+		//
+		// Setup
+		//
+
+		// Resource
+		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+
+		// Instance
+		final FakeInstance instance = new FakeInstance();
+		
+		// Target State ID
+		final UUID targetStateId = UUID.randomUUID();
+		
+		//
+		// Execute and Verify
+		//
+
+		new Expect<JumpStateFailedException>()
+		{
+			@Override public void invoke() throws Throwable
+			{
+				resource.jumpstate(new PrintStreamLogger(System.out), instance, targetStateId);
+			}
+
+			@Override public void verify(JumpStateFailedException te)
+			{
+				assertEquals(
+					"e.message",
+					"This resource does not have a state with ID " + targetStateId.toString(),
+					te.getMessage());
+			}
+		}.perform();
+		
 	}
 	
 	@Ignore @Test public void jumpstateForExistentStateSucceeds()
@@ -497,14 +531,12 @@ public class BaseResourceTests
 
 		new Expect<IllegalArgumentException>()
 		{
-			@Override
-			public void invoke() throws Throwable
+			@Override public void invoke() throws Throwable
 			{
 				resource.jumpstate(null, instance, UUID.randomUUID());
 			}
 
-			@Override
-			public void verify(IllegalArgumentException te)
+			@Override public void verify(IllegalArgumentException te)
 			{
 				assertEquals("e.message", "logger cannot be null", te.getMessage());
 			}
@@ -518,23 +550,35 @@ public class BaseResourceTests
 
 		new Expect<IllegalArgumentException>()
 		{
-			@Override
-			public void invoke() throws Throwable
+			@Override public void invoke() throws Throwable
 			{
 				resource.jumpstate(new StdoutLogger(), null, UUID.randomUUID());
 			}
 
-			@Override
-			public void verify(IllegalArgumentException te)
+			@Override public void verify(IllegalArgumentException te)
 			{
 				assertEquals("e.message", "instance cannot be null", te.getMessage());
 			}
 		}.perform();
 	}
 	
-	@Ignore @Test public void jumpstateForNullTargetStateIdThrows()
+	@Test public void jumpstateForNullTargetStateIdThrows()
 	{
-		throw new RuntimeException("not implemented");
+		// The resource
+		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		final FakeInstance instance = new FakeInstance();
+
+		new Expect<IllegalArgumentException>()
+		{
+			@Override public void invoke() throws Throwable
+			{
+				resource.jumpstate(new StdoutLogger(), instance, null);
+			}
+
+			@Override public void verify(IllegalArgumentException te)
+			{
+				assertEquals("e.message", "targetStateId cannot be null", te.getMessage());
+			}
+		}.perform();
 	}
-	
 }
