@@ -162,24 +162,26 @@ public class PrintStreamLogger implements Logger
 		logLine("Indeterminate state: " + e.getMessage());
 	}
 	
-	@Override public void assertionFailed(
-		AssertionFailedException e)
+	@Override public void assertionFailed(AssertionFailedException e)
 	{
 		logLine("Assertion failed: " + e.getMessage());
 	}
 
-	@Override public void migrationNotPossible(
-		MigrationNotPossibleException e)
+	@Override public void migrationNotPossible(MigrationNotPossibleException e)
 	{
 		logLine("Migration not possible: " + e.getMessage());
 	}
 	
-	@Override public void migrationFailed(
-		MigrationFailedException e)
+	@Override public void migrationFailed(MigrationFailedException e)
 	{
 		logLine("Migration failed: " + e.getMessage());
 	}
 	
+	@Override public void jumpStateFailed(JumpStateFailedException e)
+	{
+		logLine("JumpState failed: " + e.getMessage());
+	}
+
 	@Override public void logLine(String message)
 	{
 		if (message == null) { throw new IllegalArgumentException("message cannot be null"); }

@@ -30,30 +30,31 @@ public class StdoutLogger implements Logger
 		throw new NotImplementedException();
 	}
 	
-	@Override public void indeterminateState(
-		IndeterminateStateException e)
+	@Override public void indeterminateState(IndeterminateStateException e)
 	{
 		throw new NotImplementedException();
 	}
 	
-	@Override public void assertionFailed(
-		AssertionFailedException e)
+	@Override public void assertionFailed(AssertionFailedException e)
 	{
 		throw new NotImplementedException();
 	}
 
-	@Override public void migrationNotPossible(
-		MigrationNotPossibleException e)
+	@Override public void migrationNotPossible(MigrationNotPossibleException e)
 	{
 		throw new NotImplementedException();
 	}
 	
-	@Override public void migrationFailed(
-		MigrationFailedException e)
+	@Override public void migrationFailed(MigrationFailedException e)
 	{
 		throw new NotImplementedException();
 	}
 	
+	@Override public void jumpStateFailed(JumpStateFailedException e)
+	{
+		throw new NotImplementedException();
+	}
+
 	@Override public void logLine(String message)
 	{
 		throw new NotImplementedException();

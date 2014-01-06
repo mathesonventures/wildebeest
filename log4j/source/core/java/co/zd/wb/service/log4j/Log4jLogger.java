@@ -20,12 +20,13 @@ import co.zd.wb.Assertion;
 import co.zd.wb.AssertionFailedException;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.IndeterminateStateException;
+import co.zd.wb.JumpStateFailedException;
+import co.zd.wb.Logger;
 import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationNotPossibleException;
 import co.zd.wb.Resource;
 import co.zd.wb.State;
-import co.zd.wb.service.Logger;
 
 /**
  * A {@link Logger} that sends messages to Log4J.
@@ -134,6 +135,11 @@ public class Log4jLogger implements Logger
 	@Override public void migrationFailed(MigrationFailedException e)
 	{
 		LOG.error("Migration failed: " + e.getMessage());
+	}
+
+	@Override public void jumpStateFailed(JumpStateFailedException e)
+	{
+		LOG.error("JumpState failed: " + e.getMessage());
 	}
 
 	@Override public void logLine(String string)

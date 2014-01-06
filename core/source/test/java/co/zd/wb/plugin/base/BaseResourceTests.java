@@ -513,7 +513,7 @@ public class BaseResourceTests
 
 	}
 	
-	@Test public void jumpstateForNonExistentStateFails() throws AssertionFailedException
+	@Test public void jumpstateForNonExistentStateThrows()
 	{
 		
 		//
@@ -551,9 +551,40 @@ public class BaseResourceTests
 		
 	}
 	
-	@Ignore @Test public void jumpstateForExistentStateSucceeds()
+	@Test public void jumpstateForExistentStateSucceeds() throws
+		AssertionFailedException,
+		JumpStateFailedException
 	{
-		throw new RuntimeException("not implemented");
+		
+		//
+		// Setup
+		//
+
+		// Resource
+		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		
+		// State 1
+		final UUID state1Id = UUID.randomUUID();
+		State state = new ImmutableState(state1Id);
+		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "Foo"));
+		resource.getStates().add(state);
+
+		// Instance
+		final FakeInstance instance = new FakeInstance();
+		instance.setTag("Foo");
+		
+		//
+		// Execute
+		//
+
+		resource.jumpstate(new PrintStreamLogger(System.out), instance, state1Id);
+
+		//
+		// Verify
+		//
+		
+		assertEquals("instance.tag", "Foo", instance.getTag());
+		
 	}
 	
 	@Test public void jumpstateForNullLoggerThrows()

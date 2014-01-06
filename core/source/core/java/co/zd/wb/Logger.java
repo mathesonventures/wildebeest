@@ -71,8 +71,7 @@ public interface Logger
 	 * @param       e                           the @{link IndeterminateStateException} that was thrown.
 	 * @since                                   1.0
 	 */
-	void indeterminateState(
-		IndeterminateStateException e);
+	void indeterminateState(IndeterminateStateException e);
 	
 	/**
 	 * Logs that an {@link Assertion} failed.
@@ -80,8 +79,7 @@ public interface Logger
 	 * @param       e                           the {@link AssertionFailedException} that was thrown.
 	 * @since                                   1.0
 	 */
-	void assertionFailed(
-		AssertionFailedException e);
+	void assertionFailed(AssertionFailedException e);
 
 	/**
 	 * Logs that a requested migration is not possible because no path could be selected.
@@ -89,8 +87,7 @@ public interface Logger
 	 * @param       e                           the {@link MigrationNotPossibleException} that was thrown.
 	 * @since                                   1.0
 	 */
-	void migrationNotPossible(
-		MigrationNotPossibleException e);
+	void migrationNotPossible(MigrationNotPossibleException e);
 	
 	/**
 	 * Logs that a requested migration failed.
@@ -98,9 +95,16 @@ public interface Logger
 	 * @param       e                           the {@link MigrationFailedException} that was thrown.
 	 * @since                                   1.0
 	 */
-	void migrationFailed(
-		MigrationFailedException e);
+	void migrationFailed(MigrationFailedException e);
 	
+	/**
+	 * Logs that a requested jumpstate failed
+	 * 
+	 * @param       e                           the {@link JumpStateFailedException} that was thrown.
+	 * @since                                   3.0
+	 */
+	void jumpStateFailed(JumpStateFailedException e);
+		
 	/**
 	 * Logs a plain text message.
 	 * 

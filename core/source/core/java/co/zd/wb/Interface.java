@@ -251,6 +251,10 @@ public class Interface
 		{
 			this.getLogger().assertionFailed(e);
 		}
+		catch (JumpStateFailedException e)
+		{
+			this.getLogger().jumpStateFailed(e);
+		}
 	}
 	
 	private static UUID getTargetStateId(
