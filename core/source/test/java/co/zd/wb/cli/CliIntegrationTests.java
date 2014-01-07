@@ -16,6 +16,7 @@
 
 package co.zd.wb.cli;
 
+import co.mv.protium.data.Db;
 import co.zd.wb.Interface;
 import co.zd.wb.Instance;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
@@ -80,6 +81,57 @@ public class CliIntegrationTests
 		finally
 		{
 			MySqlDatabaseInstance instanceT = (MySqlDatabaseInstance)instance;
+			MySqlUtil.dropDatabase(instanceT, instanceT.getSchemaName());
+		}
+
+	}
+	
+	@Test public void loadFromFilesAndJumpStateMySqlResource() throws SQLException, MessagesException
+	{
+		
+		//
+		// Setup
+		//
+		
+		WildebeestCommand wb = new WildebeestCommand();
+		Instance instance = Interface.loadInstance(
+			new File("target/test/app/integration_test_fixtures/loadFromFilesAndJumpStateMySqlResource/staging_db.wbinstance.xml"));
+		MySqlDatabaseInstance instanceT = (MySqlDatabaseInstance)instance;
+
+		// Create a database that is already in a state that matches a defined state in a Wildebeest resource.
+		//
+		// For the sake of simplicity, we will use Wildebeest to migrate to a state, then drop it's wb_state tracking
+		// table, and then do the jumpstate.
+		wb.run(new String[]
+		{
+			"migrate",
+			"--resource:target/test/app/integration_test_fixtures/loadFromFilesAndJumpStateMySqlResource/database.wbresource.xml",
+			"--instance:target/test/app/integration_test_fixtures/loadFromFilesAndJumpStateMySqlResource/staging_db.wbinstance.xml",
+			"--targetState:Core Schema Loaded"
+		});
+		
+		// Drop the wb_state table, so the database resource is now no longer tracked by Wildebeest
+		Db.nonQuery(
+			instanceT.getAppDataSource(),
+			"DROP TABLE wb_state;",
+			null);
+		
+		//
+		// Execute
+		//
+
+		try
+		{
+			wb.run(new String[]
+			{
+				"jumpstate",
+				"--resource:target/test/app/integration_test_fixtures/loadFromFilesAndJumpStateMySqlResource/database.wbresource.xml",
+				"--instance:target/test/app/integration_test_fixtures/loadFromFilesAndJumpStateMySqlResource/staging_db.wbinstance.xml",
+				"--targetState:Core Schema Loaded"
+			});
+		}
+		finally
+		{
 			MySqlUtil.dropDatabase(instanceT, instanceT.getSchemaName());
 		}
 
