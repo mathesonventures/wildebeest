@@ -44,6 +44,7 @@ public class SqlServerDropSchemaMigrationTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
+			UUID.randomUUID(),
 			p.getHostName(),
 			p.hasInstanceName() ? p.getInstanceName() : null,
 			p.getPort(),
@@ -109,6 +110,7 @@ public class SqlServerDropSchemaMigrationTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
+			UUID.randomUUID(),
 			p.getHostName(),
 			p.hasInstanceName() ? p.getInstanceName() : null,
 			p.getPort(),

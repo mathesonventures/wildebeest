@@ -47,6 +47,7 @@ public class MySqlCreateDatabaseMigrationTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
+			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -96,6 +97,7 @@ public class MySqlCreateDatabaseMigrationTests
 			UUID.randomUUID());
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
+			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),

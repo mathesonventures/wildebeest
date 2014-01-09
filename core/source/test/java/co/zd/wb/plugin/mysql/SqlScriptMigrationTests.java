@@ -55,6 +55,7 @@ public class SqlScriptMigrationTests
 			MySqlElementFixtures.productCatalogueDatabase());
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
+			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),

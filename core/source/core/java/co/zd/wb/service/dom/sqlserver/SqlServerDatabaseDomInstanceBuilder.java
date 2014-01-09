@@ -23,6 +23,7 @@ import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomInstanceBuilder;
 import co.zd.wb.service.dom.TryGetResult;
+import java.util.UUID;
 
 /**
  * An {@link InstanceBuilder} that builds a {@link SqlServerDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
@@ -32,8 +33,10 @@ import co.zd.wb.service.dom.TryGetResult;
  */
 public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
-	@Override public Instance build() throws MessagesException
+	@Override public Instance build(UUID instanceId) throws MessagesException
 	{
+		if (instanceId == null) { throw new IllegalArgumentException("instanceId"); }
+		
 		TryGetResult<String> hostName = this.tryGetString("hostName");
 		TryGetResult<String> instanceName = this.tryGetString("instanceName");
 		TryGetResult<Integer> port = this.tryGetInteger("port");
@@ -65,6 +68,7 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		}
 		
 		Instance result = new SqlServerDatabaseInstance(
+			instanceId,
 			hostName.getValue(),
 			instanceName.hasValue() ? instanceName.getValue() : null,
 			port.getValue(),

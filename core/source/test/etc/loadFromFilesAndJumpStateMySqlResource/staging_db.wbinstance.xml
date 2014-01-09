@@ -1,4 +1,4 @@
-<instance type="MySqlDatabase">
+<instance type="MySqlDatabase" id="1B24C6DA-CB5C-4DBE-B2B1-FEB4C214DFF0">
 	<hostName>127.0.0.1</hostName>
 	<port>3306</port>
 	<adminUsername>root</adminUsername>

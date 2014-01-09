@@ -18,7 +18,9 @@ package co.zd.wb.plugin.mysql;
 
 import co.zd.wb.plugin.database.DatabaseInstance;
 import co.zd.wb.Instance;
+import co.zd.wb.plugin.base.BaseInstance;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import java.util.UUID;
 import javax.sql.DataSource;
 
 /**
@@ -27,11 +29,12 @@ import javax.sql.DataSource;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public class MySqlDatabaseInstance implements Instance, DatabaseInstance
+public class MySqlDatabaseInstance extends BaseInstance implements DatabaseInstance
 {
 	/**
 	 * Creates a new MySqlDatabaseInstance.
 	 * 
+	 * @param       instanceId                  the ID of this instance
 	 * @param       hostName                    the host name or IP address of the server.
 	 * @param       port                        the port number of the server.
 	 * @param       adminUsername               the username for a user that has permission to administer the database.
@@ -42,6 +45,7 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 	 * @since                                   1.0
 	 */
 	public MySqlDatabaseInstance(
+		UUID instanceId,
 		String hostName,
 		int port,
 		String adminUsername,
@@ -49,6 +53,8 @@ public class MySqlDatabaseInstance implements Instance, DatabaseInstance
 		String schemaName,
 		String stateTableName)
 	{
+		super(instanceId);
+		
 		if (stateTableName != null && "".equals(stateTableName.trim()))
 		{
 			throw new IllegalArgumentException("stateTableName cannot be empty");

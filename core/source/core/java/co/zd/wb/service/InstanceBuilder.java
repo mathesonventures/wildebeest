@@ -17,6 +17,7 @@
 package co.zd.wb.service;
 
 import co.zd.wb.Instance;
+import java.util.UUID;
 
 /**
  * An InstanceBuilder is a factory component for building {@link Intances}s.
@@ -39,7 +40,7 @@ public interface InstanceBuilder
 	 *                                          the Instance.
 	 * @since                                   1.0
 	 */
-	Instance build() throws MessagesException;
+	Instance build(UUID instanceId) throws MessagesException;
 
 	/**
 	 * Resets the InstanceBuilder, ready to build a new instance.

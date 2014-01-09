@@ -23,6 +23,7 @@ import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomInstanceBuilder;
 import co.zd.wb.service.dom.TryGetResult;
+import java.util.UUID;
 
 /**
  * An {@link InstanceBuilder} that builds a {@link MySqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
@@ -32,8 +33,10 @@ import co.zd.wb.service.dom.TryGetResult;
  */
 public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
-	@Override public Instance build() throws MessagesException
+	@Override public Instance build(UUID instanceId) throws MessagesException
 	{
+		if (instanceId == null) { throw new IllegalArgumentException("instanceId"); }
+		
 		TryGetResult<String> hostName = this.tryGetString("hostName");
 		TryGetResult<Integer> port = this.tryGetInteger("port");
 		TryGetResult<String> adminUsername = this.tryGetString("adminUsername");
@@ -54,6 +57,7 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		}
 		
 		Instance result = new MySqlDatabaseInstance(
+			instanceId,
 			hostName.getValue(),
 			port.getValue(),
 			adminUsername.getValue(),

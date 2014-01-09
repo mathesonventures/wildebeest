@@ -48,6 +48,7 @@ public class RowExistsAssertionTests
 		f.setUp();
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
+			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -105,6 +106,7 @@ public class RowExistsAssertionTests
 		f.setUp();
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
+			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),

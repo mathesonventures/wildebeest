@@ -93,6 +93,7 @@ public class IntegrationTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
+			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -260,7 +261,7 @@ public class IntegrationTests
 		XmlBuilder instanceXml = new XmlBuilder();
 		instanceXml
 			.processingInstruction()
-			.openElement("instance type=\"MySqlDatabase\"")
+			.openElement("instance type=\"MySqlDatabase\" id=\"" + UUID.randomUUID() + "\"")
 				.openElement("hostName").text("127.0.0.1").closeElement("hostName")
 				.openElement("port").text("3306").closeElement("port")
 				.openElement("adminUsername").text("root").closeElement("adminUsername")

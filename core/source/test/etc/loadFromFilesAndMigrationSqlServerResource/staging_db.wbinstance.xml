@@ -1,4 +1,4 @@
-<instance type="SqlServerDatabase">
+<instance type="SqlServerDatabase" id="2F57F63E-0C61-4B3C-AA10-D7B11FE87BCC">
 	<hostName>127.0.0.1</hostName>
 	<port>1433</port>
 	<adminUsername>wb</adminUsername>

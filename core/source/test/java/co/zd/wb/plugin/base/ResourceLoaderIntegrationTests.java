@@ -33,6 +33,7 @@ import co.zd.wb.PrintStreamLogger;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
 import java.sql.SQLException;
+import java.util.UUID;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -62,6 +63,7 @@ public class ResourceLoaderIntegrationTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
+			UUID.randomUUID(),
 			MySqlProperties.get().getHostName(),
 			MySqlProperties.get().getPort(),
 			MySqlProperties.get().getUsername(),

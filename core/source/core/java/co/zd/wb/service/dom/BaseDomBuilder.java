@@ -17,6 +17,7 @@
 package co.zd.wb.service.dom;
 
 import co.zd.wb.ModelExtensions;
+import java.util.UUID;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;

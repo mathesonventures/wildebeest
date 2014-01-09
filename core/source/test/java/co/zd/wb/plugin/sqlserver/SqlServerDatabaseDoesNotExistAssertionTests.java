@@ -61,6 +61,7 @@ public class SqlServerDatabaseDoesNotExistAssertionTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
+			UUID.randomUUID(),
 			properties.getHostName(),
 			properties.hasInstanceName() ? properties.getInstanceName() : null,
 			properties.getPort(),
@@ -115,6 +116,7 @@ public class SqlServerDatabaseDoesNotExistAssertionTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
+			UUID.randomUUID(),
 			properties.getHostName(),
 			properties.hasInstanceName() ? properties.getInstanceName() : null,
 			properties.getPort(),
