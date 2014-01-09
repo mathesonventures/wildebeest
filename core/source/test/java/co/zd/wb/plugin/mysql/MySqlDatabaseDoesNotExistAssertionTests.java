@@ -50,7 +50,7 @@ public class MySqlDatabaseDoesNotExistAssertionTests
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		 
 		MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
-		 
+
 		State created = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(created);
 		 

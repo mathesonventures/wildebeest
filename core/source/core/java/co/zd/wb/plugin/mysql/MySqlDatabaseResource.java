@@ -24,6 +24,7 @@ import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
 import co.zd.wb.State;
 import co.zd.wb.plugin.base.BaseResource;
+import co.zd.wb.plugin.database.AnsiSqlStateHelper;
 import co.zd.wb.plugin.database.DatabaseHelper;
 import co.zd.wb.plugin.database.DatabaseResource;
 import co.zd.wb.plugin.database.Extensions;
@@ -68,63 +69,14 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 
 		if (MySqlDatabaseHelper.schemaExists(db))
 		{
-			String stateTableName = Extensions.getStateTableName(db);
-			
-			try
-			{
-				conn = db.getAppDataSource().getConnection();
-				ps = conn.prepareStatement("SELECT StateId FROM " + stateTableName + ";");
-				rs = ps.executeQuery();
-
-				if (rs.next())
-				{
-					declaredStateId = UUID.fromString(rs.getString(1));
-
-					if (rs.next())
-					{
-						throw new IndeterminateStateException(String.format(
-							"Multiple rows found in the state tracking table \"%s\"",
-							stateTableName));
-					}
-				}
-				else
-				{
-					throw new IndeterminateStateException(String.format(
-						"The state tracking table \"%s\" was not found in the target schema",
-						stateTableName));
-				}
-			}
-			catch(SQLException e)
-			{
-				throw new FaultException(e);
-			}
-			finally
-			{
-				try
-				{
-					DatabaseHelper.release(rs);
-					DatabaseHelper.release(ps);
-					DatabaseHelper.release(conn);
-				}
-				catch(SQLException e)
-				{
-					throw new FaultException(e);
-				}
-			}
+			declaredStateId = AnsiSqlStateHelper.getStateId(db);
 		}
 		
 		// If we found a declared state, check that the state is actually defined
 		State result = null;
 		if (declaredStateId != null)
 		{
-			for (State check : this.getStates())
-			{
-				if (declaredStateId.equals(check.getStateId()))
-				{
-					result = check;
-					break;
-				}
-			}
+			result = this.stateForId(declaredStateId);
 
 			// If the declared state ID is not known, throw
 			if (result == null)
@@ -152,7 +104,7 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 		// Ensure the state tracking table exists
 		try
 		{
-			MySqlDatabaseHelper.createTableIfNotExists(db, Extensions.getStateTableName(db));
+			AnsiSqlStateHelper.createStateTableIfNotExists(db, Extensions.getStateTableName(db));
 		}
 		catch (SQLException e)
 		{
@@ -162,7 +114,7 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 		// Set the state tracking row
 		try
 		{
-			MySqlDatabaseHelper.setStateId(db, stateId);
+			AnsiSqlStateHelper.setStateId(db, stateId);
 		}
 		catch (SQLException e)
 		{

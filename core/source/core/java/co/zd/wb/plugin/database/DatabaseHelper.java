@@ -121,7 +121,7 @@ public class DatabaseHelper
 				.append(" SET StateId = '").append(stateId.toString())
 			.append("';").toString());
 	}
-	
+
 	/**
 	 * If the supplied Connection reference is non-null, attempts to close that Connection.
 	 * 
