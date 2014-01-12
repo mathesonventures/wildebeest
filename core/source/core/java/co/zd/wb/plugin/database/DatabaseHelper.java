@@ -108,19 +108,6 @@ public class DatabaseHelper
 		
 		return result;
 	}
-	
-	public static void setState(
-		DatabaseInstance instance,
-		UUID stateId) throws SQLException
-	{
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
-		
-		DatabaseHelper.execute(instance.getAppDataSource(), new StringBuilder()
-			.append("UPDATE ").append(Extensions.getStateTableName(instance))
-				.append(" SET StateId = '").append(stateId.toString())
-			.append("';").toString());
-	}
 
 	/**
 	 * If the supplied Connection reference is non-null, attempts to close that Connection.

@@ -24,8 +24,6 @@ import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
 import co.zd.wb.State;
 import co.zd.wb.plugin.base.BaseResource;
-import co.zd.wb.plugin.database.AnsiSqlStateHelper;
-import co.zd.wb.plugin.database.DatabaseHelper;
 import co.zd.wb.plugin.database.DatabaseResource;
 import co.zd.wb.plugin.database.Extensions;
 import java.sql.Connection;
@@ -69,7 +67,10 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 
 		if (MySqlDatabaseHelper.schemaExists(db))
 		{
-			declaredStateId = AnsiSqlStateHelper.getStateId(db);
+			declaredStateId = MySqlStateHelper.getStateId(
+				this.getResourceId(),
+				db.getAppDataSource(),
+				Extensions.getStateTableName(db));
 		}
 		
 		// If we found a declared state, check that the state is actually defined
@@ -101,20 +102,14 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
 		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
 		
-		// Ensure the state tracking table exists
-		try
-		{
-			AnsiSqlStateHelper.createStateTableIfNotExists(db, Extensions.getStateTableName(db));
-		}
-		catch (SQLException e)
-		{
-			throw new FaultException(e);
-		}
-
 		// Set the state tracking row
 		try
 		{
-			AnsiSqlStateHelper.setStateId(db, stateId);
+			MySqlStateHelper.setStateId(
+				this.getResourceId(),
+				db.getAppDataSource(),
+				Extensions.getStateTableName(db),
+				stateId);
 		}
 		catch (SQLException e)
 		{

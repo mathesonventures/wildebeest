@@ -16,12 +16,11 @@
 
 package co.zd.wb.plugin.mysql;
 
-import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.zd.wb.plugin.mysql.MySqlDatabaseResource;
 import co.mv.helium.testframework.MySqlDatabaseFixture;
 import co.zd.wb.IndeterminateStateException;
 import co.zd.wb.State;
 import co.zd.wb.plugin.base.ImmutableState;
+import java.sql.SQLException;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -73,7 +72,7 @@ public class MySqlDatabaseResourceTests
 		
 	}
 	
-	@Test public void currentStateForExistentDatabaseSucceds() throws IndeterminateStateException
+	@Test public void currentStateForExistentDatabaseSucceds() throws IndeterminateStateException, SQLException
 	{
 		
 		//
@@ -82,6 +81,7 @@ public class MySqlDatabaseResourceTests
 		
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
+		UUID resourceId = UUID.randomUUID();
 		UUID knownStateId = UUID.randomUUID();
 		
 		MySqlDatabaseFixture database = new MySqlDatabaseFixture(
@@ -90,15 +90,20 @@ public class MySqlDatabaseResourceTests
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
 			"stm",
-			MySqlElementFixtures.stateCreateTableStatement() +
-			MySqlElementFixtures.stateInsertRow(knownStateId));
-		
+			"");
+
 		try
 		{
 			database.setUp();
+			
+			MySqlStateHelper.setStateId(
+				resourceId,
+				database.getDataSource(),
+				"wb_state",
+				knownStateId);
 
 			MySqlDatabaseResource resource = new MySqlDatabaseResource(
-				UUID.randomUUID(),
+				resourceId,
 				"Database");
 			resource.getStates().add(new ImmutableState(knownStateId));
 
@@ -135,7 +140,7 @@ public class MySqlDatabaseResourceTests
 		}
 	}
 	
-	@Test public void currentStateForDatabaseWithMultipleStateRowsFails()
+	@Test public void currentStateForDatabaseWithUnknownStateIdDeclaredFails() throws SQLException
 	{
 		
 		//
@@ -144,70 +149,7 @@ public class MySqlDatabaseResourceTests
 		
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
-		MySqlDatabaseFixture database = new MySqlDatabaseFixture(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
-			"stm",
-			MySqlElementFixtures.stateCreateTableStatement() +
-			MySqlElementFixtures.stateInsertRow(UUID.randomUUID()) +
-			MySqlElementFixtures.stateInsertRow(UUID.randomUUID()));
-		database.setUp();
-
-		MySqlDatabaseResource resource = new MySqlDatabaseResource(
-			UUID.randomUUID(),
-			"Database");
-		
-		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			UUID.randomUUID(),
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
-			database.getDatabaseName(),
-			null);
-
-		//
-		// Execute
-		//
-		
-		IndeterminateStateException caught = null;
-		
-		try
-		{
-			resource.currentState(instance);
-			
-			Assert.fail("IndeterminateStateException expected");
-		}
-		catch(IndeterminateStateException e)
-		{
-			caught = e;
-		}
-		
-		//
-		// Assert Results
-		//
-		
-		Assert.assertTrue("exception message", caught.getMessage().startsWith("Multiple rows found"));
-		
-		//
-		// Fixture Tear-Down
-		//
-		
-		database.tearDown();
-		
-	}
-	
-	@Test public void currentStateForDatabaseWithUnknownStateIdDeclaredFails()
-	{
-		
-		//
-		// Fixture Setup
-		//
-		
-		MySqlProperties mySqlProperties = MySqlProperties.get();
-		
+		UUID resourceId = UUID.randomUUID();
 		UUID knownStateId = UUID.randomUUID();
 		
 		MySqlDatabaseFixture database = new MySqlDatabaseFixture(
@@ -216,12 +158,17 @@ public class MySqlDatabaseResourceTests
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
 			"stm",
-			MySqlElementFixtures.stateCreateTableStatement() +
-			MySqlElementFixtures.stateInsertRow(knownStateId));
+			"");
 		database.setUp();
 
+		MySqlStateHelper.setStateId(
+			resourceId,
+			database.getDataSource(),
+			"wb_state",
+			knownStateId);
+		
 		MySqlDatabaseResource resource = new MySqlDatabaseResource(
-			UUID.randomUUID(),
+			resourceId,
 			"Database");
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(

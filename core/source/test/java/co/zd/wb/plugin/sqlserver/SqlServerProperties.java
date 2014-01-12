@@ -16,11 +16,12 @@
 
 package co.zd.wb.plugin.sqlserver;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SqlServerProperties
 {
-	private static Logger LOG = Logger.getLogger(SqlServerProperties.class);
+	private static Logger LOG = LoggerFactory.getLogger(SqlServerProperties.class);
 	
 	private SqlServerProperties()
 	{

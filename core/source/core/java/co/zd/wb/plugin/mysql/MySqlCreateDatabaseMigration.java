@@ -16,7 +16,6 @@
 
 package co.zd.wb.plugin.mysql;
 
-import co.zd.wb.plugin.database.Extensions;
 import co.zd.wb.plugin.base.BaseMigration;
 import co.zd.wb.plugin.database.DatabaseHelper;
 import co.zd.wb.ModelExtensions;
@@ -24,7 +23,6 @@ import co.zd.wb.Instance;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationFaultException;
 import co.zd.wb.Resource;
-import co.zd.wb.plugin.database.AnsiSqlStateHelper;
 import co.zd.wb.plugin.database.DatabaseInstance;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -79,9 +77,6 @@ public class MySqlCreateDatabaseMigration extends BaseMigration
 		{
 			DatabaseHelper.execute(db.getInfoDataSource(), new StringBuilder()
 				.append("CREATE DATABASE `").append(db.getSchemaName()).append("`;").toString());
-			
-			AnsiSqlStateHelper.createStateTable(db, Extensions.getStateTableName(db));
-			AnsiSqlStateHelper.setStateId(db, this.getToStateId());
 		}
 		catch (SQLException e)
 		{

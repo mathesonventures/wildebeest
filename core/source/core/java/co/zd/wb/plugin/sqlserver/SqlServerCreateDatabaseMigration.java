@@ -23,7 +23,6 @@ import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.BaseMigration;
 import co.zd.wb.plugin.database.DatabaseHelper;
-import co.zd.wb.plugin.database.Extensions;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -73,22 +72,6 @@ public class SqlServerCreateDatabaseMigration extends BaseMigration
 		catch(SQLServerException e)
 		{
 			throw new MigrationFailedException(this.getMigrationId(), e.getMessage());
-		}
-		catch (SQLException e)
-		{
-			throw new MigrationFaultException(e);
-		}
-		
-		try
-		{			
-			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
-				.append("CREATE TABLE [").append(Extensions.getStateTableName(db))
-					.append("](StateId uniqueidentifier NOT NULL);").toString());
-			
-			DatabaseHelper.execute(db.getAppDataSource(), new StringBuilder()
-				.append("INSERT INTO [").append(Extensions.getStateTableName(db))
-					.append("](StateId) VALUES('").append(this.getToStateId().toString())
-				.append("');").toString());
 		}
 		catch (SQLException e)
 		{

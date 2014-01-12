@@ -16,31 +16,8 @@
 
 package co.zd.wb.plugin.mysql;
 
-import java.util.UUID;
-
 public class MySqlElementFixtures
 {
-	public static String stateCreateTableStatement()
-	{
-		StringBuilder sql = new StringBuilder();
-		sql
-			.append("CREATE TABLE `wb_state` (`StateId` char(36) NOT NULL, PRIMARY KEY (`StateId`)) ")
-				.append("ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-		
-		return sql.toString();
-	}
-	
-	public static String stateInsertRow(
-		UUID stateId)
-	{
-		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
-
-		StringBuilder sql = new StringBuilder();
-		sql.append("INSERT INTO `wb_state`(`StateId`) VALUES('").append(stateId.toString()).append("');");
-
-		return sql.toString();
-	}
-	
 	public static String productCatalogueDatabase()
 	{
 		StringBuilder sql = new StringBuilder();

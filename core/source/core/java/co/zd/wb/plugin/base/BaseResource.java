@@ -286,17 +286,9 @@ public abstract class BaseResource implements Resource
 			logger.migrationStart(this, migration);
 			migration.perform(instance);
 			logger.migrationComplete(this, migration);
-
-			// Basic state check
-			State state = this.currentState(instance);
-			UUID stateId = state == null ? null : state.getStateId();
-			if (!migration.getToStateId().equals(stateId))
-			{
-				throw new MigrationFaultException(String.format(
-					"state expected to be %s after migration but is %s",
-					migration.getToStateId(),
-					stateId));
-			}
+		
+			// Update the state
+			this.setStateId(logger, instance, migration.getToStateId());
 			
 			// Assert the new state
 			List<AssertionResult> assertionResults = this.assertState(

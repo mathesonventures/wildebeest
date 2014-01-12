@@ -16,11 +16,12 @@
 
 package co.zd.wb.plugin.mysql;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MySqlProperties
 {
-	private static Logger LOG = Logger.getLogger(MySqlProperties.class);
+	private static Logger LOG = LoggerFactory.getLogger(MySqlProperties.class);
 	
 	private MySqlProperties()
 	{

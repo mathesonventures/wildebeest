@@ -16,7 +16,6 @@
 
 package co.zd.wb.plugin.mysql;
 
-import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.plugin.database.SqlScriptMigration;
 import co.zd.wb.MigrationFailedException;
 import co.mv.helium.testframework.MySqlDatabaseFixture;
@@ -45,7 +44,7 @@ public class SqlScriptMigrationTests
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
 			"stm_test",
-			MySqlElementFixtures.stateCreateTableStatement());
+			"");
 		f.setUp();
 		
 		SqlScriptMigration migration = new SqlScriptMigration(

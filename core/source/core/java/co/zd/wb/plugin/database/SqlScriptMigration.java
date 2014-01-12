@@ -119,8 +119,6 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 					DatabaseHelper.execute(db.getAppDataSource(), statement);
 				}
 			}
-
-			DatabaseHelper.setState(db, this.getToStateId());
 		}
 		catch(SQLException e)
 		{
