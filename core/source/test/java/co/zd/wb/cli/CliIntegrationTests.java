@@ -62,13 +62,13 @@ public class CliIntegrationTests
 		String[] args = new String[]
 		{
 			"migrate",
-			"--resource:target/test/app/loadFromFilesAndMigrateMySqlResource/database.wbresource.xml",
-			"--instance:target/test/app/loadFromFilesAndMigrateMySqlResource/staging_db.wbinstance.xml",
+			"--resource:loadFromFilesAndMigrateMySqlResource/database.wbresource.xml",
+			"--instance:loadFromFilesAndMigrateMySqlResource/staging_db.wbinstance.xml",
 			"--targetState:Core Schema Loaded"
 		};
 		
 		Instance instance = Interface.loadInstance(
-			new File("target/test/app/loadFromFilesAndMigrateMySqlResource/staging_db.wbinstance.xml"));
+			new File("loadFromFilesAndMigrateMySqlResource/staging_db.wbinstance.xml"));
 		
 		//
 		// Execute
@@ -95,7 +95,7 @@ public class CliIntegrationTests
 		
 		WildebeestCommand wb = new WildebeestCommand();
 		Instance instance = Interface.loadInstance(
-			new File("target/test/app/loadFromFilesAndJumpStateMySqlResource/staging_db.wbinstance.xml"));
+			new File("loadFromFilesAndJumpStateMySqlResource/staging_db.wbinstance.xml"));
 		MySqlDatabaseInstance instanceT = (MySqlDatabaseInstance)instance;
 
 		// Create a database that is already in a state that matches a defined state in a Wildebeest resource.
@@ -105,8 +105,8 @@ public class CliIntegrationTests
 		wb.run(new String[]
 		{
 			"migrate",
-			"--resource:target/test/app/loadFromFilesAndJumpStateMySqlResource/database.wbresource.xml",
-			"--instance:target/test/app/loadFromFilesAndJumpStateMySqlResource/staging_db.wbinstance.xml",
+			"--resource:loadFromFilesAndJumpStateMySqlResource/database.wbresource.xml",
+			"--instance:loadFromFilesAndJumpStateMySqlResource/staging_db.wbinstance.xml",
 			"--targetState:Core Schema Loaded"
 		});
 		
@@ -125,8 +125,8 @@ public class CliIntegrationTests
 			wb.run(new String[]
 			{
 				"jumpstate",
-				"--resource:target/test/app/loadFromFilesAndJumpStateMySqlResource/database.wbresource.xml",
-				"--instance:target/test/app/loadFromFilesAndJumpStateMySqlResource/staging_db.wbinstance.xml",
+				"--resource:loadFromFilesAndJumpStateMySqlResource/database.wbresource.xml",
+				"--instance:loadFromFilesAndJumpStateMySqlResource/staging_db.wbinstance.xml",
 				"--targetState:Core Schema Loaded"
 			});
 		}
@@ -148,13 +148,13 @@ public class CliIntegrationTests
 		String[] args = new String[]
 		{
 			"migrate",
-			"--resource:target/test/app/loadFromFilesAndMigrationSqlServerResource/database.wbresource.xml",
-			"--instance:target/test/app/loadFromFilesAndMigrationSqlServerResource/staging_db.wbinstance.xml",
+			"--resource:loadFromFilesAndMigrationSqlServerResource/database.wbresource.xml",
+			"--instance:loadFromFilesAndMigrationSqlServerResource/staging_db.wbinstance.xml",
 			"--targetState:Core Schema Loaded"
 		};
 		
 		Instance instance = Interface.loadInstance(
-			new File("target/test/app/loadFromFilesAndMigrationSqlServerResource/staging_db.wbinstance.xml"));
+			new File("loadFromFilesAndMigrationSqlServerResource/staging_db.wbinstance.xml"));
 		
 		//
 		// Execute

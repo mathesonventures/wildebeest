@@ -93,7 +93,6 @@ public class IntegrationTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),

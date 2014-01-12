@@ -41,7 +41,6 @@ public class DomInstanceLoader implements InstanceLoader
 {
 	private static String ELT_INSTANCE = "instance";
 		private static String ATT_INSTANCE_TYPE = "type";
-		private static String ATT_INSTANCE_ID = "id";
 	private static String ELT_HOST_NAME = "hostName";
 	private static String ELT_PORT = "port";
 	private static String ELT_ADMIN_USERNAME = "adminUsername";
@@ -181,8 +180,6 @@ public class DomInstanceLoader implements InstanceLoader
 		if (instanceXe == null) { throw new IllegalArgumentException("instanceXe"); }
 		
 		String type = instanceXe.getAttribute(ATT_INSTANCE_TYPE);
-		String instanceIdRaw = instanceXe.getAttribute(ATT_INSTANCE_ID);
-		UUID instanceId = UUID.fromString(instanceIdRaw);
 		
 		InstanceBuilder builder = instanceBuilders.get(type);
 			
@@ -195,6 +192,6 @@ public class DomInstanceLoader implements InstanceLoader
 		
 		builder.reset();
 		((DomBuilder)builder).setElement(instanceXe);
-		return builder.build(instanceId);
+		return builder.build();
 	}
 }

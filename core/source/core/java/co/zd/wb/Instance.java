@@ -16,8 +16,6 @@
 
 package co.zd.wb;
 
-import java.util.UUID;
-
 /**
  * Represents a specific instance of a Resource.
  * 
@@ -26,5 +24,4 @@ import java.util.UUID;
  */
 public interface Instance
 {
-	UUID getInstanceId();
 }

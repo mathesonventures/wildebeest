@@ -1,0 +1,17 @@
+/core/target
+/core/build
+/core/dist
+/core/nbproject/private
+/repo
+/log4j/nbproject/private/
+/log4j/dist/
+/log4j/build/
+/log4j/target
+/website/source/rel
+/project.override.properties
+*.swp
+/slf4j/nbproject/private/
+/slf4j/build/
+/slf4j/target
+/slf4j/dist/
+/assembly/target

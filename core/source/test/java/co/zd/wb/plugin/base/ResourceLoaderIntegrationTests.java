@@ -63,7 +63,6 @@ public class ResourceLoaderIntegrationTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			UUID.randomUUID(),
 			MySqlProperties.get().getHostName(),
 			MySqlProperties.get().getPort(),
 			MySqlProperties.get().getUsername(),

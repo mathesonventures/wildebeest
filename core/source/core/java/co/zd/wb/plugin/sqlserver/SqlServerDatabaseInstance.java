@@ -17,11 +17,9 @@
 package co.zd.wb.plugin.sqlserver;
 
 import co.zd.wb.Instance;
-import co.zd.wb.plugin.base.BaseInstance;
 import co.zd.wb.plugin.database.DatabaseConstants;
 import co.zd.wb.plugin.database.DatabaseInstance;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
-import java.util.UUID;
 import javax.sql.DataSource;
 
 /**
@@ -30,12 +28,11 @@ import javax.sql.DataSource;
  * @author                                      Brendon Matheson
  * @since                                       2.0
  */
-public class SqlServerDatabaseInstance extends BaseInstance implements DatabaseInstance
+public class SqlServerDatabaseInstance implements DatabaseInstance
 {
 	/**
 	 * Creates a new SqlServerDatabaseInstance.
 	 * 
-	 * @param       instanceId                  the ID of this instance
 	 * @param       hostName                    the host name of the server for this instance.
 	 * @param       instanceName                the SQL Server instance name for this instance.  Null may be supplied
 	 *                                          where no instance name needs to be specified.
@@ -50,7 +47,6 @@ public class SqlServerDatabaseInstance extends BaseInstance implements DatabaseI
 	 * @since                                   2.0
 	 */
 	public SqlServerDatabaseInstance(
-		UUID instanceId,
 		String hostName,
 		String instanceName,
 		int portNumber,
@@ -59,8 +55,6 @@ public class SqlServerDatabaseInstance extends BaseInstance implements DatabaseI
 		String databaseName,
 		String stateTableName)
 	{
-		super(instanceId);
-		
 		if (stateTableName == null || stateTableName.trim().equals(""))
 		{
 			stateTableName = DatabaseConstants.DefaultStateTableName;

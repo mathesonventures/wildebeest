@@ -16,7 +16,6 @@
 
 package co.zd.wb.plugin.database;
 
-import co.zd.wb.plugin.database.RowExistsAssertion;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.plugin.mysql.MySqlElementFixtures;
@@ -48,7 +47,6 @@ public class RowExistsAssertionTests
 		f.setUp();
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -106,7 +104,6 @@ public class RowExistsAssertionTests
 		f.setUp();
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),

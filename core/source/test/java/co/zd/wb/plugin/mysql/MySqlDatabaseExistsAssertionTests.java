@@ -61,7 +61,6 @@ public class MySqlDatabaseExistsAssertionTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -107,7 +106,6 @@ public class MySqlDatabaseExistsAssertionTests
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),

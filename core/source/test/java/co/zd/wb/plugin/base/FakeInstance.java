@@ -19,16 +19,14 @@ package co.zd.wb.plugin.base;
 import co.zd.wb.Instance;
 import java.util.UUID;
 
-public class FakeInstance extends BaseInstance
+public class FakeInstance implements Instance
 {
-	public FakeInstance()
-	{
-		super(UUID.randomUUID());
-	}
-	
+    public FakeInstance()
+    {
+    }
+
 	public FakeInstance(UUID stateId)
 	{
-		super(UUID.randomUUID());
 		this.setStateId(stateId);
 	}
 	

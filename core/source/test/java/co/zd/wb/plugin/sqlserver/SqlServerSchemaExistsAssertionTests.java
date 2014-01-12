@@ -49,7 +49,6 @@ public class SqlServerSchemaExistsAssertionTests
 		// Instance
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
-			UUID.randomUUID(),
 			properties.getHostName(),
 			properties.hasInstanceName() ? properties.getInstanceName() : null,
 			properties.getPort(),
@@ -112,7 +111,6 @@ public class SqlServerSchemaExistsAssertionTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
-			UUID.randomUUID(),
 			properties.getHostName(),
 			properties.hasInstanceName() ? properties.getInstanceName() : null,
 			properties.getPort(),
@@ -166,7 +164,6 @@ public class SqlServerSchemaExistsAssertionTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
-			UUID.randomUUID(),
 			properties.getHostName(),
 			properties.hasInstanceName() ? properties.getInstanceName() : null,
 			properties.getPort(),

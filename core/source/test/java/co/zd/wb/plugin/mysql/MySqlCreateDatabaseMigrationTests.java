@@ -16,8 +16,6 @@
 
 package co.zd.wb.plugin.mysql;
 
-import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.zd.wb.plugin.mysql.MySqlCreateDatabaseMigration;
 import co.zd.wb.MigrationFailedException;
 import co.mv.helium.testframework.MySqlDatabaseFixture;
 import co.zd.wb.plugin.database.DatabaseFixtureHelper;
@@ -47,7 +45,6 @@ public class MySqlCreateDatabaseMigrationTests
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -97,7 +94,6 @@ public class MySqlCreateDatabaseMigrationTests
 			UUID.randomUUID());
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
-			UUID.randomUUID(),
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
