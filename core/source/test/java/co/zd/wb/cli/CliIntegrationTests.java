@@ -92,6 +92,50 @@ public class CliIntegrationTests
 
 	}
 	
+	@Test public void mySqlDatabaseMigrateWithMissingInstanceArg() throws SQLException, MessagesException
+	{
+		
+		//
+		// Setup
+		//
+
+		WildebeestCommand wb = new WildebeestCommand();
+
+		//
+		// Execute
+		//
+
+		wb.run(new String[]
+		{
+			"migrate",
+			"--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
+			"--targetState:Core Schema Loaded"
+		});
+
+	}
+	
+	@Test public void mySqlDatabaseMigrateWithMissingResourceArg() throws SQLException, MessagesException
+	{
+		
+		//
+		// Setup
+		//
+
+		WildebeestCommand wb = new WildebeestCommand();
+
+		//
+		// Execute
+		//
+
+		wb.run(new String[]
+		{
+			"migrate",
+			"--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml",
+			"--targetState:Core Schema Loaded"
+		});
+
+	}
+	
 	@Test public void mySqlDatabaseJumpState() throws SQLException, MessagesException
 	{
 		
@@ -139,6 +183,51 @@ public class CliIntegrationTests
             if (instanceT != null)
             {
     			MySqlUtil.dropDatabase(instanceT, instanceT.getSchemaName());
+            }
+		}
+
+	}
+	
+	@Test public void mySqlDatabaseState() throws SQLException, MessagesException
+	{
+		
+		//
+		// Setup
+		//
+
+		WildebeestCommand wb = new WildebeestCommand();
+
+        Instance instance = null;
+        
+		try
+		{
+            instance = Interface.loadInstance(new File("target/test/app/MySqlDatabase/staging_db.wbinstance.xml"));
+
+			wb.run(new String[]
+			{
+				"migrate",
+				"--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
+				"--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml",
+				"--targetState:Database Created"
+			});
+			
+            //
+            // Execute
+            //
+
+			wb.run(new String[]
+			{
+				"state",
+				"--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
+				"--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml"
+			});
+		}
+		finally
+		{
+            if (instance != null)
+            {
+                MySqlDatabaseInstance instanceT = (MySqlDatabaseInstance)instance;
+                MySqlUtil.dropDatabase(instanceT, instanceT.getSchemaName());
             }
 		}
 

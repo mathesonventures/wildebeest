@@ -125,11 +125,13 @@ public class WildebeestCommand
             
 			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName))
 			{
-				throw new RuntimeException("args missing");
+				WildebeestCommand.printUsage(System.out);
 			}
-
-            Interface iface = new Interface(this.getLogger());
-			iface.state(resourceFileName, instanceFileName);
+			else
+			{
+				Interface iface = new Interface(this.getLogger());
+				iface.state(resourceFileName, instanceFileName);
+			}
 		}
 				
 		else if ("migrate".equals(command))
@@ -140,15 +142,17 @@ public class WildebeestCommand
             
 			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) || isNull(targetState))
 			{
-				throw new RuntimeException("args missing");
+				WildebeestCommand.printUsage(System.out);
 			}
+			else
+			{
+				Interface iface = new Interface(this.getLogger());
 
-            Interface iface = new Interface(this.getLogger());
-            
-			Resource resource = iface.tryLoadResource(resourceFileName);
-			Instance instance = iface.tryLoadInstance(instanceFileName);
+				Resource resource = iface.tryLoadResource(resourceFileName);
+				Instance instance = iface.tryLoadInstance(instanceFileName);
 
-			iface.migrate(resource, instance, targetState);
+				iface.migrate(resource, instance, targetState);
+			}
 		}
 		
 		else if (("jumpstate").equals(command))
@@ -159,15 +163,17 @@ public class WildebeestCommand
 
 			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) || isNull(targetState))
 			{
-				throw new RuntimeException("args missing");
+				WildebeestCommand.printUsage(System.out);
 			}
+			else
+			{
+				Interface iface = new Interface(this.getLogger());
 
-            Interface iface = new Interface(this.getLogger());
-            
-			Resource resource = iface.tryLoadResource(resourceFileName);
-			Instance instance = iface.tryLoadInstance(instanceFileName);
+				Resource resource = iface.tryLoadResource(resourceFileName);
+				Instance instance = iface.tryLoadInstance(instanceFileName);
 
-			iface.jumpstate(resource, instance, targetState);
+				iface.jumpstate(resource, instance, targetState);
+			}
 		}
 		
 		else
@@ -242,7 +248,7 @@ public class WildebeestCommand
 		
 		out.println("Usage: wb command [options]");
 		out.println("");
-		out.println("Valid commands: state; migrate;");
+		out.println("Valid commands: state; migrate; jumpstate;");
 		out.println("");
 	}
 }
