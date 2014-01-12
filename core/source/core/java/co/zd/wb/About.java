@@ -20,7 +20,7 @@ package co.zd.wb;
  * Provides information about this release of Wildebeest.
  * 
  * @author                                      Brendon Matheson
- * @since                                       2.1
+ * @since                                       3.0
  */
 public class About
 {

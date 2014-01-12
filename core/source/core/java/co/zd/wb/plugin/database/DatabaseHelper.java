@@ -20,14 +20,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 import javax.sql.DataSource;
 
 /**
  * Provides a set of convenience methods for working with JDBC-accessed databases.
  * 
  * @author                                      Brendon Matheson
- */
+ * @since                                       1.0
+*/
 public class DatabaseHelper
 {
 	/**
@@ -37,6 +37,7 @@ public class DatabaseHelper
 	 * @param       sql                         the SQL statement to execute against the target database.
 	 * @throws      SQLException                may be thrown due to a mal-formed SQL statement, connectivity problem,
 	 *                                          or some other issue.
+     * @since                                   1.0
 	 */
 	public static void execute(
 		DataSource dataSource,
@@ -71,6 +72,7 @@ public class DatabaseHelper
 	 * @return                                  the value from the first column of the single resultant row
 	 * @throws      SQLException                may be thrown due to a mal-formed SQL statement, connectivity problem,
 	 *                                          or some other issue.
+     * @since                                   1.0
 	 */
 	public static Object querySingle(
 		DataSource dataSource,
@@ -115,6 +117,7 @@ public class DatabaseHelper
 	 * @param       conn                        the Connection to be closed.  Ignored if null is supplied.
 	 * @throws      SQLException                may be thrown due to a state exception, connectivity problem, or some
 	 *                                          other issue.
+     * @since                                   1.0
 	 */
 	public static void release(Connection conn) throws SQLException
 	{
@@ -130,6 +133,7 @@ public class DatabaseHelper
 	 * @param       ps                          the PreparedStatement to be closed.  Ignored if null is supplied.
 	 * @throws      SQLException                may be thrown due to a state exception, connectivity problem or some
 	 *                                          other issue.
+     * @since                                   1.0
 	 */
 	public static void release(PreparedStatement ps) throws SQLException
 	{
@@ -145,6 +149,7 @@ public class DatabaseHelper
 	 * @param       rs                          the ResultSet to be closed.  Ignored if null is supplied.
 	 * @throws      SQLException                may be thrown due to a state exception, connectiivty problem or some
 	 *                                          other issue.
+     * @since                                   1.0
 	 */
 	public static void release(ResultSet rs) throws SQLException
 	{

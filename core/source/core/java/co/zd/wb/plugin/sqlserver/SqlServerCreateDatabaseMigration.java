@@ -41,6 +41,7 @@ public class SqlServerCreateDatabaseMigration extends BaseMigration
 	 * @param       migrationId                 the ID of the new migration.
 	 * @param       fromStateId                 the source state for this migration.
 	 * @param       toStateId                   the target state for this migration.
+	 * @since                                   2.0
 	 */
 	public SqlServerCreateDatabaseMigration(
 		UUID migrationId,

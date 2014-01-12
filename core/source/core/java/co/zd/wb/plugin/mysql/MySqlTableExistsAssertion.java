@@ -39,6 +39,7 @@ public class MySqlTableExistsAssertion extends BaseAssertion
 	 * @param       assertionId                 the ID of the new assertion.
 	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
 	 * @param       tableName                   the name of the table that this assertion will check for.
+	 * @since                                   1.0
 	 */
 	public MySqlTableExistsAssertion(
 		UUID assertionId,

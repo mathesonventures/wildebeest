@@ -37,6 +37,7 @@ public class SqlServerDatabaseExistsAssertion extends BaseAssertion
 	 * 
 	 * @param       assertionId                 the ID of the new assertion.
 	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
+	 * @since                                   2.0
 	 */
 	public SqlServerDatabaseExistsAssertion(
 		UUID assertionId,

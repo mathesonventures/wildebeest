@@ -38,6 +38,7 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 	 * @param       assertionId                 the ID of the new assertion.
 	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
 	 * @param       schemaName                  the name of the schema to check,
+	 * @since                                   2.0
 	 */
 	public SqlServerSchemaDoesNotExistAssertion(
 		UUID assertionId,

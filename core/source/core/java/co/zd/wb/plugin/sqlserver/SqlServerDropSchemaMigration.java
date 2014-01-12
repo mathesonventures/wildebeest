@@ -42,6 +42,7 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 	 * @param       fromStateId                 the source state for this migration.
 	 * @param       toStateId                   the target state for this migration.
 	 * @param       schemaName                  the name of the schema to be dropped.
+	 * @since                                   2.0
 	 */
 	public SqlServerDropSchemaMigration(
 		UUID migrationId,

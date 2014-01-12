@@ -39,6 +39,7 @@ public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
 	 * @param       schemaName                  the name of the schema to check.
 	 * @param       tableName                   the name of the table to check.
+	 * @since                                   2.0
 	 */
 	public SqlServerTableDoesNotExistAssertion(
 		UUID assertionId,

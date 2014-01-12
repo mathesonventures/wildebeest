@@ -27,7 +27,6 @@ import co.zd.wb.JumpStateFailedException;
 import co.zd.wb.State;
 import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationFaultException;
 import co.zd.wb.MigrationNotPossibleException;
 import co.zd.wb.Logger;
 import java.util.ArrayList;

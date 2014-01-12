@@ -48,6 +48,7 @@ public interface Logger
      * specifier.
      * 
 	 * @param       e                           the {@link InvalidStateSpecifiedException} that was thrown.
+	 * @since                                   3.0
      */
     void invalidStateSpecified(InvalidStateSpecifiedException e);
     
@@ -55,6 +56,7 @@ public interface Logger
      * Logs that the target state specified in a migrate or jumpstate command could not be found in the resource.
      * 
 	 * @param       e                           the {@link UnknownStateSpecifiedException} that was thrown.
+	 * @since                                   3.0
      */
     void unknownStateSpecified(UnknownStateSpecifiedException e);
 

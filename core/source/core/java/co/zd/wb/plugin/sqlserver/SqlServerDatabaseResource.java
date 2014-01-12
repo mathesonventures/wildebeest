@@ -45,6 +45,7 @@ public class SqlServerDatabaseResource extends BaseResource implements DatabaseR
 	 * 
 	 * @param       resourceId                  the ID of the new resource.
 	 * @param       name                        the name of the new resource.
+	 * @since                                   2.0
 	 */
 	public SqlServerDatabaseResource(
 		UUID resourceId,

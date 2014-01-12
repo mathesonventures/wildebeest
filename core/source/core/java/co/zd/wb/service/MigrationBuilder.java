@@ -44,7 +44,7 @@ public interface MigrationBuilder
 	 *                                          the non-existent state.
 	 * @return                                  the new {@link Migration} instance.
 	 * @throws      MessagesException           if migration fails.
-	 * @since                                   2.0
+	 * @since                                   1.0
 	 */
 	Migration build(
 		UUID migrationId,
@@ -54,7 +54,7 @@ public interface MigrationBuilder
 	/**
 	 * Resets the MigrationBuilder, making it ready to build a new instance.
 	 * 
-	 * @since                                   2.0
+	 * @since                                   1.0
 	 */
 	void reset();
 }

@@ -18,6 +18,12 @@ package co.zd.wb.plugin.database;
 
 import co.zd.wb.Resource;
 
+/**
+ * A marker interface for database resources.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public interface DatabaseResource extends Resource
 {
 }

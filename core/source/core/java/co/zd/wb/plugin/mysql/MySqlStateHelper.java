@@ -1,3 +1,19 @@
+// Wildebeest Migration Framework
+// Copyright 2013, Zen Digital Co Inc
+//
+// This file is part of Wildebeest
+//
+// Wildebeest is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License v2 as published by the Free
+// Software Foundation.
+//
+// Wildebeest is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+// A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
+
 package co.zd.wb.plugin.mysql;
 
 import co.zd.wb.FaultException;
@@ -10,8 +26,25 @@ import java.sql.SQLException;
 import java.util.UUID;
 import javax.sql.DataSource;
 
+/**
+ * Centralizes state tracking operations for MySqlDatabaseInstances.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class MySqlStateHelper
 {
+	/**
+	 * Sets the tracked state for an instance.  Note that a MySqlDatabaseInstance may be migrated by multiple separate
+	 * resource definitions (to support composite resources).  The state set is for a specific resource definition.
+	 * 
+	 * @param       resourceId                  the ID of the resource for which we are tracking state.
+	 * @param       appDataSource               the DataSource for interacting with the database.
+	 * @param       stateTableName              the name of the state tracking table in use for this instance.
+	 * @param       stateId                     the ID of the state.
+	 * @throws      SQLException                if an error occurs when interacting with the database.
+	 * @since                                   1.0
+	 */
 	public static void setStateId(
 		UUID resourceId,
 		DataSource appDataSource,
@@ -44,6 +77,19 @@ public class MySqlStateHelper
 				stateId));
 	}
 	
+	/**
+	 * Gets the tracked state for an instance.  Note that a MySqlDatabaseInstance may be migrated by multiple separate
+	 * resource definitions (to support composite resources).  The state retrieved is for a specific resource
+	 * definition.
+	 * 
+	 * @param       resourceId                  the ID of the resource for which the state should be queried.          
+	 * @param       appDataSource               the DataSource for interacting with the database.
+	 * @param       stateTableName              the name of the state tracking table in use for this instance.
+	 * @return                                  the ID of the state that the instance is in for the specified resource.
+	 * @throws      IndeterminateStateException if the current state of the instance cannot be determined for the
+	 *                                          specified resource.
+	 * @since                                   1.0
+	 */
 	public static UUID getStateId(
 		UUID resourceId,
 		DataSource appDataSource,
@@ -107,6 +153,14 @@ public class MySqlStateHelper
 		return stateId;
 	}
 
+	/**
+	 * Creates the state tracking table in a MySqlDatabaseInstance.
+	 * 
+	 * @param       appDataSource               the DataSource for interacting with the database.
+	 * @param       stateTableName              the name of the state tracking table in use for this instance.
+	 * @throws      SQLException                if an error occurs when interacting with the database.
+	 * @since                                   1.0
+	 */
 	private static void createStateTableIfNotExists(
 		DataSource appDataSource,
 		String stateTableName) throws SQLException

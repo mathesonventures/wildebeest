@@ -23,7 +23,6 @@ import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.ResourceLoaderFault;
 import java.io.StringReader;
 import java.util.Map;
-import java.util.UUID;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
