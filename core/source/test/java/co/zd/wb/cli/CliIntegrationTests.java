@@ -53,6 +53,18 @@ public class CliIntegrationTests
 
 	}
 	
+	@Test public void invokeWithNoCommand() throws SQLException, MessagesException
+	{
+		
+		//
+		// Setup
+		//
+
+		WildebeestCommand wb = new WildebeestCommand();
+		wb.run(new String[] { });
+
+	}
+	
 	@Test public void mySqlDatabaseMigrate() throws SQLException, MessagesException
 	{
 		

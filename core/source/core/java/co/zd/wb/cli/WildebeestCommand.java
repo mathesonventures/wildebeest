@@ -109,76 +109,79 @@ public class WildebeestCommand
 			WildebeestCommand.printUsage(System.out);
 		}
 		
-		String command = args[0];
-		
-		if ("about".equals(command))
-		{
-			About about = new About();
-			this.getLogger().logLine(about.getProjectName() + " " + about.getVersionFullDotted());
-			this.getLogger().logLine(about.getCopyrightAssertion());
-		}
-
-		else if ("state".equals(command))
-		{
-			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
-			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
-            
-			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName))
-			{
-				WildebeestCommand.printUsage(System.out);
-			}
-			else
-			{
-				Interface iface = new Interface(this.getLogger());
-				iface.state(resourceFileName, instanceFileName);
-			}
-		}
-				
-		else if ("migrate".equals(command))
-		{
-			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
-			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
-			String targetState = WildebeestCommand.getArg(args, "t", "targetState");
-            
-			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) || isNull(targetState))
-			{
-				WildebeestCommand.printUsage(System.out);
-			}
-			else
-			{
-				Interface iface = new Interface(this.getLogger());
-
-				Resource resource = iface.tryLoadResource(resourceFileName);
-				Instance instance = iface.tryLoadInstance(instanceFileName);
-
-				iface.migrate(resource, instance, targetState);
-			}
-		}
-		
-		else if (("jumpstate").equals(command))
-		{
-			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
-			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
-			String targetState = WildebeestCommand.getArg(args, "t", "targetState");
-
-			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) || isNull(targetState))
-			{
-				WildebeestCommand.printUsage(System.out);
-			}
-			else
-			{
-				Interface iface = new Interface(this.getLogger());
-
-				Resource resource = iface.tryLoadResource(resourceFileName);
-				Instance instance = iface.tryLoadInstance(instanceFileName);
-
-				iface.jumpstate(resource, instance, targetState);
-			}
-		}
-		
 		else
 		{
-			WildebeestCommand.printUsage(System.out);
+			String command = args[0];
+
+			if ("about".equals(command))
+			{
+				About about = new About();
+				this.getLogger().logLine(about.getProjectName() + " " + about.getVersionFullDotted());
+				this.getLogger().logLine(about.getCopyrightAssertion());
+			}
+
+			else if ("state".equals(command))
+			{
+				String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
+				String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
+
+				if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName))
+				{
+					WildebeestCommand.printUsage(System.out);
+				}
+				else
+				{
+					Interface iface = new Interface(this.getLogger());
+					iface.state(resourceFileName, instanceFileName);
+				}
+			}
+
+			else if ("migrate".equals(command))
+			{
+				String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
+				String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
+				String targetState = WildebeestCommand.getArg(args, "t", "targetState");
+
+				if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) || isNull(targetState))
+				{
+					WildebeestCommand.printUsage(System.out);
+				}
+				else
+				{
+					Interface iface = new Interface(this.getLogger());
+
+					Resource resource = iface.tryLoadResource(resourceFileName);
+					Instance instance = iface.tryLoadInstance(instanceFileName);
+
+					iface.migrate(resource, instance, targetState);
+				}
+			}
+
+			else if (("jumpstate").equals(command))
+			{
+				String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
+				String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
+				String targetState = WildebeestCommand.getArg(args, "t", "targetState");
+
+				if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) || isNull(targetState))
+				{
+					WildebeestCommand.printUsage(System.out);
+				}
+				else
+				{
+					Interface iface = new Interface(this.getLogger());
+
+					Resource resource = iface.tryLoadResource(resourceFileName);
+					Instance instance = iface.tryLoadInstance(instanceFileName);
+
+					iface.jumpstate(resource, instance, targetState);
+				}
+			}
+
+			else
+			{
+				WildebeestCommand.printUsage(System.out);
+			}
 		}
 	}
 
