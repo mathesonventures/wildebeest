@@ -274,7 +274,9 @@ public class Interface
             UnknownStateSpecifiedException
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (targetState != null && "".equals(targetState.trim()))
+
+		final String stateSpecificationRegex = "[a-zA-Z0-9][a-zA-Z0-9\\- ]+[a-zA-Z0-9]";
+		if (targetState != null && !targetState.matches(stateSpecificationRegex))
 		{
             throw new InvalidStateSpecifiedException(targetState);
 		}
