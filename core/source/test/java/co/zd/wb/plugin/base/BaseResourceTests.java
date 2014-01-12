@@ -27,7 +27,6 @@ import co.zd.wb.State;
 import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationNotPossibleException;
-import co.zd.wb.StdoutLogger;
 import co.zd.wb.PrintStreamLogger;
 import java.util.List;
 import java.util.UUID;
@@ -618,7 +617,7 @@ public class BaseResourceTests
 		{
 			@Override public void invoke() throws Throwable
 			{
-				resource.jumpstate(new StdoutLogger(), null, UUID.randomUUID());
+				resource.jumpstate(new PrintStreamLogger(System.out), null, UUID.randomUUID());
 			}
 
 			@Override public void verify(IllegalArgumentException te)
@@ -638,7 +637,7 @@ public class BaseResourceTests
 		{
 			@Override public void invoke() throws Throwable
 			{
-				resource.jumpstate(new StdoutLogger(), instance, null);
+				resource.jumpstate(new PrintStreamLogger(System.out), instance, null);
 			}
 
 			@Override public void verify(IllegalArgumentException te)

@@ -108,6 +108,20 @@ public class PrintStreamLogger implements Logger
 		}
 	}
 	
+    @Override public void invalidStateSpecified(InvalidStateSpecifiedException e)
+    {
+        logLine(String.format(
+            "The state \"%s\" that was specified is not a valid Wildebeest state identifier",
+            e.getSpecifiedState()));
+    }
+    
+    @Override public void unknownStateSpecified(UnknownStateSpecifiedException e)
+    {
+        logLine(String.format(
+            "The state \"%s\" could not be found in this resource",
+            e.getSpecifiedState()));
+    }
+    
 	@Override public void migrationStart(
 		Resource resource,
 		Migration migration)

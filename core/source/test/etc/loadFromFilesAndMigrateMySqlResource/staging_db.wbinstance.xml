@@ -1,7 +1,0 @@
-<instance type="MySqlDatabase">
-	<hostName>127.0.0.1</hostName>
-	<port>3306</port>
-	<adminUsername>root</adminUsername>
-	<adminPassword>password</adminPassword>
-	<schemaName>ProductCatalogueStaging</schemaName>
-</instance>

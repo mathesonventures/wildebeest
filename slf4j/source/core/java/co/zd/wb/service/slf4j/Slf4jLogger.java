@@ -20,6 +20,7 @@ import co.zd.wb.Assertion;
 import co.zd.wb.AssertionFailedException;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.IndeterminateStateException;
+import co.zd.wb.InvalidStateSpecifiedException;
 import co.zd.wb.JumpStateFailedException;
 import co.zd.wb.Logger;
 import co.zd.wb.Migration;
@@ -27,6 +28,7 @@ import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationNotPossibleException;
 import co.zd.wb.Resource;
 import co.zd.wb.State;
+import co.zd.wb.UnknownStateSpecifiedException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -70,6 +72,20 @@ public class Slf4jLogger implements Logger
 		}
 	}
 
+    @Override public void invalidStateSpecified(InvalidStateSpecifiedException e)
+    {
+        logLine(String.format(
+            "The state \"%s\" that was specified is not a valid Wildebeest state identifier",
+            e.getSpecifiedState()));
+    }
+    
+    @Override public void unknownStateSpecified(UnknownStateSpecifiedException e)
+    {
+        logLine(String.format(
+            "The state \"%s\" could not be found in this resource",
+            e.getSpecifiedState()));
+    }
+    
 	@Override public void migrationStart(
 		Resource resource,
 		Migration migration)

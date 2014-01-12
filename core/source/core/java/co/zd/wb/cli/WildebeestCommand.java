@@ -53,7 +53,6 @@ public class WildebeestCommand
 	public WildebeestCommand()
 	{
 		this.setLogger(new PrintStreamLogger(System.out));
-		this.setInterface(new Interface(this.getLogger()));
 	}
 
 	// <editor-fold desc="Logger" defaultstate="collapsed">
@@ -61,14 +60,14 @@ public class WildebeestCommand
 	private Logger m_logger = null;
 	private boolean m_logger_set = false;
 
-	private Logger getLogger() {
+	public Logger getLogger() {
 		if(!m_logger_set) {
 			throw new IllegalStateException("logger not set.  Use the HasLogger() method to check its state before accessing it.");
 		}
 		return m_logger;
 	}
 
-	private void setLogger(
+	public void setLogger(
 		Logger value) {
 		if(value == null) {
 			throw new IllegalArgumentException("logger cannot be null");
@@ -89,43 +88,6 @@ public class WildebeestCommand
 
 	private boolean hasLogger() {
 		return m_logger_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="Interface" defaultstate="collapsed">
-
-	private Interface m_interface = null;
-	private boolean m_interface_set = false;
-
-	private Interface getInterface() {
-		if(!m_interface_set) {
-			throw new IllegalStateException("interface not set.  Use the HasInterface() method to check its state before accessing it.");
-		}
-		return m_interface;
-	}
-
-	private void setInterface(
-		Interface value) {
-		if(value == null) {
-			throw new IllegalArgumentException("interface cannot be null");
-		}
-		boolean changing = !m_interface_set || m_interface != value;
-		if(changing) {
-			m_interface_set = true;
-			m_interface = value;
-		}
-	}
-
-	private void clearInterface() {
-		if(m_interface_set) {
-			m_interface_set = true;
-			m_interface = null;
-		}
-	}
-
-	private boolean hasInterface() {
-		return m_interface_set;
 	}
 
 	// </editor-fold>
@@ -158,12 +120,14 @@ public class WildebeestCommand
 		{
 			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
 			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
+            
 			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName))
 			{
 				throw new RuntimeException("args missing");
 			}
 
-			this.getInterface().state(resourceFileName, instanceFileName);
+            Interface iface = new Interface(this.getLogger());
+			iface.state(resourceFileName, instanceFileName);
 		}
 				
 		else if ("migrate".equals(command))
@@ -171,16 +135,18 @@ public class WildebeestCommand
 			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
 			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
 			String targetState = WildebeestCommand.getArg(args, "t", "targetState");
-			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) ||
-				isNullOrWhiteSpace(targetState))
+            
+			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) || isNull(targetState))
 			{
 				throw new RuntimeException("args missing");
 			}
 
-			Resource resource = this.getInterface().tryLoadResource(resourceFileName);
-			Instance instance = this.getInterface().tryLoadInstance(instanceFileName);
+            Interface iface = new Interface(this.getLogger());
+            
+			Resource resource = iface.tryLoadResource(resourceFileName);
+			Instance instance = iface.tryLoadInstance(instanceFileName);
 
-			this.getInterface().migrate(resource, instance, targetState);
+			iface.migrate(resource, instance, targetState);
 		}
 		
 		else if (("jumpstate").equals(command))
@@ -188,16 +154,18 @@ public class WildebeestCommand
 			String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
 			String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
 			String targetState = WildebeestCommand.getArg(args, "t", "targetState");
-			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) ||
-				isNullOrWhiteSpace(targetState))
+
+			if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) || isNull(targetState))
 			{
 				throw new RuntimeException("args missing");
 			}
 
-			Resource resource = this.getInterface().tryLoadResource(resourceFileName);
-			Instance instance = this.getInterface().tryLoadInstance(instanceFileName);
+            Interface iface = new Interface(this.getLogger());
+            
+			Resource resource = iface.tryLoadResource(resourceFileName);
+			Instance instance = iface.tryLoadInstance(instanceFileName);
 
-			this.getInterface().jumpstate(resource, instance, targetState);
+			iface.jumpstate(resource, instance, targetState);
 		}
 		
 		else
@@ -239,6 +207,11 @@ public class WildebeestCommand
 		return result;
 	}
 	
+    private static boolean isNull(String value)
+    {
+        return value == null;
+    }
+    
 	private static boolean isNullOrWhiteSpace(String value)
 	{
 		return value == null ||	"".equals(value.trim());

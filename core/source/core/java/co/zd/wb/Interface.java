@@ -187,7 +187,7 @@ public class Interface
 	 * Migrates an instance of a resource to a particular state.
 	 * 
 	 * @param       resource                    the resource
-	 * @param       instanceFile                the instance to be migrated
+	 * @param       instance                    the instance
 	 * @param       targetState                 the name or unique ID of the state to which the instance should be
 	 *                                          migrated
 	 * @since                                   1.0
@@ -199,18 +199,21 @@ public class Interface
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (targetState != null && "".equals(targetState.trim()))
-		{
-			throw new IllegalArgumentException("targetState cannot be empty");
-		}
 
-		UUID targetStateId = getTargetStateId(resource, targetState);
-		
 		// Perform migration
 		try
 		{
+            UUID targetStateId = getTargetStateId(resource, targetState);
 			resource.migrate(this.getLogger(), instance, targetStateId);
 		}
+        catch (InvalidStateSpecifiedException e)
+        {
+            this.getLogger().invalidStateSpecified(e);
+        }
+        catch(UnknownStateSpecifiedException e)
+        {
+            this.getLogger().unknownStateSpecified(e);
+        }
 		catch (IndeterminateStateException ex)
 		{
 			this.getLogger().indeterminateState(ex);
@@ -241,12 +244,19 @@ public class Interface
 			throw new IllegalArgumentException("targetState cannot be empty");
 		}
 
-		UUID targetStateId = getTargetStateId(resource, targetState);
-
 		try
 		{
+            UUID targetStateId = getTargetStateId(resource, targetState);
 			resource.jumpstate(this.getLogger(), instance, targetStateId);
 		}
+        catch (InvalidStateSpecifiedException e)
+        {
+            this.getLogger().invalidStateSpecified(e);
+        }
+        catch(UnknownStateSpecifiedException e)
+        {
+            this.getLogger().unknownStateSpecified(e);
+        }
 		catch (AssertionFailedException e)
 		{
 			this.getLogger().assertionFailed(e);
@@ -259,12 +269,14 @@ public class Interface
 	
 	private static UUID getTargetStateId(
 		Resource resource,
-		String targetState)
+		String targetState) throws
+            InvalidStateSpecifiedException,
+            UnknownStateSpecifiedException
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (targetState != null && "".equals(targetState.trim()))
 		{
-			throw new IllegalArgumentException("targetState cannot be empty");
+            throw new InvalidStateSpecifiedException(targetState);
 		}
 
 		UUID targetStateId = null;
@@ -278,6 +290,12 @@ public class Interface
 			{
 				targetStateId = resource.stateIdForLabel(targetState);
 			}
+            
+            // If we still could not find the specified state, then throw
+            if (targetStateId == null)
+            {
+                throw new UnknownStateSpecifiedException(targetState);
+            }
 		}
 		
 		return targetStateId;

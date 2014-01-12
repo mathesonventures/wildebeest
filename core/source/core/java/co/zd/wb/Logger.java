@@ -43,6 +43,21 @@ public interface Logger
 		Assertion assertion,
 		AssertionResponse response);
 	
+    /**
+     * Logs that the target state specified in a migrate or jumpstate command was not a valid Wildebeest state
+     * specifier.
+     * 
+	 * @param       e                           the {@link InvalidStateSpecifiedException} that was thrown.
+     */
+    void invalidStateSpecified(InvalidStateSpecifiedException e);
+    
+    /**
+     * Logs that the target state specified in a migrate or jumpstate command could not be found in the resource.
+     * 
+	 * @param       e                           the {@link UnknownStateSpecifiedException} that was thrown.
+     */
+    void unknownStateSpecified(UnknownStateSpecifiedException e);
+
 	/**
 	 * Logs that a {@link Migration} has been started.
 	 * 
