@@ -102,6 +102,8 @@ public class WildebeestCommand
 	{
 		if(args == null) { throw new IllegalArgumentException("args cannot be null"); }
 		
+		WildebeestCommand.printBanner(System.out);
+		
 		if (args.length == 0)
 		{
 			WildebeestCommand.printUsage(System.out);
@@ -215,6 +217,23 @@ public class WildebeestCommand
 	private static boolean isNullOrWhiteSpace(String value)
 	{
 		return value == null ||	"".equals(value.trim());
+	}
+	
+	private static void printBanner(PrintStream out)
+	{
+		if (out == null) { throw new IllegalArgumentException("out cannot be null"); }
+		
+		out.println("            _  _     _       _");
+		out.println("           |_|| |   | |     | |                      _");
+		out.println(" __      __ _ | | __| | ___ | |__   ___   ___  ___ _| |_");
+		out.println(" \\ \\ /\\ / /| || |/ _` |/ _ \\| '_ \\ / _ \\ / _ \\/ __|_   _|");
+		out.println("  \\ v  v / | || | (_| |  __/| |_) |  __/|  __/\\__ \\ | |");
+		out.println("   \\_/\\_/  |_||_|\\__,_|\\___||_.__/ \\___| \\___||___/ |_|");
+		out.println("");
+		
+		About about = new About();
+		out.println("Version " + about.getVersionFullDotted() + ", " + about.getCopyrightAssertion());
+		out.println("");
 	}
 	
 	private static void printUsage(PrintStream out)
