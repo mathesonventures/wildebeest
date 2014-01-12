@@ -1,5 +1,5 @@
 // Wildebeest Migration Framework
-// Copyright 2013, Zen Digital Co Inc
+// Copyright 2013 - 2014, Zen Digital Co Inc
 //
 // This file is part of Wildebeest
 //
@@ -32,10 +32,10 @@ import co.zd.wb.UnknownStateSpecifiedException;
 import org.slf4j.LoggerFactory;
 
 /**
- * A {@link Logger} that sends messages to Log4J.
+ * A {@link Logger} that sends messages to SLF4J.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.0
+ * @since                                       3.0
  */
 public class Slf4jLogger implements Logger
 {
