@@ -1,0 +1,7 @@
+<instance type="PostgreSqlDatabase">
+	<hostName>127.0.0.1</hostName>
+	<port>5432</port>
+	<adminUsername>wb</adminUsername>
+	<adminPassword>password</adminPassword>
+	<databaseName>ProductCatalogueStaging</databaseName>
+</instance>

@@ -1,8 +1,9 @@
-package co.zd.wb.plugin.postgresql;
+package co.zd.wb.postgresql;
 
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.zd.wb.plugin.database.DatabaseHelper;
+import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import java.sql.SQLException;
 import java.util.UUID;
 import junit.framework.Assert;

@@ -20,6 +20,7 @@ import co.zd.wb.service.AssertionBuilder;
 import co.zd.wb.service.InstanceBuilder;
 import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.MigrationBuilder;
+import co.zd.wb.service.dom.ansisql.AnsiSqlCreateDatabaseDomMigrationBuilder;
 import co.zd.wb.service.dom.database.RowDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.database.RowExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlCreateDatabaseDomMigrationBuilder;
@@ -30,6 +31,8 @@ import co.zd.wb.service.dom.mysql.MySqlDatabaseDomResourceBuilder;
 import co.zd.wb.service.dom.mysql.MySqlDatabaseExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlTableDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlTableExistsDomAssertionBuilder;
+import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomInstanceBuilder;
+import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourceBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerCreateDatabaseDomMigrationBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerCreateSchemaDomMigrationBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDoesNotExistDomAssertionBuilder;
@@ -58,6 +61,7 @@ public class DomPlugins
 		
 		result.put("MySqlDatabase", new MySqlDatabaseDomResourceBuilder());
 		result.put("SqlServerDatabase", new SqlServerDatabaseDomResourceBuilder());
+		result.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourceBuilder());
 		
 		return result;
 	}
@@ -90,9 +94,12 @@ public class DomPlugins
 	public static Map<String, MigrationBuilder> migrationBuilders()
 	{
 		Map<String, MigrationBuilder> result = new HashMap<String, MigrationBuilder>();
-		
+
 		// Database
 		result.put("SqlScript", new SqlScriptDomMigrationBuilder());
+
+		// AnsiSql
+		result.put("AnsiSqlCreateDatabase", new AnsiSqlCreateDatabaseDomMigrationBuilder());
 		
 		// MySql
 		result.put("MySqlCreateDatabase", new MySqlCreateDatabaseDomMigrationBuilder());
@@ -111,6 +118,7 @@ public class DomPlugins
 		
 		result.put("MySqlDatabase", new MySqlDatabaseDomInstanceBuilder());
 		result.put("SqlServerDatabase", new SqlServerDatabaseDomInstanceBuilder());
+		result.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomInstanceBuilder());
 		
 		return result;
 	}

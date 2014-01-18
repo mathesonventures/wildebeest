@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom.mysql;
+package co.zd.wb.service.dom.postgresql;
 
 import co.zd.wb.Instance;
-import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
+import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import co.zd.wb.service.Messages;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.V;
@@ -25,12 +25,12 @@ import co.zd.wb.service.dom.BaseDomInstanceBuilder;
 import co.zd.wb.service.dom.TryGetResult;
 
 /**
- * An {@link InstanceBuilder} that builds a {@link MySqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
+ * An {@link InstanceBuilder} that builds a {@link PostgreSqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
  * 
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
+public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
 	@Override public Instance build() throws MessagesException
 	{
@@ -40,20 +40,20 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		TryGetResult<String> adminPassword = this.tryGetString("adminPassword");
 		TryGetResult<String> databaseName = this.tryGetString("databaseName");
 		TryGetResult<String> stateTableName = this.tryGetString("stateTableName");
-		
+
 		Messages messages = new Messages();
-		if (!hostName.hasValue()) { V.elementMissing(messages, null, "hostName", MySqlDatabaseInstance.class); }
-		if (!port.hasValue()) { V.elementMissing(messages, null, "port", MySqlDatabaseInstance.class); }
-		if (!adminUsername.hasValue()) { V.elementMissing(messages, null, "adminUsername", MySqlDatabaseInstance.class); }
-		if (!adminPassword.hasValue()) { V.elementMissing(messages, null, "adminPassword", MySqlDatabaseInstance.class); }
-		if (!databaseName.hasValue()) { V.elementMissing(messages, null, "databaseName", MySqlDatabaseInstance.class); }
+		if (!hostName.hasValue()) { V.elementMissing(messages, null, "hostName", PostgreSqlDatabaseInstance.class); }
+		if (!port.hasValue()) { V.elementMissing(messages, null, "port", PostgreSqlDatabaseInstance.class); }
+		if (!adminUsername.hasValue()) { V.elementMissing(messages, null, "adminUsername", PostgreSqlDatabaseInstance.class); }
+		if (!adminPassword.hasValue()) { V.elementMissing(messages, null, "adminPassword", PostgreSqlDatabaseInstance.class); }
+		if (!databaseName.hasValue()) { V.elementMissing(messages, null, "databaseName", PostgreSqlDatabaseInstance.class); }
 
 		if (messages.size() > 0)
 		{
 			throw new MessagesException(messages);
 		}
-		
-		Instance result = new MySqlDatabaseInstance(
+
+		Instance result = new PostgreSqlDatabaseInstance(
 			hostName.getValue(),
 			port.getValue(),
 			adminUsername.getValue(),

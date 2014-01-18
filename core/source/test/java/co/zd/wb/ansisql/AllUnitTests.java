@@ -14,24 +14,15 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb;
+package co.zd.wb.ansisql;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-/**
- *
- * @author brendonm
- */
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
-	co.zd.wb.ansisql.AllUnitTests.class,
-	co.zd.wb.plugin.base.AllUnitTests.class,
-	co.zd.wb.plugin.database.AllUnitTests.class,
-	co.zd.wb.plugin.mysql.AllUnitTests.class,
-	co.zd.wb.postgresql.AllUnitTests.class,
-	co.zd.wb.plugin.sqlserver.AllUnitTests.class
+	AnsiSqlDomServiceUnitTests.class
 })
 public class AllUnitTests
 {
