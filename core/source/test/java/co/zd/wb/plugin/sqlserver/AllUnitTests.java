@@ -22,10 +22,10 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
+	SqlServerPluginUnitTests.class,
+	
 	// Database
 	SqlServerCreateDatabaseMigrationTests.class,
-	SqlServerDatabaseDoesNotExistAssertionTests.class,
-	SqlServerDatabaseExistsAssertionTests.class,
 	
 	// Schema
 	SqlServerCreateSchemaMigrationTests.class,

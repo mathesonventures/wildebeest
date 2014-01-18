@@ -27,21 +27,17 @@ import co.zd.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.database.RowDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.database.RowExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlCreateDatabaseDomMigrationBuilder;
-import co.zd.wb.service.dom.mysql.MySqlDatabaseDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.database.SqlScriptDomMigrationBuilder;
 import co.zd.wb.service.dom.mysql.MySqlDatabaseDomInstanceBuilder;
 import co.zd.wb.service.dom.mysql.MySqlDatabaseDomResourceBuilder;
-import co.zd.wb.service.dom.mysql.MySqlDatabaseExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlTableDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlTableExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomInstanceBuilder;
 import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourceBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerCreateDatabaseDomMigrationBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerCreateSchemaDomMigrationBuilder;
-import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomInstanceBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomResourceBuilder;
-import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDropSchemaDomMigrationBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerSchemaDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerSchemaExistsDomAssertionBuilder;
@@ -80,16 +76,12 @@ public class DomPlugins
 		result.put("RowDoesNotExist", new RowDoesNotExistDomAssertionBuilder());
 		
 		// MySql
-		result.put("MySqlDatabaseDoesNotExist", new MySqlDatabaseDoesNotExistDomAssertionBuilder());
-		result.put("MySqlDatabaseExists", new MySqlDatabaseExistsDomAssertionBuilder());
 		result.put("MySqlTableDoesNotExist", new MySqlTableDoesNotExistDomAssertionBuilder());
 		result.put("MySqlTableExists", new MySqlTableExistsDomAssertionBuilder());
-		
+
 		// SqlServer
 		result.put("SqlServerSchemaDoesNotExist", new SqlServerSchemaDoesNotExistDomAssertionBuilder());
 		result.put("SqlServerSchemaExists", new SqlServerSchemaExistsDomAssertionBuilder());
-		result.put("SqlServerDatabaseDoesNotExist", new SqlServerDatabaseDoesNotExistDomAssertionBuilder());
-		result.put("SqlServerDatabaseExists", new SqlServerDatabaseExistsDomAssertionBuilder());
 		result.put("SqlServerTableDoesNotExist", new SqlServerTableDoesNotExistDomAssertionBuilder());
 		result.put("SqlServerTableExists", new SqlServerTableExistsDomAssertionBuilder());
 

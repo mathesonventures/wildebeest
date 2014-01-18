@@ -233,4 +233,16 @@ public class MySqlProperties
 	}
 
 	// </editor-fold>
+	
+	public MySqlDatabaseInstance toInstance(
+		String databaseName)
+	{
+		return new MySqlDatabaseInstance(
+			this.getHostName(),
+			this.getPort(),
+			this.getUsername(),
+			this.getPassword(),
+			databaseName,
+			null);
+	}
 }

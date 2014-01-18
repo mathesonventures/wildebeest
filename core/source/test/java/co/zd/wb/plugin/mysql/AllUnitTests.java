@@ -23,11 +23,10 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses(
 {
 	MySqlCreateDatabaseMigrationTests.class,
-	MySqlDatabaseDoesNotExistAssertionTests.class,
-	MySqlDatabaseExistsAssertionTests.class,
 	MySqlDatabaseResourceTests.class,
 	MySqlTableDoesNotExistAssertionTests.class,
 	MySqlTableExistsAssertionTests.class,
+	MySqlPluginUnitTests.class,
 	SqlScriptMigrationTests.class
 })
 public class AllUnitTests

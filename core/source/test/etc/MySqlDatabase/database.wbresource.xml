@@ -5,7 +5,7 @@
 
 		<state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" label="Database Created">
 			<assertions>
-				<assertion type="MySqlDatabaseExists" id="19b64fb6-f95f-4221-bc64-303f62a3eda8" />
+				<assertion type="DatabaseExists" id="19b64fb6-f95f-4221-bc64-303f62a3eda8" />
 			</assertions>
 		</state>
 

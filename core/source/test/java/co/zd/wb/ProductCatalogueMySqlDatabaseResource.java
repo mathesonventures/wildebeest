@@ -584,7 +584,7 @@ public class ProductCatalogueMySqlDatabaseResource
 		String resourceXml = FixtureCreator.create()
 			.resource("MySqlDatabase", resourceId, "Product Catalogue Database")
 				.state(stateIdDatabaseCreated, "Database created")
-					.assertion("MySqlDatabaseExists", assertionIdDatabaseExists)
+					.assertion("DatabaseExists", assertionIdDatabaseExists)
 				.state(stateIdCoreSchemaLoadedId, "Core Schema Loaded")
 					.assertion("MySqlTableExists", assertionIdProductTypeTableExists)
 						.innerXml("<tableName>ProductType</tableName>")
