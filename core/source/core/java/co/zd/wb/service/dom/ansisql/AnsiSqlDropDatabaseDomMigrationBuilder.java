@@ -14,16 +14,28 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.ansisql;
+package co.zd.wb.service.dom.ansisql;
 
-import co.zd.wb.plugin.database.DatabaseInstance;
+import co.zd.wb.Migration;
+import co.zd.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
+import co.zd.wb.service.MessagesException;
+import co.zd.wb.service.dom.BaseDomMigrationBuilder;
+import java.util.UUID;
 
 /**
- * Marker interface for tagging DatabaseIntance implementations that represent ANSI-compliant database systems.
+ * A {@link MigrationBuilder} that builds a {@link AnsiSqlDropDatabaseMigration} from a DOM
+ * {@link org.w3c.dom.Element}.
  * 
  * @author                                      Brendon Matheson
- * @since                                       4.0
+ * @since                                       1.0
  */
-public interface AnsiSqlDatabaseInstance extends DatabaseInstance
+public class AnsiSqlDropDatabaseDomMigrationBuilder extends BaseDomMigrationBuilder
 {
+	@Override public Migration build(
+		UUID migrationId,
+		UUID fromStateId,
+		UUID toStateId) throws MessagesException
+	{
+		return new AnsiSqlDropDatabaseMigration(migrationId, fromStateId, toStateId);
+	}
 }

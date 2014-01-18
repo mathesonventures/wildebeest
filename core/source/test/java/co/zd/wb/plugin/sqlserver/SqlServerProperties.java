@@ -320,4 +320,17 @@ public class SqlServerProperties
 	}
 
 	// </editor-fold>
+	
+	public SqlServerDatabaseInstance toInstance(
+		String databaseName)
+	{
+		return new SqlServerDatabaseInstance(
+			this.getHostName(),
+			this.hasInstanceName() ? this.getInstanceName() : null,
+			this.getPort(),
+			this.getUsername(),
+			this.getPassword(),
+			databaseName,
+			null);
+	}
 }

@@ -25,30 +25,30 @@ import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
 /**
- * An {@link Assertion} that verifies that a database exists.
+ * An {@link Assertion} that verifies that a database does not exist.
  * 
  * @author                                      Brendon Matheson
- * @since                                       4.0
+ * @since                                       1.0
  */
-public class DatabaseExistsAssertion extends BaseAssertion
+public class DatabaseDoesNotExistAssertion extends BaseAssertion
 {
 	/**
-	 * Creates a new DatabaseExistsAssertion.
+	 * Creates a new MySqlDatabaseDoesNotExistAssertion
 	 * 
 	 * @param       assertionId                 the ID of the new assertion.
 	 * @param       seqNum                      the ordinal index of the new assertion within it's containing set.
-	 * @since                                   4.0
+	 * @since                                   1.0
 	 */
-	public DatabaseExistsAssertion(
+	public DatabaseDoesNotExistAssertion(
 		UUID assertionId,
 		int seqNum)
 	{
 		super(assertionId, seqNum);
 	}
-	
+
 	@Override public String getDescription()
 	{
-		return "Database exists";
+		return "Database does not exist";
 	}
 	
 	@Override public boolean canPerformOn(Resource resource)
@@ -68,11 +68,11 @@ public class DatabaseExistsAssertion extends BaseAssertion
 		
 		if (db.databaseExists())
 		{
-			result = new ImmutableAssertionResponse(true, "Database " + db.getDatabaseName() + " exists");
+			result = new ImmutableAssertionResponse(false, "Database " + db.getDatabaseName() + " exists");
 		}
 		else
 		{
-			result = new ImmutableAssertionResponse(false, "Database " + db.getDatabaseName() + " does not exist");
+			result = new ImmutableAssertionResponse(true, "Database " + db.getDatabaseName() + " does not exist");
 		}
 		
 		return result;

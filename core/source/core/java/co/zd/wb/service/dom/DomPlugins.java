@@ -21,6 +21,9 @@ import co.zd.wb.service.InstanceBuilder;
 import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.MigrationBuilder;
 import co.zd.wb.service.dom.ansisql.AnsiSqlCreateDatabaseDomMigrationBuilder;
+import co.zd.wb.service.dom.ansisql.AnsiSqlDropDatabaseDomMigrationBuilder;
+import co.zd.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
+import co.zd.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.database.RowDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.database.RowExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlCreateDatabaseDomMigrationBuilder;
@@ -71,6 +74,8 @@ public class DomPlugins
 		Map<String, AssertionBuilder> result = new HashMap<String, AssertionBuilder>();
 		
 		// Database
+		result.put("DatabaseExists", new DatabaseExistsDomAssertionBuilder());
+		result.put("DatabaseDoesNotExist", new DatabaseDoesNotExistDomAssertionBuilder());
 		result.put("RowExists", new RowExistsDomAssertionBuilder());
 		result.put("RowDoesNotExist", new RowDoesNotExistDomAssertionBuilder());
 		
@@ -100,6 +105,7 @@ public class DomPlugins
 
 		// AnsiSql
 		result.put("AnsiSqlCreateDatabase", new AnsiSqlCreateDatabaseDomMigrationBuilder());
+		result.put("AnsiSqlDropDatabase", new AnsiSqlDropDatabaseDomMigrationBuilder());
 		
 		// MySql
 		result.put("MySqlCreateDatabase", new MySqlCreateDatabaseDomMigrationBuilder());
@@ -121,5 +127,37 @@ public class DomPlugins
 		result.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomInstanceBuilder());
 		
 		return result;
+	}
+	
+	/**
+	 * Returns a {@link DomResourceLoader} for the supplied resource XML, configured with the standard builders.
+	 * 
+	 * @param       resourceXml                 the &lt;resource&gt; XML to be loaded by the DomResourceLoader.
+	 * @return                                  a DomResourceLoader configured with the standard builders.
+	 * @since                                   4.0
+	 */
+	public static DomResourceLoader resourceLoader(
+		String resourceXml)
+	{
+		return new DomResourceLoader(
+			DomPlugins.resourceBuilders(),
+			DomPlugins.assertionBuilders(),
+			DomPlugins.migrationBuilders(),
+			resourceXml);
+	}
+	
+	/**
+	 * Returns a {@link DomInstanceLoader} for the supplied instance XML, configured with the standard builders.
+	 * 
+	 * @param       instanceXml                 the &lt;instance&gt; XML to be loaded by the DomInstanceLoader.
+	 * @return                                  a DomInstanceLoader configured with the standard builders.
+	 * @since                                   4.0
+	 */
+	public static DomInstanceLoader instanceLoader(
+		String instanceXml)
+	{
+		return new DomInstanceLoader(
+			DomPlugins.instanceBuilders(),
+			instanceXml);
 	}
 }

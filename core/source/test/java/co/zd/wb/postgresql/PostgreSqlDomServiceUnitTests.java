@@ -22,17 +22,10 @@ import co.zd.wb.Resource;
 import co.zd.wb.fixturecreator.FixtureCreator;
 import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseResource;
-import co.zd.wb.service.AssertionBuilder;
-import co.zd.wb.service.InstanceBuilder;
 import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.MigrationBuilder;
-import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.dom.DomInstanceLoader;
+import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
-import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomInstanceBuilder;
-import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourceBuilder;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,14 +52,7 @@ public class PostgreSqlDomServiceUnitTests
 			.resource("PostgreSqlDatabase", resourceId, resourceName)
 			.render();
 		
-		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
-		resourceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourceBuilder());
-		
-		DomResourceLoader loader = new DomResourceLoader(
-			resourceBuilders,
-			new HashMap<String, AssertionBuilder>(),
-			new HashMap<String, MigrationBuilder>(),
-			resourceXml);
+		DomResourceLoader loader = DomPlugins.resourceLoader(resourceXml);
 		
 		//
 		// Execute
@@ -103,12 +89,7 @@ public class PostgreSqlDomServiceUnitTests
 			.append("<databaseName>ProductCatalogueStaging</databaseName>\n")
 			.append("</instance>");
 
-		Map<String, InstanceBuilder> instanceBuilders = new HashMap<String, InstanceBuilder>();
-		instanceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomInstanceBuilder());
-
-		DomInstanceLoader loader = new DomInstanceLoader(
-			instanceBuilders,
-			xml.toString());
+		DomInstanceLoader loader = DomPlugins.instanceLoader(xml.toString());
 		
 		//
 		// Execute

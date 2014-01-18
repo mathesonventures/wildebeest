@@ -33,24 +33,14 @@ public class SqlServerCreateSchemaMigrationTests
 		// Setup
 		//
 
-		SqlServerProperties p = SqlServerProperties.get();
+		String databaseName = DatabaseFixtureHelper.databaseName();
+		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
 
 		// Create the database
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			null,
 			UUID.randomUUID());
-
-		String databaseName = DatabaseFixtureHelper.databaseName();
-
-		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
-			p.getHostName(),
-			p.hasInstanceName() ? p.getInstanceName() : null,
-			p.getPort(),
-			p.getUsername(),
-			p.getPassword(),
-			databaseName,
-			null);
 		
 		createDatabase.perform(instance);
 		
@@ -91,7 +81,8 @@ public class SqlServerCreateSchemaMigrationTests
 		// Fixture Setup
 		//
 
-		SqlServerProperties p = SqlServerProperties.get();
+		String databaseName = DatabaseFixtureHelper.databaseName();
+		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
 
 		// Create the database
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
@@ -99,17 +90,6 @@ public class SqlServerCreateSchemaMigrationTests
 			null,
 			UUID.randomUUID());
 
-		String databaseName = DatabaseFixtureHelper.databaseName();
-
-		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
-			p.getHostName(),
-			p.hasInstanceName() ? p.getInstanceName() : null,
-			p.getPort(),
-			p.getUsername(),
-			p.getPassword(),
-			databaseName,
-			null);
-		
 		createDatabase.perform(instance);
 		
 		// Setup the migration

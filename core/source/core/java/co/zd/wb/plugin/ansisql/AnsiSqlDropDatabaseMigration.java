@@ -23,20 +23,19 @@ import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.BaseMigration;
 import co.zd.wb.plugin.database.DatabaseHelper;
-import co.zd.wb.plugin.database.DatabaseInstance;
 import co.zd.wb.plugin.database.DatabaseResource;
 import java.sql.SQLException;
 import java.util.UUID;
 
 /**
- * A {@link Migration} that creates a database using ANSI-standard SQL statements.
+ * A {@link Migration} that drops a database using ANSI-standard SQL statements.
  * 
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class AnsiSqlCreateDatabaseMigration extends BaseMigration
+public class AnsiSqlDropDatabaseMigration extends BaseMigration
 {
-    public AnsiSqlCreateDatabaseMigration(
+    public AnsiSqlDropDatabaseMigration(
         UUID migrationId,
         UUID fromStateId,
         UUID toStateId)
@@ -57,18 +56,18 @@ public class AnsiSqlCreateDatabaseMigration extends BaseMigration
 		AnsiSqlDatabaseInstance db = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a AnsiSqlDatabaseInstance"); }
 
-		if (db.databaseExists())
+		if (!db.databaseExists())
 		{
 			throw new MigrationFailedException(
 				this.getMigrationId(),
-				String.format("database \"%s\" already exists", db.getDatabaseName()));
+				String.format("database \"%s\" does not exist",	db.getDatabaseName()));
 		}
 		
 		try
 		{
 			DatabaseHelper.execute(
 				db.getAdminDataSource(),
-				String.format("CREATE DATABASE %s;", db.getDatabaseName()));
+				String.format("DROP DATABASE %s;", db.getDatabaseName()));
 		}
 		catch (SQLException e)
 		{

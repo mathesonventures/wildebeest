@@ -14,16 +14,27 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.ansisql;
+package co.zd.wb.service.dom.database;
 
-import co.zd.wb.plugin.database.DatabaseInstance;
+import co.zd.wb.Assertion;
+import co.zd.wb.plugin.database.DatabaseDoesNotExistAssertion;
+import co.zd.wb.service.MessagesException;
+import co.zd.wb.service.dom.BaseDomAssertionBuilder;
+import java.util.UUID;
 
 /**
- * Marker interface for tagging DatabaseIntance implementations that represent ANSI-compliant database systems.
+ * An {@link AssertionBuilder} that builds a {@link DatabaseDoesNotExistAssertion} from a DOM
+ * {@link org.w3c.dom.Element}.
  * 
  * @author                                      Brendon Matheson
- * @since                                       4.0
+ * @since                                       1.0
  */
-public interface AnsiSqlDatabaseInstance extends DatabaseInstance
+public class DatabaseDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 {
+	@Override public Assertion build(
+		UUID assertionId,
+		int seqNum) throws MessagesException
+	{
+		return new DatabaseDoesNotExistAssertion(assertionId, seqNum);
+	}
 }

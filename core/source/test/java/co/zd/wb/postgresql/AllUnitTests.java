@@ -23,7 +23,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses(
 {
 	PostgreSqlDomServiceUnitTests.class,
-	PostgreSqlMigrationUnitTests.class
+	PostgreSqlPluginUnitTests.class
 })
 public class AllUnitTests
 {

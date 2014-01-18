@@ -16,11 +16,11 @@
 
 package co.zd.wb.postgresql;
 
-import co.zd.wb.AssertionResponse;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
-import co.zd.wb.plugin.database.DatabaseExistsAssertion;
+import co.zd.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
 import co.zd.wb.plugin.database.DatabaseHelper;
+import co.zd.wb.plugin.database.TemplatePluginUnitTests;
 import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -33,7 +33,7 @@ import org.junit.Test;
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class PostgreSqlMigrationUnitTests
+public class PostgreSqlPluginUnitTests extends TemplatePluginUnitTests
 {
 	@Test public void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException
 	{
@@ -87,13 +87,8 @@ public class PostgreSqlMigrationUnitTests
 		
 	}
 	
-	@Test public void databaseExistsAssertionSucceeds() throws MigrationFailedException
+	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		
-		//
-		// Setup
-		//
-		
 		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
@@ -102,48 +97,65 @@ public class PostgreSqlMigrationUnitTests
 			"SkyfallTest",
 			null);
 		
-		AnsiSqlCreateDatabaseMigration m = new AnsiSqlCreateDatabaseMigration(
+		AnsiSqlCreateDatabaseMigration create = new AnsiSqlCreateDatabaseMigration(
+			UUID.randomUUID(),
+			UUID.randomUUID(),
+			UUID.randomUUID());
+		
+		AnsiSqlDropDatabaseMigration drop = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			UUID.randomUUID());
 
-		DatabaseExistsAssertion databaseExists = new DatabaseExistsAssertion(
+		this.databaseExistsAssertionForExistentDatabase(db, create, drop);
+	}
+	
+	@Override @Test public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
+	{
+		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
+			"127.0.0.1",
+			5432,
+			"postgres",
+			"password",
+			"SkyfallTest",
+			null);
+
+		this.databaseExistsAssertionForNonExistentDatabase(db);
+	}
+	
+	@Override @Test public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
+	{
+		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
+			"127.0.0.1",
+			5432,
+			"postgres",
+			"password",
+			"SkyfallTest",
+			null);
+		
+		AnsiSqlCreateDatabaseMigration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			0);
+			UUID.randomUUID(),
+			UUID.randomUUID());
 		
-		try
-		{
-			// Use the migration to create the database
-			m.perform(db);
+		AnsiSqlDropDatabaseMigration drop = new AnsiSqlDropDatabaseMigration(
+			UUID.randomUUID(),
+			UUID.randomUUID(),
+			UUID.randomUUID());
+
+		this.databaseDoesNotExistAssertionForExistentDatabase(db, create, drop);
+	}
+	
+	@Override @Test public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException
+	{
+		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
+			"127.0.0.1",
+			5432,
+			"postgres",
+			"password",
+			"SkyfallTest",
+			null);
 		
-			//
-			// Execute
-			//
-
-			AssertionResponse response = databaseExists.perform(db);
-
-			//
-			// Verify
-			//
-
-			Assert.assertNotNull("response", response);
-			Assert.assertEquals("response.message", "Database SkyfallTest exists", response.getMessage());
-			Assert.assertTrue("respnse.result", response.getResult());
-			
-		}
-		finally
-		{
-			try
-			{
-				DatabaseHelper.execute(
-					db.getAdminDataSource(),
-					"DROP DATABASE skyfalltest");
-			}
-			catch (SQLException e)
-			{
-				throw new RuntimeException(e);
-			}
-		}
-		
+		this.databaseDoesNotExistAssertionForNonExistentDatabase(db);
 	}
 }
