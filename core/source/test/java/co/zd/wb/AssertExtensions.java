@@ -212,7 +212,7 @@ public class AssertExtensions
 		int expectedPort,
 		String expectedAdminUsername,
 		String expectedAdminPassword,
-		String expectedSchemaName,
+		String expectedDatabaseName,
 		Instance actual,
 		String name)
 	{
@@ -234,6 +234,6 @@ public class AssertExtensions
 		Assert.assertEquals("port", expectedPort, db.getPort());
 		Assert.assertEquals("adminUsername", expectedAdminUsername, db.getAdminUsername());
 		Assert.assertEquals("adminPassword", expectedAdminPassword, db.getAdminPassword());
-		Assert.assertEquals("schemaName", expectedSchemaName, db.getSchemaName());
+		Assert.assertEquals("databaseName", expectedDatabaseName, db.getDatabaseName());
 	}
 }

@@ -67,7 +67,7 @@ public class SqlServerCreateDatabaseMigration extends BaseMigration
 
 		try
 		{
-			DatabaseHelper.execute(db.getMasterDataSource(), new StringBuilder()
+			DatabaseHelper.execute(db.getAdminDataSource(), new StringBuilder()
 				.append("CREATE DATABASE [").append(db.getDatabaseName()).append("];").toString());
 		}
 		catch(SQLServerException e)

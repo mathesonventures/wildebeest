@@ -23,7 +23,6 @@ import co.zd.wb.Instance;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationFaultException;
 import co.zd.wb.Resource;
-import co.zd.wb.plugin.database.DatabaseInstance;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -57,7 +56,7 @@ public class MySqlCreateDatabaseMigration extends BaseMigration
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		
-		return ModelExtensions.As(resource, DatabaseInstance.class) != null;
+		return ModelExtensions.As(resource, MySqlDatabaseInstance.class) != null;
 	}
 
 	@Override public void perform(Instance instance) throws MigrationFailedException
@@ -66,17 +65,17 @@ public class MySqlCreateDatabaseMigration extends BaseMigration
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
 
-		if (MySqlDatabaseHelper.schemaExists(db))
+		if (db.databaseExists())
 		{
 			throw new MigrationFailedException(
 				this.getMigrationId(),
-				String.format("database \"%s\" already exists",	db.getSchemaName()));
+				String.format("database \"%s\" already exists",	db.getDatabaseName()));
 		}
 		
 		try
 		{
-			DatabaseHelper.execute(db.getInfoDataSource(), new StringBuilder()
-				.append("CREATE DATABASE `").append(db.getSchemaName()).append("`;").toString());
+			DatabaseHelper.execute(db.getAdminDataSource(), new StringBuilder()
+				.append("CREATE DATABASE `").append(db.getDatabaseName()).append("`;").toString());
 		}
 		catch (SQLException e)
 		{

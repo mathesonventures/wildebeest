@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.mysql;
+package co.zd.wb.plugin.postgresql;
 
-import co.zd.wb.plugin.database.DatabaseHelper;
-import java.sql.SQLException;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class MySqlUtil
+@RunWith(Suite.class)
+@Suite.SuiteClasses(
 {
-	public static void dropDatabase(
-		MySqlDatabaseInstance instance,
-		String databaseName) throws SQLException
-	{
-		DatabaseHelper.execute(instance.getAdminDataSource(), "DROP DATABASE `" + databaseName + "`;");
-	}
+	PostgreSqlMigrationUnitTests.class
+})
+public class AllUnitTests
+{
 }

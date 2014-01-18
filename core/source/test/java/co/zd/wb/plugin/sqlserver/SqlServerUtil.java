@@ -28,7 +28,7 @@ public class SqlServerUtil
 		if (instance == null) { throw new ArgumentNullException("instance"); }
 
 		DatabaseHelper.execute(
-			instance.getMasterDataSource(),
+			instance.getAdminDataSource(),
 			"CREATE DATABASE [" + instance.getDatabaseName() + "]");
 	}
 	
@@ -38,7 +38,7 @@ public class SqlServerUtil
 		try
 		{
 			DatabaseHelper.execute(
-				instance.getMasterDataSource(),
+				instance.getAdminDataSource(),
 				"DROP DATABASE [" + instance.getDatabaseName() + "];");
 		}
 		catch (SQLException ex)

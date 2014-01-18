@@ -66,7 +66,7 @@ public class SqlServerDatabaseExistsAssertion extends BaseAssertion
 		
 		AssertionResponse result = null;
 	
-		if (SqlServerDatabaseHelper.databaseExists(db))
+		if (db.databaseExists())
 		{
 			result = new ImmutableAssertionResponse(true, "Database " + db.getDatabaseName() + " exists");
 		}

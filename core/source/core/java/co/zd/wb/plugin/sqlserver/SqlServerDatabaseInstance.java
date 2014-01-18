@@ -16,10 +16,16 @@
 
 package co.zd.wb.plugin.sqlserver;
 
+import co.zd.wb.FaultException;
 import co.zd.wb.Instance;
 import co.zd.wb.plugin.database.DatabaseConstants;
+import co.zd.wb.plugin.database.DatabaseHelper;
 import co.zd.wb.plugin.database.DatabaseInstance;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.sql.DataSource;
 
 /**
@@ -282,14 +288,12 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 	private String _databaseName = null;
 	private boolean _databaseName_set = false;
 
-	/**
-	 * Returns the name of the database for this instance.
-	 * 
-	 * @since                                   2.0
-	 */
 	public String getDatabaseName() {
 		if(!_databaseName_set) {
-			throw new IllegalStateException("databaseName not set.  Use the HasDatabaseName() method to check its state before accessing it.");
+			throw new IllegalStateException("databaseName not set.");
+		}
+		if(_databaseName == null) {
+			throw new IllegalStateException("databaseName should not be null");
 		}
 		return _databaseName;
 	}
@@ -361,7 +365,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 	 * 
 	 * @since                                   2.0
 	 */
-	public DataSource getMasterDataSource()
+	@Override public DataSource getAdminDataSource()
 	{
 		SQLServerDataSource result = new SQLServerDataSource();
 		result.setServerName(this.getHostName());
@@ -394,6 +398,48 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		result.setUser(this.getAdminUsername());
 		result.setPassword(this.getAdminPassword());
 		result.setDatabaseName(this.getDatabaseName());
+		
+		return result;
+	}
+
+	@Override public boolean databaseExists()
+	{
+		boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			conn = this.getAdminDataSource().getConnection();
+			
+			ps = conn.prepareStatement(
+				"SELECT * FROM master.dbo.sysdatabases WHERE ('[' + name + ']' = ?) OR name = ?;");
+			ps.setString(1, this.getDatabaseName());
+			ps.setString(2, this.getDatabaseName());
+			
+			rs = ps.executeQuery();
+		
+			result = rs.next();
+		}
+		catch(SQLException e)
+		{
+			throw new FaultException(e);
+		}
+		finally
+		{
+			try
+			{
+				DatabaseHelper.release(rs);
+				DatabaseHelper.release(ps);
+				DatabaseHelper.release(conn);
+			}
+			catch(SQLException e)
+			{
+				throw new FaultException(e);
+			}
+		}
 		
 		return result;
 	}

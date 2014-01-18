@@ -32,56 +32,6 @@ import java.sql.SQLException;
 public class MySqlDatabaseHelper
 {
 	/**
-	 * Returns a boolean flag indicating whether or not the database schema described by the supplied instance exists.
-	 * 
-	 * @param       instance                    the MySqlDatabaseInstance to check.
-	 * @return                                  a boolean flag indicating whether or not the specified database schema
-	 *                                          exists.
-	 * @since                                   1.0
-	 */
-	public static boolean schemaExists(
-		MySqlDatabaseInstance instance)
-	{
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		
-		boolean result = false;
-		
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try
-		{
-			conn = instance.getInfoDataSource().getConnection();
-			ps = conn.prepareStatement("SELECT * FROM SCHEMATA WHERE SCHEMA_NAME = ?;");
-			ps.setString(1, instance.getSchemaName());
-			
-			rs = ps.executeQuery();
-		
-			result = rs.next();
-		}
-		catch(SQLException e)
-		{
-			throw new FaultException(e);
-		}
-		finally
-		{
-			try
-			{
-				DatabaseHelper.release(rs);
-				DatabaseHelper.release(ps);
-				DatabaseHelper.release(conn);
-			}
-			catch(SQLException e)
-			{
-				throw new FaultException(e);
-			}
-		}
-		
-		return result;
-	}
-	
-	/**
 	 * Returns a boolean flag indicating whether or not a table exists for the database described by the supplied
 	 * instance.
 	 * 
@@ -113,9 +63,9 @@ public class MySqlDatabaseHelper
 
 		try
 		{
-			conn = instance.getInfoDataSource().getConnection();
+			conn = instance.getAdminDataSource().getConnection();
 			ps = conn.prepareStatement(query.toString());
-			ps.setString(1, instance.getSchemaName());
+			ps.setString(1, instance.getDatabaseName());
 			ps.setString(2, tableName);
 			rs = ps.executeQuery();
 

@@ -114,11 +114,11 @@ public class MySqlTableExistsAssertion extends BaseAssertion
 		
 		AssertionResponse result = null;
 
-		if (!MySqlDatabaseHelper.schemaExists(db))
+		if (!db.databaseExists())
 		{
 			result = new ImmutableAssertionResponse(
 				false,
-				String.format("Database %s does not exist", db.getSchemaName()));
+				String.format("Database %s does not exist", db.getDatabaseName()));
 		}
 		
 		else if (MySqlDatabaseHelper.tableExists(db, this.getTableName()))

@@ -32,57 +32,6 @@ import java.sql.SQLException;
 public class SqlServerDatabaseHelper
 {
 	/**
-	 * Returns an indication of whether or not the SQL Server database represented by the supplied instance exists.
-	 * 
-	 * @param       instance                    the SqlServerDatabseInstance to check.
-	 * @return                                  an indication of whether or not the SQL Server database exists
-	 * @since                                   2.0
-	 */
-	public static boolean databaseExists(SqlServerDatabaseInstance instance)
-	{
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		
-		boolean result = false;
-		
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try
-		{
-			conn = instance.getMasterDataSource().getConnection();
-			
-			ps = conn.prepareStatement(
-				"SELECT * FROM master.dbo.sysdatabases WHERE ('[' + name + ']' = ?) OR name = ?;");
-			ps.setString(1, instance.getDatabaseName());
-			ps.setString(2, instance.getDatabaseName());
-			
-			rs = ps.executeQuery();
-		
-			result = rs.next();
-		}
-		catch(SQLException e)
-		{
-			throw new FaultException(e);
-		}
-		finally
-		{
-			try
-			{
-				DatabaseHelper.release(rs);
-				DatabaseHelper.release(ps);
-				DatabaseHelper.release(conn);
-			}
-			catch(SQLException e)
-			{
-				throw new FaultException(e);
-			}
-		}
-		
-		return result;
-	}
-
-	/**
 	 * Returns an indication of whether or not the SQL Server database represented by the supplied instance contains
 	 * a given schema.
 	 * 

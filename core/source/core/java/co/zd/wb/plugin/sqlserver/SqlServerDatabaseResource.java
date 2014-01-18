@@ -66,7 +66,7 @@ public class SqlServerDatabaseResource extends BaseResource implements DatabaseR
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		if (SqlServerDatabaseHelper.databaseExists(db))
+		if (db.databaseExists())
 		{
 			declaredStateId = SqlServerStateHelper.getStateId(
 				this.getResourceId(),

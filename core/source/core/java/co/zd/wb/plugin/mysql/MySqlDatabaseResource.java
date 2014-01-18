@@ -65,7 +65,7 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		if (MySqlDatabaseHelper.schemaExists(db))
+		if (db.databaseExists())
 		{
 			declaredStateId = MySqlStateHelper.getStateId(
 				this.getResourceId(),

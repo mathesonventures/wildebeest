@@ -76,8 +76,8 @@ public class CliIntegrationTests
 		String[] args = new String[]
 		{
 			"migrate",
-			"--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
-			"--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml",
+			"--resource:MySqlDatabase/database.wbresource.xml",
+			"--instance:MySqlDatabase/staging_db.wbinstance.xml",
 			"--targetState:Core Schema Loaded"
 		};
 
@@ -85,7 +85,7 @@ public class CliIntegrationTests
         
 		try
 		{
-            instance = Interface.loadInstance(new File("target/test/app/MySqlDatabase/staging_db.wbinstance.xml"));
+            instance = Interface.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
 
             //
             // Execute
@@ -98,7 +98,7 @@ public class CliIntegrationTests
             if (instance != null)
             {
                 MySqlDatabaseInstance instanceT = (MySqlDatabaseInstance)instance;
-                MySqlUtil.dropDatabase(instanceT, instanceT.getSchemaName());
+                MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
             }
 		}
 
@@ -120,7 +120,7 @@ public class CliIntegrationTests
 		wb.run(new String[]
 		{
 			"migrate",
-			"--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
+			"--resource:MySqlDatabase/database.wbresource.xml",
 			"--targetState:Core Schema Loaded"
 		});
 
@@ -142,7 +142,7 @@ public class CliIntegrationTests
 		wb.run(new String[]
 		{
 			"migrate",
-			"--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml",
+			"--instance:MySqlDatabase/staging_db.wbinstance.xml",
 			"--targetState:Core Schema Loaded"
 		});
 
@@ -160,7 +160,7 @@ public class CliIntegrationTests
         
 		try
 		{
-            Instance instance = Interface.loadInstance(new File("target/test/app/MySqlDatabase/staging_db.wbinstance.xml"));
+            Instance instance = Interface.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
             instanceT = (MySqlDatabaseInstance)instance;
 
             // Create a database that is already in a state that matches a defined state in a Wildebeest resource.
@@ -170,8 +170,8 @@ public class CliIntegrationTests
             wb.run(new String[]
             {
                 "migrate",
-                "--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
-                "--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml",
+                "--resource:MySqlDatabase/database.wbresource.xml",
+                "--instance:MySqlDatabase/staging_db.wbinstance.xml",
                 "--targetState:Core Schema Loaded"
             });
 
@@ -185,8 +185,8 @@ public class CliIntegrationTests
 			wb.run(new String[]
 			{
 				"jumpstate",
-				"--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
-				"--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml",
+				"--resource:MySqlDatabase/database.wbresource.xml",
+				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
 				"--targetState:Core Schema Loaded"
 			});
 		}
@@ -194,7 +194,7 @@ public class CliIntegrationTests
 		{
             if (instanceT != null)
             {
-    			MySqlUtil.dropDatabase(instanceT, instanceT.getSchemaName());
+    			MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
             }
 		}
 
@@ -213,13 +213,13 @@ public class CliIntegrationTests
         
 		try
 		{
-            instance = Interface.loadInstance(new File("target/test/app/MySqlDatabase/staging_db.wbinstance.xml"));
+            instance = Interface.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
 
 			wb.run(new String[]
 			{
 				"migrate",
-				"--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
-				"--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml",
+				"--resource:MySqlDatabase/database.wbresource.xml",
+				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
 				"--targetState:Database Created"
 			});
 			
@@ -230,8 +230,8 @@ public class CliIntegrationTests
 			wb.run(new String[]
 			{
 				"state",
-				"--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
-				"--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml"
+				"--resource:MySqlDatabase/database.wbresource.xml",
+				"--instance:MySqlDatabase/staging_db.wbinstance.xml"
 			});
 		}
 		finally
@@ -239,7 +239,7 @@ public class CliIntegrationTests
             if (instance != null)
             {
                 MySqlDatabaseInstance instanceT = (MySqlDatabaseInstance)instance;
-                MySqlUtil.dropDatabase(instanceT, instanceT.getSchemaName());
+                MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
             }
 		}
 
@@ -263,8 +263,8 @@ public class CliIntegrationTests
         wb.run(new String[]
         {
             "migrate",
-            "--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
-            "--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml",
+            "--resource:MySqlDatabase/database.wbresource.xml",
+            "--instance:MySqlDatabase/staging_db.wbinstance.xml",
             "--targetState:   "
         });
 
@@ -296,8 +296,8 @@ public class CliIntegrationTests
         wb.run(new String[]
         {
             "migrate",
-            "--resource:target/test/app/MySqlDatabase/database.wbresource.xml",
-            "--instance:target/test/app/MySqlDatabase/staging_db.wbinstance.xml",
+            "--resource:MySqlDatabase/database.wbresource.xml",
+            "--instance:MySqlDatabase/staging_db.wbinstance.xml",
             "--targetState:Foo"
         });
 
@@ -322,8 +322,8 @@ public class CliIntegrationTests
 		String[] args = new String[]
 		{
 			"migrate",
-			"--resource:target/test/app/SqlServerDatabase/database.wbresource.xml",
-			"--instance:target/test/app/SqlServerDatabase/staging_db.wbinstance.xml",
+			"--resource:SqlServerDatabase/database.wbresource.xml",
+			"--instance:SqlServerDatabase/staging_db.wbinstance.xml",
 			"--targetState:Core Schema Loaded"
 		};
 		
@@ -331,7 +331,7 @@ public class CliIntegrationTests
         
 		try
 		{
-            instance = Interface.loadInstance(new File("target/test/app/SqlServerDatabase/staging_db.wbinstance.xml"));
+            instance = Interface.loadInstance(new File("SqlServerDatabase/staging_db.wbinstance.xml"));
 
             //
             // Execute

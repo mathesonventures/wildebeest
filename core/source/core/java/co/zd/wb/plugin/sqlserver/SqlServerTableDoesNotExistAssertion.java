@@ -157,7 +157,7 @@ public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 		
 		AssertionResponse result = null;
 
-		if (!SqlServerDatabaseHelper.databaseExists(db))
+		if (!db.databaseExists())
 		{
 			result = new ImmutableAssertionResponse(
 				false,

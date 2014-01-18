@@ -16,6 +16,7 @@
 
 package co.zd.wb.plugin.database;
 
+import co.zd.wb.FaultException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -111,6 +112,50 @@ public class DatabaseHelper
 		return result;
 	}
 
+	public static boolean rowExists(
+		DataSource dataSource,
+		String sql)
+	{
+		if (dataSource == null) { throw new IllegalArgumentException("dataSource cannot be null"); }
+		if (sql == null) { throw new IllegalArgumentException("sql cannot be null"); }
+		if ("".equals(sql)) { throw new IllegalArgumentException("sql cannot be empty"); }
+		
+		boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			conn = dataSource.getConnection();
+			ps = conn.prepareStatement(sql);
+
+			rs = ps.executeQuery();
+		
+			result = rs.next();
+		}
+		catch (SQLException e)
+		{
+			throw new FaultException(e);
+		}
+		finally
+		{
+			try
+			{
+				DatabaseHelper.release(rs);
+				DatabaseHelper.release(ps);
+				DatabaseHelper.release(conn);
+			}
+			catch(SQLException e)
+			{
+				throw new FaultException(e);
+			}
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * If the supplied Connection reference is non-null, attempts to close that Connection.
 	 * 

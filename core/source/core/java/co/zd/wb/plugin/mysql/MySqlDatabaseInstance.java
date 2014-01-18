@@ -16,9 +16,15 @@
 
 package co.zd.wb.plugin.mysql;
 
-import co.zd.wb.plugin.database.DatabaseInstance;
+import co.zd.wb.FaultException;
 import co.zd.wb.Instance;
+import co.zd.wb.plugin.database.BaseDatabaseInstance;
+import co.zd.wb.plugin.database.DatabaseHelper;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.sql.DataSource;
 
 /**
@@ -27,7 +33,7 @@ import javax.sql.DataSource;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public class MySqlDatabaseInstance implements DatabaseInstance
+public class MySqlDatabaseInstance extends BaseDatabaseInstance
 {
 	/**
 	 * Creates a new MySqlDatabaseInstance.
@@ -36,7 +42,7 @@ public class MySqlDatabaseInstance implements DatabaseInstance
 	 * @param       port                        the port number of the server.
 	 * @param       adminUsername               the username for a user that has permission to administer the database.
 	 * @param       adminPassword               the password for the admin user, in clear text.
-	 * @param       schemaName                  the name of the database schema for this instance of the resource.
+	 * @param       databaseName                the name of the database for this instance of the resource.
 	 * @param       stateTableName              the name to give the state tracking table.  This is optional and null
 	 *                                          may be supplied.
 	 * @since                                   1.0
@@ -46,23 +52,15 @@ public class MySqlDatabaseInstance implements DatabaseInstance
 		int port,
 		String adminUsername,
 		String adminPassword,
-		String schemaName,
+		String databaseName,
 		String stateTableName)
 	{
-		if (stateTableName != null && "".equals(stateTableName.trim()))
-		{
-			throw new IllegalArgumentException("stateTableName cannot be empty");
-		}
-		
+		super(databaseName, stateTableName);
+
 		this.setHostName(hostName);
 		this.setPort(port);
 		this.setAdminUsername(adminUsername);
 		this.setAdminPassword(adminPassword);
-		this.setSchemaName(schemaName);
-		if (stateTableName != null)
-		{
-			this.setStateTableName(stateTableName);
-		}
 	}
 	
 	// <editor-fold desc="HostName" defaultstate="collapsed">
@@ -230,92 +228,13 @@ public class MySqlDatabaseInstance implements DatabaseInstance
 
 	// </editor-fold>
 	
-	// <editor-fold desc="SchemaName" defaultstate="collapsed">
-
-	private String m_schemaName = null;
-	private boolean m_schemaName_set = false;
-
-	/**
-	 * Returns the name of the database schema for this instance.
-	 * 
-	 * @since                                   1.0
-	 */
-	public String getSchemaName() {
-		if(!m_schemaName_set) {
-			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
-		}
-		return m_schemaName;
-	}
-
-	private void setSchemaName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("schemaName cannot be null");
-		}
-		boolean changing = !m_schemaName_set || m_schemaName != value;
-		if(changing) {
-			m_schemaName_set = true;
-			m_schemaName = value;
-		}
-	}
-
-	private void clearSchemaName() {
-		if(m_schemaName_set) {
-			m_schemaName_set = true;
-			m_schemaName = null;
-		}
-	}
-
-	private boolean hasSchemaName() {
-		return m_schemaName_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="StateTableName" defaultstate="collapsed">
-
-	private String m_stateTableName = null;
-	private boolean m_stateTableName_set = false;
-
-	@Override public String getStateTableName() {
-		if(!m_stateTableName_set) {
-			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
-		}
-		return m_stateTableName;
-	}
-
-	private void setStateTableName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("stateTableName cannot be null");
-		}
-		boolean changing = !m_stateTableName_set || m_stateTableName != value;
-		if(changing) {
-			m_stateTableName_set = true;
-			m_stateTableName = value;
-		}
-	}
-
-	private void clearStateTableName() {
-		if(m_stateTableName_set) {
-			m_stateTableName_set = true;
-			m_stateTableName = null;
-		}
-	}
-
-	@Override public boolean hasStateTableName() {
-		return m_stateTableName_set;
-	}
-
-	// </editor-fold>
-	
 	/**
 	 * Returns a DataSource for the information schema in the target MySQL database.
 	 * 
 	 * @return                                  a DataSource for the information schema in the target MySQL server.
 	 * @since                                   1.0
 	 */
-	public DataSource getInfoDataSource()
+	@Override public DataSource getAdminDataSource()
 	{
 		MysqlDataSource ds = new MysqlDataSource();
 		ds.setServerName(this.getHostName());
@@ -340,8 +259,47 @@ public class MySqlDatabaseInstance implements DatabaseInstance
 		ds.setPort(this.getPort());
 		ds.setUser(this.getAdminUsername());
 		ds.setPassword(this.getAdminPassword());
-		ds.setDatabaseName(this.getSchemaName());
+		ds.setDatabaseName(this.getDatabaseName());
 		
 		return ds;
+	}
+
+	@Override public boolean databaseExists()
+	{
+		boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			conn = this.getAdminDataSource().getConnection();
+			ps = conn.prepareStatement("SELECT * FROM SCHEMATA WHERE SCHEMA_NAME = ?;");
+			ps.setString(1, this.getDatabaseName());
+			
+			rs = ps.executeQuery();
+		
+			result = rs.next();
+		}
+		catch(SQLException e)
+		{
+			throw new FaultException(e);
+		}
+		finally
+		{
+			try
+			{
+				DatabaseHelper.release(rs);
+				DatabaseHelper.release(ps);
+				DatabaseHelper.release(conn);
+			}
+			catch(SQLException e)
+			{
+				throw new FaultException(e);
+			}
+		}
+		
+		return result;
 	}
 }
