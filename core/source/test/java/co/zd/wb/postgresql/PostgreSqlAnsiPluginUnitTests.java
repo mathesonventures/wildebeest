@@ -20,12 +20,9 @@ import co.zd.wb.MigrationFailedException;
 import co.zd.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.zd.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
 import co.zd.wb.plugin.database.AnsiPluginUnitTestsTemplate;
-import co.zd.wb.plugin.database.DatabaseHelper;
 import co.zd.wb.plugin.database.SqlScriptMigration;
 import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
-import java.sql.SQLException;
 import java.util.UUID;
-import junit.framework.Assert;
 import org.junit.Test;
 
 /**
@@ -44,6 +41,7 @@ public class PostgreSqlAnsiPluginUnitTests extends AnsiPluginUnitTestsTemplate
 			"postgres",
 			"password",
 			"SkyfallTest",
+			null,
 			null);
 		
 		AnsiSqlCreateDatabaseMigration create = new AnsiSqlCreateDatabaseMigration(
@@ -67,6 +65,7 @@ public class PostgreSqlAnsiPluginUnitTests extends AnsiPluginUnitTestsTemplate
 			"postgres",
 			"password",
 			"SkyfallTest",
+			null,
 			null);
 		
 		AnsiSqlCreateDatabaseMigration createDatabase = new AnsiSqlCreateDatabaseMigration(
@@ -96,6 +95,7 @@ public class PostgreSqlAnsiPluginUnitTests extends AnsiPluginUnitTestsTemplate
 			"postgres",
 			"password",
 			"SkyfallTest",
+			null,
 			null);
 		
 		AnsiSqlCreateDatabaseMigration create = new AnsiSqlCreateDatabaseMigration(

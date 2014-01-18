@@ -36,6 +36,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		String adminUsername,
 		String adminPassword,
 		String databaseName,
+		String metaSchemaName,
 		String stateTableName)
 	{
 		super(databaseName, stateTableName);
@@ -44,6 +45,10 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		this.setPort(port);
 		this.setAdminUsername(adminUsername);
 		this.setAdminPassword(adminPassword);
+		if (metaSchemaName != null)
+		{
+			this.setMetaSchemaName(metaSchemaName);
+		}
 	}
 	
 	// <editor-fold desc="HostName" defaultstate="collapsed">
@@ -196,6 +201,46 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 
 	private boolean hasAdminPassword() {
 		return _adminPassword_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="MetaSchemaName" defaultstate="collapsed">
+
+	private String _metaSchemaName = null;
+	private boolean _metaSchemaName_set = false;
+
+	@Override public String getMetaSchemaName() {
+		if(!_metaSchemaName_set) {
+			throw new IllegalStateException("metaSchemaName not set.");
+		}
+		if(_metaSchemaName == null) {
+			throw new IllegalStateException("metaSchemaName should not be null");
+		}
+		return _metaSchemaName;
+	}
+
+	private void setMetaSchemaName(
+		String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("metaSchemaName cannot be null");
+		}
+		boolean changing = !_metaSchemaName_set || _metaSchemaName != value;
+		if(changing) {
+			_metaSchemaName_set = true;
+			_metaSchemaName = value;
+		}
+	}
+
+	private void clearMetaSchemaName() {
+		if(_metaSchemaName_set) {
+			_metaSchemaName_set = true;
+			_metaSchemaName = null;
+		}
+	}
+
+	@Override public boolean hasMetaSchemaName() {
+		return _metaSchemaName_set;
 	}
 
 	// </editor-fold>

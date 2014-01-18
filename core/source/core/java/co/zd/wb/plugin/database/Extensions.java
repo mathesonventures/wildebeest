@@ -16,6 +16,8 @@
 
 package co.zd.wb.plugin.database;
 
+import co.zd.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
+
 /**
  * Provides convenience methods for working with database resources.
  * 
@@ -25,12 +27,30 @@ package co.zd.wb.plugin.database;
 public class Extensions
 {
 	/**
+	 * Returns the meta-data schema name from the supplied instance if it has one.  Otherwise returns the default
+	 * meta-data schema name from {@link DatabaseConstants}.
+	 * 
+	 * @param       instance                    the {@link DatabaseInstance} for which the state table name should be
+	 *                                          determined.
+	 * @return                                  the meta-data schema name for the supplied instance.
+	 * @since                                   4.0
+	 */
+	public static String getMetaSchemaName(
+		AnsiSqlDatabaseInstance instance)
+	{
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		
+		return instance.hasMetaSchemaName() ? instance.getMetaSchemaName() : DatabaseConstants.DefaultMetaSchemaName;
+	}
+	
+	/**
 	 * Returns the state table name from the supplied instance if it has one.  Otherwise returns the default state table
 	 * name from {@link DatabaseConstants}.
 	 * 
 	 * @param       instance                    the {@link DatabaseInstance} for which the state table name should be
-	 *                                          determined
-	 * @return                                  the state table name for the supplied DatabaseInstance.
+	 *                                          determined.
+	 * @return                                  the state table name for the supplied instance.
+	 * @since                                   1.0
 	 */
 	public static String getStateTableName(
 		DatabaseInstance instance)

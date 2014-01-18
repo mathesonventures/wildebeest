@@ -39,6 +39,7 @@ public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		TryGetResult<String> adminUsername = this.tryGetString("adminUsername");
 		TryGetResult<String> adminPassword = this.tryGetString("adminPassword");
 		TryGetResult<String> databaseName = this.tryGetString("databaseName");
+		TryGetResult<String> metaSchemaName = this.tryGetString("metaSchemaName");
 		TryGetResult<String> stateTableName = this.tryGetString("stateTableName");
 
 		Messages messages = new Messages();
@@ -59,6 +60,7 @@ public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			adminUsername.getValue(),
 			adminPassword.getValue(),
 			databaseName.getValue(),
+			metaSchemaName.hasValue() ? metaSchemaName.getValue() : null,
 			stateTableName.hasValue() ? stateTableName.getValue() : null);
 
 		return result;

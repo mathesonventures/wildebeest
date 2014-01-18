@@ -20,8 +20,10 @@ import co.mv.protium.data.Db;
 import co.zd.wb.FakeLogger;
 import co.zd.wb.Interface;
 import co.zd.wb.Instance;
+import co.zd.wb.plugin.database.DatabaseHelper;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.plugin.mysql.MySqlUtil;
+import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import co.zd.wb.plugin.sqlserver.SqlServerDatabaseInstance;
 import co.zd.wb.plugin.sqlserver.SqlServerUtil;
 import co.zd.wb.service.MessagesException;
@@ -64,6 +66,10 @@ public class CliIntegrationTests
 		wb.run(new String[] { });
 
 	}
+	
+	//
+	// MySql
+	//
 	
 	@Test public void mySqlDatabaseMigrate() throws SQLException, MessagesException
 	{
@@ -311,6 +317,10 @@ public class CliIntegrationTests
         
 	}
 	
+	//
+	// SqlServer
+	//
+	
 	@Test public void sqlServerDatabaseMigrate() throws SQLException, MessagesException
 	{
 		
@@ -349,4 +359,58 @@ public class CliIntegrationTests
 		}
 
 	}
+	
+	//
+	// PostgreSql
+	//
+	
+	@Test public void postgreSqlDatabaseMigrate() throws MessagesException
+	{
+		
+		//
+		// Setup
+		//
+
+		WildebeestCommand wb = new WildebeestCommand();
+		String[] args = new String[]
+		{
+			"migrate",
+			"--resource:PostgreSqlDatabase/database.wbresource.xml",
+			"--instance:PostgreSqlDatabase/staging.wbinstance.xml",
+			"--targetState:434fb1fd-e903-4b0f-a2b3-b1014360f799"
+		};
+
+        Instance instance = null;
+        
+		try
+		{
+            instance = Interface.loadInstance(new File("PostgreSqlDatabase/staging.wbinstance.xml"));
+
+            //
+            // Execute
+            //
+
+			wb.run(args);
+		}
+		finally
+		{
+            if (instance != null)
+            {
+				PostgreSqlDatabaseInstance instanceT = (PostgreSqlDatabaseInstance)instance;
+				
+				try
+				{
+					DatabaseHelper.execute(
+						instanceT.getAdminDataSource(),
+						String.format("DROP DATABASE %s", instanceT.getDatabaseName()));
+				}
+				catch (SQLException e)
+				{
+					throw new RuntimeException(e);
+				}
+            }
+		}
+
+	}
+	
 }

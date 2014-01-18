@@ -26,4 +26,7 @@ import co.zd.wb.plugin.database.DatabaseInstance;
  */
 public interface AnsiSqlDatabaseInstance extends DatabaseInstance
 {
+	String getMetaSchemaName();
+
+	boolean hasMetaSchemaName();
 }

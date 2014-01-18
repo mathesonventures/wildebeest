@@ -9,6 +9,25 @@
 			</assertions>
 		</state>
 
+		<state id="18bb4e09-0e18-4eb8-995f-75f7a4fcf1fa">
+			<assertions>
+<!--
+				<assertion type="AnsiSqlSchemaExists" id="ca714295-491f-4634-9b26-d1dae50f3a75">
+					<schemaName>ProdCat</schemaName>
+				</assertion>
+-->
+			</assertions>
+		</state>
+
+		<state id="434fb1fd-e903-4b0f-a2b3-b1014360f799">
+			<assertions>
+				<assertion type="AnsiSqlTableExists" id="84a3d24b-396c-4784-abb2-c2e485ff77a4">
+					<schemaName>ProdCat</schemaName>
+					<tableName>ProductType</tableName>
+				</assertion>
+			</assertions>
+		</state>
+
 <!--
 		<state id="6096d6fc-2b04-45cf-88cf-9ab49629f50e" label="Core Schema Loaded">
 			<assertions>
@@ -50,6 +69,38 @@
 			type="AnsiSqlCreateDatabase"
 			id="637d1065-caa6-41a0-81b1-ac95af43380f"
 			toStateId="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79">
+		</migration>
+
+		<migration
+			type="SqlScript"
+			id="086c890e-dca9-4b40-88ec-cebafeb6820d"
+			fromStateId="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79"
+			toStateId="18bb4e09-0e18-4eb8-995f-75f7a4fcf1fa">
+			<sql><![CDATA[
+
+CREATE SCHEMA ProdCat;
+
+			]]></sql>
+		</migration>
+
+		<migration
+			type="SqlScript"
+			id="86a9ba74-5a91-4704-a909-f3004d3e4304"
+			fromStateId="18bb4e09-0e18-4eb8-995f-75f7a4fcf1fa"
+			toStateId="434fb1fd-e903-4b0f-a2b3-b1014360f799">
+			<sql><![CDATA[
+
+CREATE TABLE ProdCat.ProductType
+(
+	ProductTypeCode character(2), 
+	Name character varying(10), 
+	CONSTRAINT PK_ProductType PRIMARY KEY (ProductTypeCode)
+) 
+WITH (
+	OIDS = FALSE
+);
+
+			]]></sql>
 		</migration>
 
 <!--

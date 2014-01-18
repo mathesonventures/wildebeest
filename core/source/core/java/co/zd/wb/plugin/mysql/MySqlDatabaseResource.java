@@ -61,10 +61,6 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 
 		UUID declaredStateId = null;
 		
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
 		if (db.databaseExists())
 		{
 			declaredStateId = MySqlStateHelper.getStateId(
