@@ -1,3 +1,19 @@
+// Wildebeest Migration Framework
+// Copyright 2013 - 2014, Zen Digital Co Inc
+//
+// This file is part of Wildebeest
+//
+// Wildebeest is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License v2 as published by the Free
+// Software Foundation.
+//
+// Wildebeest is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+// A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
+
 package co.zd.wb.ansisql;
 
 import co.zd.wb.ModelExtensions;
@@ -17,6 +33,12 @@ import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Unit tests for the DOM persistence services for ANSI SQL plugins.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       4.0
+ */
 public class AnsiSqlDomServiceUnitTests
 {
 	@Test public void ansiSqlCreateMigrationLoadFromValidDocumentSucceeds() throws MessagesException
