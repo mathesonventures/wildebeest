@@ -22,6 +22,7 @@ import co.zd.wb.service.ResourceBuilder;
 import co.zd.wb.service.MigrationBuilder;
 import co.zd.wb.service.dom.ansisql.AnsiSqlCreateDatabaseDomMigrationBuilder;
 import co.zd.wb.service.dom.ansisql.AnsiSqlDropDatabaseDomMigrationBuilder;
+import co.zd.wb.service.dom.ansisql.AnsiSqlTableDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.ansisql.AnsiSqlTableExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
@@ -78,6 +79,7 @@ public class DomPlugins
 		
 		// AnsiSql
 		result.put("AnsiSqlTableExists", new AnsiSqlTableExistsDomAssertionBuilder());
+		result.put("AnsiSqlTableDoesNotExist", new AnsiSqlTableDoesNotExistDomAssertionBuilder());
 		
 		// MySql
 		result.put("MySqlTableDoesNotExist", new MySqlTableDoesNotExistDomAssertionBuilder());

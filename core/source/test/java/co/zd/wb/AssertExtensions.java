@@ -18,6 +18,7 @@ package co.zd.wb;
 
 import co.zd.wb.fake.FakeAssertion;
 import co.zd.wb.fake.FakeMigration;
+import co.zd.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
 import co.zd.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import java.util.UUID;
@@ -226,6 +227,25 @@ public class AssertExtensions
 		String expectedSchemaName,
 		String expectedTableName,
 		AnsiSqlTableExistsAssertion actual,
+		String name)
+	{
+		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId cannot be null"); }
+		if (expectedSchemaName == null) { throw new IllegalArgumentException("expectedSchemaName cannot be null"); }
+		if (expectedTableName == null) { throw new IllegalArgumentException("expectedTableName cannot be null"); }
+		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
+		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
+		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+		
+		Assert.assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
+		Assert.assertEquals(name + ".schemaName", expectedSchemaName, actual.getSchemaName());
+		Assert.assertEquals(name + ".tableName", expectedTableName, actual.getTableName());
+	}
+	
+	public static void assertAnsiSqlTableDoesNotExistAssertion(
+		UUID expectedAssertionId,
+		String expectedSchemaName,
+		String expectedTableName,
+		AnsiSqlTableDoesNotExistAssertion actual,
 		String name)
 	{
 		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId cannot be null"); }

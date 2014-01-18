@@ -22,6 +22,7 @@ import co.zd.wb.Resource;
 import co.zd.wb.fixturecreator.FixtureCreator;
 import co.zd.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.zd.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
+import co.zd.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
 import co.zd.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.DomPlugins;
@@ -174,6 +175,54 @@ public class AnsiSqlDomServiceUnitTests
 			AnsiSqlTableExistsAssertion.class);
 		Assert.assertNotNull("Expected to be an AnsiSqlTableExistsAssertion", assertionT);
 		AssertExtensions.assertAnsiSqlTableExistsAssertion(
+			assertionId,
+			"sch",
+			"tbl",
+			assertionT,
+			"resource.states[0].assertions[0]");
+
+	}
+	
+	@Test public void ansiSqlTableDoesNotExistAssertionLoadFromValidDocument() throws MessagesException
+	{
+		
+		//
+		// Setup
+		//
+		
+		UUID assertionId = UUID.randomUUID();
+		
+		String xml = FixtureCreator.create()
+			.resource("PostgreSqlDatabase", UUID.randomUUID(), "Foo")
+				.state(UUID.randomUUID(), null)
+					.assertion("AnsiSqlTableDoesNotExist", assertionId)
+						.appendInnerXml("<schemaName>sch</schemaName>")
+						.appendInnerXml("<tableName>tbl</tableName>")
+			.render();
+
+		DomResourceLoader loader = DomPlugins.resourceLoader(xml);
+		
+		//
+		// Execute
+		//
+		
+		Resource resource = loader.load();
+		
+		//
+		// Verify
+		//
+		
+		Assert.assertNotNull("resource", resource);
+		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
+		Assert.assertEquals(
+			"resource.states[0].assertions.size",
+			1,
+			resource.getStates().get(0).getAssertions().size());
+		AnsiSqlTableDoesNotExistAssertion assertionT = ModelExtensions.As(
+			resource.getStates().get(0).getAssertions().get(0),
+			AnsiSqlTableDoesNotExistAssertion.class);
+		Assert.assertNotNull("Expected to be an AnsiSqlTableDoesNotExistAssertion", assertionT);
+		AssertExtensions.assertAnsiSqlTableDoesNotExistAssertion(
 			assertionId,
 			"sch",
 			"tbl",
