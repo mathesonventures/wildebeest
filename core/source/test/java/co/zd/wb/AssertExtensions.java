@@ -18,12 +18,18 @@ package co.zd.wb;
 
 import co.zd.wb.fake.FakeAssertion;
 import co.zd.wb.fake.FakeMigration;
+import co.zd.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import java.util.UUID;
 import org.junit.Assert;
 
 public class AssertExtensions
 {
+	
+	//
+	// Core
+	//
+	
 	public static void assertResource(
 		Class expectedClass,
 		UUID expectedResourceId,
@@ -144,23 +150,6 @@ public class AssertExtensions
 		}
 	}
 	
-	public static void assertFakeMigration(
-		UUID expectedMigrationId,
-		UUID expectedFromStateId,
-		UUID expectedToStateId,
-		String expectedTag,
-		FakeMigration actual,
-		String name)
-	{
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
-
-		AssertExtensions.assertMigration(expectedMigrationId, expectedFromStateId, expectedToStateId, actual, name);
-		
-		Assert.assertEquals(name + ".tag", expectedTag, actual.getTag());
-	}
-	
 	public static void assertAssertionResponse(
 		boolean expectedResult,
 		String expectedMessage,
@@ -206,6 +195,54 @@ public class AssertExtensions
 		
 		Assert.assertEquals("actual.class", expectedClass, actual.getClass());
 	}
+	
+	//
+	// Fake
+	//
+	
+	public static void assertFakeMigration(
+		UUID expectedMigrationId,
+		UUID expectedFromStateId,
+		UUID expectedToStateId,
+		String expectedTag,
+		FakeMigration actual,
+		String name)
+	{
+		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
+		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
+		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+
+		AssertExtensions.assertMigration(expectedMigrationId, expectedFromStateId, expectedToStateId, actual, name);
+		
+		Assert.assertEquals(name + ".tag", expectedTag, actual.getTag());
+	}
+
+	//
+	// AnsiSql
+	//
+	
+	public static void assertAnsiSqlTableExistsAssertion(
+		UUID expectedAssertionId,
+		String expectedSchemaName,
+		String expectedTableName,
+		AnsiSqlTableExistsAssertion actual,
+		String name)
+	{
+		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId cannot be null"); }
+		if (expectedSchemaName == null) { throw new IllegalArgumentException("expectedSchemaName cannot be null"); }
+		if (expectedTableName == null) { throw new IllegalArgumentException("expectedTableName cannot be null"); }
+		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
+		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
+		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+		
+		Assert.assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
+		Assert.assertEquals(name + ".schemaName", expectedSchemaName, actual.getSchemaName());
+		Assert.assertEquals(name + ".tableName", expectedTableName, actual.getTableName());
+	}
+	
+	//
+	// MySql
+	//
 	
 	public static void assertMySqlDatabaseInstance(
 		String expectedHostName,

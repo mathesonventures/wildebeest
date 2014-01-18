@@ -19,7 +19,7 @@ package co.zd.wb.plugin.ansisql;
 import co.zd.wb.plugin.database.DatabaseInstance;
 
 /**
- * Marker interface for tagging DatabaseIntance implementations that represent ANSI-compliant database systems.
+ * Marker interface for tagging DatabaseInstance implementations that represent ANSI-compliant database systems.
  * 
  * @author                                      Brendon Matheson
  * @since                                       4.0

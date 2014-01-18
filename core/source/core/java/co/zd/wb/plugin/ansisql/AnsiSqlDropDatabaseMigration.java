@@ -47,7 +47,7 @@ public class AnsiSqlDropDatabaseMigration extends BaseMigration
     {
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		
-		return ModelExtensions.As(resource, DatabaseResource.class) != null;
+		return ModelExtensions.As(resource, AnsiSqlDatabaseResource.class) != null;
     }
 
     @Override public void perform(Instance instance) throws MigrationFailedException

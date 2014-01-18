@@ -214,7 +214,14 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 
 	@Override public DataSource getAppDataSource()
 	{
-		throw new UnsupportedOperationException("Not supported yet.");
+		PGSimpleDataSource ds = new PGSimpleDataSource();
+		ds.setServerName(this.getHostName());
+		ds.setPortNumber(this.getPort());
+		ds.setUser(this.getAdminUsername());
+		ds.setPassword(this.getAdminPassword());
+		ds.setDatabaseName(this.getDatabaseName().toLowerCase());
+		
+		return ds;
 	}
 
 	@Override public boolean databaseExists()

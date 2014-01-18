@@ -14,18 +14,16 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.postgresql;
+package co.zd.wb.plugin.ansisql;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import co.zd.wb.plugin.database.DatabaseResource;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses(
-{
-	PostgreSqlAnsiPluginUnitTests.class,
-	PostgreSqlDatabasePluginUnitTests.class,
-	PostgreSqlDomServiceUnitTests.class
-})
-public class AllUnitTests
+/**
+ * Marker interface for tagging DatabaseResource implementations that represent ANSI-compliant database systems.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       4.0
+ */
+public interface AnsiSqlDatabaseResource extends DatabaseResource
 {
 }

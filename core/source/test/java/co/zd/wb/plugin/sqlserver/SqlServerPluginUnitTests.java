@@ -18,7 +18,7 @@ package co.zd.wb.plugin.sqlserver;
 
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.plugin.database.DatabaseFixtureHelper;
-import co.zd.wb.plugin.database.TemplatePluginUnitTests;
+import co.zd.wb.plugin.database.DatabasePluginUnitTestsTemplate;
 import java.util.UUID;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ import org.junit.Test;
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class SqlServerPluginUnitTests extends TemplatePluginUnitTests
+public class SqlServerPluginUnitTests extends DatabasePluginUnitTestsTemplate
 {
 	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{

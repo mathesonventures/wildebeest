@@ -3,10 +3,11 @@ package co.zd.wb.plugin.database;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
+import co.zd.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import java.util.UUID;
 import junit.framework.Assert;
 
-public abstract class TemplatePluginUnitTests
+public abstract class DatabasePluginUnitTestsTemplate
 {
 	public abstract void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException;
 	

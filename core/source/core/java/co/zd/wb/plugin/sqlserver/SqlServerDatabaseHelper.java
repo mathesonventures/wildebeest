@@ -17,11 +17,6 @@
 package co.zd.wb.plugin.sqlserver;
 
 import co.zd.wb.plugin.database.DatabaseHelper;
-import co.zd.wb.FaultException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * Functional helper methods for working with SQL Server databases.
@@ -48,43 +43,11 @@ public class SqlServerDatabaseHelper
 		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
 		if ("".equals(schemaName.trim())) { throw new IllegalArgumentException("schemaName cannot be empty"); }
 
-		boolean result = false;
-		
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try
-		{
-			conn = instance.getAppDataSource().getConnection();
-			
-			ps = conn.prepareStatement(
-				"SELECT * FROM sys.schemas WHERE name = ?");
-			ps.setString(1, schemaName);
-	
-			rs = ps.executeQuery();
-		
-			result = rs.next();
-		}
-		catch(SQLException e)
-		{
-			throw new FaultException(e);
-		}
-		finally
-		{
-			try
-			{
-				DatabaseHelper.release(rs);
-				DatabaseHelper.release(ps);
-				DatabaseHelper.release(conn);
-			}
-			catch(SQLException e)
-			{
-				throw new FaultException(e);
-			}
-		}
-		
-		return result;
+		return DatabaseHelper.rowExists(
+			instance.getAppDataSource(),
+			String.format(
+				"SELECT * FROM sys.schemas WHERE name = '%s'",
+				schemaName));
 	}
 	
 	/**
@@ -107,42 +70,10 @@ public class SqlServerDatabaseHelper
 		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
 		if ("".equals(tableName.trim())) { throw new IllegalArgumentException("tableName cannot be empty"); }
 		
-		boolean result = false;
-		
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try
-		{
-			conn = instance.getAppDataSource().getConnection();
-			
-			ps = conn.prepareStatement(
-				"SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(?) AND TYPE IN (N'U')");
-			ps.setString(1, "[" + schemaName + "].[" + tableName + "]");
-			
-			rs = ps.executeQuery();
-		
-			result = rs.next();
-		}
-		catch(SQLException e)
-		{
-			throw new FaultException(e);
-		}
-		finally
-		{
-			try
-			{
-				DatabaseHelper.release(rs);
-				DatabaseHelper.release(ps);
-				DatabaseHelper.release(conn);
-			}
-			catch(SQLException e)
-			{
-				throw new FaultException(e);
-			}
-		}
-		
-		return result;
+		return DatabaseHelper.rowExists(
+			instance.getAppDataSource(),
+			String.format(
+				"SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('%s') AND TYPE IN (N'U')",
+				"[" + schemaName + "].[" + tableName + "]"));
 	}
 }

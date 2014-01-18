@@ -20,7 +20,7 @@ import co.zd.wb.MigrationFailedException;
 import co.zd.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.zd.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
 import co.zd.wb.plugin.database.DatabaseHelper;
-import co.zd.wb.plugin.database.TemplatePluginUnitTests;
+import co.zd.wb.plugin.database.DatabasePluginUnitTestsTemplate;
 import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -28,65 +28,13 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 /**
- * Unit tests for plugins as applied to PostgreSQL databases.
+ * Unit tests for Database plugins as applied to PostgreSQL databases.
  * 
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class PostgreSqlPluginUnitTests extends TemplatePluginUnitTests
+public class PostgreSqlDatabasePluginUnitTests extends DatabasePluginUnitTestsTemplate
 {
-	@Test public void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException
-	{
-		
-		//
-		// Setup
-		//
-		
-		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
-			"127.0.0.1",
-			5432,
-			"postgres",
-			"password",
-			"SkyfallTest",
-			null);
-		
-		AnsiSqlCreateDatabaseMigration m = new AnsiSqlCreateDatabaseMigration(
-			UUID.randomUUID(),
-			UUID.randomUUID(),
-			UUID.randomUUID());
-
-		try
-		{
-
-			//
-			// Execute
-			//
-
-			m.perform(db);
-
-			//
-			// Verify
-			//
-
-			Assert.assertEquals("databaseExists", true, db.databaseExists());
-
-		}
-		finally
-		{
-			try
-			{
-				DatabaseHelper.execute(
-					db.getAdminDataSource(),
-					"DROP DATABASE skyfalltest");
-			}
-			catch (SQLException e)
-			{
-				throw new RuntimeException(e);
-			}
-		}
-		
-	}
-	
 	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
 		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(

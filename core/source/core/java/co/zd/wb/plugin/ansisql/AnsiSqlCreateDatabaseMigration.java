@@ -23,7 +23,6 @@ import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.BaseMigration;
 import co.zd.wb.plugin.database.DatabaseHelper;
-import co.zd.wb.plugin.database.DatabaseInstance;
 import co.zd.wb.plugin.database.DatabaseResource;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -48,7 +47,7 @@ public class AnsiSqlCreateDatabaseMigration extends BaseMigration
     {
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		
-		return ModelExtensions.As(resource, DatabaseResource.class) != null;
+		return ModelExtensions.As(resource, AnsiSqlDatabaseResource.class) != null;
     }
 
     @Override public void perform(Instance instance) throws MigrationFailedException

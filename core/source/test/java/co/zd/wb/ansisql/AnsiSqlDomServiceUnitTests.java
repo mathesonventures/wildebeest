@@ -16,11 +16,13 @@
 
 package co.zd.wb.ansisql;
 
+import co.zd.wb.AssertExtensions;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
 import co.zd.wb.fixturecreator.FixtureCreator;
 import co.zd.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.zd.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
+import co.zd.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
@@ -36,7 +38,7 @@ import org.junit.Test;
  */
 public class AnsiSqlDomServiceUnitTests
 {
-	@Test public void ansiSqlCreateDatabaseMigrationLoadFromValidDocumentSucceeds() throws MessagesException
+	@Test public void ansiSqlCreateDatabaseMigrationLoadFromValidDocument() throws MessagesException
 	{
 		
 		//
@@ -84,7 +86,7 @@ public class AnsiSqlDomServiceUnitTests
 		
 	}
 
-	@Test public void ansiSqlDropDatabaseMigrationLoadFromValidDocumentSucceeds() throws MessagesException
+	@Test public void ansiSqlDropDatabaseMigrationLoadFromValidDocument() throws MessagesException
 	{
 		
 		//
@@ -130,5 +132,53 @@ public class AnsiSqlDomServiceUnitTests
 			toStateId,
 			mT.getToStateId());
 		
+	}
+	
+	@Test public void ansiSqlTableExistsAssertionLoadFromValidDocument() throws MessagesException
+	{
+		
+		//
+		// Setup
+		//
+		
+		UUID assertionId = UUID.randomUUID();
+		
+		String xml = FixtureCreator.create()
+			.resource("PostgreSqlDatabase", UUID.randomUUID(), "Foo")
+				.state(UUID.randomUUID(), null)
+					.assertion("AnsiSqlTableExists", assertionId)
+						.appendInnerXml("<schemaName>sch</schemaName>")
+						.appendInnerXml("<tableName>tbl</tableName>")
+			.render();
+
+		DomResourceLoader loader = DomPlugins.resourceLoader(xml);
+		
+		//
+		// Execute
+		//
+		
+		Resource resource = loader.load();
+		
+		//
+		// Verify
+		//
+		
+		Assert.assertNotNull("resource", resource);
+		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
+		Assert.assertEquals(
+			"resource.states[0].assertions.size",
+			1,
+			resource.getStates().get(0).getAssertions().size());
+		AnsiSqlTableExistsAssertion assertionT = ModelExtensions.As(
+			resource.getStates().get(0).getAssertions().get(0),
+			AnsiSqlTableExistsAssertion.class);
+		Assert.assertNotNull("Expected to be an AnsiSqlTableExistsAssertion", assertionT);
+		AssertExtensions.assertAnsiSqlTableExistsAssertion(
+			assertionId,
+			"sch",
+			"tbl",
+			assertionT,
+			"resource.states[0].assertions[0]");
+
 	}
 }
