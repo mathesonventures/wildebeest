@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.base;
+package co.zd.wb.fake;
 
 import co.zd.wb.Instance;
 import java.util.UUID;

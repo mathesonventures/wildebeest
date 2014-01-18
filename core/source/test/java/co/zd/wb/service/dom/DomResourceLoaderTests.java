@@ -16,11 +16,15 @@
 
 package co.zd.wb.service.dom;
 
+import co.zd.wb.fake.DomFakeMigrationBuilder;
+import co.zd.wb.fake.DomFakeResourceBuilder;
+import co.zd.wb.fake.DomFakeAssertionBuilder;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.Resource;
-import co.zd.wb.plugin.base.FakeAssertion;
-import co.zd.wb.plugin.base.FakeResource;
-import co.zd.wb.plugin.base.FakeMigration;
+import co.zd.wb.fixturecreator.FixtureCreator;
+import co.zd.wb.fake.FakeAssertion;
+import co.zd.wb.fake.FakeResource;
+import co.zd.wb.fake.FakeMigration;
 import co.zd.wb.service.AssertionBuilder;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.ResourceBuilder;
@@ -37,19 +41,14 @@ public class DomResourceLoaderTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 		
 		UUID resourceId = UUID.randomUUID();
 		
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openElement("resource",
-				"id", resourceId.toString(),
-				"type", "Fake",
-				"name", "Product Catalogue Database")
-			.closeElement("resource");
+		String resourceXml = FixtureCreator.create()
+			.resource("Fake", resourceId, "Product Catalogue Database")
+			.render();
 
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
@@ -61,7 +60,7 @@ public class DomResourceLoaderTests
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
-			resourceXml.toString());
+			resourceXml);
 
 		//
 		// Execute
@@ -70,7 +69,7 @@ public class DomResourceLoaderTests
 		Resource resource = resourceBuilder.load();
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		// Resource
@@ -89,24 +88,17 @@ public class DomResourceLoaderTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 		
 		UUID resourceId = UUID.randomUUID();
 		UUID stateId = UUID.randomUUID();
 		
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openElement("resource",
-				"id", resourceId.toString(),
-				"type", "Fake",
-				"name", "Product Catalogue Database")
-				.openElement("states")
-					.openElement("state", "id", stateId.toString(), "label", "Foo").closeElement("state")
-				.closeElement("states")
-			.closeElement("resource");
-
+		String resourceXml = FixtureCreator.create()
+			.resource("Fake", resourceId, "Product Catalogue Database")
+				.state(stateId, "Foo")
+			.render();
+		
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
 		
@@ -117,7 +109,7 @@ public class DomResourceLoaderTests
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
-			resourceXml.toString());
+			resourceXml);
 
 		//
 		// Execute
@@ -126,7 +118,7 @@ public class DomResourceLoaderTests
 		Resource resource = resourceBuilder.load();
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		// Resource
@@ -146,23 +138,16 @@ public class DomResourceLoaderTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 		
 		UUID resourceId = UUID.randomUUID();
 		UUID stateId = UUID.randomUUID();
 		
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openElement("resource",
-				"id", resourceId.toString(),
-				"type", "Fake",
-				"name", "Product Catalogue Database")
-				.openElement("states")
-					.openElement("state", "id", stateId.toString()).closeElement("state")
-				.closeElement("states")
-			.closeElement("resource");
+		String resourceXml = FixtureCreator.create()
+			.resource("Fake", resourceId, "Product Catalogue Database")
+				.state(stateId, null)
+			.render();
 
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
@@ -174,7 +159,7 @@ public class DomResourceLoaderTests
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
-			resourceXml.toString());
+			resourceXml);
 
 		//
 		// Execute
@@ -183,7 +168,7 @@ public class DomResourceLoaderTests
 		Resource resource = resourceBuilder.load();
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		// Resource
@@ -203,25 +188,18 @@ public class DomResourceLoaderTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 		
 		UUID resourceId = UUID.randomUUID();
 		UUID state1Id = UUID.randomUUID();
 		UUID state2Id = UUID.randomUUID();
 		
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openElement("resource",
-				"id", resourceId.toString(),
-				"type", "Fake",
-				"name", "Product Catalogue Database")
-				.openElement("states")
-					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
-					.openElement("state", "id", state2Id.toString(), "label", "Bar").closeElement("state")
-				.closeElement("states")
-			.closeElement("resource");
+		String resourceXml = FixtureCreator.create()
+			.resource("Fake", resourceId, "Product Catalogue Database")
+				.state(state1Id, "Foo")
+				.state(state2Id, "Bar")
+			.render();
 
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
@@ -233,7 +211,7 @@ public class DomResourceLoaderTests
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
-			resourceXml.toString());
+			resourceXml);
 
 		//
 		// Execute
@@ -242,7 +220,7 @@ public class DomResourceLoaderTests
 		Resource resource = resourceBuilder.load();
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		// Resource
@@ -270,26 +248,11 @@ public class DomResourceLoaderTests
 		UUID stateId = UUID.randomUUID();
 		UUID assertion1Id = UUID.randomUUID();
 		
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openElement("resource",
-				"id", resourceId.toString(),
-				"type", "Fake",
-				"name", "Product Catalogue Database")
-				.openElement("states")
-					.openElement("state", "id", stateId.toString(), "label", "Foo")
-						.openElement("assertions")
-							.openElement("assertion",
-								"type", "Fake",
-								"id", assertion1Id.toString(),
-								"name", "Tag is Foo")
-								.openElement("tag").text("Foo").closeElement("tag")
-							.closeElement("assertion")
-						.closeElement("assertions")
-					.closeElement("state")
-				.closeElement("states")
-			.closeElement("resource");
+		String resourceXml = FixtureCreator.create()
+			.resource("Fake", resourceId, "Product Catalogue Database")
+				.state(stateId, "Foo")
+					.assertion("Fake", assertion1Id).innerXml("<tag>Foo</tag>")
+			.render();
 
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
@@ -303,7 +266,7 @@ public class DomResourceLoaderTests
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
-			resourceXml.toString());
+			resourceXml);
 
 		//
 		// Execute
@@ -349,32 +312,12 @@ public class DomResourceLoaderTests
 		UUID assertion1Id = UUID.randomUUID();
 		UUID assertion2Id = UUID.randomUUID();
 		
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openElement("resource",
-				"id", resourceId.toString(),
-				"type", "Fake",
-				"name", "Product Catalogue Database")
-				.openElement("states")
-					.openElement("state", "id", stateId.toString(), "label", "Foo")
-						.openElement("assertions")
-							.openElement("assertion",
-								"type", "Fake",
-								"id", assertion1Id.toString(),
-								"name", "Tag is Foo")
-								.openElement("tag").text("Foo").closeElement("tag")
-							.closeElement("assertion")
-							.openElement("assertion",
-								"type", "Fake",
-								"id", assertion2Id.toString(),
-								"name", "Tag is Bar")
-								.openElement("tag").text("Bar").closeElement("tag")
-							.closeElement("assertion")
-						.closeElement("assertions")
-					.closeElement("state")
-				.closeElement("states")
-			.closeElement("resource");
+		String resourceXml = FixtureCreator.create()
+			.resource("Fake", resourceId, "Product Catalogue Database")
+				.state(stateId, "Foo")
+					.assertion("Fake", assertion1Id).innerXml("<tag>Foo</tag>")
+					.assertion("Fake", assertion2Id).innerXml("<tag>Bar</tag>")
+			.render();
 
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
@@ -388,7 +331,7 @@ public class DomResourceLoaderTests
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
-			resourceXml.toString());
+			resourceXml);
 
 		//
 		// Execute
@@ -437,26 +380,11 @@ public class DomResourceLoaderTests
 		UUID state1Id = UUID.randomUUID();
 		UUID migrationId = UUID.randomUUID();
 		
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openElement("resource",
-				"id", resourceId.toString(),
-				"type", "Fake",
-				"name", "Product Catalogue Database")
-				.openElement("states")
-					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
-				.closeElement("states")
-				.openElement("migrations")
-					.openElement("migration",
-						"type", "Fake",
-						"id", migrationId.toString(),
-						"fromStateId", state1Id.toString())
-						.openElement("tag").text("Blah").closeElement("tag")
-					.closeElement("migration")
-				.closeElement("migrations")
-			.closeElement("resource");
-
+		String resourceXml = FixtureCreator.create()
+			.resource("Fake", resourceId, "Product Catalogue Database")
+				.state(state1Id, "Foo")
+				.migration("Fake", migrationId, state1Id, null).innerXml("<tag>Blah</tag>")
+			.render();
 		
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
@@ -470,7 +398,7 @@ public class DomResourceLoaderTests
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
-			resourceXml.toString());
+			resourceXml);
 
 		//
 		// Execute
@@ -510,26 +438,11 @@ public class DomResourceLoaderTests
 		UUID state1Id = UUID.randomUUID();
 		UUID migrationId = UUID.randomUUID();
 		
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openElement("resource",
-				"id", resourceId.toString(),
-				"type", "Fake",
-				"name", "Product Catalogue Database")
-				.openElement("states")
-					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
-				.closeElement("states")
-				.openElement("migrations")
-					.openElement("migration",
-						"type", "Fake",
-						"id", migrationId.toString(),
-						"toStateId", state1Id.toString())
-						.openElement("tag").text("Blah").closeElement("tag")
-					.closeElement("migration")
-				.closeElement("migrations")
-			.closeElement("resource");
-
+		String resourceXml = FixtureCreator.create()
+			.resource("Fake", resourceId, "Product Catalogue Database")
+				.state(state1Id, "Foo")
+				.migration("Fake", migrationId, null, state1Id).innerXml("<tag>Blah</tag>")
+			.render();
 		
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
@@ -543,7 +456,7 @@ public class DomResourceLoaderTests
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
-			resourceXml.toString());
+			resourceXml);
 
 		//
 		// Execute
@@ -584,28 +497,12 @@ public class DomResourceLoaderTests
 		UUID state2Id = UUID.randomUUID();
 		UUID migrationId = UUID.randomUUID();
 		
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openElement("resource",
-				"id", resourceId.toString(),
-				"type", "Fake",
-				"name", "Product Catalogue Database")
-				.openElement("states")
-					.openElement("state", "id", state1Id.toString(), "label", "Foo").closeElement("state")
-					.openElement("state", "id", state2Id.toString(), "label", "Bar").closeElement("state")
-				.closeElement("states")
-				.openElement("migrations")
-					.openElement("migration",
-						"type", "Fake",
-						"id", migrationId.toString(),
-						"fromStateId", state1Id.toString(),
-						"toStateId", state2Id.toString())
-						.openElement("tag").text("Blah").closeElement("tag")
-					.closeElement("migration")
-				.closeElement("migrations")
-			.closeElement("resource");
-
+		String resourceXml = FixtureCreator.create()
+			.resource("Fake", resourceId, "Product Catalogue Database")
+				.state(state1Id, "Foo")
+				.state(state2Id, "Bar")
+				.migration("Fake", migrationId, state1Id, state2Id).innerXml("<tag>Blah</tag>")
+			.render();
 		
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
 		resourceBuilders.put("Fake", new DomFakeResourceBuilder());
@@ -619,7 +516,7 @@ public class DomResourceLoaderTests
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
-			resourceXml.toString());
+			resourceXml);
 
 		//
 		// Execute

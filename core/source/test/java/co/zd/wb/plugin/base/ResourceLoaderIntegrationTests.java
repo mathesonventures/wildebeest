@@ -33,12 +33,15 @@ import co.zd.wb.PrintStreamLogger;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
 import java.sql.SQLException;
-import java.util.UUID;
 import junit.framework.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ResourceLoaderIntegrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(ResourceLoaderIntegrationTests.class);
+
 	@Test public void loadAndMigrateMySqlResourceFromXml() throws
 		IndeterminateStateException,
 		AssertionFailedException,
@@ -58,7 +61,7 @@ public class ResourceLoaderIntegrationTests
 			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
 			DomPlugins.migrationBuilders(),
-			productCatalogueResource.getXmlBuilder().toString());
+			productCatalogueResource.getResourceXml());
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
@@ -74,7 +77,20 @@ public class ResourceLoaderIntegrationTests
 		// Execute - Load
 		//
 		
-		Resource resource = resourceBuilder.load();
+		Resource resource = null;
+		try
+		{
+			resource = resourceBuilder.load();
+		}
+		catch (MessagesException e)
+		{
+			for (String message : e.getMessages().getMessages())
+			{
+				LOG.error(message);
+			}
+			
+			throw e;
+		}
 		
 		//
 		// Assert Model

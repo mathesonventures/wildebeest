@@ -14,13 +14,15 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.base;
+package co.zd.wb.fake;
 
 import co.zd.wb.Assertion;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Instance;
 import co.zd.wb.Resource;
+import co.zd.wb.plugin.base.BaseAssertion;
+import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
 public class FakeAssertion extends BaseAssertion implements Assertion

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom;
+package co.zd.wb.fixturecreator;
 
 import java.util.UUID;
 
@@ -178,7 +178,7 @@ public class XmlBuilder
 		return this;
 	}
 	
-	public XmlBuilder text(String text)
+	public XmlBuilder append(String text)
 	{
 		this.getStringBuilder().append(text);
 		

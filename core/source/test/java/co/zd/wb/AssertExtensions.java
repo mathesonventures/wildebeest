@@ -16,8 +16,8 @@
 
 package co.zd.wb;
 
-import co.zd.wb.plugin.base.FakeAssertion;
-import co.zd.wb.plugin.base.FakeMigration;
+import co.zd.wb.fake.FakeAssertion;
+import co.zd.wb.fake.FakeMigration;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import java.util.UUID;
 import org.junit.Assert;

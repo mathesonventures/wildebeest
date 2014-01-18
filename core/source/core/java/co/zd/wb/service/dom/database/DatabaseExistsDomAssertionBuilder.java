@@ -14,16 +14,26 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom;
+package co.zd.wb.service.dom.database;
 
-import co.zd.wb.Resource;
-import co.zd.wb.plugin.base.FakeResource;
+import co.zd.wb.Assertion;
+import co.zd.wb.plugin.database.DatabaseExistsAssertion;
+import co.zd.wb.service.MessagesException;
+import co.zd.wb.service.dom.BaseDomAssertionBuilder;
 import java.util.UUID;
 
-public class DomFakeResourceBuilder extends BaseDomResourceBuilder
+/**
+ * An {@link AssertionBuilder} that builds a {@link DatabaseExistsAssertion} from a DOM {@link org.w3c.dom.Element}.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
+public class DatabaseExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Resource build(UUID id, String name)
+	@Override public Assertion build(
+		UUID assertionId,
+		int seqNum) throws MessagesException
 	{
-		return new FakeResource(id, name);
+		return new DatabaseExistsAssertion(assertionId, seqNum);
 	}
 }

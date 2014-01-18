@@ -14,25 +14,33 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.base;
+package co.zd.wb.fake;
 
+import co.zd.wb.fake.FakeInstance;
+import co.zd.wb.fake.FakeResource;
+import co.zd.wb.AssertionResponse;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Instance;
-import co.zd.wb.MigrationFailedException;
 import co.zd.wb.Resource;
+import co.zd.wb.plugin.base.BaseAssertion;
+import co.zd.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
-public class FakeMigration extends BaseMigration
+public class TagAssertion extends BaseAssertion
 {
-	public FakeMigration(
-		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId,
+	public TagAssertion(
+		UUID assertionId,
+		int seqNum,
 		String tag)
 	{
-		super(migrationId, fromStateId, toStateId);
+		super(assertionId, seqNum);
 		
 		this.setTag(tag);
+	}
+	
+	@Override public String getDescription()
+	{
+		return "Tag";
 	}
 	
 	// <editor-fold desc="Tag" defaultstate="collapsed">
@@ -47,7 +55,7 @@ public class FakeMigration extends BaseMigration
 		return m_tag;
 	}
 
-	private void setTag(
+	public void setTag(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("tag cannot be null");
@@ -76,17 +84,26 @@ public class FakeMigration extends BaseMigration
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		
-		return ModelExtensions.As(resource, FakeInstance.class) != null;
+		return ModelExtensions.As(resource, FakeResource.class) != null;
 	}
-	
-	@Override public void perform(Instance instance) throws MigrationFailedException
+
+	@Override public AssertionResponse perform(Instance instance)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance"); }
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
-		if (fake == null) { throw new IllegalArgumentException("instance must of type FakeResource"); }
-	
-		fake.setTag(this.getTag());
+		if (fake == null) { throw new IllegalArgumentException("instance must be a FakeInstance"); }
 		
-		fake.setStateId(this.getToStateId());
+		AssertionResponse response = null;
+		
+		if (this.getTag().equals(fake.getTag()))
+		{
+			response = new ImmutableAssertionResponse(true, "Tag is as expected");
+		}
+		else
+		{
+			response = new ImmutableAssertionResponse(false, "Tag not as expected");
+		}
+		
+		return response;
 	}
 }

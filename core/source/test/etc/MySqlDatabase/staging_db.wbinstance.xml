@@ -3,5 +3,5 @@
 	<port>3306</port>
 	<adminUsername>root</adminUsername>
 	<adminPassword>password</adminPassword>
-	<schemaName>ProductCatalogueStaging</schemaName>
+	<databaseName>ProductCatalogueStaging</databaseName>
 </instance>

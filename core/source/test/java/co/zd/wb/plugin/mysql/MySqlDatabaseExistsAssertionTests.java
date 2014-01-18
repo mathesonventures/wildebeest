@@ -17,7 +17,7 @@
 package co.zd.wb.plugin.mysql;
 
 import co.zd.wb.AssertExtensions;
-import co.zd.wb.plugin.base.FakeInstance;
+import co.zd.wb.fake.FakeInstance;
 import co.zd.wb.AssertionFailedException;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.IndeterminateStateException;

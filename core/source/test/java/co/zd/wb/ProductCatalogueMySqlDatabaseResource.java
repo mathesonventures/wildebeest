@@ -17,8 +17,8 @@
 package co.zd.wb;
 
 import co.mv.protium.system.ArgumentNullException;
+import co.zd.wb.fixturecreator.FixtureCreator;
 import co.zd.wb.plugin.mysql.MySqlElementFixtures;
-import co.zd.wb.service.dom.XmlBuilder;
 import java.util.UUID;
 
 public class ProductCatalogueMySqlDatabaseResource
@@ -55,7 +55,7 @@ public class ProductCatalogueMySqlDatabaseResource
 		this.setMigrationIdLoadCoreSchema(MigrationIdLoadCoreSchema);
 		this.setMigrationIdLoadReferenceData(MigrationIdLoadReferenceData);
 		
-		this.setXmlBuilder(buildXml(
+		this.setResourceXml(buildXml(
 			this.getResourceId(),
 			this.getStateIdDatabaseCreated(),
 				this.getAssertionIdDatabaseExists(),
@@ -514,44 +514,47 @@ public class ProductCatalogueMySqlDatabaseResource
 
 	// </editor-fold>
 	
-	// <editor-fold desc="XmlBuilder" defaultstate="collapsed">
+	// <editor-fold desc="ResourceXml" defaultstate="collapsed">
 
-	private XmlBuilder m_xmlBuilder = null;
-	private boolean m_xmlBuilder_set = false;
+	private String _resourceXml = null;
+	private boolean _resourceXml_set = false;
 
-	public XmlBuilder getXmlBuilder() {
-		if(!m_xmlBuilder_set) {
-			throw new IllegalStateException("xmlBuilder not set.  Use the HasXmlBuilder() method to check its state before accessing it.");
+	public String getResourceXml() {
+		if(!_resourceXml_set) {
+			throw new IllegalStateException("resourceXml not set.");
 		}
-		return m_xmlBuilder;
+		if(_resourceXml == null) {
+			throw new IllegalStateException("resourceXml should not be null");
+		}
+		return _resourceXml;
 	}
 
-	private void setXmlBuilder(
-		XmlBuilder value) {
+	private void setResourceXml(
+		String value) {
 		if(value == null) {
-			throw new IllegalArgumentException("xmlBuilder cannot be null");
+			throw new IllegalArgumentException("resourceXml cannot be null");
 		}
-		boolean changing = !m_xmlBuilder_set || m_xmlBuilder != value;
+		boolean changing = !_resourceXml_set || _resourceXml != value;
 		if(changing) {
-			m_xmlBuilder_set = true;
-			m_xmlBuilder = value;
+			_resourceXml_set = true;
+			_resourceXml = value;
 		}
 	}
 
-	private void clearXmlBuilder() {
-		if(m_xmlBuilder_set) {
-			m_xmlBuilder_set = true;
-			m_xmlBuilder = null;
+	private void clearResourceXml() {
+		if(_resourceXml_set) {
+			_resourceXml_set = true;
+			_resourceXml = null;
 		}
 	}
 
-	private boolean hasXmlBuilder() {
-		return m_xmlBuilder_set;
+	private boolean hasResourceXml() {
+		return _resourceXml_set;
 	}
 
 	// </editor-fold>
 
-	private static XmlBuilder buildXml(
+	private static String buildXml(
 		UUID resourceId,
 		UUID stateIdDatabaseCreated,
 			UUID assertionIdDatabaseExists,
@@ -578,60 +581,29 @@ public class ProductCatalogueMySqlDatabaseResource
 		if (migrationIdLoadSchema == null) { throw new ArgumentNullException("migrationIdLoadSchema"); }
 		if (migrationIdLoadReferenceData == null) { throw new ArgumentNullException("migrationIdLoadReferenceData"); }
 		
-		XmlBuilder resourceXml = new XmlBuilder();
-		resourceXml
-			.processingInstruction()
-			.openResource(resourceId, "MySqlDatabase", "Product Catalogue Database")
-				.openStates()
-					.openState(stateIdDatabaseCreated, "Database created")
-						.openAssertions()
-							.openAssertion("MySqlDatabaseExists", assertionIdDatabaseExists)
-							.closeAssertion()
-						.closeAssertions()
-					.closeState()
-					.openState(stateIdCoreSchemaLoadedId, "Core Schema Loaded")
-						.openAssertions()
-							.openAssertion("MySqlTableExists", assertionIdProductTypeTableExists)
-								.openElement("tableName").text("ProductType").closeElement("tableName")
-							.closeAssertion()
-							.openAssertion("MySqlTableExists", assertionIdProductTableExists)
-								.openElement("tableName").text("Product").closeElement("tableName")
-							.closeAssertion()
-						.closeAssertions()
-					.closeState()
-					.openState(stateIdInitialReferenceDataLoaded, "Reference Data Loaded")
-						.openAssertions()
-							.openAssertion("RowExists", assertionIdProductTypeHwRowExists)
-								.openElement("description").text("ProductType HW exists").closeElement("description")
-								.openElement("sql").openCdata()
-									.text("SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';")
-								.closeCdata().closeElement("sql")
-							.closeAssertion()
-							.openAssertion("RowExists", assertionIdProductTypeSwRowExists)
-								.openElement("description").text("ProductType SW exists").closeElement("description")
-								.openElement("sql").openCdata()
-									.text("SELECT * FROM ProductType WHERE ProductTypeCode = 'SW';")
-								.closeCdata().closeElement("sql")
-							.closeAssertion()
-						.closeAssertions()
-					.closeState()
-				.closeStates()
-				.openMigrations()
-					.openMigration("MySqlCreateDatabase", migrationIdCreateDatabase, null, stateIdDatabaseCreated)
-					.closeMigration()
-					.openMigration("SqlScript", migrationIdLoadSchema, stateIdDatabaseCreated, stateIdCoreSchemaLoadedId)
-						.openElement("sql").openCdata()
-							.text(MySqlElementFixtures.productCatalogueDatabase())
-						.closeCdata().closeElement("sql")
-					.closeMigration()
-					.openMigration("SqlScript", migrationIdLoadReferenceData, stateIdCoreSchemaLoadedId, stateIdInitialReferenceDataLoaded)
-						.openElement("sql").openCdata()
-							.text(MySqlElementFixtures.productTypeRows())
-						.closeCdata().closeElement("sql")
-					.closeMigration()
-				.closeMigrations()
-			.closeResource();
-		
+		String resourceXml = FixtureCreator.create()
+			.resource("MySqlDatabase", resourceId, "Product Catalogue Database")
+				.state(stateIdDatabaseCreated, "Database created")
+					.assertion("MySqlDatabaseExists", assertionIdDatabaseExists)
+				.state(stateIdCoreSchemaLoadedId, "Core Schema Loaded")
+					.assertion("MySqlTableExists", assertionIdProductTypeTableExists)
+						.innerXml("<tableName>ProductType</tableName>")
+					.assertion("MySqlTableExists", assertionIdProductTableExists)
+						.innerXml("<tableName>Product</tableName>")
+				.state(stateIdInitialReferenceDataLoaded, "Reference Data Loaded")
+					.assertion("RowExists", assertionIdProductTypeHwRowExists)
+						.appendInnerXml("<description>ProductType HW exists</description>")
+						.appendInnerXml("<sql>SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';</sql>")
+					.assertion("RowExists", assertionIdProductTypeSwRowExists)
+						.appendInnerXml("<description>ProductType SW exists</description>")
+						.appendInnerXml("<sql>SELECT * FROM ProductType WHERE ProductTypeCode = 'SW';</sql>")
+				.migration("MySqlCreateDatabase", migrationIdCreateDatabase, null, stateIdDatabaseCreated)
+				.migration("SqlScript", migrationIdLoadSchema, stateIdDatabaseCreated, stateIdCoreSchemaLoadedId)
+					.innerXml("<sql><![CDATA[" + MySqlElementFixtures.productCatalogueDatabase() + "]]></sql>")
+				.migration("SqlScript", migrationIdLoadReferenceData, stateIdCoreSchemaLoadedId, stateIdInitialReferenceDataLoaded)
+					.innerXml("<sql><![CDATA[" + MySqlElementFixtures.productTypeRows() + "]]></sql>")
+			.render();
+			
 		return resourceXml;
 	}
 }

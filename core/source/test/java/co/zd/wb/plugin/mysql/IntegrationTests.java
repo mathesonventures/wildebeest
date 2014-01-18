@@ -33,7 +33,7 @@ import co.zd.wb.PrintStreamLogger;
 import co.zd.wb.service.dom.DomInstanceLoader;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
-import co.zd.wb.service.dom.XmlBuilder;
+import co.zd.wb.fixturecreator.XmlBuilder;
 import java.sql.SQLException;
 import java.util.UUID;
 import junit.framework.Assert;
@@ -132,7 +132,7 @@ public class IntegrationTests
 			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
 			DomPlugins.migrationBuilders(),
-			prodCatResource.getXmlBuilder().toString());
+			prodCatResource.getResourceXml());
 
 		//
 		// Execute - load
@@ -196,7 +196,7 @@ public class IntegrationTests
 			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
 			DomPlugins.migrationBuilders(),
-			prodCatResource.getXmlBuilder().toString());
+			prodCatResource.getResourceXml());
 		
 		// Execute
 		Resource resource = resourceLoader.load();
@@ -261,11 +261,11 @@ public class IntegrationTests
 		instanceXml
 			.processingInstruction()
 			.openElement("instance type=\"MySqlDatabase\" id=\"" + UUID.randomUUID() + "\"")
-				.openElement("hostName").text("127.0.0.1").closeElement("hostName")
-				.openElement("port").text("3306").closeElement("port")
-				.openElement("adminUsername").text("root").closeElement("adminUsername")
-				.openElement("adminPassword").text("password").closeElement("adminPassword")
-				.openElement("schemaName").text(databaseName).closeElement("schemaName")
+				.openElement("hostName").append("127.0.0.1").closeElement("hostName")
+				.openElement("port").append("3306").closeElement("port")
+				.openElement("adminUsername").append("root").closeElement("adminUsername")
+				.openElement("adminPassword").append("password").closeElement("adminPassword")
+				.openElement("databaseName").append(databaseName).closeElement("databaseName")
 			.closeElement("instance");
 		
 		return instanceXml;

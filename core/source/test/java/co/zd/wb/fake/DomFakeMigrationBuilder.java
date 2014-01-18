@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom;
+package co.zd.wb.fake;
 
 import co.zd.wb.Migration;
-import co.zd.wb.plugin.base.FakeMigration;
+import co.zd.wb.fake.FakeMigration;
+import co.zd.wb.service.dom.BaseDomMigrationBuilder;
 import java.util.UUID;
 
 public class DomFakeMigrationBuilder extends BaseDomMigrationBuilder

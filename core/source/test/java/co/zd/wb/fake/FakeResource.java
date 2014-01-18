@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.base;
+package co.zd.wb.fake;
 
 import co.zd.wb.IndeterminateStateException;
 import co.zd.wb.Instance;
 import co.zd.wb.Logger;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.State;
+import co.zd.wb.plugin.base.BaseResource;
 import java.util.UUID;
 
 public class FakeResource extends BaseResource

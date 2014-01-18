@@ -16,6 +16,11 @@
 
 package co.zd.wb.plugin.base;
 
+import co.zd.wb.fake.TagAssertion;
+import co.zd.wb.fake.FakeAssertion;
+import co.zd.wb.fake.FakeInstance;
+import co.zd.wb.fake.FakeResource;
+import co.zd.wb.fake.FakeMigration;
 import co.mv.helium.testframework.Expect;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.Assertion;

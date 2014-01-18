@@ -3,6 +3,7 @@ package co.zd.wb.postgresql;
 import co.zd.wb.Instance;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
+import co.zd.wb.fixturecreator.FixtureCreator;
 import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseResource;
 import co.zd.wb.service.AssertionBuilder;
@@ -29,8 +30,12 @@ public class PostgreSqlDomServiceUnitTests
 		// Setup
 		//
 		
-		String resourceXml = "<resource type=\"PostgreSqlDatabase\" id=\"38d0eabd-ab40-4c37-96a7-fcacb43bd059\""
-			+ " name=\"Product Catalogue Database\"></resource>";
+		UUID resourceId = UUID.randomUUID();
+		String resourceName = "Foo";
+		
+		String resourceXml = FixtureCreator.create()
+			.resource("PostgreSqlDatabase", resourceId, resourceName)
+			.render();
 		
 		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
 		resourceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourceBuilder());
@@ -55,14 +60,8 @@ public class PostgreSqlDomServiceUnitTests
 		PostgreSqlDatabaseResource resourceT = ModelExtensions.As(resource, PostgreSqlDatabaseResource.class);
 		Assert.assertNotNull("resource is not a PostgreSqlDatabaseResource", resourceT);
 		
-		Assert.assertEquals(
-			"resource.resourceId",
-			UUID.fromString("38d0eabd-ab40-4c37-96a7-fcacb43bd059"),
-			resource.getResourceId());
-		Assert.assertEquals(
-			"resource.name",
-			"Product Catalogue Database",
-			resource.getName());
+		Assert.assertEquals("resource.resourceId", resourceId, resource.getResourceId());
+		Assert.assertEquals("resource.name", resourceName, resource.getName());
 		
 	}
 	
