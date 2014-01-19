@@ -98,7 +98,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		return _hostName;
 	}
 
-	private void setHostName(
+	public void setHostName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
@@ -135,7 +135,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		return _instanceName;
 	}
 
-	private void setInstanceName(
+	public void setInstanceName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("instanceName cannot be null");
@@ -177,7 +177,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		return _portNumber;
 	}
 
-	private void setPortNumber(
+	public void setPortNumber(
 		int value) {
 		boolean changing = !_portNumber_set || _portNumber != value;
 		if(changing) {
@@ -216,7 +216,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		return _adminUsername;
 	}
 
-	private void setAdminUsername(
+	public void setAdminUsername(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminUsername cannot be null");
@@ -258,7 +258,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		return _adminPassword;
 	}
 
-	private void setAdminPassword(
+	public void setAdminPassword(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminPassword cannot be null");
@@ -298,7 +298,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		return _databaseName;
 	}
 
-	private void setDatabaseName(
+	public void setDatabaseName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("databaseName cannot be null");
@@ -335,7 +335,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		return m_stateTableName;
 	}
 
-	private void setStateTableName(
+	public void setStateTableName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateTableName cannot be null");

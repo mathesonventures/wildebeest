@@ -80,7 +80,7 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance
 		return m_hostName;
 	}
 
-	private void setHostName(
+	public void setHostName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
@@ -122,7 +122,7 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance
 		return m_port;
 	}
 
-	private void setPort(
+	public void setPort(
 		int value) {
 		boolean changing = !m_port_set || m_port != value;
 		if(changing) {
@@ -161,7 +161,7 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance
 		return m_adminUsername;
 	}
 
-	private void setAdminUsername(
+	public void setAdminUsername(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminUsername cannot be null");
@@ -203,7 +203,7 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance
 		return m_adminPassword;
 	}
 
-	private void setAdminPassword(
+	public void setAdminPassword(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminPassword cannot be null");

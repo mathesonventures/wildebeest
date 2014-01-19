@@ -66,7 +66,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		return _hostName;
 	}
 
-	private void setHostName(
+	public void setHostName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
@@ -103,7 +103,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		return _port;
 	}
 
-	private void setPort(
+	public void setPort(
 		int value) {
 		boolean changing = !_port_set || _port != value;
 		if(changing) {
@@ -140,7 +140,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		return _adminUsername;
 	}
 
-	private void setAdminUsername(
+	public void setAdminUsername(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminUsername cannot be null");
@@ -180,7 +180,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		return _adminPassword;
 	}
 
-	private void setAdminPassword(
+	public void setAdminPassword(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminPassword cannot be null");
@@ -220,7 +220,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		return _metaSchemaName;
 	}
 
-	private void setMetaSchemaName(
+	public void setMetaSchemaName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("metaSchemaName cannot be null");
