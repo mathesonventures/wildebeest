@@ -45,7 +45,7 @@ public abstract class BaseDatabaseInstance implements DatabaseInstance
 	private String _databaseName = null;
 	private boolean _databaseName_set = false;
 
-	public String getDatabaseName() {
+	@Override public String getDatabaseName() {
 		if(!_databaseName_set) {
 			throw new IllegalStateException("databaseName not set.");
 		}
@@ -55,7 +55,7 @@ public abstract class BaseDatabaseInstance implements DatabaseInstance
 		return _databaseName;
 	}
 
-	private void setDatabaseName(
+	@Override public void setDatabaseName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("databaseName cannot be null");
@@ -92,7 +92,7 @@ public abstract class BaseDatabaseInstance implements DatabaseInstance
 		return m_stateTableName;
 	}
 
-	private void setStateTableName(
+	@Override public void setStateTableName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateTableName cannot be null");
@@ -104,7 +104,7 @@ public abstract class BaseDatabaseInstance implements DatabaseInstance
 		}
 	}
 
-	private void clearStateTableName() {
+	@Override public void clearStateTableName() {
 		if(m_stateTableName_set) {
 			m_stateTableName_set = true;
 			m_stateTableName = null;

@@ -220,7 +220,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		return _metaSchemaName;
 	}
 
-	public void setMetaSchemaName(
+	@Override public void setMetaSchemaName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("metaSchemaName cannot be null");
@@ -232,7 +232,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		}
 	}
 
-	private void clearMetaSchemaName() {
+	@Override public void clearMetaSchemaName() {
 		if(_metaSchemaName_set) {
 			_metaSchemaName_set = true;
 			_metaSchemaName = null;

@@ -26,7 +26,36 @@ import co.zd.wb.plugin.database.DatabaseInstance;
  */
 public interface AnsiSqlDatabaseInstance extends DatabaseInstance
 {
+	/**
+	 * Gets the name of the schema where meta data is tracked by Wildebeest.  If no schema name is specified on this
+	 * instance, then Wildebeest will choose the name to use.
+	 * 
+	 * @return                                  the name of the schema where meta data is tracked.
+	 * @since                                   4.0
+	 */
 	String getMetaSchemaName();
+	
+	/**
+	 * Sets the name of the schema where meta data is tracked by Wildebeest.
+	 * 
+	 * @param       value                       the name of the schema where meta data is tracked by Wildebeest.
+	 * @since                                   4.0
+	 */
+	void setMetaSchemaName(String value);
 
+	/**
+	 * Clears the meta data schema name for this instance, leaving Wildebeest to choose the schema to be used.
+	 * 
+	 * @since                                   4.0
+	 */
+	void clearMetaSchemaName();
+	
+	/**
+	 * Returns whether or not this instance has a meta data schema name specified.
+	 * 
+	 * @return                                  a boolean flag indicating whether or not this instance ha a meta data
+	 *                                          schema name specified.
+	 * @since                                   4.0
+	 */
 	boolean hasMetaSchemaName();
 }

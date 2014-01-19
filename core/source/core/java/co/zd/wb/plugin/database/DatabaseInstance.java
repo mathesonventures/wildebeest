@@ -36,6 +36,14 @@ public interface DatabaseInstance extends Instance
 	String getDatabaseName();
 	
 	/**
+	 * Sets the name of the database represented by this DatabaseInstance.
+	 * 
+	 * @param       value                       the new value for the DatabaseName property.
+	 * @since                                   4.0
+	 */
+	void setDatabaseName(String value);
+	
+	/**
 	 * Gets the name to use for the state tracking table in this database instance, if specified.  If not specified this
 	 * method throws an InvalidStateException.  Before calling getStateTableName(), call hasStateTableName() to check if
 	 * a state table name has been set.
@@ -43,6 +51,20 @@ public interface DatabaseInstance extends Instance
 	 * @since                                   1.0
 	 */
 	String getStateTableName();
+	
+	/**
+	 * Sets the name to use for the state tracking table in this database instance.
+	 * 
+	 * @param       value                       4.0
+	 */
+	void setStateTableName(String value);
+
+	/**
+	 * Clears the state table name for this instance, leaving Wildebeest to determine the name to use.
+	 * 
+	 * @since                                   4.0
+	 */
+	void clearStateTableName();
 	
 	/**
 	 * Returns whether or not this instance has a state table name set.

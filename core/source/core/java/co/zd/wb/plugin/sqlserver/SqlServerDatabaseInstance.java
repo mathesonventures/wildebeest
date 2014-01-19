@@ -335,7 +335,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		return m_stateTableName;
 	}
 
-	public void setStateTableName(
+	@Override public void setStateTableName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateTableName cannot be null");
@@ -347,7 +347,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		}
 	}
 
-	private void clearStateTableName() {
+	@Override public void clearStateTableName() {
 		if(m_stateTableName_set) {
 			m_stateTableName_set = true;
 			m_stateTableName = null;
