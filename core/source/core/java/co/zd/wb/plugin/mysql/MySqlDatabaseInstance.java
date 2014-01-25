@@ -20,6 +20,7 @@ import co.zd.wb.FaultException;
 import co.zd.wb.Instance;
 import co.zd.wb.plugin.database.BaseDatabaseInstance;
 import co.zd.wb.plugin.database.DatabaseHelper;
+import co.zd.wb.plugin.database.JdbcDatabaseInstance;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,7 +34,7 @@ import javax.sql.DataSource;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public class MySqlDatabaseInstance extends BaseDatabaseInstance
+public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcDatabaseInstance
 {
 	/**
 	 * Creates a new MySqlDatabaseInstance.

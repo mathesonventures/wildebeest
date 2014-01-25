@@ -19,6 +19,7 @@ package co.zd.wb.plugin.postgresql;
 import co.zd.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
 import co.zd.wb.plugin.database.BaseDatabaseInstance;
 import co.zd.wb.plugin.database.DatabaseHelper;
+import co.zd.wb.plugin.database.JdbcDatabaseInstance;
 import javax.sql.DataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -28,7 +29,8 @@ import org.postgresql.ds.PGSimpleDataSource;
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements AnsiSqlDatabaseInstance
+public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements AnsiSqlDatabaseInstance,
+	JdbcDatabaseInstance
 {
 	public PostgreSqlDatabaseInstance(
 		String hostName,

@@ -21,6 +21,7 @@ import co.zd.wb.Instance;
 import co.zd.wb.plugin.database.DatabaseConstants;
 import co.zd.wb.plugin.database.DatabaseHelper;
 import co.zd.wb.plugin.database.DatabaseInstance;
+import co.zd.wb.plugin.database.JdbcDatabaseInstance;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,7 +35,7 @@ import javax.sql.DataSource;
  * @author                                      Brendon Matheson
  * @since                                       2.0
  */
-public class SqlServerDatabaseInstance implements DatabaseInstance
+public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabaseInstance
 {
 	/**
 	 * Creates a new SqlServerDatabaseInstance.
@@ -42,7 +43,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 	 * @param       hostName                    the host name of the server for this instance.
 	 * @param       instanceName                the SQL Server instance name for this instance.  Null may be supplied
 	 *                                          where no instance name needs to be specified.
-	 * @param       portNumber                  the port number of the server for this instance.
+	 * @param       port                  the port number of the server for this instance.
 	 * @param       adminUsername               the username of the user that will be used to administer the database
 	 *                                          represented by this instance.
 	 * @param       adminPassword               the password of the user that will be used to administer the database
@@ -55,7 +56,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 	public SqlServerDatabaseInstance(
 		String hostName,
 		String instanceName,
-		int portNumber,
+		int port,
 		String adminUsername,
 		String adminPassword,
 		String databaseName,
@@ -71,7 +72,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		{
 			this.setInstanceName(instanceName);
 		}
-		this.setPortNumber(portNumber);
+		this.setPort(port);
 		this.setAdminUsername(adminUsername);
 		this.setAdminPassword(adminPassword);
 		this.setDatabaseName(databaseName);
@@ -160,41 +161,41 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 
 	// </editor-fold>
 
-	// <editor-fold desc="PortNumber" defaultstate="collapsed">
+	// <editor-fold desc="Port" defaultstate="collapsed">
 
-	private int _portNumber = 0;
-	private boolean _portNumber_set = false;
+	private int _port = 0;
+	private boolean _port_set = false;
 
 	/**
 	 * Returns the port number of the server for this instance.
 	 * 
 	 * @since                                   2.0
 	 */
-	public int getPortNumber() {
-		if(!_portNumber_set) {
-			throw new IllegalStateException("portNumber not set.  Use the HasPortNumber() method to check its state before accessing it.");
+	public int getPort() {
+		if(!_port_set) {
+			throw new IllegalStateException("port not set.");
 		}
-		return _portNumber;
+		return _port;
 	}
 
-	public void setPortNumber(
+	public void setPort(
 		int value) {
-		boolean changing = !_portNumber_set || _portNumber != value;
+		boolean changing = !_port_set || _port != value;
 		if(changing) {
-			_portNumber_set = true;
-			_portNumber = value;
+			_port_set = true;
+			_port = value;
 		}
 	}
 
-	private void clearPortNumber() {
-		if(_portNumber_set) {
-			_portNumber_set = true;
-			_portNumber = 0;
+	private void clearPort() {
+		if(_port_set) {
+			_port_set = true;
+			_port = 0;
 		}
 	}
 
-	private boolean hasPortNumber() {
-		return _portNumber_set;
+	private boolean hasPort() {
+		return _port_set;
 	}
 
 	// </editor-fold>
@@ -373,7 +374,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		{
 			result.setInstanceName(this.getInstanceName());
 		}
-		result.setPortNumber(this.getPortNumber());
+		result.setPortNumber(this.getPort());
 		result.setUser(this.getAdminUsername());
 		result.setPassword(this.getAdminPassword());
 		result.setDatabaseName("master");
@@ -394,7 +395,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance
 		{
 			result.setInstanceName(this.getInstanceName());
 		}
-		result.setPortNumber(this.getPortNumber());
+		result.setPortNumber(this.getPort());
 		result.setUser(this.getAdminUsername());
 		result.setPassword(this.getAdminPassword());
 		result.setDatabaseName(this.getDatabaseName());
