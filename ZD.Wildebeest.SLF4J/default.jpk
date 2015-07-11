@@ -1,0 +1,21 @@
+<jpk xmlns="http://mathesonventures.co/jpk">
+    
+    <feeds>
+        <feed name="mv" url="http://artifacts.mathesonventures.co/jpk" />
+    </feeds>
+ 
+    <dep xmlns="http://mathesonventures.co/jpk/dep">
+        <groups>
+            <group name="clc" />
+            <group name="clr" />
+            <group name="tlc" />
+            <group name="tlr" />
+        </groups>
+        <packages>
+            <mvnpackage groupId="${meta.project.identity.organization.id}" artifactId="${meta.project.identity.id}.Core" version="${meta.project.version.full.dotted}" groups="clc,clr,tlc,tlr" />
+            <mvnpackage groupId="org.slf4j" artifactId="slf4j-api" version="1.7.5" groups="clc,clr,tlc,tlr" />
+            <mvnpackage groupId="junit" artifactId="junit" version="4.11" groups="tlc,tlr" />
+        </packages>
+    </dep>
+ 
+</jpk>
