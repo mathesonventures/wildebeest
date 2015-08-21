@@ -40,7 +40,7 @@ public interface Resource
 	UUID getResourceId();
 	
 	/**
-	 * Gets the Name of this Resource.
+	 * Gets the name of this Resource.
 	 * 
 	 * @since                                   1.0
 	 */

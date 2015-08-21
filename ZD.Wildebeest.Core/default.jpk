@@ -20,10 +20,10 @@
             <mvnpackage groupId="org.postgresql" artifactId="postgresql" version="9.3-1100-jdbc41" groups="clc,clr,tlr" />
 
             <mvnpackage groupId="junit" artifactId="junit" version="4.11" groups="tlc,tlr" />
-            <mvnpackage groupId="MV" artifactId="MV.Protium.Data" version="1.1.207.39" groups="tlc,tlr" />
-            <mvnpackage groupId="MV" artifactId="MV.Protium.System" version="1.1.207.39" groups="tlc,tlr" />
-            <mvnpackage groupId="MV" artifactId="MV.Helium.TestFramework" version="1.0.67.49" groups="tlc,tlr" />
-            <mvnpackage groupId="MV" artifactId="MV.Helium.TestFramework.MySql" version="1.0.67.49" groups="tlc,tlr" />
+            <mvnpackage groupId="MV" artifactId="MV.Protium.Data" version="1.1.319.177" groups="tlc,tlr" />
+            <mvnpackage groupId="MV" artifactId="MV.Protium.Eventing" version="1.1.319.177" groups="tlc,tlr" />
+            <mvnpackage groupId="MV" artifactId="MV.Protium.System" version="1.1.319.177" groups="tlc,tlr" />
+            <mvnpackage groupId="MV" artifactId="MV.Helium.TestFramework" version="1.0.97.93" groups="tlc,tlr" />
             <mvnpackage groupId="javax" artifactId="javaee-api" version="7.0" groups="tlc,tlr" />
 
         </packages>

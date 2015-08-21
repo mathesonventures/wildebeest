@@ -16,12 +16,12 @@
 
 package co.zd.wb.plugin.base;
 
+import co.mv.helium.ExpectException;
 import co.zd.wb.fake.TagAssertion;
 import co.zd.wb.fake.FakeAssertion;
 import co.zd.wb.fake.FakeInstance;
 import co.zd.wb.fake.FakeResource;
 import co.zd.wb.fake.FakeMigration;
-import co.mv.helium.testframework.Expect;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.Assertion;
 import co.zd.wb.AssertionFailedException;
@@ -501,7 +501,7 @@ public class BaseResourceTests
 		// Execute and Verify
 		//
 
-		new Expect<AssertionFailedException>()
+		new ExpectException<AssertionFailedException>()
 		{
 			@Override public void invoke() throws Throwable
 			{
@@ -537,7 +537,7 @@ public class BaseResourceTests
 		// Execute and Verify
 		//
 
-		new Expect<JumpStateFailedException>()
+		new ExpectException<JumpStateFailedException>()
 		{
 			@Override public void invoke() throws Throwable
 			{
@@ -599,7 +599,7 @@ public class BaseResourceTests
 		// Instance
 		final FakeInstance instance = new FakeInstance();
 
-		new Expect<IllegalArgumentException>()
+		new ExpectException<IllegalArgumentException>()
 		{
 			@Override public void invoke() throws Throwable
 			{
@@ -618,7 +618,7 @@ public class BaseResourceTests
 		// The resource
 		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 
-		new Expect<IllegalArgumentException>()
+		new ExpectException<IllegalArgumentException>()
 		{
 			@Override public void invoke() throws Throwable
 			{
@@ -638,7 +638,7 @@ public class BaseResourceTests
 		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 		final FakeInstance instance = new FakeInstance();
 
-		new Expect<IllegalArgumentException>()
+		new ExpectException<IllegalArgumentException>()
 		{
 			@Override public void invoke() throws Throwable
 			{

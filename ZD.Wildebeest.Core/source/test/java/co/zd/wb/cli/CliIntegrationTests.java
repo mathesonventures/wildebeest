@@ -17,6 +17,8 @@
 package co.zd.wb.cli;
 
 import co.mv.protium.data.Db;
+import co.mv.protium.eventing.EventRouter;
+import co.mv.protium.eventing.routers.NoOpEventRouter;
 import co.zd.wb.FakeLogger;
 import co.zd.wb.Interface;
 import co.zd.wb.Instance;
@@ -161,6 +163,7 @@ public class CliIntegrationTests
 		// Setup
 		//
 		
+		EventRouter er = new NoOpEventRouter();
 		WildebeestCommand wb = new WildebeestCommand();
         MySqlDatabaseInstance instanceT = null;
         
@@ -182,7 +185,7 @@ public class CliIntegrationTests
             });
 
             // Drop the wb_state table, so the database resource is now no longer tracked by Wildebeest
-            Db.nonQuery(instanceT.getAppDataSource(), "DROP TABLE wb_state;", null);
+            Db.nonQuery(er, instanceT.getAppDataSource(), "DROP TABLE wb_state;", null);
 
             //
             // Execute

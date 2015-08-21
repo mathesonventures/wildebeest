@@ -47,23 +47,23 @@ import org.xml.sax.InputSource;
  */
 public class DomResourceLoader implements ResourceLoader
 {
-	private static final String ELT_RESOURCE = "resource";
-		private static final String ATT_RESOURCE_TYPE = "type";
-		private static final String ATT_RESOURCE_ID = "id";
-		private static final String ATT_RESOURCE_NAME = "name";
-	private static final String ELT_STATES = "states";
-	private static final String ELT_STATE = "state";
-		private static final String ATT_STATE_ID = "id";
-		private static final String ATT_STATE_LABEL = "label";
-	private static final String ELT_ASSERTIONS = "assertions";
-		private static final String ATT_ASSERTION_TYPE = "type";
-		private static final String ATT_ASSERTION_ID = "id";
-		private static final String ATT_ASSERTION_NAME = "name";
-	private static final String ELT_MIGRATIONS = "migrations";
-		private static final String ATT_MIGRATION_TYPE = "type";
-		private static final String ATT_MIGRATION_ID = "id";
-		private static final String ATT_MIGRATION_FROM_STATE_ID = "fromStateId";
-		private static final String ATT_MIGRATION_TO_STATE_ID = "toStateId";
+	private static final String XE_RESOURCE = "resource";
+		private static final String XA_RESOURCE_TYPE = "type";
+		private static final String XA_RESOURCE_ID = "id";
+		private static final String XA_RESOURCE_NAME = "name";
+	private static final String XE_STATES = "states";
+	private static final String XE_STATE = "state";
+		private static final String XA_STATE_ID = "id";
+		private static final String XA_STATE_LABEL = "label";
+	private static final String XE_ASSERTIONS = "assertions";
+		private static final String XA_ASSERTION_TYPE = "type";
+		private static final String XA_ASSERTION_ID = "id";
+		private static final String XA_ASSERTION_NAME = "name";
+	private static final String XE_MIGRATIONS = "migrations";
+		private static final String XA_MIGRATION_TYPE = "type";
+		private static final String XA_MIGRATION_ID = "id";
+		private static final String XA_MIGRATION_FROM_STATE_ID = "fromStateId";
+		private static final String XA_MIGRATION_TO_STATE_ID = "toStateId";
 	
 	/**
 	 * Creates a new DomResourceBuilder.
@@ -258,7 +258,7 @@ public class DomResourceLoader implements ResourceLoader
 		Element resourceXe = resourceXd.getDocumentElement();
 		Resource resource = null;
 
-		if (ELT_RESOURCE.equals(resourceXe.getTagName()))
+		if (XE_RESOURCE.equals(resourceXe.getTagName()))
 		{
 			resource = buildResource(
 				this.getResourceBuilders(),
@@ -268,7 +268,7 @@ public class DomResourceLoader implements ResourceLoader
 			{
 				Element childXe =  ModelExtensions.As(resourceXe.getChildNodes().item(i), Element.class);
 
-				if (childXe != null && ELT_STATES.equals(childXe.getTagName()))
+				if (childXe != null && XE_STATES.equals(childXe.getTagName()))
 				{
 					for (int stateIndex = 0; stateIndex < childXe.getChildNodes().getLength(); stateIndex ++)
 					{
@@ -282,7 +282,7 @@ public class DomResourceLoader implements ResourceLoader
 							{
 								Element stChildXe = ModelExtensions.As(stateXe.getChildNodes().item(stChildIndex),
 									Element.class);
-								if (stChildXe != null && ELT_ASSERTIONS.equals(stChildXe.getTagName()))
+								if (stChildXe != null && XE_ASSERTIONS.equals(stChildXe.getTagName()))
 								{
 									for (int asrIndex = 0; asrIndex < stChildXe.getChildNodes().getLength(); asrIndex ++)
 									{
@@ -314,7 +314,7 @@ public class DomResourceLoader implements ResourceLoader
 					}
 				}
 				
-				if (childXe != null && ELT_MIGRATIONS.equals(childXe.getTagName()))
+				if (childXe != null && XE_MIGRATIONS.equals(childXe.getTagName()))
 				{
 					for (int tranIndex = 0; tranIndex < childXe.getChildNodes().getLength(); tranIndex ++)
 					{
@@ -353,9 +353,9 @@ public class DomResourceLoader implements ResourceLoader
 		if (resourceBuilders == null) { throw new IllegalArgumentException("resourceBuilders cannot be null"); }
 		if (resourceXe == null) { throw new IllegalArgumentException("resourceXe cannot be null"); }
 		
-		String type = resourceXe.getAttribute(ATT_RESOURCE_TYPE);
-		UUID id = UUID.fromString(resourceXe.getAttribute(ATT_RESOURCE_ID));
-		String name = resourceXe.getAttribute(ATT_RESOURCE_NAME);
+		String type = resourceXe.getAttribute(XA_RESOURCE_TYPE);
+		UUID id = UUID.fromString(resourceXe.getAttribute(XA_RESOURCE_ID));
+		String name = resourceXe.getAttribute(XA_RESOURCE_NAME);
 
 		ResourceBuilder builder = resourceBuilders.get(type);
 		
@@ -376,11 +376,11 @@ public class DomResourceLoader implements ResourceLoader
 	{
 		if (element == null) { throw new IllegalArgumentException("element"); }
 
-		UUID id = UUID.fromString(element.getAttribute(ATT_STATE_ID));
+		UUID id = UUID.fromString(element.getAttribute(XA_STATE_ID));
 		String label = null;
-		if (element.hasAttribute(ATT_STATE_LABEL))
+		if (element.hasAttribute(XA_STATE_LABEL))
 		{
-			label = element.getAttribute(ATT_STATE_LABEL);
+			label = element.getAttribute(XA_STATE_LABEL);
 		}
 		
 		State result = null;
@@ -405,9 +405,9 @@ public class DomResourceLoader implements ResourceLoader
 		if (assertionBuilders == null) { throw new IllegalArgumentException("assertionBuilders cannot be null"); }
 		if (element == null) { throw new IllegalArgumentException("element cannot be null"); }
 		
-		String type = element.getAttribute(ATT_ASSERTION_TYPE);
-		UUID id = UUID.fromString(element.getAttribute(ATT_ASSERTION_ID));
-		String name = element.getAttribute(ATT_ASSERTION_NAME);
+		String type = element.getAttribute(XA_ASSERTION_TYPE);
+		UUID id = UUID.fromString(element.getAttribute(XA_ASSERTION_ID));
+		String name = element.getAttribute(XA_ASSERTION_NAME);
 		
 		AssertionBuilder builder = assertionBuilders.get(type);
 		
@@ -430,17 +430,17 @@ public class DomResourceLoader implements ResourceLoader
 		if (migrationBuilders == null) { throw new IllegalArgumentException("migrationBuilders cannot be null"); }
 		if (element == null) { throw new IllegalArgumentException("element cannot be null"); }
 		
-		String type = element.getAttribute(ATT_MIGRATION_TYPE);
-		UUID id = UUID.fromString(element.getAttribute(ATT_MIGRATION_ID));
+		String type = element.getAttribute(XA_MIGRATION_TYPE);
+		UUID id = UUID.fromString(element.getAttribute(XA_MIGRATION_ID));
 		UUID fromStateId = null;
-		if (element.hasAttribute(ATT_MIGRATION_FROM_STATE_ID))
+		if (element.hasAttribute(XA_MIGRATION_FROM_STATE_ID))
 		{
-			fromStateId = UUID.fromString(element.getAttribute(ATT_MIGRATION_FROM_STATE_ID));
+			fromStateId = UUID.fromString(element.getAttribute(XA_MIGRATION_FROM_STATE_ID));
 		}
 		UUID toStateId = null;
-		if (element.hasAttribute(ATT_MIGRATION_TO_STATE_ID))
+		if (element.hasAttribute(XA_MIGRATION_TO_STATE_ID))
 		{
-			toStateId = UUID.fromString(element.getAttribute(ATT_MIGRATION_TO_STATE_ID));
+			toStateId = UUID.fromString(element.getAttribute(XA_MIGRATION_TO_STATE_ID));
 		}
 		
 		MigrationBuilder builder = migrationBuilders.get(type);
