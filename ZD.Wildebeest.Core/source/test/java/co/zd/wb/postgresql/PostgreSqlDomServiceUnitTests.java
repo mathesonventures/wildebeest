@@ -21,7 +21,7 @@ import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
 import co.zd.wb.fixturecreator.FixtureCreator;
 import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
-import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseResource;
+import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.DomInstanceLoader;
 import co.zd.wb.service.dom.DomPlugins;
@@ -55,7 +55,7 @@ public class PostgreSqlDomServiceUnitTests
 		
 		// Verify
 		Assert.assertNotNull("resource", resource);
-		PostgreSqlDatabaseResource resourceT = ModelExtensions.As(resource, PostgreSqlDatabaseResource.class);
+		PostgreSqlDatabaseResourcePlugin resourceT = ModelExtensions.As(resource, PostgreSqlDatabaseResourcePlugin.class);
 		Assert.assertNotNull("resource is not a PostgreSqlDatabaseResource", resourceT);
 		
 		Assert.assertEquals("resource.resourceId", resourceId, resource.getResourceId());

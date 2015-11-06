@@ -156,7 +156,7 @@ public class Interface
 		{
 			try
 			{
-				State state = resource.currentState(instance);
+				State state = resource.getPlugin().currentState(resource, instance);
 
 				if (state == null)
 				{

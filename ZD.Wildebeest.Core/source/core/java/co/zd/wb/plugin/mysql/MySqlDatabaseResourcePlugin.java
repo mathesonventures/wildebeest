@@ -22,8 +22,9 @@ import co.zd.wb.Instance;
 import co.zd.wb.Logger;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
+import co.zd.wb.ResourcePlugin;
 import co.zd.wb.State;
-import co.zd.wb.plugin.base.BaseResource;
+import co.zd.wb.plugin.base.ResourceImpl;
 import co.zd.wb.plugin.database.DatabaseResource;
 import co.zd.wb.plugin.database.Extensions;
 import java.sql.SQLException;
@@ -35,23 +36,20 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public class MySqlDatabaseResource extends BaseResource implements DatabaseResource
+public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 {
 	/**
-	 * Creates a new MySqlDatabaseResource.
-	 * 
-	 * @param       resourceId                  the ID of the resource.
-	 * @param       name                        the name of the resource.
+	 * Creates a new MySqlDatabaseResourcePlugin
 	 */
-	public MySqlDatabaseResource(
-		UUID resourceId,
-		String name)
+	public MySqlDatabaseResourcePlugin()
 	{
-		super(resourceId, name);
 	}
 	
-	@Override public State currentState(Instance instance) throws IndeterminateStateException
+	@Override public State currentState(
+		Resource resource,
+		Instance instance) throws IndeterminateStateException
 	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
@@ -61,7 +59,7 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 		if (db.databaseExists())
 		{
 			declaredStateId = MySqlStateHelper.getStateId(
-				this.getResourceId(),
+				resource.getResourceId(),
 				db.getAppDataSource(),
 				Extensions.getStateTableName(db));
 		}
@@ -70,7 +68,7 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 		State result = null;
 		if (declaredStateId != null)
 		{
-			result = this.stateForId(declaredStateId);
+			result = resource.stateForId(declaredStateId);
 
 			// If the declared state ID is not known, throw
 			if (result == null)
@@ -86,10 +84,12 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 	
 	@Override public void setStateId(
 		Logger logger,
+		Resource resource,
 		Instance instance,
 		UUID stateId)
 	{
 		if (logger == null) { throw new IllegalArgumentException("logger"); }
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
@@ -99,7 +99,7 @@ public class MySqlDatabaseResource extends BaseResource implements DatabaseResou
 		try
 		{
 			MySqlStateHelper.setStateId(
-				this.getResourceId(),
+				resource.getResourceId(),
 				db.getAppDataSource(),
 				Extensions.getStateTableName(db),
 				stateId);

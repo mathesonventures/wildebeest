@@ -83,7 +83,7 @@ public class FakeAssertion extends BaseAssertion implements Assertion
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		
-		return ModelExtensions.As(resource, FakeResource.class) != null;
+		return ModelExtensions.As(resource, FakeResourcePlugin.class) != null;
 	}
 
 	@Override public AssertionResponse perform(Instance instance)

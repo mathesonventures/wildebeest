@@ -22,9 +22,8 @@ import co.zd.wb.Instance;
 import co.zd.wb.Logger;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
+import co.zd.wb.ResourcePlugin;
 import co.zd.wb.State;
-import co.zd.wb.plugin.base.BaseResource;
-import co.zd.wb.plugin.database.DatabaseResource;
 import co.zd.wb.plugin.database.Extensions;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,24 +37,13 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       2.0
  */
-public class SqlServerDatabaseResource extends BaseResource implements DatabaseResource
+public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 {
-	/**
-	 * Creates a new SqlServerDatabaseResource.
-	 * 
-	 * @param       resourceId                  the ID of the new resource.
-	 * @param       name                        the name of the new resource.
-	 * @since                                   2.0
-	 */
-	public SqlServerDatabaseResource(
-		UUID resourceId,
-		String name)
+	@Override public State currentState(
+		Resource resource,
+		Instance instance) throws IndeterminateStateException
 	{
-		super(resourceId, name);
-	}
-	
-	@Override public State currentState(Instance instance) throws IndeterminateStateException
-	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
@@ -69,7 +57,7 @@ public class SqlServerDatabaseResource extends BaseResource implements DatabaseR
 		if (db.databaseExists())
 		{
 			declaredStateId = SqlServerStateHelper.getStateId(
-				this.getResourceId(),
+				resource.getResourceId(),
 				db.getAppDataSource(),
 				Extensions.getStateTableName(db));
 		}
@@ -78,7 +66,7 @@ public class SqlServerDatabaseResource extends BaseResource implements DatabaseR
 		State result = null;
 		if (declaredStateId != null)
 		{
-			result = this.stateForId(declaredStateId);
+			result = resource.stateForId(declaredStateId);
 
 			// If the declared state ID is not known, throw
 			if (result == null)
@@ -94,10 +82,12 @@ public class SqlServerDatabaseResource extends BaseResource implements DatabaseR
 
 	@Override public void setStateId(
 		Logger logger,
+		Resource resource,
 		Instance instance,
 		UUID stateId)
 	{
 		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
@@ -107,7 +97,7 @@ public class SqlServerDatabaseResource extends BaseResource implements DatabaseR
 		try
 		{
 			SqlServerStateHelper.setStateId(
-				this.getResourceId(),
+				resource.getResourceId(),
 				db.getAppDataSource(),
 				Extensions.getStateTableName(db),
 				stateId);

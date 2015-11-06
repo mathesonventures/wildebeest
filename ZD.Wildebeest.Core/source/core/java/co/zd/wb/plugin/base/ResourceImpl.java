@@ -29,6 +29,7 @@ import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationNotPossibleException;
 import co.zd.wb.Logger;
+import co.zd.wb.ResourcePlugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,23 +40,26 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public abstract class BaseResource implements Resource
+public final class ResourceImpl implements Resource
 {
 	/**
 	 * Creates a new BaseResource instance.
 	 * 
 	 * @param       resourceId                  the ID of the new resource
 	 * @param       name                        the name of the new resource
+	 * @param       plugin              the plugin for handling the type of the resource
 	 * @since                                   1.0
 	 */
-	protected BaseResource(
+	public ResourceImpl(
 		UUID resourceId,
-		String name)
+		String name,
+		ResourcePlugin plugin)
 	{
 		this.setResourceId(resourceId);
 		this.setName(name);
 		this.setStates(new ArrayList<State>());
 		this.setMigrations(new ArrayList<Migration>());
+		this.setPlugin(plugin);
 	}
 
 	//
@@ -208,6 +212,46 @@ public abstract class BaseResource implements Resource
 
 	// </editor-fold>
 
+	// <editor-fold desc="Plugin" defaultstate="collapsed">
+
+	private ResourcePlugin _plugin = null;
+	private boolean _plugin_set = false;
+
+	@Override public ResourcePlugin getPlugin() {
+		if(!_plugin_set) {
+			throw new IllegalStateException("plugin not set.");
+		}
+		if(_plugin == null) {
+			throw new IllegalStateException("plugin should not be null");
+		}
+		return _plugin;
+	}
+
+	private void setPlugin(
+		ResourcePlugin value) {
+		if(value == null) {
+			throw new IllegalArgumentException("plugin cannot be null");
+		}
+		boolean changing = !_plugin_set || _plugin != value;
+		if(changing) {
+			_plugin_set = true;
+			_plugin = value;
+		}
+	}
+
+	private void clearPlugin() {
+		if(_plugin_set) {
+			_plugin_set = true;
+			_plugin = null;
+		}
+	}
+
+	private boolean hasPlugin() {
+		return _plugin_set;
+	}
+
+	// </editor-fold>
+
 	@Override public List<AssertionResult> assertState(
 		Logger logger,
 		Instance instance) throws IndeterminateStateException
@@ -215,7 +259,9 @@ public abstract class BaseResource implements Resource
 		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 
-		State state = this.currentState(instance);
+		State state = this.getPlugin().currentState(
+			this,
+			instance);
 		
 		List<AssertionResult> results = this.assertState(logger, instance, state);
 		
@@ -263,7 +309,9 @@ public abstract class BaseResource implements Resource
 		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
 		
-		State currentState = this.currentState(instance);
+		State currentState = this.getPlugin().currentState(
+			this,
+			instance);
 		UUID currentStateId = currentState == null ? null : currentState.getStateId();
 		List<UUID> workList = new ArrayList<UUID>();
 		
@@ -287,7 +335,11 @@ public abstract class BaseResource implements Resource
 			logger.migrationComplete(this, migration);
 		
 			// Update the state
-			this.setStateId(logger, instance, migration.getToStateId());
+			this.getPlugin().setStateId(
+				logger,
+				this,
+				instance,
+				migration.getToStateId());
 			
 			// Assert the new state
 			List<AssertionResult> assertionResults = this.assertState(
@@ -325,7 +377,11 @@ public abstract class BaseResource implements Resource
 
 		throwIfFailed(targetState.getStateId(), assertionResults);
 		
-		this.setStateId(logger, instance, targetStateId);
+		this.getPlugin().setStateId(
+			logger,
+			this,
+			instance,
+			targetStateId);
 	}
 	
 	private static void throwIfFailed(
@@ -346,7 +402,7 @@ public abstract class BaseResource implements Resource
 	}
 	
 	private static void findPaths(
-		BaseResource resource,
+		ResourceImpl resource,
 		List<List<Migration>> paths,
 		List<Migration> thisPath,
 		UUID fromStateId,

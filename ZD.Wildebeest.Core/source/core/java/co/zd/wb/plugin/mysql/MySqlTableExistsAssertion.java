@@ -103,7 +103,7 @@ public class MySqlTableExistsAssertion extends BaseAssertion
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		
-		return ModelExtensions.As(resource, MySqlDatabaseResource.class) != null;
+		return ModelExtensions.As(resource, MySqlDatabaseResourcePlugin.class) != null;
 	}
 	
 	@Override public AssertionResponse perform(Instance instance)

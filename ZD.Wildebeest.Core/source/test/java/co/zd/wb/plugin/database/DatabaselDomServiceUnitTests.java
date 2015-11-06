@@ -23,11 +23,11 @@ import co.zd.wb.fixturecreator.FixtureCreator;
 import co.zd.wb.service.AssertionBuilder;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.MigrationBuilder;
-import co.zd.wb.service.ResourceBuilder;
+import co.zd.wb.service.ResourcePluginBuilder;
 import co.zd.wb.service.dom.DomResourceLoader;
 import co.zd.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
-import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourceBuilder;
+import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourcePluginBuilder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -53,8 +53,8 @@ public class DatabaselDomServiceUnitTests
 					.assertion("DatabaseExists", assertionId)
 			.render();
 
-		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
-		resourceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourceBuilder());
+		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<String, ResourcePluginBuilder>();
+		resourceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourcePluginBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
 		assertionBuilders.put("DatabaseExists", new DatabaseExistsDomAssertionBuilder());
@@ -93,8 +93,8 @@ public class DatabaselDomServiceUnitTests
 					.assertion("DatabaseDoesNotExist", assertionId)
 			.render();
 
-		Map<String, ResourceBuilder> resourceBuilders = new HashMap<String, ResourceBuilder>();
-		resourceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourceBuilder());
+		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<String, ResourcePluginBuilder>();
+		resourceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourcePluginBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
 		assertionBuilders.put("DatabaseDoesNotExist", new DatabaseDoesNotExistDomAssertionBuilder());

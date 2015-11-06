@@ -101,7 +101,7 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		
-		return ModelExtensions.As(resource, SqlServerDatabaseResource.class) != null;
+		return ModelExtensions.As(resource, SqlServerDatabaseResourcePlugin.class) != null;
 	}
 
 	@Override public AssertionResponse perform(Instance instance)

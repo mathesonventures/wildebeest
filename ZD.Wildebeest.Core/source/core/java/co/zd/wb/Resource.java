@@ -60,28 +60,17 @@ public interface Resource
 	 */
 	List<Migration> getMigrations();
 
+	/**
+	 * Gets the plugin for this resource.
+	 * 
+	 * @return                                  the ResourcePlugin for working with this Resource
+	 * @since                                   4.0
+	 */
+	ResourcePlugin getPlugin();
+	
 	//
 	// Behaviour
 	//
-	
-	/**
-	 * Identifies and returns the defined state that the supplied resource instance currently appears to be in, or is
-	 * declared to be in.  Note that this does not guarantee that the resource is valid as compared to the state that it
-	 * is identified to be in.  To verify that the resource is valid for the current state, use assertState().
-	 * 
-	 * If the resource does not exist at all, then this method returns null.
-	 * 
-	 * If the state of the resource cannot be determined then an IndeterminateStateException is thrown.  For example if
-	 * the resource declares itself to be in state "A", but no such state has been defined for the resource, then this
-	 * is considered to be an indeterminate state.
-	 * 
-	 * @param       instance                    the {@link Instance} to get the current state of
-	 * @return                                  the defined state that the resource currently appears to be in, or is
-	 *                                          declared to be in.
-	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
-	 * @since                                   1.0
-	 */
-	State currentState(Instance instance) throws IndeterminateStateException;
 	
 	/**
 	 * Applies the {@link Assertion}'s for this {@link Resource} and returns a collection of the results of those
@@ -130,7 +119,7 @@ public interface Resource
 	 * a MigrationNotPossibleException is thrown.
 	 * 
 	 * @param       logger                      an optional Logger service to log the activity of the assert operation.
-	 * @param       instance                    the {@link Instance} to migration
+	 * @param       instance                    the {@link Instance} to migrate
 	 * @param       targetStateId               the ID of the state to which the {@link Resource} should be migrated
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly at
 	 *                                          the commencement of the migration, and at each intermediate state and
@@ -149,17 +138,22 @@ public interface Resource
 			MigrationNotPossibleException,
 			MigrationFailedException;
 	
+	/**
+	 * Jumps the tracked state on the resource to the specified state without performing a migration.
+	 * 
+	 * @param       logger                      an optional Logger service to log the actiivty of the jumpstate operation
+	 * @param       instance                    the {@link Instance} to jump to a new state
+	 * @param       targetStateId               the ID of the state to jump the instance to
+	 * @throws                                  AssertionFailedException
+	 * @throws                                  JumpStateFailedException 
+	 * @since                                   3.0
+	 */
 	void jumpstate(
 		Logger logger,
 		Instance instance,
 		UUID targetStateId) throws
 			AssertionFailedException,
 			JumpStateFailedException;
-	
-	void setStateId(
-		Logger logger,
-		Instance instance,
-		UUID stateId);
 	
 	/**
 	 * Finds and returns the state with the supplied ID.  If no such state exists, null is returned.

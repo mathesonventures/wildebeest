@@ -29,6 +29,9 @@ import co.zd.wb.MigrationNotPossibleException;
 import co.zd.wb.plugin.base.ImmutableState;
 import co.zd.wb.plugin.database.DatabaseFixtureHelper;
 import co.zd.wb.PrintStreamLogger;
+import co.zd.wb.Resource;
+import co.zd.wb.ResourcePlugin;
+import co.zd.wb.plugin.base.ResourceImpl;
 import java.sql.SQLException;
 import java.util.UUID;
 import junit.framework.Assert;
@@ -50,7 +53,8 @@ public class MySqlTableExistsAssertionTests
 		 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Database", resourcePlugin);
 		 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -121,7 +125,8 @@ public class MySqlTableExistsAssertionTests
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		 
-		MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Database", resourcePlugin);
 		 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());

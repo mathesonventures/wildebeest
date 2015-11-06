@@ -24,7 +24,7 @@ import co.zd.wb.Resource;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationNotPossibleException;
 import co.zd.wb.plugin.database.DatabaseFixtureHelper;
-import co.zd.wb.plugin.mysql.MySqlDatabaseResource;
+import co.zd.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.plugin.mysql.MySqlProperties;
 import co.zd.wb.plugin.mysql.MySqlUtil;
@@ -98,8 +98,7 @@ public class ResourceLoaderIntegrationTests
 		
 		// Resource
 		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(
-			MySqlDatabaseResource.class, productCatalogueResource.getResourceId(), "Product Catalogue Database",
+		AssertExtensions.assertResource(MySqlDatabaseResourcePlugin.class, productCatalogueResource.getResourceId(), "Product Catalogue Database",
 			resource, "resource");
 		
 		// States

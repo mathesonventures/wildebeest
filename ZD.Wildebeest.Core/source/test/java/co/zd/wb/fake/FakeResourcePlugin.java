@@ -20,19 +20,13 @@ import co.zd.wb.IndeterminateStateException;
 import co.zd.wb.Instance;
 import co.zd.wb.Logger;
 import co.zd.wb.ModelExtensions;
+import co.zd.wb.Resource;
+import co.zd.wb.ResourcePlugin;
 import co.zd.wb.State;
-import co.zd.wb.plugin.base.BaseResource;
 import java.util.UUID;
 
-public class FakeResource extends BaseResource
+public class FakeResourcePlugin implements ResourcePlugin
 {
-	public FakeResource(
-		UUID resourceId,
-		String name)
-	{
-		super(resourceId, name);
-	}
-
 	// <editor-fold desc="StateId" defaultstate="collapsed">
 
 	private UUID _stateId = null;
@@ -71,21 +65,25 @@ public class FakeResource extends BaseResource
 	// </editor-fold>
 
 	@Override public State currentState(
+		Resource resource,
 		Instance instance) throws IndeterminateStateException
 	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
 		if (fake == null) { throw new IllegalArgumentException("instance must be of type FakeInstance"); }
 
-		return fake.hasStateId() ? this.stateForId(fake.getStateId()) : null;
+		return fake.hasStateId() ? resource.stateForId(fake.getStateId()) : null;
 	}
 
 	@Override public void setStateId(
 		Logger logger,
+		Resource resource,
 		Instance instance,
 		UUID stateId)
 	{
 		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
 		if (stateId == null) { throw new IllegalArgumentException("stateId must be of type FakeInstance"); }

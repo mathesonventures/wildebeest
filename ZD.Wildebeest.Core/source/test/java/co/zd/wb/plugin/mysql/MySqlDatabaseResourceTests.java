@@ -17,8 +17,10 @@
 package co.zd.wb.plugin.mysql;
 
 import co.zd.wb.IndeterminateStateException;
+import co.zd.wb.Resource;
 import co.zd.wb.State;
 import co.zd.wb.plugin.base.ImmutableState;
+import co.zd.wb.plugin.base.ResourceImpl;
 import java.sql.SQLException;
 import java.util.UUID;
 import org.junit.Assert;
@@ -40,9 +42,8 @@ public class MySqlDatabaseResourceTests
 		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		MySqlDatabaseResource resource = new MySqlDatabaseResource(
-			UUID.randomUUID(),
-			"Database");
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Database", resourcePlugin);
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
@@ -53,7 +54,9 @@ public class MySqlDatabaseResourceTests
 			null);
 
 		// Execute
-		State state = resource.currentState(instance);
+		State state = resourcePlugin.currentState(
+			resource,
+			instance);
 		
 		// Verify
 		Assert.assertEquals("state", null, state);
@@ -80,9 +83,9 @@ public class MySqlDatabaseResourceTests
 				"wb_state",
 				knownStateId);
 
-			MySqlDatabaseResource resource = new MySqlDatabaseResource(
-				resourceId,
-				"Database");
+			MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+			Resource resource = new ResourceImpl(resourceId, "Database", resourcePlugin);
+
 			resource.getStates().add(new ImmutableState(knownStateId));
 
 			MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
@@ -94,7 +97,7 @@ public class MySqlDatabaseResourceTests
 			null);
 
 			// Execute
-			State state = resource.currentState(instance);
+			State state = resourcePlugin.currentState(resource, instance);
 
 			// Verify
 			Assert.assertEquals("state.stateId", knownStateId, state.getStateId());
@@ -122,9 +125,8 @@ public class MySqlDatabaseResourceTests
 			"wb_state",
 			knownStateId);
 		
-		MySqlDatabaseResource resource = new MySqlDatabaseResource(
-			resourceId,
-			"Database");
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		Resource resource = new ResourceImpl(resourceId, "Database", resourcePlugin);
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
@@ -138,7 +140,7 @@ public class MySqlDatabaseResourceTests
 		IndeterminateStateException caught = null;
 		try
 		{
-			resource.currentState(instance);
+			resourcePlugin.currentState(resource, instance);
 			
 			Assert.fail("IndeterminateStateException expected");
 		}

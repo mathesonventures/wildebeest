@@ -14,26 +14,25 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom.mysql;
+package co.zd.wb.service.dom.postgresql;
 
-import co.zd.wb.Resource;
-import co.zd.wb.plugin.mysql.MySqlDatabaseResource;
+import co.zd.wb.ResourcePlugin;
+import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
 import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.dom.BaseDomResourceBuilder;
-import java.util.UUID;
+import co.zd.wb.service.ResourcePluginBuilder;
+import co.zd.wb.service.dom.BaseDomResourcePluginBuilder;
 
 /**
- * A {@link ResourceBuilder} that builds a {@link MySqlDatabaseResource} from a DOM {@link org.w3c.dom.Element}.
+ * A {@link ResourcePluginBuilder} that builds a {@link PostgreSqlDatabaseResourcePlugin} from a DOM
+ * {@link org.w3c.dom.Element}.
  * 
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public class MySqlDatabaseDomResourceBuilder extends BaseDomResourceBuilder
+public class PostgreSqlDatabaseDomResourcePluginBuilder extends BaseDomResourcePluginBuilder
 {
-	@Override public Resource build(
-		UUID id,
-		String name) throws MessagesException
+	@Override public ResourcePlugin build() throws MessagesException
 	{
-		return new MySqlDatabaseResource(id, name);
+		return new PostgreSqlDatabaseResourcePlugin();
 	}
 }

@@ -21,9 +21,10 @@ import co.zd.wb.IndeterminateStateException;
 import co.zd.wb.Instance;
 import co.zd.wb.Logger;
 import co.zd.wb.ModelExtensions;
+import co.zd.wb.Resource;
+import co.zd.wb.ResourcePlugin;
 import co.zd.wb.State;
 import co.zd.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
-import co.zd.wb.plugin.base.BaseResource;
 import co.zd.wb.plugin.database.Extensions;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -34,17 +35,13 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class PostgreSqlDatabaseResource extends BaseResource
+public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 {
-    public PostgreSqlDatabaseResource(
-        UUID resourceId,
-        String name)
+    @Override public State currentState(
+		Resource resource,
+		Instance instance) throws IndeterminateStateException
     {
-        super(resourceId, name);
-    }
-
-    @Override public State currentState(Instance instance) throws IndeterminateStateException
-    {
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		PostgreSqlDatabaseInstance db = ModelExtensions.As(instance, PostgreSqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a PostgreSqlDatabaseInstance"); }
@@ -54,7 +51,7 @@ public class PostgreSqlDatabaseResource extends BaseResource
 		if (db.databaseExists())
 		{
 			declaredStateId = PostgreSqlStateHelper.getStateId(
-				this.getResourceId(),
+				resource.getResourceId(),
 				db.getAppDataSource(),
 				Extensions.getMetaSchemaName(db),
 				Extensions.getStateTableName(db));
@@ -64,7 +61,7 @@ public class PostgreSqlDatabaseResource extends BaseResource
 		State result = null;
 		if (declaredStateId != null)
 		{
-			result = this.stateForId(declaredStateId);
+			result = resource.stateForId(declaredStateId);
 
 			// If the declared state ID is not known, throw
 			if (result == null)
@@ -80,10 +77,12 @@ public class PostgreSqlDatabaseResource extends BaseResource
 
     @Override public void setStateId(
 		Logger logger,
+		Resource resource,
 		Instance instance,
 		UUID stateId)
     {
 		if (logger == null) { throw new IllegalArgumentException("logger"); }
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		AnsiSqlDatabaseInstance db = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
@@ -93,7 +92,7 @@ public class PostgreSqlDatabaseResource extends BaseResource
 		try
 		{
 			PostgreSqlStateHelper.setStateId(
-				this.getResourceId(),
+				resource.getResourceId(),
 				db.getAppDataSource(),
 				Extensions.getMetaSchemaName(db),
 				Extensions.getStateTableName(db),

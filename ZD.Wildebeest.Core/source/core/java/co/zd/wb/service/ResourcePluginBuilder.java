@@ -16,36 +16,33 @@
 
 package co.zd.wb.service;
 
-import co.zd.wb.Resource;
-import java.util.UUID;
+import co.zd.wb.ResourcePlugin;
 
 /**
- * A ResourceBuilder is a factory component for building {@link Resource}s.
+ * A ResourcePluginBuilder is a factory component for building {@link ResourcePlugin}s.
  * 
- * It's expected that ResourceBuilders's will typically be stateful, with properties or configuration information being
- * supplied to them as properties.  The reset() method should be implemented to clear such additional state and restore
- * the ResourceBuilder to a clean state ready to be re-used to build a different Resource.  The framework will always
- * call reset() before using an ResourceBuilder.
+ * It's expected that ResourcePluginBuilders's will typically be stateful, with properties or configuration information
+ * being supplied to them as properties.  The reset() method should be implemented to clear such additional state and
+ * restore the ResourcePluginBuilder to a clean state ready to be re-used to build a different ResourcePlugin.  The
+ * framework will always call reset() before using an ResourcePluginBuilder.
  * 
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public interface ResourceBuilder
+public interface ResourcePluginBuilder
 {
 	/**
-	 * Builds and returns a new {@link Resource}.
+	 * Builds and returns a new {@link ResourcePlugin}.
 	 * 
-	 * @return                                  the newly built {@link Resource}.
+	 * @return                                  the newly built {@link ResourcePlugin}.
 	 * @throws      MessagesException           contains any user-resolvable errors that occur when attempting to build
-	 *                                          the {@link Resource}.
+	 *                                          the {@link ResourcePlugin}.
 	 * @since                                   1.0
 	 */
-	Resource build(
-		UUID id,
-		String name) throws MessagesException;
+	ResourcePlugin build() throws MessagesException;
 
 	/**
-	 * Resets the ResourceBuilder, ready to build a new instance.
+	 * Resets the ResourcePluginBuilder, ready to build a new instance.
 	 */
 	void reset();
 }

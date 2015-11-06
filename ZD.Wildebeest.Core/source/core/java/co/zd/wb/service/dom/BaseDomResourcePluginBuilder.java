@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.fake;
+package co.zd.wb.service.dom;
 
-import co.zd.wb.Resource;
-import co.zd.wb.service.dom.BaseDomResourceBuilder;
-import java.util.UUID;
+import co.zd.wb.service.ResourcePluginBuilder;
 
-public class DomFakeResourceBuilder extends BaseDomResourceBuilder
+/**
+ * Base class for DOM-based {@link ResourcePluginBuilder} implementations.
+ * 
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
+public abstract class BaseDomResourcePluginBuilder extends BaseDomBuilder implements ResourcePluginBuilder
 {
-	@Override public Resource build(UUID id, String name)
-	{
-		return new FakeResource(id, name);
-	}
 }

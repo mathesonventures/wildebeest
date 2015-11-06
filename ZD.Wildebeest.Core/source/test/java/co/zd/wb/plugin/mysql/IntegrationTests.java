@@ -34,6 +34,7 @@ import co.zd.wb.service.dom.DomInstanceLoader;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
 import co.zd.wb.fixturecreator.XmlBuilder;
+import co.zd.wb.plugin.base.ResourceImpl;
 import java.sql.SQLException;
 import java.util.UUID;
 import junit.framework.Assert;
@@ -56,7 +57,8 @@ public class IntegrationTests
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
 		// Resource
-		MySqlDatabaseResource resource = new MySqlDatabaseResource(UUID.randomUUID(), "Database");
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Database", resourcePlugin);
 		
 		// State: Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -223,7 +225,7 @@ public class IntegrationTests
 		if (resource == null) { throw new IllegalArgumentException("resource"); }
 		
 		AssertExtensions.assertResource(
-			MySqlDatabaseResource.class,
+			MySqlDatabaseResourcePlugin.class,
 			ProductCatalogueMySqlDatabaseResource.ResourceId,
 			"Product Catalogue Database",
 			resource,

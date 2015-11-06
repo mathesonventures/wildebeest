@@ -19,7 +19,7 @@ package co.zd.wb.plugin.base;
 import co.zd.wb.fake.TagAssertion;
 import co.zd.wb.fake.FakeAssertion;
 import co.zd.wb.fake.FakeInstance;
-import co.zd.wb.fake.FakeResource;
+import co.zd.wb.fake.FakeResourcePlugin;
 import co.zd.wb.fake.FakeMigration;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.Assertion;
@@ -33,6 +33,7 @@ import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationNotPossibleException;
 import co.zd.wb.PrintStreamLogger;
+import co.zd.wb.Resource;
 import java.util.List;
 import java.util.UUID;
 import static org.junit.Assert.*;
@@ -49,7 +50,8 @@ public class BaseResourceTests
 	@Test public void assertStateWithNoAssertionsSuccessful() throws IndeterminateStateException
 	{
 		// Setup
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 		
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -67,7 +69,8 @@ public class BaseResourceTests
 	@Test public void assertStateWithOneAssertionSuccessful() throws IndeterminateStateException
 	{
 		// Setup
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 		
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -94,7 +97,8 @@ public class BaseResourceTests
 	@Test public void assertStateWithMultipleAssertionsSuccessful() throws IndeterminateStateException
 	{
 		// Setup
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -153,7 +157,8 @@ public class BaseResourceTests
 		MigrationFailedException
 	{
 		// Setup
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 
 		UUID state1Id = UUID.randomUUID();
 		State state = new ImmutableState(state1Id);
@@ -186,7 +191,8 @@ public class BaseResourceTests
 		//
 
 		// The resource
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 
 		// State 1
 		State state1 = new ImmutableState(UUID.randomUUID(), "State 1");
@@ -244,7 +250,8 @@ public class BaseResourceTests
 		//
 
 		// The resource
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -340,7 +347,8 @@ public class BaseResourceTests
 		//
 
 		// The resource
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -386,7 +394,8 @@ public class BaseResourceTests
 		//
 
 		// The resource
-		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -440,7 +449,8 @@ public class BaseResourceTests
 		//
 
 		// Resource
-		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		final Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 		
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
@@ -482,7 +492,8 @@ public class BaseResourceTests
 		//
 
 		// Resource
-		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		final Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 
 		// Instance
 		final FakeInstance instance = new FakeInstance();
@@ -524,7 +535,8 @@ public class BaseResourceTests
 		//
 
 		// Resource
-		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 		
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
@@ -553,7 +565,8 @@ public class BaseResourceTests
 	@Test public void jumpstateForNullLoggerThrows()
 	{
 		// The resource
-		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		final Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 		
 		// Instance
 		final FakeInstance instance = new FakeInstance();
@@ -577,7 +590,8 @@ public class BaseResourceTests
 	@Test public void jumpstateForNullInstanceThrows()
 	{
 		// The resource
-		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		final Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 
 		new ExpectException(IllegalArgumentException.class)
 		{
@@ -598,7 +612,8 @@ public class BaseResourceTests
 	@Test public void jumpstateForNullTargetStateIdThrows()
 	{
 		// The resource
-		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
+		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+		final Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 		final FakeInstance instance = new FakeInstance();
 
 		new ExpectException(IllegalArgumentException.class)

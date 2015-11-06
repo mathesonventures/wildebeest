@@ -18,7 +18,7 @@ package co.zd.wb.service.dom;
 
 import co.zd.wb.service.AssertionBuilder;
 import co.zd.wb.service.InstanceBuilder;
-import co.zd.wb.service.ResourceBuilder;
+import co.zd.wb.service.ResourcePluginBuilder;
 import co.zd.wb.service.MigrationBuilder;
 import co.zd.wb.service.dom.ansisql.AnsiSqlCreateDatabaseDomMigrationBuilder;
 import co.zd.wb.service.dom.ansisql.AnsiSqlDropDatabaseDomMigrationBuilder;
@@ -31,15 +31,15 @@ import co.zd.wb.service.dom.database.RowExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlCreateDatabaseDomMigrationBuilder;
 import co.zd.wb.service.dom.database.SqlScriptDomMigrationBuilder;
 import co.zd.wb.service.dom.mysql.MySqlDatabaseDomInstanceBuilder;
-import co.zd.wb.service.dom.mysql.MySqlDatabaseDomResourceBuilder;
+import co.zd.wb.service.dom.mysql.MySqlDatabaseDomResourcePluginBuilder;
 import co.zd.wb.service.dom.mysql.MySqlTableDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.mysql.MySqlTableExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomInstanceBuilder;
-import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourceBuilder;
+import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourcePluginBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerCreateDatabaseDomMigrationBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerCreateSchemaDomMigrationBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomInstanceBuilder;
-import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomResourceBuilder;
+import co.zd.wb.service.dom.sqlserver.SqlServerDatabaseDomResourcePluginBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerDropSchemaDomMigrationBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerSchemaDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.sqlserver.SqlServerSchemaExistsDomAssertionBuilder;
@@ -56,13 +56,13 @@ import java.util.Map;
  */
 public class DomPlugins
 {
-	public static Map<String, ResourceBuilder> resourceBuilders()
+	public static Map<String, ResourcePluginBuilder> resourceBuilders()
 	{
-		Map<String, ResourceBuilder> result = new HashMap<String, ResourceBuilder>();
+		Map<String, ResourcePluginBuilder> result = new HashMap<String, ResourcePluginBuilder>();
 		
-		result.put("MySqlDatabase", new MySqlDatabaseDomResourceBuilder());
-		result.put("SqlServerDatabase", new SqlServerDatabaseDomResourceBuilder());
-		result.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourceBuilder());
+		result.put("MySqlDatabase", new MySqlDatabaseDomResourcePluginBuilder());
+		result.put("SqlServerDatabase", new SqlServerDatabaseDomResourcePluginBuilder());
+		result.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourcePluginBuilder());
 		
 		return result;
 	}
