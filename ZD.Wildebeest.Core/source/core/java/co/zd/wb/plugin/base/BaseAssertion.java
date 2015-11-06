@@ -43,14 +43,14 @@ public abstract class BaseAssertion implements Assertion
 	
 	// <editor-fold desc="AssertionId" defaultstate="collapsed">
 
-	private UUID m_assertionId = null;
-	private boolean m_assertionId_set = false;
+	private UUID _assertionId = null;
+	private boolean _assertionId_set = false;
 
 	@Override public UUID getAssertionId() {
-		if(!m_assertionId_set) {
+		if(!_assertionId_set) {
 			throw new IllegalStateException("assertionId not set.  Use the HasAssertionId() method to check its state before accessing it.");
 		}
-		return m_assertionId;
+		return _assertionId;
 	}
 
 	private void setAssertionId(
@@ -58,56 +58,56 @@ public abstract class BaseAssertion implements Assertion
 		if(value == null) {
 			throw new IllegalArgumentException("assertionId cannot be null");
 		}
-		boolean changing = !m_assertionId_set || m_assertionId != value;
+		boolean changing = !_assertionId_set || _assertionId != value;
 		if(changing) {
-			m_assertionId_set = true;
-			m_assertionId = value;
+			_assertionId_set = true;
+			_assertionId = value;
 		}
 	}
 
 	private void clearAssertionId() {
-		if(m_assertionId_set) {
-			m_assertionId_set = true;
-			m_assertionId = null;
+		if(_assertionId_set) {
+			_assertionId_set = true;
+			_assertionId = null;
 		}
 	}
 
 	private boolean hasAssertionId() {
-		return m_assertionId_set;
+		return _assertionId_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="SeqNum" defaultstate="collapsed">
 
-	private int m_seqNum = 0;
-	private boolean m_seqNum_set = false;
+	private int _seqNum = 0;
+	private boolean _seqNum_set = false;
 
 	@Override public int getSeqNum() {
-		if(!m_seqNum_set) {
+		if(!_seqNum_set) {
 			throw new IllegalStateException("seqNum not set.  Use the HasSeqNum() method to check its state before accessing it.");
 		}
-		return m_seqNum;
+		return _seqNum;
 	}
 
 	private void setSeqNum(
 		int value) {
-		boolean changing = !m_seqNum_set || m_seqNum != value;
+		boolean changing = !_seqNum_set || _seqNum != value;
 		if(changing) {
-			m_seqNum_set = true;
-			m_seqNum = value;
+			_seqNum_set = true;
+			_seqNum = value;
 		}
 	}
 
 	private void clearSeqNum() {
-		if(m_seqNum_set) {
-			m_seqNum_set = true;
-			m_seqNum = 0;
+		if(_seqNum_set) {
+			_seqNum_set = true;
+			_seqNum = 0;
 		}
 	}
 
 	private boolean hasSeqNum() {
-		return m_seqNum_set;
+		return _seqNum_set;
 	}
 
 	// </editor-fold>

@@ -97,14 +97,14 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 	
 	// <editor-fold desc="Sql" defaultstate="collapsed">
 
-	private String m_sql = null;
-	private boolean m_sql_set = false;
+	private String _sql = null;
+	private boolean _sql_set = false;
 
 	private String getSql() {
-		if(!m_sql_set) {
+		if(!_sql_set) {
 			throw new IllegalStateException("sql not set.  Use the HasSql() method to check its state before accessing it.");
 		}
-		return m_sql;
+		return _sql;
 	}
 
 	private void setSql(
@@ -112,22 +112,22 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 		if(value == null) {
 			throw new IllegalArgumentException("sql cannot be null");
 		}
-		boolean changing = !m_sql_set || m_sql != value;
+		boolean changing = !_sql_set || _sql != value;
 		if(changing) {
-			m_sql_set = true;
-			m_sql = value;
+			_sql_set = true;
+			_sql = value;
 		}
 	}
 
 	private void clearSql() {
-		if(m_sql_set) {
-			m_sql_set = true;
-			m_sql = null;
+		if(_sql_set) {
+			_sql_set = true;
+			_sql = null;
 		}
 	}
 
 	private boolean hasSql() {
-		return m_sql_set;
+		return _sql_set;
 	}
 
 	// </editor-fold>

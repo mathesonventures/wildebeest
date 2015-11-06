@@ -102,8 +102,8 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 	
 	// <editor-fold desc="TableName" defaultstate="collapsed">
 
-	private String m_tableName = null;
-	private boolean m_tableName_set = false;
+	private String _tableName = null;
+	private boolean _tableName_set = false;
 
 	/**
 	 * Gets the name of the table to check.
@@ -111,10 +111,10 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 	 * @since                                   2.0
 	 */
 	public String getTableName() {
-		if(!m_tableName_set) {
+		if(!_tableName_set) {
 			throw new IllegalStateException("tableName not set.  Use the HasTableName() method to check its state before accessing it.");
 		}
-		return m_tableName;
+		return _tableName;
 	}
 
 	private void setTableName(
@@ -122,22 +122,22 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 		if(value == null) {
 			throw new IllegalArgumentException("tableName cannot be null");
 		}
-		boolean changing = !m_tableName_set || m_tableName != value;
+		boolean changing = !_tableName_set || _tableName != value;
 		if(changing) {
-			m_tableName_set = true;
-			m_tableName = value;
+			_tableName_set = true;
+			_tableName = value;
 		}
 	}
 
 	private void clearTableName() {
-		if(m_tableName_set) {
-			m_tableName_set = true;
-			m_tableName = null;
+		if(_tableName_set) {
+			_tableName_set = true;
+			_tableName = null;
 		}
 	}
 
 	private boolean hasTableName() {
-		return m_tableName_set;
+		return _tableName_set;
 	}
 
 	// </editor-fold>

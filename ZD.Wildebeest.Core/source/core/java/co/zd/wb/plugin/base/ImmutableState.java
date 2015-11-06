@@ -90,14 +90,14 @@ public class ImmutableState implements State
 
 	// <editor-fold desc="StateId" defaultstate="collapsed">
 
-	private UUID m_stateId = null;
-	private boolean m_stateId_set = false;
+	private UUID _stateId = null;
+	private boolean _stateId_set = false;
 
 	@Override public UUID getStateId() {
-		if(!m_stateId_set) {
+		if(!_stateId_set) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
-		return m_stateId;
+		return _stateId;
 	}
 
 	private void setStateId(
@@ -105,36 +105,36 @@ public class ImmutableState implements State
 		if(value == null) {
 			throw new IllegalArgumentException("stateId cannot be null");
 		}
-		boolean changing = !m_stateId_set || m_stateId != value;
+		boolean changing = !_stateId_set || _stateId != value;
 		if(changing) {
-			m_stateId_set = true;
-			m_stateId = value;
+			_stateId_set = true;
+			_stateId = value;
 		}
 	}
 
 	private void clearStateId() {
-		if(m_stateId_set) {
-			m_stateId_set = true;
-			m_stateId = null;
+		if(_stateId_set) {
+			_stateId_set = true;
+			_stateId = null;
 		}
 	}
 
 	private boolean hasStateId() {
-		return m_stateId_set;
+		return _stateId_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="Label" defaultstate="collapsed">
 
-	private String m_label = null;
-	private boolean m_label_set = false;
+	private String _label = null;
+	private boolean _label_set = false;
 
 	@Override public String getLabel() {
-		if(!m_label_set) {
+		if(!_label_set) {
 			throw new IllegalStateException("label not set.  Use the HasLabel() method to check its state before accessing it.");
 		}
-		return m_label;
+		return _label;
 	}
 
 	private void setLabel(
@@ -142,58 +142,58 @@ public class ImmutableState implements State
 		if(value == null) {
 			throw new IllegalArgumentException("label cannot be null");
 		}
-		boolean changing = !m_label_set || m_label != value;
+		boolean changing = !_label_set || _label != value;
 		if(changing) {
-			m_label_set = true;
-			m_label = value;
+			_label_set = true;
+			_label = value;
 		}
 	}
 
 	private void clearLabel() {
-		if(m_label_set) {
-			m_label_set = true;
-			m_label = null;
+		if(_label_set) {
+			_label_set = true;
+			_label = null;
 		}
 	}
 
 	public boolean hasLabel() {
-		return m_label_set;
+		return _label_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="Assertions" defaultstate="collapsed">
 
-	private List<Assertion> m_assertions = null;
-	private boolean m_assertions_set = false;
+	private List<Assertion> _assertions = null;
+	private boolean _assertions_set = false;
 
 	@Override public List<Assertion> getAssertions() {
-		if(!m_assertions_set) {
+		if(!_assertions_set) {
 			throw new IllegalStateException("assertions not set.  Use the HasAssertions() method to check its state before accessing it.");
 		}
-		return m_assertions;
+		return _assertions;
 	}
 
 	private void setAssertions(List<Assertion> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("assertions cannot be null");
 		}
-		boolean changing = !m_assertions_set || m_assertions != value;
+		boolean changing = !_assertions_set || _assertions != value;
 		if(changing) {
-			m_assertions_set = true;
-			m_assertions = value;
+			_assertions_set = true;
+			_assertions = value;
 		}
 	}
 
 	private void clearAssertions() {
-		if(m_assertions_set) {
-			m_assertions_set = true;
-			m_assertions = null;
+		if(_assertions_set) {
+			_assertions_set = true;
+			_assertions = null;
 		}
 	}
 
 	private boolean hasAssertions() {
-		return m_assertions_set;
+		return _assertions_set;
 	}
 
 	// </editor-fold>

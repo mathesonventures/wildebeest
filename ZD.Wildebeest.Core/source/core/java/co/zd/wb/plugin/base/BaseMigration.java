@@ -52,14 +52,14 @@ public abstract class BaseMigration implements Migration
 	
 	// <editor-fold desc="MigrationId" defaultstate="collapsed">
 
-	private UUID m_migrationId = null;
-	private boolean m_migrationId_set = false;
+	private UUID _migrationId = null;
+	private boolean _migrationId_set = false;
 
 	@Override public UUID getMigrationId() {
-		if(!m_migrationId_set) {
+		if(!_migrationId_set) {
 			throw new IllegalStateException("migrationId not set.  Use the HasMigrationId() method to check its state before accessing it.");
 		}
-		return m_migrationId;
+		return _migrationId;
 	}
 
 	private void setMigrationId(
@@ -67,70 +67,70 @@ public abstract class BaseMigration implements Migration
 		if(value == null) {
 			throw new IllegalArgumentException("migrationId cannot be null");
 		}
-		boolean changing = !m_migrationId_set || m_migrationId != value;
+		boolean changing = !_migrationId_set || _migrationId != value;
 		if(changing) {
-			m_migrationId_set = true;
-			m_migrationId = value;
+			_migrationId_set = true;
+			_migrationId = value;
 		}
 	}
 
 	private void clearMigrationId() {
-		if(m_migrationId_set) {
-			m_migrationId_set = true;
-			m_migrationId = null;
+		if(_migrationId_set) {
+			_migrationId_set = true;
+			_migrationId = null;
 		}
 	}
 
 	private boolean hasMigrationId() {
-		return m_migrationId_set;
+		return _migrationId_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="FromStateId" defaultstate="collapsed">
 
-	private UUID m_fromStateId = null;
-	private boolean m_fromStateId_set = false;
+	private UUID _fromStateId = null;
+	private boolean _fromStateId_set = false;
 
 	@Override public UUID getFromStateId() {
-		if(!m_fromStateId_set) {
+		if(!_fromStateId_set) {
 			throw new IllegalStateException("fromStateId not set.  Use the HasFromStateId() method to check its state before accessing it.");
 		}
-		return m_fromStateId;
+		return _fromStateId;
 	}
 
 	private void setFromStateId(
 		UUID value) {
-		boolean changing = !m_fromStateId_set || m_fromStateId != value;
+		boolean changing = !_fromStateId_set || _fromStateId != value;
 		if(changing) {
-			m_fromStateId_set = true;
-			m_fromStateId = value;
+			_fromStateId_set = true;
+			_fromStateId = value;
 		}
 	}
 
 	private void clearFromStateId() {
-		if(m_fromStateId_set) {
-			m_fromStateId_set = true;
-			m_fromStateId = null;
+		if(_fromStateId_set) {
+			_fromStateId_set = true;
+			_fromStateId = null;
 		}
 	}
 
 	public boolean hasFromStateId() {
-		return m_fromStateId_set;
+		return _fromStateId_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="ToStateId" defaultstate="collapsed">
 
-	private UUID m_toStateId = null;
-	private boolean m_toStateId_set = false;
+	private UUID _toStateId = null;
+	private boolean _toStateId_set = false;
 
 	@Override public UUID getToStateId() {
-		if(!m_toStateId_set) {
+		if(!_toStateId_set) {
 			throw new IllegalStateException("toStateId not set.  Use the HasToStateId() method to check its state before accessing it.");
 		}
-		return m_toStateId;
+		return _toStateId;
 	}
 
 	private void setToStateId(
@@ -138,22 +138,22 @@ public abstract class BaseMigration implements Migration
 		if(value == null) {
 			throw new IllegalArgumentException("toStateId cannot be null");
 		}
-		boolean changing = !m_toStateId_set || m_toStateId != value;
+		boolean changing = !_toStateId_set || _toStateId != value;
 		if(changing) {
-			m_toStateId_set = true;
-			m_toStateId = value;
+			_toStateId_set = true;
+			_toStateId = value;
 		}
 	}
 
 	private void clearToStateId() {
-		if(m_toStateId_set) {
-			m_toStateId_set = true;
-			m_toStateId = null;
+		if(_toStateId_set) {
+			_toStateId_set = true;
+			_toStateId = null;
 		}
 	}
 
 	public boolean hasToStateId() {
-		return m_toStateId_set;
+		return _toStateId_set;
 	}
 
 	// </editor-fold>

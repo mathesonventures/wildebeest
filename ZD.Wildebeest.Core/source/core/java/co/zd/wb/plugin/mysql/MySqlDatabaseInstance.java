@@ -66,8 +66,8 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 	
 	// <editor-fold desc="HostName" defaultstate="collapsed">
 
-	private String m_hostName = null;
-	private boolean m_hostName_set = false;
+	private String _hostName = null;
+	private boolean _hostName_set = false;
 
 	/**
 	 * Returns the host name of the server
@@ -75,10 +75,10 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 	 * @since                                   1.0
 	 */
 	public String getHostName() {
-		if(!m_hostName_set) {
+		if(!_hostName_set) {
 			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
 		}
-		return m_hostName;
+		return _hostName;
 	}
 
 	public void setHostName(
@@ -86,30 +86,30 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
 		}
-		boolean changing = !m_hostName_set || m_hostName != value;
+		boolean changing = !_hostName_set || _hostName != value;
 		if(changing) {
-			m_hostName_set = true;
-			m_hostName = value;
+			_hostName_set = true;
+			_hostName = value;
 		}
 	}
 
 	private void clearHostName() {
-		if(m_hostName_set) {
-			m_hostName_set = true;
-			m_hostName = null;
+		if(_hostName_set) {
+			_hostName_set = true;
+			_hostName = null;
 		}
 	}
 
 	private boolean hasHostName() {
-		return m_hostName_set;
+		return _hostName_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="Port" defaultstate="collapsed">
 
-	private int m_port = 0;
-	private boolean m_port_set = false;
+	private int _port = 0;
+	private boolean _port_set = false;
 
 	/**
 	 * Returns the port number of the server
@@ -117,38 +117,38 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 	 * @since                                   1.0
 	 */
 	public int getPort() {
-		if(!m_port_set) {
+		if(!_port_set) {
 			throw new IllegalStateException("port not set.  Use the HasPort() method to check its state before accessing it.");
 		}
-		return m_port;
+		return _port;
 	}
 
 	public void setPort(
 		int value) {
-		boolean changing = !m_port_set || m_port != value;
+		boolean changing = !_port_set || _port != value;
 		if(changing) {
-			m_port_set = true;
-			m_port = value;
+			_port_set = true;
+			_port = value;
 		}
 	}
 
 	private void clearPort() {
-		if(m_port_set) {
-			m_port_set = true;
-			m_port = 0;
+		if(_port_set) {
+			_port_set = true;
+			_port = 0;
 		}
 	}
 
 	private boolean hasPort() {
-		return m_port_set;
+		return _port_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="AdminUsername" defaultstate="collapsed">
 
-	private String m_adminUsername = null;
-	private boolean m_adminUsername_set = false;
+	private String _adminUsername = null;
+	private boolean _adminUsername_set = false;
 
 	/**
 	 * Gets the username of the administrative user on the server.
@@ -156,10 +156,10 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 	 * @since                                   1.0
 	 */
 	public String getAdminUsername() {
-		if(!m_adminUsername_set) {
+		if(!_adminUsername_set) {
 			throw new IllegalStateException("adminUsername not set.  Use the HasAdminUsername() method to check its state before accessing it.");
 		}
-		return m_adminUsername;
+		return _adminUsername;
 	}
 
 	public void setAdminUsername(
@@ -167,30 +167,30 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 		if(value == null) {
 			throw new IllegalArgumentException("adminUsername cannot be null");
 		}
-		boolean changing = !m_adminUsername_set || m_adminUsername != value;
+		boolean changing = !_adminUsername_set || _adminUsername != value;
 		if(changing) {
-			m_adminUsername_set = true;
-			m_adminUsername = value;
+			_adminUsername_set = true;
+			_adminUsername = value;
 		}
 	}
 
 	private void clearAdminUsername() {
-		if(m_adminUsername_set) {
-			m_adminUsername_set = true;
-			m_adminUsername = null;
+		if(_adminUsername_set) {
+			_adminUsername_set = true;
+			_adminUsername = null;
 		}
 	}
 
 	private boolean hasAdminUsername() {
-		return m_adminUsername_set;
+		return _adminUsername_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="AdminPassword" defaultstate="collapsed">
 
-	private String m_adminPassword = null;
-	private boolean m_adminPassword_set = false;
+	private String _adminPassword = null;
+	private boolean _adminPassword_set = false;
 
 	/**
 	 * Gets the password of the administrative user on the server.
@@ -198,10 +198,10 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 	 * @since                                   1.0
 	 */
 	public String getAdminPassword() {
-		if(!m_adminPassword_set) {
+		if(!_adminPassword_set) {
 			throw new IllegalStateException("adminPassword not set.  Use the HasAdminPassword() method to check its state before accessing it.");
 		}
-		return m_adminPassword;
+		return _adminPassword;
 	}
 
 	public void setAdminPassword(
@@ -209,22 +209,22 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 		if(value == null) {
 			throw new IllegalArgumentException("adminPassword cannot be null");
 		}
-		boolean changing = !m_adminPassword_set || m_adminPassword != value;
+		boolean changing = !_adminPassword_set || _adminPassword != value;
 		if(changing) {
-			m_adminPassword_set = true;
-			m_adminPassword = value;
+			_adminPassword_set = true;
+			_adminPassword = value;
 		}
 	}
 
 	private void clearAdminPassword() {
-		if(m_adminPassword_set) {
-			m_adminPassword_set = true;
-			m_adminPassword = null;
+		if(_adminPassword_set) {
+			_adminPassword_set = true;
+			_adminPassword = null;
 		}
 	}
 
 	private boolean hasAdminPassword() {
-		return m_adminPassword_set;
+		return _adminPassword_set;
 	}
 
 	// </editor-fold>

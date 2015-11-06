@@ -42,14 +42,14 @@ public class PrintStreamLogger implements Logger
 
 	// <editor-fold desc="Stream" defaultstate="collapsed">
 
-	private PrintStream m_stream = null;
-	private boolean m_stream_set = false;
+	private PrintStream _stream = null;
+	private boolean _stream_set = false;
 
 	private PrintStream getStream() {
-		if(!m_stream_set) {
+		if(!_stream_set) {
 			throw new IllegalStateException("stream not set.  Use the HasStream() method to check its state before accessing it.");
 		}
-		return m_stream;
+		return _stream;
 	}
 
 	private void setStream(
@@ -57,22 +57,22 @@ public class PrintStreamLogger implements Logger
 		if(value == null) {
 			throw new IllegalArgumentException("stream cannot be null");
 		}
-		boolean changing = !m_stream_set || m_stream != value;
+		boolean changing = !_stream_set || _stream != value;
 		if(changing) {
-			m_stream_set = true;
-			m_stream = value;
+			_stream_set = true;
+			_stream = value;
 		}
 	}
 
 	private void clearStream() {
-		if(m_stream_set) {
-			m_stream_set = true;
-			m_stream = null;
+		if(_stream_set) {
+			_stream_set = true;
+			_stream = null;
 		}
 	}
 
 	private boolean hasStream() {
-		return m_stream_set;
+		return _stream_set;
 	}
 
 	// </editor-fold>

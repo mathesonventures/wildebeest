@@ -32,14 +32,14 @@ public class FakeInstance implements Instance
 	
 	// <editor-fold desc="StateId" defaultstate="collapsed">
 
-	private UUID m_stateId = null;
-	private boolean m_stateId_set = false;
+	private UUID _stateId = null;
+	private boolean _stateId_set = false;
 
 	public UUID getStateId() {
-		if(!m_stateId_set) {
+		if(!_stateId_set) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
-		return m_stateId;
+		return _stateId;
 	}
 
 	public void setStateId(
@@ -47,36 +47,36 @@ public class FakeInstance implements Instance
 		if(value == null) {
 			throw new IllegalArgumentException("stateId cannot be null");
 		}
-		boolean changing = !m_stateId_set || m_stateId != value;
+		boolean changing = !_stateId_set || _stateId != value;
 		if(changing) {
-			m_stateId_set = true;
-			m_stateId = value;
+			_stateId_set = true;
+			_stateId = value;
 		}
 	}
 
 	public void clearStateId() {
-		if(m_stateId_set) {
-			m_stateId_set = true;
-			m_stateId = null;
+		if(_stateId_set) {
+			_stateId_set = true;
+			_stateId = null;
 		}
 	}
 
 	public boolean hasStateId() {
-		return m_stateId_set;
+		return _stateId_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="Tag" defaultstate="collapsed">
 
-	private String m_tag = null;
-	private boolean m_tag_set = false;
+	private String _tag = null;
+	private boolean _tag_set = false;
 
 	public String getTag() {
-		if(!m_tag_set) {
+		if(!_tag_set) {
 			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
 		}
-		return m_tag;
+		return _tag;
 	}
 
 	public void setTag(
@@ -84,22 +84,22 @@ public class FakeInstance implements Instance
 		if(value == null) {
 			throw new IllegalArgumentException("tag cannot be null");
 		}
-		boolean changing = !m_tag_set || m_tag != value;
+		boolean changing = !_tag_set || _tag != value;
 		if(changing) {
-			m_tag_set = true;
-			m_tag = value;
+			_tag_set = true;
+			_tag = value;
 		}
 	}
 
 	public void clearTag() {
-		if(m_tag_set) {
-			m_tag_set = true;
-			m_tag = null;
+		if(_tag_set) {
+			_tag_set = true;
+			_tag = null;
 		}
 	}
 
 	public boolean hasTag() {
-		return m_tag_set;
+		return _tag_set;
 	}
 
 	// </editor-fold>

@@ -44,8 +44,8 @@ public abstract class BaseDomBuilder implements DomBuilder
 	
 	// <editor-fold desc="Element" defaultstate="collapsed">
 
-	private Element m_element = null;
-	private boolean m_element_set = false;
+	private Element _element = null;
+	private boolean _element_set = false;
 
 	/**
 	 * Gets the root {@link org.w3c.dom.Element} that represents the item to be deserialized.
@@ -53,10 +53,10 @@ public abstract class BaseDomBuilder implements DomBuilder
 	 * @since                                   1.0
 	 */
 	protected Element getElement() {
-		if(!m_element_set) {
+		if(!_element_set) {
 			throw new IllegalStateException("element not set.  Use the HasElement() method to check its state before accessing it.");
 		}
-		return m_element;
+		return _element;
 	}
 
 	@Override public void setElement(
@@ -64,36 +64,36 @@ public abstract class BaseDomBuilder implements DomBuilder
 		if(value == null) {
 			throw new IllegalArgumentException("element cannot be null");
 		}
-		boolean changing = !m_element_set || m_element != value;
+		boolean changing = !_element_set || _element != value;
 		if(changing) {
-			m_element_set = true;
-			m_element = value;
+			_element_set = true;
+			_element = value;
 		}
 	}
 
 	protected void clearElement() {
-		if(m_element_set) {
-			m_element_set = true;
-			m_element = null;
+		if(_element_set) {
+			_element_set = true;
+			_element = null;
 		}
 	}
 
 	private boolean hasElement() {
-		return m_element_set;
+		return _element_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="XPath" defaultstate="collapsed">
 
-	private XPath m_xPath = null;
-	private boolean m_xPath_set = false;
+	private XPath _xPath = null;
+	private boolean _xPath_set = false;
 
 	private XPath getXPath() {
-		if(!m_xPath_set) {
+		if(!_xPath_set) {
 			throw new IllegalStateException("xPath not set.  Use the HasXPath() method to check its state before accessing it.");
 		}
-		return m_xPath;
+		return _xPath;
 	}
 
 	private void setXPath(
@@ -101,22 +101,22 @@ public abstract class BaseDomBuilder implements DomBuilder
 		if(value == null) {
 			throw new IllegalArgumentException("xPath cannot be null");
 		}
-		boolean changing = !m_xPath_set || m_xPath != value;
+		boolean changing = !_xPath_set || _xPath != value;
 		if(changing) {
-			m_xPath_set = true;
-			m_xPath = value;
+			_xPath_set = true;
+			_xPath = value;
 		}
 	}
 
 	private void clearXPath() {
-		if(m_xPath_set) {
-			m_xPath_set = true;
-			m_xPath = null;
+		if(_xPath_set) {
+			_xPath_set = true;
+			_xPath = null;
 		}
 	}
 
 	private boolean hasXPath() {
-		return m_xPath_set;
+		return _xPath_set;
 	}
 
 	// </editor-fold>

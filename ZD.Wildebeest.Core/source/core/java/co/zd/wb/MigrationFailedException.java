@@ -44,8 +44,8 @@ public class MigrationFailedException extends Exception
 
 	// <editor-fold desc="MigrationId" defaultstate="collapsed">
 
-	private UUID m_migrationId = null;
-	private boolean m_migrationId_set = false;
+	private UUID _migrationId = null;
+	private boolean _migrationId_set = false;
 
 	/**
 	 * Gets the ID of the Migration that failed
@@ -53,10 +53,10 @@ public class MigrationFailedException extends Exception
 	 * @since                                   1.0
 	 */
 	public UUID getMigrationId() {
-		if(!m_migrationId_set) {
+		if(!_migrationId_set) {
 			throw new IllegalStateException("migrationId not set.  Use the HasMigrationId() method to check its state before accessing it.");
 		}
-		return m_migrationId;
+		return _migrationId;
 	}
 
 	private void setMigrationId(
@@ -64,22 +64,22 @@ public class MigrationFailedException extends Exception
 		if(value == null) {
 			throw new IllegalArgumentException("migrationId cannot be null");
 		}
-		boolean changing = !m_migrationId_set || m_migrationId != value;
+		boolean changing = !_migrationId_set || _migrationId != value;
 		if(changing) {
-			m_migrationId_set = true;
-			m_migrationId = value;
+			_migrationId_set = true;
+			_migrationId = value;
 		}
 	}
 
 	private void clearMigrationId() {
-		if(m_migrationId_set) {
-			m_migrationId_set = true;
-			m_migrationId = null;
+		if(_migrationId_set) {
+			_migrationId_set = true;
+			_migrationId = null;
 		}
 	}
 
 	public boolean hasMigrationId() {
-		return m_migrationId_set;
+		return _migrationId_set;
 	}
 
 	// </editor-fold>

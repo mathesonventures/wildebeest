@@ -33,14 +33,14 @@ public class XmlBuilder
 	
 	// <editor-fold desc="StringBuilder" defaultstate="collapsed">
 
-	private StringBuilder m_stringBuilder = null;
-	private boolean m_stringBuilder_set = false;
+	private StringBuilder _stringBuilder = null;
+	private boolean _stringBuilder_set = false;
 
 	public StringBuilder getStringBuilder() {
-		if(!m_stringBuilder_set) {
+		if(!_stringBuilder_set) {
 			throw new IllegalStateException("stringBuilder not set.  Use the HasStringBuilder() method to check its state before accessing it.");
 		}
-		return m_stringBuilder;
+		return _stringBuilder;
 	}
 
 	private void setStringBuilder(
@@ -48,22 +48,22 @@ public class XmlBuilder
 		if(value == null) {
 			throw new IllegalArgumentException("stringBuilder cannot be null");
 		}
-		boolean changing = !m_stringBuilder_set || m_stringBuilder != value;
+		boolean changing = !_stringBuilder_set || _stringBuilder != value;
 		if(changing) {
-			m_stringBuilder_set = true;
-			m_stringBuilder = value;
+			_stringBuilder_set = true;
+			_stringBuilder = value;
 		}
 	}
 
 	private void clearStringBuilder() {
-		if(m_stringBuilder_set) {
-			m_stringBuilder_set = true;
-			m_stringBuilder = null;
+		if(_stringBuilder_set) {
+			_stringBuilder_set = true;
+			_stringBuilder = null;
 		}
 	}
 
 	private boolean hasStringBuilder() {
-		return m_stringBuilder_set;
+		return _stringBuilder_set;
 	}
 
 	// </editor-fold>

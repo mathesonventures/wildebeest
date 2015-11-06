@@ -326,14 +326,14 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 	
 	// <editor-fold desc="StateTableName" defaultstate="collapsed">
 
-	private String m_stateTableName = null;
-	private boolean m_stateTableName_set = false;
+	private String _stateTableName = null;
+	private boolean _stateTableName_set = false;
 
 	@Override public String getStateTableName() {
-		if(!m_stateTableName_set) {
+		if(!_stateTableName_set) {
 			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
 		}
-		return m_stateTableName;
+		return _stateTableName;
 	}
 
 	@Override public void setStateTableName(
@@ -341,22 +341,22 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 		if(value == null) {
 			throw new IllegalArgumentException("stateTableName cannot be null");
 		}
-		boolean changing = !m_stateTableName_set || m_stateTableName != value;
+		boolean changing = !_stateTableName_set || _stateTableName != value;
 		if(changing) {
-			m_stateTableName_set = true;
-			m_stateTableName = value;
+			_stateTableName_set = true;
+			_stateTableName = value;
 		}
 	}
 
 	@Override public void clearStateTableName() {
-		if(m_stateTableName_set) {
-			m_stateTableName_set = true;
-			m_stateTableName = null;
+		if(_stateTableName_set) {
+			_stateTableName_set = true;
+			_stateTableName = null;
 		}
 	}
 
 	@Override public boolean hasStateTableName() {
-		return m_stateTableName_set;
+		return _stateTableName_set;
 	}
 
 	// </editor-fold>

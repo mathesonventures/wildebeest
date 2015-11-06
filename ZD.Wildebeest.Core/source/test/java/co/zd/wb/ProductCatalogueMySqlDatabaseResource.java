@@ -71,14 +71,14 @@ public class ProductCatalogueMySqlDatabaseResource
 	
 	// <editor-fold desc="ResourceId" defaultstate="collapsed">
 
-	private UUID m_resourceId = null;
-	private boolean m_resourceId_set = false;
+	private UUID _resourceId = null;
+	private boolean _resourceId_set = false;
 
 	public UUID getResourceId() {
-		if(!m_resourceId_set) {
+		if(!_resourceId_set) {
 			throw new IllegalStateException("resourceId not set.  Use the HasResourceId() method to check its state before accessing it.");
 		}
-		return m_resourceId;
+		return _resourceId;
 	}
 
 	private void setResourceId(
@@ -86,36 +86,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("resourceId cannot be null");
 		}
-		boolean changing = !m_resourceId_set || m_resourceId != value;
+		boolean changing = !_resourceId_set || _resourceId != value;
 		if(changing) {
-			m_resourceId_set = true;
-			m_resourceId = value;
+			_resourceId_set = true;
+			_resourceId = value;
 		}
 	}
 
 	private void clearResourceId() {
-		if(m_resourceId_set) {
-			m_resourceId_set = true;
-			m_resourceId = null;
+		if(_resourceId_set) {
+			_resourceId_set = true;
+			_resourceId = null;
 		}
 	}
 
 	private boolean hasResourceId() {
-		return m_resourceId_set;
+		return _resourceId_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="StateIdDatabaseCreated" defaultstate="collapsed">
 
-	private UUID m_stateIdDatabaseCreated = null;
-	private boolean m_stateIdDatabaseCreated_set = false;
+	private UUID _stateIdDatabaseCreated = null;
+	private boolean _stateIdDatabaseCreated_set = false;
 
 	public UUID getStateIdDatabaseCreated() {
-		if(!m_stateIdDatabaseCreated_set) {
+		if(!_stateIdDatabaseCreated_set) {
 			throw new IllegalStateException("stateIdDatabaseCreated not set.  Use the HasStateIdDatabaseCreated() method to check its state before accessing it.");
 		}
-		return m_stateIdDatabaseCreated;
+		return _stateIdDatabaseCreated;
 	}
 
 	private void setStateIdDatabaseCreated(
@@ -123,36 +123,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("stateIdDatabaseCreated cannot be null");
 		}
-		boolean changing = !m_stateIdDatabaseCreated_set || m_stateIdDatabaseCreated != value;
+		boolean changing = !_stateIdDatabaseCreated_set || _stateIdDatabaseCreated != value;
 		if(changing) {
-			m_stateIdDatabaseCreated_set = true;
-			m_stateIdDatabaseCreated = value;
+			_stateIdDatabaseCreated_set = true;
+			_stateIdDatabaseCreated = value;
 		}
 	}
 
 	private void clearStateIdDatabaseCreated() {
-		if(m_stateIdDatabaseCreated_set) {
-			m_stateIdDatabaseCreated_set = true;
-			m_stateIdDatabaseCreated = null;
+		if(_stateIdDatabaseCreated_set) {
+			_stateIdDatabaseCreated_set = true;
+			_stateIdDatabaseCreated = null;
 		}
 	}
 
 	private boolean hasStateIdDatabaseCreated() {
-		return m_stateIdDatabaseCreated_set;
+		return _stateIdDatabaseCreated_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="AssertionIdDatabaseExists" defaultstate="collapsed">
 
-	private UUID m_assertionIdDatabaseExists = null;
-	private boolean m_assertionIdDatabaseExists_set = false;
+	private UUID _assertionIdDatabaseExists = null;
+	private boolean _assertionIdDatabaseExists_set = false;
 
 	public UUID getAssertionIdDatabaseExists() {
-		if(!m_assertionIdDatabaseExists_set) {
+		if(!_assertionIdDatabaseExists_set) {
 			throw new IllegalStateException("assertionIdDatabaseExists not set.  Use the HasAssertionIdDatabaseExists() method to check its state before accessing it.");
 		}
-		return m_assertionIdDatabaseExists;
+		return _assertionIdDatabaseExists;
 	}
 
 	private void setAssertionIdDatabaseExists(
@@ -160,36 +160,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("assertionIdDatabaseExists cannot be null");
 		}
-		boolean changing = !m_assertionIdDatabaseExists_set || m_assertionIdDatabaseExists != value;
+		boolean changing = !_assertionIdDatabaseExists_set || _assertionIdDatabaseExists != value;
 		if(changing) {
-			m_assertionIdDatabaseExists_set = true;
-			m_assertionIdDatabaseExists = value;
+			_assertionIdDatabaseExists_set = true;
+			_assertionIdDatabaseExists = value;
 		}
 	}
 
 	private void clearAssertionIdDatabaseExists() {
-		if(m_assertionIdDatabaseExists_set) {
-			m_assertionIdDatabaseExists_set = true;
-			m_assertionIdDatabaseExists = null;
+		if(_assertionIdDatabaseExists_set) {
+			_assertionIdDatabaseExists_set = true;
+			_assertionIdDatabaseExists = null;
 		}
 	}
 
 	private boolean hasAssertionIdDatabaseExists() {
-		return m_assertionIdDatabaseExists_set;
+		return _assertionIdDatabaseExists_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="StateIdCoreSchemaLoaded" defaultstate="collapsed">
 
-	private UUID m_stateIdCoreSchemaLoaded = null;
-	private boolean m_stateIdCoreSchemaLoaded_set = false;
+	private UUID _stateIdCoreSchemaLoaded = null;
+	private boolean _stateIdCoreSchemaLoaded_set = false;
 
 	public UUID getStateIdCoreSchemaLoaded() {
-		if(!m_stateIdCoreSchemaLoaded_set) {
+		if(!_stateIdCoreSchemaLoaded_set) {
 			throw new IllegalStateException("stateIdCoreSchemaLoaded not set.  Use the HasStateIdCoreSchemaLoaded() method to check its state before accessing it.");
 		}
-		return m_stateIdCoreSchemaLoaded;
+		return _stateIdCoreSchemaLoaded;
 	}
 
 	private void setStateIdCoreSchemaLoaded(
@@ -197,36 +197,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("stateIdCoreSchemaLoaded cannot be null");
 		}
-		boolean changing = !m_stateIdCoreSchemaLoaded_set || m_stateIdCoreSchemaLoaded != value;
+		boolean changing = !_stateIdCoreSchemaLoaded_set || _stateIdCoreSchemaLoaded != value;
 		if(changing) {
-			m_stateIdCoreSchemaLoaded_set = true;
-			m_stateIdCoreSchemaLoaded = value;
+			_stateIdCoreSchemaLoaded_set = true;
+			_stateIdCoreSchemaLoaded = value;
 		}
 	}
 
 	private void clearStateIdCoreSchemaLoaded() {
-		if(m_stateIdCoreSchemaLoaded_set) {
-			m_stateIdCoreSchemaLoaded_set = true;
-			m_stateIdCoreSchemaLoaded = null;
+		if(_stateIdCoreSchemaLoaded_set) {
+			_stateIdCoreSchemaLoaded_set = true;
+			_stateIdCoreSchemaLoaded = null;
 		}
 	}
 
 	private boolean hasStateIdCoreSchemaLoaded() {
-		return m_stateIdCoreSchemaLoaded_set;
+		return _stateIdCoreSchemaLoaded_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="AssertionIdProductTypeTableExists" defaultstate="collapsed">
 
-	private UUID m_assertionIdProductTypeTableExists = null;
-	private boolean m_assertionIdProductTypeTableExists_set = false;
+	private UUID _assertionIdProductTypeTableExists = null;
+	private boolean _assertionIdProductTypeTableExists_set = false;
 
 	public UUID getAssertionIdProductTypeTableExists() {
-		if(!m_assertionIdProductTypeTableExists_set) {
+		if(!_assertionIdProductTypeTableExists_set) {
 			throw new IllegalStateException("assertionIdProductTypeTableExists not set.  Use the HasAssertionIdProductTypeTableExists() method to check its state before accessing it.");
 		}
-		return m_assertionIdProductTypeTableExists;
+		return _assertionIdProductTypeTableExists;
 	}
 
 	private void setAssertionIdProductTypeTableExists(
@@ -234,36 +234,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("assertionIdProductTypeTableExists cannot be null");
 		}
-		boolean changing = !m_assertionIdProductTypeTableExists_set || m_assertionIdProductTypeTableExists != value;
+		boolean changing = !_assertionIdProductTypeTableExists_set || _assertionIdProductTypeTableExists != value;
 		if(changing) {
-			m_assertionIdProductTypeTableExists_set = true;
-			m_assertionIdProductTypeTableExists = value;
+			_assertionIdProductTypeTableExists_set = true;
+			_assertionIdProductTypeTableExists = value;
 		}
 	}
 
 	private void clearAssertionIdProductTypeTableExists() {
-		if(m_assertionIdProductTypeTableExists_set) {
-			m_assertionIdProductTypeTableExists_set = true;
-			m_assertionIdProductTypeTableExists = null;
+		if(_assertionIdProductTypeTableExists_set) {
+			_assertionIdProductTypeTableExists_set = true;
+			_assertionIdProductTypeTableExists = null;
 		}
 	}
 
 	private boolean hasAssertionIdProductTypeTableExists() {
-		return m_assertionIdProductTypeTableExists_set;
+		return _assertionIdProductTypeTableExists_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="StateIdInitialReferenceDataLoaded" defaultstate="collapsed">
 
-	private UUID m_stateIdInitialReferenceDataLoaded = null;
-	private boolean m_stateIdInitialReferenceDataLoaded_set = false;
+	private UUID _stateIdInitialReferenceDataLoaded = null;
+	private boolean _stateIdInitialReferenceDataLoaded_set = false;
 
 	public UUID getStateIdInitialReferenceDataLoaded() {
-		if(!m_stateIdInitialReferenceDataLoaded_set) {
+		if(!_stateIdInitialReferenceDataLoaded_set) {
 			throw new IllegalStateException("stateIdInitialReferenceDataLoaded not set.  Use the HasStateIdInitialReferenceDataLoaded() method to check its state before accessing it.");
 		}
-		return m_stateIdInitialReferenceDataLoaded;
+		return _stateIdInitialReferenceDataLoaded;
 	}
 
 	private void setStateIdInitialReferenceDataLoaded(
@@ -271,36 +271,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("stateIdInitialReferenceDataLoaded cannot be null");
 		}
-		boolean changing = !m_stateIdInitialReferenceDataLoaded_set || m_stateIdInitialReferenceDataLoaded != value;
+		boolean changing = !_stateIdInitialReferenceDataLoaded_set || _stateIdInitialReferenceDataLoaded != value;
 		if(changing) {
-			m_stateIdInitialReferenceDataLoaded_set = true;
-			m_stateIdInitialReferenceDataLoaded = value;
+			_stateIdInitialReferenceDataLoaded_set = true;
+			_stateIdInitialReferenceDataLoaded = value;
 		}
 	}
 
 	private void clearStateIdInitialReferenceDataLoaded() {
-		if(m_stateIdInitialReferenceDataLoaded_set) {
-			m_stateIdInitialReferenceDataLoaded_set = true;
-			m_stateIdInitialReferenceDataLoaded = null;
+		if(_stateIdInitialReferenceDataLoaded_set) {
+			_stateIdInitialReferenceDataLoaded_set = true;
+			_stateIdInitialReferenceDataLoaded = null;
 		}
 	}
 
 	private boolean hasStateIdInitialReferenceDataLoaded() {
-		return m_stateIdInitialReferenceDataLoaded_set;
+		return _stateIdInitialReferenceDataLoaded_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="AssertionIdProductTypeHwRowExists" defaultstate="collapsed">
 
-	private UUID m_assertionIdProductTypeHwRowExists = null;
-	private boolean m_assertionIdProductTypeHwRowExists_set = false;
+	private UUID _assertionIdProductTypeHwRowExists = null;
+	private boolean _assertionIdProductTypeHwRowExists_set = false;
 
 	public UUID getAssertionIdProductTypeHwRowExists() {
-		if(!m_assertionIdProductTypeHwRowExists_set) {
+		if(!_assertionIdProductTypeHwRowExists_set) {
 			throw new IllegalStateException("assertionIdProductTypeHwRowExists not set.  Use the HasAssertionIdProductTypeHwRowExists() method to check its state before accessing it.");
 		}
-		return m_assertionIdProductTypeHwRowExists;
+		return _assertionIdProductTypeHwRowExists;
 	}
 
 	private void setAssertionIdProductTypeHwRowExists(
@@ -308,36 +308,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("assertionIdProductTypeHwRowExists cannot be null");
 		}
-		boolean changing = !m_assertionIdProductTypeHwRowExists_set || m_assertionIdProductTypeHwRowExists != value;
+		boolean changing = !_assertionIdProductTypeHwRowExists_set || _assertionIdProductTypeHwRowExists != value;
 		if(changing) {
-			m_assertionIdProductTypeHwRowExists_set = true;
-			m_assertionIdProductTypeHwRowExists = value;
+			_assertionIdProductTypeHwRowExists_set = true;
+			_assertionIdProductTypeHwRowExists = value;
 		}
 	}
 
 	private void clearAssertionIdProductTypeHwRowExists() {
-		if(m_assertionIdProductTypeHwRowExists_set) {
-			m_assertionIdProductTypeHwRowExists_set = true;
-			m_assertionIdProductTypeHwRowExists = null;
+		if(_assertionIdProductTypeHwRowExists_set) {
+			_assertionIdProductTypeHwRowExists_set = true;
+			_assertionIdProductTypeHwRowExists = null;
 		}
 	}
 
 	private boolean hasAssertionIdProductTypeHwRowExists() {
-		return m_assertionIdProductTypeHwRowExists_set;
+		return _assertionIdProductTypeHwRowExists_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="AssertionIdProductTypeSwRowExists" defaultstate="collapsed">
 
-	private UUID m_assertionIdProductTypeSwRowExists = null;
-	private boolean m_assertionIdProductTypeSwRowExists_set = false;
+	private UUID _assertionIdProductTypeSwRowExists = null;
+	private boolean _assertionIdProductTypeSwRowExists_set = false;
 
 	public UUID getAssertionIdProductTypeSwRowExists() {
-		if(!m_assertionIdProductTypeSwRowExists_set) {
+		if(!_assertionIdProductTypeSwRowExists_set) {
 			throw new IllegalStateException("assertionIdProductTypeSwRowExists not set.  Use the HasAssertionIdProductTypeSwRowExists() method to check its state before accessing it.");
 		}
-		return m_assertionIdProductTypeSwRowExists;
+		return _assertionIdProductTypeSwRowExists;
 	}
 
 	private void setAssertionIdProductTypeSwRowExists(
@@ -345,36 +345,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("assertionIdProductTypeSwRowExists cannot be null");
 		}
-		boolean changing = !m_assertionIdProductTypeSwRowExists_set || m_assertionIdProductTypeSwRowExists != value;
+		boolean changing = !_assertionIdProductTypeSwRowExists_set || _assertionIdProductTypeSwRowExists != value;
 		if(changing) {
-			m_assertionIdProductTypeSwRowExists_set = true;
-			m_assertionIdProductTypeSwRowExists = value;
+			_assertionIdProductTypeSwRowExists_set = true;
+			_assertionIdProductTypeSwRowExists = value;
 		}
 	}
 
 	private void clearAssertionIdProductTypeSwRowExists() {
-		if(m_assertionIdProductTypeSwRowExists_set) {
-			m_assertionIdProductTypeSwRowExists_set = true;
-			m_assertionIdProductTypeSwRowExists = null;
+		if(_assertionIdProductTypeSwRowExists_set) {
+			_assertionIdProductTypeSwRowExists_set = true;
+			_assertionIdProductTypeSwRowExists = null;
 		}
 	}
 
 	private boolean hasAssertionIdProductTypeSwRowExists() {
-		return m_assertionIdProductTypeSwRowExists_set;
+		return _assertionIdProductTypeSwRowExists_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="AssertionIdProductTableExists" defaultstate="collapsed">
 
-	private UUID m_assertionIdProductTableExists = null;
-	private boolean m_assertionIdProductTableExists_set = false;
+	private UUID _assertionIdProductTableExists = null;
+	private boolean _assertionIdProductTableExists_set = false;
 
 	public UUID getAssertionIdProductTableExists() {
-		if(!m_assertionIdProductTableExists_set) {
+		if(!_assertionIdProductTableExists_set) {
 			throw new IllegalStateException("assertionIdProductTableExists not set.  Use the HasAssertionIdProductTableExists() method to check its state before accessing it.");
 		}
-		return m_assertionIdProductTableExists;
+		return _assertionIdProductTableExists;
 	}
 
 	private void setAssertionIdProductTableExists(
@@ -382,36 +382,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("assertionIdProductTableExists cannot be null");
 		}
-		boolean changing = !m_assertionIdProductTableExists_set || m_assertionIdProductTableExists != value;
+		boolean changing = !_assertionIdProductTableExists_set || _assertionIdProductTableExists != value;
 		if(changing) {
-			m_assertionIdProductTableExists_set = true;
-			m_assertionIdProductTableExists = value;
+			_assertionIdProductTableExists_set = true;
+			_assertionIdProductTableExists = value;
 		}
 	}
 
 	private void clearAssertionIdProductTableExists() {
-		if(m_assertionIdProductTableExists_set) {
-			m_assertionIdProductTableExists_set = true;
-			m_assertionIdProductTableExists = null;
+		if(_assertionIdProductTableExists_set) {
+			_assertionIdProductTableExists_set = true;
+			_assertionIdProductTableExists = null;
 		}
 	}
 
 	private boolean hasAssertionIdProductTableExists() {
-		return m_assertionIdProductTableExists_set;
+		return _assertionIdProductTableExists_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="MigrationIdCreateDatabase" defaultstate="collapsed">
 
-	private UUID m_migrationIdCreateDatabase = null;
-	private boolean m_migrationIdCreateDatabase_set = false;
+	private UUID _migrationIdCreateDatabase = null;
+	private boolean _migrationIdCreateDatabase_set = false;
 
 	public UUID getMigrationIdCreateDatabase() {
-		if(!m_migrationIdCreateDatabase_set) {
+		if(!_migrationIdCreateDatabase_set) {
 			throw new IllegalStateException("migrationIdCreateDatabase not set.  Use the HasMigrationIdCreateDatabase() method to check its state before accessing it.");
 		}
-		return m_migrationIdCreateDatabase;
+		return _migrationIdCreateDatabase;
 	}
 
 	private void setMigrationIdCreateDatabase(
@@ -419,36 +419,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("migrationIdCreateDatabase cannot be null");
 		}
-		boolean changing = !m_migrationIdCreateDatabase_set || m_migrationIdCreateDatabase != value;
+		boolean changing = !_migrationIdCreateDatabase_set || _migrationIdCreateDatabase != value;
 		if(changing) {
-			m_migrationIdCreateDatabase_set = true;
-			m_migrationIdCreateDatabase = value;
+			_migrationIdCreateDatabase_set = true;
+			_migrationIdCreateDatabase = value;
 		}
 	}
 
 	private void clearMigrationIdCreateDatabase() {
-		if(m_migrationIdCreateDatabase_set) {
-			m_migrationIdCreateDatabase_set = true;
-			m_migrationIdCreateDatabase = null;
+		if(_migrationIdCreateDatabase_set) {
+			_migrationIdCreateDatabase_set = true;
+			_migrationIdCreateDatabase = null;
 		}
 	}
 
 	private boolean hasMigrationIdCreateDatabase() {
-		return m_migrationIdCreateDatabase_set;
+		return _migrationIdCreateDatabase_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="MigrationIdLoadCoreSchema" defaultstate="collapsed">
 
-	private UUID m_migrationIdLoadCoreSchema = null;
-	private boolean m_migrationIdLoadCoreSchema_set = false;
+	private UUID _migrationIdLoadCoreSchema = null;
+	private boolean _migrationIdLoadCoreSchema_set = false;
 
 	public UUID getMigrationIdLoadCoreSchema() {
-		if(!m_migrationIdLoadCoreSchema_set) {
+		if(!_migrationIdLoadCoreSchema_set) {
 			throw new IllegalStateException("migrationIdLoadCoreSchema not set.  Use the HasMigrationIdLoadCoreSchema() method to check its state before accessing it.");
 		}
-		return m_migrationIdLoadCoreSchema;
+		return _migrationIdLoadCoreSchema;
 	}
 
 	private void setMigrationIdLoadCoreSchema(
@@ -456,36 +456,36 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("migrationIdLoadCoreSchema cannot be null");
 		}
-		boolean changing = !m_migrationIdLoadCoreSchema_set || m_migrationIdLoadCoreSchema != value;
+		boolean changing = !_migrationIdLoadCoreSchema_set || _migrationIdLoadCoreSchema != value;
 		if(changing) {
-			m_migrationIdLoadCoreSchema_set = true;
-			m_migrationIdLoadCoreSchema = value;
+			_migrationIdLoadCoreSchema_set = true;
+			_migrationIdLoadCoreSchema = value;
 		}
 	}
 
 	private void clearMigrationIdLoadCoreSchema() {
-		if(m_migrationIdLoadCoreSchema_set) {
-			m_migrationIdLoadCoreSchema_set = true;
-			m_migrationIdLoadCoreSchema = null;
+		if(_migrationIdLoadCoreSchema_set) {
+			_migrationIdLoadCoreSchema_set = true;
+			_migrationIdLoadCoreSchema = null;
 		}
 	}
 
 	private boolean hasMigrationIdLoadCoreSchema() {
-		return m_migrationIdLoadCoreSchema_set;
+		return _migrationIdLoadCoreSchema_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="MigrationIdLoadReferenceData" defaultstate="collapsed">
 
-	private UUID m_migrationIdLoadReferenceData = null;
-	private boolean m_migrationIdLoadReferenceData_set = false;
+	private UUID _migrationIdLoadReferenceData = null;
+	private boolean _migrationIdLoadReferenceData_set = false;
 
 	public UUID getMigrationIdLoadReferenceData() {
-		if(!m_migrationIdLoadReferenceData_set) {
+		if(!_migrationIdLoadReferenceData_set) {
 			throw new IllegalStateException("migrationIdLoadReferenceData not set.  Use the HasMigrationIdLoadReferenceData() method to check its state before accessing it.");
 		}
-		return m_migrationIdLoadReferenceData;
+		return _migrationIdLoadReferenceData;
 	}
 
 	private void setMigrationIdLoadReferenceData(
@@ -493,22 +493,22 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("migrationIdLoadReferenceData cannot be null");
 		}
-		boolean changing = !m_migrationIdLoadReferenceData_set || m_migrationIdLoadReferenceData != value;
+		boolean changing = !_migrationIdLoadReferenceData_set || _migrationIdLoadReferenceData != value;
 		if(changing) {
-			m_migrationIdLoadReferenceData_set = true;
-			m_migrationIdLoadReferenceData = value;
+			_migrationIdLoadReferenceData_set = true;
+			_migrationIdLoadReferenceData = value;
 		}
 	}
 
 	private void clearMigrationIdLoadReferenceData() {
-		if(m_migrationIdLoadReferenceData_set) {
-			m_migrationIdLoadReferenceData_set = true;
-			m_migrationIdLoadReferenceData = null;
+		if(_migrationIdLoadReferenceData_set) {
+			_migrationIdLoadReferenceData_set = true;
+			_migrationIdLoadReferenceData = null;
 		}
 	}
 
 	private boolean hasMigrationIdLoadReferenceData() {
-		return m_migrationIdLoadReferenceData_set;
+		return _migrationIdLoadReferenceData_set;
 	}
 
 	// </editor-fold>

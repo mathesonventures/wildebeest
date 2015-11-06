@@ -42,48 +42,48 @@ public class ImmutableAssertionResponse implements AssertionResponse
 	
 	// <editor-fold desc="Result" defaultstate="collapsed">
 
-	private boolean m_result = false;
-	private boolean m_result_set = false;
+	private boolean _result = false;
+	private boolean _result_set = false;
 
 	@Override public boolean getResult() {
-		if(!m_result_set) {
+		if(!_result_set) {
 			throw new IllegalStateException("result not set.  Use the HasResult() method to check its state before accessing it.");
 		}
-		return m_result;
+		return _result;
 	}
 
 	private void setResult(
 		boolean value) {
-		boolean changing = !m_result_set || m_result != value;
+		boolean changing = !_result_set || _result != value;
 		if(changing) {
-			m_result_set = true;
-			m_result = value;
+			_result_set = true;
+			_result = value;
 		}
 	}
 
 	private void clearResult() {
-		if(m_result_set) {
-			m_result_set = true;
-			m_result = false;
+		if(_result_set) {
+			_result_set = true;
+			_result = false;
 		}
 	}
 
 	private boolean hasResult() {
-		return m_result_set;
+		return _result_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="Message" defaultstate="collapsed">
 
-	private String m_message = null;
-	private boolean m_message_set = false;
+	private String _message = null;
+	private boolean _message_set = false;
 
 	@Override public String getMessage() {
-		if(!m_message_set) {
+		if(!_message_set) {
 			throw new IllegalStateException("message not set.  Use the HasMessage() method to check its state before accessing it.");
 		}
-		return m_message;
+		return _message;
 	}
 
 	private void setMessage(
@@ -91,22 +91,22 @@ public class ImmutableAssertionResponse implements AssertionResponse
 		if(value == null) {
 			throw new IllegalArgumentException("message cannot be null");
 		}
-		boolean changing = !m_message_set || m_message != value;
+		boolean changing = !_message_set || _message != value;
 		if(changing) {
-			m_message_set = true;
-			m_message = value;
+			_message_set = true;
+			_message = value;
 		}
 	}
 
 	private void clearMessage() {
-		if(m_message_set) {
-			m_message_set = true;
-			m_message = null;
+		if(_message_set) {
+			_message_set = true;
+			_message = null;
 		}
 	}
 
 	private boolean hasMessage() {
-		return m_message_set;
+		return _message_set;
 	}
 
 	// </editor-fold>

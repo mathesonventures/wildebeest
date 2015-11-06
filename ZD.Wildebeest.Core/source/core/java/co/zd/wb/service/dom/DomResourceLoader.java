@@ -88,122 +88,122 @@ public class DomResourceLoader implements ResourceLoader
 
 	// <editor-fold desc="ResourceBuilders" defaultstate="collapsed">
 
-	private Map<String, ResourceBuilder> m_resourceBuilders = null;
-	private boolean m_resourceBuilders_set = false;
+	private Map<String, ResourceBuilder> _resourceBuilders = null;
+	private boolean _resourceBuilders_set = false;
 
 	private Map<String, ResourceBuilder> getResourceBuilders() {
-		if(!m_resourceBuilders_set) {
+		if(!_resourceBuilders_set) {
 			throw new IllegalStateException("resourceBuilders not set.  Use the HasResourceBuilders() method to check its state before accessing it.");
 		}
-		return m_resourceBuilders;
+		return _resourceBuilders;
 	}
 
 	private void setResourceBuilders(Map<String, ResourceBuilder> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("resourceBuilders cannot be null");
 		}
-		boolean changing = !m_resourceBuilders_set || m_resourceBuilders != value;
+		boolean changing = !_resourceBuilders_set || _resourceBuilders != value;
 		if(changing) {
-			m_resourceBuilders_set = true;
-			m_resourceBuilders = value;
+			_resourceBuilders_set = true;
+			_resourceBuilders = value;
 		}
 	}
 
 	private void clearResourceBuilders() {
-		if(m_resourceBuilders_set) {
-			m_resourceBuilders_set = true;
-			m_resourceBuilders = null;
+		if(_resourceBuilders_set) {
+			_resourceBuilders_set = true;
+			_resourceBuilders = null;
 		}
 	}
 
 	private boolean hasResourceBuilders() {
-		return m_resourceBuilders_set;
+		return _resourceBuilders_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="AssertionBuilders" defaultstate="collapsed">
 
-	private Map<String, AssertionBuilder> m_assertionBuilders = null;
-	private boolean m_assertionBuilders_set = false;
+	private Map<String, AssertionBuilder> _assertionBuilders = null;
+	private boolean _assertionBuilders_set = false;
 
 	private Map<String, AssertionBuilder> getAssertionBuilders() {
-		if(!m_assertionBuilders_set) {
+		if(!_assertionBuilders_set) {
 			throw new IllegalStateException("assertionBuilders not set.  Use the HasAssertionBuilders() method to check its state before accessing it.");
 		}
-		return m_assertionBuilders;
+		return _assertionBuilders;
 	}
 
 	private void setAssertionBuilders(Map<String, AssertionBuilder> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("assertionBuilders cannot be null");
 		}
-		boolean changing = !m_assertionBuilders_set || m_assertionBuilders != value;
+		boolean changing = !_assertionBuilders_set || _assertionBuilders != value;
 		if(changing) {
-			m_assertionBuilders_set = true;
-			m_assertionBuilders = value;
+			_assertionBuilders_set = true;
+			_assertionBuilders = value;
 		}
 	}
 
 	private void clearAssertionBuilders() {
-		if(m_assertionBuilders_set) {
-			m_assertionBuilders_set = true;
-			m_assertionBuilders = null;
+		if(_assertionBuilders_set) {
+			_assertionBuilders_set = true;
+			_assertionBuilders = null;
 		}
 	}
 
 	private boolean hasAssertionBuilders() {
-		return m_assertionBuilders_set;
+		return _assertionBuilders_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="MigrationBuilders" defaultstate="collapsed">
 
-	private Map<String, MigrationBuilder> m_migrationBuilders = null;
-	private boolean m_migrationBuilders_set = false;
+	private Map<String, MigrationBuilder> _migrationBuilders = null;
+	private boolean _migrationBuilders_set = false;
 
 	private Map<String, MigrationBuilder> getMigrationBuilders() {
-		if(!m_migrationBuilders_set) {
+		if(!_migrationBuilders_set) {
 			throw new IllegalStateException("migrationBuilders not set.  Use the HasMigrationBuilders() method to check its state before accessing it.");
 		}
-		return m_migrationBuilders;
+		return _migrationBuilders;
 	}
 
 	private void setMigrationBuilders(Map<String, MigrationBuilder> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("migrationBuilders cannot be null");
 		}
-		boolean changing = !m_migrationBuilders_set || m_migrationBuilders != value;
+		boolean changing = !_migrationBuilders_set || _migrationBuilders != value;
 		if(changing) {
-			m_migrationBuilders_set = true;
-			m_migrationBuilders = value;
+			_migrationBuilders_set = true;
+			_migrationBuilders = value;
 		}
 	}
 
 	private void clearMigrationBuilders() {
-		if(m_migrationBuilders_set) {
-			m_migrationBuilders_set = true;
-			m_migrationBuilders = null;
+		if(_migrationBuilders_set) {
+			_migrationBuilders_set = true;
+			_migrationBuilders = null;
 		}
 	}
 
 	private boolean hasMigrationBuilders() {
-		return m_migrationBuilders_set;
+		return _migrationBuilders_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="ResourceXml" defaultstate="collapsed">
 
-	private String m_resourceXml = null;
-	private boolean m_resourceXml_set = false;
+	private String _resourceXml = null;
+	private boolean _resourceXml_set = false;
 
 	private String getResourceXml() {
-		if(!m_resourceXml_set) {
+		if(!_resourceXml_set) {
 			throw new IllegalStateException("resourceXml not set.  Use the HasResourceXml() method to check its state before accessing it.");
 		}
-		return m_resourceXml;
+		return _resourceXml;
 	}
 
 	private void setResourceXml(
@@ -211,22 +211,22 @@ public class DomResourceLoader implements ResourceLoader
 		if(value == null) {
 			throw new IllegalArgumentException("resourceXml cannot be null");
 		}
-		boolean changing = !m_resourceXml_set || m_resourceXml != value;
+		boolean changing = !_resourceXml_set || _resourceXml != value;
 		if(changing) {
-			m_resourceXml_set = true;
-			m_resourceXml = value;
+			_resourceXml_set = true;
+			_resourceXml = value;
 		}
 	}
 
 	private void clearResourceXml() {
-		if(m_resourceXml_set) {
-			m_resourceXml_set = true;
-			m_resourceXml = null;
+		if(_resourceXml_set) {
+			_resourceXml_set = true;
+			_resourceXml = null;
 		}
 	}
 
 	private boolean hasResourceXml() {
-		return m_resourceXml_set;
+		return _resourceXml_set;
 	}
 
 	// </editor-fold>

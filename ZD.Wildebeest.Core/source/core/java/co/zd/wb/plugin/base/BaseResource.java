@@ -64,14 +64,14 @@ public abstract class BaseResource implements Resource
 	
 	// <editor-fold desc="ResourceId" defaultstate="collapsed">
 
-	private UUID m_resourceId = null;
-	private boolean m_resourceId_set = false;
+	private UUID _resourceId = null;
+	private boolean _resourceId_set = false;
 
 	@Override public UUID getResourceId() {
-		if(!m_resourceId_set) {
+		if(!_resourceId_set) {
 			throw new IllegalStateException("resourceId not set.  Use the HasResourceId() method to check its state before accessing it.");
 		}
-		return m_resourceId;
+		return _resourceId;
 	}
 
 	private void setResourceId(
@@ -79,36 +79,36 @@ public abstract class BaseResource implements Resource
 		if(value == null) {
 			throw new IllegalArgumentException("resourceId cannot be null");
 		}
-		boolean changing = !m_resourceId_set || m_resourceId != value;
+		boolean changing = !_resourceId_set || _resourceId != value;
 		if(changing) {
-			m_resourceId_set = true;
-			m_resourceId = value;
+			_resourceId_set = true;
+			_resourceId = value;
 		}
 	}
 
 	private void clearResourceId() {
-		if(m_resourceId_set) {
-			m_resourceId_set = true;
-			m_resourceId = null;
+		if(_resourceId_set) {
+			_resourceId_set = true;
+			_resourceId = null;
 		}
 	}
 
 	private boolean hasResourceId() {
-		return m_resourceId_set;
+		return _resourceId_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="Name" defaultstate="collapsed">
 
-	private String m_name = null;
-	private boolean m_name_set = false;
+	private String _name = null;
+	private boolean _name_set = false;
 
 	@Override public String getName() {
-		if(!m_name_set) {
+		if(!_name_set) {
 			throw new IllegalStateException("name not set.  Use the HasName() method to check its state before accessing it.");
 		}
-		return m_name;
+		return _name;
 	}
 
 	private void setName(
@@ -116,94 +116,94 @@ public abstract class BaseResource implements Resource
 		if(value == null) {
 			throw new IllegalArgumentException("name cannot be null");
 		}
-		boolean changing = !m_name_set || m_name != value;
+		boolean changing = !_name_set || _name != value;
 		if(changing) {
-			m_name_set = true;
-			m_name = value;
+			_name_set = true;
+			_name = value;
 		}
 	}
 
 	private void clearName() {
-		if(m_name_set) {
-			m_name_set = true;
-			m_name = null;
+		if(_name_set) {
+			_name_set = true;
+			_name = null;
 		}
 	}
 
 	private boolean hasName() {
-		return m_name_set;
+		return _name_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="States" defaultstate="collapsed">
 
-	private List<State> m_states = null;
-	private boolean m_states_set = false;
+	private List<State> _states = null;
+	private boolean _states_set = false;
 
 	@Override public List<State> getStates() {
-		if(!m_states_set) {
+		if(!_states_set) {
 			throw new IllegalStateException("states not set.  Use the HasStates() method to check its state before accessing it.");
 		}
-		return m_states;
+		return _states;
 	}
 
 	private void setStates(List<State> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("states cannot be null");
 		}
-		boolean changing = !m_states_set || m_states != value;
+		boolean changing = !_states_set || _states != value;
 		if(changing) {
-			m_states_set = true;
-			m_states = value;
+			_states_set = true;
+			_states = value;
 		}
 	}
 
 	private void clearStates() {
-		if(m_states_set) {
-			m_states_set = true;
-			m_states = null;
+		if(_states_set) {
+			_states_set = true;
+			_states = null;
 		}
 	}
 
 	private boolean hasStates() {
-		return m_states_set;
+		return _states_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="Migrations" defaultstate="collapsed">
 
-	private List<Migration> m_migrations = null;
-	private boolean m_migrations_set = false;
+	private List<Migration> _migrations = null;
+	private boolean _migrations_set = false;
 
 	@Override public List<Migration> getMigrations() {
-		if(!m_migrations_set) {
+		if(!_migrations_set) {
 			throw new IllegalStateException("migrations not set.  Use the HasMigrations() method to check its state before accessing it.");
 		}
-		return m_migrations;
+		return _migrations;
 	}
 
 	private void setMigrations(List<Migration> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("migrations cannot be null");
 		}
-		boolean changing = !m_migrations_set || m_migrations != value;
+		boolean changing = !_migrations_set || _migrations != value;
 		if(changing) {
-			m_migrations_set = true;
-			m_migrations = value;
+			_migrations_set = true;
+			_migrations = value;
 		}
 	}
 
 	private void clearMigrations() {
-		if(m_migrations_set) {
-			m_migrations_set = true;
-			m_migrations = null;
+		if(_migrations_set) {
+			_migrations_set = true;
+			_migrations = null;
 		}
 	}
 
 	public boolean hasMigrations() {
-		return m_migrations_set;
+		return _migrations_set;
 	}
 
 	// </editor-fold>

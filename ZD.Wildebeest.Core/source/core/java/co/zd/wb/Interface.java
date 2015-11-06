@@ -52,14 +52,14 @@ public class Interface
 	
 	// <editor-fold desc="Logger" defaultstate="collapsed">
 
-	private Logger m_logger = null;
-	private boolean m_logger_set = false;
+	private Logger _logger = null;
+	private boolean _logger_set = false;
 
 	private Logger getLogger() {
-		if(!m_logger_set) {
+		if(!_logger_set) {
 			throw new IllegalStateException("logger not set.  Use the HasLogger() method to check its state before accessing it.");
 		}
-		return m_logger;
+		return _logger;
 	}
 
 	private void setLogger(
@@ -67,22 +67,22 @@ public class Interface
 		if(value == null) {
 			throw new IllegalArgumentException("logger cannot be null");
 		}
-		boolean changing = !m_logger_set || m_logger != value;
+		boolean changing = !_logger_set || _logger != value;
 		if(changing) {
-			m_logger_set = true;
-			m_logger = value;
+			_logger_set = true;
+			_logger = value;
 		}
 	}
 
 	private void clearLogger() {
-		if(m_logger_set) {
-			m_logger_set = true;
-			m_logger = null;
+		if(_logger_set) {
+			_logger_set = true;
+			_logger = null;
 		}
 	}
 
 	private boolean hasLogger() {
-		return m_logger_set;
+		return _logger_set;
 	}
 
 	// </editor-fold>

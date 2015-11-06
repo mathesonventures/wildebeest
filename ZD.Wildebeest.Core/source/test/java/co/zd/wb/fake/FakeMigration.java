@@ -38,14 +38,14 @@ public class FakeMigration extends BaseMigration
 	
 	// <editor-fold desc="Tag" defaultstate="collapsed">
 
-	private String m_tag = null;
-	private boolean m_tag_set = false;
+	private String _tag = null;
+	private boolean _tag_set = false;
 
 	public String getTag() {
-		if(!m_tag_set) {
+		if(!_tag_set) {
 			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
 		}
-		return m_tag;
+		return _tag;
 	}
 
 	private void setTag(
@@ -53,22 +53,22 @@ public class FakeMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("tag cannot be null");
 		}
-		boolean changing = !m_tag_set || m_tag != value;
+		boolean changing = !_tag_set || _tag != value;
 		if(changing) {
-			m_tag_set = true;
-			m_tag = value;
+			_tag_set = true;
+			_tag = value;
 		}
 	}
 
 	private void clearTag() {
-		if(m_tag_set) {
-			m_tag_set = true;
-			m_tag = null;
+		if(_tag_set) {
+			_tag_set = true;
+			_tag = null;
 		}
 	}
 
 	private boolean hasTag() {
-		return m_tag_set;
+		return _tag_set;
 	}
 
 	// </editor-fold>

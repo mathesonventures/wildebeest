@@ -63,50 +63,50 @@ public class DomInstanceLoader implements InstanceLoader
 
 	// <editor-fold desc="InstanceBuilders" defaultstate="collapsed">
 
-	private Map<String, InstanceBuilder> m_instanceBuilders = null;
-	private boolean m_instanceBuilders_set = false;
+	private Map<String, InstanceBuilder> _instanceBuilders = null;
+	private boolean _instanceBuilders_set = false;
 
 	private Map<String, InstanceBuilder> getInstanceBuilders() {
-		if(!m_instanceBuilders_set) {
+		if(!_instanceBuilders_set) {
 			throw new IllegalStateException("instanceBuilders not set.  Use the HasInstanceBuilders() method to check its state before accessing it.");
 		}
-		return m_instanceBuilders;
+		return _instanceBuilders;
 	}
 
 	private void setInstanceBuilders(Map<String, InstanceBuilder> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("instanceBuilders cannot be null");
 		}
-		boolean changing = !m_instanceBuilders_set || m_instanceBuilders != value;
+		boolean changing = !_instanceBuilders_set || _instanceBuilders != value;
 		if(changing) {
-			m_instanceBuilders_set = true;
-			m_instanceBuilders = value;
+			_instanceBuilders_set = true;
+			_instanceBuilders = value;
 		}
 	}
 
 	private void clearInstanceBuilders() {
-		if(m_instanceBuilders_set) {
-			m_instanceBuilders_set = true;
-			m_instanceBuilders = null;
+		if(_instanceBuilders_set) {
+			_instanceBuilders_set = true;
+			_instanceBuilders = null;
 		}
 	}
 
 	private boolean hasInstanceBuilders() {
-		return m_instanceBuilders_set;
+		return _instanceBuilders_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="InstanceXml" defaultstate="collapsed">
 
-	private String m_instanceXml = null;
-	private boolean m_instanceXml_set = false;
+	private String _instanceXml = null;
+	private boolean _instanceXml_set = false;
 
 	private String getInstanceXml() {
-		if(!m_instanceXml_set) {
+		if(!_instanceXml_set) {
 			throw new IllegalStateException("instanceXml not set.  Use the HasInstanceXml() method to check its state before accessing it.");
 		}
-		return m_instanceXml;
+		return _instanceXml;
 	}
 
 	private void setInstanceXml(
@@ -114,22 +114,22 @@ public class DomInstanceLoader implements InstanceLoader
 		if(value == null) {
 			throw new IllegalArgumentException("instanceXml cannot be null");
 		}
-		boolean changing = !m_instanceXml_set || m_instanceXml != value;
+		boolean changing = !_instanceXml_set || _instanceXml != value;
 		if(changing) {
-			m_instanceXml_set = true;
-			m_instanceXml = value;
+			_instanceXml_set = true;
+			_instanceXml = value;
 		}
 	}
 
 	private void clearInstanceXml() {
-		if(m_instanceXml_set) {
-			m_instanceXml_set = true;
-			m_instanceXml = null;
+		if(_instanceXml_set) {
+			_instanceXml_set = true;
+			_instanceXml = null;
 		}
 	}
 
 	private boolean hasInstanceXml() {
-		return m_instanceXml_set;
+		return _instanceXml_set;
 	}
 
 	// </editor-fold>

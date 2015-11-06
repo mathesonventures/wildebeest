@@ -42,8 +42,8 @@ public class AssertionFaultException extends RuntimeException
 	
 	// <editor-fold desc="AssertionId" defaultstate="collapsed">
 
-	private UUID m_assertionId = null;
-	private boolean m_assertionId_set = false;
+	private UUID _assertionId = null;
+	private boolean _assertionId_set = false;
 
 	/**
 	 * Gets the ID of the Assertion that was faulted.
@@ -51,10 +51,10 @@ public class AssertionFaultException extends RuntimeException
 	 * @since                                   1.0
 	 */
 	public UUID getAssertionId() {
-		if(!m_assertionId_set) {
+		if(!_assertionId_set) {
 			throw new IllegalStateException("assertionId not set.  Use the HasAssertionId() method to check its state before accessing it.");
 		}
-		return m_assertionId;
+		return _assertionId;
 	}
 
 	private void setAssertionId(
@@ -62,22 +62,22 @@ public class AssertionFaultException extends RuntimeException
 		if(value == null) {
 			throw new IllegalArgumentException("assertionId cannot be null");
 		}
-		boolean changing = !m_assertionId_set || m_assertionId != value;
+		boolean changing = !_assertionId_set || _assertionId != value;
 		if(changing) {
-			m_assertionId_set = true;
-			m_assertionId = value;
+			_assertionId_set = true;
+			_assertionId = value;
 		}
 	}
 
 	private void clearAssertionId() {
-		if(m_assertionId_set) {
-			m_assertionId_set = true;
-			m_assertionId = null;
+		if(_assertionId_set) {
+			_assertionId_set = true;
+			_assertionId = null;
 		}
 	}
 
 	private boolean hasAssertionId() {
-		return m_assertionId_set;
+		return _assertionId_set;
 	}
 
 	// </editor-fold>

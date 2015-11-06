@@ -91,14 +91,14 @@ public class MySqlProperties
 	
 	// <editor-fold desc="HostName" defaultstate="collapsed">
 
-	private String m_hostName = null;
-	private boolean m_hostName_set = false;
+	private String _hostName = null;
+	private boolean _hostName_set = false;
 
 	public String getHostName() {
-		if(!m_hostName_set) {
+		if(!_hostName_set) {
 			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
 		}
-		return m_hostName;
+		return _hostName;
 	}
 
 	private void setHostName(
@@ -106,70 +106,70 @@ public class MySqlProperties
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
 		}
-		boolean changing = !m_hostName_set || m_hostName != value;
+		boolean changing = !_hostName_set || _hostName != value;
 		if(changing) {
-			m_hostName_set = true;
-			m_hostName = value;
+			_hostName_set = true;
+			_hostName = value;
 		}
 	}
 
 	private void clearHostName() {
-		if(m_hostName_set) {
-			m_hostName_set = true;
-			m_hostName = null;
+		if(_hostName_set) {
+			_hostName_set = true;
+			_hostName = null;
 		}
 	}
 
 	private boolean hasHostName() {
-		return m_hostName_set;
+		return _hostName_set;
 	}
 
 	// </editor-fold>
 
 	// <editor-fold desc="Port" defaultstate="collapsed">
 
-	private int m_port = 0;
-	private boolean m_port_set = false;
+	private int _port = 0;
+	private boolean _port_set = false;
 
 	public int getPort() {
-		if(!m_port_set) {
+		if(!_port_set) {
 			throw new IllegalStateException("port not set.  Use the HasPort() method to check its state before accessing it.");
 		}
-		return m_port;
+		return _port;
 	}
 
 	private void setPort(
 		int value) {
-		boolean changing = !m_port_set || m_port != value;
+		boolean changing = !_port_set || _port != value;
 		if(changing) {
-			m_port_set = true;
-			m_port = value;
+			_port_set = true;
+			_port = value;
 		}
 	}
 
 	private void clearPort() {
-		if(m_port_set) {
-			m_port_set = true;
-			m_port = 0;
+		if(_port_set) {
+			_port_set = true;
+			_port = 0;
 		}
 	}
 
 	private boolean hasPort() {
-		return m_port_set;
+		return _port_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="Username" defaultstate="collapsed">
 
-	private String m_username = null;
-	private boolean m_username_set = false;
+	private String _username = null;
+	private boolean _username_set = false;
 
 	public String getUsername() {
-		if(!m_username_set) {
+		if(!_username_set) {
 			throw new IllegalStateException("username not set.  Use the HasUsername() method to check its state before accessing it.");
 		}
-		return m_username;
+		return _username;
 	}
 
 	private void setUsername(
@@ -177,36 +177,36 @@ public class MySqlProperties
 		if(value == null) {
 			throw new IllegalArgumentException("username cannot be null");
 		}
-		boolean changing = !m_username_set || m_username != value;
+		boolean changing = !_username_set || _username != value;
 		if(changing) {
-			m_username_set = true;
-			m_username = value;
+			_username_set = true;
+			_username = value;
 		}
 	}
 
 	private void clearUsername() {
-		if(m_username_set) {
-			m_username_set = true;
-			m_username = null;
+		if(_username_set) {
+			_username_set = true;
+			_username = null;
 		}
 	}
 
 	private boolean hasUsername() {
-		return m_username_set;
+		return _username_set;
 	}
 
 	// </editor-fold>
 	
 	// <editor-fold desc="Password" defaultstate="collapsed">
 
-	private String m_password = null;
-	private boolean m_password_set = false;
+	private String _password = null;
+	private boolean _password_set = false;
 
 	public String getPassword() {
-		if(!m_password_set) {
+		if(!_password_set) {
 			throw new IllegalStateException("password not set.  Use the HasPassword() method to check its state before accessing it.");
 		}
-		return m_password;
+		return _password;
 	}
 
 	private void setPassword(
@@ -214,22 +214,22 @@ public class MySqlProperties
 		if(value == null) {
 			throw new IllegalArgumentException("password cannot be null");
 		}
-		boolean changing = !m_password_set || m_password != value;
+		boolean changing = !_password_set || _password != value;
 		if(changing) {
-			m_password_set = true;
-			m_password = value;
+			_password_set = true;
+			_password = value;
 		}
 	}
 
 	private void clearPassword() {
-		if(m_password_set) {
-			m_password_set = true;
-			m_password = null;
+		if(_password_set) {
+			_password_set = true;
+			_password = null;
 		}
 	}
 
 	private boolean hasPassword() {
-		return m_password_set;
+		return _password_set;
 	}
 
 	// </editor-fold>
