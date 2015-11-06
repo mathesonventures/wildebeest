@@ -1,5 +1,5 @@
 // Wildebeest Migration Framework
-// Copyright 2013 - 2014, Zen Digital Co Inc
+// Copyright © 2013 - 2015, Zen Digital Co Inc
 //
 // This file is part of Wildebeest
 //

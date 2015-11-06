@@ -1,7 +1,7 @@
 @echo off
 
 REM Wildebeest Migration Framework
-REM Copyright 2013, Zen Digital Co Inc
+REM Copyright © 2013, Zen Digital Co Inc
 REM
 REM This file is part of Wildebeest
 REM
