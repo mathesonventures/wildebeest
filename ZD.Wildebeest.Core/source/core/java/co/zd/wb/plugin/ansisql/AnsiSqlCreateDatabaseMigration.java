@@ -17,13 +17,13 @@
 package co.zd.wb.plugin.ansisql;
 
 import co.zd.wb.Instance;
+import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationFaultException;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.BaseMigration;
 import co.zd.wb.plugin.database.DatabaseHelper;
-import co.zd.wb.plugin.database.DatabaseResource;
 import java.sql.SQLException;
 import java.util.UUID;
 
