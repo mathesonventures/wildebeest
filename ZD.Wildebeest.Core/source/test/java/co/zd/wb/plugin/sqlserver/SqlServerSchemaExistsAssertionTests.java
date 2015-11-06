@@ -39,14 +39,9 @@ public class SqlServerSchemaExistsAssertionTests
 		 MigrationFailedException,
 		 SQLException
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-		 
+		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
 
-		// Instance
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
 			properties.getHostName(),
@@ -57,11 +52,9 @@ public class SqlServerSchemaExistsAssertionTests
 			databaseName,
 			null);
 
-		// CreateDatabase
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(UUID.randomUUID(), null, UUID.randomUUID());
 		createDatabase.perform(instance);
 		 
-		// CreateSchema
 		Migration createSchema = new SqlServerCreateSchemaMigration(UUID.randomUUID(), null, null, "prd");
 		createSchema.perform(instance);
 		 
@@ -70,28 +63,22 @@ public class SqlServerSchemaExistsAssertionTests
 			0,
 			"prd");
  
-		//
-		// Execute
-		//
-		
 		AssertionResponse response = null;
 		
 		try
 		{
+			// Execute
 			response = schemaExists.perform(instance);
 		}
 		finally
 		{
+			// Tear-Down
 			SqlServerUtil.tryDropDatabase(instance);
-
-			//
-			// Assert Results
-			//
-
-			Assert.assertNotNull("response", response);
-			AssertExtensions.assertAssertionResponse(true, "Schema prd exists", response, "response");
 		}
-		
+
+		// Verify
+		Assert.assertNotNull("response", response);
+		AssertExtensions.assertAssertionResponse(true, "Schema prd exists", response, "response");
 	 }
 	 
 	 @Test public void applyForNonExistentSchemaFails() throws
@@ -101,11 +88,7 @@ public class SqlServerSchemaExistsAssertionTests
 		 MigrationFailedException,
 		 SQLException
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-
+		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -119,7 +102,6 @@ public class SqlServerSchemaExistsAssertionTests
 			databaseName,
 			null);
 		 
-		// CreateDatabase
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(UUID.randomUUID(), null, UUID.randomUUID());
 		createDatabase.perform(instance);
 		
@@ -128,37 +110,27 @@ public class SqlServerSchemaExistsAssertionTests
 			0,
 			"prd");
  
-		//
-		// Execute
-		//
-		
 		AssertionResponse response = null;
 		
 		try
 		{
+			// Execute
 			response = schemaExists.perform(instance);
 		}
 		finally
 		{
+			// Tear-Down
 			SqlServerUtil.tryDropDatabase(instance);
-
-			//
-			// Assert Results
-			//
-
-			Assert.assertNotNull("response", response);
-			AssertExtensions.assertAssertionResponse(false, "Schema prd does not exist", response, "response");
 		}
 
+		// Verify
+		Assert.assertNotNull("response", response);
+		AssertExtensions.assertAssertionResponse(false, "Schema prd does not exist", response, "response");
 	 }
 	 
 	 @Test public void applyForNonExistentDatabaseFails()
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-
+		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -177,48 +149,25 @@ public class SqlServerSchemaExistsAssertionTests
 			0,
 			"prd");
  
-		//
 		// Execute
-		//
-		
-		AssertionResponse response = null;
-		
-		try
-		{
-			response = assertion.perform(instance);
-		}
-		finally
-		{
+		AssertionResponse response = assertion.perform(instance);
 
-			//
-			// Assert Results
-			//
-
-			Assert.assertNotNull("response", response);
-			AssertExtensions.assertAssertionResponse(
-				false, "Database " + databaseName + " does not exist",
-				response, "response");
-
-		}
-
+		// Verify
+		Assert.assertNotNull("response", response);
+		AssertExtensions.assertAssertionResponse(
+			false, "Database " + databaseName + " does not exist",
+			response, "response");
 	 }
 	 
 	 @Test public void applyForNullInstanceFails()
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-		 
+		// Setup
 		SqlServerSchemaExistsAssertion assertion = new SqlServerSchemaExistsAssertion(
 			UUID.randomUUID(),
 			0,
 			"prd");
 		
-		//
 		// Execute
-		//
-		
 		IllegalArgumentException caught = null;
 		
 		try
@@ -232,21 +181,13 @@ public class SqlServerSchemaExistsAssertionTests
 			caught = e;
 		}
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals("caught.message", "instance cannot be null", caught.getMessage());
-		
 	 }
 	 
 	 @Test public void applyForIncorrectInstanceTypeFails()
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-		 
+		// Setup
 		SqlServerSchemaExistsAssertion assertion = new SqlServerSchemaExistsAssertion(
 			UUID.randomUUID(),
 			0,
@@ -254,10 +195,7 @@ public class SqlServerSchemaExistsAssertionTests
 		
 		FakeInstance instance = new FakeInstance();
 		
-		//
 		// Execute
-		//
-		
 		IllegalArgumentException caught = null;
 		
 		try
@@ -271,11 +209,7 @@ public class SqlServerSchemaExistsAssertionTests
 			caught = e;
 		}
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals("caught.message", "instance must be a SqlServerDatabaseInstance", caught.getMessage());
-		
 	}
 }

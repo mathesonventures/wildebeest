@@ -28,14 +28,9 @@ public class SqlServerDropSchemaMigrationTests
 	@Test public void performForExistantSchemaSucceeds() throws
 		MigrationFailedException
 	{
-		
-		//
 		// Setup
-		//
-
 		SqlServerProperties p = SqlServerProperties.get();
 
-		// Create the database
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			null,
@@ -61,46 +56,29 @@ public class SqlServerDropSchemaMigrationTests
 			"prd");
 		createSchema.perform(instance);
 		
-		// Setup the migration
 		SqlServerDropSchemaMigration dropSchema = new SqlServerDropSchemaMigration(
 			UUID.randomUUID(),
 			null,
 			null,
 			"prd");
 		
-		//
-		// Execute
-		//
-		
 		try
 		{
+			// Execute
 			dropSchema.perform(instance);
-		
-			//
-			// Verify
-			//
-
-			//
-			// Tear-Down
-			//
-			
 		}
 		finally
 		{
+			// Tear-Down
 			SqlServerUtil.tryDropDatabase(instance);
 		}
 	}
 
 	@Test public void performForNonExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
-		
-		//
-		// Fixture Setup
-		//
-
+		// Setup
 		SqlServerProperties p = SqlServerProperties.get();
 
-		// Create the database
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			null,
@@ -119,21 +97,17 @@ public class SqlServerDropSchemaMigrationTests
 		
 		createDatabase.perform(instance);
 		
-		// Setup the migration
 		SqlServerDropSchemaMigration dropSchema = new SqlServerDropSchemaMigration(
 			UUID.randomUUID(),
 			null,
 			null,
 			"prd");
 		
-		//
-		// Execute
-		//
-
 		MigrationFailedException caught = null;
 		
 		try
 		{
+			// Execute
 			dropSchema.perform(instance);
 			
 			Assert.fail("MigrationFailedException expected");
@@ -144,17 +118,14 @@ public class SqlServerDropSchemaMigrationTests
 		}
 		finally
 		{
+			// Tear-Down
 			SqlServerUtil.tryDropDatabase(instance);
 		}
 		
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals(
 			"caught.message",
 			"Cannot drop the schema 'prd', because it does not exist or you do not have permission.",
 			caught.getMessage());
-		
 	}
 }

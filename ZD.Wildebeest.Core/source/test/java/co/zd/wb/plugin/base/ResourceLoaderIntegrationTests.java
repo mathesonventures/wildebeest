@@ -52,7 +52,7 @@ public class ResourceLoaderIntegrationTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 		
 		ProductCatalogueMySqlDatabaseResource productCatalogueResource = new ProductCatalogueMySqlDatabaseResource();
@@ -93,7 +93,7 @@ public class ResourceLoaderIntegrationTests
 		}
 		
 		//
-		// Assert Model
+		// Verify - Model
 		//
 		
 		// Resource

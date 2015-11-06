@@ -16,7 +16,6 @@
 
 package co.zd.wb;
 
-import co.mv.protium.system.ArgumentNullException;
 import co.zd.wb.fixturecreator.FixtureCreator;
 import co.zd.wb.plugin.mysql.MySqlElementFixtures;
 import java.util.UUID;
@@ -568,18 +567,18 @@ public class ProductCatalogueMySqlDatabaseResource
 		UUID migrationIdLoadSchema,
 		UUID migrationIdLoadReferenceData)
 	{
-		if (resourceId == null) { throw new ArgumentNullException("resourceId"); }
-		if (stateIdDatabaseCreated == null) { throw new ArgumentNullException("stateIdDatabaseCreated"); }
-		if (assertionIdDatabaseExists == null) { throw new ArgumentNullException("assertionIdDatabaseExists"); }
-		if (stateIdCoreSchemaLoadedId == null) { throw new ArgumentNullException("stateIdCoreSchemaLoadedId"); }
-		if (assertionIdProductTypeTableExists == null) { throw new ArgumentNullException("assertionIdProductTypeTableExists"); }
-		if (stateIdInitialReferenceDataLoaded == null) { throw new ArgumentNullException("stateIdInitialReferenceDataLoaded"); }
-		if (assertionIdProductTypeHwRowExists == null) { throw new ArgumentNullException("assertionIdProductTypeHwRowExists"); }
-		if (assertionIdProductTypeSwRowExists == null) { throw new ArgumentNullException("assertionIdProductTypeSwRowExists"); }
-		if (assertionIdProductTableExists == null) { throw new ArgumentNullException("assertionIdProductTableExists"); }
-		if (migrationIdCreateDatabase == null) { throw new ArgumentNullException("migrationIdCreateDatabase"); }
-		if (migrationIdLoadSchema == null) { throw new ArgumentNullException("migrationIdLoadSchema"); }
-		if (migrationIdLoadReferenceData == null) { throw new ArgumentNullException("migrationIdLoadReferenceData"); }
+		if (resourceId == null) { throw new IllegalArgumentException("resourceId cannot be null"); }
+		if (stateIdDatabaseCreated == null) { throw new IllegalArgumentException("stateIdDatabaseCreated cannot be null"); }
+		if (assertionIdDatabaseExists == null) { throw new IllegalArgumentException("assertionIdDatabaseExists cannot be null"); }
+		if (stateIdCoreSchemaLoadedId == null) { throw new IllegalArgumentException("stateIdCoreSchemaLoadedId cannot be null"); }
+		if (assertionIdProductTypeTableExists == null) { throw new IllegalArgumentException("assertionIdProductTypeTableExists cannot be null"); }
+		if (stateIdInitialReferenceDataLoaded == null) { throw new IllegalArgumentException("stateIdInitialReferenceDataLoaded cannot be null"); }
+		if (assertionIdProductTypeHwRowExists == null) { throw new IllegalArgumentException("assertionIdProductTypeHwRowExists cannot be null"); }
+		if (assertionIdProductTypeSwRowExists == null) { throw new IllegalArgumentException("assertionIdProductTypeSwRowExists cannot be null"); }
+		if (assertionIdProductTableExists == null) { throw new IllegalArgumentException("assertionIdProductTableExists cannot be null"); }
+		if (migrationIdCreateDatabase == null) { throw new IllegalArgumentException("migrationIdCreateDatabase cannot be null"); }
+		if (migrationIdLoadSchema == null) { throw new IllegalArgumentException("migrationIdLoadSchema cannot be null"); }
+		if (migrationIdLoadReferenceData == null) { throw new IllegalArgumentException("migrationIdLoadReferenceData cannot be null"); }
 		
 		String resourceXml = FixtureCreator.create()
 			.resource("MySqlDatabase", resourceId, "Product Catalogue Database")

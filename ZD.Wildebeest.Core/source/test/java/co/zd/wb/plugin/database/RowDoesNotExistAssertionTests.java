@@ -21,6 +21,7 @@ import co.zd.wb.AssertionResponse;
 import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.zd.wb.plugin.mysql.MySqlElementFixtures;
 import co.zd.wb.plugin.mysql.MySqlProperties;
+import co.zd.wb.plugin.mysql.MySqlUtil;
 import java.util.UUID;
 import junit.framework.Assert;
 import org.junit.Ignore;
@@ -30,28 +31,20 @@ public class RowDoesNotExistAssertionTests
 {
 	@Test public void applyForNonExistentRowSucceds() throws AssertionFailedException
 	{
-		
-		//
-		// Fixture Setup
-		//
-		
+		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
-		MySqlDatabaseFixture f = new MySqlDatabaseFixture(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
+		String databaseName = MySqlUtil.createDatabase(
+			mySqlProperties,
 			"stm_test",
 			MySqlElementFixtures.productCatalogueDatabase());
-		f.setUp();
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			f.getDatabaseName(),
+			databaseName,
 			null);
 		
 		RowDoesNotExistAssertion assertion = new RowDoesNotExistAssertion(
@@ -60,10 +53,7 @@ public class RowDoesNotExistAssertionTests
 			0,
 			"SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';");
 		
-		//
 		// Execute
-		//
-
 		AssertionResponse response = null;
 		try
 		{
@@ -71,13 +61,10 @@ public class RowDoesNotExistAssertionTests
 		}
 		finally
 		{
-			f.tearDown();
+			MySqlUtil.dropDatabase(mySqlProperties, "stm_test");
 		}
 		
-		//
-		// Assert Results
-		//
-		
+		// Verify
 		Assert.assertNotNull("response", response);
 		Assert.assertEquals("response.result", true, response.getResult());
 		Assert.assertEquals("response.message", "Row does not exist, as expected", response.getMessage());
@@ -86,29 +73,21 @@ public class RowDoesNotExistAssertionTests
 	
 	@Test public void applyForExistentRowFails()
 	{
-		
-		//
-		// Fixture Setup
-		//
-		
+		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
-		MySqlDatabaseFixture f = new MySqlDatabaseFixture(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
+		String databaseName = MySqlUtil.createDatabase(
+			mySqlProperties,
 			"stm_test",
 			MySqlElementFixtures.productCatalogueDatabase() +
-			MySqlElementFixtures.productTypeRows());
-		f.setUp();
+				MySqlElementFixtures.productTypeRows());
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			f.getDatabaseName(),
+			databaseName,
 			null);
 		
 		RowDoesNotExistAssertion assertion = new RowDoesNotExistAssertion(
@@ -117,10 +96,7 @@ public class RowDoesNotExistAssertionTests
 			0,
 			"SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';");
 		
-		//
 		// Execute
-		//
-
 		AssertionResponse response = null;
 		try
 		{
@@ -128,13 +104,10 @@ public class RowDoesNotExistAssertionTests
 		}
 		finally
 		{
-			f.tearDown();
+			MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 		}
 		
-		//
-		// Assert Results
-		//
-		
+		// Verify
 		Assert.assertNotNull("response", response);
 		Assert.assertEquals("response.result", false, response.getResult());
 		Assert.assertEquals("response.message", "Expected to find no rows but found 1", response.getMessage());

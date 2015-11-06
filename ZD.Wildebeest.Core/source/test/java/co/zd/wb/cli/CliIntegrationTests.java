@@ -16,9 +16,6 @@
 
 package co.zd.wb.cli;
 
-import co.mv.protium.data.Db;
-import co.mv.protium.eventing.EventRouter;
-import co.mv.protium.eventing.routers.NoOpEventRouter;
 import co.zd.wb.FakeLogger;
 import co.zd.wb.Interface;
 import co.zd.wb.Instance;
@@ -38,35 +35,22 @@ public class CliIntegrationTests
 {
 	@Test public void about()
 	{
-		
-		//
 		// Setup
-		//
-
 		WildebeestCommand wb = new WildebeestCommand();
 		String[] args = new String[]
 		{
 			"about"
 		};
 
-		//
 		// Execute
-		//
-
 		wb.run(args);
-
 	}
 	
 	@Test public void invokeWithNoCommand() throws SQLException, MessagesException
 	{
-		
-		//
 		// Setup
-		//
-
 		WildebeestCommand wb = new WildebeestCommand();
 		wb.run(new String[] { });
-
 	}
 	
 	//
@@ -75,11 +59,7 @@ public class CliIntegrationTests
 	
 	@Test public void mySqlDatabaseMigrate() throws SQLException, MessagesException
 	{
-		
-		//
 		// Setup
-		//
-
 		WildebeestCommand wb = new WildebeestCommand();
 		String[] args = new String[]
 		{
@@ -95,10 +75,7 @@ public class CliIntegrationTests
 		{
             instance = Interface.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
 
-            //
             // Execute
-            //
-
 			wb.run(args);
 		}
 		finally
@@ -109,61 +86,39 @@ public class CliIntegrationTests
                 MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
             }
 		}
-
 	}
 	
 	@Test public void mySqlDatabaseMigrateWithMissingInstanceArg() throws SQLException, MessagesException
 	{
-		
-		//
 		// Setup
-		//
-
 		WildebeestCommand wb = new WildebeestCommand();
 
-		//
 		// Execute
-		//
-
 		wb.run(new String[]
 		{
 			"migrate",
 			"--resource:MySqlDatabase/database.wbresource.xml",
 			"--targetState:Core Schema Loaded"
 		});
-
 	}
 	
 	@Test public void mySqlDatabaseMigrateWithMissingResourceArg() throws SQLException, MessagesException
 	{
-		
-		//
 		// Setup
-		//
-
 		WildebeestCommand wb = new WildebeestCommand();
 
-		//
 		// Execute
-		//
-
 		wb.run(new String[]
 		{
 			"migrate",
 			"--instance:MySqlDatabase/staging_db.wbinstance.xml",
 			"--targetState:Core Schema Loaded"
 		});
-
 	}
 	
 	@Test public void mySqlDatabaseJumpState() throws SQLException, MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
-		EventRouter er = new NoOpEventRouter();
 		WildebeestCommand wb = new WildebeestCommand();
         MySqlDatabaseInstance instanceT = null;
         
@@ -185,12 +140,9 @@ public class CliIntegrationTests
             });
 
             // Drop the wb_state table, so the database resource is now no longer tracked by Wildebeest
-            Db.nonQuery(er, instanceT.getAppDataSource(), "DROP TABLE wb_state;", null);
+			DatabaseHelper.execute(instanceT.getAppDataSource(), "DROP TABLE wb_state;");
 
-            //
             // Execute
-            //
-
 			wb.run(new String[]
 			{
 				"jumpstate",
@@ -206,16 +158,11 @@ public class CliIntegrationTests
     			MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
             }
 		}
-
 	}
 	
 	@Test public void mySqlDatabaseState() throws SQLException, MessagesException
 	{
-		
-		//
 		// Setup
-		//
-
 		WildebeestCommand wb = new WildebeestCommand();
 
         Instance instance = null;
@@ -232,10 +179,7 @@ public class CliIntegrationTests
 				"--targetState:Database Created"
 			});
 			
-            //
             // Execute
-            //
-
 			wb.run(new String[]
 			{
 				"state",
@@ -251,24 +195,16 @@ public class CliIntegrationTests
                 MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
             }
 		}
-
 	}
 	
 	@Test public void mySqlDatabaseMigrateToInvalidStateLabel() throws SQLException, MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
         FakeLogger logger = new FakeLogger();
 		WildebeestCommand wb = new WildebeestCommand();
         wb.setLogger(logger);
 
-        //
         // Execute
-        //
-        
         wb.run(new String[]
         {
             "migrate",
@@ -284,16 +220,11 @@ public class CliIntegrationTests
             "e.specifiedState",
             "   ",
             logger.getInvalidStateSpecifiedException().getSpecifiedState());
-        
 	}
 	
 	@Test public void mySqlDatabaseMigrateToUnknownStateLabel() throws SQLException, MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
         FakeLogger logger = new FakeLogger();
 		WildebeestCommand wb = new WildebeestCommand();
         wb.setLogger(logger);
@@ -317,7 +248,6 @@ public class CliIntegrationTests
             "e.specifiedState",
             "Foo",
             logger.getUnknownStateSpecifiedException().getSpecifiedState());
-        
 	}
 	
 	//
@@ -326,11 +256,7 @@ public class CliIntegrationTests
 	
 	@Test public void sqlServerDatabaseMigrate() throws SQLException, MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
 		WildebeestCommand wb = new WildebeestCommand();
 		String[] args = new String[]
 		{
@@ -346,10 +272,7 @@ public class CliIntegrationTests
 		{
             instance = Interface.loadInstance(new File("SqlServerDatabase/staging_db.wbinstance.xml"));
 
-            //
             // Execute
-            //
-
             wb.run(args);
 		}
 		finally
@@ -360,7 +283,6 @@ public class CliIntegrationTests
                 SqlServerUtil.tryDropDatabase(instanceT);
             }
 		}
-
 	}
 	
 	//
@@ -369,11 +291,7 @@ public class CliIntegrationTests
 	
 	@Test public void postgreSqlDatabaseMigrate() throws MessagesException
 	{
-		
-		//
 		// Setup
-		//
-
 		WildebeestCommand wb = new WildebeestCommand();
 		String[] args = new String[]
 		{
@@ -389,10 +307,7 @@ public class CliIntegrationTests
 		{
             instance = Interface.loadInstance(new File("PostgreSqlDatabase/staging.wbinstance.xml"));
 
-            //
             // Execute
-            //
-
 			wb.run(args);
 		}
 		finally
@@ -413,7 +328,6 @@ public class CliIntegrationTests
 				}
             }
 		}
-
 	}
 	
 }

@@ -45,7 +45,7 @@ public class MySqlTableExistsAssertionTests
 	 {
 		 
 		//
-		// Fixture Setup
+		// Setup
 		//
 		 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -99,7 +99,7 @@ public class MySqlTableExistsAssertionTests
 		MySqlUtil.dropDatabase(instance, databaseName);
 
 		//
-		// Assert Results
+		// Verify
 		//
 
 		Assert.assertNotNull("response", response);
@@ -116,7 +116,7 @@ public class MySqlTableExistsAssertionTests
 	 {
 		 
 		//
-		// Fixture Setup
+		// Setup
 		//
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -158,7 +158,7 @@ public class MySqlTableExistsAssertionTests
 		MySqlUtil.dropDatabase(instance, databaseName);
 
 		//
-		// Assert Results
+		// Verify
 		//
 
 		Assert.assertNotNull("response", response);
@@ -170,7 +170,7 @@ public class MySqlTableExistsAssertionTests
 	 {
 		 
 		//
-		// Fixture Setup
+		// Setup
 		//
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -197,7 +197,7 @@ public class MySqlTableExistsAssertionTests
 		AssertionResponse response = assertion.perform(instance);
 
 		//
-		// Assert Results
+		// Verify
 		//
 
 		Assert.assertNotNull("response", response);
@@ -209,20 +209,13 @@ public class MySqlTableExistsAssertionTests
 	 
 	 @Test public void applyForNullInstanceFails()
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-		 
+		// Setup
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),
 			0,
 			"TableName");
 		
-		//
 		// Execute
-		//
-		
 		IllegalArgumentException caught = null;
 		
 		try
@@ -236,21 +229,13 @@ public class MySqlTableExistsAssertionTests
 			caught = e;
 		}
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals("caught.message", "instance cannot be null", caught.getMessage());
-		
 	 }
 	 
 	 @Test public void applyForIncorrectInstanceTypeFails()
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-		 
+		// Setup
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),
 			0,
@@ -258,10 +243,7 @@ public class MySqlTableExistsAssertionTests
 		
 		FakeInstance instance = new FakeInstance();
 		
-		//
 		// Execute
-		//
-		
 		IllegalArgumentException caught = null;
 		
 		try
@@ -275,11 +257,7 @@ public class MySqlTableExistsAssertionTests
 			caught = e;
 		}
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals("caught.message", "instance must be a MySqlDatabaseInstance", caught.getMessage());
-		
 	}
 }

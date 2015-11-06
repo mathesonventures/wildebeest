@@ -18,7 +18,6 @@ package co.zd.wb.plugin.mysql;
 
 import co.zd.wb.plugin.database.SqlScriptMigration;
 import co.zd.wb.MigrationFailedException;
-import co.mv.helium.testframework.MySqlDatabaseFixture;
 import java.util.UUID;
 import org.junit.Test;
 
@@ -31,21 +30,10 @@ public class SqlScriptMigrationTests
 	@Test
 	public void performSuccessfully() throws MigrationFailedException
 	{
-		
-		//
-		// Fixture Setup
-		//
-		
+		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
-		MySqlDatabaseFixture f = new MySqlDatabaseFixture(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
-			"stm_test",
-			"");
-		f.setUp();
+		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm_test", "");
 		
 		SqlScriptMigration migration = new SqlScriptMigration(
 			UUID.randomUUID(),
@@ -58,25 +46,20 @@ public class SqlScriptMigrationTests
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			f.getDatabaseName(),
+			databaseName,
 			null);
 		
-		//
 		// Execute
-		//
-
 		try
 		{
 			migration.perform(instance);
 		}
 		finally
 		{
-			f.tearDown();
+			MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 		}
 		
-		//
-		// Assert Results
-		//
-		
+		// Verify
+		// (none)
 	}
 }

@@ -16,8 +16,6 @@
 
 package co.zd.wb;
 
-import co.mv.protium.system.NotImplementedException;
-
 public class FakeLogger implements Logger
 {
 	// <editor-fold desc="InvalidStateSpecifiedException" defaultstate="collapsed">
@@ -102,12 +100,12 @@ public class FakeLogger implements Logger
     
     @Override public void assertionStart(Assertion assertion)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not Implemented");
     }
 
     @Override public void assertionComplete(Assertion assertion, AssertionResponse response)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not Implemented");
     }
 
     @Override public void invalidStateSpecified(InvalidStateSpecifiedException e)
@@ -122,41 +120,41 @@ public class FakeLogger implements Logger
 
     @Override public void migrationStart(Resource resource, Migration migration)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not Implemented");
     }
 
     @Override public void migrationComplete(Resource resource, Migration migration)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not Implemented");
     }
 
     @Override public void indeterminateState(IndeterminateStateException e)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not Implemented");
     }
 
     @Override public void assertionFailed(AssertionFailedException e)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not Implemented");
     }
 
     @Override public void migrationNotPossible(MigrationNotPossibleException e)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not Implemented");
     }
 
     @Override public void migrationFailed(MigrationFailedException e)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not Implemented");
     }
 
     @Override public void jumpStateFailed(JumpStateFailedException e)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not Implemented");
     }
 
     @Override public void logLine(String message)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException("Not Implemented");
     }
 }

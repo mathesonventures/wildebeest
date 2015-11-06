@@ -41,11 +41,7 @@ public class AnsiSqlDomServiceUnitTests
 {
 	@Test public void ansiSqlCreateDatabaseMigrationLoadFromValidDocument() throws MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
 		UUID migrationId = UUID.randomUUID();
 		UUID fromStateId = null;
 		UUID toStateId = UUID.randomUUID();
@@ -57,16 +53,10 @@ public class AnsiSqlDomServiceUnitTests
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(xml);
 
-		//
 		// Execute
-		//
-		
 		Resource resource = loader.load();
 		
-		//
 		// Verify
-		//
-		
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		AnsiSqlCreateDatabaseMigration mT = ModelExtensions.As(
@@ -84,16 +74,11 @@ public class AnsiSqlDomServiceUnitTests
 			"resource.migrations[0].toStateId",
 			toStateId,
 			mT.getToStateId());
-		
 	}
 
 	@Test public void ansiSqlDropDatabaseMigrationLoadFromValidDocument() throws MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
 		UUID migrationId = UUID.randomUUID();
 		UUID fromStateId = null;
 		UUID toStateId = UUID.randomUUID();
@@ -105,16 +90,10 @@ public class AnsiSqlDomServiceUnitTests
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(xml);
 
-		//
 		// Execute
-		//
-		
 		Resource resource = loader.load();
 		
-		//
 		// Verify
-		//
-		
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		AnsiSqlDropDatabaseMigration mT = ModelExtensions.As(
@@ -132,16 +111,11 @@ public class AnsiSqlDomServiceUnitTests
 			"resource.migrations[0].toStateId",
 			toStateId,
 			mT.getToStateId());
-		
 	}
 	
 	@Test public void ansiSqlTableExistsAssertionLoadFromValidDocument() throws MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
@@ -154,16 +128,10 @@ public class AnsiSqlDomServiceUnitTests
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(xml);
 		
-		//
 		// Execute
-		//
-		
 		Resource resource = loader.load();
 		
-		//
 		// Verify
-		//
-		
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
 		Assert.assertEquals(
@@ -180,16 +148,11 @@ public class AnsiSqlDomServiceUnitTests
 			"tbl",
 			assertionT,
 			"resource.states[0].assertions[0]");
-
 	}
 	
 	@Test public void ansiSqlTableDoesNotExistAssertionLoadFromValidDocument() throws MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
@@ -202,16 +165,10 @@ public class AnsiSqlDomServiceUnitTests
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(xml);
 		
-		//
 		// Execute
-		//
-		
 		Resource resource = loader.load();
 		
-		//
 		// Verify
-		//
-		
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
 		Assert.assertEquals(
@@ -228,6 +185,5 @@ public class AnsiSqlDomServiceUnitTests
 			"tbl",
 			assertionT,
 			"resource.states[0].assertions[0]");
-
 	}
 }

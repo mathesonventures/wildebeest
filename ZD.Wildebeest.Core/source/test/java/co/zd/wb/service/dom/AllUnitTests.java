@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.mysql;
+package co.zd.wb.service.dom;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -22,12 +22,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
-	MySqlCreateDatabaseMigrationTests.class,
-	MySqlDatabaseResourceTests.class,
-	MySqlTableDoesNotExistAssertionTests.class,
-	MySqlTableExistsAssertionTests.class,
-	MySqlPluginUnitTests.class,
-	SqlScriptMigrationTests.class
+	DomInstanceLoaderTests.class,
+	DomResourceLoaderTests.class
 })
 public class AllUnitTests
 {

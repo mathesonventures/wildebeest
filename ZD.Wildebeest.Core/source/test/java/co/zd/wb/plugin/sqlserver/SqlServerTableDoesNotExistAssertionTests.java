@@ -45,7 +45,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 	 {
 		 
 		//
-		// Fixture Setup
+		// Setup
 		//
 		 
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -108,7 +108,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		}
 
 		//
-		// Assert Results
+		// Verify
 		//
 
 		Assert.assertNotNull("response", response);
@@ -125,7 +125,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 	 {
 		 
 		 //
-		 // Fixture Setup
+		 // Setup
 		 //
 
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -176,7 +176,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		}
 
 		//
-		// Assert Results
+		// Verify
 		//
 
 		Assert.assertNotNull("response", response);
@@ -188,7 +188,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 	 {
 		 
 		//
-		// Fixture Setup
+		// Setup
 		//
 		 
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -217,7 +217,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		AssertionResponse response = assertion.perform(instance);
 
 		//
-		// Assert Results
+		// Verify
 		//
 
 		Assert.assertNotNull("response", response);
@@ -231,7 +231,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 	 {
 		 
 		//
-		// Fixture Setup
+		// Setup
 		//
 		 
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
@@ -258,7 +258,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		}
 
 		//
-		// Assert Results
+		// Verify
 		//
 
 		Assert.assertEquals("caught.message", "instance cannot be null", caught.getMessage());
@@ -269,7 +269,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 	 {
 		 
 		//
-		// Fixture Setup
+		// Setup
 		//
 		 
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
@@ -298,7 +298,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		}
 
 		//
-		// Assert Results
+		// Verify
 		//
 
 		Assert.assertEquals("caught.message", "instance must be a SqlServerDatabaseInstance", caught.getMessage());

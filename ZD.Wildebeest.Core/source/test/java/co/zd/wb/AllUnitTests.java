@@ -31,7 +31,8 @@ import org.junit.runners.Suite;
 	co.zd.wb.plugin.database.AllUnitTests.class,
 	co.zd.wb.plugin.mysql.AllUnitTests.class,
 	co.zd.wb.postgresql.AllUnitTests.class,
-	co.zd.wb.plugin.sqlserver.AllUnitTests.class
+	co.zd.wb.plugin.sqlserver.AllUnitTests.class,
+	co.zd.wb.service.dom.AllUnitTests.class
 })
 public class AllUnitTests
 {

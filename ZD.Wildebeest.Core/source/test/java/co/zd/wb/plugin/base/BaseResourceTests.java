@@ -16,7 +16,6 @@
 
 package co.zd.wb.plugin.base;
 
-import co.mv.helium.ExpectException;
 import co.zd.wb.fake.TagAssertion;
 import co.zd.wb.fake.FakeAssertion;
 import co.zd.wb.fake.FakeInstance;
@@ -26,6 +25,7 @@ import co.zd.wb.AssertExtensions;
 import co.zd.wb.Assertion;
 import co.zd.wb.AssertionFailedException;
 import co.zd.wb.AssertionResult;
+import co.zd.wb.ExpectException;
 import co.zd.wb.IndeterminateStateException;
 import co.zd.wb.JumpStateFailedException;
 import co.zd.wb.State;
@@ -48,11 +48,7 @@ public class BaseResourceTests
 	
 	@Test public void assertStateWithNoAssertionsSuccessful() throws IndeterminateStateException
 	{
-		
-		//
-		// Fixture Setup
-		//
-				
+		// Setup
 		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 		
 		State state = new ImmutableState(UUID.randomUUID());
@@ -60,28 +56,17 @@ public class BaseResourceTests
 		
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
-		//
 		// Execute
-		//
-
 		List<AssertionResult> results = resource.assertState(new PrintStreamLogger(System.out), instance);
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		assertNotNull("results", results);
 		assertEquals("results.size", 0, results.size());
-			
 	}
 	
 	@Test public void assertStateWithOneAssertionSuccessful() throws IndeterminateStateException
 	{
-		
-		//
-		// Fixture Setup
-		//
-		
+		// Setup
 		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 		
 		State state = new ImmutableState(UUID.randomUUID());
@@ -96,16 +81,10 @@ public class BaseResourceTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
-		//
 		// Execute
-		//
-
 		List<AssertionResult> results = resource.assertState(new PrintStreamLogger(System.out), instance);
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		assertNotNull("results", results);
 		assertEquals("results.size", 1, results.size());
 		AssertExtensions.assertAssertionResult(
@@ -114,11 +93,7 @@ public class BaseResourceTests
 	
 	@Test public void assertStateWithMultipleAssertionsSuccessful() throws IndeterminateStateException
 	{
-		
-		//
-		// Fixture Setup
-		//
-		
+		// Setup
 		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 
 		State state = new ImmutableState(UUID.randomUUID());
@@ -139,16 +114,10 @@ public class BaseResourceTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
-		//
 		// Execute
-		//
-
 		List<AssertionResult> results = resource.assertState(new PrintStreamLogger(System.out), instance);
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		assertNotNull("results", results);
 		assertEquals("results.size", 2, results.size());
 		AssertExtensions.assertAssertionResult(
@@ -183,38 +152,24 @@ public class BaseResourceTests
 		MigrationNotPossibleException,
 		MigrationFailedException
 	{
-		
-		//
-		// Fixture Setup
-		//
-
-		// The resource
+		// Setup
 		FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 
-		// State 1
 		UUID state1Id = UUID.randomUUID();
 		State state = new ImmutableState(state1Id);
 		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state);
 		
-		// Migration 1
 		UUID migration1Id = UUID.randomUUID();
 		Migration tran1 = new FakeMigration(migration1Id, null, state1Id, "foo");
 		resource.getMigrations().add(tran1);
 		
-		// Instance
 		FakeInstance instance = new FakeInstance();
 		
-		//
 		// Execute
-		//
-		
 		resource.migrate(new PrintStreamLogger(System.out), instance, state1Id);
 		
-		//
-		// Assert Results
-		//
-		
+		// Verify
 		assertEquals("instance.tag", "foo", instance.getTag());
 		
 	}
@@ -227,7 +182,7 @@ public class BaseResourceTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 
 		// The resource
@@ -270,7 +225,7 @@ public class BaseResourceTests
 		resource.migrate(new PrintStreamLogger(System.out), instance, state3.getStateId());
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		assertEquals("instance.tag", "bup", instance.getTag());
@@ -285,7 +240,7 @@ public class BaseResourceTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 
 		// The resource
@@ -356,7 +311,7 @@ public class BaseResourceTests
 		resource.migrate(new PrintStreamLogger(System.out), instance, stateB3Id);
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		assertEquals("instance.tag", "stateB3", instance.getTag());
@@ -381,7 +336,7 @@ public class BaseResourceTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 
 		// The resource
@@ -412,7 +367,7 @@ public class BaseResourceTests
 		resource.migrate(logger, instance, state1Id);
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		assertEquals("instance.tag", "foo", instance.getTag());
@@ -501,15 +456,17 @@ public class BaseResourceTests
 		// Execute and Verify
 		//
 
-		new ExpectException<AssertionFailedException>()
+		new ExpectException(AssertionFailedException.class)
 		{
-			@Override public void invoke() throws Throwable
+			@Override public void invoke() throws Exception
 			{
 				resource.jumpstate(new PrintStreamLogger(System.out), instance, state1Id);
 			}
 
-			@Override public void verify(AssertionFailedException te)
+			@Override public void verify(Exception e)
 			{
+				AssertionFailedException te = (AssertionFailedException)e;
+				
 				assertEquals("te.assertionResults.size", 1, te.getAssertionResults().size());
 				assertEquals("te.assertionResults[0].message", "Tag not as expected", te.getAssertionResults().get(0).getMessage());
 			}
@@ -537,15 +494,17 @@ public class BaseResourceTests
 		// Execute and Verify
 		//
 
-		new ExpectException<JumpStateFailedException>()
+		new ExpectException(JumpStateFailedException.class)
 		{
-			@Override public void invoke() throws Throwable
+			@Override public void invoke() throws Exception
 			{
 				resource.jumpstate(new PrintStreamLogger(System.out), instance, targetStateId);
 			}
 
-			@Override public void verify(JumpStateFailedException te)
+			@Override public void verify(Exception e)
 			{
+				JumpStateFailedException te = (JumpStateFailedException)e;
+
 				assertEquals(
 					"e.message",
 					"This resource does not have a state with ID " + targetStateId.toString(),
@@ -599,15 +558,17 @@ public class BaseResourceTests
 		// Instance
 		final FakeInstance instance = new FakeInstance();
 
-		new ExpectException<IllegalArgumentException>()
+		new ExpectException(IllegalArgumentException.class)
 		{
-			@Override public void invoke() throws Throwable
+			@Override public void invoke() throws Exception
 			{
 				resource.jumpstate(null, instance, UUID.randomUUID());
 			}
 
-			@Override public void verify(IllegalArgumentException te)
+			@Override public void verify(Exception e)
 			{
+				IllegalArgumentException te = (IllegalArgumentException)e;
+				
 				assertEquals("e.message", "logger cannot be null", te.getMessage());
 			}
 		}.perform();
@@ -618,15 +579,17 @@ public class BaseResourceTests
 		// The resource
 		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 
-		new ExpectException<IllegalArgumentException>()
+		new ExpectException(IllegalArgumentException.class)
 		{
-			@Override public void invoke() throws Throwable
+			@Override public void invoke() throws Exception
 			{
 				resource.jumpstate(new PrintStreamLogger(System.out), null, UUID.randomUUID());
 			}
 
-			@Override public void verify(IllegalArgumentException te)
+			@Override public void verify(Exception e)
 			{
+				IllegalArgumentException te = (IllegalArgumentException)e;
+
 				assertEquals("e.message", "instance cannot be null", te.getMessage());
 			}
 		}.perform();
@@ -638,15 +601,17 @@ public class BaseResourceTests
 		final FakeResource resource = new FakeResource(UUID.randomUUID(), "Resource");
 		final FakeInstance instance = new FakeInstance();
 
-		new ExpectException<IllegalArgumentException>()
+		new ExpectException(IllegalArgumentException.class)
 		{
-			@Override public void invoke() throws Throwable
+			@Override public void invoke() throws Exception
 			{
 				resource.jumpstate(new PrintStreamLogger(System.out), instance, null);
 			}
 
-			@Override public void verify(IllegalArgumentException te)
+			@Override public void verify(Exception e)
 			{
+				IllegalArgumentException te = (IllegalArgumentException)e;
+
 				assertEquals("e.message", "targetStateId cannot be null", te.getMessage());
 			}
 		}.perform();

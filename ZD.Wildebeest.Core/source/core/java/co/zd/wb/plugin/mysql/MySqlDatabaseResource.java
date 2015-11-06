@@ -26,9 +26,6 @@ import co.zd.wb.State;
 import co.zd.wb.plugin.base.BaseResource;
 import co.zd.wb.plugin.database.DatabaseResource;
 import co.zd.wb.plugin.database.Extensions;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 

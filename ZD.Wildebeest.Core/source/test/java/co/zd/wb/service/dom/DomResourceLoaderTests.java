@@ -241,7 +241,7 @@ public class DomResourceLoaderTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 		
 		UUID resourceId = UUID.randomUUID();
@@ -275,7 +275,7 @@ public class DomResourceLoaderTests
 		Resource resource = resourceBuilder.load();
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		// Resource
@@ -304,7 +304,7 @@ public class DomResourceLoaderTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 		
 		UUID resourceId = UUID.randomUUID();
@@ -340,7 +340,7 @@ public class DomResourceLoaderTests
 		Resource resource = resourceBuilder.load();
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		// Resource
@@ -373,7 +373,7 @@ public class DomResourceLoaderTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 		
 		UUID resourceId = UUID.randomUUID();
@@ -407,7 +407,7 @@ public class DomResourceLoaderTests
 		Resource resource = resourceBuilder.load();
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		// Resource
@@ -431,7 +431,7 @@ public class DomResourceLoaderTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 		
 		UUID resourceId = UUID.randomUUID();
@@ -465,7 +465,7 @@ public class DomResourceLoaderTests
 		Resource resource = resourceBuilder.load();
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		// Resource
@@ -489,7 +489,7 @@ public class DomResourceLoaderTests
 	{
 		
 		//
-		// Fixture Setup
+		// Setup
 		//
 		
 		UUID resourceId = UUID.randomUUID();
@@ -525,7 +525,7 @@ public class DomResourceLoaderTests
 		Resource resource = resourceBuilder.load();
 		
 		//
-		// Assert Results
+		// Verify
 		//
 		
 		// Resource

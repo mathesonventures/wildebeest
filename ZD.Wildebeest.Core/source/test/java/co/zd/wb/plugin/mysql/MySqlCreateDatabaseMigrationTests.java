@@ -17,7 +17,6 @@
 package co.zd.wb.plugin.mysql;
 
 import co.zd.wb.MigrationFailedException;
-import co.mv.helium.testframework.MySqlDatabaseFixture;
 import co.zd.wb.plugin.database.DatabaseFixtureHelper;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -30,11 +29,7 @@ public class MySqlCreateDatabaseMigrationTests
 		MigrationFailedException,
 		SQLException
 	{
-		
-		//
 		// Setup
-		//
-		
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
 		MySqlCreateDatabaseMigration tr = new MySqlCreateDatabaseMigration(
@@ -52,41 +47,26 @@ public class MySqlCreateDatabaseMigrationTests
 			databaseName,
 			null);
 
-		//
 		// Execute
-		//
-		
 		tr.perform(instance);
 		
-		//
 		// Verify
-		//
 
-		//
-		// Tear-Down
-		//
-
-		MySqlUtil.dropDatabase(instance, databaseName);
+		// (none)
 		
+		// Tear-Down
+		MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 	}
 
 	@Test public void performForExistantDatabaseFails()
 	{
-		
-		//
-		// Fixture Setup
-		//
-
+		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
-		MySqlDatabaseFixture f = new MySqlDatabaseFixture(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
+		String databaseName = MySqlUtil.createDatabase(
+			mySqlProperties,
 			"stm_test",
 			"");
-		f.setUp();
 		
 		MySqlCreateDatabaseMigration tr = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
@@ -98,13 +78,10 @@ public class MySqlCreateDatabaseMigrationTests
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			f.getDatabaseName(),
+			databaseName,
 			null);
 
-		//
 		// Execute
-		//
-
 		MigrationFailedException caught = null;
 		
 		try
@@ -119,17 +96,13 @@ public class MySqlCreateDatabaseMigrationTests
 		}
 		finally
 		{
-			f.tearDown();
+			MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 		}
 		
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals(
 			"caught.message",
-			String.format("database \"%s\" already exists",	f.getDatabaseName()),
+			String.format("database \"%s\" already exists",	databaseName),
 			caught.getMessage());
-		
 	}
 }

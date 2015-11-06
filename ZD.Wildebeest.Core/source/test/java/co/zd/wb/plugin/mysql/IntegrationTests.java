@@ -50,7 +50,7 @@ public class IntegrationTests
 	{
 	
 		//
-		// Fixture Setup
+		// Setup
 		//
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -114,18 +114,16 @@ public class IntegrationTests
 		}
 		
 		//
-		// Assert Results
+		// Verify
 		//
+		
+		// (none)
 		
 	}
 	
 	@Test public void loadMySqlDatabaseResource() throws MessagesException
 	{
-		
-		//
-		// Fixture Setup
-		//
-		
+		// Setup
 		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
@@ -134,46 +132,27 @@ public class IntegrationTests
 			DomPlugins.migrationBuilders(),
 			prodCatResource.getResourceXml());
 
-		//
-		// Execute - load
-		//
-		
+		// Execute
 		Resource resource = resourceBuilder.load();
 		
-		//
-		// Assert Results
-		//
-
+		// Verify
 		assertResource(resource);
-		
 	}
 	
 	@Test public void loadMySqlDatabaseInstance() throws MessagesException
 	{
-		
-		//
-		// Fixture Setup
-		//
-		
+		// Setup
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		DomInstanceLoader instanceLoader = new DomInstanceLoader(
 			DomPlugins.instanceBuilders(),
 			instance(databaseName).toString());
 
-		//
 		// Execute
-		//
-		
 		Instance instance = instanceLoader.load();
 		
-		//
-		// Assert Results
-		//
-		
-		// Instance
+		// Verify
 		assertInstance(instance, databaseName);
-
 	}
 	
 	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws

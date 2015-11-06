@@ -17,7 +17,6 @@
 package co.zd.wb.fake;
 
 import co.zd.wb.Assertion;
-import co.zd.wb.fake.FakeAssertion;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
 import java.util.UUID;
 

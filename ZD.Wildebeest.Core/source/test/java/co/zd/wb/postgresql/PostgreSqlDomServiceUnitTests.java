@@ -40,11 +40,7 @@ public class PostgreSqlDomServiceUnitTests
 {
 	@Test public void postgreSqlDatabaseResourceLoadFromValidDocumentSucceeds() throws MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
 		UUID resourceId = UUID.randomUUID();
 		String resourceName = "Foo";
 		
@@ -54,32 +50,21 @@ public class PostgreSqlDomServiceUnitTests
 		
 		DomResourceLoader loader = DomPlugins.resourceLoader(resourceXml);
 		
-		//
 		// Execute
-		//
-		
 		Resource resource = loader.load();
 		
-		//
 		// Verify
-		//
-		
 		Assert.assertNotNull("resource", resource);
 		PostgreSqlDatabaseResource resourceT = ModelExtensions.As(resource, PostgreSqlDatabaseResource.class);
 		Assert.assertNotNull("resource is not a PostgreSqlDatabaseResource", resourceT);
 		
 		Assert.assertEquals("resource.resourceId", resourceId, resource.getResourceId());
 		Assert.assertEquals("resource.name", resourceName, resource.getName());
-		
 	}
 	
 	@Test public void postgreSqlDatabaseInstanceLoadFromValidDocumentSucceeds() throws MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
 		StringBuilder xml = new StringBuilder();
 		xml.append("<instance type=\"PostgreSqlDatabase\">\n")
 			.append("<hostName>127.0.0.1</hostName>\n")
@@ -91,16 +76,10 @@ public class PostgreSqlDomServiceUnitTests
 
 		DomInstanceLoader loader = DomPlugins.instanceLoader(xml.toString());
 		
-		//
 		// Execute
-		//
-		
 		Instance instance = loader.load();
 		
-		//
 		// Verify
-		//
-		
 		Assert.assertNotNull("instance", instance);
 		PostgreSqlDatabaseInstance instanceT = ModelExtensions.As(instance, PostgreSqlDatabaseInstance.class);
 		Assert.assertNotNull("instance must be of type PostgreSqlDatabaseInstance", instanceT);
@@ -112,7 +91,6 @@ public class PostgreSqlDomServiceUnitTests
 			"ProductCatalogueStaging",
 			instanceT,
 			"instance");
-		
 	}
 	
 	private static void assertPostgreSqlDatabaseInstance(

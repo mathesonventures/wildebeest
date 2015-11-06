@@ -45,7 +45,7 @@ public class SqlServerTableExistsAssertionTests
 	 {
 		 
 		//
-		// Fixture Setup
+		// Setup
 		//
 		 
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -105,15 +105,14 @@ public class SqlServerTableExistsAssertionTests
 		finally
 		{
 			SqlServerUtil.tryDropDatabase(instance);
-
-			//
-			// Assert Results
-			//
-
-			Assert.assertNotNull("response", response);
-			AssertExtensions.assertAssertionResponse(true, "Table ProductType exists", response, "response");
 		}
-		
+
+		//
+		// Verify
+		//
+
+		Assert.assertNotNull("response", response);
+		AssertExtensions.assertAssertionResponse(true, "Table ProductType exists", response, "response");
 	 }
 	 
 	 @Test public void applyForNonExistentTableFails() throws
@@ -125,7 +124,7 @@ public class SqlServerTableExistsAssertionTests
 	 {
 		 
 		//
-		// Fixture Setup
+		// Setup
 		//
 
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -173,24 +172,19 @@ public class SqlServerTableExistsAssertionTests
 		finally
 		{
 			SqlServerUtil.tryDropDatabase(instance);
-
-			//
-			// Assert Results
-			//
-
-			Assert.assertNotNull("response", response);
-			AssertExtensions.assertAssertionResponse(false, "Table ProductType does not exist", response, "response");
 		}
 
+		//
+		// Verify
+		//
+
+		Assert.assertNotNull("response", response);
+		AssertExtensions.assertAssertionResponse(false, "Table ProductType does not exist", response, "response");
 	 }
 	 
 	 @Test public void applyForNonExistentDatabaseFails()
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-
+		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -210,49 +204,26 @@ public class SqlServerTableExistsAssertionTests
 			"dbo",
 			"ProductType");
  
-		//
 		// Execute
-		//
-		
-		AssertionResponse response = null;
-		
-		try
-		{
-			response = assertion.perform(instance);
-		}
-		finally
-		{
+		AssertionResponse response = assertion.perform(instance);
 
-			//
-			// Assert Results
-			//
-
-			Assert.assertNotNull("response", response);
-			AssertExtensions.assertAssertionResponse(
-				false, "Database " + databaseName + " does not exist",
-				response, "response");
-
-		}
-
+		// Verify
+		Assert.assertNotNull("response", response);
+		AssertExtensions.assertAssertionResponse(
+			false, "Database " + databaseName + " does not exist",
+			response, "response");
 	 }
 	 
 	 @Test public void applyForNullInstanceFails()
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-		 
+		// Setup
 		SqlServerTableExistsAssertion assertion = new SqlServerTableExistsAssertion(
 			UUID.randomUUID(),
 			0,
 			"dbo",
 			"TableName");
 		
-		//
 		// Execute
-		//
-		
 		IllegalArgumentException caught = null;
 		
 		try
@@ -266,21 +237,14 @@ public class SqlServerTableExistsAssertionTests
 			caught = e;
 		}
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals("caught.message", "instance cannot be null", caught.getMessage());
 		
 	 }
 	 
 	 @Test public void applyForIncorrectInstanceTypeFails()
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-		 
+		// Setup
 		SqlServerTableExistsAssertion assertion = new SqlServerTableExistsAssertion(
 			UUID.randomUUID(),
 			0,
@@ -289,10 +253,7 @@ public class SqlServerTableExistsAssertionTests
 		
 		FakeInstance instance = new FakeInstance();
 		
-		//
 		// Execute
-		//
-		
 		IllegalArgumentException caught = null;
 		
 		try
@@ -306,11 +267,7 @@ public class SqlServerTableExistsAssertionTests
 			caught = e;
 		}
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals("caught.message", "instance must be a SqlServerDatabaseInstance", caught.getMessage());
-		
 	}
 }

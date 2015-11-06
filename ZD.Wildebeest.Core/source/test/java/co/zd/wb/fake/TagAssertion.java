@@ -16,8 +16,6 @@
 
 package co.zd.wb.fake;
 
-import co.zd.wb.fake.FakeInstance;
-import co.zd.wb.fake.FakeResource;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Instance;

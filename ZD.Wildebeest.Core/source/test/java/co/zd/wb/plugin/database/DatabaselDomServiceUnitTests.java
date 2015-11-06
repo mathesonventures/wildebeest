@@ -44,11 +44,7 @@ public class DatabaselDomServiceUnitTests
 {
 	@Test public void databaseExistsAssertionLoadFromValidDocumentSucceeds() throws MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
@@ -69,16 +65,10 @@ public class DatabaselDomServiceUnitTests
 			new HashMap<String, MigrationBuilder>(),
 			xml);
 		
-		//
 		// Execute
-		//
-		
 		Resource resource = loader.load();
 		
-		//
 		// Verify
-		//
-		
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
 		Assert.assertEquals(
@@ -90,16 +80,11 @@ public class DatabaselDomServiceUnitTests
 		Assert.assertNotNull("expected to be DatabaseExistsAssertion", assertionT);
 		
 		Assert.assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());
-		
 	}
 	
 	@Test public void databaseDoesNotExistAssertionLoadFromValidDocumentSucceeds() throws MessagesException
 	{
-		
-		//
 		// Setup
-		//
-		
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
@@ -120,16 +105,10 @@ public class DatabaselDomServiceUnitTests
 			new HashMap<String, MigrationBuilder>(),
 			xml);
 		
-		//
 		// Execute
-		//
-		
 		Resource resource = loader.load();
 		
-		//
 		// Verify
-		//
-		
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
 		Assert.assertEquals(
@@ -141,6 +120,5 @@ public class DatabaselDomServiceUnitTests
 		Assert.assertNotNull("expected to be DatabaseDoesNotExistAssertion", assertionT);
 		
 		Assert.assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());
-		
 	}
 }

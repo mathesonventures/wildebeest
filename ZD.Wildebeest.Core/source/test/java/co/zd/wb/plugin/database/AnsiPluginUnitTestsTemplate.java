@@ -3,14 +3,10 @@ package co.zd.wb.plugin.database;
 import co.zd.wb.AssertionResponse;
 import co.zd.wb.Migration;
 import co.zd.wb.MigrationFailedException;
-import co.zd.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.zd.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
 import co.zd.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
-import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
-import java.sql.SQLException;
 import java.util.UUID;
 import junit.framework.Assert;
-import org.junit.Test;
 
 public abstract class AnsiPluginUnitTestsTemplate
 {
@@ -27,17 +23,10 @@ public abstract class AnsiPluginUnitTestsTemplate
 		
 		try
 		{
-			
-			//
 			// Execute
-			//
-
 			create.perform(db);
 
-			//
 			// Verify
-			//
-
 			Assert.assertEquals("databaseExists", true, db.databaseExists());
 
 		}
@@ -60,10 +49,7 @@ public abstract class AnsiPluginUnitTestsTemplate
 		if (createTable == null) { throw new IllegalArgumentException("createTable cannot be null"); }
 		if (dropDatabase == null) { throw new IllegalArgumentException("dropDatabase cannot be null"); }
 		
-		//
 		// Setup
-		//
-		
 		AnsiSqlTableExistsAssertion tableExists = new AnsiSqlTableExistsAssertion(
 			UUID.randomUUID(),
 			0,
@@ -75,16 +61,10 @@ public abstract class AnsiPluginUnitTestsTemplate
 			createDatabase.perform(db);
 			createTable.perform(db);
 		
-			//
 			// Execute
-			//
-
 			AssertionResponse response = tableExists.perform(db);
 
-			//
 			// Verify
-			//
-
 			Assert.assertNotNull("response", response);
 			Assert.assertEquals("response.message", "Table tbl exists in schema sch", response.getMessage());
 			Assert.assertTrue("respnse.result", response.getResult());
@@ -107,10 +87,7 @@ public abstract class AnsiPluginUnitTestsTemplate
 		if (createDatabase == null) { throw new IllegalArgumentException("createDatabase cannot be null"); }
 		if (dropDatabase == null) { throw new IllegalArgumentException("dropDatabase cannot be null"); }
 		
-		//
 		// Setup
-		//
-		
 		AnsiSqlTableExistsAssertion tableExists = new AnsiSqlTableExistsAssertion(
 			UUID.randomUUID(),
 			0,
@@ -121,16 +98,10 @@ public abstract class AnsiPluginUnitTestsTemplate
 		{
 			createDatabase.perform(db);
 		
-			//
 			// Execute
-			//
-
 			AssertionResponse response = tableExists.perform(db);
 
-			//
 			// Verify
-			//
-
 			Assert.assertNotNull("response", response);
 			Assert.assertEquals("response.message", "Table tbl does not exist in schema sch", response.getMessage());
 			Assert.assertFalse("respnse.result", response.getResult());
@@ -139,7 +110,5 @@ public abstract class AnsiPluginUnitTestsTemplate
 		{
 			dropDatabase.perform(db);
 		}
-		
 	}
-	
 }

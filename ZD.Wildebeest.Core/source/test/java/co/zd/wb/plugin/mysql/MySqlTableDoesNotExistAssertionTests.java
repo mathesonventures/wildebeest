@@ -45,7 +45,7 @@ public class MySqlTableDoesNotExistAssertionTests
 	 {
 		 
 		//
-		// Fixture Setup
+		// Setup
 		//
 		 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -106,7 +106,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		}
 
 		//
-		// Assert Results
+		// Verify
 		//
 
 		Assert.assertNotNull("response", response);
@@ -123,7 +123,7 @@ public class MySqlTableDoesNotExistAssertionTests
 	 {
 		 
 		 //
-		 // Fixture Setup
+		 // Setup
 		 //
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -172,7 +172,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		}
 
 		//
-		// Assert Results
+		// Verify
 		//
 
 		Assert.assertNotNull("response", response);
@@ -182,11 +182,7 @@ public class MySqlTableDoesNotExistAssertionTests
 	 
 	 @Test public void applyForNonExistentDatabaseFails() throws SQLException
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-		 
+		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 	
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -204,39 +200,25 @@ public class MySqlTableDoesNotExistAssertionTests
 			0,
 			"ProductType");
  
-		//
 		// Execute
-		//
-		
 		AssertionResponse response = assertion.perform(instance);
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertNotNull("response", response);
 		AssertExtensions.assertAssertionResponse(
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
-
 	 }
 	 
 	 @Test public void applyForNullInstanceFails()
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-		 
+		// Setup
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0,
 			"TableName");
 		
-		//
 		// Execute
-		//
-		
 		IllegalArgumentException caught = null;
 		
 		try
@@ -250,21 +232,13 @@ public class MySqlTableDoesNotExistAssertionTests
 			caught = e;
 		}
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals("caught.message", "instance cannot be null", caught.getMessage());
-		
 	 }
 	 
 	 @Test public void applyForIncorrectInstanceTypeFails()
 	 {
-		 
-		//
-		// Fixture Setup
-		//
-		 
+		// Setup
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0,
@@ -272,10 +246,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 		FakeInstance instance = new FakeInstance();
 		
-		//
 		// Execute
-		//
-		
 		IllegalArgumentException caught = null;
 		
 		try
@@ -289,11 +260,7 @@ public class MySqlTableDoesNotExistAssertionTests
 			caught = e;
 		}
 
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals("caught.message", "instance must be a MySqlDatabaseInstance", caught.getMessage());
-		
 	 }
 }

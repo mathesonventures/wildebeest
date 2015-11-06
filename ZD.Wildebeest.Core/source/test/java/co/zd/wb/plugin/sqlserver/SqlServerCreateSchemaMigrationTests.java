@@ -28,11 +28,7 @@ public class SqlServerCreateSchemaMigrationTests
 	@Test public void performForNonExistantSchemaSucceeds() throws
 		MigrationFailedException
 	{
-		
-		//
 		// Setup
-		//
-
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
 
@@ -51,36 +47,21 @@ public class SqlServerCreateSchemaMigrationTests
 			null,
 			"prd");
 		
-		//
-		// Execute
-		//
-		
 		try
 		{
+			// Execute
 			createSchema.perform(instance);
-		
-			//
-			// Verify
-			//
-
-			//
-			// Tear-Down
-			//
-			
 		}
 		finally
 		{
+			// Tear-Down
 			SqlServerUtil.tryDropDatabase(instance);
 		}
 	}
 
 	@Test public void performForExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
-		
-		//
-		// Fixture Setup
-		//
-
+		// Setup
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
 
@@ -101,10 +82,7 @@ public class SqlServerCreateSchemaMigrationTests
 		
 		createSchema.perform(instance);
 		
-		//
 		// Execute
-		//
-
 		MigrationFailedException caught = null;
 		
 		try
@@ -122,14 +100,10 @@ public class SqlServerCreateSchemaMigrationTests
 			SqlServerUtil.tryDropDatabase(instance);
 		}
 		
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals(
 			"caught.message",
 			"There is already an object named 'prd' in the database.",
 			caught.getMessage());
-		
 	}
 }

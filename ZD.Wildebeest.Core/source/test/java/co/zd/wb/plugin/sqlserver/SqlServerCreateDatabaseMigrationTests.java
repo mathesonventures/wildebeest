@@ -28,11 +28,7 @@ public class SqlServerCreateDatabaseMigrationTests
 	@Test public void performForNonExistantDatabaseSucceeds() throws
 		MigrationFailedException
 	{
-		
-		//
 		// Setup
-		//
-		
 		SqlServerProperties p = SqlServerProperties.get();
 		
 		SqlServerCreateDatabaseMigration m = new SqlServerCreateDatabaseMigration(
@@ -51,36 +47,21 @@ public class SqlServerCreateDatabaseMigrationTests
 			databaseName,
 			null);
 		
-		//
 		// Execute
-		//
-		
 		try
 		{
 			m.perform(instance);
-		
-			//
-			// Verify
-			//
-
-			//
-			// Tear-Down
-			//
-			
 		}
 		finally
 		{
+			// Tear-Down
 			SqlServerUtil.tryDropDatabase(instance);
 		}
 	}
 
 	@Test public void performForExistantDatabaseFails() throws SQLException
 	{
-		
-		//
-		// Fixture Setup
-		//
-
+		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
@@ -99,11 +80,7 @@ public class SqlServerCreateDatabaseMigrationTests
 			null,
 			UUID.randomUUID());
 
-
-		//
 		// Execute
-		//
-
 		MigrationFailedException caught = null;
 		
 		try
@@ -121,14 +98,10 @@ public class SqlServerCreateDatabaseMigrationTests
 			SqlServerUtil.tryDropDatabase(instance);
 		}
 		
-		//
-		// Assert Results
-		//
-
+		// Verify
 		Assert.assertEquals(
 			"caught.message",
 			String.format("Database '%s' already exists. Choose a different database name.",	instance.getDatabaseName()),
 			caught.getMessage());
-		
 	}
 }

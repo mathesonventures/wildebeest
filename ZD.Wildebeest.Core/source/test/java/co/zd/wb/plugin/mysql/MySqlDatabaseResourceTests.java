@@ -16,7 +16,6 @@
 
 package co.zd.wb.plugin.mysql;
 
-import co.mv.helium.testframework.MySqlDatabaseFixture;
 import co.zd.wb.IndeterminateStateException;
 import co.zd.wb.State;
 import co.zd.wb.plugin.base.ImmutableState;
@@ -38,11 +37,7 @@ public class MySqlDatabaseResourceTests
 	
 	@Test public void currentStateForNonExistentDatabaseSucceds() throws IndeterminateStateException
 	{
-		
-		//
-		// Fixture Setup
-		//
-
+		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		MySqlDatabaseResource resource = new MySqlDatabaseResource(
@@ -57,47 +52,31 @@ public class MySqlDatabaseResourceTests
 			"non_existent_schema",
 			null);
 
-		//
 		// Execute
-		//
-		
 		State state = resource.currentState(instance);
 		
-		//
-		// Assert Results
-		//
-		
+		// Verify
 		Assert.assertEquals("state", null, state);
-		
 	}
 	
 	@Test public void currentStateForExistentDatabaseSucceds() throws IndeterminateStateException, SQLException
 	{
-		
-		//
-		// Fixture Setup
-		//
-		
+		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		UUID resourceId = UUID.randomUUID();
 		UUID knownStateId = UUID.randomUUID();
-		
-		MySqlDatabaseFixture database = new MySqlDatabaseFixture(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
+
+		String databaseName = MySqlUtil.createDatabase(
+			mySqlProperties,
 			"stm",
 			"");
 
 		try
 		{
-			database.setUp();
-			
 			MySqlStateHelper.setStateId(
 				resourceId,
-				database.getDataSource(),
+				MySqlUtil.getDataSource(mySqlProperties, databaseName),
 				"wb_state",
 				knownStateId);
 
@@ -111,57 +90,35 @@ public class MySqlDatabaseResourceTests
 				mySqlProperties.getPort(),
 				mySqlProperties.getUsername(),
 				mySqlProperties.getPassword(),
-				database.getDatabaseName(),
+				databaseName,
 			null);
 
-			//
 			// Execute
-			//
-
 			State state = resource.currentState(instance);
 
-			//
-			// Assert Results
-			//
-
+			// Verify
 			Assert.assertEquals("state.stateId", knownStateId, state.getStateId());
 		}
 		finally
 		{
-		
-			//
-			// Fixture Tear-Down
-			//
-
-			database.tearDown();
-			
+			// Tear-Down
+			MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 		}
 	}
 	
 	@Test public void currentStateForDatabaseWithUnknownStateIdDeclaredFails() throws SQLException
 	{
-		
-		//
-		// Fixture Setup
-		//
-		
+		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
 		UUID resourceId = UUID.randomUUID();
 		UUID knownStateId = UUID.randomUUID();
 		
-		MySqlDatabaseFixture database = new MySqlDatabaseFixture(
-			mySqlProperties.getHostName(),
-			mySqlProperties.getPort(),
-			mySqlProperties.getUsername(),
-			mySqlProperties.getPassword(),
-			"stm",
-			"");
-		database.setUp();
+		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm", "");
 
 		MySqlStateHelper.setStateId(
 			resourceId,
-			database.getDataSource(),
+			MySqlUtil.getDataSource(mySqlProperties, databaseName),
 			"wb_state",
 			knownStateId);
 		
@@ -174,13 +131,10 @@ public class MySqlDatabaseResourceTests
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
 			mySqlProperties.getPassword(),
-			database.getDatabaseName(),
+			databaseName,
 			null);
 
-		//
 		// Execute
-		//
-		
 		IndeterminateStateException caught = null;
 		try
 		{
@@ -193,20 +147,13 @@ public class MySqlDatabaseResourceTests
 			caught = e;
 		}
 		
-		//
-		// Assert Results
-		//
-		
+		// Verify
 		Assert.assertTrue(
 			"exception message",
 			caught.getMessage().startsWith("The resource is declared to be in state"));
 		
-		//
-		// Fixture Tear-Down
-		//
-		
-		database.tearDown();
-		
+		// Tear-Down
+		MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 	}
 	
 	@Ignore @Test public void currentStateForDatabaseWithInvalidStateTableSchemaFaults()
