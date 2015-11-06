@@ -75,7 +75,7 @@ public class DatabaseHelper
 	 *                                          or some other issue.
      * @since                                   1.0
 	 */
-	public static Object querySingle(
+	public static Object single(
 		DataSource dataSource,
 		String sql) throws SQLException
 	{

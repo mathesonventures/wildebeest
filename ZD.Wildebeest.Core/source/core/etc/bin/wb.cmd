@@ -22,6 +22,7 @@ SET WB_CLASSPATH=%WB_HOME%\lib\ZD.Wildebeest.Core-@meta.project.version.full.dot
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\ZD.Wildebeest.Log4J-@meta.project.version.full.dotted@.jar
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\ZD.Wildebeest.Slf4j-@meta.project.version.full.dotted@.jar
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\mysql-connector-java-5.1.22.jar
+SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\postgresql-9.3-1100-jdbc41.jar
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\sqljdbc4.jar
 
 java -classpath "%WB_CLASSPATH%" co.zd.wb.cli.WildebeestCommand %1 %2 %3 %4

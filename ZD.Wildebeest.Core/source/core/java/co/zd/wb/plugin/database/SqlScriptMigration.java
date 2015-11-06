@@ -57,14 +57,14 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 	
 	// <editor-fold desc="Sql" defaultstate="collapsed">
 
-	private String m_sql = null;
-	private boolean m_sql_set = false;
+	private String _sql = null;
+	private boolean _sql_set = false;
 
 	private String getSql() {
-		if(!m_sql_set) {
+		if(!_sql_set) {
 			throw new IllegalStateException("sql not set.  Use the HasSql() method to check its state before accessing it.");
 		}
-		return m_sql;
+		return _sql;
 	}
 
 	private void setSql(
@@ -72,22 +72,22 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 		if(value == null) {
 			throw new IllegalArgumentException("sql cannot be null");
 		}
-		boolean changing = !m_sql_set || m_sql != value;
+		boolean changing = !_sql_set || _sql != value;
 		if(changing) {
-			m_sql_set = true;
-			m_sql = value;
+			_sql_set = true;
+			_sql = value;
 		}
 	}
 
 	private void clearSql() {
-		if(m_sql_set) {
-			m_sql_set = true;
-			m_sql = null;
+		if(_sql_set) {
+			_sql_set = true;
+			_sql = null;
 		}
 	}
 
 	private boolean hasSql() {
-		return m_sql_set;
+		return _sql_set;
 	}
 
 	// </editor-fold>
@@ -108,17 +108,7 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 		try
 		{
 			// Strip out any comments, and split the block of SQL into individual statements
-			String sql = this.getSql().replaceAll("/\\*.*?\\*/", "");
-			String[] statements = sql.split(";");
-
-			// Execute each statement
-			for(String statement : statements)
-			{
-				if (!"".equals(statement.trim()))
-				{
-					DatabaseHelper.execute(db.getAppDataSource(), statement);
-				}
-			}
+			DatabaseHelper.execute(db.getAppDataSource(), this.getSql());
 		}
 		catch(SQLException e)
 		{
