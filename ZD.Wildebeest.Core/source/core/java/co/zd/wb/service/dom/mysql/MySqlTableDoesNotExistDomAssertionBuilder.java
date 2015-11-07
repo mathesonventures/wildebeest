@@ -22,7 +22,7 @@ import co.zd.wb.service.Messages;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
-import co.zd.wb.service.dom.TryGetResult;
+import co.zd.wb.framework.TryResult;
 import java.util.UUID;
 
 /**
@@ -38,7 +38,7 @@ public class MySqlTableDoesNotExistDomAssertionBuilder extends BaseDomAssertionB
 		UUID assertionId,
 		int seqNum) throws MessagesException
 	{
-		TryGetResult<String> tableName = this.tryGetString("tableName");
+		TryResult<String> tableName = this.tryGetString("tableName");
 		
 		Messages messages = new Messages();
 		if (!tableName.hasValue())

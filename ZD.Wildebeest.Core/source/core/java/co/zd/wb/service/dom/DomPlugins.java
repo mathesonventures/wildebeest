@@ -16,6 +16,7 @@
 
 package co.zd.wb.service.dom;
 
+import co.zd.wb.Logger;
 import co.zd.wb.service.AssertionBuilder;
 import co.zd.wb.service.InstanceBuilder;
 import co.zd.wb.service.ResourcePluginBuilder;
@@ -24,6 +25,7 @@ import co.zd.wb.service.dom.ansisql.AnsiSqlCreateDatabaseDomMigrationBuilder;
 import co.zd.wb.service.dom.ansisql.AnsiSqlDropDatabaseDomMigrationBuilder;
 import co.zd.wb.service.dom.ansisql.AnsiSqlTableDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.ansisql.AnsiSqlTableExistsDomAssertionBuilder;
+import co.zd.wb.service.dom.composite.ExternalResourceDomMigrationBuilder;
 import co.zd.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.database.RowDoesNotExistDomAssertionBuilder;
@@ -56,6 +58,12 @@ import java.util.Map;
  */
 public class DomPlugins
 {
+	/**
+	 * Builds and returns the collection of factory-shipped {@link ResourceBuilder}s.
+	 * 
+	 * @return                                  a Map that maps the XML element name to the builder instance.
+	 * @since                                   1.0
+	 */
 	public static Map<String, ResourcePluginBuilder> resourceBuilders()
 	{
 		Map<String, ResourcePluginBuilder> result = new HashMap<String, ResourcePluginBuilder>();
@@ -67,6 +75,12 @@ public class DomPlugins
 		return result;
 	}
 
+	/**
+	 * Builds and returns the collection of factory-shipped {@link AssertionBuilder}s.
+	 * 
+	 * @return                                  a Map that maps the XML element name to the builder instance.
+	 * @since                                   1.0
+	 */
 	public static Map<String, AssertionBuilder> assertionBuilders()
 	{
 		Map<String, AssertionBuilder> result = new HashMap<String, AssertionBuilder>();
@@ -90,12 +104,22 @@ public class DomPlugins
 		result.put("SqlServerSchemaExists", new SqlServerSchemaExistsDomAssertionBuilder());
 		result.put("SqlServerTableDoesNotExist", new SqlServerTableDoesNotExistDomAssertionBuilder());
 		result.put("SqlServerTableExists", new SqlServerTableExistsDomAssertionBuilder());
-
+		
 		return result;
 	}
 	
-	public static Map<String, MigrationBuilder> migrationBuilders()
+	/**
+	 * Builds and returns the collection of factory-shipped {@link MigrationBuilder}s.
+	 * 
+	 * @param       logger                      the {@link Logger} instance to provide to plugins that require one.
+	 * @return                                  a Map that maps the XML element name to the builder instance.
+	 * @since                                   1.0
+	 */
+	public static Map<String, MigrationBuilder> migrationBuilders(
+		Logger logger)
 	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+
 		Map<String, MigrationBuilder> result = new HashMap<String, MigrationBuilder>();
 
 		// Database
@@ -113,9 +137,18 @@ public class DomPlugins
 		result.put("SqlServerCreateSchema", new SqlServerCreateSchemaDomMigrationBuilder());
 		result.put("SqlServerDropSchema", new SqlServerDropSchemaDomMigrationBuilder());
 
+		// Composite
+		result.put("External", new ExternalResourceDomMigrationBuilder(logger));
+
 		return result;
 	}
 	
+	/**
+	 * Builds and returns the collection of factory-shipped {@link InstanceBuilder}s.
+	 * 
+	 * @return                                  a Map that maps the XML element name to the builder instance.
+	 * @since                                   1.0
+	 */
 	public static Map<String, InstanceBuilder> instanceBuilders()
 	{
 		Map<String, InstanceBuilder> result = new HashMap<String, InstanceBuilder>();
@@ -130,17 +163,19 @@ public class DomPlugins
 	/**
 	 * Returns a {@link DomResourceLoader} for the supplied resource XML, configured with the standard builders.
 	 * 
+	 * @param       logger                      the {@link Logger} to provide to plugins that require one.
 	 * @param       resourceXml                 the &lt;resource&gt; XML to be loaded by the DomResourceLoader.
 	 * @return                                  a DomResourceLoader configured with the standard builders.
 	 * @since                                   4.0
 	 */
 	public static DomResourceLoader resourceLoader(
+		Logger logger,
 		String resourceXml)
 	{
 		return new DomResourceLoader(
 			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
-			DomPlugins.migrationBuilders(),
+			DomPlugins.migrationBuilders(logger),
 			resourceXml);
 	}
 	

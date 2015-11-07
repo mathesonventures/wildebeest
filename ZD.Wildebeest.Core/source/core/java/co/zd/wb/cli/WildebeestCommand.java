@@ -132,7 +132,7 @@ public class WildebeestCommand
 				else
 				{
 					Interface iface = new Interface(this.getLogger());
-					iface.state(resourceFileName, instanceFileName);
+					iface.state(this.getLogger(), resourceFileName, instanceFileName);
 				}
 			}
 
@@ -150,7 +150,7 @@ public class WildebeestCommand
 				{
 					Interface iface = new Interface(this.getLogger());
 
-					Resource resource = iface.tryLoadResource(resourceFileName);
+					Resource resource = iface.tryLoadResource(this.getLogger(), resourceFileName);
 					Instance instance = iface.tryLoadInstance(instanceFileName);
 
 					iface.migrate(resource, instance, targetState);
@@ -171,7 +171,7 @@ public class WildebeestCommand
 				{
 					Interface iface = new Interface(this.getLogger());
 
-					Resource resource = iface.tryLoadResource(resourceFileName);
+					Resource resource = iface.tryLoadResource(this.getLogger(), resourceFileName);
 					Instance instance = iface.tryLoadInstance(instanceFileName);
 
 					iface.jumpstate(resource, instance, targetState);

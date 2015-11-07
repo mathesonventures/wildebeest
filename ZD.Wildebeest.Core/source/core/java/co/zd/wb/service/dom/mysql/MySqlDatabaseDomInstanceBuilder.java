@@ -22,7 +22,7 @@ import co.zd.wb.service.Messages;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomInstanceBuilder;
-import co.zd.wb.service.dom.TryGetResult;
+import co.zd.wb.framework.TryResult;
 
 /**
  * An {@link InstanceBuilder} that builds a {@link MySqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
@@ -34,12 +34,12 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
 	@Override public Instance build() throws MessagesException
 	{
-		TryGetResult<String> hostName = this.tryGetString("hostName");
-		TryGetResult<Integer> port = this.tryGetInteger("port");
-		TryGetResult<String> adminUsername = this.tryGetString("adminUsername");
-		TryGetResult<String> adminPassword = this.tryGetString("adminPassword");
-		TryGetResult<String> databaseName = this.tryGetString("databaseName");
-		TryGetResult<String> stateTableName = this.tryGetString("stateTableName");
+		TryResult<String> hostName = this.tryGetString("hostName");
+		TryResult<Integer> port = this.tryGetInteger("port");
+		TryResult<String> adminUsername = this.tryGetString("adminUsername");
+		TryResult<String> adminPassword = this.tryGetString("adminPassword");
+		TryResult<String> databaseName = this.tryGetString("databaseName");
+		TryResult<String> stateTableName = this.tryGetString("stateTableName");
 		
 		Messages messages = new Messages();
 		if (!hostName.hasValue()) { V.elementMissing(messages, null, "hostName", MySqlDatabaseInstance.class); }

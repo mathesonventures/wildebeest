@@ -19,6 +19,7 @@ package co.zd.wb.plugin.base;
 import co.zd.wb.AssertExtensions;
 import co.zd.wb.ProductCatalogueMySqlDatabaseResource;
 import co.zd.wb.AssertionFailedException;
+import co.zd.wb.FakeLogger;
 import co.zd.wb.IndeterminateStateException;
 import co.zd.wb.Resource;
 import co.zd.wb.MigrationFailedException;
@@ -57,10 +58,8 @@ public class ResourceLoaderIntegrationTests
 		
 		ProductCatalogueMySqlDatabaseResource productCatalogueResource = new ProductCatalogueMySqlDatabaseResource();
 
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			DomPlugins.resourceBuilders(),
-			DomPlugins.assertionBuilders(),
-			DomPlugins.migrationBuilders(),
+		DomResourceLoader resourceBuilder = DomPlugins.resourceLoader(
+			new FakeLogger(),
 			productCatalogueResource.getResourceXml());
 
 		String databaseName = DatabaseFixtureHelper.databaseName();

@@ -16,6 +16,7 @@
 
 package co.zd.wb.service.dom;
 
+import co.zd.wb.framework.TryResult;
 import co.zd.wb.ModelExtensions;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -136,12 +137,12 @@ public abstract class BaseDomBuilder implements DomBuilder
 	 *                                          it was able to be obtained, or an empty TryGetResult otherwise
 	 * @since                                   2.0
 	 */
-	protected TryGetResult<String> tryGetString(String xpath)
+	protected TryResult<String> tryGetString(String xpath)
 	{
 		if (xpath == null) { throw new IllegalArgumentException("xpath"); }
 		if ("".equals(xpath)) { throw new IllegalArgumentException("xpath"); }
 		
-		TryGetResult<String> result = null;
+		TryResult<String> result = null;
 		
 		Node node = null;
 		try
@@ -154,7 +155,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 				if (element != null)
 				{
 					String value = element.getTextContent();
-					result = new TryGetResult<String>(value);
+					result = new TryResult<String>(value);
 				}
 			}
 		}
@@ -164,7 +165,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 
 		if (result == null)
 		{
-			result = new TryGetResult<String>();
+			result = new TryResult<String>();
 		}
 
 		return result;
@@ -180,21 +181,21 @@ public abstract class BaseDomBuilder implements DomBuilder
 	 *                                          it was able to be obtained, or an empty TryGetResult otherwise
 	 * @since                                   2.0
 	 */
-	protected TryGetResult<Integer> tryGetInteger(String xpath)
+	protected TryResult<Integer> tryGetInteger(String xpath)
 	{
-		TryGetResult<Integer> result = null;
-		TryGetResult<String> raw = this.tryGetString(xpath);
+		TryResult<Integer> result = null;
+		TryResult<String> raw = this.tryGetString(xpath);
 		
 		if (raw.hasValue())
 		{
 			try
 			{
 				int value = Integer.parseInt(raw.getValue());
-				result = new TryGetResult<Integer>(value);
+				result = new TryResult<Integer>(value);
 			}
 			catch(Exception e)
 			{
-				result = new TryGetResult<Integer>();
+				result = new TryResult<Integer>();
 			}
 		}
 		

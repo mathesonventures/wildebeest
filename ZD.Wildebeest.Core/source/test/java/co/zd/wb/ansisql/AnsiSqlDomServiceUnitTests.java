@@ -17,6 +17,7 @@
 package co.zd.wb.ansisql;
 
 import co.zd.wb.AssertExtensions;
+import co.zd.wb.FakeLogger;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
 import co.zd.wb.fixturecreator.FixtureCreator;
@@ -51,7 +52,7 @@ public class AnsiSqlDomServiceUnitTests
 				.migration("AnsiSqlCreateDatabase", migrationId, fromStateId, toStateId)
 			.render();
 
-		DomResourceLoader loader = DomPlugins.resourceLoader(xml);
+		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
 
 		// Execute
 		Resource resource = loader.load();
@@ -88,7 +89,7 @@ public class AnsiSqlDomServiceUnitTests
 				.migration("AnsiSqlDropDatabase", migrationId, fromStateId, toStateId)
 			.render();
 
-		DomResourceLoader loader = DomPlugins.resourceLoader(xml);
+		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
 
 		// Execute
 		Resource resource = loader.load();
@@ -126,7 +127,7 @@ public class AnsiSqlDomServiceUnitTests
 						.appendInnerXml("<tableName>tbl</tableName>")
 			.render();
 
-		DomResourceLoader loader = DomPlugins.resourceLoader(xml);
+		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
 		
 		// Execute
 		Resource resource = loader.load();
@@ -163,7 +164,7 @@ public class AnsiSqlDomServiceUnitTests
 						.appendInnerXml("<tableName>tbl</tableName>")
 			.render();
 
-		DomResourceLoader loader = DomPlugins.resourceLoader(xml);
+		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
 		
 		// Execute
 		Resource resource = loader.load();

@@ -90,14 +90,17 @@ public class Interface
 	/**
 	 * Checks the state of an instance of a resource.
 	 * 
+	 * @param       logger                      the {@link Logger} instance to use.
 	 * @param       resourceFileName            the filename of the descriptor for the resource
 	 * @param       instanceFileName            the filename of the descriptor for the instance
 	 * @since                                   1.0
 	 */
 	public void state(
+		Logger logger,
 		String resourceFileName,
 		String instanceFileName)
 	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (resourceFileName == null) { throw new IllegalArgumentException("resourceFileName cannot be null"); }
 		if ("".equals(resourceFileName.trim()))
 		{
@@ -110,6 +113,7 @@ public class Interface
 		}
 
 		this.state(
+			logger,
 			new File(resourceFileName),
 			new File(instanceFileName));
 	}
@@ -117,14 +121,17 @@ public class Interface
 	/**
 	 * Checks the state of an instance of a resource.
 	 * 
+	 * @param       logger                      the {@link Logger} instance to use.
 	 * @param       resourceFile                the descriptor file for the resource
 	 * @param       instanceFile                the descriptor file for the instance
 	 * @since                                   1.0
 	 */
 	public void state(
+		Logger logger,
 		File resourceFile,
 		File instanceFile)
 	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
 		if (instanceFile == null) { throw new IllegalArgumentException("instanceFile cannot be null"); }
 		
@@ -132,7 +139,7 @@ public class Interface
 		Resource resource = null;
 		try
 		{
-			resource = loadResource(resourceFile);
+			resource = loadResource(logger, resourceFile);
 		}
 		catch (MessagesException e)
 		{
@@ -275,7 +282,7 @@ public class Interface
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 
-		final String stateSpecificationRegex = "[a-zA-Z0-9][a-zA-Z0-9\\- ]+[a-zA-Z0-9]";
+		final String stateSpecificationRegex = "[a-zA-Z0-9][a-zA-Z0-9\\-\\_ ]+[a-zA-Z0-9]";
 		if (targetState != null && !targetState.matches(stateSpecificationRegex))
 		{
             throw new InvalidStateSpecifiedException(targetState);
@@ -303,14 +310,24 @@ public class Interface
 		return targetStateId;
 	}
 	
+	/**
+	 * Attempt to load the specified resource and return it if successful.  If not successful then null is returned.
+	 * 
+	 * @param       logger                      the {@link Logger} instance to use.
+	 * @param       resourceFileName            the descriptor file from which the Resource should be deserialized
+	 * @return                                  a deserialized Resource object or null if the load request failed.
+	 */
 	public Resource tryLoadResource(
+		Logger logger,
 		String resourceFileName)
 	{
 		// Load the resource
 		Resource resource = null;
 		try
 		{
-			resource = Interface.loadResource(new File(resourceFileName));
+			resource = Interface.loadResource(
+				logger,
+				new File(resourceFileName));
 		}
 		catch (MessagesException e)
 		{
@@ -339,19 +356,33 @@ public class Interface
 		return instance;
 	}
 	
+	/**
+	 * Deserializes a {@link Resource} from the specified descriptor file.
+	 * 
+	 * @param       logger                      the {@link Logger} instance to use.
+	 * @param       resourceFileName            the descriptor file from which the Resource should be deserialized
+	 * @return                                  a deserialized Resource object
+	 * @throws      MessagesException           containing any validation errors encountered while the Resource is
+	 *                                          being deserialized
+	 * @since                                   1.0
+	 */
 	public static Resource loadResource(
+		Logger logger,
 		String resourceFileName) throws MessagesException
 	{
 		if (resourceFileName == null) { throw new IllegalArgumentException("resourceFileName"); }
 		
-		Resource resource = Interface.loadResource(new File(resourceFileName));
+		Resource resource = Interface.loadResource(
+			logger,
+			new File(resourceFileName));
 
 		return resource;
 	}
-	
+
 	/**
 	 * Deserializes a {@link Resource} from the specified descriptor file.
 	 * 
+	 * @param       logger                      the {@link Logger} instance to use.
 	 * @param       resourceFile                the descriptor file from which the Resource should be deserialized
 	 * @return                                  a deserialized Resource object
 	 * @throws      MessagesException           containing any validation errors encountered while the Resource is
@@ -359,8 +390,10 @@ public class Interface
 	 * @since                                   1.0
 	 */
 	public static Resource loadResource(
+		Logger logger,
 		File resourceFile) throws MessagesException
 	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
 		
 		// Load Resource
@@ -385,11 +418,7 @@ public class Interface
 		Resource resource = null;
 		if (resourceXml != null)
 		{
-			DomResourceLoader resourceLoader = new DomResourceLoader(
-				DomPlugins.resourceBuilders(),
-				DomPlugins.assertionBuilders(),
-				DomPlugins.migrationBuilders(),
-				resourceXml);
+			DomResourceLoader resourceLoader = DomPlugins.resourceLoader(logger, resourceXml);
 			resource = resourceLoader.load();
 		}
 

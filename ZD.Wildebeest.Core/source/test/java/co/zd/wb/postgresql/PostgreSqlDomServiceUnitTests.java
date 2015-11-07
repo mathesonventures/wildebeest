@@ -16,6 +16,7 @@
 
 package co.zd.wb.postgresql;
 
+import co.zd.wb.FakeLogger;
 import co.zd.wb.Instance;
 import co.zd.wb.ModelExtensions;
 import co.zd.wb.Resource;
@@ -48,18 +49,20 @@ public class PostgreSqlDomServiceUnitTests
 			.resource("PostgreSqlDatabase", resourceId, resourceName)
 			.render();
 		
-		DomResourceLoader loader = DomPlugins.resourceLoader(resourceXml);
+		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), resourceXml);
 		
 		// Execute
 		Resource resource = loader.load();
 		
 		// Verify
 		Assert.assertNotNull("resource", resource);
-		PostgreSqlDatabaseResourcePlugin resourceT = ModelExtensions.As(resource, PostgreSqlDatabaseResourcePlugin.class);
-		Assert.assertNotNull("resource is not a PostgreSqlDatabaseResource", resourceT);
-		
 		Assert.assertEquals("resource.resourceId", resourceId, resource.getResourceId());
 		Assert.assertEquals("resource.name", resourceName, resource.getName());
+		
+		PostgreSqlDatabaseResourcePlugin plugin = ModelExtensions.As(
+			resource.getPlugin(),
+			PostgreSqlDatabaseResourcePlugin.class);
+		Assert.assertNotNull("plugin is not a PostgreSqlDatabaseResource", plugin);
 	}
 	
 	@Test public void postgreSqlDatabaseInstanceLoadFromValidDocumentSucceeds() throws MessagesException

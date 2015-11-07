@@ -24,6 +24,7 @@ import co.zd.wb.State;
 import co.zd.wb.MigrationFailedException;
 import co.zd.wb.MigrationNotPossibleException;
 import co.zd.wb.AssertExtensions;
+import co.zd.wb.FakeLogger;
 import co.zd.wb.ProductCatalogueMySqlDatabaseResource;
 import co.zd.wb.Resource;
 import co.zd.wb.plugin.base.ImmutableState;
@@ -128,14 +129,12 @@ public class IntegrationTests
 		// Setup
 		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
 		
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			DomPlugins.resourceBuilders(),
-			DomPlugins.assertionBuilders(),
-			DomPlugins.migrationBuilders(),
+		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
+			new FakeLogger(),
 			prodCatResource.getResourceXml());
 
 		// Execute
-		Resource resource = resourceBuilder.load();
+		Resource resource = resourceLoader.load();
 		
 		// Verify
 		assertResource(resource);
@@ -173,10 +172,8 @@ public class IntegrationTests
 		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
 		
 		// Fixture
-		DomResourceLoader resourceLoader = new DomResourceLoader(
-			DomPlugins.resourceBuilders(),
-			DomPlugins.assertionBuilders(),
-			DomPlugins.migrationBuilders(),
+		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
+			new FakeLogger(),
 			prodCatResource.getResourceXml());
 		
 		// Execute

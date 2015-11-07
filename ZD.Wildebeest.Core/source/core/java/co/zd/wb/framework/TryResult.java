@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom;
+package co.zd.wb.framework;
 
 /**
  * The result from some try-get method.  A TryGetResult will contain a value if it was successful, or will be empty if
@@ -24,14 +24,14 @@ package co.zd.wb.service.dom;
  * @author                                      Brendon Matheson
  * @since                                       2.0
  */
-public class TryGetResult<TValue>
+public class TryResult<TValue>
 {
 	/**
 	 * Creates a new empty TryGetResult.
 	 * 
 	 * @since                                   2.0
 	 */
-	public TryGetResult()
+	public TryResult()
 	{
 	}
 
@@ -41,7 +41,7 @@ public class TryGetResult<TValue>
 	 * @param       value                       the value for this TryGetResult.
 	 * @since                                   2.0
 	 */
-	public TryGetResult(TValue value)
+	public TryResult(TValue value)
 	{
 		this.setValue(value);
 	}

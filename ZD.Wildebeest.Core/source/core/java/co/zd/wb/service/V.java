@@ -55,4 +55,25 @@ public class V
 			messages.addMessage("Element %s is missing from %s with ID %s", elementName, itemType.getName(), itemId);
 		}
 	}
+	
+	public static void elementInvalidValue(
+		Messages messages,
+		UUID itemId,
+		String elementName,
+		Class itemType)
+	{
+		if (messages == null) { throw new IllegalArgumentException("messages cannot be null"); }
+		if (elementName == null) { throw new IllegalArgumentException("elementName cannot be null"); }
+		if ("".equals(elementName.trim())) { throw new IllegalArgumentException("elementName.trim() cannot be empty"); }
+		if (itemType == null) { throw new IllegalArgumentException("itemType cannot be null"); }
+
+		if (itemId == null)
+		{
+			messages.addMessage("The value of element %s is invalid on %s", elementName, itemType.getName());
+		}
+		else
+		{
+			messages.addMessage("The value of element %s is invalid for %s with ID %s", elementName, itemType.getName());
+		}
+	}
 }

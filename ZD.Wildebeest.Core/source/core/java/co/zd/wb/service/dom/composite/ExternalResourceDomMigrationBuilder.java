@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom.database;
+package co.zd.wb.service.dom.composite;
 
+import co.zd.wb.Logger;
 import co.zd.wb.Migration;
-import co.zd.wb.plugin.database.SqlScriptMigration;
+import co.zd.wb.plugin.composite.ExternalResourceMigration;
 import co.zd.wb.service.Messages;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.V;
@@ -26,27 +27,42 @@ import co.zd.wb.framework.TryResult;
 import java.util.UUID;
 
 /**
- * A {@link MigrationBuilder} that builds a {@link SqlScriptMigration} from a DOM {@link org.w3c.dom.Element}.
+ * A {@link MigrationBuilder} that builds a {@link ExternalResourceMigration} from a DOM {@link org.w3c.dom.Element}.
  * 
  * @author                                      Brendon Matheson
- * @since                                       1.0
+ * @since                                       4.0
  */
-public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
+public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 {
+	private Logger _logger = null;
+	
+	public ExternalResourceDomMigrationBuilder(
+		Logger logger)
+	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		
+		_logger = logger;
+	}
+	
 	@Override public Migration build(
 		UUID migrationId,
 		UUID fromStateId,
 		UUID toStateId) throws MessagesException
 	{
 		Migration result = null;
-		
-		TryResult<String> sql = this.tryGetString("sql");
+
+		TryResult<String> filename = this.tryGetString("filename");
+		TryResult<String> target = this.tryGetString("target");
 		
 		// Validation
 		Messages messages = new Messages();
-		if (!sql.hasValue())
+		if (!filename.hasValue())
 		{
-			V.elementMissing(messages, migrationId, "sql", SqlScriptMigration.class);
+			V.elementMissing(messages, migrationId, "filename", ExternalResourceMigration.class);
+		}
+		if (!target.hasValue())
+		{
+			V.elementMissing(messages, migrationId, "target", ExternalResourceMigration.class);
 		}
 		
 		if (messages.size() > 0)
@@ -54,7 +70,11 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 			throw new MessagesException(messages);
 		}
 
-		result = new SqlScriptMigration(migrationId, fromStateId, toStateId, sql.getValue());
+		result = new ExternalResourceMigration(
+			migrationId, fromStateId, toStateId,
+			_logger,
+			filename.getValue(),
+			target.getValue());
 		
 		return result;
 	}

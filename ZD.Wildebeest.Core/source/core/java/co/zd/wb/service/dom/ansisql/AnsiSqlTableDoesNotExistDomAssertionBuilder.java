@@ -22,7 +22,7 @@ import co.zd.wb.service.Messages;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomAssertionBuilder;
-import co.zd.wb.service.dom.TryGetResult;
+import co.zd.wb.framework.TryResult;
 import java.util.UUID;
 
 /**
@@ -38,8 +38,8 @@ public class AnsiSqlTableDoesNotExistDomAssertionBuilder extends BaseDomAssertio
 		UUID assertionId,
 		int seqNum) throws MessagesException
 	{
-		TryGetResult<String> schemaName = this.tryGetString("schemaName");
-		TryGetResult<String> tableName = this.tryGetString("tableName");
+		TryResult<String> schemaName = this.tryGetString("schemaName");
+		TryResult<String> tableName = this.tryGetString("tableName");
 
 		// Validation
 		Messages messages = new Messages();
