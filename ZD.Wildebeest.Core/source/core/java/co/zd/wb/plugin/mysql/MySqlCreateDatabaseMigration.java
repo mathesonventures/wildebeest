@@ -65,21 +65,17 @@ public class MySqlCreateDatabaseMigration extends BaseMigration
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
 
-		if (db.databaseExists())
+		if (!db.databaseExists())
 		{
-			throw new MigrationFailedException(
-				this.getMigrationId(),
-				String.format("database \"%s\" already exists",	db.getDatabaseName()));
-		}
-		
-		try
-		{
-			DatabaseHelper.execute(db.getAdminDataSource(), new StringBuilder()
-				.append("CREATE DATABASE `").append(db.getDatabaseName()).append("`;").toString());
-		}
-		catch (SQLException e)
-		{
-			throw new MigrationFaultException(e);
+			try
+			{
+				DatabaseHelper.execute(db.getAdminDataSource(), new StringBuilder()
+					.append("CREATE DATABASE `").append(db.getDatabaseName()).append("`;").toString());
+			}
+			catch (SQLException e)
+			{
+				throw new MigrationFaultException(e);
+			}
 		}
 	}
 }

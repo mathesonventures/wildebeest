@@ -56,22 +56,18 @@ public class AnsiSqlCreateDatabaseMigration extends BaseMigration
 		AnsiSqlDatabaseInstance db = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a AnsiSqlDatabaseInstance"); }
 
-		if (db.databaseExists())
+		if (!db.databaseExists())
 		{
-			throw new MigrationFailedException(
-				this.getMigrationId(),
-				String.format("database \"%s\" already exists", db.getDatabaseName()));
-		}
-		
-		try
-		{
-			DatabaseHelper.execute(
-				db.getAdminDataSource(),
-				String.format("CREATE DATABASE %s;", db.getDatabaseName()));
-		}
-		catch (SQLException e)
-		{
-			throw new MigrationFaultException(e);
+			try
+			{
+				DatabaseHelper.execute(
+					db.getAdminDataSource(),
+					String.format("CREATE DATABASE %s;", db.getDatabaseName()));
+			}
+			catch (SQLException e)
+			{
+				throw new MigrationFaultException(e);
+			}
 		}
     }
 }

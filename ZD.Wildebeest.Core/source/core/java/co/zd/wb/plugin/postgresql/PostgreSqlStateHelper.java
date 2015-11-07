@@ -112,20 +112,130 @@ public class PostgreSqlStateHelper
 		if (stateTableName == null) { throw new IllegalArgumentException("stateTableName cannot be null"); }
 		if ("".equals(stateTableName)) { throw new IllegalArgumentException("stateTableName cannot be empty"); }
 
+		PostgreSqlStateHelper.createStateTableIfNotExists(
+			appDataSource,
+			metaSchemaName,
+			stateTableName);
+		
+		UUID stateId = PostgreSqlStateHelper.stateIdScalarOptional(
+			resourceId,
+			appDataSource,
+			metaSchemaName, stateTableName);
+		
+		if (stateId == null)
+		{
+			throw new IndeterminateStateException(String.format(
+				"The state tracking table \"%s\" was not found in the target schema",
+				stateTableName));
+		}
+
+		return stateId;
+	}
+
+	/**
+	 * Indicates whether or not a state is currently tracked for the specified resource.
+	 * 
+	 * @param       resourceId                  the ID of the resource for which the state should be queried.          
+	 * @param       appDataSource               the DataSource for interacting with the database.
+	 * @param       metaSchemaName              the name of the meta-data tracking schema to use.
+	 * @param       stateTableName              the name of the state tracking table in use for this instance.
+	 * @return                                  a boolean value indicating whether or not a state is currently tracked
+	 *                                          for the specified resource.
+	 * @since                                   4.0
+	 */
+	public static boolean hasStateId(
+		UUID resourceId,
+		DataSource appDataSource,
+		String metaSchemaName,
+		String stateTableName) throws IndeterminateStateException
+	{
+		if (resourceId == null) { throw new IllegalArgumentException("resourceId cannot be null"); }
+		if (appDataSource == null) { throw new IllegalArgumentException("appDataSource"); }
+		if (metaSchemaName == null) { throw new IllegalArgumentException("metaSchemaName cannot be null"); }
+		if ("".equals(metaSchemaName)) { throw new IllegalArgumentException("metaSchemaName cannot be empty"); }
+		if (stateTableName == null) { throw new IllegalArgumentException("stateTableName cannot be null"); }
+		if ("".equals(stateTableName)) { throw new IllegalArgumentException("stateTableName cannot be empty"); }
+
+		PostgreSqlStateHelper.createStateTableIfNotExists(
+			appDataSource,
+			metaSchemaName,
+			stateTableName);
+		
+		UUID stateId = PostgreSqlStateHelper.stateIdScalarOptional(
+			resourceId,
+			appDataSource,
+			metaSchemaName, stateTableName);
+
+		return stateId != null;
+	}
+	
+	/**
+	 * Creates the state tracking table in a PostgreSqlDatabaseInstance.
+	 * 
+	 * @param       appDataSource               the DataSource for interacting with the database.
+	 * @param       metaSchemaName              the name of the meta-data tracking schema to use.
+	 * @param       stateTableName              the name of the state tracking table in use for this instance.
+	 * @throws      SQLException                if an error occurs when interacting with the database.
+	 * @since                                   1.0
+	 */
+	private static void createStateTableIfNotExists(
+		DataSource appDataSource,
+		String metaSchemaName,
+		String stateTableName)
+	{
+		if (appDataSource == null) { throw new IllegalArgumentException("appDataSource"); }
+		if (metaSchemaName == null) { throw new IllegalArgumentException("metaSchemaName cannot be null"); }
+		if ("".equals(metaSchemaName)) { throw new IllegalArgumentException("metaSchemaName cannot be empty"); }
+		if (stateTableName == null) { throw new IllegalArgumentException("stateTableName cannot be null"); }
+		if ("".equals(stateTableName)) { throw new IllegalArgumentException("stateTableName cannot be empty"); }
+		
 		try
 		{
-			PostgreSqlStateHelper.createStateTableIfNotExists(
+			DatabaseHelper.execute(
 				appDataSource,
-				metaSchemaName,
-				stateTableName);
+				String.format("CREATE SCHEMA IF NOT EXISTS %s;", metaSchemaName));
+
+			DatabaseHelper.execute(appDataSource, new StringBuilder()
+				.append("CREATE TABLE IF NOT EXISTS ")
+						.append(metaSchemaName).append(".")
+						.append(stateTableName).append("(")
+					.append("ResourceId UUID NOT NULL, ")
+					.append("StateId UUID NOT NULL, ")
+					.append("CONSTRAINT PK_").append(stateTableName).append(" PRIMARY KEY (ResourceId)")
+					.append(");").toString());
 		}
-		catch (SQLException e)
+		catch(SQLException e)
 		{
 			throw new FaultException(e);
 		}
+	}
+
+	/**
+	 * Data access method for retrieving the state ID for the specified resource, if it is tracked.  If not then this
+	 * method will return null.
+	 * 
+	 * @param       resourceId                  the ID of the resource for which the state should be queried.          
+	 * @param       appDataSource               the DataSource for interacting with the database.
+	 * @param       metaSchemaName              the name of the meta-data tracking schema to use.
+	 * @param       stateTableName              the name of the state tracking table in use for this instance.
+	 * @return                                  the ID of the tracked state for this resource if tracked, or null
+	 *                                          otherwise.
+	 * @throws                                  IndeterminateStateException if multiple states are tracked for the
+	 *                                          specified resource.
+	 * @since                                   4.0
+	 */
+	private static UUID stateIdScalarOptional(
+		UUID resourceId,
+		DataSource appDataSource,
+		String metaSchemaName,
+		String stateTableName) throws IndeterminateStateException
+	{
+		if (resourceId == null) { throw new IllegalArgumentException("resourceId cannot be null"); }
+		if (appDataSource == null) { throw new IllegalArgumentException("appDataSource cannot be null"); }
+		if (metaSchemaName == null) { throw new IllegalArgumentException("metaSchemaName cannot be null"); }
+		if (stateTableName == null) { throw new IllegalArgumentException("stateTableName cannot be null"); }
 		
-		UUID stateId = null;
-		
+		UUID result = null;
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -142,7 +252,7 @@ public class PostgreSqlStateHelper
 
 			if (rs.next())
 			{
-				stateId = (UUID)rs.getObject(1);
+				result = (UUID)rs.getObject(1);
 
 				if (rs.next())
 				{
@@ -150,12 +260,6 @@ public class PostgreSqlStateHelper
 						"Multiple rows found in the state tracking table \"%s\"",
 						stateTableName));
 				}
-			}
-			else
-			{
-				throw new IndeterminateStateException(String.format(
-					"The state tracking table \"%s\" was not found in the target schema",
-					stateTableName));
 			}
 		}
 		catch(SQLException e)
@@ -175,40 +279,7 @@ public class PostgreSqlStateHelper
 				throw new FaultException(e);
 			}
 		}
-
-		return stateId;
-	}
-
-	/**
-	 * Creates the state tracking table in a PostgreSqlDatabaseInstance.
-	 * 
-	 * @param       appDataSource               the DataSource for interacting with the database.
-	 * @param       stateTableName              the name of the state tracking table in use for this instance.
-	 * @throws      SQLException                if an error occurs when interacting with the database.
-	 * @since                                   1.0
-	 */
-	private static void createStateTableIfNotExists(
-		DataSource appDataSource,
-		String metaSchemaName,
-		String stateTableName) throws SQLException
-	{
-		if (appDataSource == null) { throw new IllegalArgumentException("appDataSource"); }
-		if (metaSchemaName == null) { throw new IllegalArgumentException("metaSchemaName cannot be null"); }
-		if ("".equals(metaSchemaName)) { throw new IllegalArgumentException("metaSchemaName cannot be empty"); }
-		if (stateTableName == null) { throw new IllegalArgumentException("stateTableName cannot be null"); }
-		if ("".equals(stateTableName)) { throw new IllegalArgumentException("stateTableName cannot be empty"); }
 		
-		DatabaseHelper.execute(
-			appDataSource,
-			String.format("CREATE SCHEMA IF NOT EXISTS %s;", metaSchemaName));
-
-		DatabaseHelper.execute(appDataSource, new StringBuilder()
-			.append("CREATE TABLE IF NOT EXISTS ")
-					.append(metaSchemaName).append(".")
-					.append(stateTableName).append("(")
-				.append("ResourceId UUID NOT NULL, ")
-				.append("StateId UUID NOT NULL, ")
-				.append("CONSTRAINT PK_").append(stateTableName).append(" PRIMARY KEY (ResourceId)")
-				.append(");").toString());
+		return result;
 	}
 }

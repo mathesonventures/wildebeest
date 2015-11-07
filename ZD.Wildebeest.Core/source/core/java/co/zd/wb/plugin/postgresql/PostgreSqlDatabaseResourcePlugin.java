@@ -46,15 +46,19 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 		PostgreSqlDatabaseInstance db = ModelExtensions.As(instance, PostgreSqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a PostgreSqlDatabaseInstance"); }
 
+		String metaSchemaName = Extensions.getMetaSchemaName(db);
+		String stateTableName = Extensions.getStateTableName(db);
+		
 		UUID declaredStateId = null;
 		
-		if (db.databaseExists())
+		if (db.databaseExists() && PostgreSqlStateHelper.hasStateId(
+			resource.getResourceId(), db.getAppDataSource(), metaSchemaName, stateTableName))
 		{
 			declaredStateId = PostgreSqlStateHelper.getStateId(
 				resource.getResourceId(),
 				db.getAppDataSource(),
-				Extensions.getMetaSchemaName(db),
-				Extensions.getStateTableName(db));
+				metaSchemaName,
+				stateTableName);
 		}
 		
 		// If we found a declared state, check that the state is actually defined
