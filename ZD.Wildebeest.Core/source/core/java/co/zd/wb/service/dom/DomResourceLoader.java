@@ -31,6 +31,7 @@ import co.zd.wb.service.ResourcePluginBuilder;
 import co.zd.wb.service.ResourceLoader;
 import co.zd.wb.service.ResourceLoaderFault;
 import co.zd.wb.service.MigrationBuilder;
+import java.io.File;
 import java.io.StringReader;
 import java.util.Map;
 import java.util.UUID;
@@ -237,8 +238,10 @@ public class DomResourceLoader implements ResourceLoader
 
 	// </editor-fold>
 
-	@Override public Resource load() throws MessagesException
+	@Override public Resource load(File baseDir) throws MessagesException
 	{
+		if (baseDir == null) { throw new IllegalArgumentException("baseDir cannot be null"); }
+		
 		InputSource inputSource = new InputSource(new StringReader(this.getResourceXml()));
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = null;
@@ -339,7 +342,8 @@ public class DomResourceLoader implements ResourceLoader
 						{
 							Migration migration = buildMigration(
 								this.getMigrationBuilders(),
-								migrationXe);
+								migrationXe,
+								baseDir);
 											
 							// Verify that this assertion can be used with the Resource.
 							if (!migration.canPerformOn(resource))
@@ -438,10 +442,12 @@ public class DomResourceLoader implements ResourceLoader
 	
 	private static Migration buildMigration(
 		Map<String, MigrationBuilder> migrationBuilders,
-		Element element) throws MessagesException
+		Element element,
+		File baseDir) throws MessagesException
 	{
 		if (migrationBuilders == null) { throw new IllegalArgumentException("migrationBuilders cannot be null"); }
 		if (element == null) { throw new IllegalArgumentException("element cannot be null"); }
+		if (baseDir == null) { throw new IllegalArgumentException("baseDir cannot be null"); }
 		
 		String type = element.getAttribute(XA_MIGRATION_TYPE);
 		UUID id = UUID.fromString(element.getAttribute(XA_MIGRATION_ID));
@@ -470,6 +476,7 @@ public class DomResourceLoader implements ResourceLoader
 		return builder.build(
 			id,
 			fromStateId,
-			toStateId);
+			toStateId,
+			baseDir);
 	}
 }

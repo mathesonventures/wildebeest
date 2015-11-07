@@ -17,6 +17,7 @@
 package co.zd.wb.service;
 
 import co.zd.wb.Resource;
+import java.io.File;
 
 /**
  * An ResourceLoader is responsible for the overall deserialization of a descriptor from some persistent representation
@@ -30,9 +31,10 @@ public interface ResourceLoader
 	/**
 	 * Loads an Resource according to the configuration of this ResourceLoader.
 	 * 
+	 * @param       baseDir                     the base directory for relative paths.
 	 * @return                                  the deserialized Resource.
 	 * @throws      MessagesException           if any user-resolvable errors occurred during deserialization.
 	 * @since                                   1.0
 	 */
-	Resource load() throws MessagesException;
+	Resource load(File baseDir) throws MessagesException;
 }

@@ -33,6 +33,7 @@ import co.zd.wb.service.MessagesException;
 import co.zd.wb.PrintStreamLogger;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
+import java.io.File;
 import java.sql.SQLException;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -79,7 +80,7 @@ public class ResourceLoaderIntegrationTests
 		Resource resource = null;
 		try
 		{
-			resource = resourceBuilder.load();
+			resource = resourceBuilder.load(new File("."));
 		}
 		catch (MessagesException e)
 		{

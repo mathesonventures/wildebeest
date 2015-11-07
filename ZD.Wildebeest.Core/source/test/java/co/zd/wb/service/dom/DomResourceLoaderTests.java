@@ -29,6 +29,7 @@ import co.zd.wb.service.AssertionBuilder;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.ResourcePluginBuilder;
 import co.zd.wb.service.MigrationBuilder;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -66,7 +67,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load();
+		Resource resource = resourceBuilder.load(new File("."));
 		
 		//
 		// Verify
@@ -115,7 +116,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load();
+		Resource resource = resourceBuilder.load(new File("."));
 		
 		//
 		// Verify
@@ -165,7 +166,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load();
+		Resource resource = resourceBuilder.load(new File("."));
 		
 		//
 		// Verify
@@ -217,7 +218,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load();
+		Resource resource = resourceBuilder.load(new File("."));
 		
 		//
 		// Verify
@@ -272,7 +273,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load();
+		Resource resource = resourceBuilder.load(new File("."));
 		
 		//
 		// Verify
@@ -337,7 +338,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load();
+		Resource resource = resourceBuilder.load(new File("."));
 		
 		//
 		// Verify
@@ -404,7 +405,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load();
+		Resource resource = resourceBuilder.load(new File("."));
 		
 		//
 		// Verify
@@ -462,7 +463,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load();
+		Resource resource = resourceBuilder.load(new File("."));
 		
 		//
 		// Verify
@@ -522,7 +523,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load();
+		Resource resource = resourceBuilder.load(new File("."));
 		
 		//
 		// Verify

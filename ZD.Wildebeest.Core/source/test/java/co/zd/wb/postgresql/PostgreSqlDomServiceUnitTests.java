@@ -27,6 +27,7 @@ import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.DomInstanceLoader;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
+import java.io.File;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,7 +53,7 @@ public class PostgreSqlDomServiceUnitTests
 		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), resourceXml);
 		
 		// Execute
-		Resource resource = loader.load();
+		Resource resource = loader.load(new File("."));
 		
 		// Verify
 		Assert.assertNotNull("resource", resource);

@@ -24,6 +24,7 @@ import co.zd.wb.plugin.composite.ExternalResourceMigration;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
+import java.io.File;
 import java.util.UUID;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -66,7 +67,7 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(new FakeLogger(), resourceXml);
 
 		// Execute
-		Resource resource = resourceLoader.load();
+		Resource resource = resourceLoader.load(new File("."));
 		
 		// Verify
 		Migration migration = resource.getMigrations().get(0);

@@ -28,6 +28,7 @@ import co.zd.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
+import java.io.File;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,7 +56,7 @@ public class AnsiSqlDomServiceUnitTests
 		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
 
 		// Execute
-		Resource resource = loader.load();
+		Resource resource = loader.load(new File("."));
 		
 		// Verify
 		Assert.assertNotNull("resource", resource);
@@ -92,7 +93,7 @@ public class AnsiSqlDomServiceUnitTests
 		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
 
 		// Execute
-		Resource resource = loader.load();
+		Resource resource = loader.load(new File("."));
 		
 		// Verify
 		Assert.assertNotNull("resource", resource);
@@ -130,7 +131,7 @@ public class AnsiSqlDomServiceUnitTests
 		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
 		
 		// Execute
-		Resource resource = loader.load();
+		Resource resource = loader.load(new File("."));
 		
 		// Verify
 		Assert.assertNotNull("resource", resource);
@@ -167,7 +168,7 @@ public class AnsiSqlDomServiceUnitTests
 		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
 		
 		// Execute
-		Resource resource = loader.load();
+		Resource resource = loader.load(new File("."));
 		
 		// Verify
 		Assert.assertNotNull("resource", resource);

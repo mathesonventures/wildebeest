@@ -28,6 +28,7 @@ import co.zd.wb.service.dom.DomResourceLoader;
 import co.zd.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
 import co.zd.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
 import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourcePluginBuilder;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -66,7 +67,7 @@ public class DatabaselDomServiceUnitTests
 			xml);
 		
 		// Execute
-		Resource resource = loader.load();
+		Resource resource = loader.load(new File("."));
 		
 		// Verify
 		Assert.assertNotNull("resource", resource);
@@ -106,7 +107,7 @@ public class DatabaselDomServiceUnitTests
 			xml);
 		
 		// Execute
-		Resource resource = loader.load();
+		Resource resource = loader.load(new File("."));
 		
 		// Verify
 		Assert.assertNotNull("resource", resource);

@@ -36,6 +36,7 @@ import co.zd.wb.service.dom.DomPlugins;
 import co.zd.wb.service.dom.DomResourceLoader;
 import co.zd.wb.fixturecreator.XmlBuilder;
 import co.zd.wb.plugin.base.ResourceImpl;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.UUID;
 import junit.framework.Assert;
@@ -134,7 +135,7 @@ public class IntegrationTests
 			prodCatResource.getResourceXml());
 
 		// Execute
-		Resource resource = resourceLoader.load();
+		Resource resource = resourceLoader.load(new File("."));
 		
 		// Verify
 		assertResource(resource);
@@ -177,7 +178,7 @@ public class IntegrationTests
 			prodCatResource.getResourceXml());
 		
 		// Execute
-		Resource resource = resourceLoader.load();
+		Resource resource = resourceLoader.load(new File("."));
 
 		// Assert
 		assertResource(resource);

@@ -17,6 +17,7 @@
 package co.zd.wb.service;
 
 import co.zd.wb.Migration;
+import java.io.File;
 import java.util.UUID;
 
 
@@ -42,6 +43,7 @@ public interface MigrationBuilder
 	 *                                          the non-existent state.
 	 * @param       toStateId                   the target state for the new {@link Migration} or null to migrate to
 	 *                                          the non-existent state.
+	 * @param       baseDir                     the base directory to use for resolving relative paths.
 	 * @return                                  the new {@link Migration} instance.
 	 * @throws      MessagesException           if migration fails.
 	 * @since                                   1.0
@@ -49,7 +51,8 @@ public interface MigrationBuilder
 	Migration build(
 		UUID migrationId,
 		UUID fromStateId,
-		UUID toStateId) throws MessagesException;
+		UUID toStateId,
+		File baseDir) throws MessagesException;
 	
 	/**
 	 * Resets the MigrationBuilder, making it ready to build a new instance.

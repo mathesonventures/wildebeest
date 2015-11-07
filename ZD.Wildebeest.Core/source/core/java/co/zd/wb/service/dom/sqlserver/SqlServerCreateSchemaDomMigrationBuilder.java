@@ -23,6 +23,7 @@ import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.V;
 import co.zd.wb.service.dom.BaseDomMigrationBuilder;
 import co.zd.wb.framework.TryResult;
+import java.io.File;
 import java.util.UUID;
 
 /**
@@ -37,7 +38,8 @@ public class SqlServerCreateSchemaDomMigrationBuilder extends BaseDomMigrationBu
 	@Override public Migration build(
 		UUID migrationId,
 		UUID fromStateId,
-		UUID toStateId) throws MessagesException
+		UUID toStateId,
+		File baseDir) throws MessagesException
 	{
 		TryResult<String> schemaName = this.tryGetString("schemaName");
 		

@@ -28,6 +28,7 @@ import co.zd.wb.framework.Try;
 import co.zd.wb.framework.TryResult;
 import co.zd.wb.plugin.base.BaseMigration;
 import co.zd.wb.service.MessagesException;
+import java.io.File;
 import java.util.UUID;
 
 public class ExternalResourceMigration extends BaseMigration
@@ -36,12 +37,14 @@ public class ExternalResourceMigration extends BaseMigration
 		UUID migrationId,
 		UUID fromStateId,
 		UUID toStateId,
+		File baseDir,
 		Logger logger,
 		String fileName,
 		String target)
 	{
 		super(migrationId, fromStateId, toStateId);
 
+		this.setBaseDir(baseDir);
 		this.setLogger(logger);
 		this.setFileName(fileName);
 		this.setTarget(target);
@@ -83,6 +86,46 @@ public class ExternalResourceMigration extends BaseMigration
 
 	private boolean hasLogger() {
 		return _logger_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="BaseDir" defaultstate="collapsed">
+
+	private File _baseDir = null;
+	private boolean _baseDir_set = false;
+
+	public File getBaseDir() {
+		if(!_baseDir_set) {
+			throw new IllegalStateException("baseDir not set.");
+		}
+		if(_baseDir == null) {
+			throw new IllegalStateException("baseDir should not be null");
+		}
+		return _baseDir;
+	}
+
+	private void setBaseDir(
+		File value) {
+		if(value == null) {
+			throw new IllegalArgumentException("baseDir cannot be null");
+		}
+		boolean changing = !_baseDir_set || _baseDir != value;
+		if(changing) {
+			_baseDir_set = true;
+			_baseDir = value;
+		}
+	}
+
+	private void clearBaseDir() {
+		if(_baseDir_set) {
+			_baseDir_set = true;
+			_baseDir = null;
+		}
+	}
+
+	private boolean hasBaseDir() {
+		return _baseDir_set;
 	}
 
 	// </editor-fold>
@@ -183,7 +226,8 @@ public class ExternalResourceMigration extends BaseMigration
 		Resource externalResource = null;
 		try
 		{
-			externalResource = Interface.loadResource(this.getLogger(), this.getFileName());
+			File file = new File(this.getBaseDir(), this.getFileName());
+			externalResource = Interface.loadResource(this.getLogger(), file);
 		}
 		catch(MessagesException e)
 		{

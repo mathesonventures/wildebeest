@@ -20,6 +20,7 @@ import co.zd.wb.Migration;
 import co.zd.wb.plugin.mysql.MySqlCreateDatabaseMigration;
 import co.zd.wb.service.MessagesException;
 import co.zd.wb.service.dom.BaseDomMigrationBuilder;
+import java.io.File;
 import java.util.UUID;
 
 /**
@@ -33,7 +34,8 @@ public class MySqlCreateDatabaseDomMigrationBuilder extends BaseDomMigrationBuil
 	@Override public Migration build(
 		UUID migrationId,
 		UUID fromStateId,
-		UUID toStateId) throws MessagesException
+		UUID toStateId,
+		File baseDir) throws MessagesException
 	{
 		return new MySqlCreateDatabaseMigration(migrationId, fromStateId, toStateId);
 	}

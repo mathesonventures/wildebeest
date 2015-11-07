@@ -419,7 +419,7 @@ public class Interface
 		if (resourceXml != null)
 		{
 			DomResourceLoader resourceLoader = DomPlugins.resourceLoader(logger, resourceXml);
-			resource = resourceLoader.load();
+			resource = resourceLoader.load(resourceFile.getParentFile());
 		}
 
 		return resource;
