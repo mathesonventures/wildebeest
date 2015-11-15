@@ -395,6 +395,9 @@ public class Interface
 	{
 		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
+
+		// Get the absolute file for this resource - this ensures that getParentFile works correctly
+		resourceFile = resourceFile.getAbsoluteFile();
 		
 		// Load Resource
 		String resourceXml;
