@@ -463,7 +463,7 @@ public final class ResourceImpl implements Resource
 		
 		for (State check : this.getStates())
 		{
-			if (label.equals(check.getLabel()))
+			if (check.hasLabel() && label.equals(check.getLabel()))
 			{
 				result = check;
 			}
