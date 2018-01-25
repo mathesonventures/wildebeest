@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom.sqlserver;
+package co.mv.wb.service.dom.sqlserver;
 
-import co.zd.wb.ResourcePlugin;
-import co.zd.wb.plugin.sqlserver.SqlServerDatabaseResourcePlugin;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.ResourcePluginBuilder;
-import co.zd.wb.service.dom.BaseDomResourcePluginBuilder;
+import co.mv.wb.ResourcePlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerDatabaseResourcePlugin;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.ResourcePluginBuilder;
+import co.mv.wb.service.dom.BaseDomResourcePluginBuilder;
 
 /**
  * A {@link ResourcePluginBuilder} that builds a {@link SqlServerDatabaseResourcePlugin} from a DOM

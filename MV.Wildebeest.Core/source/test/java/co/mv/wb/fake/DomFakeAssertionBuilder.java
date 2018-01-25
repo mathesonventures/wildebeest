@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.fake;
+package co.mv.wb.fake;
 
-import co.zd.wb.Assertion;
-import co.zd.wb.service.dom.BaseDomAssertionBuilder;
+import co.mv.wb.Assertion;
+import co.mv.wb.service.dom.BaseDomAssertionBuilder;
 import java.util.UUID;
 
 public class DomFakeAssertionBuilder extends BaseDomAssertionBuilder

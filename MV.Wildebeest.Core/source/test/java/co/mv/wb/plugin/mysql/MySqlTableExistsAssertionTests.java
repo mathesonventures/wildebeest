@@ -14,24 +14,24 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.mysql;
+package co.mv.wb.plugin.mysql;
 
-import co.zd.wb.AssertExtensions;
-import co.zd.wb.fake.FakeInstance;
-import co.zd.wb.plugin.database.SqlScriptMigration;
-import co.zd.wb.AssertionFailedException;
-import co.zd.wb.AssertionResponse;
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.State;
-import co.zd.wb.Migration;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationNotPossibleException;
-import co.zd.wb.plugin.base.ImmutableState;
-import co.zd.wb.plugin.database.DatabaseFixtureHelper;
-import co.zd.wb.PrintStreamLogger;
-import co.zd.wb.Resource;
-import co.zd.wb.ResourcePlugin;
-import co.zd.wb.plugin.base.ResourceImpl;
+import co.mv.wb.AssertExtensions;
+import co.mv.wb.fake.FakeInstance;
+import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.State;
+import co.mv.wb.Migration;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.plugin.base.ImmutableState;
+import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.Resource;
+import co.mv.wb.ResourcePlugin;
+import co.mv.wb.plugin.base.ResourceImpl;
 import java.sql.SQLException;
 import java.util.UUID;
 import junit.framework.Assert;

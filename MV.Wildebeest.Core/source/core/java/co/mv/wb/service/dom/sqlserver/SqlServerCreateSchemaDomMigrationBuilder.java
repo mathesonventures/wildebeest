@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom.sqlserver;
+package co.mv.wb.service.dom.sqlserver;
 
-import co.zd.wb.Migration;
-import co.zd.wb.plugin.sqlserver.SqlServerCreateSchemaMigration;
-import co.zd.wb.service.Messages;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.V;
-import co.zd.wb.service.dom.BaseDomMigrationBuilder;
-import co.zd.wb.framework.TryResult;
+import co.mv.wb.Migration;
+import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigration;
+import co.mv.wb.service.Messages;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.V;
+import co.mv.wb.service.dom.BaseDomMigrationBuilder;
+import co.mv.wb.framework.TryResult;
 import java.io.File;
 import java.util.UUID;
 

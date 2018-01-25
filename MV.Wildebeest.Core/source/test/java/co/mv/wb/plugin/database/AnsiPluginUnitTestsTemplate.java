@@ -1,10 +1,10 @@
-package co.zd.wb.plugin.database;
+package co.mv.wb.plugin.database;
 
-import co.zd.wb.AssertionResponse;
-import co.zd.wb.Migration;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
-import co.zd.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.Migration;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
+import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import java.util.UUID;
 import junit.framework.Assert;
 

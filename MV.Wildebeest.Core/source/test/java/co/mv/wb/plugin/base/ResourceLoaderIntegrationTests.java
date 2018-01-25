@@ -14,25 +14,25 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.base;
+package co.mv.wb.plugin.base;
 
-import co.zd.wb.AssertExtensions;
-import co.zd.wb.ProductCatalogueMySqlDatabaseResource;
-import co.zd.wb.AssertionFailedException;
-import co.zd.wb.FakeLogger;
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.Resource;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationNotPossibleException;
-import co.zd.wb.plugin.database.DatabaseFixtureHelper;
-import co.zd.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
-import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.zd.wb.plugin.mysql.MySqlProperties;
-import co.zd.wb.plugin.mysql.MySqlUtil;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.PrintStreamLogger;
-import co.zd.wb.service.dom.DomPlugins;
-import co.zd.wb.service.dom.DomResourceLoader;
+import co.mv.wb.AssertExtensions;
+import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.FakeLogger;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Resource;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
+import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
+import co.mv.wb.plugin.mysql.MySqlProperties;
+import co.mv.wb.plugin.mysql.MySqlUtil;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.service.dom.DomPlugins;
+import co.mv.wb.service.dom.DomResourceLoader;
 import java.io.File;
 import java.sql.SQLException;
 import junit.framework.Assert;

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.framework;
+package co.mv.wb.framework;
 
 /**
  * The result from some try-get method.  A TryGetResult will contain a value if it was successful, or will be empty if

@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.database;
+package co.mv.wb.plugin.database;
 
-import co.zd.wb.AssertionFailedException;
-import co.zd.wb.AssertionResponse;
-import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.zd.wb.plugin.mysql.MySqlElementFixtures;
-import co.zd.wb.plugin.mysql.MySqlProperties;
-import co.zd.wb.plugin.mysql.MySqlUtil;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
+import co.mv.wb.plugin.mysql.MySqlElementFixtures;
+import co.mv.wb.plugin.mysql.MySqlProperties;
+import co.mv.wb.plugin.mysql.MySqlUtil;
 import java.util.UUID;
 import junit.framework.Assert;
 import org.junit.Ignore;

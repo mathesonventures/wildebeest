@@ -14,21 +14,21 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom;
+package co.mv.wb.service.dom;
 
-import co.zd.wb.fake.DomFakeMigrationBuilder;
-import co.zd.wb.fake.DomFakeResourcePluginBuilder;
-import co.zd.wb.fake.DomFakeAssertionBuilder;
-import co.zd.wb.AssertExtensions;
-import co.zd.wb.Resource;
-import co.zd.wb.fixturecreator.FixtureCreator;
-import co.zd.wb.fake.FakeAssertion;
-import co.zd.wb.fake.FakeResourcePlugin;
-import co.zd.wb.fake.FakeMigration;
-import co.zd.wb.service.AssertionBuilder;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.ResourcePluginBuilder;
-import co.zd.wb.service.MigrationBuilder;
+import co.mv.wb.fake.DomFakeMigrationBuilder;
+import co.mv.wb.fake.DomFakeResourcePluginBuilder;
+import co.mv.wb.fake.DomFakeAssertionBuilder;
+import co.mv.wb.AssertExtensions;
+import co.mv.wb.Resource;
+import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.fake.FakeAssertion;
+import co.mv.wb.fake.FakeResourcePlugin;
+import co.mv.wb.fake.FakeMigration;
+import co.mv.wb.service.AssertionBuilder;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.ResourcePluginBuilder;
+import co.mv.wb.service.MigrationBuilder;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;

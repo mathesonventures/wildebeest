@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb;
+package co.mv.wb;
 
 /**
  * Indicates that the state specified for a migrate or a jumpstate command not defined for the current resource.

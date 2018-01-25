@@ -29,7 +29,7 @@
 		<java>
 			<source>1.8</source>
 			<target>1.8</target>
-			<mainclass>co.zd.wb.cli.WildebeestCommand</mainclass>
+			<mainclass>co.mv.wb.cli.WildebeestCommand</mainclass>
 		</java>
 	</type>
 

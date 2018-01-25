@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.sqlserver;
+package co.mv.wb.plugin.sqlserver;
 
-import co.zd.wb.AssertExtensions;
-import co.zd.wb.fake.FakeInstance;
-import co.zd.wb.AssertionFailedException;
-import co.zd.wb.AssertionResponse;
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.Migration;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationNotPossibleException;
-import co.zd.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.AssertExtensions;
+import co.mv.wb.fake.FakeInstance;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Migration;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import java.sql.SQLException;
 import java.util.UUID;
 import junit.framework.Assert;

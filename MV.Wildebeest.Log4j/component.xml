@@ -21,8 +21,8 @@
 <component>
 
 	<identity>
-		<name>Log4J</name>
-		<title>Log4J Integration</title>
+		<name>Log4j</name>
+		<title>Log4J Logger Plugin</title>
 	</identity>
 
 	<type>

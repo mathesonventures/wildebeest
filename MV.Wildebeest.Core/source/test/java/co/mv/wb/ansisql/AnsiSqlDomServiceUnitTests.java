@@ -14,20 +14,20 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.ansisql;
+package co.mv.wb.ansisql;
 
-import co.zd.wb.AssertExtensions;
-import co.zd.wb.FakeLogger;
-import co.zd.wb.ModelExtensions;
-import co.zd.wb.Resource;
-import co.zd.wb.fixturecreator.FixtureCreator;
-import co.zd.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
-import co.zd.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
-import co.zd.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
-import co.zd.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.dom.DomPlugins;
-import co.zd.wb.service.dom.DomResourceLoader;
+import co.mv.wb.AssertExtensions;
+import co.mv.wb.FakeLogger;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.Resource;
+import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
+import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
+import co.mv.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
+import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.dom.DomPlugins;
+import co.mv.wb.service.dom.DomResourceLoader;
 import java.io.File;
 import java.util.UUID;
 import org.junit.Assert;

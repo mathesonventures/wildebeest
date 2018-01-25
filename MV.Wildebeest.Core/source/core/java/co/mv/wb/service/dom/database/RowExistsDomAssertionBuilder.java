@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom.database;
+package co.mv.wb.service.dom.database;
 
-import co.zd.wb.Assertion;
-import co.zd.wb.plugin.database.RowExistsAssertion;
-import co.zd.wb.service.AssertionBuilder;
-import co.zd.wb.service.Messages;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.V;
-import co.zd.wb.service.dom.BaseDomAssertionBuilder;
-import co.zd.wb.framework.TryResult;
+import co.mv.wb.Assertion;
+import co.mv.wb.plugin.database.RowExistsAssertion;
+import co.mv.wb.service.AssertionBuilder;
+import co.mv.wb.service.Messages;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.V;
+import co.mv.wb.service.dom.BaseDomAssertionBuilder;
+import co.mv.wb.framework.TryResult;
 import java.util.UUID;
 
 /**

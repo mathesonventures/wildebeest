@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.sqlserver;
+package co.mv.wb.plugin.sqlserver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

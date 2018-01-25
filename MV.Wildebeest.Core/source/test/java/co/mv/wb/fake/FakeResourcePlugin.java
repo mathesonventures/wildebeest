@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.fake;
+package co.mv.wb.fake;
 
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.Instance;
-import co.zd.wb.Logger;
-import co.zd.wb.ModelExtensions;
-import co.zd.wb.Resource;
-import co.zd.wb.ResourcePlugin;
-import co.zd.wb.State;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Instance;
+import co.mv.wb.Logger;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.Resource;
+import co.mv.wb.ResourcePlugin;
+import co.mv.wb.State;
 import java.util.UUID;
 
 public class FakeResourcePlugin implements ResourcePlugin

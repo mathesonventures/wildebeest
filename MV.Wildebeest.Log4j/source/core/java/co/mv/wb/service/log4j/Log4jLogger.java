@@ -14,21 +14,21 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.log4j;
+package co.mv.wb.service.log4j;
 
-import co.zd.wb.Assertion;
-import co.zd.wb.AssertionFailedException;
-import co.zd.wb.AssertionResponse;
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.InvalidStateSpecifiedException;
-import co.zd.wb.JumpStateFailedException;
-import co.zd.wb.Logger;
-import co.zd.wb.Migration;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationNotPossibleException;
-import co.zd.wb.Resource;
-import co.zd.wb.State;
-import co.zd.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Assertion;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.JumpStateFailedException;
+import co.mv.wb.Logger;
+import co.mv.wb.Migration;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.UnknownStateSpecifiedException;
 
 /**
  * A {@link Logger} that sends messages to Log4J.

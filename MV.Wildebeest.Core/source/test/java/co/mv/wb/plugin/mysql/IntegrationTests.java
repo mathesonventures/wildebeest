@@ -14,28 +14,28 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.mysql;
+package co.mv.wb.plugin.mysql;
 
-import co.zd.wb.plugin.database.SqlScriptMigration;
-import co.zd.wb.AssertionFailedException;
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.Instance;
-import co.zd.wb.State;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationNotPossibleException;
-import co.zd.wb.AssertExtensions;
-import co.zd.wb.FakeLogger;
-import co.zd.wb.ProductCatalogueMySqlDatabaseResource;
-import co.zd.wb.Resource;
-import co.zd.wb.plugin.base.ImmutableState;
-import co.zd.wb.plugin.database.DatabaseFixtureHelper;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.PrintStreamLogger;
-import co.zd.wb.service.dom.DomInstanceLoader;
-import co.zd.wb.service.dom.DomPlugins;
-import co.zd.wb.service.dom.DomResourceLoader;
-import co.zd.wb.fixturecreator.XmlBuilder;
-import co.zd.wb.plugin.base.ResourceImpl;
+import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Instance;
+import co.mv.wb.State;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.AssertExtensions;
+import co.mv.wb.FakeLogger;
+import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
+import co.mv.wb.Resource;
+import co.mv.wb.plugin.base.ImmutableState;
+import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.service.dom.DomInstanceLoader;
+import co.mv.wb.service.dom.DomPlugins;
+import co.mv.wb.service.dom.DomResourceLoader;
+import co.mv.wb.fixturecreator.XmlBuilder;
+import co.mv.wb.plugin.base.ResourceImpl;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.UUID;

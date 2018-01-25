@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb;
+package co.mv.wb;
 
-import co.zd.wb.fixturecreator.FixtureCreator;
-import co.zd.wb.plugin.mysql.MySqlElementFixtures;
+import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.plugin.mysql.MySqlElementFixtures;
 import java.util.UUID;
 
 public class ProductCatalogueMySqlDatabaseResource

@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.database;
+package co.mv.wb.plugin.database;
 
-import co.zd.wb.Instance;
+import co.mv.wb.Instance;
 
 /**
  * A {@link Resource} {@link Instance} that is a database.

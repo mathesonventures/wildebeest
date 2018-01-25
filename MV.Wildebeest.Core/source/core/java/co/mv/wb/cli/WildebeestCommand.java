@@ -14,19 +14,19 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.cli;
+package co.mv.wb.cli;
 
-import co.zd.wb.About;
-import co.zd.wb.Instance;
-import co.zd.wb.Interface;
-import co.zd.wb.Resource;
-import co.zd.wb.Logger;
-import co.zd.wb.PrintStreamLogger;
+import co.mv.wb.About;
+import co.mv.wb.Instance;
+import co.mv.wb.Interface;
+import co.mv.wb.Resource;
+import co.mv.wb.Logger;
+import co.mv.wb.PrintStreamLogger;
 import java.io.PrintStream;
 
 /**
  * The Wildebeest command-line interface.  WildebeestCommand parses command-line invocations, and delegates to
- * {@link co.zd.wb.Interface} to carry out the command.
+ * {@link co.mv.wb.Interface} to carry out the command.
  * 
  * @author                                      Brendon Matheson
  * @since                                       1.0

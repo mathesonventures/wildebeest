@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.postgresql;
+package co.mv.wb.postgresql;
 
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
-import co.zd.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
-import co.zd.wb.plugin.database.AnsiPluginUnitTestsTemplate;
-import co.zd.wb.plugin.database.SqlScriptMigration;
-import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
+import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
+import co.mv.wb.plugin.database.AnsiPluginUnitTestsTemplate;
+import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import java.util.UUID;
 import org.junit.Test;
 

@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom;
+package co.mv.wb.service.dom;
 
-import co.zd.wb.service.InstanceBuilder;
+import co.mv.wb.service.InstanceBuilder;
 
 /**
  * Base class for DOM-based {@link InstanceBuilder} implementations.

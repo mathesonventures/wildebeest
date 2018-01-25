@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.mysql;
+package co.mv.wb.plugin.mysql;
 
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.Resource;
-import co.zd.wb.State;
-import co.zd.wb.plugin.base.ImmutableState;
-import co.zd.wb.plugin.base.ResourceImpl;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.plugin.base.ImmutableState;
+import co.mv.wb.plugin.base.ResourceImpl;
 import java.sql.SQLException;
 import java.util.UUID;
 import org.junit.Assert;

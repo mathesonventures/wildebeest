@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb;
+package co.mv.wb;
 
-import co.zd.wb.service.InstanceLoaderFault;
-import co.zd.wb.service.Messages;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.ResourceLoaderFault;
-import co.zd.wb.service.dom.DomInstanceLoader;
-import co.zd.wb.service.dom.DomPlugins;
-import co.zd.wb.service.dom.DomResourceLoader;
+import co.mv.wb.service.InstanceLoaderFault;
+import co.mv.wb.service.Messages;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.ResourceLoaderFault;
+import co.mv.wb.service.dom.DomInstanceLoader;
+import co.mv.wb.service.dom.DomPlugins;
+import co.mv.wb.service.dom.DomResourceLoader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;

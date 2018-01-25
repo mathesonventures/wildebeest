@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom.composite;
+package co.mv.wb.service.dom.composite;
 
-import co.zd.wb.FakeLogger;
-import co.zd.wb.Migration;
-import co.zd.wb.Resource;
-import co.zd.wb.fixturecreator.FixtureCreator;
-import co.zd.wb.plugin.composite.ExternalResourceMigration;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.dom.DomPlugins;
-import co.zd.wb.service.dom.DomResourceLoader;
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Migration;
+import co.mv.wb.Resource;
+import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.plugin.composite.ExternalResourceMigration;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.dom.DomPlugins;
+import co.mv.wb.service.dom.DomResourceLoader;
 import java.io.File;
 import java.util.UUID;
 import static junit.framework.Assert.assertEquals;

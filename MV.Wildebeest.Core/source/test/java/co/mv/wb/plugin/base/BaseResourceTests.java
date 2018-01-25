@@ -14,26 +14,26 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.base;
+package co.mv.wb.plugin.base;
 
-import co.zd.wb.fake.TagAssertion;
-import co.zd.wb.fake.FakeAssertion;
-import co.zd.wb.fake.FakeInstance;
-import co.zd.wb.fake.FakeResourcePlugin;
-import co.zd.wb.fake.FakeMigration;
-import co.zd.wb.AssertExtensions;
-import co.zd.wb.Assertion;
-import co.zd.wb.AssertionFailedException;
-import co.zd.wb.AssertionResult;
-import co.zd.wb.ExpectException;
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.JumpStateFailedException;
-import co.zd.wb.State;
-import co.zd.wb.Migration;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationNotPossibleException;
-import co.zd.wb.PrintStreamLogger;
-import co.zd.wb.Resource;
+import co.mv.wb.fake.TagAssertion;
+import co.mv.wb.fake.FakeAssertion;
+import co.mv.wb.fake.FakeInstance;
+import co.mv.wb.fake.FakeResourcePlugin;
+import co.mv.wb.fake.FakeMigration;
+import co.mv.wb.AssertExtensions;
+import co.mv.wb.Assertion;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionResult;
+import co.mv.wb.ExpectException;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.JumpStateFailedException;
+import co.mv.wb.State;
+import co.mv.wb.Migration;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.Resource;
 import java.util.List;
 import java.util.UUID;
 import static org.junit.Assert.*;

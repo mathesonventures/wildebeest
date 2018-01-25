@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.database;
+package co.mv.wb.plugin.database;
 
-import co.zd.wb.plugin.base.BaseAssertion;
-import co.zd.wb.AssertionResponse;
-import co.zd.wb.ModelExtensions;
-import co.zd.wb.Instance;
-import co.zd.wb.Resource;
-import co.zd.wb.plugin.base.ImmutableAssertionResponse;
+import co.mv.wb.plugin.base.BaseAssertion;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.Instance;
+import co.mv.wb.Resource;
+import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 import java.util.UUID;
 
 /**

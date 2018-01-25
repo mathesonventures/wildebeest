@@ -19,8 +19,8 @@
 <component>
 
 	<identity>
-		<name>SLF4J</name>
-		<title>SLF4J</title>
+		<name>Slf4j</name>
+		<title>SLF4J Logger Plugin</title>
 	</identity>
 
 	<type>

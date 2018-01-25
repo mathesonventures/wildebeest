@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom.postgresql;
+package co.mv.wb.service.dom.postgresql;
 
-import co.zd.wb.Instance;
-import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
-import co.zd.wb.service.Messages;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.V;
-import co.zd.wb.service.dom.BaseDomInstanceBuilder;
-import co.zd.wb.framework.TryResult;
+import co.mv.wb.Instance;
+import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
+import co.mv.wb.service.Messages;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.V;
+import co.mv.wb.service.dom.BaseDomInstanceBuilder;
+import co.mv.wb.framework.TryResult;
 
 /**
  * An {@link InstanceBuilder} that builds a {@link PostgreSqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.

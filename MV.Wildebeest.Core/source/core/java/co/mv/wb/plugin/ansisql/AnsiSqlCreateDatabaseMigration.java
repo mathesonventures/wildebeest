@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.ansisql;
+package co.mv.wb.plugin.ansisql;
 
-import co.zd.wb.Instance;
-import co.zd.wb.Migration;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationFaultException;
-import co.zd.wb.ModelExtensions;
-import co.zd.wb.Resource;
-import co.zd.wb.plugin.base.BaseMigration;
-import co.zd.wb.plugin.database.DatabaseHelper;
+import co.mv.wb.Instance;
+import co.mv.wb.Migration;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationFaultException;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.Resource;
+import co.mv.wb.plugin.base.BaseMigration;
+import co.mv.wb.plugin.database.DatabaseHelper;
 import java.sql.SQLException;
 import java.util.UUID;
 

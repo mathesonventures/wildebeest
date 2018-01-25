@@ -14,20 +14,20 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.database;
+package co.mv.wb.plugin.database;
 
-import co.zd.wb.Assertion;
-import co.zd.wb.ModelExtensions;
-import co.zd.wb.Resource;
-import co.zd.wb.fixturecreator.FixtureCreator;
-import co.zd.wb.service.AssertionBuilder;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.MigrationBuilder;
-import co.zd.wb.service.ResourcePluginBuilder;
-import co.zd.wb.service.dom.DomResourceLoader;
-import co.zd.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
-import co.zd.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
-import co.zd.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourcePluginBuilder;
+import co.mv.wb.Assertion;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.Resource;
+import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.service.AssertionBuilder;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.MigrationBuilder;
+import co.mv.wb.service.ResourcePluginBuilder;
+import co.mv.wb.service.dom.DomResourceLoader;
+import co.mv.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
+import co.mv.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
+import co.mv.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourcePluginBuilder;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;

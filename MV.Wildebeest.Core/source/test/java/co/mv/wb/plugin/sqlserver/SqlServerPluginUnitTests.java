@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.sqlserver;
+package co.mv.wb.plugin.sqlserver;
 
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.plugin.database.DatabaseFixtureHelper;
-import co.zd.wb.plugin.database.DatabasePluginUnitTestsTemplate;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.plugin.database.DatabasePluginUnitTestsTemplate;
 import java.util.UUID;
 import org.junit.Test;
 

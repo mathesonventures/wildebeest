@@ -14,18 +14,18 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.postgresql;
+package co.mv.wb.plugin.postgresql;
 
-import co.zd.wb.FaultException;
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.Instance;
-import co.zd.wb.Logger;
-import co.zd.wb.ModelExtensions;
-import co.zd.wb.Resource;
-import co.zd.wb.ResourcePlugin;
-import co.zd.wb.State;
-import co.zd.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
-import co.zd.wb.plugin.database.Extensions;
+import co.mv.wb.FaultException;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Instance;
+import co.mv.wb.Logger;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.Resource;
+import co.mv.wb.ResourcePlugin;
+import co.mv.wb.State;
+import co.mv.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
+import co.mv.wb.plugin.database.Extensions;
 import java.sql.SQLException;
 import java.util.UUID;
 

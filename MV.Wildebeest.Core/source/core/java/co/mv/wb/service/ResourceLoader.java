@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service;
+package co.mv.wb.service;
 
-import co.zd.wb.Resource;
+import co.mv.wb.Resource;
 import java.io.File;
 
 /**

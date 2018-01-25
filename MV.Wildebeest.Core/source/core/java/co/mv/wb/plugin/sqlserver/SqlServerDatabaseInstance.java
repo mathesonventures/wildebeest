@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.sqlserver;
+package co.mv.wb.plugin.sqlserver;
 
-import co.zd.wb.FaultException;
-import co.zd.wb.Instance;
-import co.zd.wb.plugin.database.DatabaseConstants;
-import co.zd.wb.plugin.database.DatabaseHelper;
-import co.zd.wb.plugin.database.DatabaseInstance;
-import co.zd.wb.plugin.database.JdbcDatabaseInstance;
+import co.mv.wb.FaultException;
+import co.mv.wb.Instance;
+import co.mv.wb.plugin.database.DatabaseConstants;
+import co.mv.wb.plugin.database.DatabaseHelper;
+import co.mv.wb.plugin.database.DatabaseInstance;
+import co.mv.wb.plugin.database.JdbcDatabaseInstance;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

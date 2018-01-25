@@ -14,23 +14,23 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.service.dom;
+package co.mv.wb.service.dom;
 
-import co.zd.wb.Assertion;
-import co.zd.wb.ModelExtensions;
-import co.zd.wb.Resource;
-import co.zd.wb.State;
-import co.zd.wb.Migration;
-import co.zd.wb.ResourcePlugin;
-import co.zd.wb.plugin.base.ImmutableState;
-import co.zd.wb.plugin.base.ResourceImpl;
-import co.zd.wb.service.AssertionBuilder;
-import co.zd.wb.service.Messages;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.ResourcePluginBuilder;
-import co.zd.wb.service.ResourceLoader;
-import co.zd.wb.service.ResourceLoaderFault;
-import co.zd.wb.service.MigrationBuilder;
+import co.mv.wb.Assertion;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.Migration;
+import co.mv.wb.ResourcePlugin;
+import co.mv.wb.plugin.base.ImmutableState;
+import co.mv.wb.plugin.base.ResourceImpl;
+import co.mv.wb.service.AssertionBuilder;
+import co.mv.wb.service.Messages;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.ResourcePluginBuilder;
+import co.mv.wb.service.ResourceLoader;
+import co.mv.wb.service.ResourceLoaderFault;
+import co.mv.wb.service.MigrationBuilder;
 import java.io.File;
 import java.io.StringReader;
 import java.util.Map;

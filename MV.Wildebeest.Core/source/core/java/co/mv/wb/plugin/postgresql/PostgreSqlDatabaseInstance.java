@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.postgresql;
+package co.mv.wb.plugin.postgresql;
 
-import co.zd.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
-import co.zd.wb.plugin.database.BaseDatabaseInstance;
-import co.zd.wb.plugin.database.DatabaseHelper;
-import co.zd.wb.plugin.database.JdbcDatabaseInstance;
+import co.mv.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
+import co.mv.wb.plugin.database.BaseDatabaseInstance;
+import co.mv.wb.plugin.database.DatabaseHelper;
+import co.mv.wb.plugin.database.JdbcDatabaseInstance;
 import javax.sql.DataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 

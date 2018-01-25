@@ -14,20 +14,20 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.composite;
+package co.mv.wb.plugin.composite;
 
-import co.zd.wb.AssertionFailedException;
-import co.zd.wb.IndeterminateStateException;
-import co.zd.wb.Instance;
-import co.zd.wb.Interface;
-import co.zd.wb.Logger;
-import co.zd.wb.MigrationFailedException;
-import co.zd.wb.MigrationNotPossibleException;
-import co.zd.wb.Resource;
-import co.zd.wb.framework.Try;
-import co.zd.wb.framework.TryResult;
-import co.zd.wb.plugin.base.BaseMigration;
-import co.zd.wb.service.MessagesException;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Instance;
+import co.mv.wb.Interface;
+import co.mv.wb.Logger;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.Resource;
+import co.mv.wb.framework.Try;
+import co.mv.wb.framework.TryResult;
+import co.mv.wb.plugin.base.BaseMigration;
+import co.mv.wb.service.MessagesException;
 import java.io.File;
 import java.util.UUID;
 

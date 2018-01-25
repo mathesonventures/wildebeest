@@ -14,18 +14,18 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.cli;
+package co.mv.wb.cli;
 
-import co.zd.wb.FakeLogger;
-import co.zd.wb.Interface;
-import co.zd.wb.Instance;
-import co.zd.wb.plugin.database.DatabaseHelper;
-import co.zd.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.zd.wb.plugin.mysql.MySqlUtil;
-import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
-import co.zd.wb.plugin.sqlserver.SqlServerDatabaseInstance;
-import co.zd.wb.plugin.sqlserver.SqlServerUtil;
-import co.zd.wb.service.MessagesException;
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Interface;
+import co.mv.wb.Instance;
+import co.mv.wb.plugin.database.DatabaseHelper;
+import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
+import co.mv.wb.plugin.mysql.MySqlUtil;
+import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
+import co.mv.wb.plugin.sqlserver.SqlServerDatabaseInstance;
+import co.mv.wb.plugin.sqlserver.SqlServerUtil;
+import co.mv.wb.service.MessagesException;
 import java.io.File;
 import java.sql.SQLException;
 import org.junit.Test;

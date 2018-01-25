@@ -14,19 +14,19 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.postgresql;
+package co.mv.wb.postgresql;
 
-import co.zd.wb.FakeLogger;
-import co.zd.wb.Instance;
-import co.zd.wb.ModelExtensions;
-import co.zd.wb.Resource;
-import co.zd.wb.fixturecreator.FixtureCreator;
-import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
-import co.zd.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
-import co.zd.wb.service.MessagesException;
-import co.zd.wb.service.dom.DomInstanceLoader;
-import co.zd.wb.service.dom.DomPlugins;
-import co.zd.wb.service.dom.DomResourceLoader;
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Instance;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.Resource;
+import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
+import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
+import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.dom.DomInstanceLoader;
+import co.mv.wb.service.dom.DomPlugins;
+import co.mv.wb.service.dom.DomResourceLoader;
 import java.io.File;
 import java.util.UUID;
 import org.junit.Assert;

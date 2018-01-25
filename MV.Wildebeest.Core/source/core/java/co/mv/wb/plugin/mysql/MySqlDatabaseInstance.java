@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.zd.wb.plugin.mysql;
+package co.mv.wb.plugin.mysql;
 
-import co.zd.wb.FaultException;
-import co.zd.wb.Instance;
-import co.zd.wb.plugin.database.BaseDatabaseInstance;
-import co.zd.wb.plugin.database.DatabaseHelper;
-import co.zd.wb.plugin.database.JdbcDatabaseInstance;
+import co.mv.wb.FaultException;
+import co.mv.wb.Instance;
+import co.mv.wb.plugin.database.BaseDatabaseInstance;
+import co.mv.wb.plugin.database.DatabaseHelper;
+import co.mv.wb.plugin.database.JdbcDatabaseInstance;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
