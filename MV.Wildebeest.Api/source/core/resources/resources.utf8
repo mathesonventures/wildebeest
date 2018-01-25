@@ -1,0 +1,20 @@
+﻿################################################################################
+# Project:     $Xmeta.project.identity.id$
+#              $Xmeta.project.identity.title$
+#              $Xmeta.project.identity.url$
+# Component:   $Xmeta.component.identity.name$
+#              $Xmeta.component.identity.title$
+# Version:     $XName$
+#
+# Template:    $Name:  $ / templates / Document Types / Properties File
+#
+# Copyright (c) $Xmeta.project.copyright.years$, $Xmeta.project.copyright.owner$
+# All rights reserved
+#
+# Title:       $Xmeta.file.title: English Resources $
+# Description: $Xmeta.file.description: English Language String Resources $
+#
+
+#key=Value
+#itemXtoYofZ=(Item {0} to {1} of {2})
+

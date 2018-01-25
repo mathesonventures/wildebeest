@@ -13,7 +13,7 @@
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1">
             <reference>
-                <foreign-project>MV_Wildebeest_Core</foreign-project>
+                <foreign-project>MV_Wildebeest_Api</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>nbbuild.xml</script>
                 <target>jar</target>
