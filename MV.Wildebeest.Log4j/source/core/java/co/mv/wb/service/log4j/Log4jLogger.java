@@ -38,7 +38,7 @@ import co.mv.wb.UnknownStateSpecifiedException;
  */
 public class Log4jLogger implements Logger
 {
-	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Log4jLogger.class);
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Log4jLogger.class);
 	
 	@Override public void assertionStart(Assertion assertion)
 	{

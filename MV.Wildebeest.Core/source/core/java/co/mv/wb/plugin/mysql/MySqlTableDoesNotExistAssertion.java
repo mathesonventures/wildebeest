@@ -78,7 +78,7 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 		if(value == null) {
 			throw new IllegalArgumentException("tableName cannot be null");
 		}
-		boolean changing = !_tableName_set || _tableName != value;
+		boolean changing = !_tableName_set || !_tableName.equals(value);
 		if(changing) {
 			_tableName_set = true;
 			_tableName = value;
@@ -111,7 +111,7 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
 		
-		AssertionResponse result = null;
+		AssertionResponse result;
 
 		if (!db.databaseExists())
 		{

@@ -17,23 +17,23 @@
 package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.AssertExtensions;
-import co.mv.wb.fake.FakeInstance;
-import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.State;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.plugin.base.ImmutableState;
-import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.fake.FakeInstance;
+import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
+import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.plugin.database.SqlScriptMigration;
 import java.sql.SQLException;
 import java.util.UUID;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class MySqlTableDoesNotExistAssertionTests
@@ -112,7 +112,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		// Verify
 		//
 
-		Assert.assertNotNull("response", response);
+		assertNotNull("response", response);
 		AssertExtensions.assertAssertionResponse(false, "Table ProductType exists", response, "response");
 		
 	 }
@@ -179,7 +179,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		// Verify
 		//
 
-		Assert.assertNotNull("response", response);
+		assertNotNull("response", response);
 		AssertExtensions.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
 		
 	 }
@@ -208,7 +208,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		AssertionResponse response = assertion.perform(instance);
 
 		// Verify
-		Assert.assertNotNull("response", response);
+		assertNotNull("response", response);
 		AssertExtensions.assertAssertionResponse(
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
@@ -222,22 +222,17 @@ public class MySqlTableDoesNotExistAssertionTests
 			0,
 			"TableName");
 		
-		// Execute
-		IllegalArgumentException caught = null;
-		
+		// Execute and Verify
 		try
 		{
 			AssertionResponse response = assertion.perform(null);
 			
-			Assert.fail("IllegalArgumentException expected");
+			fail("IllegalArgumentException expected");
 		}
 		catch(IllegalArgumentException e)
 		{
-			caught = e;
+			assertEquals("e.message", "instance cannot be null", e.getMessage());
 		}
-
-		// Verify
-		Assert.assertEquals("caught.message", "instance cannot be null", caught.getMessage());
 	 }
 	 
 	 @Test public void applyForIncorrectInstanceTypeFails()
@@ -250,21 +245,16 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 		FakeInstance instance = new FakeInstance();
 		
-		// Execute
-		IllegalArgumentException caught = null;
-		
+		// Execute and Verify
 		try
 		{
 			AssertionResponse response = assertion.perform(instance);
 			
-			Assert.fail("IllegalArgumentException expected");
+			fail("IllegalArgumentException expected");
 		}
 		catch(IllegalArgumentException e)
 		{
-			caught = e;
+			assertEquals("e.message", "instance must be a MySqlDatabaseInstance", e.getMessage());
 		}
-
-		// Verify
-		Assert.assertEquals("caught.message", "instance must be a MySqlDatabaseInstance", caught.getMessage());
 	 }
 }

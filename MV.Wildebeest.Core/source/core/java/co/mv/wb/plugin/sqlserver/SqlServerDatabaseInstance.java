@@ -87,24 +87,19 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 	private String _hostName = null;
 	private boolean _hostName_set = false;
 
-	/**
-	 * Returns the host name of the server for this instance.
-	 * 
-	 * @since                                   2.0
-	 */
-	public String getHostName() {
+	@Override public final String getHostName() {
 		if(!_hostName_set) {
 			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
 		}
 		return _hostName;
 	}
 
-	public void setHostName(
+	public final void setHostName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
 		}
-		boolean changing = !_hostName_set || _hostName != value;
+		boolean changing = !_hostName_set || !_hostName.equals(value);
 		if(changing) {
 			_hostName_set = true;
 			_hostName = value;
@@ -136,12 +131,12 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 		return _instanceName;
 	}
 
-	public void setInstanceName(
+	public final void setInstanceName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("instanceName cannot be null");
 		}
-		boolean changing = !_instanceName_set || _instanceName != value;
+		boolean changing = !_instanceName_set || !_instanceName.equals(value);
 		if(changing) {
 			_instanceName_set = true;
 			_instanceName = value;
@@ -166,19 +161,14 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 	private int _port = 0;
 	private boolean _port_set = false;
 
-	/**
-	 * Returns the port number of the server for this instance.
-	 * 
-	 * @since                                   2.0
-	 */
-	public int getPort() {
+	@Override public final int getPort() {
 		if(!_port_set) {
 			throw new IllegalStateException("port not set.");
 		}
 		return _port;
 	}
 
-	public void setPort(
+	public final void setPort(
 		int value) {
 		boolean changing = !_port_set || _port != value;
 		if(changing) {
@@ -205,24 +195,19 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 	private String _adminUsername = null;
 	private boolean _adminUsername_set = false;
 
-	/**
-	 * Returns the username of the user that will be used to administer the database represented by this instance.
-	 * 
-	 * @since                                   2.0
-	 */
-	public String getAdminUsername() {
+	@Override public final String getAdminUsername() {
 		if(!_adminUsername_set) {
 			throw new IllegalStateException("adminUsername not set.  Use the HasAdminUsername() method to check its state before accessing it.");
 		}
 		return _adminUsername;
 	}
 
-	public void setAdminUsername(
+	public final void setAdminUsername(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminUsername cannot be null");
 		}
-		boolean changing = !_adminUsername_set || _adminUsername != value;
+		boolean changing = !_adminUsername_set || !_adminUsername.equals(value);
 		if(changing) {
 			_adminUsername_set = true;
 			_adminUsername = value;
@@ -247,24 +232,19 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 	private String _adminPassword = null;
 	private boolean _adminPassword_set = false;
 
-	/**
-	 * Returns the password of the user that will be used to administer the database represented by this instance.
-	 * 
-	 * @since                                   2.0
-	 */
-	public String getAdminPassword() {
+	@Override public final String getAdminPassword() {
 		if(!_adminPassword_set) {
 			throw new IllegalStateException("adminPassword not set.  Use the HasAdminPassword() method to check its state before accessing it.");
 		}
 		return _adminPassword;
 	}
 
-	public void setAdminPassword(
+	public final void setAdminPassword(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminPassword cannot be null");
 		}
-		boolean changing = !_adminPassword_set || _adminPassword != value;
+		boolean changing = !_adminPassword_set || !_adminPassword.equals(value);
 		if(changing) {
 			_adminPassword_set = true;
 			_adminPassword = value;
@@ -289,7 +269,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 	private String _databaseName = null;
 	private boolean _databaseName_set = false;
 
-	public String getDatabaseName() {
+	@Override public final String getDatabaseName() {
 		if(!_databaseName_set) {
 			throw new IllegalStateException("databaseName not set.");
 		}
@@ -299,12 +279,12 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 		return _databaseName;
 	}
 
-	public void setDatabaseName(
+	@Override public final void setDatabaseName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("databaseName cannot be null");
 		}
-		boolean changing = !_databaseName_set || _databaseName != value;
+		boolean changing = !_databaseName_set || !_databaseName.equals(value);
 		if(changing) {
 			_databaseName_set = true;
 			_databaseName = value;
@@ -329,19 +309,19 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 	private String _stateTableName = null;
 	private boolean _stateTableName_set = false;
 
-	@Override public String getStateTableName() {
+	@Override public final String getStateTableName() {
 		if(!_stateTableName_set) {
 			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
 		}
 		return _stateTableName;
 	}
 
-	@Override public void setStateTableName(
+	@Override public final void setStateTableName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateTableName cannot be null");
 		}
-		boolean changing = !_stateTableName_set || _stateTableName != value;
+		boolean changing = !_stateTableName_set || !_stateTableName.equals(value);
 		if(changing) {
 			_stateTableName_set = true;
 			_stateTableName = value;

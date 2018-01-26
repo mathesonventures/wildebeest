@@ -136,8 +136,7 @@ public class MySqlDatabaseResourceTests
 			databaseName,
 			null);
 
-		// Execute
-		IndeterminateStateException caught = null;
+		// Execute and Verify
 		try
 		{
 			resourcePlugin.currentState(resource, instance);
@@ -146,13 +145,10 @@ public class MySqlDatabaseResourceTests
 		}
 		catch(IndeterminateStateException e)
 		{
-			caught = e;
+			Assert.assertTrue(
+				"exception message",
+				e.getMessage().startsWith("The resource is declared to be in state"));
 		}
-		
-		// Verify
-		Assert.assertTrue(
-			"exception message",
-			caught.getMessage().startsWith("The resource is declared to be in state"));
 		
 		// Tear-Down
 		MySqlUtil.dropDatabase(mySqlProperties, databaseName);

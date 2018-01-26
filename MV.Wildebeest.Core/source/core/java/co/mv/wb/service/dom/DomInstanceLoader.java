@@ -21,6 +21,7 @@ import co.mv.wb.service.InstanceBuilder;
 import co.mv.wb.service.InstanceLoader;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.ResourceLoaderFault;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
@@ -29,6 +30,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * An {@link InstanceBuilder} deserializes {@link Instance} descriptors from XML.
@@ -38,13 +40,14 @@ import org.xml.sax.InputSource;
  */
 public class DomInstanceLoader implements InstanceLoader
 {
-	private static String ELT_INSTANCE = "instance";
-		private static String ATT_INSTANCE_TYPE = "type";
-	private static String ELT_HOST_NAME = "hostName";
-	private static String ELT_PORT = "port";
-	private static String ELT_ADMIN_USERNAME = "adminUsername";
-	private static String ELT_ADMIN_PASSWORD = "adminPassword";
-	private static String ELT_SCHEMA_NAME = "schemaName";
+	private static final String ELT_INSTANCE = "instance";
+	private static final String ATT_INSTANCE_TYPE = "type";
+	
+	private static final String ELT_HOST_NAME = "hostName";
+	private static final String ELT_PORT = "port";
+	private static final String ELT_ADMIN_USERNAME = "adminUsername";
+	private static final String ELT_ADMIN_PASSWORD = "adminPassword";
+	private static final String ELT_SCHEMA_NAME = "schemaName";
 	
 	/**
 	 * Creates a new DomInstanceLoader.
@@ -114,7 +117,7 @@ public class DomInstanceLoader implements InstanceLoader
 		if(value == null) {
 			throw new IllegalArgumentException("instanceXml cannot be null");
 		}
-		boolean changing = !_instanceXml_set || _instanceXml != value;
+		boolean changing = !_instanceXml_set || !_instanceXml.equals(value);
 		if(changing) {
 			_instanceXml_set = true;
 			_instanceXml = value;
@@ -153,7 +156,7 @@ public class DomInstanceLoader implements InstanceLoader
 		{
 			resourceXd = db.parse(inputSource);
 		}
-		catch (Exception e)
+		catch (IOException | SAXException e)
 		{
 			throw new ResourceLoaderFault(e);
 		}

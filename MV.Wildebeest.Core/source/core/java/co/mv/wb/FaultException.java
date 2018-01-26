@@ -27,6 +27,7 @@ public class FaultException extends RuntimeException
 	/**
 	 * Creates a new FaultException for the specified root cause.
 	 * 
+	 * @param       cause                       the cause of the FaultException
 	 * @since                                   1.0
 	 */
 	public FaultException(Throwable cause)

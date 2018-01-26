@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 public class MySqlUtil
 {
-	private static Logger LOG = LoggerFactory.getLogger(MySqlUtil.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MySqlUtil.class);
 
 	public static String createDatabase(
 		MySqlProperties properties,

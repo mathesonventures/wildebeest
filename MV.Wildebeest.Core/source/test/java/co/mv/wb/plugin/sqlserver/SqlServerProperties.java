@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 public class SqlServerProperties
 {
-	private static Logger LOG = LoggerFactory.getLogger(SqlServerProperties.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SqlServerProperties.class);
 	
 	private SqlServerProperties()
 	{
@@ -119,7 +119,7 @@ public class SqlServerProperties
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
 		}
-		boolean changing = !_hostName_set || _hostName != value;
+		boolean changing = !_hostName_set || !_hostName.equals(value);
 		if(changing) {
 			_hostName_set = true;
 			_hostName = value;
@@ -156,7 +156,7 @@ public class SqlServerProperties
 		if(value == null) {
 			throw new IllegalArgumentException("instanceName cannot be null");
 		}
-		boolean changing = !_instanceName_set || _instanceName != value;
+		boolean changing = !_instanceName_set || !_instanceName.equals(value);
 		if(changing) {
 			_instanceName_set = true;
 			_instanceName = value;
@@ -227,7 +227,7 @@ public class SqlServerProperties
 		if(value == null) {
 			throw new IllegalArgumentException("databaseName cannot be null");
 		}
-		boolean changing = !_databaseName_set || _databaseName != value;
+		boolean changing = !_databaseName_set || !_databaseName.equals(value);
 		if(changing) {
 			_databaseName_set = true;
 			_databaseName = value;
@@ -264,7 +264,7 @@ public class SqlServerProperties
 		if(value == null) {
 			throw new IllegalArgumentException("username cannot be null");
 		}
-		boolean changing = !_username_set || _username != value;
+		boolean changing = !_username_set || !_username.equals(value);
 		if(changing) {
 			_username_set = true;
 			_username = value;
@@ -301,7 +301,7 @@ public class SqlServerProperties
 		if(value == null) {
 			throw new IllegalArgumentException("password cannot be null");
 		}
-		boolean changing = !_password_set || _password != value;
+		boolean changing = !_password_set || !_password.equals(value);
 		if(changing) {
 			_password_set = true;
 			_password = value;

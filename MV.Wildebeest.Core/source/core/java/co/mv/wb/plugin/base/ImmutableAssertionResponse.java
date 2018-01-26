@@ -91,7 +91,7 @@ public class ImmutableAssertionResponse implements AssertionResponse
 		if(value == null) {
 			throw new IllegalArgumentException("message cannot be null");
 		}
-		boolean changing = !_message_set || _message != value;
+		boolean changing = !_message_set || !_message.equals(value);
 		if(changing) {
 			_message_set = true;
 			_message = value;

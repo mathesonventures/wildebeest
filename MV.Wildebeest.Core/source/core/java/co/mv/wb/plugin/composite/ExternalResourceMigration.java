@@ -150,7 +150,7 @@ public class ExternalResourceMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("fileName cannot be null");
 		}
-		boolean changing = !_fileName_set || _fileName != value;
+		boolean changing = !_fileName_set || !_fileName.equals(value);
 		if(changing) {
 			_fileName_set = true;
 			_fileName = value;
@@ -190,7 +190,7 @@ public class ExternalResourceMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("target cannot be null");
 		}
-		boolean changing = !_target_set || _target != value;
+		boolean changing = !_target_set || !_target.equals(value);
 		if(changing) {
 			_target_set = true;
 			_target = value;
@@ -235,7 +235,7 @@ public class ExternalResourceMigration extends BaseMigration
 		}
 
 		// TODO: replace with monadic chain once support for Java < 8 is dropped
-		UUID targetStateId = null;
+		UUID targetStateId;
 		TryResult<UUID> targetStateIdTryResult = Try.tryParseUuid(this.getTarget());
 		if (targetStateIdTryResult.hasValue())
 		{
@@ -245,7 +245,7 @@ public class ExternalResourceMigration extends BaseMigration
 		{
 			targetStateId = externalResource.stateIdForLabel(this.getTarget());
 		}
-		
+
 		try
 		{
 			externalResource.migrate(this.getLogger(), instance, targetStateId);

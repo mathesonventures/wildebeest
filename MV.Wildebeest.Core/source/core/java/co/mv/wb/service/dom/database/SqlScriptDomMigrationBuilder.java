@@ -40,7 +40,7 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 		UUID toStateId,
 		File baseDir) throws MessagesException
 	{
-		Migration result = null;
+		Migration result;
 		
 		TryResult<String> sql = this.tryGetString("sql");
 		

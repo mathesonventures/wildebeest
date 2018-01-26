@@ -72,7 +72,7 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 		if(value == null) {
 			throw new IllegalArgumentException("sql cannot be null");
 		}
-		boolean changing = !_sql_set || _sql != value;
+		boolean changing = !_sql_set || !_sql.equals(value);
 		if(changing) {
 			_sql_set = true;
 			_sql = value;

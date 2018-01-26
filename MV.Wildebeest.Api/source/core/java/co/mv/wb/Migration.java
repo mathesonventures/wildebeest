@@ -29,6 +29,7 @@ public interface Migration
 	/**
 	 * Gets the ID of this Migration
 	 * 
+	 * @return                                  the unique ID of this Migration
 	 * @since                                   1.0
 	 */
 	UUID getMigrationId();
@@ -36,6 +37,7 @@ public interface Migration
 	/**
 	 * Gets the ID of the source State for this Migration
 	 * 
+	 * @return                                  the ID of the source State for this Migration
 	 * @since                                   1.0
 	 */
 	UUID getFromStateId();
@@ -44,6 +46,7 @@ public interface Migration
 	 * Indicates whether or not this Migration specifies a source State.  A Migration without a source State migrates
 	 * from the non-existent state (i.e. creates the resource instance).
 	 * 
+	 * @return                                  a boolean flag indicating if this Migration has a source State.
 	 * @since                                   1.0
 	 */
 	boolean hasFromStateId();
@@ -51,6 +54,7 @@ public interface Migration
 	/**
 	 * Gets the ID of the target State for this Migration.
 	 * 
+	 * @return                                  the ID of the to State for this Migration
 	 * @since                                   1.0
 	 */
 	UUID getToStateId();
@@ -59,6 +63,7 @@ public interface Migration
 	 * Indicates whether or not this Migration specifies a target State.  A Migration without a target State migrates to
 	 * the non-existent state (i.e. destroys the resource instance).
 	 * 
+	 * @return                                  a boolean flag indicating if this Migration has a to State
 	 * @since                                   1.0
 	 */
 	boolean hasToStateId();

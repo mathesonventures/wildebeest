@@ -141,6 +141,7 @@ public class PostgreSqlStateHelper
 	 * @param       stateTableName              the name of the state tracking table in use for this instance.
 	 * @return                                  a boolean value indicating whether or not a state is currently tracked
 	 *                                          for the specified resource.
+	 * @exception   IndeterminateStateException if the state of the resource cannot be determined
 	 * @since                                   4.0
 	 */
 	public static boolean hasStateId(

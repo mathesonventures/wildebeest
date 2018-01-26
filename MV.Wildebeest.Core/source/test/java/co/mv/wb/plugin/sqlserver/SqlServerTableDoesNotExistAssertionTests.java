@@ -33,7 +33,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.plugin.base.ResourceImpl;
 import java.sql.SQLException;
 import java.util.UUID;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class SqlServerTableDoesNotExistAssertionTests
@@ -114,7 +114,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		// Verify
 		//
 
-		Assert.assertNotNull("response", response);
+		assertNotNull("response", response);
 		AssertExtensions.assertAssertionResponse(false, "Table ProductType exists", response, "response");
 		
 	 }
@@ -183,7 +183,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		// Verify
 		//
 
-		Assert.assertNotNull("response", response);
+		assertNotNull("response", response);
 		AssertExtensions.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
 		
 	 }
@@ -224,7 +224,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		// Verify
 		//
 
-		Assert.assertNotNull("response", response);
+		assertNotNull("response", response);
 		AssertExtensions.assertAssertionResponse(
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
@@ -233,49 +233,29 @@ public class SqlServerTableDoesNotExistAssertionTests
 	 
 	 @Test public void applyForNullInstanceFails()
 	 {
-		 
-		//
 		// Setup
-		//
-		 
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0,
 			"dbo",
 			"TableName");
 		
-		//
-		// Execute
-		//
-		
-		IllegalArgumentException caught = null;
-		
+		// Execute and Verify
 		try
 		{
 			AssertionResponse response = assertion.perform(null);
 			
-			Assert.fail("IllegalArgumentException expected");
+			fail("IllegalArgumentException expected");
 		}
 		catch(IllegalArgumentException e)
 		{
-			caught = e;
+			assertEquals("e.message", "instance cannot be null", e.getMessage());
 		}
-
-		//
-		// Verify
-		//
-
-		Assert.assertEquals("caught.message", "instance cannot be null", caught.getMessage());
-		
 	 }
 	 
 	 @Test public void applyForIncorrectInstanceTypeFails()
 	 {
-		 
-		//
 		// Setup
-		//
-		 
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0,
@@ -284,28 +264,16 @@ public class SqlServerTableDoesNotExistAssertionTests
 		
 		FakeInstance instance = new FakeInstance();
 		
-		//
-		// Execute
-		//
-		
-		IllegalArgumentException caught = null;
-		
+		// Execute and Verify
 		try
 		{
 			AssertionResponse response = assertion.perform(instance);
 			
-			Assert.fail("IllegalArgumentException expected");
+			fail("IllegalArgumentException expected");
 		}
 		catch(IllegalArgumentException e)
 		{
-			caught = e;
+			assertEquals("e.message", "instance must be a SqlServerDatabaseInstance", e.getMessage());
 		}
-
-		//
-		// Verify
-		//
-
-		Assert.assertEquals("caught.message", "instance must be a SqlServerDatabaseInstance", caught.getMessage());
-		
 	 }
 }

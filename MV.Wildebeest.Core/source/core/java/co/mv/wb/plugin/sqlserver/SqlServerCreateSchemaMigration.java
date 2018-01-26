@@ -78,7 +78,7 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("schemaName cannot be null");
 		}
-		boolean changing = !_schemaName_set || _schemaName != value;
+		boolean changing = !_schemaName_set || !_schemaName.equals(value);
 		if(changing) {
 			_schemaName_set = true;
 			_schemaName = value;

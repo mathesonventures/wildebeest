@@ -26,6 +26,9 @@ public class About
 {
 	/**
 	 * Gets the project name.
+	 * 
+	 * @return                                  the name of this project - i.e. Wildebeest
+	 * @since                                   3.0
 	 */
 	public String getProjectName()
 	{
@@ -34,6 +37,9 @@ public class About
 	
 	/**
 	 * Gets the project title.
+	 * 
+	 * @return                                  the title of this project
+	 * @since                                   3.0
 	 */
 	public String getProjectTitle()
 	{
@@ -42,6 +48,9 @@ public class About
 	
 	/**
 	 * Gets the full project version in dotted format.
+	 * 
+	 * @return                                  the full project version in dotted format
+	 * @since                                   3.0
 	 */
 	public String getVersionFullDotted()
 	{
@@ -50,6 +59,9 @@ public class About
 	
 	/**
 	 * Gets the copyright assertion for this project.
+	 * 
+	 * @return                                  the copyright assertion for this project
+	 * @since                                   3.0
 	 */
 	public String getCopyrightAssertion()
 	{

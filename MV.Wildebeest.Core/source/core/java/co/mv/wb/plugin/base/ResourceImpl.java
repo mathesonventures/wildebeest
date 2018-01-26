@@ -16,7 +16,6 @@
 
 package co.mv.wb.plugin.base;
 
-import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
@@ -57,8 +56,8 @@ public final class ResourceImpl implements Resource
 	{
 		this.setResourceId(resourceId);
 		this.setName(name);
-		this.setStates(new ArrayList<State>());
-		this.setMigrations(new ArrayList<Migration>());
+		this.setStates(new ArrayList<>());
+		this.setMigrations(new ArrayList<>());
 		this.setPlugin(plugin);
 	}
 
@@ -120,7 +119,7 @@ public final class ResourceImpl implements Resource
 		if(value == null) {
 			throw new IllegalArgumentException("name cannot be null");
 		}
-		boolean changing = !_name_set || _name != value;
+		boolean changing = !_name_set || !_name.equals(value);
 		if(changing) {
 			_name_set = true;
 			_name = value;
@@ -277,23 +276,21 @@ public final class ResourceImpl implements Resource
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (state == null) { throw new IllegalArgumentException("state cannot be null"); }
 
-		List<AssertionResult> results = new ArrayList<AssertionResult>();
+		List<AssertionResult> results = new ArrayList<>();
 		
-		for(Assertion assertion : state.getAssertions())
-		{
-			AssertionResponse response = assertion.perform(instance);
-
-			if (logger != null)
+		state.getAssertions().forEach(
+			assertion ->
 			{
-				logger.assertionComplete(assertion, response);
-			}
+				AssertionResponse response = assertion.perform(instance);
 
-			results.add(new ImmutableAssertionResult(
-				assertion.getAssertionId(),
-				response.getResult(),
-				response.getMessage()));
-		}
-		
+				logger.assertionComplete(assertion, response);
+
+				results.add(new ImmutableAssertionResult(
+					assertion.getAssertionId(),
+					response.getResult(),
+					response.getMessage()));
+			});
+	
 		return results;
 	}
 
@@ -313,10 +310,10 @@ public final class ResourceImpl implements Resource
 			this,
 			instance);
 		UUID currentStateId = currentState == null ? null : currentState.getStateId();
-		List<UUID> workList = new ArrayList<UUID>();
+		List<UUID> workList = new ArrayList<>();
 		
-		List<List<Migration>> paths = new ArrayList<List<Migration>>();
-		List<Migration> thisPath = new ArrayList<Migration>();
+		List<List<Migration>> paths = new ArrayList<>();
+		List<Migration> thisPath = new ArrayList<>();
 		
 		findPaths(this, paths, thisPath, currentStateId, targetStateId);
 		
@@ -422,17 +419,19 @@ public final class ResourceImpl implements Resource
 		// If we have not reached the target state, keep traversing the graph
 		else
 		{
-			for (Migration migration : resource.getMigrations())
-			{
-				if ((!migration.hasFromStateId() && fromStateId == null) ||
-					(migration.hasFromStateId() && migration.getFromStateId().equals(fromStateId)))
-				{
-					State toState = resource.stateForId(migration.getToStateId());
-					List<Migration> thisPathCopy = new ArrayList<Migration>(thisPath);
-					thisPathCopy.add(migration);
-					findPaths(resource, paths, thisPathCopy, toState.getStateId(), targetStateId);
-				}
-			}
+			resource.getMigrations()
+				.stream()
+				.filter(m ->
+					(!m.hasFromStateId() && fromStateId == null) ||
+					(m.hasFromStateId() && m.getFromStateId().equals(fromStateId)))
+				.forEach(
+					migration ->
+					{
+						State toState = resource.stateForId(migration.getToStateId());
+						List<Migration> thisPathCopy = new ArrayList<>(thisPath);
+						thisPathCopy.add(migration);
+						findPaths(resource, paths, thisPathCopy, toState.getStateId(), targetStateId);
+					});
 		}
 	}
 	

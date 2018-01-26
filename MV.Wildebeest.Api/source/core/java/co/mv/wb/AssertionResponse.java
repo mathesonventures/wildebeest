@@ -30,6 +30,8 @@ public interface AssertionResponse
 	/**
 	 * Gets the result, a boolean flag indicating whether or not the Assertion evaluation passed or failed.
 	 * 
+	 * @return                                  a boolean flag indicating whether or not the assertion evaluation passed
+	 *                                          or failed
 	 * @since                                   1.0
 	 */
 	boolean getResult();
@@ -37,6 +39,7 @@ public interface AssertionResponse
 	/**
 	 * Gets the message that was raised by the Assertion during evaluation.
 	 * 
+	 * @return                                  the message that was raised by the assertion during evalulation
 	 * @since                                   1.0
 	 */
 	String getMessage();

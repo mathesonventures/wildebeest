@@ -34,7 +34,7 @@ public class Messages
 	 */
 	public Messages()
 	{
-		this.setMessages(new ArrayList<String>());
+		this.setMessages(new ArrayList<>());
 	}
 	
 	// <editor-fold desc="Messages" defaultstate="collapsed">
@@ -45,6 +45,7 @@ public class Messages
 	/**
 	 * Gets the set of messages that have been raised.
 	 * 
+	 * @return                                  the set of messages that have been raised
 	 * @since                                   2.0
 	 */
 	public List<String> getMessages() {
@@ -95,7 +96,7 @@ public class Messages
 	/**
 	 * Adds a message formatted with the supplied replacement values to the collection.
 	 * 
-	 * @param       message                     the message to add to the collection.
+	 * @param       format                      the format string for the message to add to the collection.
 	 * @param       args                        the replacement values to be used in the message.
 	 * @since                                   2.0
 	 */
@@ -111,6 +112,7 @@ public class Messages
 	/**
 	 * Gets the number of messages in this collection.
 	 * 
+	 * @return                                  the number of messages in this collection
 	 * @since                                   2.0
 	 */
 	public int size()

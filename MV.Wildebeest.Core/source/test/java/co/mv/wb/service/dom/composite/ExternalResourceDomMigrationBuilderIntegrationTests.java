@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ExternalResourceDomMigrationBuilderIntegrationTests
 {
-	private static Logger LOG = LoggerFactory.getLogger(ExternalResourceDomMigrationBuilderIntegrationTests.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ExternalResourceDomMigrationBuilderIntegrationTests.class);
 	
 	//
 	// build

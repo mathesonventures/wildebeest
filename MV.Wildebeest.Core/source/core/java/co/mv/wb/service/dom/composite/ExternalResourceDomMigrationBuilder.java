@@ -51,7 +51,7 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 		UUID toStateId,
 		File baseDir) throws MessagesException
 	{
-		Migration result = null;
+		Migration result;
 
 		TryResult<String> filename = this.tryGetString("filename");
 		TryResult<String> target = this.tryGetString("target");

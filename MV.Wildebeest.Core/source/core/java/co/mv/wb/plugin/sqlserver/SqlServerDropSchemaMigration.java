@@ -63,9 +63,10 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 	/**
 	 * Returns the name of the schema to be dropped.
 	 * 
+	 * @return                                  the name of the schema to be dropped
 	 * @since                                   2.0
 	 */
-	public String getSchemaName() {
+	public final String getSchemaName() {
 		if(!_schemaName_set) {
 			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
 		}
@@ -77,7 +78,7 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("schemaName cannot be null");
 		}
-		boolean changing = !_schemaName_set || _schemaName != value;
+		boolean changing = !_schemaName_set || !_schemaName.equals(value);
 		if(changing) {
 			_schemaName_set = true;
 			_schemaName = value;

@@ -38,8 +38,8 @@ public class ResourceCreator
 		this.setType(type);
 		this.setResourceId(resourceId);
 		this.setName(name);
-		this.setStates(new ArrayList<StateCreator>());
-		this.setMigrations(new ArrayList<MigrationCreator>());
+		this.setStates(new ArrayList<>());
+		this.setMigrations(new ArrayList<>());
 	}
 	
 	// <editor-fold desc="Creator" defaultstate="collapsed">
@@ -102,7 +102,7 @@ public class ResourceCreator
 		if(value == null) {
 			throw new IllegalArgumentException("type cannot be null");
 		}
-		boolean changing = !_type_set || _type != value;
+		boolean changing = !_type_set || !_type.equals(value);
 		if(changing) {
 			_type_set = true;
 			_type = value;
@@ -182,7 +182,7 @@ public class ResourceCreator
 		if(value == null) {
 			throw new IllegalArgumentException("name cannot be null");
 		}
-		boolean changing = !_name_set || _name != value;
+		boolean changing = !_name_set || !_name.equals(value);
 		if(changing) {
 			_name_set = true;
 			_name = value;

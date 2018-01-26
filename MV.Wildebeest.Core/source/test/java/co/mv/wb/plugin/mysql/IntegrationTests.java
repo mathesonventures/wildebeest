@@ -16,26 +16,26 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.AssertExtensions;
 import co.mv.wb.AssertionFailedException;
+import co.mv.wb.FakeLogger;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
-import co.mv.wb.State;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.AssertExtensions;
-import co.mv.wb.FakeLogger;
+import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.fixturecreator.XmlBuilder;
 import co.mv.wb.plugin.base.ImmutableState;
+import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.service.MessagesException;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.service.dom.DomInstanceLoader;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
-import co.mv.wb.fixturecreator.XmlBuilder;
-import co.mv.wb.plugin.base.ResourceImpl;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.UUID;

@@ -39,7 +39,7 @@ public class ImmutableState implements State
 		UUID stateId)
 	{
 		this.setStateId(stateId);
-		this.setAssertions(new ArrayList<Assertion>());
+		this.setAssertions(new ArrayList<>());
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class ImmutableState implements State
 	{
 		this.setStateId(stateId);
 		this.setLabel(label);
-		this.setAssertions(new ArrayList<Assertion>());
+		this.setAssertions(new ArrayList<>());
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class ImmutableState implements State
 		if(value == null) {
 			throw new IllegalArgumentException("label cannot be null");
 		}
-		boolean changing = !_label_set || _label != value;
+		boolean changing = !_label_set || !_label.equals(value);
 		if(changing) {
 			_label_set = true;
 			_label = value;
@@ -156,7 +156,7 @@ public class ImmutableState implements State
 		}
 	}
 
-	public boolean hasLabel() {
+	@Override public boolean hasLabel() {
 		return _label_set;
 	}
 

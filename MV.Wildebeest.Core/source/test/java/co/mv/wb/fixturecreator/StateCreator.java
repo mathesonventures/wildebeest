@@ -43,7 +43,7 @@ public class StateCreator
 			this.setLabel(label);
 		}
 
-		this.setAssertions(new ArrayList<AssertionCreator>());
+		this.setAssertions(new ArrayList<>());
 	}
 
 	// <editor-fold desc="Creator" defaultstate="collapsed">
@@ -186,7 +186,7 @@ public class StateCreator
 		if(value == null) {
 			throw new IllegalArgumentException("label cannot be null");
 		}
-		boolean changing = !_label_set || _label != value;
+		boolean changing = !_label_set || !_label.equals(value);
 		if(changing) {
 			_label_set = true;
 			_label = value;

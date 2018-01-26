@@ -54,16 +54,16 @@ public class DatabaselDomServiceUnitTests
 					.assertion("DatabaseExists", assertionId)
 			.render();
 
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<String, ResourcePluginBuilder>();
+		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
 		resourceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourcePluginBuilder());
 		
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
+		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put("DatabaseExists", new DatabaseExistsDomAssertionBuilder());
 		
 		DomResourceLoader loader = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			new HashMap<String, MigrationBuilder>(),
+			new HashMap<>(),
 			xml);
 		
 		// Execute
@@ -94,16 +94,16 @@ public class DatabaselDomServiceUnitTests
 					.assertion("DatabaseDoesNotExist", assertionId)
 			.render();
 
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<String, ResourcePluginBuilder>();
+		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
 		resourceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourcePluginBuilder());
 		
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<String, AssertionBuilder>();
+		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put("DatabaseDoesNotExist", new DatabaseDoesNotExistDomAssertionBuilder());
 		
 		DomResourceLoader loader = new DomResourceLoader(
 			resourceBuilders,
 			assertionBuilders,
-			new HashMap<String, MigrationBuilder>(),
+			new HashMap<>(),
 			xml);
 		
 		// Execute

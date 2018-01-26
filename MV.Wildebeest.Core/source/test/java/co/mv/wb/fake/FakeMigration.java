@@ -53,7 +53,7 @@ public class FakeMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("tag cannot be null");
 		}
-		boolean changing = !_tag_set || _tag != value;
+		boolean changing = !_tag_set || !_tag.equals(value);
 		if(changing) {
 			_tag_set = true;
 			_tag = value;

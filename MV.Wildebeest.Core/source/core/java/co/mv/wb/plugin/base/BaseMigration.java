@@ -115,7 +115,7 @@ public abstract class BaseMigration implements Migration
 		}
 	}
 
-	public boolean hasFromStateId() {
+	@Override public boolean hasFromStateId() {
 		return _fromStateId_set;
 	}
 
@@ -152,7 +152,7 @@ public abstract class BaseMigration implements Migration
 		}
 	}
 
-	public boolean hasToStateId() {
+	@Override public boolean hasToStateId() {
 		return _toStateId_set;
 	}
 

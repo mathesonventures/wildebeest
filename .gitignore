@@ -19,3 +19,5 @@
 /MV.Wildebeest.SLF4J/target
 
 /website/source/rel
+/MV.Wildebeest.Api/dist/
+/MV.Wildebeest.Api/build/

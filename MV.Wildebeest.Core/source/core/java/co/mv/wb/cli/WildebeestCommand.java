@@ -60,14 +60,14 @@ public class WildebeestCommand
 	private Logger _logger = null;
 	private boolean _logger_set = false;
 
-	public Logger getLogger() {
+	public final Logger getLogger() {
 		if(!_logger_set) {
 			throw new IllegalStateException("logger not set.  Use the HasLogger() method to check its state before accessing it.");
 		}
 		return _logger;
 	}
 
-	public void setLogger(
+	public final void setLogger(
 		Logger value) {
 		if(value == null) {
 			throw new IllegalArgumentException("logger cannot be null");

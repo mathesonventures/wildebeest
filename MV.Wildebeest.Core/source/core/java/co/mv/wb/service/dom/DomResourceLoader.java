@@ -17,21 +17,22 @@
 package co.mv.wb.service.dom;
 
 import co.mv.wb.Assertion;
+import co.mv.wb.Migration;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
-import co.mv.wb.State;
-import co.mv.wb.Migration;
 import co.mv.wb.ResourcePlugin;
+import co.mv.wb.State;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
-import co.mv.wb.service.ResourcePluginBuilder;
+import co.mv.wb.service.MigrationBuilder;
 import co.mv.wb.service.ResourceLoader;
 import co.mv.wb.service.ResourceLoaderFault;
-import co.mv.wb.service.MigrationBuilder;
+import co.mv.wb.service.ResourcePluginBuilder;
 import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
 import java.util.UUID;
@@ -41,6 +42,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * An {@link ResourcePluginBuilder} deserializes {@link Resource} descriptors from XML.
@@ -218,7 +220,7 @@ public class DomResourceLoader implements ResourceLoader
 		if(value == null) {
 			throw new IllegalArgumentException("resourceXml cannot be null");
 		}
-		boolean changing = !_resourceXml_set || _resourceXml != value;
+		boolean changing = !_resourceXml_set || !_resourceXml.equals(value);
 		if(changing) {
 			_resourceXml_set = true;
 			_resourceXml = value;
@@ -259,13 +261,13 @@ public class DomResourceLoader implements ResourceLoader
 		{
 			resourceXd = db.parse(inputSource);
 		}
-		catch (Exception e)
+		catch (IOException | SAXException e)
 		{
 			throw new ResourceLoaderFault(e);
 		}
 		
 		Element resourceXe = resourceXd.getDocumentElement();
-		ResourcePlugin resourcePlugin = null;
+		ResourcePlugin resourcePlugin;
 		Resource resource = null;
 
 		if (XE_RESOURCE.equals(resourceXe.getTagName()))
@@ -400,16 +402,9 @@ public class DomResourceLoader implements ResourceLoader
 			label = element.getAttribute(XA_STATE_LABEL);
 		}
 		
-		State result = null;
-		
-		if (label == null)
-		{
-			result = new ImmutableState(id);
-		}
-		else
-		{
-			result = new ImmutableState(id, label);
-		}
+		State result = label == null
+			? new ImmutableState(id)
+			: new ImmutableState(id, label);
 		
 		return result;
 	}

@@ -58,7 +58,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 	private String _hostName = null;
 	private boolean _hostName_set = false;
 
-	public String getHostName() {
+	@Override public final String getHostName() {
 		if(!_hostName_set) {
 			throw new IllegalStateException("hostName not set.");
 		}
@@ -68,12 +68,12 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		return _hostName;
 	}
 
-	public void setHostName(
+	public final void setHostName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
 		}
-		boolean changing = !_hostName_set || _hostName != value;
+		boolean changing = !_hostName_set || !_hostName.equals(value);
 		if(changing) {
 			_hostName_set = true;
 			_hostName = value;
@@ -98,14 +98,14 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 	private int _port = 0;
 	private boolean _port_set = false;
 
-	public int getPort() {
+	@Override public final int getPort() {
 		if(!_port_set) {
 			throw new IllegalStateException("port not set.");
 		}
 		return _port;
 	}
 
-	public void setPort(
+	public final void setPort(
 		int value) {
 		boolean changing = !_port_set || _port != value;
 		if(changing) {
@@ -132,7 +132,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 	private String _adminUsername = null;
 	private boolean _adminUsername_set = false;
 
-	public String getAdminUsername() {
+	@Override public final String getAdminUsername() {
 		if(!_adminUsername_set) {
 			throw new IllegalStateException("adminUsername not set.");
 		}
@@ -142,12 +142,12 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		return _adminUsername;
 	}
 
-	public void setAdminUsername(
+	public final void setAdminUsername(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminUsername cannot be null");
 		}
-		boolean changing = !_adminUsername_set || _adminUsername != value;
+		boolean changing = !_adminUsername_set || !_adminUsername.equals(value);
 		if(changing) {
 			_adminUsername_set = true;
 			_adminUsername = value;
@@ -172,7 +172,7 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 	private String _adminPassword = null;
 	private boolean _adminPassword_set = false;
 
-	public String getAdminPassword() {
+	@Override public final String getAdminPassword() {
 		if(!_adminPassword_set) {
 			throw new IllegalStateException("adminPassword not set.");
 		}
@@ -182,12 +182,12 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		return _adminPassword;
 	}
 
-	public void setAdminPassword(
+	public final void setAdminPassword(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminPassword cannot be null");
 		}
-		boolean changing = !_adminPassword_set || _adminPassword != value;
+		boolean changing = !_adminPassword_set || !_adminPassword.equals(value);
 		if(changing) {
 			_adminPassword_set = true;
 			_adminPassword = value;
@@ -222,12 +222,12 @@ public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements 
 		return _metaSchemaName;
 	}
 
-	@Override public void setMetaSchemaName(
+	@Override public final void setMetaSchemaName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("metaSchemaName cannot be null");
 		}
-		boolean changing = !_metaSchemaName_set || _metaSchemaName != value;
+		boolean changing = !_metaSchemaName_set || !_metaSchemaName.equals(value);
 		if(changing) {
 			_metaSchemaName_set = true;
 			_metaSchemaName = value;

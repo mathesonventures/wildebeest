@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Slf4jLogger implements Logger
 {
-	private static org.slf4j.Logger LOG = LoggerFactory.getLogger(Slf4jLogger.class);
+	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(Slf4jLogger.class);
 	
 	@Override public void assertionStart(Assertion assertion)
 	{

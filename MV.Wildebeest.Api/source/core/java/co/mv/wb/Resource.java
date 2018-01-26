@@ -35,6 +35,7 @@ public interface Resource
 	/**
 	 * Gets the ID of this Resource.
 	 * 
+	 * @return                                  the unique ID of this Resource
 	 * @since                                   1.0
 	 */
 	UUID getResourceId();
@@ -42,6 +43,7 @@ public interface Resource
 	/**
 	 * Gets the name of this Resource.
 	 * 
+	 * @return                                  the name of this Resource
 	 * @since                                   1.0
 	 */
 	String getName();
@@ -49,6 +51,7 @@ public interface Resource
 	/**
 	 * Gets the states that have been defined for this Resource.
 	 * 
+	 * @return                                  the set of states defined for this Resource
 	 * @since                                   1.0
 	 */
 	List<State> getStates();
@@ -56,6 +59,7 @@ public interface Resource
 	/**
 	 * Gets the migrations that have been defined for this Resource.
 	 * 
+	 * @return                                  the migrations defined for this Resource
 	 * @since                                   1.0
 	 */
 	List<Migration> getMigrations();
@@ -124,9 +128,11 @@ public interface Resource
 	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly at
 	 *                                          the commencement of the migration, and at each intermediate state and
 	 *                                          at the final state of the migration process.
+	 * @exception   AssertionFailedException    when one or more post-migration assertions fail
 	 * @exception   MigrationNotPossibleException
-	 *                                          when the number of from the current state to the target state is not
-	 *                                          exactly one.
+	 *                                          when the number of paths from the current state to the target state is
+	 *                                          not exactly one.
+	 * @exception   MigrationFailedException    when the migration failed for some other reason
 	 * @since                                   1.0
 	 */
 	void migrate(

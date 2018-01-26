@@ -139,7 +139,7 @@ public class AssertionCreator
 		if(value == null) {
 			throw new IllegalArgumentException("type cannot be null");
 		}
-		boolean changing = !_type_set || _type != value;
+		boolean changing = !_type_set || !_type.equals(value);
 		if(changing) {
 			_type_set = true;
 			_type = value;
@@ -219,7 +219,7 @@ public class AssertionCreator
 		if(value == null) {
 			throw new IllegalArgumentException("innerXml cannot be null");
 		}
-		boolean changing = !_innerXml_set || _innerXml != value;
+		boolean changing = !_innerXml_set || !_innerXml.equals(value);
 		if(changing) {
 			_innerXml_set = true;
 			_innerXml = value;

@@ -64,7 +64,7 @@ public class DatabaseDoesNotExistAssertion extends BaseAssertion
 		DatabaseInstance db = ModelExtensions.As(instance, DatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseInstance"); }
 		
-		AssertionResponse result = null;
+		AssertionResponse result;
 		
 		if (db.databaseExists())
 		{

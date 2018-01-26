@@ -19,8 +19,8 @@ package co.mv.wb.service.dom;
 import co.mv.wb.Logger;
 import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.InstanceBuilder;
-import co.mv.wb.service.ResourcePluginBuilder;
 import co.mv.wb.service.MigrationBuilder;
+import co.mv.wb.service.ResourcePluginBuilder;
 import co.mv.wb.service.dom.ansisql.AnsiSqlCreateDatabaseDomMigrationBuilder;
 import co.mv.wb.service.dom.ansisql.AnsiSqlDropDatabaseDomMigrationBuilder;
 import co.mv.wb.service.dom.ansisql.AnsiSqlTableDoesNotExistDomAssertionBuilder;
@@ -30,8 +30,8 @@ import co.mv.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
 import co.mv.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
 import co.mv.wb.service.dom.database.RowDoesNotExistDomAssertionBuilder;
 import co.mv.wb.service.dom.database.RowExistsDomAssertionBuilder;
-import co.mv.wb.service.dom.mysql.MySqlCreateDatabaseDomMigrationBuilder;
 import co.mv.wb.service.dom.database.SqlScriptDomMigrationBuilder;
+import co.mv.wb.service.dom.mysql.MySqlCreateDatabaseDomMigrationBuilder;
 import co.mv.wb.service.dom.mysql.MySqlDatabaseDomInstanceBuilder;
 import co.mv.wb.service.dom.mysql.MySqlDatabaseDomResourcePluginBuilder;
 import co.mv.wb.service.dom.mysql.MySqlTableDoesNotExistDomAssertionBuilder;
@@ -66,7 +66,7 @@ public class DomPlugins
 	 */
 	public static Map<String, ResourcePluginBuilder> resourceBuilders()
 	{
-		Map<String, ResourcePluginBuilder> result = new HashMap<String, ResourcePluginBuilder>();
+		Map<String, ResourcePluginBuilder> result = new HashMap<>();
 		
 		result.put("MySqlDatabase", new MySqlDatabaseDomResourcePluginBuilder());
 		result.put("SqlServerDatabase", new SqlServerDatabaseDomResourcePluginBuilder());
@@ -83,7 +83,7 @@ public class DomPlugins
 	 */
 	public static Map<String, AssertionBuilder> assertionBuilders()
 	{
-		Map<String, AssertionBuilder> result = new HashMap<String, AssertionBuilder>();
+		Map<String, AssertionBuilder> result = new HashMap<>();
 		
 		// Database
 		result.put("DatabaseExists", new DatabaseExistsDomAssertionBuilder());
@@ -120,7 +120,7 @@ public class DomPlugins
 	{
 		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 
-		Map<String, MigrationBuilder> result = new HashMap<String, MigrationBuilder>();
+		Map<String, MigrationBuilder> result = new HashMap<>();
 
 		// Database
 		result.put("SqlScript", new SqlScriptDomMigrationBuilder());
@@ -151,7 +151,7 @@ public class DomPlugins
 	 */
 	public static Map<String, InstanceBuilder> instanceBuilders()
 	{
-		Map<String, InstanceBuilder> result = new HashMap<String, InstanceBuilder>();
+		Map<String, InstanceBuilder> result = new HashMap<>();
 		
 		result.put("MySqlDatabase", new MySqlDatabaseDomInstanceBuilder());
 		result.put("SqlServerDatabase", new SqlServerDatabaseDomInstanceBuilder());

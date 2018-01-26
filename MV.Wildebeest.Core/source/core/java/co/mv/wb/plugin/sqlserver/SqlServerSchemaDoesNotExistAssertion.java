@@ -63,9 +63,10 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 	/**
 	 * Gets the name of the schema to check.
 	 * 
+	 * @return                                  the name of the schema to check
 	 * @since                                   2.0
 	 */
-	public String getSchemaName() {
+	public final String getSchemaName() {
 		if(!_schemaName_set) {
 			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
 		}
@@ -77,7 +78,7 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 		if(value == null) {
 			throw new IllegalArgumentException("schemaName cannot be null");
 		}
-		boolean changing = !_schemaName_set || _schemaName != value;
+		boolean changing = !_schemaName_set || !_schemaName.equals(value);
 		if(changing) {
 			_schemaName_set = true;
 			_schemaName = value;
@@ -110,7 +111,7 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
 		
-		AssertionResponse result = null;
+		AssertionResponse result;
 
 		if (!db.databaseExists())
 		{

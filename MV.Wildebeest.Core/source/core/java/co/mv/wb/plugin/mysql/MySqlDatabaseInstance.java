@@ -72,21 +72,22 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 	/**
 	 * Returns the host name of the server
 	 * 
+	 * @return                                  the host name of the server
 	 * @since                                   1.0
 	 */
-	public String getHostName() {
+	@Override public final String getHostName() {
 		if(!_hostName_set) {
 			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
 		}
 		return _hostName;
 	}
 
-	public void setHostName(
+	public final void setHostName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
 		}
-		boolean changing = !_hostName_set || _hostName != value;
+		boolean changing = !_hostName_set || !_hostName.equals(value);
 		if(changing) {
 			_hostName_set = true;
 			_hostName = value;
@@ -114,16 +115,17 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 	/**
 	 * Returns the port number of the server
 	 * 
+	 * @return                                  the port number of the server
 	 * @since                                   1.0
 	 */
-	public int getPort() {
+	@Override public final int getPort() {
 		if(!_port_set) {
 			throw new IllegalStateException("port not set.  Use the HasPort() method to check its state before accessing it.");
 		}
 		return _port;
 	}
 
-	public void setPort(
+	public final void setPort(
 		int value) {
 		boolean changing = !_port_set || _port != value;
 		if(changing) {
@@ -153,21 +155,22 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 	/**
 	 * Gets the username of the administrative user on the server.
 	 * 
+	 * @return                                  the username of the administrative user on the server
 	 * @since                                   1.0
 	 */
-	public String getAdminUsername() {
+	@Override public final String getAdminUsername() {
 		if(!_adminUsername_set) {
 			throw new IllegalStateException("adminUsername not set.  Use the HasAdminUsername() method to check its state before accessing it.");
 		}
 		return _adminUsername;
 	}
 
-	public void setAdminUsername(
+	public final void setAdminUsername(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminUsername cannot be null");
 		}
-		boolean changing = !_adminUsername_set || _adminUsername != value;
+		boolean changing = !_adminUsername_set || !_adminUsername.equals(value);
 		if(changing) {
 			_adminUsername_set = true;
 			_adminUsername = value;
@@ -195,21 +198,22 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 	/**
 	 * Gets the password of the administrative user on the server.
 	 * 
+	 * @return                                  the password for the administrative user on the server
 	 * @since                                   1.0
 	 */
-	public String getAdminPassword() {
+	@Override public final String getAdminPassword() {
 		if(!_adminPassword_set) {
 			throw new IllegalStateException("adminPassword not set.  Use the HasAdminPassword() method to check its state before accessing it.");
 		}
 		return _adminPassword;
 	}
 
-	public void setAdminPassword(
+	public final void setAdminPassword(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("adminPassword cannot be null");
 		}
-		boolean changing = !_adminPassword_set || _adminPassword != value;
+		boolean changing = !_adminPassword_set || !_adminPassword.equals(value);
 		if(changing) {
 			_adminPassword_set = true;
 			_adminPassword = value;

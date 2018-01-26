@@ -28,6 +28,8 @@ public interface Assertion
 {
 	/**
 	 * Gets the unique ID of this Assertion.
+	 * 
+	 * @return                                  the unique ID of this Assertion
      * @since                                   1.0
 	 */
 	UUID getAssertionId();
@@ -35,6 +37,7 @@ public interface Assertion
 	/**
 	 * Gets a description of this Assertion.
 	 *
+	 * @return                                  the description of this Assertion
 	 * @since                                   1.0
 	 */
 	String getDescription();
@@ -42,6 +45,7 @@ public interface Assertion
 	/**
 	 * Gets the ordinal index of this Assertion within the container that owns it.
 	 *
+	 * @return                                  the ordinal index of this Assertion within the container that owns it
 	 * @since                                   1.0
 	 */
 	int getSeqNum();

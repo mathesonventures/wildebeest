@@ -536,9 +536,6 @@ public class Interface
 		if (logger == null) { throw new IllegalArgumentException("logger"); }
 		if (messages == null) { throw new IllegalArgumentException("messages"); }
 		
-		for (String message : messages.getMessages())
-		{
-			logger.logLine(message);
-		}
+		messages.getMessages().forEach(m -> logger.logLine(m));
 	}
 }

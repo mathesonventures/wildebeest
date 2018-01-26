@@ -20,7 +20,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import java.sql.SQLException;
 import java.util.UUID;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class SqlServerDropSchemaMigrationTests
@@ -103,29 +103,24 @@ public class SqlServerDropSchemaMigrationTests
 			null,
 			"prd");
 		
-		MigrationFailedException caught = null;
-		
 		try
 		{
 			// Execute
 			dropSchema.perform(instance);
 			
-			Assert.fail("MigrationFailedException expected");
+			fail("MigrationFailedException expected");
 		}
 		catch (MigrationFailedException e)
 		{
-			caught = e;
+			assertEquals(
+				"e.message",
+				"Cannot drop the schema 'prd', because it does not exist or you do not have permission.",
+				e.getMessage());
 		}
 		finally
 		{
 			// Tear-Down
 			SqlServerUtil.tryDropDatabase(instance);
 		}
-		
-		// Verify
-		Assert.assertEquals(
-			"caught.message",
-			"Cannot drop the schema 'prd', because it does not exist or you do not have permission.",
-			caught.getMessage());
 	}
 }

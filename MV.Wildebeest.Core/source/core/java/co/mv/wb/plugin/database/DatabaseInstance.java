@@ -48,6 +48,7 @@ public interface DatabaseInstance extends Instance
 	 * method throws an InvalidStateException.  Before calling getStateTableName(), call hasStateTableName() to check if
 	 * a state table name has been set.
 	 * 
+	 * @return                                  the name of the state tracking table for this instance
 	 * @since                                   1.0
 	 */
 	String getStateTableName();
@@ -67,8 +68,10 @@ public interface DatabaseInstance extends Instance
 	void clearStateTableName();
 	
 	/**
-	 * Returns whether or not this instance has a state table name set.
+	 * Returns whether or not this instance has a state table name set.  If none is set then the default will be used.
 	 * 
+	 * @return                                  a boolean flag indicating whether or not this instance has a state table
+	 *                                          name set
 	 * @since                                   1.0
 	 */
 	boolean hasStateTableName();
@@ -85,6 +88,7 @@ public interface DatabaseInstance extends Instance
 	/**
 	 * Returns a DataSource for the database represented by this DatabaseInstance.
 	 * 
+	 * @return                                  a DataSource for the database represented by this DatabaseInstance
 	 * @since                                   1.0
 	 */
 	DataSource getAppDataSource();

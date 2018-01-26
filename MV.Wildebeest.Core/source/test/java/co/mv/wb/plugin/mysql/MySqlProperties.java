@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 public class MySqlProperties
 {
-	private static Logger LOG = LoggerFactory.getLogger(MySqlProperties.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MySqlProperties.class);
 	
 	private MySqlProperties()
 	{
@@ -106,7 +106,7 @@ public class MySqlProperties
 		if(value == null) {
 			throw new IllegalArgumentException("hostName cannot be null");
 		}
-		boolean changing = !_hostName_set || _hostName != value;
+		boolean changing = !_hostName_set || !_hostName.equals(value);
 		if(changing) {
 			_hostName_set = true;
 			_hostName = value;
@@ -177,7 +177,7 @@ public class MySqlProperties
 		if(value == null) {
 			throw new IllegalArgumentException("username cannot be null");
 		}
-		boolean changing = !_username_set || _username != value;
+		boolean changing = !_username_set || !_username.equals(value);
 		if(changing) {
 			_username_set = true;
 			_username = value;
@@ -214,7 +214,7 @@ public class MySqlProperties
 		if(value == null) {
 			throw new IllegalArgumentException("password cannot be null");
 		}
-		boolean changing = !_password_set || _password != value;
+		boolean changing = !_password_set || !_password.equals(value);
 		if(changing) {
 			_password_set = true;
 			_password = value;

@@ -30,6 +30,7 @@ public interface State
 	/**
 	 * Gets the ID of this State.
 	 * 
+	 * @return                                  the unique ID of this State
 	 * @since                                   1.0
 	 */
 	UUID getStateId();
@@ -37,6 +38,7 @@ public interface State
 	/**
 	 * Gets the label of this State, if it has one.
 	 * 
+	 * @return                                  the label of this State, if it has one
 	 * @since                                   1.0
 	 */
 	String getLabel();
@@ -44,6 +46,7 @@ public interface State
 	/**
 	 * Indicates whether or not this State has a label.
 	 * 
+	 * @return                                  a boolean flag indicating if this State has a label
 	 * @state                                   1.0
 	 */
 	boolean hasLabel();
@@ -51,6 +54,7 @@ public interface State
 	/**
 	 * Gets the set of Assertions that should be used to verify this State.
 	 * 
+	 * @return                                  the set of assertions that should be used to verify this State
 	 * @since                                   1.0
 	 */
 	List<Assertion> getAssertions();
@@ -58,6 +62,7 @@ public interface State
 	/**
 	 * Returns the label if the state has one, otherwise returns it's ID.
 	 * 
+	 * @return                                  the label if the State has one, otherwise it's unique ID
 	 * @since                                   1.0
 	 */
 	String getDisplayName();

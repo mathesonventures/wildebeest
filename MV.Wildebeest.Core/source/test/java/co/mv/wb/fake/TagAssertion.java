@@ -53,12 +53,12 @@ public class TagAssertion extends BaseAssertion
 		return _tag;
 	}
 
-	public void setTag(
+	public final void setTag(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("tag cannot be null");
 		}
-		boolean changing = !_tag_set || _tag != value;
+		boolean changing = !_tag_set || !_tag.equals(value);
 		if(changing) {
 			_tag_set = true;
 			_tag = value;
@@ -91,7 +91,7 @@ public class TagAssertion extends BaseAssertion
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
 		if (fake == null) { throw new IllegalArgumentException("instance must be a FakeInstance"); }
 		
-		AssertionResponse response = null;
+		AssertionResponse response;
 		
 		if (this.getTag().equals(fake.getTag()))
 		{

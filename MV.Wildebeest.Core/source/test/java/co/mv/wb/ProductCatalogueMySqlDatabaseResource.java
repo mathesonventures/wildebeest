@@ -74,7 +74,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _resourceId = null;
 	private boolean _resourceId_set = false;
 
-	public UUID getResourceId() {
+	public final UUID getResourceId() {
 		if(!_resourceId_set) {
 			throw new IllegalStateException("resourceId not set.  Use the HasResourceId() method to check its state before accessing it.");
 		}
@@ -111,7 +111,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _stateIdDatabaseCreated = null;
 	private boolean _stateIdDatabaseCreated_set = false;
 
-	public UUID getStateIdDatabaseCreated() {
+	public final UUID getStateIdDatabaseCreated() {
 		if(!_stateIdDatabaseCreated_set) {
 			throw new IllegalStateException("stateIdDatabaseCreated not set.  Use the HasStateIdDatabaseCreated() method to check its state before accessing it.");
 		}
@@ -148,7 +148,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _assertionIdDatabaseExists = null;
 	private boolean _assertionIdDatabaseExists_set = false;
 
-	public UUID getAssertionIdDatabaseExists() {
+	public final UUID getAssertionIdDatabaseExists() {
 		if(!_assertionIdDatabaseExists_set) {
 			throw new IllegalStateException("assertionIdDatabaseExists not set.  Use the HasAssertionIdDatabaseExists() method to check its state before accessing it.");
 		}
@@ -185,7 +185,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _stateIdCoreSchemaLoaded = null;
 	private boolean _stateIdCoreSchemaLoaded_set = false;
 
-	public UUID getStateIdCoreSchemaLoaded() {
+	public final UUID getStateIdCoreSchemaLoaded() {
 		if(!_stateIdCoreSchemaLoaded_set) {
 			throw new IllegalStateException("stateIdCoreSchemaLoaded not set.  Use the HasStateIdCoreSchemaLoaded() method to check its state before accessing it.");
 		}
@@ -222,7 +222,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _assertionIdProductTypeTableExists = null;
 	private boolean _assertionIdProductTypeTableExists_set = false;
 
-	public UUID getAssertionIdProductTypeTableExists() {
+	public final UUID getAssertionIdProductTypeTableExists() {
 		if(!_assertionIdProductTypeTableExists_set) {
 			throw new IllegalStateException("assertionIdProductTypeTableExists not set.  Use the HasAssertionIdProductTypeTableExists() method to check its state before accessing it.");
 		}
@@ -259,7 +259,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _stateIdInitialReferenceDataLoaded = null;
 	private boolean _stateIdInitialReferenceDataLoaded_set = false;
 
-	public UUID getStateIdInitialReferenceDataLoaded() {
+	public final UUID getStateIdInitialReferenceDataLoaded() {
 		if(!_stateIdInitialReferenceDataLoaded_set) {
 			throw new IllegalStateException("stateIdInitialReferenceDataLoaded not set.  Use the HasStateIdInitialReferenceDataLoaded() method to check its state before accessing it.");
 		}
@@ -296,7 +296,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _assertionIdProductTypeHwRowExists = null;
 	private boolean _assertionIdProductTypeHwRowExists_set = false;
 
-	public UUID getAssertionIdProductTypeHwRowExists() {
+	public final UUID getAssertionIdProductTypeHwRowExists() {
 		if(!_assertionIdProductTypeHwRowExists_set) {
 			throw new IllegalStateException("assertionIdProductTypeHwRowExists not set.  Use the HasAssertionIdProductTypeHwRowExists() method to check its state before accessing it.");
 		}
@@ -333,7 +333,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _assertionIdProductTypeSwRowExists = null;
 	private boolean _assertionIdProductTypeSwRowExists_set = false;
 
-	public UUID getAssertionIdProductTypeSwRowExists() {
+	public final UUID getAssertionIdProductTypeSwRowExists() {
 		if(!_assertionIdProductTypeSwRowExists_set) {
 			throw new IllegalStateException("assertionIdProductTypeSwRowExists not set.  Use the HasAssertionIdProductTypeSwRowExists() method to check its state before accessing it.");
 		}
@@ -370,7 +370,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _assertionIdProductTableExists = null;
 	private boolean _assertionIdProductTableExists_set = false;
 
-	public UUID getAssertionIdProductTableExists() {
+	public final UUID getAssertionIdProductTableExists() {
 		if(!_assertionIdProductTableExists_set) {
 			throw new IllegalStateException("assertionIdProductTableExists not set.  Use the HasAssertionIdProductTableExists() method to check its state before accessing it.");
 		}
@@ -407,7 +407,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _migrationIdCreateDatabase = null;
 	private boolean _migrationIdCreateDatabase_set = false;
 
-	public UUID getMigrationIdCreateDatabase() {
+	public final UUID getMigrationIdCreateDatabase() {
 		if(!_migrationIdCreateDatabase_set) {
 			throw new IllegalStateException("migrationIdCreateDatabase not set.  Use the HasMigrationIdCreateDatabase() method to check its state before accessing it.");
 		}
@@ -444,7 +444,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _migrationIdLoadCoreSchema = null;
 	private boolean _migrationIdLoadCoreSchema_set = false;
 
-	public UUID getMigrationIdLoadCoreSchema() {
+	public final UUID getMigrationIdLoadCoreSchema() {
 		if(!_migrationIdLoadCoreSchema_set) {
 			throw new IllegalStateException("migrationIdLoadCoreSchema not set.  Use the HasMigrationIdLoadCoreSchema() method to check its state before accessing it.");
 		}
@@ -481,7 +481,7 @@ public class ProductCatalogueMySqlDatabaseResource
 	private UUID _migrationIdLoadReferenceData = null;
 	private boolean _migrationIdLoadReferenceData_set = false;
 
-	public UUID getMigrationIdLoadReferenceData() {
+	public final UUID getMigrationIdLoadReferenceData() {
 		if(!_migrationIdLoadReferenceData_set) {
 			throw new IllegalStateException("migrationIdLoadReferenceData not set.  Use the HasMigrationIdLoadReferenceData() method to check its state before accessing it.");
 		}
@@ -533,7 +533,7 @@ public class ProductCatalogueMySqlDatabaseResource
 		if(value == null) {
 			throw new IllegalArgumentException("resourceXml cannot be null");
 		}
-		boolean changing = !_resourceXml_set || _resourceXml != value;
+		boolean changing = !_resourceXml_set || !_resourceXml.equals(value);
 		if(changing) {
 			_resourceXml_set = true;
 			_resourceXml = value;

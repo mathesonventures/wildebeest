@@ -24,8 +24,6 @@ import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
-import co.mv.wb.plugin.base.ResourceImpl;
-import co.mv.wb.plugin.database.DatabaseResource;
 import co.mv.wb.plugin.database.Extensions;
 import java.sql.SQLException;
 import java.util.UUID;

@@ -20,7 +20,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import java.sql.SQLException;
 import java.util.UUID;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class SqlServerCreateDatabaseMigrationTests
@@ -87,21 +87,18 @@ public class SqlServerCreateDatabaseMigrationTests
 		{
 			tr.perform(instance);
 			
-			Assert.fail("MigrationFailedException expected");
+			fail("MigrationFailedException expected");
 		}
 		catch (MigrationFailedException e)
 		{
-			caught = e;
+			assertEquals(
+				"e.message",
+				String.format("Database '%s' already exists. Choose a different database name.", instance.getDatabaseName()),
+				e.getMessage());
 		}
 		finally
 		{
 			SqlServerUtil.tryDropDatabase(instance);
 		}
-		
-		// Verify
-		Assert.assertEquals(
-			"caught.message",
-			String.format("Database '%s' already exists. Choose a different database name.",	instance.getDatabaseName()),
-			caught.getMessage());
 	}
 }

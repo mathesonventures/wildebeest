@@ -42,7 +42,7 @@ public class FakeInstance implements Instance
 		return _stateId;
 	}
 
-	public void setStateId(
+	public final void setStateId(
 		UUID value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateId cannot be null");
@@ -84,7 +84,7 @@ public class FakeInstance implements Instance
 		if(value == null) {
 			throw new IllegalArgumentException("tag cannot be null");
 		}
-		boolean changing = !_tag_set || _tag != value;
+		boolean changing = !_tag_set || !_tag.equals(value);
 		if(changing) {
 			_tag_set = true;
 			_tag = value;

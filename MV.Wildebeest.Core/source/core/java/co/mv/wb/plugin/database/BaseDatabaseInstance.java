@@ -45,7 +45,7 @@ public abstract class BaseDatabaseInstance implements DatabaseInstance
 	private String _databaseName = null;
 	private boolean _databaseName_set = false;
 
-	@Override public String getDatabaseName() {
+	@Override public final String getDatabaseName() {
 		if(!_databaseName_set) {
 			throw new IllegalStateException("databaseName not set.");
 		}
@@ -55,12 +55,12 @@ public abstract class BaseDatabaseInstance implements DatabaseInstance
 		return _databaseName;
 	}
 
-	@Override public void setDatabaseName(
+	@Override public final void setDatabaseName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("databaseName cannot be null");
 		}
-		boolean changing = !_databaseName_set || _databaseName != value;
+		boolean changing = !_databaseName_set || !_databaseName.equals(value);
 		if(changing) {
 			_databaseName_set = true;
 			_databaseName = value;
@@ -85,19 +85,19 @@ public abstract class BaseDatabaseInstance implements DatabaseInstance
 	private String _stateTableName = null;
 	private boolean _stateTableName_set = false;
 
-	@Override public String getStateTableName() {
+	@Override public final String getStateTableName() {
 		if(!_stateTableName_set) {
 			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
 		}
 		return _stateTableName;
 	}
 
-	@Override public void setStateTableName(
+	@Override public final void setStateTableName(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateTableName cannot be null");
 		}
-		boolean changing = !_stateTableName_set || _stateTableName != value;
+		boolean changing = !_stateTableName_set || !_stateTableName.equals(value);
 		if(changing) {
 			_stateTableName_set = true;
 			_stateTableName = value;

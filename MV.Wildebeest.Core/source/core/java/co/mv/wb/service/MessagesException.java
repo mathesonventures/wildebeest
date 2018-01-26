@@ -44,9 +44,10 @@ public class MessagesException extends Exception
 	/**
 	 * Gets the messages collection.
 	 * 
+	 * @return                                  the messages collection
 	 * @since                                   2.0
 	 */
-	public Messages getMessages() {
+	public final Messages getMessages() {
 		if(!_messages_set) {
 			throw new IllegalStateException("messages not set.  Use the HasMessages() method to check its state before accessing it.");
 		}

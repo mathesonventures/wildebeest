@@ -66,6 +66,7 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 	/**
 	 * Gets the name of the schema to check.
 	 * 
+	 * @return                                  the schema name to check
 	 * @since                                   2.0
 	 */
 	public String getSchemaName() {
@@ -80,7 +81,7 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 		if(value == null) {
 			throw new IllegalArgumentException("schemaName cannot be null");
 		}
-		boolean changing = !_schemaName_set || _schemaName != value;
+		boolean changing = !_schemaName_set || !_schemaName.equals(value);
 		if(changing) {
 			_schemaName_set = true;
 			_schemaName = value;
@@ -108,6 +109,7 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 	/**
 	 * Gets the name of the table to check.
 	 * 
+	 * @return                                  the name of the table to check
 	 * @since                                   2.0
 	 */
 	public String getTableName() {
@@ -122,7 +124,7 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 		if(value == null) {
 			throw new IllegalArgumentException("tableName cannot be null");
 		}
-		boolean changing = !_tableName_set || _tableName != value;
+		boolean changing = !_tableName_set || !_tableName.equals(value);
 		if(changing) {
 			_tableName_set = true;
 			_tableName = value;
@@ -155,7 +157,7 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 		AnsiSqlDatabaseInstance db = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
 		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
 		
-		AssertionResponse result = null;
+		AssertionResponse result;
 
 		if (!db.databaseExists())
 		{

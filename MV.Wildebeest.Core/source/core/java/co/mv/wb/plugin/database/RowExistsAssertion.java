@@ -75,7 +75,7 @@ public class RowExistsAssertion extends BaseAssertion implements Assertion
 		if(value == null) {
 			throw new IllegalArgumentException("description cannot be null");
 		}
-		boolean changing = !_description_set || _description != value;
+		boolean changing = !_description_set || !_description.equals(value);
 		if(changing) {
 			_description_set = true;
 			_description = value;
@@ -112,7 +112,7 @@ public class RowExistsAssertion extends BaseAssertion implements Assertion
 		if(value == null) {
 			throw new IllegalArgumentException("sql cannot be null");
 		}
-		boolean changing = !_sql_set || _sql != value;
+		boolean changing = !_sql_set || !_sql.equals(value);
 		if(changing) {
 			_sql_set = true;
 			_sql = value;

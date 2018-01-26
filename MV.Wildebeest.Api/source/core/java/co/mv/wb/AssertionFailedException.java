@@ -31,6 +31,9 @@ public class AssertionFailedException extends Exception
 	/**
 	 * Creates a new AssertionFailedException for the specified state and AssertionResult.
 	 * 
+	 * @param       stateId                     the state that was being asserted
+	 * @param       assertionResults            the full set of assertion results for the state including both those
+	 *                                          that succeeded as well as those that failed to trigger this exception
 	 * @since                                   1.0
 	 */
 	public AssertionFailedException(

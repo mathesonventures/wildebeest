@@ -51,9 +51,10 @@ public abstract class BaseDomBuilder implements DomBuilder
 	/**
 	 * Gets the root {@link org.w3c.dom.Element} that represents the item to be deserialized.
 	 * 
+	 * @return                                  the Element that represents the item to be deserialized
 	 * @since                                   1.0
 	 */
-	protected Element getElement() {
+	protected final Element getElement() {
 		if(!_element_set) {
 			throw new IllegalStateException("element not set.  Use the HasElement() method to check its state before accessing it.");
 		}
@@ -144,7 +145,8 @@ public abstract class BaseDomBuilder implements DomBuilder
 		
 		TryResult<String> result = null;
 		
-		Node node = null;
+		Node node;
+
 		try
 		{
 			node  = (Node)this.getXPath().compile(xpath).evaluate(this.getElement(), XPathConstants.NODE);
@@ -155,7 +157,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 				if (element != null)
 				{
 					String value = element.getTextContent();
-					result = new TryResult<String>(value);
+					result = new TryResult<>(value);
 				}
 			}
 		}
@@ -165,7 +167,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 
 		if (result == null)
 		{
-			result = new TryResult<String>();
+			result = new TryResult<>();
 		}
 
 		return result;
@@ -191,11 +193,11 @@ public abstract class BaseDomBuilder implements DomBuilder
 			try
 			{
 				int value = Integer.parseInt(raw.getValue());
-				result = new TryResult<Integer>(value);
+				result = new TryResult<>(value);
 			}
-			catch(Exception e)
+			catch(NumberFormatException e)
 			{
-				result = new TryResult<Integer>();
+				result = new TryResult<>();
 			}
 		}
 		
