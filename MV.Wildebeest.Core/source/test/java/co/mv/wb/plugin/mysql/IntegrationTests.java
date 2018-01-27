@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.AssertExtensions;
+import co.mv.wb.Asserts;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.FakeLogger;
 import co.mv.wb.IndeterminateStateException;
@@ -38,8 +38,9 @@ import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class IntegrationTests
@@ -77,21 +78,21 @@ public class IntegrationTests
 		// Migration: to Created
 		resource.getMigrations().add(new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			null,
-			created.getStateId()));
+			Optional.empty(),
+			Optional.of(created.getStateId())));
 		
 		// Migration: Created to Initial Schema
 		resource.getMigrations().add(new SqlScriptMigration(
 			UUID.randomUUID(),
-			created.getStateId(),
-			initialSchema.getStateId(),
+			Optional.of(created.getStateId()),
+			Optional.of(initialSchema.getStateId()),
 			MySqlElementFixtures.productCatalogueDatabase()));
 		
 		// Migration: Initial Schema to Populated
 		resource.getMigrations().add(new SqlScriptMigration(
 			UUID.randomUUID(),
-			initialSchema.getStateId(),
-			populated.getStateId(),
+			Optional.of(initialSchema.getStateId()),
+			Optional.of(populated.getStateId()),
 			MySqlElementFixtures.productTypeRows()));
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -222,7 +223,7 @@ public class IntegrationTests
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource"); }
 		
-		AssertExtensions.assertResource(
+		Asserts.assertResource(
 			MySqlDatabaseResourcePlugin.class,
 			ProductCatalogueMySqlDatabaseResource.ResourceId,
 			"Product Catalogue Database",
@@ -257,9 +258,9 @@ public class IntegrationTests
 		if (databaseName == null) { throw new IllegalArgumentException("databaseName"); }
 		if ("".equals(databaseName)) { throw new IllegalArgumentException("databaseName"); }
 		
-		Assert.assertNotNull("instance", instance);
-		AssertExtensions.assertInstance(MySqlDatabaseInstance.class, instance, "instance");
-		AssertExtensions.assertMySqlDatabaseInstance(
+		assertNotNull("instance", instance);
+		Asserts.assertInstance(MySqlDatabaseInstance.class, instance, "instance");
+		Asserts.assertMySqlDatabaseInstance(
 			"127.0.0.1",
 			3306,
 			"root",

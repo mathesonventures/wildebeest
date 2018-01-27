@@ -18,7 +18,8 @@ package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
-import co.mv.wb.plugin.database.DatabasePluginUnitTestsTemplate;
+import co.mv.wb.plugin.database.BaseDatabasePluginUnitTests;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.Test;
 
@@ -28,7 +29,7 @@ import org.junit.Test;
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class SqlServerPluginUnitTests extends DatabasePluginUnitTestsTemplate
+public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 {
 	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
@@ -37,13 +38,13 @@ public class SqlServerPluginUnitTests extends DatabasePluginUnitTestsTemplate
 		
 		SqlServerCreateDatabaseMigration create = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			null,
-			UUID.randomUUID());
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()));
 		
 		SqlServerDropDatabaseMigration drop = new SqlServerDropDatabaseMigration(
 			UUID.randomUUID(),
-			UUID.randomUUID(),
-			null);
+			Optional.of(UUID.randomUUID()),
+			Optional.empty());
 
 		this.databaseExistsAssertionForExistentDatabase(db, create, drop);
 	}
@@ -63,13 +64,13 @@ public class SqlServerPluginUnitTests extends DatabasePluginUnitTestsTemplate
 		
 		SqlServerCreateDatabaseMigration create = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			null,
-			UUID.randomUUID());
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()));
 		
 		SqlServerDropDatabaseMigration drop = new SqlServerDropDatabaseMigration(
 			UUID.randomUUID(),
-			UUID.randomUUID(),
-			null);
+			Optional.of(UUID.randomUUID()),
+			Optional.empty());
 
 		this.databaseDoesNotExistAssertionForExistentDatabase(db, create, drop);
 	}

@@ -336,14 +336,14 @@ public final class ResourceImpl implements Resource
 				logger,
 				this,
 				instance,
-				migration.getToStateId());
+				migration.getToStateId().get());
 			
 			// Assert the new state
 			List<AssertionResult> assertionResults = this.assertState(
 				logger,
 				instance);
 
-			throwIfFailed(migration.getToStateId(), assertionResults);
+			throwIfFailed(migration.getToStateId().get(), assertionResults);
 		}
 	}
 	
@@ -422,12 +422,12 @@ public final class ResourceImpl implements Resource
 			resource.getMigrations()
 				.stream()
 				.filter(m ->
-					(!m.hasFromStateId() && fromStateId == null) ||
-					(m.hasFromStateId() && m.getFromStateId().equals(fromStateId)))
+					(!m.getFromStateId().isPresent() && fromStateId == null) ||
+					(m.getFromStateId().isPresent() && m.getFromStateId().equals(fromStateId)))
 				.forEach(
 					migration ->
 					{
-						State toState = resource.stateForId(migration.getToStateId());
+						State toState = resource.stateForId(migration.getToStateId().get());
 						List<Migration> thisPathCopy = new ArrayList<>(thisPath);
 						thisPathCopy.add(migration);
 						findPaths(resource, paths, thisPathCopy, toState.getStateId(), targetStateId);

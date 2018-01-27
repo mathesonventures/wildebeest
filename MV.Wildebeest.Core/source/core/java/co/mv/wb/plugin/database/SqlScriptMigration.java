@@ -24,6 +24,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationFaultException;
 import co.mv.wb.Resource;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -47,8 +48,8 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 	 */
 	public SqlScriptMigration(
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId,
+		Optional<UUID> fromStateId,
+		Optional<UUID> toStateId,
 		String sql)
 	{
 		super(migrationId, fromStateId, toStateId);

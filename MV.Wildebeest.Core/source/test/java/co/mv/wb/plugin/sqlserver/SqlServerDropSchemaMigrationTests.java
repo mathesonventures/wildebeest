@@ -19,6 +19,7 @@ package co.mv.wb.plugin.sqlserver;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -33,8 +34,8 @@ public class SqlServerDropSchemaMigrationTests
 
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			null,
-			UUID.randomUUID());
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()));
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
@@ -81,8 +82,8 @@ public class SqlServerDropSchemaMigrationTests
 
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			null,
-			UUID.randomUUID());
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()));
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 

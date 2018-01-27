@@ -22,8 +22,9 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
-	RowDoesNotExistAssertionTests.class,
-	RowExistsAssertionTests.class
+	DatabaseDomServiceUnitTests.class,
+	MySqlRowDoesNotExistAssertionTests.class,
+	MySqlRowExistsAssertionTests.class
 })
 public class AllUnitTests
 {

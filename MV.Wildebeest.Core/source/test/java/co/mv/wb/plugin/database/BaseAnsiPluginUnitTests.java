@@ -6,9 +6,9 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import java.util.UUID;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
-public abstract class AnsiPluginUnitTestsTemplate
+public abstract class BaseAnsiPluginUnitTests
 {
 	public abstract void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException;
 
@@ -27,8 +27,7 @@ public abstract class AnsiPluginUnitTestsTemplate
 			create.perform(db);
 
 			// Verify
-			Assert.assertEquals("databaseExists", true, db.databaseExists());
-
+			assertEquals("databaseExists", true, db.databaseExists());
 		}
 		finally
 		{
@@ -65,15 +64,14 @@ public abstract class AnsiPluginUnitTestsTemplate
 			AssertionResponse response = tableExists.perform(db);
 
 			// Verify
-			Assert.assertNotNull("response", response);
-			Assert.assertEquals("response.message", "Table tbl exists in schema sch", response.getMessage());
-			Assert.assertTrue("respnse.result", response.getResult());
+			assertNotNull("response", response);
+			assertEquals("response.message", "Table tbl exists in schema sch", response.getMessage());
+			assertTrue("respnse.result", response.getResult());
 		}
 		finally
 		{
 			dropDatabase.perform(db);
 		}
-		
 	}
 	
 	public abstract void tableExistsForNonExistentTable() throws MigrationFailedException;
@@ -102,9 +100,9 @@ public abstract class AnsiPluginUnitTestsTemplate
 			AssertionResponse response = tableExists.perform(db);
 
 			// Verify
-			Assert.assertNotNull("response", response);
-			Assert.assertEquals("response.message", "Table tbl does not exist in schema sch", response.getMessage());
-			Assert.assertFalse("respnse.result", response.getResult());
+			assertNotNull("response", response);
+			assertEquals("response.message", "Table tbl does not exist in schema sch", response.getMessage());
+			assertFalse("respnse.result", response.getResult());
 		}
 		finally
 		{

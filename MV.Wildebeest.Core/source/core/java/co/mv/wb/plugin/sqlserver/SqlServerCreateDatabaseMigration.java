@@ -25,6 +25,7 @@ import co.mv.wb.plugin.base.BaseMigration;
 import co.mv.wb.plugin.database.DatabaseHelper;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -45,8 +46,8 @@ public class SqlServerCreateDatabaseMigration extends BaseMigration
 	 */
 	public SqlServerCreateDatabaseMigration(
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId)
+		Optional<UUID> fromStateId,
+		Optional<UUID> toStateId)
 	{
 		super(migrationId, fromStateId, toStateId);
 	}

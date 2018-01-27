@@ -20,6 +20,7 @@ import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * A {@link Logger} that logs to a {@link java.io.PrintStream}.
@@ -129,34 +130,34 @@ public class PrintStreamLogger implements Logger
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
 
-		State fromState = migration.hasFromStateId() ? resource.stateForId(migration.getFromStateId()) : null;
-		State toState = migration.hasToStateId() ? resource.stateForId(migration.getToStateId()) : null;
+		Optional<State> fromState = migration.getFromStateId().map(stateId -> resource.stateForId(stateId));
+		Optional<State> toState = migration.getToStateId().map(stateId -> resource.stateForId(stateId));
 		
-		if (fromState != null)
+		if (fromState.isPresent())
 		{
-			if (toState != null)
+			if (toState.isPresent())
 			{
 				logLine(this.getStream(), String.format(
 					"Migrating from state \"%s\" to \"%s\"",
-					fromState.getDisplayName(),
-					toState.getDisplayName()));
+					fromState.get().getDisplayName(),
+					toState.get().getDisplayName()));
 			}
 			else
 			{
 				logLine(this.getStream(), String.format(
 					"Migrating from state \"%s\" to non-existent",
-					fromState.getDisplayName()));
+					fromState.get().getDisplayName()));
 			}
 		}
-		else if (toState != null)
+		else if (toState.isPresent())
 		{
 				logLine(this.getStream(), String.format(
 					"Migrating from non-existent to \"%s\"",
-					toState.getDisplayName()));
+					toState.get().getDisplayName()));
 		}
 		else
 		{
-			// Exception?
+			// TODO Exception?
 		}
 	}
 	

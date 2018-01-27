@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.base;
 
 import co.mv.wb.Migration;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -36,20 +37,14 @@ public abstract class BaseMigration implements Migration
 	 */
 	protected BaseMigration(
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId)
+		Optional<UUID> fromStateId,
+		Optional<UUID> toStateId)
 	{
 		this.setMigrationId(migrationId);
-		if (fromStateId !=  null)
-		{
-			this.setFromStateId(fromStateId);
-		}
-		if (toStateId != null)
-		{
-			this.setToStateId(toStateId);
-		}
+		this.setFromStateId(fromStateId);
+		this.setToStateId(toStateId);
 	}
-	
+
 	// <editor-fold desc="MigrationId" defaultstate="collapsed">
 
 	private UUID _migrationId = null;
@@ -89,18 +84,23 @@ public abstract class BaseMigration implements Migration
 
 	// <editor-fold desc="FromStateId" defaultstate="collapsed">
 
-	private UUID _fromStateId = null;
+	private Optional<UUID> _fromStateId = null;
 	private boolean _fromStateId_set = false;
 
-	@Override public UUID getFromStateId() {
+	@Override public Optional<UUID> getFromStateId() {
 		if(!_fromStateId_set) {
-			throw new IllegalStateException("fromStateId not set.  Use the HasFromStateId() method to check its state before accessing it.");
+			throw new IllegalStateException("fromStateId not set.");
+		}
+		if(_fromStateId == null) {
+			throw new IllegalStateException("fromStateId should not be null");
 		}
 		return _fromStateId;
 	}
 
-	private void setFromStateId(
-		UUID value) {
+	private void setFromStateId(Optional<UUID> value) {
+		if(value == null) {
+			throw new IllegalArgumentException("fromStateId cannot be null");
+		}
 		boolean changing = !_fromStateId_set || _fromStateId != value;
 		if(changing) {
 			_fromStateId_set = true;
@@ -108,33 +108,24 @@ public abstract class BaseMigration implements Migration
 		}
 	}
 
-	private void clearFromStateId() {
-		if(_fromStateId_set) {
-			_fromStateId_set = true;
-			_fromStateId = null;
-		}
-	}
-
-	@Override public boolean hasFromStateId() {
-		return _fromStateId_set;
-	}
-
 	// </editor-fold>
 
 	// <editor-fold desc="ToStateId" defaultstate="collapsed">
 
-	private UUID _toStateId = null;
+	private Optional<UUID> _toStateId = null;
 	private boolean _toStateId_set = false;
 
-	@Override public UUID getToStateId() {
+	@Override public Optional<UUID> getToStateId() {
 		if(!_toStateId_set) {
-			throw new IllegalStateException("toStateId not set.  Use the HasToStateId() method to check its state before accessing it.");
+			throw new IllegalStateException("toStateId not set.");
+		}
+		if(_toStateId == null) {
+			throw new IllegalStateException("toStateId should not be null");
 		}
 		return _toStateId;
 	}
 
-	private void setToStateId(
-		UUID value) {
+	private void setToStateId(Optional<UUID> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("toStateId cannot be null");
 		}
@@ -152,7 +143,7 @@ public abstract class BaseMigration implements Migration
 		}
 	}
 
-	@Override public boolean hasToStateId() {
+	private boolean hasToStateId() {
 		return _toStateId_set;
 	}
 

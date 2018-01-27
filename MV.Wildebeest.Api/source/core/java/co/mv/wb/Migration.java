@@ -16,6 +16,7 @@
 
 package co.mv.wb;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -35,38 +36,22 @@ public interface Migration
 	UUID getMigrationId();
 	
 	/**
-	 * Gets the ID of the source State for this Migration
+	 * Gets the optional source State for this Migration.  A Migration without a source State migrates from
+	 * the non-existent state (i.e. creates the resource instance from nothing).
 	 * 
 	 * @return                                  the ID of the source State for this Migration
 	 * @since                                   1.0
 	 */
-	UUID getFromStateId();
+	Optional<UUID> getFromStateId();
 	
 	/**
-	 * Indicates whether or not this Migration specifies a source State.  A Migration without a source State migrates
-	 * from the non-existent state (i.e. creates the resource instance).
-	 * 
-	 * @return                                  a boolean flag indicating if this Migration has a source State.
-	 * @since                                   1.0
-	 */
-	boolean hasFromStateId();
-	
-	/**
-	 * Gets the ID of the target State for this Migration.
+	 * Gets the optional target State for this Migration.  A Migration without a target state migrates to the
+	 * non-existent state (i.e. destroys the resource instance).
 	 * 
 	 * @return                                  the ID of the to State for this Migration
 	 * @since                                   1.0
 	 */
-	UUID getToStateId();
-	
-	/**
-	 * Indicates whether or not this Migration specifies a target State.  A Migration without a target State migrates to
-	 * the non-existent state (i.e. destroys the resource instance).
-	 * 
-	 * @return                                  a boolean flag indicating if this Migration has a to State
-	 * @since                                   1.0
-	 */
-	boolean hasToStateId();
+	Optional<UUID> getToStateId();
 	
 	/**
 	 * Checks whether this {@link Migration} can be performed on the supplied {@link Resource}.

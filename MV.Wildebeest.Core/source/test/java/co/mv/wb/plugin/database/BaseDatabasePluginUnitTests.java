@@ -4,9 +4,9 @@ import co.mv.wb.AssertionResponse;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import java.util.UUID;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
-public abstract class DatabasePluginUnitTestsTemplate
+public abstract class BaseDatabasePluginUnitTests
 {
 	public abstract void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException;
 	
@@ -42,12 +42,12 @@ public abstract class DatabasePluginUnitTestsTemplate
 			// Verify
 			//
 
-			Assert.assertNotNull("response", response);
-			Assert.assertEquals(
+			assertNotNull("response", response);
+			assertEquals(
 				"response.message",
 				"Database " + db.getDatabaseName() + " exists",
 				response.getMessage());
-			Assert.assertTrue("respnse.result", response.getResult());
+			assertTrue("respnse.result", response.getResult());
 			
 		}
 		finally
@@ -73,12 +73,12 @@ public abstract class DatabasePluginUnitTestsTemplate
 		AssertionResponse response = databaseExists.perform(db);
 
 		// Verify
-		Assert.assertNotNull("response", response);
-		Assert.assertEquals(
+		assertNotNull("response", response);
+		assertEquals(
 			"response.message",
 			"Database " + db.getDatabaseName() + " does not exist",
 			response.getMessage());
-		Assert.assertFalse("respnse.result", response.getResult());
+		assertFalse("respnse.result", response.getResult());
 	}
 	
 	public abstract void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException;
@@ -105,12 +105,12 @@ public abstract class DatabasePluginUnitTestsTemplate
 			AssertionResponse response = databaseExists.perform(db);
 
 			// Verify
-			Assert.assertNotNull("response", response);
-			Assert.assertEquals(
+			assertNotNull("response", response);
+			assertEquals(
 				"response.message",
 				"Database " + db.getDatabaseName() + " exists",
 				response.getMessage());
-			Assert.assertFalse("respnse.result", response.getResult());
+			assertFalse("respnse.result", response.getResult());
 		}
 		finally
 		{
@@ -134,11 +134,11 @@ public abstract class DatabasePluginUnitTestsTemplate
 		AssertionResponse response = databaseExists.perform(db);
 
 		// Verify
-		Assert.assertNotNull("response", response);
-		Assert.assertEquals(
+		assertNotNull("response", response);
+		assertEquals(
 			"response.message",
 			"Database " + db.getDatabaseName() + " does not exist",
 			response.getMessage());
-		Assert.assertTrue("respnse.result", response.getResult());
+		assertTrue("respnse.result", response.getResult());
 	}
 }

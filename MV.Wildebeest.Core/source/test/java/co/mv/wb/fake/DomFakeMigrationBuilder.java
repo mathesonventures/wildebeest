@@ -19,11 +19,16 @@ package co.mv.wb.fake;
 import co.mv.wb.Migration;
 import co.mv.wb.service.dom.BaseDomMigrationBuilder;
 import java.io.File;
+import java.util.Optional;
 import java.util.UUID;
 
 public class DomFakeMigrationBuilder extends BaseDomMigrationBuilder
 {
-	@Override public Migration build(UUID migrationId, UUID fromStateId, UUID toStateId, File baseDir)
+	@Override public Migration build(
+		UUID migrationId,
+		Optional<UUID> fromStateId,
+		Optional<UUID> toStateId,
+		File baseDir)
 	{
 		String tag = this.getElement().getChildNodes().item(0).getTextContent();
 		

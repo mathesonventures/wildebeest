@@ -29,14 +29,15 @@ import co.mv.wb.framework.TryResult;
 import co.mv.wb.plugin.base.BaseMigration;
 import co.mv.wb.service.MessagesException;
 import java.io.File;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ExternalResourceMigration extends BaseMigration
 {
 	public ExternalResourceMigration(
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId,
+		Optional<UUID> fromStateId,
+		Optional<UUID> toStateId,
 		File baseDir,
 		Logger logger,
 		String fileName,

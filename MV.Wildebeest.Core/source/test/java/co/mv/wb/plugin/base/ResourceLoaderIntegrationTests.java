@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.base;
 
-import co.mv.wb.AssertExtensions;
+import co.mv.wb.Asserts;
 import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.FakeLogger;
@@ -35,7 +35,8 @@ import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
 import java.io.File;
 import java.sql.SQLException;
-import junit.framework.Assert;
+import java.util.Optional;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,38 +98,38 @@ public class ResourceLoaderIntegrationTests
 		//
 		
 		// Resource
-		Assert.assertNotNull("resource", resource);
-		AssertExtensions.assertResource(MySqlDatabaseResourcePlugin.class, productCatalogueResource.getResourceId(), "Product Catalogue Database",
+		assertNotNull("resource", resource);
+		Asserts.assertResource(MySqlDatabaseResourcePlugin.class, productCatalogueResource.getResourceId(), "Product Catalogue Database",
 			resource, "resource");
 		
 		// States
-		Assert.assertEquals("resource.states.size", 3, resource.getStates().size());
-		AssertExtensions.assertState(
+		assertEquals("resource.states.size", 3, resource.getStates().size());
+		Asserts.assertState(
 			ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated, "Database created",
 			resource.getStates().get(0), "state[0]");
-		AssertExtensions.assertState(
+		Asserts.assertState(
 			ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded, "Core Schema Loaded",
 			resource.getStates().get(1), "state[1]");
-		AssertExtensions.assertState(
+		Asserts.assertState(
 			ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded, "Reference Data Loaded",
 			resource.getStates().get(2), "state[2]");
 		
 		// Migrations
-		Assert.assertEquals("resource.migrations.size", 3, resource.getMigrations().size());
-		AssertExtensions.assertMigration(
+		assertEquals("resource.migrations.size", 3, resource.getMigrations().size());
+		Asserts.assertMigration(
 			ProductCatalogueMySqlDatabaseResource.MigrationIdCreateDatabase,
-			null,
-			ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated,
+			Optional.empty(),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated),
 			resource.getMigrations().get(0), "resource.migrations[0]");
-		AssertExtensions.assertMigration(
+		Asserts.assertMigration(
 			ProductCatalogueMySqlDatabaseResource.MigrationIdLoadCoreSchema,
-			ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated,
-			ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded,
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded),
 			resource.getMigrations().get(1), "resource.migrations[1]");
-		AssertExtensions.assertMigration(
+		Asserts.assertMigration(
 			ProductCatalogueMySqlDatabaseResource.MigrationIdLoadReferenceData,
-			ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded,
-			ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded,
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded),
 			resource.getMigrations().get(2), "resource.migrations[2]");
 		
 		//

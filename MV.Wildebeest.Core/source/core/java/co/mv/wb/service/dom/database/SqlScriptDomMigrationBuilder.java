@@ -24,6 +24,7 @@ import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomMigrationBuilder;
 import co.mv.wb.framework.TryResult;
 import java.io.File;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -36,8 +37,8 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 {
 	@Override public Migration build(
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId,
+		Optional<UUID> fromStateId,
+		Optional<UUID> toStateId,
 		File baseDir) throws MessagesException
 	{
 		Migration result;

@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -446,16 +447,13 @@ public class DomResourceLoader implements ResourceLoader
 		
 		String type = element.getAttribute(XA_MIGRATION_TYPE);
 		UUID id = UUID.fromString(element.getAttribute(XA_MIGRATION_ID));
-		UUID fromStateId = null;
-		if (element.hasAttribute(XA_MIGRATION_FROM_STATE_ID))
-		{
-			fromStateId = UUID.fromString(element.getAttribute(XA_MIGRATION_FROM_STATE_ID));
-		}
-		UUID toStateId = null;
-		if (element.hasAttribute(XA_MIGRATION_TO_STATE_ID))
-		{
-			toStateId = UUID.fromString(element.getAttribute(XA_MIGRATION_TO_STATE_ID));
-		}
+		Optional<UUID> fromStateId = element.hasAttribute(XA_MIGRATION_FROM_STATE_ID)
+			? Optional.of(UUID.fromString(element.getAttribute(XA_MIGRATION_FROM_STATE_ID)))
+			: Optional.empty();
+		
+		Optional<UUID> toStateId = element.hasAttribute(XA_MIGRATION_TO_STATE_ID)
+			? Optional.of(UUID.fromString(element.getAttribute(XA_MIGRATION_TO_STATE_ID)))
+			: Optional.empty();
 		
 		MigrationBuilder builder = migrationBuilders.get(type);
 		

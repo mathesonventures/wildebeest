@@ -13,6 +13,7 @@
         </groups>
         <packages>
             <mvnpackage groupId="org.slf4j" artifactId="slf4j-api" version="1.7.5" groups="tlc,tlr" />
+            <mvnpackage groupId="org.slf4j" artifactId="slf4j-simple" version="1.7.5" groups="tlc,tlr" />
 <!--
             <mvnpackage groupId="junit" artifactId="junit" version="4.11" groups="tlc,tlr" />
 -->

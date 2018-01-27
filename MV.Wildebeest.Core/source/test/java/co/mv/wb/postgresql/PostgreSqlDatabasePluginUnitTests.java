@@ -19,8 +19,9 @@ package co.mv.wb.postgresql;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
-import co.mv.wb.plugin.database.DatabasePluginUnitTestsTemplate;
+import co.mv.wb.plugin.database.BaseDatabasePluginUnitTests;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ import org.junit.Test;
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class PostgreSqlDatabasePluginUnitTests extends DatabasePluginUnitTestsTemplate
+public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTests
 {
 	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
@@ -39,19 +40,19 @@ public class PostgreSqlDatabasePluginUnitTests extends DatabasePluginUnitTestsTe
 			5432,
 			"postgres",
 			"password",
-			"SkyfallTest",
+			"WildebeestTest",
 			null,
 			null);
 		
 		AnsiSqlCreateDatabaseMigration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			UUID.randomUUID(),
-			UUID.randomUUID());
+			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID()));
 		
 		AnsiSqlDropDatabaseMigration drop = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
-			UUID.randomUUID(),
-			UUID.randomUUID());
+			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID()));
 
 		this.databaseExistsAssertionForExistentDatabase(db, create, drop);
 	}
@@ -63,7 +64,7 @@ public class PostgreSqlDatabasePluginUnitTests extends DatabasePluginUnitTestsTe
 			5432,
 			"postgres",
 			"password",
-			"SkyfallTest",
+			"WildebeestTest",
 			null,
 			null);
 
@@ -77,19 +78,19 @@ public class PostgreSqlDatabasePluginUnitTests extends DatabasePluginUnitTestsTe
 			5432,
 			"postgres",
 			"password",
-			"SkyfallTest",
+			"WildebeestTest",
 			null,
 			null);
 		
 		AnsiSqlCreateDatabaseMigration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			UUID.randomUUID(),
-			UUID.randomUUID());
+			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID()));
 		
 		AnsiSqlDropDatabaseMigration drop = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
-			UUID.randomUUID(),
-			UUID.randomUUID());
+			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID()));
 
 		this.databaseDoesNotExistAssertionForExistentDatabase(db, create, drop);
 	}
@@ -101,7 +102,7 @@ public class PostgreSqlDatabasePluginUnitTests extends DatabasePluginUnitTestsTe
 			5432,
 			"postgres",
 			"password",
-			"SkyfallTest",
+			"WildebeestTest",
 			null,
 			null);
 		

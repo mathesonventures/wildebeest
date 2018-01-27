@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.AssertExtensions;
+import co.mv.wb.Asserts;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.AssertionFailedException;
@@ -32,6 +32,7 @@ import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import co.mv.wb.plugin.base.ResourceImpl;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -65,14 +66,16 @@ public class SqlServerTableDoesNotExistAssertionTests
 		 
 		// Migrate -> created
 		Migration tran1 = new SqlServerCreateDatabaseMigration(
-			UUID.randomUUID(), null, created.getStateId());
+			UUID.randomUUID(),
+			Optional.empty(),
+			Optional.of(created.getStateId()));
 		resource.getMigrations().add(tran1);
 		 
 		// Migrate created -> schemaLoaded
 		Migration tran2 = new SqlScriptMigration(
 			UUID.randomUUID(),
-			created.getStateId(),
-			schemaLoaded.getStateId(),
+			Optional.of(created.getStateId()),
+			Optional.of(schemaLoaded.getStateId()),
 			SqlServerElementFixtures.productCatalogueDatabase());
 		resource.getMigrations().add(tran2);
 
@@ -115,7 +118,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		//
 
 		assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(false, "Table ProductType exists", response, "response");
+		Asserts.assertAssertionResponse(false, "Table ProductType exists", response, "response");
 		
 	 }
 	 
@@ -142,7 +145,9 @@ public class SqlServerTableDoesNotExistAssertionTests
 
 		// Migrate -> created
 		Migration tran1 = new SqlServerCreateDatabaseMigration(
-			UUID.randomUUID(), null, created.getStateId());
+			UUID.randomUUID(),
+			Optional.empty(),
+			Optional.of(created.getStateId()));
 		resource.getMigrations().add(tran1);
 		
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -184,7 +189,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		//
 
 		assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
+		Asserts.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
 		
 	 }
 	 
@@ -225,7 +230,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		//
 
 		assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(
+		Asserts.assertAssertionResponse(
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
 

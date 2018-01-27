@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.AssertExtensions;
+import co.mv.wb.Asserts;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.IndeterminateStateException;
@@ -32,6 +32,7 @@ import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -65,14 +66,16 @@ public class MySqlTableDoesNotExistAssertionTests
 		 
 		// Migrate -> created
 		Migration tran1 = new MySqlCreateDatabaseMigration(
-			UUID.randomUUID(), null, created.getStateId());
+			UUID.randomUUID(),
+			Optional.empty(),
+			Optional.of(created.getStateId()));
 		resource.getMigrations().add(tran1);
 		 
 		// Migrate created -> schemaLoaded
 		Migration tran2 = new SqlScriptMigration(
 			UUID.randomUUID(),
-			created.getStateId(),
-			schemaLoaded.getStateId(),
+			Optional.of(created.getStateId()),
+			Optional.of(schemaLoaded.getStateId()),
 			MySqlElementFixtures.productCatalogueDatabase());
 		resource.getMigrations().add(tran2);
 
@@ -113,7 +116,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 
 		assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(false, "Table ProductType exists", response, "response");
+		Asserts.assertAssertionResponse(false, "Table ProductType exists", response, "response");
 		
 	 }
 	 
@@ -140,7 +143,9 @@ public class MySqlTableDoesNotExistAssertionTests
 
 		// Migrate -> created
 		Migration tran1 = new MySqlCreateDatabaseMigration(
-			UUID.randomUUID(), null, created.getStateId());
+			UUID.randomUUID(),
+			Optional.empty(),
+			Optional.of(created.getStateId()));
 		resource.getMigrations().add(tran1);
 		
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -180,7 +185,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 
 		assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
+		Asserts.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
 		
 	 }
 	 
@@ -209,7 +214,7 @@ public class MySqlTableDoesNotExistAssertionTests
 
 		// Verify
 		assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(
+		Asserts.assertAssertionResponse(
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
 	 }

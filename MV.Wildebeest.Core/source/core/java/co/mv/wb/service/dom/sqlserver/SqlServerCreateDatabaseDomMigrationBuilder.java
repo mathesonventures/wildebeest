@@ -21,6 +21,7 @@ import co.mv.wb.plugin.sqlserver.SqlServerCreateDatabaseMigration;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.dom.BaseDomMigrationBuilder;
 import java.io.File;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -34,8 +35,8 @@ public class SqlServerCreateDatabaseDomMigrationBuilder extends BaseDomMigration
 {
 	@Override public Migration build(
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId,
+		Optional<UUID> fromStateId,
+		Optional<UUID> toStateId,
 		File baseDir) throws MessagesException
 	{
 		return new SqlServerCreateDatabaseMigration(migrationId, fromStateId, toStateId);

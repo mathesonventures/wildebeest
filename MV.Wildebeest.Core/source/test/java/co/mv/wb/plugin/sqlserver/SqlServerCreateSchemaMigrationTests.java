@@ -19,8 +19,9 @@ package co.mv.wb.plugin.sqlserver;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class SqlServerCreateSchemaMigrationTests
@@ -35,8 +36,8 @@ public class SqlServerCreateSchemaMigrationTests
 		// Create the database
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			null,
-			UUID.randomUUID());
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()));
 		
 		createDatabase.perform(instance);
 		
@@ -68,8 +69,8 @@ public class SqlServerCreateSchemaMigrationTests
 		// Create the database
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			null,
-			UUID.randomUUID());
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()));
 
 		createDatabase.perform(instance);
 		
@@ -89,7 +90,7 @@ public class SqlServerCreateSchemaMigrationTests
 		{
 			createSchema.perform(instance);
 			
-			Assert.fail("MigrationFailedException expected");
+			fail("MigrationFailedException expected");
 		}
 		catch (MigrationFailedException e)
 		{
@@ -101,7 +102,7 @@ public class SqlServerCreateSchemaMigrationTests
 		}
 		
 		// Verify
-		Assert.assertEquals(
+		assertEquals(
 			"caught.message",
 			"There is already an object named 'prd' in the database.",
 			caught.getMessage());

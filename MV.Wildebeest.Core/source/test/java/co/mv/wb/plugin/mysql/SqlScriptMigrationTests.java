@@ -18,6 +18,7 @@ package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.MigrationFailedException;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.Test;
 
@@ -37,8 +38,8 @@ public class SqlScriptMigrationTests
 		
 		SqlScriptMigration migration = new SqlScriptMigration(
 			UUID.randomUUID(),
-			null,
-			UUID.randomUUID(),
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()),
 			MySqlElementFixtures.productCatalogueDatabase());
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(

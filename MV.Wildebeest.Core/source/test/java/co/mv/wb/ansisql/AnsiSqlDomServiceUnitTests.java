@@ -16,7 +16,7 @@
 
 package co.mv.wb.ansisql;
 
-import co.mv.wb.AssertExtensions;
+import co.mv.wb.Asserts;
 import co.mv.wb.FakeLogger;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
@@ -70,8 +70,8 @@ public class AnsiSqlDomServiceUnitTests
 			migrationId,
 			mT.getMigrationId());
 		Assert.assertFalse(
-			"resource.migrations[0].hasFromStateId",
-			mT.hasFromStateId());
+			"resource.migrations[0].fromStateId.isPresent",
+			mT.getFromStateId().isPresent());
 		Assert.assertEquals(
 			"resource.migrations[0].toStateId",
 			toStateId,
@@ -107,8 +107,8 @@ public class AnsiSqlDomServiceUnitTests
 			migrationId,
 			mT.getMigrationId());
 		Assert.assertFalse(
-			"resource.migrations[0].hasFromStateId",
-			mT.hasFromStateId());
+			"resource.migrations[0].fromStateId.isPresent",
+			mT.getFromStateId().isPresent());
 		Assert.assertEquals(
 			"resource.migrations[0].toStateId",
 			toStateId,
@@ -144,7 +144,7 @@ public class AnsiSqlDomServiceUnitTests
 			resource.getStates().get(0).getAssertions().get(0),
 			AnsiSqlTableExistsAssertion.class);
 		Assert.assertNotNull("Expected to be an AnsiSqlTableExistsAssertion", assertionT);
-		AssertExtensions.assertAnsiSqlTableExistsAssertion(
+		Asserts.assertAnsiSqlTableExistsAssertion(
 			assertionId,
 			"sch",
 			"tbl",
@@ -181,7 +181,7 @@ public class AnsiSqlDomServiceUnitTests
 			resource.getStates().get(0).getAssertions().get(0),
 			AnsiSqlTableDoesNotExistAssertion.class);
 		Assert.assertNotNull("Expected to be an AnsiSqlTableDoesNotExistAssertion", assertionT);
-		AssertExtensions.assertAnsiSqlTableDoesNotExistAssertion(
+		Asserts.assertAnsiSqlTableDoesNotExistAssertion(
 			assertionId,
 			"sch",
 			"tbl",

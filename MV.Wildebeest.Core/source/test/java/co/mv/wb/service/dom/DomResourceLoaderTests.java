@@ -19,7 +19,7 @@ package co.mv.wb.service.dom;
 import co.mv.wb.fake.DomFakeMigrationBuilder;
 import co.mv.wb.fake.DomFakeResourcePluginBuilder;
 import co.mv.wb.fake.DomFakeAssertionBuilder;
-import co.mv.wb.AssertExtensions;
+import co.mv.wb.Asserts;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.fake.FakeAssertion;
@@ -32,6 +32,7 @@ import co.mv.wb.service.MigrationBuilder;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -75,7 +76,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 0, resource.getStates().size());
@@ -124,11 +125,11 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
-		AssertExtensions.assertState(stateId, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(stateId, "Foo", resource.getStates().get(0), "state[0]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
@@ -174,11 +175,11 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
-		AssertExtensions.assertState(stateId, resource.getStates().get(0), "state[0]");
+		Asserts.assertState(stateId, resource.getStates().get(0), "state[0]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
@@ -226,12 +227,12 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 2, resource.getStates().size());
-		AssertExtensions.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
-		AssertExtensions.assertState(state2Id, "Bar", resource.getStates().get(1), "state[1]");
+		Asserts.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(state2Id, "Bar", resource.getStates().get(1), "state[1]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
@@ -281,17 +282,17 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
 		
-		AssertExtensions.assertState(stateId, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(stateId, "Foo", resource.getStates().get(0), "state[0]");
 		assertEquals(
 			"resource.states[0].assertions.size",
 			1,
 			resource.getStates().get(0).getAssertions().size());
-		AssertExtensions.assertFakeAssertion(
+		Asserts.assertFakeAssertion(
 			assertion1Id, "Tag is Foo", 0, "Foo",
 			(FakeAssertion)resource.getStates().get(0).getAssertions().get(0),
 			"resource.states[0].assertions[0]");
@@ -346,21 +347,21 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
 		
-		AssertExtensions.assertState(stateId, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(stateId, "Foo", resource.getStates().get(0), "state[0]");
 		assertEquals(
 			"resource.states[0].assertions.size",
 			2,
 			resource.getStates().get(0).getAssertions().size());
-		AssertExtensions.assertFakeAssertion(
+		Asserts.assertFakeAssertion(
 			assertion1Id, "Tag is Foo", 0, "Foo",
 			(FakeAssertion)resource.getStates().get(0).getAssertions().get(0),
 			"resource.states[0].assertions[0]");
-		AssertExtensions.assertFakeAssertion(
+		Asserts.assertFakeAssertion(
 			assertion2Id, "Tag is Bar", 1, "Bar",
 			(FakeAssertion)resource.getStates().get(0).getAssertions().get(1),
 			"resource.states[0].assertions[1]");
@@ -413,16 +414,16 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
-		AssertExtensions.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
-		AssertExtensions.assertFakeMigration(
-			migrationId, state1Id, null, "Blah",
+		Asserts.assertFakeMigration(
+			migrationId, Optional.of(state1Id), Optional.empty(), "Blah",
 			(FakeMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 		
@@ -471,16 +472,16 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
-		AssertExtensions.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
-		AssertExtensions.assertFakeMigration(
-			migrationId, null, state1Id, "Blah",
+		Asserts.assertFakeMigration(
+			migrationId, Optional.empty(), Optional.of(state1Id), "Blah",
 			(FakeMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 		
@@ -531,17 +532,17 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		AssertExtensions.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 2, resource.getStates().size());
-		AssertExtensions.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
-		AssertExtensions.assertState(state2Id, "Bar", resource.getStates().get(1), "state[1]");
+		Asserts.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(state2Id, "Bar", resource.getStates().get(1), "state[1]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
-		AssertExtensions.assertFakeMigration(
-			migrationId, state1Id, state2Id, "Blah",
+		Asserts.assertFakeMigration(
+			migrationId, Optional.of(state1Id), Optional.of(state2Id), "Blah",
 			(FakeMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 		

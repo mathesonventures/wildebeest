@@ -22,7 +22,6 @@ import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.MessagesException;
-import co.mv.wb.service.MigrationBuilder;
 import co.mv.wb.service.ResourcePluginBuilder;
 import co.mv.wb.service.dom.DomResourceLoader;
 import co.mv.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
@@ -32,7 +31,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
@@ -41,7 +40,7 @@ import org.junit.Test;
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class DatabaselDomServiceUnitTests
+public class DatabaseDomServiceUnitTests
 {
 	@Test public void databaseExistsAssertionLoadFromValidDocumentSucceeds() throws MessagesException
 	{
@@ -70,17 +69,17 @@ public class DatabaselDomServiceUnitTests
 		Resource resource = loader.load(new File("."));
 		
 		// Verify
-		Assert.assertNotNull("resource", resource);
-		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
-		Assert.assertEquals(
+		assertNotNull("resource", resource);
+		assertEquals("resource.states.size", 1, resource.getStates().size());
+		assertEquals(
 			"resource.states[0].assertions.size",
 			1,
 			resource.getStates().get(0).getAssertions().size());
 		Assertion assertion = resource.getStates().get(0).getAssertions().get(0);
 		DatabaseExistsAssertion assertionT = ModelExtensions.As(assertion, DatabaseExistsAssertion.class);
-		Assert.assertNotNull("expected to be DatabaseExistsAssertion", assertionT);
+		assertNotNull("expected to be DatabaseExistsAssertion", assertionT);
 		
-		Assert.assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());
+		assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());
 	}
 	
 	@Test public void databaseDoesNotExistAssertionLoadFromValidDocumentSucceeds() throws MessagesException
@@ -110,16 +109,16 @@ public class DatabaselDomServiceUnitTests
 		Resource resource = loader.load(new File("."));
 		
 		// Verify
-		Assert.assertNotNull("resource", resource);
-		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
-		Assert.assertEquals(
+		assertNotNull("resource", resource);
+		assertEquals("resource.states.size", 1, resource.getStates().size());
+		assertEquals(
 			"resource.states[0].assertions.size",
 			1,
 			resource.getStates().get(0).getAssertions().size());
 		Assertion assertion = resource.getStates().get(0).getAssertions().get(0);
 		DatabaseDoesNotExistAssertion assertionT = ModelExtensions.As(assertion, DatabaseDoesNotExistAssertion.class);
-		Assert.assertNotNull("expected to be DatabaseDoesNotExistAssertion", assertionT);
+		assertNotNull("expected to be DatabaseDoesNotExistAssertion", assertionT);
 		
-		Assert.assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());
+		assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());
 	}
 }

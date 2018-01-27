@@ -21,14 +21,15 @@ import co.mv.wb.Instance;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.Resource;
 import co.mv.wb.plugin.base.BaseMigration;
+import java.util.Optional;
 import java.util.UUID;
 
 public class FakeMigration extends BaseMigration
 {
 	public FakeMigration(
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId,
+		Optional<UUID> fromStateId,
+		Optional<UUID> toStateId,
 		String tag)
 	{
 		super(migrationId, fromStateId, toStateId);
@@ -88,6 +89,6 @@ public class FakeMigration extends BaseMigration
 	
 		fake.setTag(this.getTag());
 		
-		fake.setStateId(this.getToStateId());
+		fake.setStateId(this.getToStateId().get());
 	}
 }

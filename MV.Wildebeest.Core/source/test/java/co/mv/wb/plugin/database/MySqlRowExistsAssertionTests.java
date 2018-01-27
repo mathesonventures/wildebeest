@@ -16,20 +16,19 @@
 
 package co.mv.wb.plugin.database;
 
-import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlElementFixtures;
 import co.mv.wb.plugin.mysql.MySqlProperties;
 import co.mv.wb.plugin.mysql.MySqlUtil;
 import java.util.UUID;
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class RowDoesNotExistAssertionTests
+public class MySqlRowExistsAssertionTests
 {
-	@Test public void applyForNonExistentRowSucceds() throws AssertionFailedException
+	@Test public void applyForNonExistentRowFails()
 	{
 		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -47,9 +46,9 @@ public class RowDoesNotExistAssertionTests
 			databaseName,
 			null);
 		
-		RowDoesNotExistAssertion assertion = new RowDoesNotExistAssertion(
+		RowExistsAssertion assertion = new RowExistsAssertion(
 			UUID.randomUUID(),
-			"HW ProductType Exists",
+			"ProductType HW Exists",
 			0,
 			"SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';");
 		
@@ -61,17 +60,16 @@ public class RowDoesNotExistAssertionTests
 		}
 		finally
 		{
-			MySqlUtil.dropDatabase(mySqlProperties, "stm_test");
+			MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 		}
 		
 		// Verify
-		Assert.assertNotNull("response", response);
-		Assert.assertEquals("response.result", true, response.getResult());
-		Assert.assertEquals("response.message", "Row does not exist, as expected", response.getMessage());
-		
+		assertNotNull("response", response);
+		assertEquals("response.result", false, response.getResult());
+		assertEquals("response.message", "Expected to find exactly one row, but found 0", response.getMessage());
 	}
 	
-	@Test public void applyForExistentRowFails()
+	@Test public void applyForExistentRowSucceeds()
 	{
 		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -90,9 +88,9 @@ public class RowDoesNotExistAssertionTests
 			databaseName,
 			null);
 		
-		RowDoesNotExistAssertion assertion = new RowDoesNotExistAssertion(
+		RowExistsAssertion assertion = new RowExistsAssertion(
 			UUID.randomUUID(),
-			"HW ProductType Exists",
+			"ProductType HW Exists",
 			0,
 			"SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';");
 		
@@ -108,10 +106,9 @@ public class RowDoesNotExistAssertionTests
 		}
 		
 		// Verify
-		Assert.assertNotNull("response", response);
-		Assert.assertEquals("response.result", false, response.getResult());
-		Assert.assertEquals("response.message", "Expected to find no rows but found 1", response.getMessage());
-		
+		assertNotNull("response", response);
+		assertEquals("response.result", true, response.getResult());
+		assertEquals("response.message", "Exactly one row exists, as expected", response.getMessage());
 	}
 	
 	@Ignore @Test public void applyForNonExistentTableFails()

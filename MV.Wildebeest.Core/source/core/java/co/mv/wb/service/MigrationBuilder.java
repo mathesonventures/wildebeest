@@ -18,6 +18,7 @@ package co.mv.wb.service;
 
 import co.mv.wb.Migration;
 import java.io.File;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -50,8 +51,8 @@ public interface MigrationBuilder
 	 */
 	Migration build(
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId,
+		Optional<UUID> fromStateId,
+		Optional<UUID> toStateId,
 		File baseDir) throws MessagesException;
 	
 	/**

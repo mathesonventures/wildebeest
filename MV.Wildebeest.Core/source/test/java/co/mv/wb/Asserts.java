@@ -21,10 +21,11 @@ import co.mv.wb.fake.FakeMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.Assert;
 
-public class AssertExtensions
+public class Asserts
 {
 	
 	//
@@ -32,21 +33,16 @@ public class AssertExtensions
 	//
 	
 	public static void assertResource(
-		Class expectedClass,
+		Class expectedPluginClass,
 		UUID expectedResourceId,
 		String expectedName,
 		Resource actual,
 		String name)
 	{
-		if (expectedClass == null) { throw new IllegalArgumentException("expectedClass cannot be null"); }
-		if (expectedResourceId == null) { throw new IllegalArgumentException("expectedResourceId cannot be null"); }
-		if (expectedName == null) { throw new IllegalArgumentException("expectedName cannot be null"); }
-		if ("".equals(expectedName)) { throw new IllegalArgumentException("expectedName cannot be empty"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
-		Assert.assertEquals(name + ".class", expectedClass, actual.getClass());
+		Assert.assertEquals(name + ".plugin.class", expectedPluginClass, actual.getPlugin().getClass());
 		Assert.assertEquals(name + ".resourceId", expectedResourceId, actual.getResourceId());
 		Assert.assertEquals(name + ".name", expectedName, actual.getName());
 	}
@@ -57,10 +53,6 @@ public class AssertExtensions
 		State actual,
 		String name)
 	{
-		if (expectedStateId == null) { throw new IllegalArgumentException("expectedStateId cannot be null"); }
-		if (expectedLabel == null) { throw new IllegalArgumentException("expectedLabel cannot be null"); }
-		if ("".equals(expectedLabel)) { throw new IllegalArgumentException("expectedLabel cannot be empty"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
@@ -74,8 +66,6 @@ public class AssertExtensions
 		State actual,
 		String name)
 	{
-		if (expectedStateId == null) { throw new IllegalArgumentException("expectedStateId cannot be null"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
@@ -89,8 +79,6 @@ public class AssertExtensions
 		Assertion actual,
 		String name)
 	{
-		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId cannot be null"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
@@ -106,12 +94,6 @@ public class AssertExtensions
 		FakeAssertion actual,
 		String name)
 	{
-		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId cannot be null"); }
-		if (expectedName == null) { throw new IllegalArgumentException("expectedName cannot be null"); }
-		if ("".equals(expectedName)) { throw new IllegalArgumentException("expectedName cannot be empty"); }
-		if (expectedTag == null) { throw new IllegalArgumentException("expectedTag cannot be null"); }
-		if ("".equals(expectedTag)) { throw new IllegalArgumentException("expectedTag cannot be empty"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
@@ -120,13 +102,11 @@ public class AssertExtensions
 	
 	public static void assertMigration(
 		UUID expectedMigrationId,
-		UUID expectedFromStateId,
-		UUID expectedToStateId,
+		Optional<UUID> expectedFromStateId,
+		Optional<UUID> expectedToStateId,
 		Migration actual,
 		String name)
 	{
-		if (expectedMigrationId == null) { throw new IllegalArgumentException("expectedMigrationId cannot be null"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
@@ -134,7 +114,7 @@ public class AssertExtensions
 
 		if (expectedFromStateId == null)
 		{
-			Assert.assertFalse(name + ".fromStateId expected to be unset", actual.hasFromStateId());
+			Assert.assertFalse(name + ".fromStateId expected to be unset", actual.getFromStateId().isPresent());
 		}
 		else
 		{
@@ -143,7 +123,7 @@ public class AssertExtensions
 
 		if (expectedToStateId == null)
 		{
-			Assert.assertFalse(name + ".toStateId expected to be unset", actual.hasToStateId());
+			Assert.assertFalse(name + ".toStateId expected to be unset", actual.getToStateId().isPresent());
 		}
 		else
 		{
@@ -157,8 +137,6 @@ public class AssertExtensions
 		AssertionResponse actual,
 		String name)
 	{
-		if (expectedMessage == null) { throw new IllegalArgumentException("expectedMessage"); }
-		if (actual == null) { throw new IllegalArgumentException("actual"); }
 		if (name == null) { throw new IllegalArgumentException("name"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
@@ -173,9 +151,6 @@ public class AssertExtensions
 		AssertionResult actual,
 		String name)
 	{
-		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId"); }
-		if (expectedMessage == null) { throw new IllegalArgumentException("expectedMessage"); }
-		if (actual == null) { throw new IllegalArgumentException("actual"); }
 		if (name == null) { throw new IllegalArgumentException("name"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be blank"); }
 
@@ -189,8 +164,6 @@ public class AssertExtensions
 		Instance actual,
 		String name)
 	{
-		if (expectedClass == null) { throw new IllegalArgumentException("expectedClass cannot be null"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) {throw new IllegalArgumentException("name cannot be blank"); }
 		
@@ -203,8 +176,8 @@ public class AssertExtensions
 	
 	public static void assertFakeMigration(
 		UUID expectedMigrationId,
-		UUID expectedFromStateId,
-		UUID expectedToStateId,
+		Optional<UUID> expectedFromStateId,
+		Optional<UUID> expectedToStateId,
 		String expectedTag,
 		FakeMigration actual,
 		String name)
@@ -213,7 +186,7 @@ public class AssertExtensions
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
-		AssertExtensions.assertMigration(expectedMigrationId, expectedFromStateId, expectedToStateId, actual, name);
+		Asserts.assertMigration(expectedMigrationId, expectedFromStateId, expectedToStateId, actual, name);
 		
 		Assert.assertEquals(name + ".tag", expectedTag, actual.getTag());
 	}
@@ -283,7 +256,7 @@ public class AssertExtensions
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) {throw new IllegalArgumentException("name cannot be blank"); }
 		
-		AssertExtensions.assertInstance(MySqlDatabaseInstance.class, actual, name);
+		Asserts.assertInstance(MySqlDatabaseInstance.class, actual, name);
 		
 		MySqlDatabaseInstance db = (MySqlDatabaseInstance)actual;
 		

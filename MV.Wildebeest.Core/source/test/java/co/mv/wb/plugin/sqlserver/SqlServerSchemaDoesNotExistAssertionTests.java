@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.AssertExtensions;
+import co.mv.wb.Asserts;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
@@ -26,6 +26,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -52,7 +53,10 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			databaseName,
 			null);
 
-		Migration createDatabase = new SqlServerCreateDatabaseMigration(UUID.randomUUID(), null, UUID.randomUUID());
+		Migration createDatabase = new SqlServerCreateDatabaseMigration(
+			UUID.randomUUID(),
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()));
 		createDatabase.perform(instance);
 		 
 		Migration createSchema = new SqlServerCreateSchemaMigration(UUID.randomUUID(), null, null, "prd");
@@ -78,7 +82,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 
 		// Verify
 		assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(false, "Schema prd exists", response, "response");
+		Asserts.assertAssertionResponse(false, "Schema prd exists", response, "response");
 	 }
 	 
 	 @Test public void applyForNonExistentSchemaSucceeds() throws
@@ -102,7 +106,10 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			databaseName,
 			null);
 		 
-		Migration createDatabase = new SqlServerCreateDatabaseMigration(UUID.randomUUID(), null, UUID.randomUUID());
+		Migration createDatabase = new SqlServerCreateDatabaseMigration(
+			UUID.randomUUID(),
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()));
 		createDatabase.perform(instance);
 		
 		SqlServerSchemaDoesNotExistAssertion schemaDoesNotExist = new SqlServerSchemaDoesNotExistAssertion(
@@ -125,7 +132,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 
 		// Verify
 		assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(true, "Schema prd does not exist", response, "response");
+		Asserts.assertAssertionResponse(true, "Schema prd does not exist", response, "response");
 	 }
 	 
 	 @Test public void applyForNonExistentDatabaseFails()
@@ -154,7 +161,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 
 		// Verify
 		assertNotNull("response", response);
-		AssertExtensions.assertAssertionResponse(
+		Asserts.assertAssertionResponse(
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
 	 }

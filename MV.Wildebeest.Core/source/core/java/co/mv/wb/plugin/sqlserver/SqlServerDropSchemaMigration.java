@@ -25,6 +25,7 @@ import co.mv.wb.plugin.base.BaseMigration;
 import co.mv.wb.plugin.database.DatabaseHelper;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -46,8 +47,8 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 	 */
 	public SqlServerDropSchemaMigration(
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId,
+		Optional<UUID> fromStateId,
+		Optional<UUID> toStateId,
 		String schemaName)
 	{
 		super(migrationId, fromStateId, toStateId);

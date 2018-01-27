@@ -21,7 +21,7 @@ import co.mv.wb.fake.FakeAssertion;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.fake.FakeResourcePlugin;
 import co.mv.wb.fake.FakeMigration;
-import co.mv.wb.AssertExtensions;
+import co.mv.wb.Asserts;
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResult;
@@ -35,6 +35,7 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
@@ -90,7 +91,7 @@ public class BaseResourceTests
 		// Verify
 		assertNotNull("results", results);
 		assertEquals("results.size", 1, results.size());
-		AssertExtensions.assertAssertionResult(
+		Asserts.assertAssertionResult(
 			assertion1.getAssertionId(), true, "Tag is \"Foo\"", results.get(0), "results[0]");
 	}
 	
@@ -124,10 +125,10 @@ public class BaseResourceTests
 		// Verify
 		assertNotNull("results", results);
 		assertEquals("results.size", 2, results.size());
-		AssertExtensions.assertAssertionResult(
+		Asserts.assertAssertionResult(
 			assertion1Id, true, "Tag is \"Foo\"",
 			results.get(0), "results[0]");
-		AssertExtensions.assertAssertionResult(
+		Asserts.assertAssertionResult(
 			assertion2Id, false, "Tag expected to be \"Bar\" but was \"Foo\"",
 			results.get(1), "results[1]");
 	}
@@ -166,7 +167,7 @@ public class BaseResourceTests
 		resource.getStates().add(state);
 		
 		UUID migration1Id = UUID.randomUUID();
-		Migration tran1 = new FakeMigration(migration1Id, null, state1Id, "foo");
+		Migration tran1 = new FakeMigration(migration1Id, Optional.empty(), Optional.of(state1Id), "foo");
 		resource.getMigrations().add(tran1);
 		
 		FakeInstance instance = new FakeInstance();
@@ -210,15 +211,28 @@ public class BaseResourceTests
 		resource.getStates().add(state3);
 		
 		// Migrate null -> State1
-		Migration tran1 = new FakeMigration(UUID.randomUUID(), null, state1.getStateId(), "foo");
+		Migration tran1 = new FakeMigration(
+			UUID.randomUUID(),
+			Optional.empty(),
+			Optional.of(state1.getStateId()),
+			"foo");
 		resource.getMigrations().add(tran1);
 		
 		// Migrate State1 -> State2
-		Migration tran2 = new FakeMigration(UUID.randomUUID(), state1.getStateId(), state2.getStateId(), "bar");
+		Migration tran2 = new FakeMigration(
+			UUID.randomUUID(),
+			Optional.of(state1.getStateId()),
+			Optional.of(state2.getStateId()),
+			"bar");
+
 		resource.getMigrations().add(tran2);
 		
 		// Migrate State2 -> State3
-		Migration tran3 = new FakeMigration(UUID.randomUUID(), state2.getStateId(), state3.getStateId(), "bup");
+		Migration tran3 = new FakeMigration(
+			UUID.randomUUID(),
+			Optional.of(state2.getStateId()),
+			Optional.of(state3.getStateId()),
+			"bup");
 		resource.getMigrations().add(tran3);
 		
 		// Instance
@@ -285,27 +299,47 @@ public class BaseResourceTests
 		
 		// Migrate null -> State1
 		UUID migration1Id = UUID.randomUUID();
-		Migration migration1 = new FakeMigration(migration1Id, null, state1Id, "state1");
+		Migration migration1 = new FakeMigration(
+			migration1Id,
+			Optional.empty(),
+			Optional.of(state1Id),
+			"state1");
 		resource.getMigrations().add(migration1);
 		
 		// Migrate State1 -> StateB2
 		UUID migration2Id = UUID.randomUUID();
-		Migration migration2 = new FakeMigration(migration2Id, state1Id, stateB2Id, "stateB2");
+		Migration migration2 = new FakeMigration(
+			migration2Id,
+			Optional.of(state1Id),
+			Optional.of(stateB2Id),
+			"stateB2");
 		resource.getMigrations().add(migration2);
 		
 		// Migrate StateB2 -> StateB3
 		UUID migration3Id = UUID.randomUUID();
-		Migration migration3 = new FakeMigration(migration3Id, stateB2Id, stateB3Id, "stateB3");
+		Migration migration3 = new FakeMigration(
+			migration3Id,
+			Optional.of(stateB2Id),
+			Optional.of(stateB3Id),
+			"stateB3");
 		resource.getMigrations().add(migration3);
 		
 		// Migrate State1 -> StateC2
 		UUID migration4Id = UUID.randomUUID();
-		Migration migration4 = new FakeMigration(migration4Id, state1Id, stateC2Id, "stateC2");
+		Migration migration4 = new FakeMigration(
+			migration4Id,
+			Optional.of(state1Id),
+			Optional.of(stateC2Id),
+			"stateC2");
 		resource.getMigrations().add(migration4);
 		
 		// Migrate StateC2 -> StateC3
 		UUID migration5Id = UUID.randomUUID();
-		Migration migration5 = new FakeMigration(migration5Id, stateC2Id, stateC3Id, "stateC3");
+		Migration migration5 = new FakeMigration(
+			migration5Id,
+			Optional.of(stateC2Id),
+			Optional.of(stateC3Id),
+			"stateC3");
 		resource.getMigrations().add(migration5);
 		
 		// Instance
@@ -358,7 +392,11 @@ public class BaseResourceTests
 		
 		// Migration 1
 		UUID migration1Id = UUID.randomUUID();
-		Migration tran1 = new FakeMigration(migration1Id, null, state1Id, "foo");
+		Migration tran1 = new FakeMigration(
+			migration1Id,
+			Optional.empty(),
+			Optional.of(state1Id),
+			"foo");
 		resource.getMigrations().add(tran1);
 		
 		// Instance
@@ -405,7 +443,11 @@ public class BaseResourceTests
 		
 		// Migration 1
 		UUID migration1Id = UUID.randomUUID();
-		Migration tran1 = new FakeMigration(migration1Id, null, state1Id, "foo");
+		Migration tran1 = new FakeMigration(
+			migration1Id,
+			Optional.empty(),
+			Optional.of(state1Id),
+			"foo");
 		resource.getMigrations().add(tran1);
 		
 		// Instance

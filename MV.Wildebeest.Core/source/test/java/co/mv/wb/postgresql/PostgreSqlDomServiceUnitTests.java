@@ -75,7 +75,7 @@ public class PostgreSqlDomServiceUnitTests
 			.append("<port>5432</port>\n")
 			.append("<adminUsername>wb</adminUsername>\n")
 			.append("<adminPassword>password</adminPassword>\n")
-			.append("<databaseName>ProductCatalogueStaging</databaseName>\n")
+			.append("<databaseName>WildebeestTest</databaseName>\n")
 			.append("</instance>");
 
 		DomInstanceLoader loader = DomPlugins.instanceLoader(xml.toString());
@@ -92,7 +92,7 @@ public class PostgreSqlDomServiceUnitTests
 			5432,
 			"wb",
 			"password",
-			"ProductCatalogueStaging",
+			"WildebeestTest",
 			instanceT,
 			"instance");
 	}

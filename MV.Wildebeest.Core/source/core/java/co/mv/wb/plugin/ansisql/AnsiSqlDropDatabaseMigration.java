@@ -25,6 +25,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.plugin.base.BaseMigration;
 import co.mv.wb.plugin.database.DatabaseHelper;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -37,8 +38,8 @@ public class AnsiSqlDropDatabaseMigration extends BaseMigration
 {
     public AnsiSqlDropDatabaseMigration(
         UUID migrationId,
-        UUID fromStateId,
-        UUID toStateId)
+        Optional<UUID> fromStateId,
+        Optional<UUID> toStateId)
     {
         super(migrationId, fromStateId, toStateId);
     }

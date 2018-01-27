@@ -29,6 +29,7 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.UnknownStateSpecifiedException;
+import java.util.Optional;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -93,30 +94,30 @@ public class Slf4jLogger implements Logger
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
 
-		State fromState = migration.hasFromStateId() ? resource.stateForId(migration.getFromStateId()) : null;
-		State toState = migration.hasToStateId() ? resource.stateForId(migration.getToStateId()) : null;
+		Optional<State> fromState = migration.getFromStateId().map(stateId -> resource.stateForId(stateId));
+		Optional<State> toState = migration.getToStateId().map(stateId -> resource.stateForId(stateId));
 		
-		if (fromState != null)
+		if (fromState.isPresent())
 		{
-			if (toState != null)
+			if (toState.isPresent())
 			{
 				LOG.info(String.format(
 					"Migrating from state \"%s\" to \"%s\"",
-					fromState.getDisplayName(),
-					toState.getDisplayName()));
+					fromState.get().getDisplayName(),
+					toState.get().getDisplayName()));
 			}
 			else
 			{
 				LOG.info(String.format(
 					"Migrating from state \"%s\" to non-existent",
-					fromState.getDisplayName()));
+					fromState.get().getDisplayName()));
 			}
 		}
-		else if (toState != null)
+		else if (toState.isPresent())
 		{
 				LOG.info(String.format(
 					"Migrating from non-existent to \"%s\"",
-					toState.getDisplayName()));
+					toState.get().getDisplayName()));
 		}
 		else
 		{

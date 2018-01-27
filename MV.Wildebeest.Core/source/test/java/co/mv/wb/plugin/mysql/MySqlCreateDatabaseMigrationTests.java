@@ -19,6 +19,7 @@ package co.mv.wb.plugin.mysql;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,8 +35,8 @@ public class MySqlCreateDatabaseMigrationTests
 		
 		MySqlCreateDatabaseMigration tr = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			null,
-			UUID.randomUUID());
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()));
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
@@ -70,8 +71,8 @@ public class MySqlCreateDatabaseMigrationTests
 		
 		MySqlCreateDatabaseMigration tr = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			null,
-			UUID.randomUUID());
+			Optional.empty(),
+			Optional.of(UUID.randomUUID()));
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
