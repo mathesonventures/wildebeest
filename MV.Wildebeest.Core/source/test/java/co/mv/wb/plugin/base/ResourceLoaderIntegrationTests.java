@@ -105,13 +105,13 @@ public class ResourceLoaderIntegrationTests
 		// States
 		assertEquals("resource.states.size", 3, resource.getStates().size());
 		Asserts.assertState(
-			ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated, "Database created",
+			ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated, Optional.of("Database created"),
 			resource.getStates().get(0), "state[0]");
 		Asserts.assertState(
-			ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded, "Core Schema Loaded",
+			ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded, Optional.of("Core Schema Loaded"),
 			resource.getStates().get(1), "state[1]");
 		Asserts.assertState(
-			ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded, "Reference Data Loaded",
+			ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded, Optional.of("Reference Data Loaded"),
 			resource.getStates().get(2), "state[2]");
 		
 		// Migrations

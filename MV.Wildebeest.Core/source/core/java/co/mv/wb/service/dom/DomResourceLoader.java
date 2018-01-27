@@ -405,7 +405,7 @@ public class DomResourceLoader implements ResourceLoader
 		
 		State result = label == null
 			? new ImmutableState(id)
-			: new ImmutableState(id, label);
+			: new ImmutableState(id, Optional.of(label));
 		
 		return result;
 	}

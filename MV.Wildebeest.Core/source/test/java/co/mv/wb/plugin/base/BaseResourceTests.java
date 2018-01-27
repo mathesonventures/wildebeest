@@ -196,17 +196,17 @@ public class BaseResourceTests
 		Resource resource = new ResourceImpl(UUID.randomUUID(), "Resource", resourcePlugin);
 
 		// State 1
-		State state1 = new ImmutableState(UUID.randomUUID(), "State 1");
+		State state1 = new ImmutableState(UUID.randomUUID(), Optional.of("State 1"));
 		state1.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state1);
 
 		// State 2
-		State state2 = new ImmutableState(UUID.randomUUID(), "State 2");
+		State state2 = new ImmutableState(UUID.randomUUID(), Optional.of("State 2"));
 		state2.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "bar"));
 		resource.getStates().add(state2);
 
 		// State 3
-		State state3 = new ImmutableState(UUID.randomUUID(), "State 3");
+		State state3 = new ImmutableState(UUID.randomUUID(), Optional.of("State 3"));
 		state3.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "bup"));
 		resource.getStates().add(state3);
 		

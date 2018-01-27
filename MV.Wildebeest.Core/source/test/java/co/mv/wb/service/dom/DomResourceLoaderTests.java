@@ -129,7 +129,7 @@ public class DomResourceLoaderTests
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
-		Asserts.assertState(stateId, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(stateId, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
@@ -179,7 +179,7 @@ public class DomResourceLoaderTests
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
-		Asserts.assertState(stateId, resource.getStates().get(0), "state[0]");
+		Asserts.assertState(stateId, Optional.empty(), resource.getStates().get(0), "state[0]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
@@ -231,8 +231,8 @@ public class DomResourceLoaderTests
 		
 		// States
 		assertEquals("resource.states.size", 2, resource.getStates().size());
-		Asserts.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
-		Asserts.assertState(state2Id, "Bar", resource.getStates().get(1), "state[1]");
+		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
+		Asserts.assertState(state2Id, Optional.of("Bar"), resource.getStates().get(1), "state[1]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
@@ -287,7 +287,7 @@ public class DomResourceLoaderTests
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
 		
-		Asserts.assertState(stateId, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(stateId, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
 		assertEquals(
 			"resource.states[0].assertions.size",
 			1,
@@ -352,7 +352,7 @@ public class DomResourceLoaderTests
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
 		
-		Asserts.assertState(stateId, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(stateId, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
 		assertEquals(
 			"resource.states[0].assertions.size",
 			2,
@@ -418,7 +418,7 @@ public class DomResourceLoaderTests
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
-		Asserts.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
@@ -476,7 +476,7 @@ public class DomResourceLoaderTests
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
-		Asserts.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
+		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
@@ -536,8 +536,8 @@ public class DomResourceLoaderTests
 		
 		// States
 		assertEquals("resource.states.size", 2, resource.getStates().size());
-		Asserts.assertState(state1Id, "Foo", resource.getStates().get(0), "state[0]");
-		Asserts.assertState(state2Id, "Bar", resource.getStates().get(1), "state[1]");
+		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
+		Asserts.assertState(state2Id, Optional.of("Bar"), resource.getStates().get(1), "state[1]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());

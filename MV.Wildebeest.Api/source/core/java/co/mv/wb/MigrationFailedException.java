@@ -50,6 +50,7 @@ public class MigrationFailedException extends Exception
 	/**
 	 * Gets the ID of the Migration that failed
 	 * 
+	 * @return                                  the ID of the Migration that failed
 	 * @since                                   1.0
 	 */
 	public UUID getMigrationId() {
@@ -69,17 +70,6 @@ public class MigrationFailedException extends Exception
 			_migrationId_set = true;
 			_migrationId = value;
 		}
-	}
-
-	private void clearMigrationId() {
-		if(_migrationId_set) {
-			_migrationId_set = true;
-			_migrationId = null;
-		}
-	}
-
-	public boolean hasMigrationId() {
-		return _migrationId_set;
 	}
 
 	// </editor-fold>

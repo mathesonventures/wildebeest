@@ -171,7 +171,7 @@ public class Interface
 				}
 				else
 				{
-					if (state.hasLabel())
+					if (state.getLabel().isPresent())
 					{
 						this.getLogger().logLine("Current state: " + state.getLabel());
 					}

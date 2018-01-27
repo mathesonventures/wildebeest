@@ -49,7 +49,7 @@ public class Asserts
 	
 	public static void assertState(
 		UUID expectedStateId,
-		String expectedLabel,
+		Optional<String> expectedLabel,
 		State actual,
 		String name)
 	{
@@ -57,20 +57,7 @@ public class Asserts
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
 		Assert.assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
-		Assert.assertTrue("name.label expected to be set", actual.hasLabel());
 		Assert.assertEquals(name + ".label", expectedLabel, actual.getLabel());
-	}
-	
-	public static void assertState(
-		UUID expectedStateId,
-		State actual,
-		String name)
-	{
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
-		
-		Assert.assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
-		Assert.assertFalse("name.label expected to be unset", actual.hasLabel());
 	}
 	
 	public static void assertAssertion(

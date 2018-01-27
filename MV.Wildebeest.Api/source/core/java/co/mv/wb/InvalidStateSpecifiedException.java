@@ -58,16 +58,5 @@ public class InvalidStateSpecifiedException extends Exception
 		}
 	}
 
-	private void clearSpecifiedState() {
-		if(_specifiedState_set) {
-			_specifiedState_set = true;
-			_specifiedState = null;
-		}
-	}
-
-	private boolean hasSpecifiedState() {
-		return _specifiedState_set;
-	}
-
 	// </editor-fold>
 }

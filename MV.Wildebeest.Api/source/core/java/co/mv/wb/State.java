@@ -17,6 +17,7 @@
 package co.mv.wb;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -36,20 +37,12 @@ public interface State
 	UUID getStateId();
 	
 	/**
-	 * Gets the label of this State, if it has one.
+	 * Gets the optional label of this State.
 	 * 
 	 * @return                                  the label of this State, if it has one
 	 * @since                                   1.0
 	 */
-	String getLabel();
-	
-	/**
-	 * Indicates whether or not this State has a label.
-	 * 
-	 * @return                                  a boolean flag indicating if this State has a label
-	 * @state                                   1.0
-	 */
-	boolean hasLabel();
+	Optional<String> getLabel();
 	
 	/**
 	 * Gets the set of Assertions that should be used to verify this State.

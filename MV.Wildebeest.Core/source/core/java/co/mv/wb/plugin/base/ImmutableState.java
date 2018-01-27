@@ -20,6 +20,7 @@ import co.mv.wb.Assertion;
 import co.mv.wb.State;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -39,6 +40,7 @@ public class ImmutableState implements State
 		UUID stateId)
 	{
 		this.setStateId(stateId);
+		this.setLabel(Optional.empty());
 		this.setAssertions(new ArrayList<>());
 	}
 	
@@ -50,7 +52,7 @@ public class ImmutableState implements State
 	 */
 	public ImmutableState(
 		UUID stateId,
-		String label)
+		Optional<String> label)
 	{
 		this.setStateId(stateId);
 		this.setLabel(label);
@@ -80,7 +82,7 @@ public class ImmutableState implements State
 	 */
 	public ImmutableState(
 		UUID stateId,
-		String label,
+		Optional<String> label,
 		List<Assertion> assertions)
 	{
 		this.setStateId(stateId);
@@ -127,37 +129,28 @@ public class ImmutableState implements State
 	
 	// <editor-fold desc="Label" defaultstate="collapsed">
 
-	private String _label = null;
+	private Optional<String> _label = null;
 	private boolean _label_set = false;
 
-	@Override public String getLabel() {
+	public Optional<String> getLabel() {
 		if(!_label_set) {
-			throw new IllegalStateException("label not set.  Use the HasLabel() method to check its state before accessing it.");
+			throw new IllegalStateException("label not set.");
+		}
+		if(_label == null) {
+			throw new IllegalStateException("label should not be null");
 		}
 		return _label;
 	}
 
-	private void setLabel(
-		String value) {
+	private void setLabel(Optional<String> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("label cannot be null");
 		}
-		boolean changing = !_label_set || !_label.equals(value);
+		boolean changing = !_label_set || _label != value;
 		if(changing) {
 			_label_set = true;
 			_label = value;
 		}
-	}
-
-	private void clearLabel() {
-		if(_label_set) {
-			_label_set = true;
-			_label = null;
-		}
-	}
-
-	@Override public boolean hasLabel() {
-		return _label_set;
 	}
 
 	// </editor-fold>
@@ -200,13 +193,6 @@ public class ImmutableState implements State
 	
 	@Override public String getDisplayName()
 	{
-		if (this.hasLabel())
-		{
-			return this.getLabel();
-		}
-		else
-		{
-			return this.getStateId().toString();
-		}
+		return this.getLabel().orElse(this.getStateId().toString());
 	}
 }

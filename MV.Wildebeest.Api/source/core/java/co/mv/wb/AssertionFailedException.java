@@ -52,6 +52,7 @@ public class AssertionFailedException extends Exception
 	/**
 	 * Gets the ID of the State for which Assertion evaluation failed.
 	 * 
+	 * @return                                   the ID of the State for which Assertion evaluation failed
 	 * @since                                   1.0
 	 */
 	public UUID getStateId() {
@@ -73,17 +74,6 @@ public class AssertionFailedException extends Exception
 		}
 	}
 
-	private void clearStateId() {
-		if(_stateId_set) {
-			_stateId_set = true;
-			_stateId = null;
-		}
-	}
-
-	private boolean hasStateId() {
-		return _stateId_set;
-	}
-
 	// </editor-fold>
 	
 	// <editor-fold desc="AssertionResults" defaultstate="collapsed">
@@ -94,6 +84,7 @@ public class AssertionFailedException extends Exception
 	/**
 	 * Gets the result of the evaluation of the Assertion.
 	 * 
+	 * @return                                  the set of result items from the assertions that were evalulated
 	 * @since                                   1.0
 	 */
 	public List<AssertionResult> getAssertionResults() {
@@ -112,17 +103,6 @@ public class AssertionFailedException extends Exception
 			_assertionResults_set = true;
 			_assertionResults = value;
 		}
-	}
-
-	private void clearAssertionResults() {
-		if(_assertionResults_set) {
-			_assertionResults_set = true;
-			_assertionResults = null;
-		}
-	}
-
-	private boolean hasAssertionResults() {
-		return _assertionResults_set;
 	}
 
 	// </editor-fold>
