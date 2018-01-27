@@ -23,7 +23,7 @@ import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomAssertionBuilder;
-import co.mv.wb.framework.TryResult;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -38,17 +38,17 @@ public class RowExistsDomAssertionBuilder extends BaseDomAssertionBuilder implem
 		UUID assertionId,
 		int seqNum) throws MessagesException
 	{
-		TryResult<String> sql = this.tryGetString("sql");
-		TryResult<String> description = this.tryGetString("description");
+		Optional<String> sql = this.tryGetString("sql");
+		Optional<String> description = this.tryGetString("description");
 		
 		// Validation
 		Messages messages = new Messages();
-		if (!sql.hasValue())
+		if (!sql.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "sql", RowExistsAssertion.class);
 		}
 		
-		if (!description.hasValue())
+		if (!description.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "description", RowExistsAssertion.class);
 		}
@@ -58,6 +58,6 @@ public class RowExistsDomAssertionBuilder extends BaseDomAssertionBuilder implem
 			throw new MessagesException(messages);
 		}
 		
-		return new RowExistsAssertion(assertionId, description.getValue(), seqNum, sql.getValue());
+		return new RowExistsAssertion(assertionId, description.get(), seqNum, sql.get());
 	}
 }

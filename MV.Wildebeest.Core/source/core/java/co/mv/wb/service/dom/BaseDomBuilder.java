@@ -16,8 +16,8 @@
 
 package co.mv.wb.service.dom;
 
-import co.mv.wb.framework.TryResult;
 import co.mv.wb.ModelExtensions;
+import java.util.Optional;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -138,12 +138,12 @@ public abstract class BaseDomBuilder implements DomBuilder
 	 *                                          it was able to be obtained, or an empty TryGetResult otherwise
 	 * @since                                   2.0
 	 */
-	protected TryResult<String> tryGetString(String xpath)
+	protected Optional<String> tryGetString(String xpath)
 	{
 		if (xpath == null) { throw new IllegalArgumentException("xpath"); }
 		if ("".equals(xpath)) { throw new IllegalArgumentException("xpath"); }
 		
-		TryResult<String> result = null;
+		Optional<String> result = null;
 		
 		Node node;
 
@@ -157,7 +157,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 				if (element != null)
 				{
 					String value = element.getTextContent();
-					result = new TryResult<>(value);
+					result = Optional.of(value);
 				}
 			}
 		}
@@ -167,7 +167,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 
 		if (result == null)
 		{
-			result = new TryResult<>();
+			result = Optional.empty();
 		}
 
 		return result;
@@ -183,21 +183,21 @@ public abstract class BaseDomBuilder implements DomBuilder
 	 *                                          it was able to be obtained, or an empty TryGetResult otherwise
 	 * @since                                   2.0
 	 */
-	protected TryResult<Integer> tryGetInteger(String xpath)
+	protected Optional<Integer> tryGetInteger(String xpath)
 	{
-		TryResult<Integer> result = null;
-		TryResult<String> raw = this.tryGetString(xpath);
+		Optional<Integer> result = null;
+		Optional<String> raw = this.tryGetString(xpath);
 		
-		if (raw.hasValue())
+		if (raw.isPresent())
 		{
 			try
 			{
-				int value = Integer.parseInt(raw.getValue());
-				result = new TryResult<>(value);
+				int value = Integer.parseInt(raw.get());
+				result = Optional.of(value);
 			}
 			catch(NumberFormatException e)
 			{
-				result = new TryResult<>();
+				result = Optional.empty();
 			}
 		}
 		

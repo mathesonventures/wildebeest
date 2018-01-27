@@ -25,12 +25,12 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.Resource;
 import co.mv.wb.framework.Try;
-import co.mv.wb.framework.TryResult;
 import co.mv.wb.plugin.base.BaseMigration;
 import co.mv.wb.service.MessagesException;
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class ExternalResourceMigration extends BaseMigration
 {
@@ -224,7 +224,7 @@ public class ExternalResourceMigration extends BaseMigration
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		
 		// Load the resource
-		Resource externalResource = null;
+		Resource externalResource;
 		try
 		{
 			File file = new File(this.getBaseDir(), this.getFileName());
@@ -235,17 +235,9 @@ public class ExternalResourceMigration extends BaseMigration
 			throw new MigrationFailedException(this.getMigrationId(), "Unable to load");
 		}
 
-		// TODO: replace with monadic chain once support for Java < 8 is dropped
-		UUID targetStateId;
-		TryResult<UUID> targetStateIdTryResult = Try.tryParseUuid(this.getTarget());
-		if (targetStateIdTryResult.hasValue())
-		{
-			targetStateId = targetStateIdTryResult.getValue();
-		}
-		else
-		{
-			targetStateId = externalResource.stateIdForLabel(this.getTarget());
-		}
+		UUID targetStateId = Try
+			.tryParseUuid(this.getTarget())
+			.orElseGet(() -> externalResource.stateIdForLabel(this.getTarget()));
 
 		try
 		{

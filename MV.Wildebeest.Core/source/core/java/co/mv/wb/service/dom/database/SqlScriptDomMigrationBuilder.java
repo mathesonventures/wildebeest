@@ -22,7 +22,6 @@ import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomMigrationBuilder;
-import co.mv.wb.framework.TryResult;
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,11 +42,11 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 	{
 		Migration result;
 		
-		TryResult<String> sql = this.tryGetString("sql");
+		Optional<String> sql = this.tryGetString("sql");
 		
 		// Validation
 		Messages messages = new Messages();
-		if (!sql.hasValue())
+		if (!sql.isPresent())
 		{
 			V.elementMissing(messages, migrationId, "sql", SqlScriptMigration.class);
 		}
@@ -57,7 +56,7 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 			throw new MessagesException(messages);
 		}
 
-		result = new SqlScriptMigration(migrationId, fromStateId, toStateId, sql.getValue());
+		result = new SqlScriptMigration(migrationId, fromStateId, toStateId, sql.get());
 		
 		return result;
 	}

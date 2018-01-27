@@ -16,6 +16,7 @@
 
 package co.mv.wb.framework;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -34,20 +35,19 @@ public class Try
 	 * @return                                  a {@link TryResult<UUID> representing the result of the attempted parse
 	 *                                          operation.
 	 */
-	public static TryResult<UUID> tryParseUuid(String value)
+	public static Optional<UUID> tryParseUuid(String value)
 	{
 		if (value == null) { throw new IllegalArgumentException("value cannot be null"); }
 		
-		TryResult<UUID> result = null;
+		Optional<UUID> result;
 		
 		try
 		{
-			UUID valueT = UUID.fromString(value);
-			result = new TryResult<UUID>(valueT);
+			result = Optional.of(UUID.fromString(value));
 		}
 		catch(IllegalArgumentException e)
 		{
-			result = new TryResult<UUID>();
+			result = Optional.empty();
 		}
 
 		return result;

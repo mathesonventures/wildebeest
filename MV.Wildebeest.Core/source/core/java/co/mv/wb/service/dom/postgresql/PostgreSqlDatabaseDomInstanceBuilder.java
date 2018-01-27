@@ -22,7 +22,7 @@ import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomInstanceBuilder;
-import co.mv.wb.framework.TryResult;
+import java.util.Optional;
 
 /**
  * An {@link InstanceBuilder} that builds a {@link PostgreSqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
@@ -34,20 +34,20 @@ public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
 	@Override public Instance build() throws MessagesException
 	{
-		TryResult<String> hostName = this.tryGetString("hostName");
-		TryResult<Integer> port = this.tryGetInteger("port");
-		TryResult<String> adminUsername = this.tryGetString("adminUsername");
-		TryResult<String> adminPassword = this.tryGetString("adminPassword");
-		TryResult<String> databaseName = this.tryGetString("databaseName");
-		TryResult<String> metaSchemaName = this.tryGetString("metaSchemaName");
-		TryResult<String> stateTableName = this.tryGetString("stateTableName");
+		Optional<String> hostName = this.tryGetString("hostName");
+		Optional<Integer> port = this.tryGetInteger("port");
+		Optional<String> adminUsername = this.tryGetString("adminUsername");
+		Optional<String> adminPassword = this.tryGetString("adminPassword");
+		Optional<String> databaseName = this.tryGetString("databaseName");
+		Optional<String> metaSchemaName = this.tryGetString("metaSchemaName");
+		Optional<String> stateTableName = this.tryGetString("stateTableName");
 
 		Messages messages = new Messages();
-		if (!hostName.hasValue()) { V.elementMissing(messages, null, "hostName", PostgreSqlDatabaseInstance.class); }
-		if (!port.hasValue()) { V.elementMissing(messages, null, "port", PostgreSqlDatabaseInstance.class); }
-		if (!adminUsername.hasValue()) { V.elementMissing(messages, null, "adminUsername", PostgreSqlDatabaseInstance.class); }
-		if (!adminPassword.hasValue()) { V.elementMissing(messages, null, "adminPassword", PostgreSqlDatabaseInstance.class); }
-		if (!databaseName.hasValue()) { V.elementMissing(messages, null, "databaseName", PostgreSqlDatabaseInstance.class); }
+		if (!hostName.isPresent()) { V.elementMissing(messages, null, "hostName", PostgreSqlDatabaseInstance.class); }
+		if (!port.isPresent()) { V.elementMissing(messages, null, "port", PostgreSqlDatabaseInstance.class); }
+		if (!adminUsername.isPresent()) { V.elementMissing(messages, null, "adminUsername", PostgreSqlDatabaseInstance.class); }
+		if (!adminPassword.isPresent()) { V.elementMissing(messages, null, "adminPassword", PostgreSqlDatabaseInstance.class); }
+		if (!databaseName.isPresent()) { V.elementMissing(messages, null, "databaseName", PostgreSqlDatabaseInstance.class); }
 
 		if (messages.size() > 0)
 		{
@@ -55,13 +55,13 @@ public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		}
 
 		Instance result = new PostgreSqlDatabaseInstance(
-			hostName.getValue(),
-			port.getValue(),
-			adminUsername.getValue(),
-			adminPassword.getValue(),
-			databaseName.getValue(),
-			metaSchemaName.hasValue() ? metaSchemaName.getValue() : null,
-			stateTableName.hasValue() ? stateTableName.getValue() : null);
+			hostName.get(),
+			port.get(),
+			adminUsername.get(),
+			adminPassword.get(),
+			databaseName.get(),
+			metaSchemaName.orElse(null),
+			stateTableName.orElse(null));
 
 		return result;
 	}

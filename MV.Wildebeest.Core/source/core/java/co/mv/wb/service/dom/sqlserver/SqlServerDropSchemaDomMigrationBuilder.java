@@ -22,7 +22,6 @@ import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomMigrationBuilder;
-import co.mv.wb.framework.TryResult;
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,11 +40,11 @@ public class SqlServerDropSchemaDomMigrationBuilder extends BaseDomMigrationBuil
 		Optional<UUID> toStateId,
 		File baseDir) throws MessagesException
 	{
-		TryResult<String> schemaName = this.tryGetString("schemaName");
+		Optional<String> schemaName = this.tryGetString("schemaName");
 		
 		// Validation
 		Messages messages = new Messages();
-		if (!schemaName.hasValue())
+		if (!schemaName.isPresent())
 		{
 			V.elementMissing(messages, migrationId, "schemaName", SqlServerDropSchemaMigration.class);
 		}
@@ -59,6 +58,6 @@ public class SqlServerDropSchemaDomMigrationBuilder extends BaseDomMigrationBuil
 			migrationId,
 			fromStateId,
 			toStateId,
-			schemaName.getValue());
+			schemaName.get());
 	}
 }

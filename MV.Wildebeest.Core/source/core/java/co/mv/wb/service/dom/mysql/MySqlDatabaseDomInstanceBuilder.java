@@ -22,7 +22,7 @@ import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomInstanceBuilder;
-import co.mv.wb.framework.TryResult;
+import java.util.Optional;
 
 /**
  * An {@link InstanceBuilder} that builds a {@link MySqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
@@ -34,19 +34,19 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
 	@Override public Instance build() throws MessagesException
 	{
-		TryResult<String> hostName = this.tryGetString("hostName");
-		TryResult<Integer> port = this.tryGetInteger("port");
-		TryResult<String> adminUsername = this.tryGetString("adminUsername");
-		TryResult<String> adminPassword = this.tryGetString("adminPassword");
-		TryResult<String> databaseName = this.tryGetString("databaseName");
-		TryResult<String> stateTableName = this.tryGetString("stateTableName");
+		Optional<String> hostName = this.tryGetString("hostName");
+		Optional<Integer> port = this.tryGetInteger("port");
+		Optional<String> adminUsername = this.tryGetString("adminUsername");
+		Optional<String> adminPassword = this.tryGetString("adminPassword");
+		Optional<String> databaseName = this.tryGetString("databaseName");
+		Optional<String> stateTableName = this.tryGetString("stateTableName");
 		
 		Messages messages = new Messages();
-		if (!hostName.hasValue()) { V.elementMissing(messages, null, "hostName", MySqlDatabaseInstance.class); }
-		if (!port.hasValue()) { V.elementMissing(messages, null, "port", MySqlDatabaseInstance.class); }
-		if (!adminUsername.hasValue()) { V.elementMissing(messages, null, "adminUsername", MySqlDatabaseInstance.class); }
-		if (!adminPassword.hasValue()) { V.elementMissing(messages, null, "adminPassword", MySqlDatabaseInstance.class); }
-		if (!databaseName.hasValue()) { V.elementMissing(messages, null, "databaseName", MySqlDatabaseInstance.class); }
+		if (!hostName.isPresent()) { V.elementMissing(messages, null, "hostName", MySqlDatabaseInstance.class); }
+		if (!port.isPresent()) { V.elementMissing(messages, null, "port", MySqlDatabaseInstance.class); }
+		if (!adminUsername.isPresent()) { V.elementMissing(messages, null, "adminUsername", MySqlDatabaseInstance.class); }
+		if (!adminPassword.isPresent()) { V.elementMissing(messages, null, "adminPassword", MySqlDatabaseInstance.class); }
+		if (!databaseName.isPresent()) { V.elementMissing(messages, null, "databaseName", MySqlDatabaseInstance.class); }
 
 		if (messages.size() > 0)
 		{
@@ -54,12 +54,12 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		}
 		
 		Instance result = new MySqlDatabaseInstance(
-			hostName.getValue(),
-			port.getValue(),
-			adminUsername.getValue(),
-			adminPassword.getValue(),
-			databaseName.getValue(),
-			stateTableName.hasValue() ? stateTableName.getValue() : null);
+			hostName.get(),
+			port.get(),
+			adminUsername.get(),
+			adminPassword.get(),
+			databaseName.get(),
+			stateTableName.orElse(null));
 
 		return result;
 	}

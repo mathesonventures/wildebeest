@@ -23,7 +23,6 @@ import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomMigrationBuilder;
-import co.mv.wb.framework.TryResult;
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,16 +53,16 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 	{
 		Migration result;
 
-		TryResult<String> filename = this.tryGetString("filename");
-		TryResult<String> target = this.tryGetString("target");
+		Optional<String> filename = this.tryGetString("filename");
+		Optional<String> target = this.tryGetString("target");
 		
 		// Validation
 		Messages messages = new Messages();
-		if (!filename.hasValue())
+		if (!filename.isPresent())
 		{
 			V.elementMissing(messages, migrationId, "filename", ExternalResourceMigration.class);
 		}
-		if (!target.hasValue())
+		if (!target.isPresent())
 		{
 			V.elementMissing(messages, migrationId, "target", ExternalResourceMigration.class);
 		}
@@ -77,8 +76,8 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 			migrationId, fromStateId, toStateId,
 			baseDir,
 			_logger,
-			filename.getValue(),
-			target.getValue());
+			filename.get(),
+			target.get());
 		
 		return result;
 	}

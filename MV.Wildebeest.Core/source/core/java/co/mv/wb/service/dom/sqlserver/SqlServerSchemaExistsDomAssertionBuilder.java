@@ -22,7 +22,7 @@ import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomAssertionBuilder;
-import co.mv.wb.framework.TryResult;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -38,11 +38,11 @@ public class SqlServerSchemaExistsDomAssertionBuilder extends BaseDomAssertionBu
 		UUID assertionId,
 		int seqNum) throws MessagesException
 	{
-		TryResult<String> schemaName = this.tryGetString("schemaName");
+		Optional<String> schemaName = this.tryGetString("schemaName");
 		
 		// Validation
 		Messages messages = new Messages();
-		if (!schemaName.hasValue())
+		if (!schemaName.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "schemaName", SqlServerSchemaExistsAssertion.class);
 		}
@@ -55,7 +55,7 @@ public class SqlServerSchemaExistsDomAssertionBuilder extends BaseDomAssertionBu
 		Assertion result = new SqlServerSchemaExistsAssertion(
 			assertionId,
 			seqNum,
-			schemaName.getValue());
+			schemaName.get());
 		
 		return result;
 	}

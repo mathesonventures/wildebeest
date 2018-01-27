@@ -22,7 +22,7 @@ import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomInstanceBuilder;
-import co.mv.wb.framework.TryResult;
+import java.util.Optional;
 
 /**
  * An {@link InstanceBuilder} that builds a {@link SqlServerDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
@@ -34,27 +34,27 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
 	@Override public Instance build() throws MessagesException
 	{
-		TryResult<String> hostName = this.tryGetString("hostName");
-		TryResult<String> instanceName = this.tryGetString("instanceName");
-		TryResult<Integer> port = this.tryGetInteger("port");
-		TryResult<String> adminUsername = this.tryGetString("adminUsername");
-		TryResult<String> adminPassword = this.tryGetString("adminPassword");
-		TryResult<String> databaseName = this.tryGetString("databaseName");
-		TryResult<String> stateTableName = this.tryGetString("stateTableName");
+		Optional<String> hostName = this.tryGetString("hostName");
+		Optional<String> instanceName = this.tryGetString("instanceName");
+		Optional<Integer> port = this.tryGetInteger("port");
+		Optional<String> adminUsername = this.tryGetString("adminUsername");
+		Optional<String> adminPassword = this.tryGetString("adminPassword");
+		Optional<String> databaseName = this.tryGetString("databaseName");
+		Optional<String> stateTableName = this.tryGetString("stateTableName");
 
 		// Validation
 		Messages messages = new Messages();
-		if (!hostName.hasValue()) { V.elementMissing(messages, null, "hostName", SqlServerDatabaseInstance.class); }
-		if (!port.hasValue()) { V.elementMissing(messages, null, "port", SqlServerDatabaseInstance.class); }
-		if (!adminUsername.hasValue())
+		if (!hostName.isPresent()) { V.elementMissing(messages, null, "hostName", SqlServerDatabaseInstance.class); }
+		if (!port.isPresent()) { V.elementMissing(messages, null, "port", SqlServerDatabaseInstance.class); }
+		if (!adminUsername.isPresent())
 		{
 			V.elementMissing(messages, null, "adminUsername", SqlServerDatabaseInstance.class);
 		}
-		if (!adminPassword.hasValue())
+		if (!adminPassword.isPresent())
 		{
 			V.elementMissing(messages, null, "adminPassword", SqlServerDatabaseInstance.class);
 		}
-		if (!databaseName.hasValue())
+		if (!databaseName.isPresent())
 		{
 			V.elementMissing(messages, null, "databaseName", SqlServerDatabaseInstance.class);
 		}
@@ -65,13 +65,13 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		}
 		
 		Instance result = new SqlServerDatabaseInstance(
-			hostName.getValue(),
-			instanceName.hasValue() ? instanceName.getValue() : null,
-			port.getValue(),
-			adminUsername.getValue(),
-			adminPassword.getValue(),
-			databaseName.getValue(),
-			stateTableName.hasValue() ? stateTableName.getValue() : null);
+			hostName.get(),
+			instanceName.orElse(null),
+			port.get(),
+			adminUsername.get(),
+			adminPassword.get(),
+			databaseName.get(),
+			stateTableName.orElse(null));
 		
 		return result;
 	}

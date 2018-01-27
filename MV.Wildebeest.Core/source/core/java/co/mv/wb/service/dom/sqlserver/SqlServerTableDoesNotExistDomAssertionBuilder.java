@@ -22,7 +22,7 @@ import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomAssertionBuilder;
-import co.mv.wb.framework.TryResult;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -38,16 +38,16 @@ public class SqlServerTableDoesNotExistDomAssertionBuilder extends BaseDomAssert
 		UUID assertionId,
 		int seqNum) throws MessagesException
 	{
-		TryResult<String> schemaName = this.tryGetString("schemaName");
-		TryResult<String> tableName = this.tryGetString("tableName");
+		Optional<String> schemaName = this.tryGetString("schemaName");
+		Optional<String> tableName = this.tryGetString("tableName");
 		
 		// Validation
 		Messages messages = new Messages();
-		if (!schemaName.hasValue())
+		if (!schemaName.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "schemaName", SqlServerTableDoesNotExistAssertion.class);
 		}
-		if (!tableName.hasValue())
+		if (!tableName.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "tableName", SqlServerTableDoesNotExistAssertion.class);
 		}
@@ -60,8 +60,8 @@ public class SqlServerTableDoesNotExistDomAssertionBuilder extends BaseDomAssert
 		Assertion result = new SqlServerTableDoesNotExistAssertion(
 			assertionId,
 			seqNum,
-			schemaName.getValue(),
-			tableName.getValue());
+			schemaName.get(),
+			tableName.get());
 		
 		return result;
 	}

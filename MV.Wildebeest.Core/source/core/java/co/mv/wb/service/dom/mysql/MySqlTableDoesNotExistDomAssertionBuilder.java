@@ -22,7 +22,7 @@ import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomAssertionBuilder;
-import co.mv.wb.framework.TryResult;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -38,10 +38,10 @@ public class MySqlTableDoesNotExistDomAssertionBuilder extends BaseDomAssertionB
 		UUID assertionId,
 		int seqNum) throws MessagesException
 	{
-		TryResult<String> tableName = this.tryGetString("tableName");
+		Optional<String> tableName = this.tryGetString("tableName");
 		
 		Messages messages = new Messages();
-		if (!tableName.hasValue())
+		if (!tableName.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "tableName", MySqlTableDoesNotExistAssertion.class);
 		}
@@ -54,7 +54,7 @@ public class MySqlTableDoesNotExistDomAssertionBuilder extends BaseDomAssertionB
 		Assertion result = new MySqlTableDoesNotExistAssertion(
 			assertionId,
 			seqNum,
-			tableName.getValue());
+			tableName.get());
 		
 		return result;
 	}
