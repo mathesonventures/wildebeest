@@ -44,8 +44,8 @@ public class SqlServerCreateSchemaMigrationTests
 		// Setup the migration
 		SqlServerCreateSchemaMigration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
-			null,
-			null,
+			Optional.empty(),
+			Optional.empty(),
 			"prd");
 		
 		try
@@ -77,8 +77,8 @@ public class SqlServerCreateSchemaMigrationTests
 		// Setup the migration
 		SqlServerCreateSchemaMigration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
-			null,
-			null,
+			Optional.empty(),
+			Optional.empty(),
 			"prd");
 		
 		createSchema.perform(instance);

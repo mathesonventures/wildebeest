@@ -69,12 +69,13 @@ public class AnsiSqlDomServiceUnitTests
 			"resource.migrations[0].id",
 			migrationId,
 			mT.getMigrationId());
-		Assert.assertFalse(
-			"resource.migrations[0].fromStateId.isPresent",
-			mT.getFromStateId().isPresent());
+		Assert.assertEquals(
+			"resource.migrations[0].fromStateId",
+			Optional.empty(),
+			mT.getFromStateId());
 		Assert.assertEquals(
 			"resource.migrations[0].toStateId",
-			toStateId,
+			Optional.of(toStateId),
 			mT.getToStateId());
 	}
 
@@ -106,12 +107,13 @@ public class AnsiSqlDomServiceUnitTests
 			"resource.migrations[0].id",
 			migrationId,
 			mT.getMigrationId());
-		Assert.assertFalse(
-			"resource.migrations[0].fromStateId.isPresent",
-			mT.getFromStateId().isPresent());
+		Assert.assertEquals(
+			"resource.migrations[0].fromStateId",
+			Optional.empty(),
+			mT.getFromStateId());
 		Assert.assertEquals(
 			"resource.migrations[0].toStateId",
-			toStateId,
+			Optional.of(toStateId),
 			mT.getToStateId());
 	}
 	

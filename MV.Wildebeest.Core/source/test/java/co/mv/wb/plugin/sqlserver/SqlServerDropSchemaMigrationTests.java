@@ -52,15 +52,15 @@ public class SqlServerDropSchemaMigrationTests
 		
 		SqlServerCreateSchemaMigration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
-			null,
-			null,
+			Optional.empty(),
+			Optional.empty(),
 			"prd");
 		createSchema.perform(instance);
 		
 		SqlServerDropSchemaMigration dropSchema = new SqlServerDropSchemaMigration(
 			UUID.randomUUID(),
-			null,
-			null,
+			Optional.empty(),
+			Optional.empty(),
 			"prd");
 		
 		try
@@ -100,8 +100,8 @@ public class SqlServerDropSchemaMigrationTests
 		
 		SqlServerDropSchemaMigration dropSchema = new SqlServerDropSchemaMigration(
 			UUID.randomUUID(),
-			null,
-			null,
+			Optional.empty(),
+			Optional.empty(),
 			"prd");
 		
 		try

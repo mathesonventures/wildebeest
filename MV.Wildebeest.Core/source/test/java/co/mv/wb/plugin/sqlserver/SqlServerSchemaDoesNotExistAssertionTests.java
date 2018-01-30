@@ -59,7 +59,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			Optional.of(UUID.randomUUID()));
 		createDatabase.perform(instance);
 		 
-		Migration createSchema = new SqlServerCreateSchemaMigration(UUID.randomUUID(), null, null, "prd");
+		Migration createSchema = new SqlServerCreateSchemaMigration(UUID.randomUUID(), Optional.empty(), Optional.empty(), "prd");
 		createSchema.perform(instance);
 		 
 		SqlServerSchemaDoesNotExistAssertion schemaDoesNotExist = new SqlServerSchemaDoesNotExistAssertion(
