@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MV.Wildebeest.Api/MV.Wildebeest.Api.iml" filepath="$PROJECT_DIR$/MV.Wildebeest.Api/MV.Wildebeest.Api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MV.Wildebeest.Core/MV.Wildebeest.Core.iml" filepath="$PROJECT_DIR$/MV.Wildebeest.Core/MV.Wildebeest.Core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MV.Wildebeest.Log4j/MV.Wildebeest.Log4j.iml" filepath="$PROJECT_DIR$/MV.Wildebeest.Log4j/MV.Wildebeest.Log4j.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MV.Wildebeest.Slf4j/MV.Wildebeest.Slf4j.iml" filepath="$PROJECT_DIR$/MV.Wildebeest.Slf4j/MV.Wildebeest.Slf4j.iml" />
+    </modules>
+  </component>
+</project>
