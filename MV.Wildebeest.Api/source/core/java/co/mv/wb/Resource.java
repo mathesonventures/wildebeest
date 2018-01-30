@@ -39,7 +39,14 @@ public interface Resource
 	 * @since                                   1.0
 	 */
 	UUID getResourceId();
-	
+
+	/**
+	 * Gets the type of this Resource.
+	 *
+	 * @return                                  the type of this Resource
+	 */
+	ResourceType getType();
+
 	/**
 	 * Gets the name of this Resource.
 	 * 
@@ -81,7 +88,7 @@ public interface Resource
 	 * Assertions.
 	 * 
 	 * {@code assertState()} will first use {@link #currentState()} to determine the current state of the Resource.  If
-	 * the current state cannot be determined, then an {@link IndeterminateException} is thrown.  See the
+	 * the current state cannot be determined, then an {@link IndeterminateStateException} is thrown.  See the
 	 * {@code currentState()} method for more details.
 	 * 
 	 * @param       logger                      an optional Logger service to log the activity of the assert operation.

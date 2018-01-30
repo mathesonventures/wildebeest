@@ -17,14 +17,19 @@
 package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.Instance;
+import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationFaultException;
 import co.mv.wb.ModelExtensions;
-import co.mv.wb.Resource;
+import co.mv.wb.ResourceType;
+import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.plugin.base.BaseMigration;
 import co.mv.wb.plugin.database.DatabaseHelper;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,11 +57,10 @@ public class SqlServerDropDatabaseMigration extends BaseMigration
 		super(migrationId, fromStateId, toStateId);
 	}
 	
-	@Override public boolean canPerformOn(Resource resource)
+	@Override public List<ResourceType> getApplicableTypes()
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		
-		return ModelExtensions.As(resource, SqlServerDatabaseInstance.class) != null;
+		return Arrays.asList(
+			FactoryResourceTypes.SqlServerDatabase);
 	}
 
 	@Override public void perform(

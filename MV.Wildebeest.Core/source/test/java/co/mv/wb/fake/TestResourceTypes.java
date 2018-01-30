@@ -14,16 +14,11 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.plugin.database;
+package co.mv.wb.fake;
 
-import co.mv.wb.Resource;
+import co.mv.wb.ResourceType;
 
-/**
- * A marker interface for database resources.
- * 
- * @author                                      Brendon Matheson
- * @since                                       1.0
- */
-public interface DatabaseResource extends Resource
+public class TestResourceTypes
 {
+	public static ResourceType Fake = new ResourceType("co.mv.wb.Fake", "Fake");
 }

@@ -20,11 +20,12 @@ import co.mv.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
 import co.mv.wb.plugin.database.BaseDatabaseInstance;
 import co.mv.wb.plugin.database.DatabaseHelper;
 import co.mv.wb.plugin.database.JdbcDatabaseInstance;
-import javax.sql.DataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 
+import javax.sql.DataSource;
+
 /**
- * Represents an instance of a {@link PostgreSqlDatabaseResource}, which is an ANSI-compliant database system.
+ * Represents an instance of a PostgreSQL database, which is an ANSI-compliant database system.
  * 
  * @author                                      Brendon Matheson
  * @since                                       4.0

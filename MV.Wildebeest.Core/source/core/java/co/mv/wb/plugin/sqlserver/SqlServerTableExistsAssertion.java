@@ -16,12 +16,17 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.plugin.base.BaseAssertion;
+import co.mv.wb.Assertion;
 import co.mv.wb.AssertionResponse;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.Instance;
-import co.mv.wb.Resource;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.ResourceType;
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -144,11 +149,10 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 
 	// </editor-fold>
 	
-	@Override public boolean canPerformOn(Resource resource)
+	@Override public List<ResourceType> getApplicableTypes()
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		
-		return ModelExtensions.As(resource, SqlServerDatabaseResourcePlugin.class) != null;
+		return Arrays.asList(
+			FactoryResourceTypes.SqlServerDatabase);
 	}
 
 	@Override public AssertionResponse perform(Instance instance)

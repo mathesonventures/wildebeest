@@ -16,11 +16,14 @@
 
 package co.mv.wb.fake;
 
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.Instance;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.Resource;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.ResourceType;
 import co.mv.wb.plugin.base.BaseMigration;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -74,11 +77,10 @@ public class FakeMigration extends BaseMigration
 
 	// </editor-fold>
 	
-	@Override public boolean canPerformOn(Resource resource)
+	@Override public List<ResourceType> getApplicableTypes()
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		
-		return ModelExtensions.As(resource, FakeInstance.class) != null;
+		return Arrays.asList(
+			TestResourceTypes.Fake);
 	}
 	
 	@Override public void perform(Instance instance) throws MigrationFailedException

@@ -21,6 +21,8 @@ import co.mv.wb.Migration;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
+import co.mv.wb.ResourceType;
+import co.mv.wb.ResourceTypeService;
 import co.mv.wb.State;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
@@ -31,19 +33,21 @@ import co.mv.wb.service.MigrationBuilder;
 import co.mv.wb.service.ResourceLoader;
 import co.mv.wb.service.ResourceLoaderFault;
 import co.mv.wb.service.ResourcePluginBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * An {@link ResourcePluginBuilder} deserializes {@link Resource} descriptors from XML.
@@ -77,7 +81,8 @@ public class DomResourceLoader implements ResourceLoader
 	
 	/**
 	 * Creates a new DomResourceBuilder.
-	 * 
+	 *
+	 * @param       resourceTypeService         the {@link ResourceTypeService} to use to look up resource types.
 	 * @param       resourceBuilders            the set of available {@link ResourcePluginBuilder}s.
 	 * @param       assertionBuilders           the set of available {@link AssertionBuilder}s.
 	 * @param       migrationBuilders           the set of available {@link MigrationBuilder}s.
@@ -85,16 +90,58 @@ public class DomResourceLoader implements ResourceLoader
 	 * @since                                   1.0
 	 */
 	public DomResourceLoader(
+		ResourceTypeService resourceTypeService,
 		Map<String, ResourcePluginBuilder> resourceBuilders,
 		Map<String, AssertionBuilder> assertionBuilders,
 		Map<String, MigrationBuilder> migrationBuilders,
 		String resourceXml)
 	{
+		this.setResourceTypeService(resourceTypeService);
 		this.setResourceBuilders(resourceBuilders);
 		this.setAssertionBuilders(assertionBuilders);
 		this.setMigrationBuilders(migrationBuilders);
 		this.setResourceXml(resourceXml);
 	}
+
+	// <editor-fold desc="ResourceTypeService" defaultstate="collapsed">
+
+	private ResourceTypeService _resourceTypeService = null;
+	private boolean _resourceTypeService_set = false;
+
+	public ResourceTypeService getResourceTypeService() {
+		if(!_resourceTypeService_set) {
+			throw new IllegalStateException("resourceTypeService not set.");
+		}
+		if(_resourceTypeService == null) {
+			throw new IllegalStateException("resourceTypeService should not be null");
+		}
+		return _resourceTypeService;
+	}
+
+	private void setResourceTypeService(
+		ResourceTypeService value) {
+		if(value == null) {
+			throw new IllegalArgumentException("resourceTypeService cannot be null");
+		}
+		boolean changing = !_resourceTypeService_set || _resourceTypeService != value;
+		if(changing) {
+			_resourceTypeService_set = true;
+			_resourceTypeService = value;
+		}
+	}
+
+	private void clearResourceTypeService() {
+		if(_resourceTypeService_set) {
+			_resourceTypeService_set = true;
+			_resourceTypeService = null;
+		}
+	}
+
+	private boolean hasResourceTypeService() {
+		return _resourceTypeService_set;
+	}
+
+	// </editor-fold>
 
 	// <editor-fold desc="ResourceBuilders" defaultstate="collapsed">
 
@@ -247,7 +294,7 @@ public class DomResourceLoader implements ResourceLoader
 		
 		InputSource inputSource = new InputSource(new StringReader(this.getResourceXml()));
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = null;
+		DocumentBuilder db;
 		try
 		{
 			db = dbf.newDocumentBuilder();
@@ -257,7 +304,7 @@ public class DomResourceLoader implements ResourceLoader
 			throw new ResourceLoaderFault(e);
 		}
 		
-		Document resourceXd = null;
+		Document resourceXd;
 		try
 		{
 			resourceXd = db.parse(inputSource);
@@ -278,10 +325,13 @@ public class DomResourceLoader implements ResourceLoader
 				resourceXe);
 			
 			UUID id = UUID.fromString(resourceXe.getAttribute(XA_RESOURCE_ID));
+			String typeUri = resourceXe.getAttribute(XA_RESOURCE_TYPE);
+			ResourceType type = this.getResourceTypeService().forUri(typeUri);
 			String name = resourceXe.getAttribute(XA_RESOURCE_NAME);
 			
 			resource = new ResourceImpl(
 				id,
+				type,
 				name,
 				resourcePlugin);
 
@@ -315,9 +365,11 @@ public class DomResourceLoader implements ResourceLoader
 												this.getAssertionBuilders(),
 												asrXe,
 												asrIndex);
-											
+
 											// Verify that this assertion can be used with the Resource.
-											if (!asr.canPerformOn(resource))
+											if (!DomResourceLoader.isApplicable(
+												asr.getApplicableTypes(),
+												resource.getType()))
 											{
 												Messages messages = new Messages();
 												messages.addMessage(
@@ -349,7 +401,9 @@ public class DomResourceLoader implements ResourceLoader
 								baseDir);
 											
 							// Verify that this assertion can be used with the Resource.
-							if (!migration.canPerformOn(resource))
+							if (!DomResourceLoader.isApplicable(
+								migration.getApplicableTypes(),
+								resource.getType()))
 							{
 								Messages messages = new Messages();
 								messages.addMessage(
@@ -366,6 +420,14 @@ public class DomResourceLoader implements ResourceLoader
 		}
 				
 		return resource;
+	}
+
+	private static boolean isApplicable(List<ResourceType> applicableTypes, ResourceType actualType)
+	{
+		if (applicableTypes == null) { throw new IllegalArgumentException("applicableTypes cannot be null"); }
+		if (actualType == null) { throw new IllegalArgumentException("actualType cannot be null"); }
+
+		return applicableTypes.stream().anyMatch(x -> x.getUri().equals(actualType.getUri()));
 	}
 	
 	private static ResourcePlugin buildResourcePlugin(

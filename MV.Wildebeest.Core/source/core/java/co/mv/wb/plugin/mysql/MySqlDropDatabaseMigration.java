@@ -16,19 +16,24 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.plugin.base.BaseMigration;
-import co.mv.wb.plugin.database.DatabaseHelper;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.Instance;
+import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationFaultException;
-import co.mv.wb.Resource;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.ResourceType;
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.plugin.base.BaseMigration;
+import co.mv.wb.plugin.database.DatabaseHelper;
+
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 /**
- * A {@link Migration} that drops a {@link MySqlDatabaseResource}.
+ * A {@link Migration} that drops a MySQL database.
  * 
  * @author                                      Brendon Matheson
  * @since                                       1.0
@@ -53,11 +58,10 @@ public class MySqlDropDatabaseMigration extends BaseMigration
 		super(migrationId, fromStateId, toStateId);
 	}
 	
-	@Override public boolean canPerformOn(Resource resource)
+	@Override public List<ResourceType> getApplicableTypes()
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		
-		return ModelExtensions.As(resource, MySqlDatabaseInstance.class) != null;
+		return Arrays.asList(
+			FactoryResourceTypes.MySqlDatabase);
 	}
 
 	@Override public void perform(Instance instance) throws MigrationFailedException

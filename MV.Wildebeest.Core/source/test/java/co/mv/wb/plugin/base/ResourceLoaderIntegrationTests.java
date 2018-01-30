@@ -16,30 +16,34 @@
 
 package co.mv.wb.plugin.base;
 
-import co.mv.wb.Asserts;
-import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.AssertionFailedException;
+import co.mv.wb.Asserts;
 import co.mv.wb.FakeLogger;
 import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.Resource;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
+import co.mv.wb.Resource;
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
-import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
+import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
 import co.mv.wb.plugin.mysql.MySqlProperties;
 import co.mv.wb.plugin.mysql.MySqlUtil;
 import co.mv.wb.service.MessagesException;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
-import java.io.File;
-import java.sql.SQLException;
-import java.util.Optional;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ResourceLoaderIntegrationTests
 {
@@ -61,6 +65,10 @@ public class ResourceLoaderIntegrationTests
 		ProductCatalogueMySqlDatabaseResource productCatalogueResource = new ProductCatalogueMySqlDatabaseResource();
 
 		DomResourceLoader resourceBuilder = DomPlugins.resourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
 			new FakeLogger(),
 			productCatalogueResource.getResourceXml());
 

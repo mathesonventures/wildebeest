@@ -17,7 +17,9 @@
 package co.mv.wb;
 
 import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.plugin.mysql.MySqlElementFixtures;
+
 import java.util.UUID;
 
 public class ProductCatalogueMySqlDatabaseResource
@@ -581,7 +583,7 @@ public class ProductCatalogueMySqlDatabaseResource
 		if (migrationIdLoadReferenceData == null) { throw new IllegalArgumentException("migrationIdLoadReferenceData cannot be null"); }
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("MySqlDatabase", resourceId, "Product Catalogue Database")
+			.resource(FactoryResourceTypes.MySqlDatabase.getUri(), resourceId, "Product Catalogue Database")
 				.state(stateIdDatabaseCreated, "Database created")
 					.assertion("DatabaseExists", assertionIdDatabaseExists)
 				.state(stateIdCoreSchemaLoadedId, "Core Schema Loaded")

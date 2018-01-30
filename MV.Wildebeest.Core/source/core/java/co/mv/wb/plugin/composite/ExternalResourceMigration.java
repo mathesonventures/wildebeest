@@ -24,13 +24,17 @@ import co.mv.wb.Logger;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceType;
 import co.mv.wb.framework.Try;
+import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.plugin.base.BaseMigration;
 import co.mv.wb.service.MessagesException;
+
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 public class ExternalResourceMigration extends BaseMigration
 {
@@ -211,11 +215,12 @@ public class ExternalResourceMigration extends BaseMigration
 
 	// </editor-fold>
 
-	@Override public boolean canPerformOn(Resource resource)
+	@Override public List<ResourceType> getApplicableTypes()
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-
-		return true;
+		return Arrays.asList(
+			FactoryResourceTypes.MySqlDatabase,
+			FactoryResourceTypes.PostgreSqlDatabase,
+			FactoryResourceTypes.SqlServerDatabase);
 	}
 
 	@Override public void perform(

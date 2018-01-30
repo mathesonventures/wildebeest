@@ -17,6 +17,9 @@
 package co.mv.wb.plugin.database;
 
 import co.mv.wb.Assertion;
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
+import co.mv.wb.impl.ResourceTypeServiceImpl;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
@@ -48,18 +51,22 @@ public class DatabaseDomServiceUnitTests
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource("PostgreSqlDatabase", UUID.randomUUID(), "Product Catalogue Database")
+			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Product Catalogue Database")
 				.state(UUID.randomUUID(), null)
 					.assertion("DatabaseExists", assertionId)
 			.render();
 
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourcePluginBuilder());
+		resourceBuilders.put(FactoryResourceTypes.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomResourcePluginBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put("DatabaseExists", new DatabaseExistsDomAssertionBuilder());
 		
 		DomResourceLoader loader = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			new HashMap<>(),
@@ -88,18 +95,22 @@ public class DatabaseDomServiceUnitTests
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource("PostgreSqlDatabase", UUID.randomUUID(), "Product Catalogue Database")
+			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Product Catalogue Database")
 				.state(UUID.randomUUID(), null)
 					.assertion("DatabaseDoesNotExist", assertionId)
 			.render();
 
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourcePluginBuilder());
+		resourceBuilders.put(FactoryResourceTypes.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomResourcePluginBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put("DatabaseDoesNotExist", new DatabaseDoesNotExistDomAssertionBuilder());
 		
 		DomResourceLoader loader = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			new HashMap<>(),

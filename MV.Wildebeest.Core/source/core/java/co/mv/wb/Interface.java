@@ -16,6 +16,7 @@
 
 package co.mv.wb;
 
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.service.InstanceLoaderFault;
 import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
@@ -23,6 +24,7 @@ import co.mv.wb.service.ResourceLoaderFault;
 import co.mv.wb.service.dom.DomInstanceLoader;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -421,7 +423,13 @@ public class Interface
 		Resource resource = null;
 		if (resourceXml != null)
 		{
-			DomResourceLoader resourceLoader = DomPlugins.resourceLoader(logger, resourceXml);
+			DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
+				ResourceTypeServiceBuilder
+					.create()
+					.withFactoryResourceTypes()
+					.build(),
+				logger,
+				resourceXml);
 			resource = resourceLoader.load(resourceFile.getParentFile());
 		}
 

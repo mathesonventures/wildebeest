@@ -21,6 +21,8 @@ import co.mv.wb.FakeLogger;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
@@ -28,10 +30,12 @@ import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
-import java.io.File;
-import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.File;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Unit tests for the DOM persistence services for ANSI SQL plugins.
@@ -49,11 +53,17 @@ public class AnsiSqlDomServiceUnitTests
 		UUID toStateId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource("PostgreSqlDatabase", UUID.randomUUID(), "Foo")
+			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.migration("AnsiSqlCreateDatabase", migrationId, fromStateId, toStateId)
 			.render();
 
-		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
+		DomResourceLoader loader = DomPlugins.resourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
+			new FakeLogger(),
+			xml);
 
 		// Execute
 		Resource resource = loader.load(new File("."));
@@ -87,11 +97,17 @@ public class AnsiSqlDomServiceUnitTests
 		UUID toStateId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource("PostgreSqlDatabase", UUID.randomUUID(), "Foo")
+			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.migration("AnsiSqlDropDatabase", migrationId, fromStateId, toStateId)
 			.render();
 
-		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
+		DomResourceLoader loader = DomPlugins.resourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
+			new FakeLogger(),
+			xml);
 
 		// Execute
 		Resource resource = loader.load(new File("."));
@@ -123,15 +139,21 @@ public class AnsiSqlDomServiceUnitTests
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource("PostgreSqlDatabase", UUID.randomUUID(), "Foo")
+			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.state(UUID.randomUUID(), null)
 					.assertion("AnsiSqlTableExists", assertionId)
 						.appendInnerXml("<schemaName>sch</schemaName>")
 						.appendInnerXml("<tableName>tbl</tableName>")
 			.render();
 
-		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
-		
+		DomResourceLoader loader = DomPlugins.resourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
+			new FakeLogger(),
+			xml);
+
 		// Execute
 		Resource resource = loader.load(new File("."));
 		
@@ -160,15 +182,21 @@ public class AnsiSqlDomServiceUnitTests
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource("PostgreSqlDatabase", UUID.randomUUID(), "Foo")
+			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.state(UUID.randomUUID(), null)
 					.assertion("AnsiSqlTableDoesNotExist", assertionId)
 						.appendInnerXml("<schemaName>sch</schemaName>")
 						.appendInnerXml("<tableName>tbl</tableName>")
 			.render();
 
-		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), xml);
-		
+		DomResourceLoader loader = DomPlugins.resourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
+			new FakeLogger(),
+			xml);
+
 		// Execute
 		Resource resource = loader.load(new File("."));
 		

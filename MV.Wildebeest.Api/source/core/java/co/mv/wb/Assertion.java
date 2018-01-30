@@ -16,6 +16,7 @@
 
 package co.mv.wb;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -49,16 +50,14 @@ public interface Assertion
 	 * @since                                   1.0
 	 */
 	int getSeqNum();
-	
+
 	/**
-	 * Checks whether this {@link Assertion} can be performed on the supplied {@link Resource}.
-	 * 
-	 * @param       resource                    the {@link Resource} to check.
-	 * @return                                  an indication of whether or not this Assertion can be performed on the
-	 *                                          supplied Resource.
+	 * Gets the list of {@link Resource} types this this {@link Assertion} can be applied to.
+	 *
+	 * @return                                  the list of resource types that this Assertion can be applied to
 	 * @since                                   2.0
 	 */
-	boolean canPerformOn(Resource resource);
+	List<ResourceType> getApplicableTypes();
 
 	/**
 	 * Evaluates this Assertion against the supplied resource instance.

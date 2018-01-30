@@ -17,6 +17,8 @@
 package co.mv.wb.service.dom;
 
 import co.mv.wb.Logger;
+import co.mv.wb.ResourceTypeService;
+import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.InstanceBuilder;
 import co.mv.wb.service.MigrationBuilder;
@@ -47,6 +49,7 @@ import co.mv.wb.service.dom.sqlserver.SqlServerSchemaDoesNotExistDomAssertionBui
 import co.mv.wb.service.dom.sqlserver.SqlServerSchemaExistsDomAssertionBuilder;
 import co.mv.wb.service.dom.sqlserver.SqlServerTableDoesNotExistDomAssertionBuilder;
 import co.mv.wb.service.dom.sqlserver.SqlServerTableExistsDomAssertionBuilder;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +62,7 @@ import java.util.Map;
 public class DomPlugins
 {
 	/**
-	 * Builds and returns the collection of factory-shipped {@link ResourceBuilder}s.
+	 * Builds and returns the collection of factory-shipped {@link ResourcePluginBuilder}s.
 	 * 
 	 * @return                                  a Map that maps the XML element name to the builder instance.
 	 * @since                                   1.0
@@ -68,10 +71,10 @@ public class DomPlugins
 	{
 		Map<String, ResourcePluginBuilder> result = new HashMap<>();
 		
-		result.put("MySqlDatabase", new MySqlDatabaseDomResourcePluginBuilder());
-		result.put("SqlServerDatabase", new SqlServerDatabaseDomResourcePluginBuilder());
-		result.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomResourcePluginBuilder());
-		
+		result.put(FactoryResourceTypes.MySqlDatabase.getUri(), new MySqlDatabaseDomResourcePluginBuilder());
+		result.put(FactoryResourceTypes.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomResourcePluginBuilder());
+		result.put(FactoryResourceTypes.SqlServerDatabase.getUri(), new SqlServerDatabaseDomResourcePluginBuilder());
+
 		return result;
 	}
 
@@ -153,26 +156,29 @@ public class DomPlugins
 	{
 		Map<String, InstanceBuilder> result = new HashMap<>();
 		
-		result.put("MySqlDatabase", new MySqlDatabaseDomInstanceBuilder());
-		result.put("SqlServerDatabase", new SqlServerDatabaseDomInstanceBuilder());
-		result.put("PostgreSqlDatabase", new PostgreSqlDatabaseDomInstanceBuilder());
-		
+		result.put(FactoryResourceTypes.MySqlDatabase.getUri(), new MySqlDatabaseDomInstanceBuilder());
+		result.put(FactoryResourceTypes.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomInstanceBuilder());
+		result.put(FactoryResourceTypes.SqlServerDatabase.getUri(), new SqlServerDatabaseDomInstanceBuilder());
+
 		return result;
 	}
 	
 	/**
 	 * Returns a {@link DomResourceLoader} for the supplied resource XML, configured with the standard builders.
-	 * 
+	 *
+	 * @param       resourceTypeService         the {@link ResourceTypeService} to use to lookup resource types.
 	 * @param       logger                      the {@link Logger} to provide to plugins that require one.
 	 * @param       resourceXml                 the &lt;resource&gt; XML to be loaded by the DomResourceLoader.
 	 * @return                                  a DomResourceLoader configured with the standard builders.
 	 * @since                                   4.0
 	 */
 	public static DomResourceLoader resourceLoader(
+		ResourceTypeService resourceTypeService,
 		Logger logger,
 		String resourceXml)
 	{
 		return new DomResourceLoader(
+			resourceTypeService,
 			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
 			DomPlugins.migrationBuilders(logger),

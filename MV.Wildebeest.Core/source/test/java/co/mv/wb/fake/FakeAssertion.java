@@ -18,11 +18,14 @@ package co.mv.wb.fake;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionResponse;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.Instance;
-import co.mv.wb.Resource;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.ResourceType;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class FakeAssertion extends BaseAssertion implements Assertion
@@ -39,7 +42,7 @@ public class FakeAssertion extends BaseAssertion implements Assertion
 	
 	@Override public String getDescription()
 	{
-		return "Fake";
+		return "Fake Assertion";
 	}
 	
 	// <editor-fold desc="Tag" defaultstate="collapsed">
@@ -79,11 +82,10 @@ public class FakeAssertion extends BaseAssertion implements Assertion
 
 	// </editor-fold>
 	
-	@Override public boolean canPerformOn(Resource resource)
+	@Override public List<ResourceType> getApplicableTypes()
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		
-		return ModelExtensions.As(resource, FakeResourcePlugin.class) != null;
+		return Arrays.asList(
+			TestResourceTypes.Fake);
 	}
 
 	@Override public AssertionResponse perform(Instance instance)

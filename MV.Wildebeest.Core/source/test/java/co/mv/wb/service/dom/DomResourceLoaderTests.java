@@ -16,26 +16,31 @@
 
 package co.mv.wb.service.dom;
 
-import co.mv.wb.fake.DomFakeMigrationBuilder;
-import co.mv.wb.fake.DomFakeResourcePluginBuilder;
-import co.mv.wb.fake.DomFakeAssertionBuilder;
 import co.mv.wb.Asserts;
 import co.mv.wb.Resource;
-import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.fake.DomFakeAssertionBuilder;
+import co.mv.wb.fake.DomFakeMigrationBuilder;
+import co.mv.wb.fake.DomFakeResourcePluginBuilder;
 import co.mv.wb.fake.FakeAssertion;
-import co.mv.wb.fake.FakeResourcePlugin;
 import co.mv.wb.fake.FakeMigration;
+import co.mv.wb.fake.FakeResourcePlugin;
+import co.mv.wb.fake.TestResourceTypes;
+import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.MessagesException;
-import co.mv.wb.service.ResourcePluginBuilder;
 import co.mv.wb.service.MigrationBuilder;
+import co.mv.wb.service.ResourcePluginBuilder;
+import org.junit.Test;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import static org.junit.Assert.*;
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class DomResourceLoaderTests
 {
@@ -49,16 +54,20 @@ public class DomResourceLoaderTests
 		UUID resourceId = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("Fake", resourceId, "Product Catalogue Database")
+			.resource(TestResourceTypes.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.render();
 
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("Fake", new DomFakeResourcePluginBuilder());
+		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.with(TestResourceTypes.Fake)
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
@@ -97,17 +106,21 @@ public class DomResourceLoaderTests
 		UUID stateId = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("Fake", resourceId, "Product Catalogue Database")
+			.resource(TestResourceTypes.Fake.getUri(), resourceId, "Product Catalogue Database")
 				.state(stateId, "Foo")
 			.render();
 		
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("Fake", new DomFakeResourcePluginBuilder());
+		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.with(TestResourceTypes.Fake)
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
@@ -147,17 +160,21 @@ public class DomResourceLoaderTests
 		UUID stateId = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("Fake", resourceId, "Product Catalogue Database")
+			.resource(TestResourceTypes.Fake.getUri(), resourceId, "Product Catalogue Database")
 				.state(stateId, null)
 			.render();
 
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("Fake", new DomFakeResourcePluginBuilder());
+		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.with(TestResourceTypes.Fake)
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
@@ -198,18 +215,22 @@ public class DomResourceLoaderTests
 		UUID state2Id = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("Fake", resourceId, "Product Catalogue Database")
+			.resource(TestResourceTypes.Fake.getUri(), resourceId, "Product Catalogue Database")
 				.state(state1Id, "Foo")
 				.state(state2Id, "Bar")
 			.render();
 
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("Fake", new DomFakeResourcePluginBuilder());
+		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.with(TestResourceTypes.Fake)
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
@@ -251,20 +272,24 @@ public class DomResourceLoaderTests
 		UUID assertion1Id = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("Fake", resourceId, "Product Catalogue Database")
+			.resource(TestResourceTypes.Fake.getUri(), resourceId, "Product Catalogue Database")
 				.state(stateId, "Foo")
-					.assertion("Fake", assertion1Id).innerXml("<tag>Foo</tag>")
+					.assertion(TestResourceTypes.Fake.getUri(), assertion1Id).innerXml("<tag>Foo</tag>")
 			.render();
 
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("Fake", new DomFakeResourcePluginBuilder());
+		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		assertionBuilders.put("Fake", new DomFakeAssertionBuilder());
+		assertionBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeAssertionBuilder());
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.with(TestResourceTypes.Fake)
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
@@ -315,21 +340,25 @@ public class DomResourceLoaderTests
 		UUID assertion2Id = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("Fake", resourceId, "Product Catalogue Database")
+			.resource(TestResourceTypes.Fake.getUri(), resourceId, "Product Catalogue Database")
 				.state(stateId, "Foo")
-					.assertion("Fake", assertion1Id).innerXml("<tag>Foo</tag>")
-					.assertion("Fake", assertion2Id).innerXml("<tag>Bar</tag>")
+					.assertion(TestResourceTypes.Fake.getUri(), assertion1Id).innerXml("<tag>Foo</tag>")
+					.assertion(TestResourceTypes.Fake.getUri(), assertion2Id).innerXml("<tag>Bar</tag>")
 			.render();
 
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("Fake", new DomFakeResourcePluginBuilder());
+		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
 		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		assertionBuilders.put("Fake", new DomFakeAssertionBuilder());
+		assertionBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeAssertionBuilder());
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.with(TestResourceTypes.Fake)
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
@@ -383,20 +412,24 @@ public class DomResourceLoaderTests
 		UUID migrationId = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("Fake", resourceId, "Product Catalogue Database")
+			.resource(TestResourceTypes.Fake.getUri(), resourceId, "Product Catalogue Database")
 				.state(state1Id, "Foo")
-				.migration("Fake", migrationId, state1Id, null).innerXml("<tag>Blah</tag>")
+				.migration(TestResourceTypes.Fake.getUri(), migrationId, state1Id, null).innerXml("<tag>Blah</tag>")
 			.render();
 		
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("Fake", new DomFakeResourcePluginBuilder());
+		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		migrationBuilders.put("Fake", new DomFakeMigrationBuilder());
+		migrationBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeMigrationBuilder());
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.with(TestResourceTypes.Fake)
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
@@ -441,20 +474,24 @@ public class DomResourceLoaderTests
 		UUID migrationId = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("Fake", resourceId, "Product Catalogue Database")
+			.resource(TestResourceTypes.Fake.getUri(), resourceId, "Product Catalogue Database")
 				.state(state1Id, "Foo")
-				.migration("Fake", migrationId, null, state1Id).innerXml("<tag>Blah</tag>")
+				.migration(TestResourceTypes.Fake.getUri(), migrationId, null, state1Id).innerXml("<tag>Blah</tag>")
 			.render();
 		
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("Fake", new DomFakeResourcePluginBuilder());
+		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		migrationBuilders.put("Fake", new DomFakeMigrationBuilder());
+		migrationBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeMigrationBuilder());
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.with(TestResourceTypes.Fake)
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
@@ -500,21 +537,25 @@ public class DomResourceLoaderTests
 		UUID migrationId = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("Fake", resourceId, "Product Catalogue Database")
+			.resource(TestResourceTypes.Fake.getUri(), resourceId, "Product Catalogue Database")
 				.state(state1Id, "Foo")
 				.state(state2Id, "Bar")
-				.migration("Fake", migrationId, state1Id, state2Id).innerXml("<tag>Blah</tag>")
+				.migration(TestResourceTypes.Fake.getUri(), migrationId, state1Id, state2Id).innerXml("<tag>Blah</tag>")
 			.render();
 		
 		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put("Fake", new DomFakeResourcePluginBuilder());
+		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		migrationBuilders.put("Fake", new DomFakeMigrationBuilder());
+		migrationBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeMigrationBuilder());
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.with(TestResourceTypes.Fake)
+				.build(),
 			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,

@@ -16,26 +16,32 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.Asserts;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
+import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceType;
 import co.mv.wb.State;
 import co.mv.wb.fake.FakeInstance;
+import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
+import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
-import static org.junit.Assert.*;
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 public class MySqlTableExistsAssertionTests
 {
@@ -54,7 +60,11 @@ public class MySqlTableExistsAssertionTests
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), "Database", resourcePlugin);
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			FactoryResourceTypes.MySqlDatabase,
+			"Database",
+			resourcePlugin);
 		 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -128,7 +138,11 @@ public class MySqlTableExistsAssertionTests
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		 
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), "Database", resourcePlugin);
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			FactoryResourceTypes.MySqlDatabase,
+			"Database",
+			resourcePlugin);
 		 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());

@@ -32,7 +32,7 @@ public class Try
 	 * the attempted parse.
 	 * 
 	 * @param       value                       the raw value to attempt to parse as a UUID
-	 * @return                                  a {@link TryResult<UUID> representing the result of the attempted parse
+	 * @return                                  a {@link Optional<UUID> representing the result of the attempted parse
 	 *                                          operation.
 	 */
 	public static Optional<UUID> tryParseUuid(String value)

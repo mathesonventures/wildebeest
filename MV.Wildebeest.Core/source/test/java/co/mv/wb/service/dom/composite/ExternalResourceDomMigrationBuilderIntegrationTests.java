@@ -16,6 +16,9 @@
 
 package co.mv.wb.service.dom.composite;
 
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
+import co.mv.wb.impl.ResourceTypeServiceImpl;
 import co.mv.wb.FakeLogger;
 import co.mv.wb.Migration;
 import co.mv.wb.Resource;
@@ -24,12 +27,15 @@ import co.mv.wb.plugin.composite.ExternalResourceMigration;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
-import java.io.File;
-import java.util.UUID;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Unit tests for {@link ExternalResourceDomMigrationBuilder}.
@@ -54,7 +60,7 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 		UUID migration1Id = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("PostgreSqlDatabase", resourceId, "Test")
+			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), resourceId, "Test")
 			.state(state1Id, "state1")
 			.state(state2Id, "state2")
 			.migration("External", migration1Id, state1Id, state2Id)
@@ -63,7 +69,13 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 		
 		System.out.println("resourceXml: " + resourceXml);
 
-		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(new FakeLogger(), resourceXml);
+		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
+			new FakeLogger(),
+			resourceXml);
 
 		// Execute
 		Resource resource = resourceLoader.load(new File("."));
@@ -76,5 +88,4 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 		assertEquals("migration.filename", "foo.wbr", migrationT.getFileName());
 		assertEquals("migration.target", "bar", migrationT.getTarget());
 	}
-
 }

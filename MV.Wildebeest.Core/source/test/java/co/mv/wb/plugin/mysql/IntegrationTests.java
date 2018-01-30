@@ -16,8 +16,10 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.Asserts;
 import co.mv.wb.AssertionFailedException;
+import co.mv.wb.Asserts;
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
+import co.mv.wb.impl.ResourceTypeServiceImpl;
 import co.mv.wb.FakeLogger;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
@@ -28,6 +30,7 @@ import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.fixturecreator.XmlBuilder;
+import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
@@ -36,12 +39,14 @@ import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.dom.DomInstanceLoader;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
+import org.junit.Test;
+
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
-import static org.junit.Assert.*;
-import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 public class IntegrationTests
 {
@@ -61,8 +66,12 @@ public class IntegrationTests
 		
 		// Resource
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), "Database", resourcePlugin);
-		
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			FactoryResourceTypes.MySqlDatabase,
+			"Database",
+			resourcePlugin);
+
 		// State: Created
 		State created = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(created);
@@ -132,6 +141,10 @@ public class IntegrationTests
 		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
 		
 		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
 			new FakeLogger(),
 			prodCatResource.getResourceXml());
 
@@ -175,6 +188,10 @@ public class IntegrationTests
 		
 		// Fixture
 		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
 			new FakeLogger(),
 			prodCatResource.getResourceXml());
 		

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<resource type="PostgreSqlDatabase" id="38d0eabd-ab40-4c37-96a7-fcacb43bd059" name="Product Catalogue Database">
+<resource type="co.mv.wb.PostgreSqlDatabase" id="38d0eabd-ab40-4c37-96a7-fcacb43bd059" name="Product Catalogue Database">
 
 	<states>
 

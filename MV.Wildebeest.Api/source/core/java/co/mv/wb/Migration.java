@@ -16,6 +16,7 @@
 
 package co.mv.wb;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -54,14 +55,12 @@ public interface Migration
 	Optional<UUID> getToStateId();
 	
 	/**
-	 * Checks whether this {@link Migration} can be performed on the supplied {@link Resource}.
+	 * Gets the list of {@link Resource} types that this this {@link Migration} can be applied to.
 	 * 
-	 * @param       resource                    the {@link Resource} to check.
-	 * @return                                  an indication of whether or not this Migration can be performed on the
-	 *                                          supplied Resource.
+	 * @return                                  the list of resource types that this Migration can be applied to
 	 * @since                                   2.0
 	 */
-	boolean canPerformOn(Resource resource);
+	List<ResourceType> getApplicableTypes();
 
 	/**
 	 * Performs the migration, transitioning the supplied Instance from this Migration's from state to it's to state.

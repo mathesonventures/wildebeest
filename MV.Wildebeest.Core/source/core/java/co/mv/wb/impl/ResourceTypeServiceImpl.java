@@ -14,16 +14,33 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.plugin.ansisql;
+package co.mv.wb.impl;
 
-import co.mv.wb.plugin.database.DatabaseResource;
+import co.mv.wb.ResourceType;
+import co.mv.wb.ResourceTypeService;
+
+import java.util.List;
 
 /**
- * Marker interface for tagging DatabaseResource implementations that represent ANSI-compliant database systems.
- * 
+ * Default in-memory implementation of {@link ResourceTypeService}
+ *
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public interface AnsiSqlDatabaseResource extends DatabaseResource
+public class ResourceTypeServiceImpl implements ResourceTypeService
 {
+	private List<ResourceType> _resourceTypes;
+
+	public ResourceTypeServiceImpl(
+		List<ResourceType> resourceTypes)
+	{
+		if (resourceTypes == null) { throw new IllegalArgumentException("resourceTypes cannot be null"); }
+
+		_resourceTypes = resourceTypes;
+	}
+
+	@Override public List<ResourceType> getResourceTypes()
+	{
+		return _resourceTypes;
+	}
 }

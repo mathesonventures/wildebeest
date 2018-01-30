@@ -21,16 +21,19 @@ import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.dom.DomInstanceLoader;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
-import java.io.File;
-import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.File;
+import java.util.UUID;
 
 /**
  * Unit tests for the DOM persistence services for PostgreSQL plugins.
@@ -47,10 +50,16 @@ public class PostgreSqlDomServiceUnitTests
 		String resourceName = "Foo";
 		
 		String resourceXml = FixtureCreator.create()
-			.resource("PostgreSqlDatabase", resourceId, resourceName)
+			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), resourceId, resourceName)
 			.render();
 		
-		DomResourceLoader loader = DomPlugins.resourceLoader(new FakeLogger(), resourceXml);
+		DomResourceLoader loader = DomPlugins.resourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.withFactoryResourceTypes()
+				.build(),
+			new FakeLogger(),
+			resourceXml);
 		
 		// Execute
 		Resource resource = loader.load(new File("."));
@@ -70,7 +79,7 @@ public class PostgreSqlDomServiceUnitTests
 	{
 		// Setup
 		StringBuilder xml = new StringBuilder();
-		xml.append("<instance type=\"PostgreSqlDatabase\">\n")
+		xml.append("<instance type=\"").append(FactoryResourceTypes.PostgreSqlDatabase.getUri()).append("\">\n")
 			.append("<hostName>127.0.0.1</hostName>\n")
 			.append("<port>5432</port>\n")
 			.append("<adminUsername>wb</adminUsername>\n")

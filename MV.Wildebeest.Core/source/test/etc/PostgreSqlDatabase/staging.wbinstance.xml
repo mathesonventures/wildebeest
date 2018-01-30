@@ -1,4 +1,4 @@
-<instance type="PostgreSqlDatabase">
+<instance type="co.mv.wb.PostgreSqlDatabase">
 	<hostName>127.0.0.1</hostName>
 	<port>5432</port>
 	<adminUsername>postgres</adminUsername>

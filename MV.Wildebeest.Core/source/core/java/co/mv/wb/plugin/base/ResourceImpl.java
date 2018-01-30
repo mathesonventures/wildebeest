@@ -20,15 +20,17 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
 import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.Resource;
 import co.mv.wb.Instance;
 import co.mv.wb.JumpStateFailedException;
-import co.mv.wb.State;
+import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.Logger;
+import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
+import co.mv.wb.ResourceType;
+import co.mv.wb.State;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,17 +46,20 @@ public final class ResourceImpl implements Resource
 	/**
 	 * Creates a new BaseResource instance.
 	 * 
-	 * @param       resourceId                  the ID of the new resource
-	 * @param       name                        the name of the new resource
-	 * @param       plugin              the plugin for handling the type of the resource
+	 * @param       resourceId                  the ID of the new Resource
+	 * @param       type                        the type of the new Resource
+	 * @param       name                        the name of the new Resource
+	 * @param       plugin                      the plugin for handling the type of the Resource
 	 * @since                                   1.0
 	 */
 	public ResourceImpl(
 		UUID resourceId,
+		ResourceType type,
 		String name,
 		ResourcePlugin plugin)
 	{
 		this.setResourceId(resourceId);
+		this.setType(type);
 		this.setName(name);
 		this.setStates(new ArrayList<>());
 		this.setMigrations(new ArrayList<>());
@@ -98,6 +103,46 @@ public final class ResourceImpl implements Resource
 
 	private boolean hasResourceId() {
 		return _resourceId_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="Type" defaultstate="collapsed">
+
+	private ResourceType _type = null;
+	private boolean _type_set = false;
+
+	public ResourceType getType() {
+		if(!_type_set) {
+			throw new IllegalStateException("type not set.");
+		}
+		if(_type == null) {
+			throw new IllegalStateException("type should not be null");
+		}
+		return _type;
+	}
+
+	private void setType(
+			ResourceType value) {
+		if(value == null) {
+			throw new IllegalArgumentException("type cannot be null");
+		}
+		boolean changing = !_type_set || _type != value;
+		if(changing) {
+			_type_set = true;
+			_type = value;
+		}
+	}
+
+	private void clearType() {
+		if(_type_set) {
+			_type_set = true;
+			_type = null;
+		}
+	}
+
+	private boolean hasType() {
+		return _type_set;
 	}
 
 	// </editor-fold>

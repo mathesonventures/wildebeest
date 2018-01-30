@@ -16,16 +16,20 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.AssertionResponse;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.Instance;
-import co.mv.wb.Resource;
+import co.mv.wb.ModelExtensions;
+import co.mv.wb.ResourceType;
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 /**
- * An {@link Assertion} that verifies that a given table does not exist in a MySQL database.
+ * An {@link co.mv.wb.Assertion} that verifies that a given table does not exist in a MySQL database.
  * 
  * @author                                      Brendon Matheson
  * @since                                       1.0
@@ -98,11 +102,10 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 
 	// </editor-fold>
 	
-	@Override public boolean canPerformOn(Resource resource)
+	@Override public List<ResourceType> getApplicableTypes()
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		
-		return ModelExtensions.As(resource, MySqlDatabaseResourcePlugin.class) != null;
+		return Arrays.asList(
+			FactoryResourceTypes.MySqlDatabase);
 	}
 	
 	@Override public AssertionResponse perform(Instance instance)
