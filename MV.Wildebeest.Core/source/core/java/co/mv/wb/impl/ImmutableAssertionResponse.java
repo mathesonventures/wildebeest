@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.plugin.base;
+package co.mv.wb.impl;
 
 import co.mv.wb.AssertionResponse;
 

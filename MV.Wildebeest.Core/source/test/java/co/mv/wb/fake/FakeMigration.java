@@ -16,11 +16,8 @@
 
 package co.mv.wb.fake;
 
-import co.mv.wb.Instance;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
-import co.mv.wb.plugin.base.BaseMigration;
+import co.mv.wb.impl.BaseMigration;
 
 import java.util.Arrays;
 import java.util.List;
@@ -81,16 +78,5 @@ public class FakeMigration extends BaseMigration
 	{
 		return Arrays.asList(
 			TestResourceTypes.Fake);
-	}
-	
-	@Override public void perform(Instance instance) throws MigrationFailedException
-	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
-		if (fake == null) { throw new IllegalArgumentException("instance must of type FakeResource"); }
-	
-		fake.setTag(this.getTag());
-		
-		fake.setStateId(this.getToStateId().get());
 	}
 }

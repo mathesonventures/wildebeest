@@ -16,7 +16,14 @@
 
 package co.mv.wb;
 
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.impl.ResourceHelper;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
+import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
+import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
+import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
+import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerDatabaseResourcePlugin;
 import co.mv.wb.service.InstanceLoaderFault;
 import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
@@ -30,6 +37,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -148,7 +157,11 @@ public class Interface
 			this.getLogger().logLine("Unable to load the resource.");
 			logMessages(this.getLogger(), e.getMessages());
 		}
-		
+
+		ResourcePlugin resourcePlugin = Interface.getResourcePlugin(
+			Interface.getResourcePlugins(),
+			resource.getType());
+
 		// Load Instance
 		Instance instance = null;
 		try
@@ -165,7 +178,9 @@ public class Interface
 		{
 			try
 			{
-				State state = resource.getPlugin().currentState(resource, instance);
+				State state = resourcePlugin.currentState(
+					resource,
+					instance);
 
 				if (state == null)
 				{
@@ -182,7 +197,11 @@ public class Interface
 						this.getLogger().logLine("Current state: " + state.getStateId().toString());
 					}
 
-					resource.assertState(this.getLogger(), instance);
+					ResourceHelper.assertState(
+						this.getLogger(),
+						resource,
+						resourcePlugin,
+						instance);
 				}
 			}
 			catch (IndeterminateStateException ex)
@@ -209,11 +228,27 @@ public class Interface
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 
+		Map<String, ResourcePlugin> resourcePlugins = Interface.getResourcePlugins();
+
+		ResourcePlugin resourcePlugin = Interface.getResourcePlugin(
+			resourcePlugins,
+			resource.getType());
+
 		// Perform migration
 		try
 		{
-            UUID targetStateId = getTargetStateId(resource, targetState);
-			resource.migrate(this.getLogger(), instance, targetStateId);
+            UUID targetStateId = getTargetStateId(
+            	resource,
+				resourcePlugin,
+				targetState);
+
+			ResourceHelper.migrate(
+				this.getLogger(),
+				resource,
+				resourcePlugin,
+				instance,
+				this.getMigrationPlugins(),
+				targetStateId);
 		}
         catch (InvalidStateSpecifiedException e)
         {
@@ -253,10 +288,23 @@ public class Interface
 			throw new IllegalArgumentException("targetState cannot be empty");
 		}
 
+		ResourcePlugin resourcePlugin = Interface.getResourcePlugin(
+			 Interface.getResourcePlugins(),
+			resource.getType());
+
 		try
 		{
-            UUID targetStateId = getTargetStateId(resource, targetState);
-			resource.jumpstate(this.getLogger(), instance, targetStateId);
+            UUID targetStateId = getTargetStateId(
+            	resource,
+				resourcePlugin,
+				targetState);
+
+			ResourceHelper.jumpstate(
+				this.getLogger(),
+				resource,
+				resourcePlugin,
+				instance,
+				targetStateId);
 		}
         catch (InvalidStateSpecifiedException e)
         {
@@ -275,14 +323,55 @@ public class Interface
 			this.getLogger().jumpStateFailed(e);
 		}
 	}
-	
+
+	private static Map<String, ResourcePlugin> getResourcePlugins()
+	{
+		Map<String, ResourcePlugin> result = new HashMap<>();
+
+		result.put(FactoryResourceTypes.MySqlDatabase.getUri(), new MySqlDatabaseResourcePlugin());
+		result.put(FactoryResourceTypes.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseResourcePlugin());
+		result.put(FactoryResourceTypes.SqlServerDatabase.getUri(), new SqlServerDatabaseResourcePlugin());
+
+		return result;
+	}
+
+	private static ResourcePlugin getResourcePlugin(
+		Map<String, ResourcePlugin> resourcePlugins,
+		ResourceType resourceType)
+	{
+		if (resourcePlugins == null) { throw new IllegalArgumentException("resourcePlugins cannot be null"); }
+		if (resourceType == null) { throw new IllegalArgumentException("resourceType cannot be null"); }
+
+		ResourcePlugin resourcePlugin = resourcePlugins.get(resourceType.getUri());
+
+		if (resourcePlugin == null)
+		{
+			throw new ResourceLoaderFault(String.format(
+				"resource plugin for resource type %s not found",
+				resourceType.getUri()));
+		}
+
+		return resourcePlugin;
+	}
+
+	private static Map<Class, MigrationPlugin> getMigrationPlugins()
+	{
+		Map<Class, MigrationPlugin> result = new HashMap<>();
+
+		result.put(AnsiSqlCreateDatabaseMigration.class, new AnsiSqlCreateDatabaseMigrationPlugin());
+
+		return result;
+	}
+
 	private static UUID getTargetStateId(
 		Resource resource,
+		ResourcePlugin resourcePlugin,
 		String targetState) throws
             InvalidStateSpecifiedException,
             UnknownStateSpecifiedException
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		if (resourcePlugin == null) { throw new IllegalArgumentException("resourcePlugin cannot be null"); }
 
 		final String stateSpecificationRegex = "[a-zA-Z0-9][a-zA-Z0-9\\-\\_ ]+[a-zA-Z0-9]";
 		if (targetState != null && !targetState.matches(stateSpecificationRegex))
@@ -299,7 +388,9 @@ public class Interface
 			}
 			catch(IllegalArgumentException e)
 			{
-				targetStateId = resource.stateIdForLabel(targetState);
+				targetStateId = ResourceHelper.stateIdForLabel(
+					resource,
+					targetState);
 			}
             
             // If we still could not find the specified state, then throw
@@ -363,7 +454,7 @@ public class Interface
 	 * 
 	 * @param       logger                      the {@link Logger} instance to use.
 	 * @param       resourceFileName            the descriptor file from which the Resource should be deserialized
-	 * @return                                  a deserialized Resource object
+	 * @return                                  a deserialized Resource object with it's plugin
 	 * @throws      MessagesException           containing any validation errors encountered while the Resource is
 	 *                                          being deserialized
 	 * @since                                   1.0
@@ -373,7 +464,7 @@ public class Interface
 		String resourceFileName) throws MessagesException
 	{
 		if (resourceFileName == null) { throw new IllegalArgumentException("resourceFileName"); }
-		
+
 		Resource resource = Interface.loadResource(
 			logger,
 			new File(resourceFileName));
@@ -386,7 +477,7 @@ public class Interface
 	 * 
 	 * @param       logger                      the {@link Logger} instance to use.
 	 * @param       resourceFile                the descriptor file from which the Resource should be deserialized
-	 * @return                                  a deserialized Resource object
+	 * @return                                  a deserialized Resource object with it's plugin
 	 * @throws      MessagesException           containing any validation errors encountered while the Resource is
 	 *                                          being deserialized
 	 * @since                                   1.0
@@ -430,6 +521,7 @@ public class Interface
 					.build(),
 				logger,
 				resourceXml);
+
 			resource = resourceLoader.load(resourceFile.getParentFile());
 		}
 

@@ -16,6 +16,8 @@
 
 package co.mv.wb;
 
+import java.util.Optional;
+
 /**
  * An application-level logging interface for providing feedback on the progress of Wildebeest commands.
  * 
@@ -69,7 +71,9 @@ public interface Logger
 	 */
 	void migrationStart(
 		Resource resource,
-		Migration migration);
+		Migration migration,
+		Optional<State> fromState,
+		Optional<State> toState);
 
 	/**
 	 * Logs that a [@link Migration} has been completed.

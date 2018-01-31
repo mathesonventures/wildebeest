@@ -20,17 +20,14 @@ import co.mv.wb.Asserts;
 import co.mv.wb.Resource;
 import co.mv.wb.fake.DomFakeAssertionBuilder;
 import co.mv.wb.fake.DomFakeMigrationBuilder;
-import co.mv.wb.fake.DomFakeResourcePluginBuilder;
 import co.mv.wb.fake.FakeAssertion;
 import co.mv.wb.fake.FakeMigration;
-import co.mv.wb.fake.FakeResourcePlugin;
 import co.mv.wb.fake.TestResourceTypes;
 import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.MigrationBuilder;
-import co.mv.wb.service.ResourcePluginBuilder;
 import org.junit.Test;
 
 import java.io.File;
@@ -57,18 +54,14 @@ public class DomResourceLoaderTests
 			.resource(TestResourceTypes.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.render();
 
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
-		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
+		DomResourceLoader resourceLoader = new DomResourceLoader(
 			ResourceTypeServiceBuilder
 				.create()
 				.with(TestResourceTypes.Fake)
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
 			resourceXml);
@@ -77,7 +70,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load(new File("."));
+		Resource resource = resourceLoader.load(new File("."));
 		
 		//
 		// Verify
@@ -85,13 +78,23 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(
+			resourceId,
+			"Product Catalogue Database",
+			resource,
+			"resource");
 		
 		// States
-		assertEquals("resource.states.size", 0, resource.getStates().size());
+		assertEquals(
+			"resource.states.size",
+			0,
+			resource.getStates().size());
 		
 		// Migrations
-		assertEquals("resource.migration.size", 0, resource.getMigrations().size());
+		assertEquals(
+			"resource.migration.size",
+			0,
+			resource.getMigrations().size());
 		
 	}
 	
@@ -110,18 +113,14 @@ public class DomResourceLoaderTests
 				.state(stateId, "Foo")
 			.render();
 		
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
-		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
+		DomResourceLoader resourceLoader = new DomResourceLoader(
 			ResourceTypeServiceBuilder
 				.create()
 				.with(TestResourceTypes.Fake)
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
 			resourceXml);
@@ -130,7 +129,7 @@ public class DomResourceLoaderTests
 		// Execute
 		//
 		
-		Resource resource = resourceBuilder.load(new File("."));
+		Resource resource = resourceLoader.load(new File("."));
 		
 		//
 		// Verify
@@ -138,15 +137,29 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(
+			resourceId,
+			"Product Catalogue Database",
+			resource,
+			"resource");
 		
 		// States
-		assertEquals("resource.states.size", 1, resource.getStates().size());
-		Asserts.assertState(stateId, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
+		assertEquals(
+			"resource.states.size",
+			1,
+			resource.getStates().size());
+		Asserts.assertState(
+			stateId,
+			Optional.of("Foo"),
+			resource.getStates().get(0),
+			"state[0]");
 		
 		// Migrations
-		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
-		
+		assertEquals(
+			"resource.migrations.size",
+			0,
+			resource.getMigrations().size());
+
 	}
 	
 	@Test public void loadResourceForStateWithNoLabel() throws MessagesException
@@ -164,9 +177,6 @@ public class DomResourceLoaderTests
 				.state(stateId, null)
 			.render();
 
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
-		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
@@ -175,7 +185,6 @@ public class DomResourceLoaderTests
 				.create()
 				.with(TestResourceTypes.Fake)
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
 			resourceXml);
@@ -192,14 +201,29 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+
+		Asserts.assertResource(
+			resourceId,
+			"Product Catalogue Database",
+			resource,
+			"resource");
 		
 		// States
-		assertEquals("resource.states.size", 1, resource.getStates().size());
-		Asserts.assertState(stateId, Optional.empty(), resource.getStates().get(0), "state[0]");
-		
+		assertEquals(
+			"resource.states.size",
+			1,
+			resource.getStates().size());
+		Asserts.assertState(
+			stateId,
+			Optional.empty(),
+			resource.getStates().get(0),
+			"resource.state[0]");
+
 		// Migrations
-		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
+		assertEquals(
+			"resource.migrations.size",
+			0,
+			resource.getMigrations().size());
 		
 	}
 	
@@ -220,9 +244,6 @@ public class DomResourceLoaderTests
 				.state(state2Id, "Bar")
 			.render();
 
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
-		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
@@ -231,7 +252,6 @@ public class DomResourceLoaderTests
 				.create()
 				.with(TestResourceTypes.Fake)
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
 			resourceXml);
@@ -248,16 +268,34 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(
+			resourceId,
+			"Product Catalogue Database",
+			resource,
+			"resource");
 		
 		// States
-		assertEquals("resource.states.size", 2, resource.getStates().size());
-		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
-		Asserts.assertState(state2Id, Optional.of("Bar"), resource.getStates().get(1), "state[1]");
+		assertEquals(
+			"resource.states.size",
+			2,
+			resource.getStates().size());
+		Asserts.assertState(
+			state1Id,
+			Optional.of("Foo"),
+			resource.getStates().get(0),
+			"resource.state[0]");
+		Asserts.assertState(
+			state2Id,
+			Optional.of("Bar"),
+			resource.getStates().get(1),
+			"resource.state[1]");
 		
 		// Migrations
-		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
-		
+		assertEquals(
+			"resource.migrations.size",
+			0,
+			resource.getMigrations().size());
+
 	}
 	
 	@Test public void loadResourceForStateWithOneAssertion() throws MessagesException
@@ -277,9 +315,6 @@ public class DomResourceLoaderTests
 					.assertion(TestResourceTypes.Fake.getUri(), assertion1Id).innerXml("<tag>Foo</tag>")
 			.render();
 
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
-		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeAssertionBuilder());
 		
@@ -290,7 +325,6 @@ public class DomResourceLoaderTests
 				.create()
 				.with(TestResourceTypes.Fake)
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
 			resourceXml);
@@ -307,7 +341,11 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(
+			resourceId,
+			"Product Catalogue Database",
+			resource,
+			"resource");
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -346,9 +384,6 @@ public class DomResourceLoaderTests
 					.assertion(TestResourceTypes.Fake.getUri(), assertion2Id).innerXml("<tag>Bar</tag>")
 			.render();
 
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
-		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeAssertionBuilder());
 		
@@ -359,7 +394,6 @@ public class DomResourceLoaderTests
 				.create()
 				.with(TestResourceTypes.Fake)
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
 			resourceXml);
@@ -376,7 +410,7 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -417,9 +451,6 @@ public class DomResourceLoaderTests
 				.migration(TestResourceTypes.Fake.getUri(), migrationId, state1Id, null).innerXml("<tag>Blah</tag>")
 			.render();
 		
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
-
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
@@ -430,7 +461,6 @@ public class DomResourceLoaderTests
 				.create()
 				.with(TestResourceTypes.Fake)
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
 			resourceXml);
@@ -447,11 +477,11 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
-		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
+		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
@@ -479,9 +509,6 @@ public class DomResourceLoaderTests
 				.migration(TestResourceTypes.Fake.getUri(), migrationId, null, state1Id).innerXml("<tag>Blah</tag>")
 			.render();
 		
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
-
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
@@ -492,7 +519,6 @@ public class DomResourceLoaderTests
 				.create()
 				.with(TestResourceTypes.Fake)
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
 			resourceXml);
@@ -509,11 +535,11 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 1, resource.getStates().size());
-		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
+		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
@@ -543,9 +569,6 @@ public class DomResourceLoaderTests
 				.migration(TestResourceTypes.Fake.getUri(), migrationId, state1Id, state2Id).innerXml("<tag>Blah</tag>")
 			.render();
 		
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(TestResourceTypes.Fake.getUri(), new DomFakeResourcePluginBuilder());
-
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
@@ -556,7 +579,6 @@ public class DomResourceLoaderTests
 				.create()
 				.with(TestResourceTypes.Fake)
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			migrationBuilders,
 			resourceXml);
@@ -573,12 +595,12 @@ public class DomResourceLoaderTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		Asserts.assertResource(FakeResourcePlugin.class, resourceId, "Product Catalogue Database", resource, "resource");
+		Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 2, resource.getStates().size());
-		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
-		Asserts.assertState(state2Id, Optional.of("Bar"), resource.getStates().get(1), "state[1]");
+		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
+		Asserts.assertState(state2Id, Optional.of("Bar"), resource.getStates().get(1), "resource.state[1]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());

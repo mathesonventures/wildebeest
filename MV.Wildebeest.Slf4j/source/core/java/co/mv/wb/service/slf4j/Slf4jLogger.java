@@ -29,8 +29,9 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.UnknownStateSpecifiedException;
-import java.util.Optional;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 /**
  * A {@link Logger} that sends messages to SLF4J.
@@ -89,14 +90,15 @@ public class Slf4jLogger implements Logger
     
 	@Override public void migrationStart(
 		Resource resource,
-		Migration migration)
+		Migration migration,
+		Optional<State> fromState,
+		Optional<State> toState)
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
+		if (fromState == null) { throw new IllegalArgumentException("fromState cannot be null"); }
+		if (toState == null) { throw new IllegalArgumentException("toState cannot be null"); }
 
-		Optional<State> fromState = migration.getFromStateId().map(stateId -> resource.stateForId(stateId));
-		Optional<State> toState = migration.getToStateId().map(stateId -> resource.stateForId(stateId));
-		
 		if (fromState.isPresent())
 		{
 			if (toState.isPresent())

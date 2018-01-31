@@ -24,7 +24,9 @@ import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
+import co.mv.wb.impl.ResourceHelper;
 import co.mv.wb.plugin.database.Extensions;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -66,7 +68,7 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 		State result = null;
 		if (declaredStateId != null)
 		{
-			result = resource.stateForId(declaredStateId);
+			result = ResourceHelper.stateForId(resource, declaredStateId);
 
 			// If the declared state ID is not known, throw
 			if (result == null)

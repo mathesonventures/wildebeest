@@ -16,6 +16,8 @@
 
 package co.mv.wb;
 
+import java.util.Optional;
+
 public class FakeLogger implements Logger
 {
 	// <editor-fold desc="InvalidStateSpecifiedException" defaultstate="collapsed">
@@ -118,7 +120,11 @@ public class FakeLogger implements Logger
         this.setUnknownStateSpecifiedException(e);
     }
 
-    @Override public void migrationStart(Resource resource, Migration migration)
+    @Override public void migrationStart(
+    	Resource resource,
+		Migration migration,
+		Optional<State> fromState,
+		Optional<State> toState)
     {
         throw new RuntimeException("Not Implemented");
     }

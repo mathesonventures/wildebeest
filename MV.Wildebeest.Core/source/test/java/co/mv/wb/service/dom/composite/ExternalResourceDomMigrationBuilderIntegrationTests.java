@@ -16,13 +16,12 @@
 
 package co.mv.wb.service.dom.composite;
 
-import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.impl.ResourceTypeServiceBuilder;
-import co.mv.wb.impl.ResourceTypeServiceImpl;
 import co.mv.wb.FakeLogger;
 import co.mv.wb.Migration;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.composite.ExternalResourceMigration;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.dom.DomPlugins;

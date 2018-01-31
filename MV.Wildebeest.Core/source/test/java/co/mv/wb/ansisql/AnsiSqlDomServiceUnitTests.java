@@ -74,17 +74,17 @@ public class AnsiSqlDomServiceUnitTests
 		AnsiSqlCreateDatabaseMigration mT = ModelExtensions.As(
 			resource.getMigrations().get(0),
 			AnsiSqlCreateDatabaseMigration.class);
-		Assert.assertNotNull("resource.migrations[0] expected to be of type AnsiSqlCreateDatabaseMigration", mT);
+		Assert.assertNotNull("resourceWithPlugin.resource.migrations[0] expected to be of type AnsiSqlCreateDatabaseMigration", mT);
 		Assert.assertEquals(
-			"resource.migrations[0].id",
+			"resourceWithPlugin.resource.migrations[0].id",
 			migrationId,
 			mT.getMigrationId());
 		Assert.assertEquals(
-			"resource.migrations[0].fromStateId",
+			"resourceWithPlugin.resource.migrations[0].fromStateId",
 			Optional.empty(),
 			mT.getFromStateId());
 		Assert.assertEquals(
-			"resource.migrations[0].toStateId",
+			"resourceWithPlugin.resource.migrations[0].toStateId",
 			Optional.of(toStateId),
 			mT.getToStateId());
 	}

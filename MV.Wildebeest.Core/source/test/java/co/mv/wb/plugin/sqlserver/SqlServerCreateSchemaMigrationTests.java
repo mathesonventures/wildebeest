@@ -16,13 +16,18 @@
 
 package co.mv.wb.plugin.sqlserver;
 
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Logger;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
-import static org.junit.Assert.*;
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SqlServerCreateSchemaMigrationTests
 {
@@ -30,6 +35,8 @@ public class SqlServerCreateSchemaMigrationTests
 		MigrationFailedException
 	{
 		// Setup
+		Logger logger = new FakeLogger();
+
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
 
@@ -38,8 +45,13 @@ public class SqlServerCreateSchemaMigrationTests
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()));
+
+		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 		
-		createDatabase.perform(instance);
+		createDatabaseRunner.perform(
+			logger,
+			createDatabase,
+			instance);
 		
 		// Setup the migration
 		SqlServerCreateSchemaMigration createSchema = new SqlServerCreateSchemaMigration(
@@ -47,11 +59,16 @@ public class SqlServerCreateSchemaMigrationTests
 			Optional.empty(),
 			Optional.empty(),
 			"prd");
+
+		SqlServerCreateSchemaMigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
 		
 		try
 		{
 			// Execute
-			createSchema.perform(instance);
+			createSchemaRunner.perform(
+				logger,
+				createSchema,
+				instance);
 		}
 		finally
 		{
@@ -63,6 +80,8 @@ public class SqlServerCreateSchemaMigrationTests
 	@Test public void performForExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
 		// Setup
+		Logger logger = new FakeLogger();
+
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
 
@@ -72,7 +91,12 @@ public class SqlServerCreateSchemaMigrationTests
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()));
 
-		createDatabase.perform(instance);
+		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
+
+		createDatabaseRunner.perform(
+			logger,
+			createDatabase,
+			instance);
 		
 		// Setup the migration
 		SqlServerCreateSchemaMigration createSchema = new SqlServerCreateSchemaMigration(
@@ -80,15 +104,23 @@ public class SqlServerCreateSchemaMigrationTests
 			Optional.empty(),
 			Optional.empty(),
 			"prd");
+
+		SqlServerCreateSchemaMigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
 		
-		createSchema.perform(instance);
+		createSchemaRunner.perform(
+			logger,
+			createSchema,
+			instance);
 		
 		// Execute
 		MigrationFailedException caught = null;
 		
 		try
 		{
-			createSchema.perform(instance);
+			createSchemaRunner.perform(
+				logger,
+				createSchema,
+				instance);
 			
 			fail("MigrationFailedException expected");
 		}

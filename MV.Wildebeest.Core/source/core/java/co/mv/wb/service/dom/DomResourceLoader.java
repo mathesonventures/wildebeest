@@ -20,19 +20,17 @@ import co.mv.wb.Assertion;
 import co.mv.wb.Migration;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
 import co.mv.wb.ResourceTypeService;
 import co.mv.wb.State;
-import co.mv.wb.plugin.base.ImmutableState;
-import co.mv.wb.plugin.base.ResourceImpl;
+import co.mv.wb.impl.ImmutableState;
+import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.MigrationBuilder;
 import co.mv.wb.service.ResourceLoader;
 import co.mv.wb.service.ResourceLoaderFault;
-import co.mv.wb.service.ResourcePluginBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -50,7 +48,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * An {@link ResourcePluginBuilder} deserializes {@link Resource} descriptors from XML.
+ * Loads {@link Resource}'s from XML definitions.
  * 
  * @author                                      Brendon Matheson
  * @since                                       1.0
@@ -83,7 +81,6 @@ public class DomResourceLoader implements ResourceLoader
 	 * Creates a new DomResourceBuilder.
 	 *
 	 * @param       resourceTypeService         the {@link ResourceTypeService} to use to look up resource types.
-	 * @param       resourceBuilders            the set of available {@link ResourcePluginBuilder}s.
 	 * @param       assertionBuilders           the set of available {@link AssertionBuilder}s.
 	 * @param       migrationBuilders           the set of available {@link MigrationBuilder}s.
 	 * @param       resourceXml                 the XML representation of the {@link Resource} to be loaded.
@@ -91,13 +88,11 @@ public class DomResourceLoader implements ResourceLoader
 	 */
 	public DomResourceLoader(
 		ResourceTypeService resourceTypeService,
-		Map<String, ResourcePluginBuilder> resourceBuilders,
 		Map<String, AssertionBuilder> assertionBuilders,
 		Map<String, MigrationBuilder> migrationBuilders,
 		String resourceXml)
 	{
 		this.setResourceTypeService(resourceTypeService);
-		this.setResourceBuilders(resourceBuilders);
 		this.setAssertionBuilders(assertionBuilders);
 		this.setMigrationBuilders(migrationBuilders);
 		this.setResourceXml(resourceXml);
@@ -139,42 +134,6 @@ public class DomResourceLoader implements ResourceLoader
 
 	private boolean hasResourceTypeService() {
 		return _resourceTypeService_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="ResourceBuilders" defaultstate="collapsed">
-
-	private Map<String, ResourcePluginBuilder> _resourceBuilders = null;
-	private boolean _resourceBuilders_set = false;
-
-	private Map<String, ResourcePluginBuilder> getResourceBuilders() {
-		if(!_resourceBuilders_set) {
-			throw new IllegalStateException("resourceBuilders not set.  Use the HasResourceBuilders() method to check its state before accessing it.");
-		}
-		return _resourceBuilders;
-	}
-
-	private void setResourceBuilders(Map<String, ResourcePluginBuilder> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("resourceBuilders cannot be null");
-		}
-		boolean changing = !_resourceBuilders_set || _resourceBuilders != value;
-		if(changing) {
-			_resourceBuilders_set = true;
-			_resourceBuilders = value;
-		}
-	}
-
-	private void clearResourceBuilders() {
-		if(_resourceBuilders_set) {
-			_resourceBuilders_set = true;
-			_resourceBuilders = null;
-		}
-	}
-
-	private boolean hasResourceBuilders() {
-		return _resourceBuilders_set;
 	}
 
 	// </editor-fold>
@@ -315,15 +274,10 @@ public class DomResourceLoader implements ResourceLoader
 		}
 		
 		Element resourceXe = resourceXd.getDocumentElement();
-		ResourcePlugin resourcePlugin;
 		Resource resource = null;
 
 		if (XE_RESOURCE.equals(resourceXe.getTagName()))
 		{
-			resourcePlugin = buildResourcePlugin(
-				this.getResourceBuilders(),
-				resourceXe);
-			
 			UUID id = UUID.fromString(resourceXe.getAttribute(XA_RESOURCE_ID));
 			String typeUri = resourceXe.getAttribute(XA_RESOURCE_TYPE);
 			ResourceType type = this.getResourceTypeService().forUri(typeUri);
@@ -332,8 +286,7 @@ public class DomResourceLoader implements ResourceLoader
 			resource = new ResourceImpl(
 				id,
 				type,
-				name,
-				resourcePlugin);
+				name);
 
 			for (int i = 0; i < resourceXe.getChildNodes().getLength(); i ++)
 			{
@@ -344,6 +297,7 @@ public class DomResourceLoader implements ResourceLoader
 					for (int stateIndex = 0; stateIndex < childXe.getChildNodes().getLength(); stateIndex ++)
 					{
 						Element stateXe = ModelExtensions.As(childXe.getChildNodes().item(stateIndex), Element.class);
+
 						if (stateXe != null)
 						{
 							State state = buildState(stateXe);
@@ -353,12 +307,14 @@ public class DomResourceLoader implements ResourceLoader
 							{
 								Element stChildXe = ModelExtensions.As(stateXe.getChildNodes().item(stChildIndex),
 									Element.class);
+
 								if (stChildXe != null && XE_ASSERTIONS.equals(stChildXe.getTagName()))
 								{
 									for (int asrIndex = 0; asrIndex < stChildXe.getChildNodes().getLength(); asrIndex ++)
 									{
 										Element asrXe = ModelExtensions.As(stChildXe.getChildNodes().item(asrIndex),
 											Element.class);
+
 										if (asrXe != null)
 										{
 											Assertion asr = buildAssertion(
@@ -429,30 +385,7 @@ public class DomResourceLoader implements ResourceLoader
 
 		return applicableTypes.stream().anyMatch(x -> x.getUri().equals(actualType.getUri()));
 	}
-	
-	private static ResourcePlugin buildResourcePlugin(
-		Map<String, ResourcePluginBuilder> resourcePluginBuilders,
-		Element resourceXe) throws MessagesException
-	{
-		if (resourcePluginBuilders == null) { throw new IllegalArgumentException("resourcePluginBuilders cannot be null"); }
-		if (resourceXe == null) { throw new IllegalArgumentException("resourceXe cannot be null"); }
-		
-		String type = resourceXe.getAttribute(XA_RESOURCE_TYPE);
 
-		ResourcePluginBuilder builder = resourcePluginBuilders.get(type);
-		
-		if (builder == null)
-		{
-			throw new ResourceLoaderFault(String.format(
-				"resource builder of type %s not found",
-				type));
-		}
-		
-		builder.reset();
-		((DomBuilder)builder).setElement(resourceXe);
-		return builder.build();
-	}
-	
 	private static State buildState(
 		Element element)
 	{

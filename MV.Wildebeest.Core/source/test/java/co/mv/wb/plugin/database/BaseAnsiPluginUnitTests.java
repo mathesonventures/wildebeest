@@ -1,53 +1,96 @@
+// Wildebeest Migration Framework
+// Copyright © 2013 - 2018, Matheson Ventures Pte Ltd
+//
+// This file is part of Wildebeest
+//
+// Wildebeest is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License v2 as published by the Free
+// Software Foundation.
+//
+// Wildebeest is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+// A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
+
 package co.mv.wb.plugin.database;
 
 import co.mv.wb.AssertionResponse;
+import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationPlugin;
 import co.mv.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
+
 import java.util.UUID;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public abstract class BaseAnsiPluginUnitTests
 {
 	public abstract void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException;
 
 	protected void ansiSqlCreateDatabaseMigrationSucceeds(
-		AnsiSqlDatabaseInstance db,
+		Logger logger,
+		AnsiSqlDatabaseInstance instance,
 		Migration create,
-		Migration drop) throws MigrationFailedException
+		MigrationPlugin createRunner,
+		Migration drop,
+		MigrationPlugin dropRunner) throws MigrationFailedException
 	{
-		if (db == null) { throw new IllegalArgumentException("db cannot be null"); }
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (create == null) { throw new IllegalArgumentException("create cannot be null"); }
+		if (createRunner == null) { throw new IllegalArgumentException("createRunner cannot be null"); }
 		if (drop == null) { throw new IllegalArgumentException("drop cannot be null"); }
-		
+		if (dropRunner == null) { throw new IllegalArgumentException("dropRunner cannot be null"); }
+
 		try
 		{
 			// Execute
-			create.perform(db);
+			createRunner.perform(
+				logger,
+				create,
+				instance);
 
 			// Verify
-			assertEquals("databaseExists", true, db.databaseExists());
+			assertEquals("databaseExists", true, instance.databaseExists());
 		}
 		finally
 		{
-			drop.perform(db);
+			dropRunner.perform(
+				logger,
+				drop,
+				instance);
 		}
 	}
 	
 	public abstract void tableExistsForExistentTable() throws MigrationFailedException;
 	
 	protected void tableExistsForExistentTable(
-		DatabaseInstance db,
+		Logger logger,
+		DatabaseInstance instance,
 		Migration createDatabase,
+		MigrationPlugin createDatabaseRunner,
 		Migration createTable,
-		Migration dropDatabase) throws MigrationFailedException
+		MigrationPlugin createTableRunner,
+		Migration dropDatabase,
+		MigrationPlugin dropDatabaseRunner) throws MigrationFailedException
 	{
-		if (db == null) { throw new IllegalArgumentException("db cannot be null"); }
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (createDatabase == null) { throw new IllegalArgumentException("createDatabase cannot be null"); }
+		if (createDatabaseRunner == null) { throw new IllegalArgumentException("createDatabaseRunner cannot be null"); }
 		if (createTable == null) { throw new IllegalArgumentException("createTable cannot be null"); }
+		if (createTableRunner == null) { throw new IllegalArgumentException("createTableRunner cannot be null"); }
 		if (dropDatabase == null) { throw new IllegalArgumentException("dropDatabase cannot be null"); }
-		
+		if (dropDatabaseRunner == null) { throw new IllegalArgumentException("dropDatabaseRunner cannot be null"); }
+
 		// Setup
 		AnsiSqlTableExistsAssertion tableExists = new AnsiSqlTableExistsAssertion(
 			UUID.randomUUID(),
@@ -57,11 +100,18 @@ public abstract class BaseAnsiPluginUnitTests
 		
 		try
 		{
-			createDatabase.perform(db);
-			createTable.perform(db);
+			createDatabaseRunner.perform(
+				logger,
+				createDatabase,
+				instance);
+
+			createTableRunner.perform(
+				logger,
+				createTable,
+				instance);
 		
 			// Execute
-			AssertionResponse response = tableExists.perform(db);
+			AssertionResponse response = tableExists.perform(instance);
 
 			// Verify
 			assertNotNull("response", response);
@@ -70,21 +120,30 @@ public abstract class BaseAnsiPluginUnitTests
 		}
 		finally
 		{
-			dropDatabase.perform(db);
+			dropDatabaseRunner.perform(
+				logger,
+				dropDatabase,
+				instance);
 		}
 	}
 	
 	public abstract void tableExistsForNonExistentTable() throws MigrationFailedException;
 	
 	protected void tableExistsForNonExistentTable(
-		DatabaseInstance db,
+		Logger logger,
+		DatabaseInstance instance,
 		Migration createDatabase,
-		Migration dropDatabase) throws MigrationFailedException
+		MigrationPlugin createDatabaseRunner,
+		Migration dropDatabase,
+		MigrationPlugin dropDatabaseRunner) throws MigrationFailedException
 	{
-		if (db == null) { throw new IllegalArgumentException("db cannot be null"); }
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (createDatabase == null) { throw new IllegalArgumentException("createDatabase cannot be null"); }
+		if (createDatabaseRunner == null) { throw new IllegalArgumentException("createDatabaseRunner cannot be null"); }
 		if (dropDatabase == null) { throw new IllegalArgumentException("dropDatabase cannot be null"); }
-		
+		if (dropDatabaseRunner == null) { throw new IllegalArgumentException("dropDatabaseRunner cannot be null"); }
+
 		// Setup
 		AnsiSqlTableExistsAssertion tableExists = new AnsiSqlTableExistsAssertion(
 			UUID.randomUUID(),
@@ -94,10 +153,13 @@ public abstract class BaseAnsiPluginUnitTests
 		
 		try
 		{
-			createDatabase.perform(db);
+			createDatabaseRunner.perform(
+				logger,
+				createDatabase,
+				instance);
 		
 			// Execute
-			AssertionResponse response = tableExists.perform(db);
+			AssertionResponse response = tableExists.perform(instance);
 
 			// Verify
 			assertNotNull("response", response);
@@ -106,7 +168,10 @@ public abstract class BaseAnsiPluginUnitTests
 		}
 		finally
 		{
-			dropDatabase.perform(db);
+			dropDatabaseRunner.perform(
+				logger,
+				dropDatabase,
+				instance);
 		}
 	}
 }

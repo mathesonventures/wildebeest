@@ -21,9 +21,10 @@ import co.mv.wb.fake.FakeMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
+import org.junit.Assert;
+
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.Assert;
 
 public class Asserts
 {
@@ -33,7 +34,6 @@ public class Asserts
 	//
 	
 	public static void assertResource(
-		Class expectedPluginClass,
 		UUID expectedResourceId,
 		String expectedName,
 		Resource actual,
@@ -42,7 +42,6 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
-		Assert.assertEquals(name + ".plugin.class", expectedPluginClass, actual.getPlugin().getClass());
 		Assert.assertEquals(name + ".resourceId", expectedResourceId, actual.getResourceId());
 		Assert.assertEquals(name + ".name", expectedName, actual.getName());
 	}

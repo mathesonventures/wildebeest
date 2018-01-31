@@ -21,9 +21,9 @@ import co.mv.wb.AssertionResponse;
 import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
+import co.mv.wb.impl.BaseAssertion;
 import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.plugin.base.BaseAssertion;
-import co.mv.wb.plugin.base.ImmutableAssertionResponse;
+import co.mv.wb.impl.ImmutableAssertionResponse;
 
 import java.util.Arrays;
 import java.util.List;

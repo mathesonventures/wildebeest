@@ -21,8 +21,10 @@ import co.mv.wb.Migration;
 import co.mv.wb.plugin.composite.ExternalResourceMigration;
 import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.MigrationBuilder;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomMigrationBuilder;
+
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
@@ -73,9 +75,10 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 		}
 
 		result = new ExternalResourceMigration(
-			migrationId, fromStateId, toStateId,
+			migrationId,
+			fromStateId,
+			toStateId,
 			baseDir,
-			_logger,
 			filename.get(),
 			target.get());
 		

@@ -16,11 +16,18 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Instance;
+import co.mv.wb.Logger;
+import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationPlugin;
+import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
+import org.junit.Test;
+
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.Test;
 
 public class SqlScriptMigrationTests
 {
@@ -32,17 +39,21 @@ public class SqlScriptMigrationTests
 	public void performSuccessfully() throws MigrationFailedException
 	{
 		// Setup
+		Logger logger = new FakeLogger();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
 		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm_test", "");
 		
-		SqlScriptMigration migration = new SqlScriptMigration(
+		Migration migration = new SqlScriptMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()),
 			MySqlElementFixtures.productCatalogueDatabase());
+
+		MigrationPlugin migrationPlugin = new SqlScriptMigrationPlugin();
 		
-		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
+		Instance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
 			mySqlProperties.getUsername(),
@@ -53,7 +64,10 @@ public class SqlScriptMigrationTests
 		// Execute
 		try
 		{
-			migration.perform(instance);
+			migrationPlugin.perform(
+				logger,
+				migration,
+				instance);
 		}
 		finally
 		{

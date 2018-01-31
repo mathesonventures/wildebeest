@@ -23,18 +23,23 @@ import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.plugin.base.ImmutableState;
-import co.mv.wb.plugin.base.ResourceImpl;
+import co.mv.wb.impl.ImmutableState;
+import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -59,11 +64,11 @@ public class SqlServerTableDoesNotExistAssertionTests
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin();
+
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.SqlServerDatabase,
-			"Database",
-			resourcePlugin);
+			"Database");
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -88,6 +93,10 @@ public class SqlServerTableDoesNotExistAssertionTests
 			SqlServerElementFixtures.productCatalogueDatabase());
 		resource.getMigrations().add(tran2);
 
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(SqlServerCreateDatabaseMigration.class, new SqlServerCreateDatabaseMigrationPlugin());
+		migrationPlugins.put(SqlScriptMigration.class, new SqlScriptMigrationPlugin());
+
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
@@ -99,7 +108,13 @@ public class SqlServerTableDoesNotExistAssertionTests
 			databaseName,
 			null);
 		 
-		resource.migrate(new PrintStreamLogger(System.out), instance, schemaLoaded.getStateId());
+		ResourceHelper.migrate(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			schemaLoaded.getStateId());
 		
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
@@ -146,11 +161,11 @@ public class SqlServerTableDoesNotExistAssertionTests
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin();
+
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.SqlServerDatabase,
-			"Database",
-			resourcePlugin);
+			"Database");
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -162,7 +177,10 @@ public class SqlServerTableDoesNotExistAssertionTests
 			Optional.empty(),
 			Optional.of(created.getStateId()));
 		resource.getMigrations().add(tran1);
-		
+
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(SqlServerCreateDatabaseMigration.class, new SqlServerCreateDatabaseMigrationPlugin());
+
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
@@ -174,7 +192,13 @@ public class SqlServerTableDoesNotExistAssertionTests
 			databaseName,
 			null);
 		 
-		resource.migrate(new PrintStreamLogger(System.out), instance, created.getStateId());
+		ResourceHelper.migrate(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			created.getStateId());
 		
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
@@ -208,11 +232,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 	 
 	 @Test public void applyForNonExistentDatabaseFails() throws SQLException
 	 {
-		 
-		//
 		// Setup
-		//
-		 
 		SqlServerProperties properties = SqlServerProperties.get();
 	
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -232,21 +252,14 @@ public class SqlServerTableDoesNotExistAssertionTests
 			"dbo",
 			"ProductType");
  
-		//
 		// Execute
-		//
-		
 		AssertionResponse response = assertion.perform(instance);
 
-		//
 		// Verify
-		//
-
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
-
 	 }
 	 
 	 @Test public void applyForNullInstanceFails()

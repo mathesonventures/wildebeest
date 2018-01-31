@@ -16,19 +16,9 @@
 
 package co.mv.wb.plugin.composite;
 
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.Instance;
-import co.mv.wb.Interface;
-import co.mv.wb.Logger;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.Resource;
 import co.mv.wb.ResourceType;
-import co.mv.wb.framework.Try;
+import co.mv.wb.impl.BaseMigration;
 import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.plugin.base.BaseMigration;
-import co.mv.wb.service.MessagesException;
 
 import java.io.File;
 import java.util.Arrays;
@@ -43,57 +33,15 @@ public class ExternalResourceMigration extends BaseMigration
 		Optional<UUID> fromStateId,
 		Optional<UUID> toStateId,
 		File baseDir,
-		Logger logger,
 		String fileName,
 		String target)
 	{
 		super(migrationId, fromStateId, toStateId);
 
 		this.setBaseDir(baseDir);
-		this.setLogger(logger);
 		this.setFileName(fileName);
 		this.setTarget(target);
 	}
-
-	// <editor-fold desc="Logger" defaultstate="collapsed">
-
-	private Logger _logger = null;
-	private boolean _logger_set = false;
-
-	private Logger getLogger() {
-		if(!_logger_set) {
-			throw new IllegalStateException("logger not set.");
-		}
-		if(_logger == null) {
-			throw new IllegalStateException("logger should not be null");
-		}
-		return _logger;
-	}
-
-	private void setLogger(
-		Logger value) {
-		if(value == null) {
-			throw new IllegalArgumentException("logger cannot be null");
-		}
-		boolean changing = !_logger_set || _logger != value;
-		if(changing) {
-			_logger_set = true;
-			_logger = value;
-		}
-	}
-
-	private void clearLogger() {
-		if(_logger_set) {
-			_logger_set = true;
-			_logger = null;
-		}
-	}
-
-	private boolean hasLogger() {
-		return _logger_set;
-	}
-
-	// </editor-fold>
 
 	// <editor-fold desc="BaseDir" defaultstate="collapsed">
 
@@ -221,50 +169,5 @@ public class ExternalResourceMigration extends BaseMigration
 			FactoryResourceTypes.MySqlDatabase,
 			FactoryResourceTypes.PostgreSqlDatabase,
 			FactoryResourceTypes.SqlServerDatabase);
-	}
-
-	@Override public void perform(
-		Instance instance) throws MigrationFailedException
-	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		
-		// Load the resource
-		Resource externalResource;
-		try
-		{
-			File file = new File(this.getBaseDir(), this.getFileName());
-			externalResource = Interface.loadResource(this.getLogger(), file);
-		}
-		catch(MessagesException e)
-		{
-			throw new MigrationFailedException(this.getMigrationId(), "Unable to load");
-		}
-
-		UUID targetStateId = Try
-			.tryParseUuid(this.getTarget())
-			.orElseGet(() -> externalResource.stateIdForLabel(this.getTarget()));
-
-		try
-		{
-			externalResource.migrate(this.getLogger(), instance, targetStateId);
-		}
-		catch (IndeterminateStateException ex)
-		{
-			throw new MigrationFailedException(
-				this.getMigrationId(),
-				"Indeterminate exception in external resource");
-		}
-		catch (AssertionFailedException ex)
-		{
-			throw new MigrationFailedException(
-				this.getMigrationId(),
-				"Assertion failed in external resource");
-		}
-		catch (MigrationNotPossibleException ex)
-		{
-			throw new MigrationFailedException(
-				this.getMigrationId(),
-				"Migration not possible in external resource");
-		}
 	}
 }

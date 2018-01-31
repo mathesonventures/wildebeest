@@ -16,13 +16,18 @@
 
 package co.mv.wb.plugin.sqlserver;
 
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Logger;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
-import static org.junit.Assert.*;
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SqlServerCreateDatabaseMigrationTests
 {
@@ -30,12 +35,16 @@ public class SqlServerCreateDatabaseMigrationTests
 		MigrationFailedException
 	{
 		// Setup
+		Logger logger = new FakeLogger();
+
 		SqlServerProperties p = SqlServerProperties.get();
 		
-		SqlServerCreateDatabaseMigration m = new SqlServerCreateDatabaseMigration(
+		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()));
+
+		SqlServerCreateDatabaseMigrationPlugin migrationPlugin = new SqlServerCreateDatabaseMigrationPlugin();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
@@ -51,7 +60,10 @@ public class SqlServerCreateDatabaseMigrationTests
 		// Execute
 		try
 		{
-			m.perform(instance);
+			migrationPlugin.perform(
+				logger,
+				migration,
+				instance);
 		}
 		finally
 		{
@@ -63,6 +75,8 @@ public class SqlServerCreateDatabaseMigrationTests
 	@Test public void performForExistantDatabaseFails() throws SQLException
 	{
 		// Setup
+		Logger logger = new FakeLogger();
+
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
@@ -76,17 +90,22 @@ public class SqlServerCreateDatabaseMigrationTests
 		
 		SqlServerUtil.createDatabase(instance);
 		
-		SqlServerCreateDatabaseMigration tr = new SqlServerCreateDatabaseMigration(
+		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()));
+
+		SqlServerCreateDatabaseMigrationPlugin migrationPlugin = new SqlServerCreateDatabaseMigrationPlugin();
 
 		// Execute
 		MigrationFailedException caught = null;
 		
 		try
 		{
-			tr.perform(instance);
+			migrationPlugin.perform(
+				logger,
+				migration,
+				instance);
 			
 			fail("MigrationFailedException expected");
 		}

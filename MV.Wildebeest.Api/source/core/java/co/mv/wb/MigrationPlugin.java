@@ -14,15 +14,23 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.fake;
+package co.mv.wb;
 
-import co.mv.wb.ResourcePlugin;
-import co.mv.wb.service.dom.BaseDomResourcePluginBuilder;
-
-public class DomFakeResourcePluginBuilder extends BaseDomResourcePluginBuilder
+/**
+ * MigrationPlugins actually perform {@link Migration}'s.  Runner plugins are separated from {@link Migration}'s so that
+ * additional services required when running the Migration can be injected into the runner.
+ */
+public interface MigrationPlugin
 {
-	@Override public ResourcePlugin build()
-	{
-		return new FakeResourcePlugin();
-	}
+	/**
+	 * Performs the migration, transitioning the supplied Instance from the Migration's from state to it's to state.
+	 *
+	 * @param       instance                    the instance to be migrated
+	 * @throws      MigrationFailedException    if the migration fails
+	 * @since                                   1.0
+	 */
+	void perform(
+		Logger logger,
+		Migration migration,
+		Instance instance) throws MigrationFailedException;
 }

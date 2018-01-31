@@ -26,19 +26,26 @@ import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.fake.FakeAssertion;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.fake.FakeMigration;
+import co.mv.wb.fake.FakeMigrationPlugin;
 import co.mv.wb.fake.FakeResourcePlugin;
 import co.mv.wb.fake.TagAssertion;
 import co.mv.wb.fake.TestResourceTypes;
+import co.mv.wb.impl.ImmutableState;
+import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceImpl;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,7 +63,7 @@ public class BaseResourceTests
 	{
 		// Setup
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 		
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -64,7 +71,11 @@ public class BaseResourceTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
 		// Execute
-		List<AssertionResult> results = resource.assertState(new PrintStreamLogger(System.out), instance);
+		List<AssertionResult> results = ResourceHelper.assertState(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance);
 
 		// Verify
 		assertNotNull("results", results);
@@ -75,7 +86,7 @@ public class BaseResourceTests
 	{
 		// Setup
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 		
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -90,7 +101,11 @@ public class BaseResourceTests
 		instance.setTag("Foo");
 
 		// Execute
-		List<AssertionResult> results = resource.assertState(new PrintStreamLogger(System.out), instance);
+		List<AssertionResult> results = ResourceHelper.assertState(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance);
 
 		// Verify
 		assertNotNull("results", results);
@@ -103,7 +118,7 @@ public class BaseResourceTests
 	{
 		// Setup
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -124,7 +139,11 @@ public class BaseResourceTests
 		instance.setTag("Foo");
 
 		// Execute
-		List<AssertionResult> results = resource.assertState(new PrintStreamLogger(System.out), instance);
+		List<AssertionResult> results = ResourceHelper.assertState(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance);
 
 		// Verify
 		assertNotNull("results", results);
@@ -163,7 +182,7 @@ public class BaseResourceTests
 	{
 		// Setup
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 
 		UUID state1Id = UUID.randomUUID();
 		State state = new ImmutableState(state1Id);
@@ -173,11 +192,20 @@ public class BaseResourceTests
 		UUID migration1Id = UUID.randomUUID();
 		Migration tran1 = new FakeMigration(migration1Id, Optional.empty(), Optional.of(state1Id), "foo");
 		resource.getMigrations().add(tran1);
+
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
 		
 		FakeInstance instance = new FakeInstance();
 		
 		// Execute
-		resource.migrate(new PrintStreamLogger(System.out), instance, state1Id);
+		ResourceHelper.migrate(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			state1Id);
 		
 		// Verify
 		assertEquals("instance.tag", "foo", instance.getTag());
@@ -197,7 +225,7 @@ public class BaseResourceTests
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 
 		// State 1
 		State state1 = new ImmutableState(UUID.randomUUID(), Optional.of("State 1"));
@@ -238,7 +266,10 @@ public class BaseResourceTests
 			Optional.of(state3.getStateId()),
 			"bup");
 		resource.getMigrations().add(tran3);
-		
+
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
+
 		// Instance
 		FakeInstance instance = new FakeInstance();
 		
@@ -246,7 +277,13 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.migrate(new PrintStreamLogger(System.out), instance, state3.getStateId());
+		ResourceHelper.migrate(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			state3.getStateId());
 		
 		//
 		// Verify
@@ -269,7 +306,7 @@ public class BaseResourceTests
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -345,7 +382,10 @@ public class BaseResourceTests
 			Optional.of(stateC3Id),
 			"stateC3");
 		resource.getMigrations().add(migration5);
-		
+
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
+
 		// Instance
 		FakeInstance instance = new FakeInstance();
 		
@@ -353,7 +393,13 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		resource.migrate(new PrintStreamLogger(System.out), instance, stateB3Id);
+		ResourceHelper.migrate(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			stateB3Id);
 		
 		//
 		// Verify
@@ -386,7 +432,7 @@ public class BaseResourceTests
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -402,19 +448,34 @@ public class BaseResourceTests
 			Optional.of(state1Id),
 			"foo");
 		resource.getMigrations().add(tran1);
-		
+
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
+
 		// Instance
 		FakeInstance instance = new FakeInstance();
 		
 		PrintStreamLogger logger = new PrintStreamLogger(System.out);
 		
-		resource.migrate(logger, instance, state1Id);
+		ResourceHelper.migrate(
+			logger,
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			state1Id);
 		
 		//
 		// Execute
 		//
 		
-		resource.migrate(logger, instance, state1Id);
+		ResourceHelper.migrate(
+			logger,
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			state1Id);
 		
 		//
 		// Verify
@@ -437,7 +498,7 @@ public class BaseResourceTests
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -453,18 +514,33 @@ public class BaseResourceTests
 			Optional.of(state1Id),
 			"foo");
 		resource.getMigrations().add(tran1);
-		
+
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
+
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		resource.migrate(new PrintStreamLogger(System.out), instance, state1Id);
+		ResourceHelper.migrate(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			state1Id);
 
 		//
 		// Execute
 		//
 		
-		resource.migrate(new PrintStreamLogger(System.out), instance, null);
-		
+		ResourceHelper.migrate(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			null);
+
 		//
 		// Verify
 		//
@@ -496,7 +572,7 @@ public class BaseResourceTests
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 		
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
@@ -516,7 +592,12 @@ public class BaseResourceTests
 		{
 			@Override public void invoke() throws Exception
 			{
-				resource.jumpstate(new PrintStreamLogger(System.out), instance, state1Id);
+				ResourceHelper.jumpstate(
+					new PrintStreamLogger(System.out),
+					resource,
+					resourcePlugin,
+					instance,
+					state1Id);
 			}
 
 			@Override public void verify(Exception e)
@@ -539,7 +620,7 @@ public class BaseResourceTests
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 
 		// Instance
 		final FakeInstance instance = new FakeInstance();
@@ -555,7 +636,12 @@ public class BaseResourceTests
 		{
 			@Override public void invoke() throws Exception
 			{
-				resource.jumpstate(new PrintStreamLogger(System.out), instance, targetStateId);
+				ResourceHelper.jumpstate(
+					new PrintStreamLogger(System.out),
+					resource,
+					resourcePlugin,
+					instance,
+					targetStateId);
 			}
 
 			@Override public void verify(Exception e)
@@ -582,7 +668,7 @@ public class BaseResourceTests
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 		
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
@@ -598,7 +684,12 @@ public class BaseResourceTests
 		// Execute
 		//
 
-		resource.jumpstate(new PrintStreamLogger(System.out), instance, state1Id);
+		ResourceHelper.jumpstate(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance,
+			state1Id);
 
 		//
 		// Verify
@@ -612,7 +703,7 @@ public class BaseResourceTests
 	{
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 		
 		// Instance
 		final FakeInstance instance = new FakeInstance();
@@ -621,7 +712,12 @@ public class BaseResourceTests
 		{
 			@Override public void invoke() throws Exception
 			{
-				resource.jumpstate(null, instance, UUID.randomUUID());
+				ResourceHelper.jumpstate(
+					null,
+					resource,
+					resourcePlugin,
+					instance,
+					UUID.randomUUID());
 			}
 
 			@Override public void verify(Exception e)
@@ -637,13 +733,18 @@ public class BaseResourceTests
 	{
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 
 		new ExpectException(IllegalArgumentException.class)
 		{
 			@Override public void invoke() throws Exception
 			{
-				resource.jumpstate(new PrintStreamLogger(System.out), null, UUID.randomUUID());
+				ResourceHelper.jumpstate(
+					new PrintStreamLogger(System.out),
+					resource,
+					resourcePlugin,
+					null,
+					UUID.randomUUID());
 			}
 
 			@Override public void verify(Exception e)
@@ -659,14 +760,19 @@ public class BaseResourceTests
 	{
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource", resourcePlugin);
+		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
 		final FakeInstance instance = new FakeInstance();
 
 		new ExpectException(IllegalArgumentException.class)
 		{
 			@Override public void invoke() throws Exception
 			{
-				resource.jumpstate(new PrintStreamLogger(System.out), instance, null);
+				ResourceHelper.jumpstate(
+					new PrintStreamLogger(System.out),
+					resource,
+					resourcePlugin,
+					instance,
+					null);
 			}
 
 			@Override public void verify(Exception e)

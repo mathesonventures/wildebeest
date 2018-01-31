@@ -16,17 +16,11 @@
 
 package co.mv.wb.plugin.ansisql;
 
-import co.mv.wb.Instance;
 import co.mv.wb.Migration;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationFaultException;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
+import co.mv.wb.impl.BaseMigration;
 import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.plugin.base.BaseMigration;
-import co.mv.wb.plugin.database.DatabaseHelper;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -52,26 +46,5 @@ public class AnsiSqlCreateDatabaseMigration extends BaseMigration
     {
 		return Arrays.asList(
 			FactoryResourceTypes.PostgreSqlDatabase);
-    }
-
-    @Override public void perform(Instance instance) throws MigrationFailedException
-    {
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		AnsiSqlDatabaseInstance db = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a AnsiSqlDatabaseInstance"); }
-
-		if (!db.databaseExists())
-		{
-			try
-			{
-				DatabaseHelper.execute(
-					db.getAdminDataSource(),
-					String.format("CREATE DATABASE %s;", db.getDatabaseName()));
-			}
-			catch (SQLException e)
-			{
-				throw new MigrationFaultException(e);
-			}
-		}
     }
 }

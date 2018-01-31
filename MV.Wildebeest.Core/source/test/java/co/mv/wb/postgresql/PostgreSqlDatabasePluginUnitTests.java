@@ -16,14 +16,21 @@
 
 package co.mv.wb.postgresql;
 
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Logger;
+import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationPlugin;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
+import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
+import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigrationPlugin;
 import co.mv.wb.plugin.database.BaseDatabasePluginUnitTests;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
+import org.junit.Test;
+
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.Test;
 
 /**
  * Unit tests for Database plugins as applied to PostgreSQL databases.
@@ -35,7 +42,9 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 {
 	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
+		Logger logger = new FakeLogger();
+
+		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
 			"postgres",
@@ -44,22 +53,32 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			null,
 			null);
 		
-		AnsiSqlCreateDatabaseMigration create = new AnsiSqlCreateDatabaseMigration(
-			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID()),
-			Optional.of(UUID.randomUUID()));
-		
-		AnsiSqlDropDatabaseMigration drop = new AnsiSqlDropDatabaseMigration(
+		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.of(UUID.randomUUID()));
 
-		this.databaseExistsAssertionForExistentDatabase(db, create, drop);
+		MigrationPlugin createRunner = new AnsiSqlCreateDatabaseMigrationPlugin();
+
+		Migration drop = new AnsiSqlDropDatabaseMigration(
+			UUID.randomUUID(),
+			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID()));
+
+		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
+
+		this.databaseExistsAssertionForExistentDatabase(
+			logger,
+			instance,
+			create,
+			createRunner,
+			drop,
+			dropRunner);
 	}
 	
 	@Override @Test public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
+		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
 			"postgres",
@@ -68,12 +87,14 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			null,
 			null);
 
-		this.databaseExistsAssertionForNonExistentDatabase(db);
+		this.databaseExistsAssertionForNonExistentDatabase(instance);
 	}
 	
 	@Override @Test public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
+		Logger logger = new FakeLogger();
+
+		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
 			"postgres",
@@ -82,22 +103,32 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			null,
 			null);
 		
-		AnsiSqlCreateDatabaseMigration create = new AnsiSqlCreateDatabaseMigration(
-			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID()),
-			Optional.of(UUID.randomUUID()));
-		
-		AnsiSqlDropDatabaseMigration drop = new AnsiSqlDropDatabaseMigration(
+		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.of(UUID.randomUUID()));
 
-		this.databaseDoesNotExistAssertionForExistentDatabase(db, create, drop);
+		MigrationPlugin createRunner = new AnsiSqlCreateDatabaseMigrationPlugin();
+
+		Migration drop = new AnsiSqlDropDatabaseMigration(
+			UUID.randomUUID(),
+			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID()));
+
+		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
+
+		this.databaseDoesNotExistAssertionForExistentDatabase(
+			logger,
+			instance,
+			create,
+			createRunner,
+			drop,
+			dropRunner);
 	}
 	
 	@Override @Test public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
+		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
 			"postgres",
@@ -106,6 +137,6 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			null,
 			null);
 		
-		this.databaseDoesNotExistAssertionForNonExistentDatabase(db);
+		this.databaseDoesNotExistAssertionForNonExistentDatabase(instance);
 	}
 }

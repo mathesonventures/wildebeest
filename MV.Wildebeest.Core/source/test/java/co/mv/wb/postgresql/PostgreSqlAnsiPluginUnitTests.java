@@ -16,15 +16,23 @@
 
 package co.mv.wb.postgresql;
 
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Logger;
+import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationPlugin;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
+import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
+import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigrationPlugin;
 import co.mv.wb.plugin.database.BaseAnsiPluginUnitTests;
 import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
+import org.junit.Test;
+
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.Test;
 
 /**
  * Unit tests for AnsiSql plugins as applied to PostgreSQL databases.
@@ -36,7 +44,9 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 {
 	@Override @Test public void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
+		Logger logger = new FakeLogger();
+
+		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
 			"postgres",
@@ -45,22 +55,34 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 			null,
 			null);
 		
-		AnsiSqlCreateDatabaseMigration create = new AnsiSqlCreateDatabaseMigration(
+		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.of(UUID.randomUUID()));
+
+		MigrationPlugin createRunner = new AnsiSqlCreateDatabaseMigrationPlugin();
 		
-		AnsiSqlDropDatabaseMigration drop = new AnsiSqlDropDatabaseMigration(
+		Migration drop = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.of(UUID.randomUUID()));
+
+		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 		
-		this.ansiSqlCreateDatabaseMigrationSucceeds(db, create, drop);
+		this.ansiSqlCreateDatabaseMigrationSucceeds(
+			logger,
+			instance,
+			create,
+			createRunner,
+			drop,
+			dropRunner);
 	}
 
 	@Override @Test public void tableExistsForExistentTable() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
+		Logger logger = new FakeLogger();
+
+		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
 			"postgres",
@@ -69,28 +91,44 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 			null,
 			null);
 		
-		AnsiSqlCreateDatabaseMigration createDatabase = new AnsiSqlCreateDatabaseMigration(
+		Migration createDatabase = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.of(UUID.randomUUID()));
-		
-		SqlScriptMigration createTable = new SqlScriptMigration(
+
+		MigrationPlugin createDatabaseRunner = new AnsiSqlCreateDatabaseMigrationPlugin();
+
+		Migration createTable = new SqlScriptMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.of(UUID.randomUUID()),
 			"CREATE SCHEMA sch; CREATE TABLE sch.tbl ( tblId INTEGER );");
-		
-		AnsiSqlDropDatabaseMigration dropDatabase = new AnsiSqlDropDatabaseMigration(
+
+		MigrationPlugin createTableRunner = new SqlScriptMigrationPlugin();
+
+		Migration dropDatabase = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.of(UUID.randomUUID()));
+
+		MigrationPlugin dropDatabaseRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 		
-		this.tableExistsForExistentTable(db, createDatabase, createTable, dropDatabase);
+		this.tableExistsForExistentTable(
+			logger,
+			instance,
+			createDatabase,
+			createDatabaseRunner,
+			createTable,
+			createTableRunner,
+			dropDatabase,
+			dropDatabaseRunner);
 	}
 
 	@Override @Test public void tableExistsForNonExistentTable() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance db = new PostgreSqlDatabaseInstance(
+		Logger logger = new FakeLogger();
+
+		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
 			"postgres",
@@ -99,16 +137,26 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 			null,
 			null);
 		
-		AnsiSqlCreateDatabaseMigration create = new AnsiSqlCreateDatabaseMigration(
+		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.of(UUID.randomUUID()));
-		
-		AnsiSqlDropDatabaseMigration drop = new AnsiSqlDropDatabaseMigration(
+
+		MigrationPlugin createRunner = new AnsiSqlCreateDatabaseMigrationPlugin();
+
+		Migration drop = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.of(UUID.randomUUID()));
-		
-		this.tableExistsForNonExistentTable(db, create, drop);
+
+		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
+
+		this.tableExistsForNonExistentTable(
+			logger,
+			instance,
+			create,
+			createRunner,
+			drop,
+			dropRunner);
 	}
 }

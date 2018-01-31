@@ -16,17 +16,11 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.Instance;
 import co.mv.wb.Migration;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationFaultException;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
+import co.mv.wb.impl.BaseMigration;
 import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.plugin.base.BaseMigration;
-import co.mv.wb.plugin.database.DatabaseHelper;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -62,29 +56,5 @@ public class MySqlDropDatabaseMigration extends BaseMigration
 	{
 		return Arrays.asList(
 			FactoryResourceTypes.MySqlDatabase);
-	}
-
-	@Override public void perform(Instance instance) throws MigrationFailedException
-	{
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
-
-		if (!db.databaseExists())
-		{
-			throw new MigrationFailedException(
-				this.getMigrationId(),
-				String.format("database \"%s\" does not exist", db.getDatabaseName()));
-		}
-		
-		try
-		{
-			DatabaseHelper.execute(db.getAdminDataSource(), new StringBuilder()
-				.append("DROP DATABASE `").append(db.getDatabaseName()).append("`;").toString());
-		}
-		catch (SQLException e)
-		{
-			throw new MigrationFaultException(e);
-		}
 	}
 }

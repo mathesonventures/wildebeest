@@ -61,13 +61,4 @@ public interface Migration
 	 * @since                                   2.0
 	 */
 	List<ResourceType> getApplicableTypes();
-
-	/**
-	 * Performs the migration, transitioning the supplied Instance from this Migration's from state to it's to state.
-	 * 
-	 * @param       instance                    the instance to be migrated
-	 * @throws      MigrationFailedException    if the migration fails
-	 * @since                                   1.0
-	 */
-	void perform(Instance instance) throws MigrationFailedException;
 }

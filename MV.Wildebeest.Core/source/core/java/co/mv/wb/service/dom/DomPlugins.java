@@ -22,7 +22,6 @@ import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.InstanceBuilder;
 import co.mv.wb.service.MigrationBuilder;
-import co.mv.wb.service.ResourcePluginBuilder;
 import co.mv.wb.service.dom.ansisql.AnsiSqlCreateDatabaseDomMigrationBuilder;
 import co.mv.wb.service.dom.ansisql.AnsiSqlDropDatabaseDomMigrationBuilder;
 import co.mv.wb.service.dom.ansisql.AnsiSqlTableDoesNotExistDomAssertionBuilder;
@@ -35,15 +34,12 @@ import co.mv.wb.service.dom.database.RowExistsDomAssertionBuilder;
 import co.mv.wb.service.dom.database.SqlScriptDomMigrationBuilder;
 import co.mv.wb.service.dom.mysql.MySqlCreateDatabaseDomMigrationBuilder;
 import co.mv.wb.service.dom.mysql.MySqlDatabaseDomInstanceBuilder;
-import co.mv.wb.service.dom.mysql.MySqlDatabaseDomResourcePluginBuilder;
 import co.mv.wb.service.dom.mysql.MySqlTableDoesNotExistDomAssertionBuilder;
 import co.mv.wb.service.dom.mysql.MySqlTableExistsDomAssertionBuilder;
 import co.mv.wb.service.dom.postgresql.PostgreSqlDatabaseDomInstanceBuilder;
-import co.mv.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourcePluginBuilder;
 import co.mv.wb.service.dom.sqlserver.SqlServerCreateDatabaseDomMigrationBuilder;
 import co.mv.wb.service.dom.sqlserver.SqlServerCreateSchemaDomMigrationBuilder;
 import co.mv.wb.service.dom.sqlserver.SqlServerDatabaseDomInstanceBuilder;
-import co.mv.wb.service.dom.sqlserver.SqlServerDatabaseDomResourcePluginBuilder;
 import co.mv.wb.service.dom.sqlserver.SqlServerDropSchemaDomMigrationBuilder;
 import co.mv.wb.service.dom.sqlserver.SqlServerSchemaDoesNotExistDomAssertionBuilder;
 import co.mv.wb.service.dom.sqlserver.SqlServerSchemaExistsDomAssertionBuilder;
@@ -61,23 +57,6 @@ import java.util.Map;
  */
 public class DomPlugins
 {
-	/**
-	 * Builds and returns the collection of factory-shipped {@link ResourcePluginBuilder}s.
-	 * 
-	 * @return                                  a Map that maps the XML element name to the builder instance.
-	 * @since                                   1.0
-	 */
-	public static Map<String, ResourcePluginBuilder> resourceBuilders()
-	{
-		Map<String, ResourcePluginBuilder> result = new HashMap<>();
-		
-		result.put(FactoryResourceTypes.MySqlDatabase.getUri(), new MySqlDatabaseDomResourcePluginBuilder());
-		result.put(FactoryResourceTypes.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomResourcePluginBuilder());
-		result.put(FactoryResourceTypes.SqlServerDatabase.getUri(), new SqlServerDatabaseDomResourcePluginBuilder());
-
-		return result;
-	}
-
 	/**
 	 * Builds and returns the collection of factory-shipped {@link AssertionBuilder}s.
 	 * 
@@ -179,7 +158,6 @@ public class DomPlugins
 	{
 		return new DomResourceLoader(
 			resourceTypeService,
-			DomPlugins.resourceBuilders(),
 			DomPlugins.assertionBuilders(),
 			DomPlugins.migrationBuilders(logger),
 			resourceXml);

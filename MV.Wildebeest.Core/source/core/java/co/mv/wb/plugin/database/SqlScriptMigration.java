@@ -16,16 +16,11 @@
 
 package co.mv.wb.plugin.database;
 
-import co.mv.wb.Instance;
 import co.mv.wb.Migration;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationFaultException;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
+import co.mv.wb.impl.BaseMigration;
 import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.plugin.base.BaseMigration;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +60,7 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 	private String _sql = null;
 	private boolean _sql_set = false;
 
-	private String getSql() {
+	public String getSql() {
 		if(!_sql_set) {
 			throw new IllegalStateException("sql not set.  Use the HasSql() method to check its state before accessing it.");
 		}
@@ -103,22 +98,5 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 			FactoryResourceTypes.MySqlDatabase,
 			FactoryResourceTypes.PostgreSqlDatabase,
 			FactoryResourceTypes.SqlServerDatabase);
-	}
-
-	@Override public void perform(Instance instance) throws MigrationFailedException
-	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		DatabaseInstance db = ModelExtensions.As(instance, DatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseInstance"); }
-
-		try
-		{
-			// Strip out any comments, and split the block of SQL into individual statements
-			DatabaseHelper.execute(db.getAppDataSource(), this.getSql());
-		}
-		catch(SQLException e)
-		{
-			throw new MigrationFaultException(e);
-		}
 	}
 }

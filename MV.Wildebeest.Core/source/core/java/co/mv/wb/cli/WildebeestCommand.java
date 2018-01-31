@@ -19,9 +19,10 @@ package co.mv.wb.cli;
 import co.mv.wb.About;
 import co.mv.wb.Instance;
 import co.mv.wb.Interface;
-import co.mv.wb.Resource;
 import co.mv.wb.Logger;
 import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.Resource;
+
 import java.io.PrintStream;
 
 /**
@@ -150,7 +151,10 @@ public class WildebeestCommand
 				{
 					Interface iface = new Interface(this.getLogger());
 
-					Resource resource = iface.tryLoadResource(this.getLogger(), resourceFileName);
+					Resource resource = iface.tryLoadResource(
+						this.getLogger(),
+						resourceFileName);
+
 					Instance instance = iface.tryLoadInstance(instanceFileName);
 
 					iface.migrate(resource, instance, targetState);
@@ -171,7 +175,9 @@ public class WildebeestCommand
 				{
 					Interface iface = new Interface(this.getLogger());
 
-					Resource resource = iface.tryLoadResource(this.getLogger(), resourceFileName);
+					Resource resource = iface.tryLoadResource(
+						this.getLogger(),
+						resourceFileName);
 					Instance instance = iface.tryLoadInstance(instanceFileName);
 
 					iface.jumpstate(resource, instance, targetState);

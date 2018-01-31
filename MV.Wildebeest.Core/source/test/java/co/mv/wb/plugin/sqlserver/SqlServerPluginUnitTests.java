@@ -16,12 +16,17 @@
 
 package co.mv.wb.plugin.sqlserver;
 
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Logger;
+import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.MigrationPlugin;
 import co.mv.wb.plugin.database.BaseDatabasePluginUnitTests;
+import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import org.junit.Test;
+
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.Test;
 
 /**
  * Unit tests for plugins as applied to SQL-Server databases.
@@ -33,20 +38,32 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 {
 	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
+		Logger logger = new FakeLogger();
+
 		String databaseName = DatabaseFixtureHelper.databaseName();
-		SqlServerDatabaseInstance db = SqlServerProperties.get().toInstance(databaseName);
+		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
 		
-		SqlServerCreateDatabaseMigration create = new SqlServerCreateDatabaseMigration(
+		Migration create = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()));
-		
-		SqlServerDropDatabaseMigration drop = new SqlServerDropDatabaseMigration(
+
+		MigrationPlugin createRunner = new SqlServerCreateDatabaseMigrationPlugin();
+
+		Migration drop = new SqlServerDropDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.empty());
 
-		this.databaseExistsAssertionForExistentDatabase(db, create, drop);
+		MigrationPlugin dropRunner = new SqlServerDropDatabaseMigrationPlugin();
+
+		this.databaseExistsAssertionForExistentDatabase(
+			logger,
+			instance,
+			create,
+			createRunner,
+			drop,
+			dropRunner);
 	}
 	
 	@Override @Test public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
@@ -59,20 +76,32 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 	
 	@Override @Test public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
+		Logger logger = new FakeLogger();
+
 		String databaseName = DatabaseFixtureHelper.databaseName();
-		SqlServerDatabaseInstance db = SqlServerProperties.get().toInstance(databaseName);
+		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
 		
-		SqlServerCreateDatabaseMigration create = new SqlServerCreateDatabaseMigration(
+		Migration create = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()));
-		
-		SqlServerDropDatabaseMigration drop = new SqlServerDropDatabaseMigration(
+
+		MigrationPlugin createRunner = new SqlServerCreateDatabaseMigrationPlugin();
+
+		Migration drop = new SqlServerDropDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID()),
 			Optional.empty());
 
-		this.databaseDoesNotExistAssertionForExistentDatabase(db, create, drop);
+		MigrationPlugin dropRunner = new SqlServerDropDatabaseMigrationPlugin();
+
+		this.databaseDoesNotExistAssertionForExistentDatabase(
+			logger,
+			instance,
+			create,
+			createRunner,
+			drop,
+			dropRunner);
 	}
 	
 	@Override @Test public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException

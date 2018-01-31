@@ -18,23 +18,25 @@ package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.Asserts;
-import co.mv.wb.impl.ResourceTypeServiceBuilder;
-import co.mv.wb.impl.ResourceTypeServiceImpl;
 import co.mv.wb.FakeLogger;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.fixturecreator.XmlBuilder;
 import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.plugin.base.ImmutableState;
-import co.mv.wb.plugin.base.ResourceImpl;
+import co.mv.wb.impl.ImmutableState;
+import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceImpl;
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.dom.DomInstanceLoader;
 import co.mv.wb.service.dom.DomPlugins;
@@ -43,6 +45,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -66,11 +70,11 @@ public class IntegrationTests
 		
 		// Resource
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.MySqlDatabase,
-			"Database",
-			resourcePlugin);
+			"Database");
 
 		// State: Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -104,6 +108,10 @@ public class IntegrationTests
 			Optional.of(populated.getStateId()),
 			MySqlElementFixtures.productTypeRows()));
 
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(MySqlCreateDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());
+		migrationPlugins.put(SqlScriptMigration.class, new SqlScriptMigrationPlugin());
+
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
@@ -120,7 +128,13 @@ public class IntegrationTests
 		
 		try
 		{
-			resource.migrate(new PrintStreamLogger(System.out), instance, populated.getStateId());
+			ResourceHelper.migrate(
+				new PrintStreamLogger(System.out),
+				resource,
+				resourcePlugin,
+				instance,
+				migrationPlugins,
+				populated.getStateId());
 		}
 		finally
 		{
@@ -150,7 +164,7 @@ public class IntegrationTests
 
 		// Execute
 		Resource resource = resourceLoader.load(new File("."));
-		
+
 		// Verify
 		assertResource(resource);
 	}
@@ -221,12 +235,19 @@ public class IntegrationTests
 		//
 		// Migrate
 		//
-		
+
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+
 		try
 		{
-			resource.migrate(
+			ResourceHelper.migrate(
 				new PrintStreamLogger(System.out),
+				resource,
+				resourcePlugin,
 				instance,
+				migrationPlugins,
 				ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded);
 		}
 		finally
@@ -241,7 +262,6 @@ public class IntegrationTests
 		if (resource == null) { throw new IllegalArgumentException("resource"); }
 		
 		Asserts.assertResource(
-			MySqlDatabaseResourcePlugin.class,
 			ProductCatalogueMySqlDatabaseResource.ResourceId,
 			"Product Catalogue Database",
 			resource,

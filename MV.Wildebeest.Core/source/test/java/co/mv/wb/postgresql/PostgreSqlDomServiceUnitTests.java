@@ -24,7 +24,6 @@ import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
-import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
 import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.dom.DomInstanceLoader;
 import co.mv.wb.service.dom.DomPlugins;
@@ -68,11 +67,6 @@ public class PostgreSqlDomServiceUnitTests
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.resourceId", resourceId, resource.getResourceId());
 		Assert.assertEquals("resource.name", resourceName, resource.getName());
-		
-		PostgreSqlDatabaseResourcePlugin plugin = ModelExtensions.As(
-			resource.getPlugin(),
-			PostgreSqlDatabaseResourcePlugin.class);
-		Assert.assertNotNull("plugin is not a PostgreSqlDatabaseResource", plugin);
 	}
 	
 	@Test public void postgreSqlDatabaseInstanceLoadFromValidDocumentSucceeds() throws MessagesException

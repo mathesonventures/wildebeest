@@ -23,19 +23,23 @@ import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceType;
 import co.mv.wb.State;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.plugin.base.ImmutableState;
-import co.mv.wb.plugin.base.ResourceImpl;
+import co.mv.wb.impl.ImmutableState;
+import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -63,8 +67,7 @@ public class MySqlTableExistsAssertionTests
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.MySqlDatabase,
-			"Database",
-			resourcePlugin);
+			"Database");
 		 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -89,6 +92,10 @@ public class MySqlTableExistsAssertionTests
 			MySqlElementFixtures.productCatalogueDatabase());
 		resource.getMigrations().add(migration2);
 
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(MySqlCreateDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());
+		migrationPlugins.put(SqlScriptMigration.class, new SqlScriptMigrationPlugin());
+
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
@@ -99,7 +106,13 @@ public class MySqlTableExistsAssertionTests
 			databaseName,
 			null);
 		 
-		resource.migrate(new PrintStreamLogger(System.out), instance, schemaLoaded.getStateId());
+		ResourceHelper.migrate(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			schemaLoaded.getStateId());
 		
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),
@@ -138,11 +151,11 @@ public class MySqlTableExistsAssertionTests
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		 
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.MySqlDatabase,
-			"Database",
-			resourcePlugin);
+			"Database");
 		 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -155,6 +168,9 @@ public class MySqlTableExistsAssertionTests
 			Optional.of(created.getStateId()));
 		resource.getMigrations().add(migration1);
 
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(MySqlCreateDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());
+
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
@@ -165,8 +181,14 @@ public class MySqlTableExistsAssertionTests
 			databaseName,
 			null);
 		 
-		resource.migrate(new PrintStreamLogger(System.out), instance, created.getStateId());
-		
+		ResourceHelper.migrate(
+			new PrintStreamLogger(System.out),
+			resource,
+			resourcePlugin,
+			instance,
+			migrationPlugins,
+			created.getStateId());
+
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),
 			0,

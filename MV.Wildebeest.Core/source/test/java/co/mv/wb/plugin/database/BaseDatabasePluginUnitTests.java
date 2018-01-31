@@ -1,24 +1,53 @@
+// Wildebeest Migration Framework
+// Copyright © 2013 - 2018, Matheson Ventures Pte Ltd
+//
+// This file is part of Wildebeest
+//
+// Wildebeest is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License v2 as published by the Free
+// Software Foundation.
+//
+// Wildebeest is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+// A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
+
 package co.mv.wb.plugin.database;
 
 import co.mv.wb.AssertionResponse;
+import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationPlugin;
+
 import java.util.UUID;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public abstract class BaseDatabasePluginUnitTests
 {
 	public abstract void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException;
 	
 	protected void databaseExistsAssertionForExistentDatabase(
-		DatabaseInstance db,
+		Logger logger,
+		DatabaseInstance instance,
 		Migration create,
-		Migration drop) throws MigrationFailedException
+		MigrationPlugin createRunner,
+		Migration drop,
+		MigrationPlugin dropRunner) throws MigrationFailedException
 	{
-		if (db == null) { throw new IllegalArgumentException("db cannot be null"); }
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (create == null) { throw new IllegalArgumentException("create cannot be null"); }
+		if (createRunner == null) { throw new IllegalArgumentException("createRunner cannot be null"); }
 		if (drop == null) { throw new IllegalArgumentException("drop cannot be null"); }
-		
+		if (dropRunner == null) { throw new IllegalArgumentException("dropRunner cannot be null"); }
+
 		//
 		// Setup
 		//
@@ -30,13 +59,16 @@ public abstract class BaseDatabasePluginUnitTests
 		try
 		{
 			// Use the migration to create the database
-			create.perform(db);
+			createRunner.perform(
+				logger,
+				create,
+				instance);
 		
 			//
 			// Execute
 			//
 
-			AssertionResponse response = databaseExists.perform(db);
+			AssertionResponse response = databaseExists.perform(instance);
 
 			//
 			// Verify
@@ -45,16 +77,18 @@ public abstract class BaseDatabasePluginUnitTests
 			assertNotNull("response", response);
 			assertEquals(
 				"response.message",
-				"Database " + db.getDatabaseName() + " exists",
+				"Database " + instance.getDatabaseName() + " exists",
 				response.getMessage());
 			assertTrue("respnse.result", response.getResult());
 			
 		}
 		finally
 		{
-			drop.perform(db);
+			dropRunner.perform(
+				logger,
+				drop,
+				instance);
 		}
-		
 	}
 	
 	public abstract void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException;
@@ -84,14 +118,19 @@ public abstract class BaseDatabasePluginUnitTests
 	public abstract void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException;
 	
 	protected void databaseDoesNotExistAssertionForExistentDatabase(
-		DatabaseInstance db,
+		Logger logger,
+		DatabaseInstance instance,
 		Migration create,
-		Migration drop) throws MigrationFailedException
+		MigrationPlugin createRunner,
+		Migration drop,
+		MigrationPlugin dropRunner) throws MigrationFailedException
 	{
-		if (db == null) { throw new IllegalArgumentException("db cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (create == null) { throw new IllegalArgumentException("create cannot be null"); }
+		if (createRunner == null) { throw new IllegalArgumentException("createRunner cannot be null"); }
 		if (drop == null) { throw new IllegalArgumentException("drop cannot be null"); }
-		
+		if (dropRunner == null) { throw new IllegalArgumentException("dropRunner cannot be null"); }
+
 		// Setup
 		DatabaseDoesNotExistAssertion databaseExists = new DatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
@@ -99,22 +138,28 @@ public abstract class BaseDatabasePluginUnitTests
 		
 		try
 		{
-			create.perform(db);
+			createRunner.perform(
+				logger,
+				create,
+				instance);
 		
 			// Execute
-			AssertionResponse response = databaseExists.perform(db);
+			AssertionResponse response = databaseExists.perform(instance);
 
 			// Verify
 			assertNotNull("response", response);
 			assertEquals(
 				"response.message",
-				"Database " + db.getDatabaseName() + " exists",
+				"Database " + instance.getDatabaseName() + " exists",
 				response.getMessage());
 			assertFalse("respnse.result", response.getResult());
 		}
 		finally
 		{
-			drop.perform(db);
+			dropRunner.perform(
+				logger,
+				drop,
+				instance);
 		}
 	}
 	

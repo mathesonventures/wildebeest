@@ -16,13 +16,16 @@
 
 package co.mv.wb.plugin.mysql;
 
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Logger;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class MySqlCreateDatabaseMigrationTests
 {
@@ -31,12 +34,16 @@ public class MySqlCreateDatabaseMigrationTests
 		SQLException
 	{
 		// Setup
+		Logger logger = new FakeLogger();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
-		MySqlCreateDatabaseMigration tr = new MySqlCreateDatabaseMigration(
+		MySqlCreateDatabaseMigration migration = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()));
+
+		MySqlCreateDatabaseMigrationPlugin migrationPlugin = new MySqlCreateDatabaseMigrationPlugin();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
@@ -49,7 +56,10 @@ public class MySqlCreateDatabaseMigrationTests
 			null);
 
 		// Execute
-		tr.perform(instance);
+		migrationPlugin.perform(
+			logger,
+			migration,
+			instance);
 		
 		// Verify
 
@@ -62,6 +72,8 @@ public class MySqlCreateDatabaseMigrationTests
 	@Test public void performForExistantDatabaseFails()
 	{
 		// Setup
+		Logger logger = new FakeLogger();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
 		String databaseName = MySqlUtil.createDatabase(
@@ -69,10 +81,12 @@ public class MySqlCreateDatabaseMigrationTests
 			"stm_test",
 			"");
 		
-		MySqlCreateDatabaseMigration tr = new MySqlCreateDatabaseMigration(
+		MySqlCreateDatabaseMigration migration = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()));
+
+		MySqlCreateDatabaseMigrationPlugin migrationPlugin = new MySqlCreateDatabaseMigrationPlugin();
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
@@ -87,7 +101,10 @@ public class MySqlCreateDatabaseMigrationTests
 		
 		try
 		{
-			tr.perform(instance);
+			migrationPlugin.perform(
+				logger,
+				migration,
+				instance);
 			
 			Assert.fail("MigrationFailedException expected");
 		}

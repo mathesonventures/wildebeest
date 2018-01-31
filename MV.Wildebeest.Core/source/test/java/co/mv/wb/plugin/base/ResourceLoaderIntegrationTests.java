@@ -22,9 +22,12 @@ import co.mv.wb.FakeLogger;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourcePlugin;
+import co.mv.wb.impl.ResourceHelper;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
@@ -40,6 +43,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -107,20 +112,22 @@ public class ResourceLoaderIntegrationTests
 		
 		// Resource
 		assertNotNull("resource", resource);
-		Asserts.assertResource(MySqlDatabaseResourcePlugin.class, productCatalogueResource.getResourceId(), "Product Catalogue Database",
+		Asserts.assertResource(
+			productCatalogueResource.getResourceId(),
+			"Product Catalogue Database",
 			resource, "resource");
 		
 		// States
 		assertEquals("resource.states.size", 3, resource.getStates().size());
 		Asserts.assertState(
 			ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated, Optional.of("Database created"),
-			resource.getStates().get(0), "state[0]");
+			resource.getStates().get(0), "resource.state[0]");
 		Asserts.assertState(
 			ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded, Optional.of("Core Schema Loaded"),
-			resource.getStates().get(1), "state[1]");
+			resource.getStates().get(1), "resource.state[1]");
 		Asserts.assertState(
 			ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded, Optional.of("Reference Data Loaded"),
-			resource.getStates().get(2), "state[2]");
+			resource.getStates().get(2), "resource.state[2]");
 		
 		// Migrations
 		assertEquals("resource.migrations.size", 3, resource.getMigrations().size());
@@ -143,12 +150,19 @@ public class ResourceLoaderIntegrationTests
 		//
 		// Execute - Migrate
 		//
-		
+
+		ResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+
 		try
 		{
-			resource.migrate(
+			ResourceHelper.migrate(
 				new PrintStreamLogger(System.out),
+				resource,
+				resourcePlugin,
 				instance,
+				migrationPlugins,
 				ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded);
 		}
 		finally

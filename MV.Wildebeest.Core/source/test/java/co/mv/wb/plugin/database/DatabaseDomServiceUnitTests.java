@@ -17,25 +17,25 @@
 package co.mv.wb.plugin.database;
 
 import co.mv.wb.Assertion;
-import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.impl.ResourceTypeServiceBuilder;
-import co.mv.wb.impl.ResourceTypeServiceImpl;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.MessagesException;
-import co.mv.wb.service.ResourcePluginBuilder;
 import co.mv.wb.service.dom.DomResourceLoader;
 import co.mv.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
 import co.mv.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
-import co.mv.wb.service.dom.postgresql.PostgreSqlDatabaseDomResourcePluginBuilder;
+import org.junit.Test;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import static org.junit.Assert.*;
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Unit tests for the DOM persistence services for core database plugins.
@@ -56,9 +56,6 @@ public class DatabaseDomServiceUnitTests
 					.assertion("DatabaseExists", assertionId)
 			.render();
 
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(FactoryResourceTypes.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomResourcePluginBuilder());
-		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put("DatabaseExists", new DatabaseExistsDomAssertionBuilder());
 		
@@ -67,14 +64,13 @@ public class DatabaseDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			new HashMap<>(),
 			xml);
 		
 		// Execute
 		Resource resource = loader.load(new File("."));
-		
+
 		// Verify
 		assertNotNull("resource", resource);
 		assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -100,9 +96,6 @@ public class DatabaseDomServiceUnitTests
 					.assertion("DatabaseDoesNotExist", assertionId)
 			.render();
 
-		Map<String, ResourcePluginBuilder> resourceBuilders = new HashMap<>();
-		resourceBuilders.put(FactoryResourceTypes.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomResourcePluginBuilder());
-		
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put("DatabaseDoesNotExist", new DatabaseDoesNotExistDomAssertionBuilder());
 		
@@ -111,7 +104,6 @@ public class DatabaseDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			resourceBuilders,
 			assertionBuilders,
 			new HashMap<>(),
 			xml);

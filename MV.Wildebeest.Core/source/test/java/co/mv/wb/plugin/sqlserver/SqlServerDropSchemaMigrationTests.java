@@ -16,13 +16,18 @@
 
 package co.mv.wb.plugin.sqlserver;
 
+import co.mv.wb.FakeLogger;
+import co.mv.wb.Logger;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
-import static org.junit.Assert.*;
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SqlServerDropSchemaMigrationTests
 {
@@ -30,12 +35,16 @@ public class SqlServerDropSchemaMigrationTests
 		MigrationFailedException
 	{
 		// Setup
+		Logger logger = new FakeLogger();
+
 		SqlServerProperties p = SqlServerProperties.get();
 
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()));
+
+		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
@@ -48,25 +57,39 @@ public class SqlServerDropSchemaMigrationTests
 			databaseName,
 			null);
 		
-		createDatabase.perform(instance);
+		createDatabaseRunner.perform(
+			logger,
+			createDatabase,
+			instance);
 		
 		SqlServerCreateSchemaMigration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.empty(),
 			"prd");
-		createSchema.perform(instance);
+
+		SqlServerCreateSchemaMigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
+
+		createSchemaRunner.perform(
+			logger,
+			createSchema,
+			instance);
 		
 		SqlServerDropSchemaMigration dropSchema = new SqlServerDropSchemaMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.empty(),
 			"prd");
-		
+
+		SqlServerDropSchemaMigrationPlugin dropSchemaRunner = new SqlServerDropSchemaMigrationPlugin();
+
 		try
 		{
 			// Execute
-			dropSchema.perform(instance);
+			dropSchemaRunner.perform(
+				logger,
+				dropSchema,
+				instance);
 		}
 		finally
 		{
@@ -78,12 +101,16 @@ public class SqlServerDropSchemaMigrationTests
 	@Test public void performForNonExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
 		// Setup
+		Logger logger = new FakeLogger();
+
 		SqlServerProperties p = SqlServerProperties.get();
 
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(UUID.randomUUID()));
+
+		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
@@ -95,19 +122,27 @@ public class SqlServerDropSchemaMigrationTests
 			p.getPassword(),
 			databaseName,
 			null);
-		
-		createDatabase.perform(instance);
+
+		createDatabaseRunner.perform(
+			logger,
+			createDatabase,
+			instance);
 		
 		SqlServerDropSchemaMigration dropSchema = new SqlServerDropSchemaMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.empty(),
 			"prd");
+
+		SqlServerDropSchemaMigrationPlugin dropSchemaRunner = new SqlServerDropSchemaMigrationPlugin();
 		
 		try
 		{
 			// Execute
-			dropSchema.perform(instance);
+			dropSchemaRunner.perform(
+				logger,
+				dropSchema,
+				instance);
 			
 			fail("MigrationFailedException expected");
 		}

@@ -18,11 +18,10 @@ package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceType;
 import co.mv.wb.State;
 import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.plugin.base.ImmutableState;
-import co.mv.wb.plugin.base.ResourceImpl;
+import co.mv.wb.impl.ImmutableState;
+import co.mv.wb.impl.ResourceImpl;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -46,11 +45,11 @@ public class MySqlDatabaseResourceTests
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.MySqlDatabase,
-			"Database",
-			resourcePlugin);
+			"Database");
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
@@ -91,11 +90,11 @@ public class MySqlDatabaseResourceTests
 				knownStateId);
 
 			MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+
 			Resource resource = new ResourceImpl(
 				resourceId,
 				FactoryResourceTypes.MySqlDatabase,
-				"Database",
-				resourcePlugin);
+				"Database");
 
 			resource.getStates().add(new ImmutableState(knownStateId));
 
@@ -137,11 +136,11 @@ public class MySqlDatabaseResourceTests
 			knownStateId);
 		
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+
 		Resource resource = new ResourceImpl(
 			resourceId,
 			FactoryResourceTypes.MySqlDatabase,
-			"Database",
-			resourcePlugin);
+			"Database");
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),

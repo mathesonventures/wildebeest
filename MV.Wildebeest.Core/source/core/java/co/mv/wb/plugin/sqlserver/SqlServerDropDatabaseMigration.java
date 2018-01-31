@@ -16,18 +16,11 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.Instance;
 import co.mv.wb.Migration;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationFaultException;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
+import co.mv.wb.impl.BaseMigration;
 import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.plugin.base.BaseMigration;
-import co.mv.wb.plugin.database.DatabaseHelper;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -61,27 +54,5 @@ public class SqlServerDropDatabaseMigration extends BaseMigration
 	{
 		return Arrays.asList(
 			FactoryResourceTypes.SqlServerDatabase);
-	}
-
-	@Override public void perform(
-		Instance instance) throws MigrationFailedException
-	{
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
-
-		try
-		{
-			DatabaseHelper.execute(db.getAdminDataSource(), new StringBuilder()
-				.append("DROP DATABASE [").append(db.getDatabaseName()).append("];").toString());
-		}
-		catch(SQLServerException e)
-		{
-			throw new MigrationFailedException(this.getMigrationId(), e.getMessage());
-		}
-		catch (SQLException e)
-		{
-			throw new MigrationFaultException(e);
-		}
 	}
 }
