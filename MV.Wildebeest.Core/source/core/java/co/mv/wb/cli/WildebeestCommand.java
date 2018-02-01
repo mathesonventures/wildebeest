@@ -172,7 +172,7 @@ public class WildebeestCommand
 						resourcePlugins,
 						migrationPlugins,
 						resourceHelper);
-					iface.state(this.getLogger(), resourceFileName, instanceFileName);
+					iface.state(resourceFileName, instanceFileName);
 				}
 			}
 
@@ -195,7 +195,6 @@ public class WildebeestCommand
 						resourceHelper);
 
 					Resource resource = iface.tryLoadResource(
-						this.getLogger(),
 						resourceFileName);
 
 					Instance instance = iface.tryLoadInstance(instanceFileName);
@@ -223,7 +222,6 @@ public class WildebeestCommand
 						resourceHelper);
 
 					Resource resource = iface.tryLoadResource(
-						this.getLogger(),
 						resourceFileName);
 					Instance instance = iface.tryLoadInstance(instanceFileName);
 

@@ -219,17 +219,14 @@ public class Interface
 	/**
 	 * Checks the state of an instance of a resource.
 	 * 
-	 * @param       logger                      the {@link Logger} instance to use.
 	 * @param       resourceFileName            the filename of the descriptor for the resource
 	 * @param       instanceFileName            the filename of the descriptor for the instance
 	 * @since                                   1.0
 	 */
 	public void state(
-		Logger logger,
 		String resourceFileName,
 		String instanceFileName)
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (resourceFileName == null) { throw new IllegalArgumentException("resourceFileName cannot be null"); }
 		if ("".equals(resourceFileName.trim()))
 		{
@@ -242,7 +239,6 @@ public class Interface
 		}
 
 		this.state(
-			logger,
 			new File(resourceFileName),
 			new File(instanceFileName));
 	}
@@ -250,17 +246,14 @@ public class Interface
 	/**
 	 * Checks the state of an instance of a resource.
 	 * 
-	 * @param       logger                      the {@link Logger} instance to use.
 	 * @param       resourceFile                the descriptor file for the resource
 	 * @param       instanceFile                the descriptor file for the instance
 	 * @since                                   1.0
 	 */
 	public void state(
-		Logger logger,
 		File resourceFile,
 		File instanceFile)
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
 		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
 		if (instanceFile == null) { throw new IllegalArgumentException("instanceFile cannot be null"); }
 		
@@ -268,7 +261,7 @@ public class Interface
 		Resource resource = null;
 		try
 		{
-			resource = loadResource(logger, resourceFile);
+			resource = loadResource(this.getLogger(), resourceFile);
 		}
 		catch (MessagesException e)
 		{
@@ -500,12 +493,10 @@ public class Interface
 	/**
 	 * Attempt to load the specified resource and return it if successful.  If not successful then null is returned.
 	 * 
-	 * @param       logger                      the {@link Logger} instance to use.
 	 * @param       resourceFileName            the descriptor file from which the Resource should be deserialized
 	 * @return                                  a deserialized Resource object or null if the load request failed.
 	 */
 	public Resource tryLoadResource(
-		Logger logger,
 		String resourceFileName)
 	{
 		// Load the resource
@@ -513,7 +504,7 @@ public class Interface
 		try
 		{
 			resource = Interface.loadResource(
-				logger,
+				this.getLogger(),
 				new File(resourceFileName));
 		}
 		catch (MessagesException e)
