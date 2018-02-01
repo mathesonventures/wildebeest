@@ -19,13 +19,13 @@ package co.mv.wb.plugin.sqlserver;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Asserts;
-import co.mv.wb.FakeLogger;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class SqlServerSchemaExistsAssertionTests
 		SQLException
 	{
 		// Setup
-		Logger logger = new FakeLogger();
+		Logger logger = new PrintStreamLogger(System.out);
 
 		SqlServerProperties properties = SqlServerProperties.get();
 
@@ -122,7 +122,7 @@ public class SqlServerSchemaExistsAssertionTests
 		SQLException
 	{
 		// Setup
-		Logger logger = new FakeLogger();
+		Logger logger = new PrintStreamLogger(System.out);
 
 		SqlServerProperties properties = SqlServerProperties.get();
 

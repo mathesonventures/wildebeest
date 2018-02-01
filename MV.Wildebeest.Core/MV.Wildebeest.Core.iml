@@ -84,5 +84,16 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../repo/org/mockito/mockito-all/1.10.19/mockito-all-1.10.19.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../repo/org/mockito/mockito-all/1.10.19/mockito-all-1.10.19.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

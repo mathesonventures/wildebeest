@@ -20,10 +20,39 @@ import co.mv.wb.About;
 import co.mv.wb.Instance;
 import co.mv.wb.Interface;
 import co.mv.wb.Logger;
+import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
+import co.mv.wb.ResourcePlugin;
+import co.mv.wb.ResourceType;
+import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.impl.ResourceHelperImpl;
+import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
+import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
+import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
+import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigrationPlugin;
+import co.mv.wb.plugin.composite.ExternalResourceMigration;
+import co.mv.wb.plugin.composite.ExternalResourceMigrationPlugin;
+import co.mv.wb.plugin.database.SqlScriptMigration;
+import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
+import co.mv.wb.plugin.mysql.MySqlCreateDatabaseMigration;
+import co.mv.wb.plugin.mysql.MySqlCreateDatabaseMigrationPlugin;
+import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
+import co.mv.wb.plugin.mysql.MySqlDropDatabaseMigration;
+import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerCreateDatabaseMigration;
+import co.mv.wb.plugin.sqlserver.SqlServerCreateDatabaseMigrationPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigration;
+import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigrationPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerDatabaseResourcePlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerDropDatabaseMigrationPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerDropSchemaMigration;
 
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * The Wildebeest command-line interface.  WildebeestCommand parses command-line invocations, and delegates to
@@ -114,6 +143,12 @@ public class WildebeestCommand
 		{
 			String command = args[0];
 
+			ResourceHelper resourceHelper = new ResourceHelperImpl();
+			Map<ResourceType, ResourcePlugin> resourcePlugins = WildebeestCommand.getResourcePlugins(
+				resourceHelper);
+			Map<Class, MigrationPlugin> migrationPlugins = WildebeestCommand.getMigrationPlugins(
+				resourceHelper);
+
 			if ("about".equals(command))
 			{
 				About about = new About();
@@ -132,7 +167,11 @@ public class WildebeestCommand
 				}
 				else
 				{
-					Interface iface = new Interface(this.getLogger());
+					Interface iface = new Interface(
+						this.getLogger(),
+						resourcePlugins,
+						migrationPlugins,
+						resourceHelper);
 					iface.state(this.getLogger(), resourceFileName, instanceFileName);
 				}
 			}
@@ -141,15 +180,19 @@ public class WildebeestCommand
 			{
 				String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
 				String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
-				String targetState = WildebeestCommand.getArg(args, "t", "targetState");
+				Optional<String> targetState = WildebeestCommand.getOptionalArg(args, "t", "targetState");
 
-				if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) || isNull(targetState))
+				if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName))
 				{
 					WildebeestCommand.printUsage(System.out);
 				}
 				else
 				{
-					Interface iface = new Interface(this.getLogger());
+					Interface iface = new Interface(
+						this.getLogger(),
+						resourcePlugins,
+						migrationPlugins,
+						resourceHelper);
 
 					Resource resource = iface.tryLoadResource(
 						this.getLogger(),
@@ -173,7 +216,11 @@ public class WildebeestCommand
 				}
 				else
 				{
-					Interface iface = new Interface(this.getLogger());
+					Interface iface = new Interface(
+						this.getLogger(),
+						resourcePlugins,
+						migrationPlugins,
+						resourceHelper);
 
 					Resource resource = iface.tryLoadResource(
 						this.getLogger(),
@@ -223,8 +270,41 @@ public class WildebeestCommand
 		
 		return result;
 	}
-	
-    private static boolean isNull(String value)
+
+	private static Optional<String> getOptionalArg(
+		String[] args,
+		String shortName,
+		String longName)
+	{
+		if (args == null) { throw new IllegalArgumentException("args"); }
+		if (shortName == null) { throw new IllegalArgumentException("shortName cannot be null"); }
+		if ("".equals(shortName)) { throw new IllegalArgumentException("shortName cannot be empty"); }
+		if (longName == null) { throw new IllegalArgumentException("longName cannot be null"); }
+		if ("".equals(longName)) { throw new IllegalArgumentException("longName cannot be empty"); }
+
+		shortName = "-" + shortName + ":";
+		longName = "--" + longName + ":";
+
+		Optional<String> result = Optional.empty();
+
+		for(String arg : args)
+		{
+			if (arg.startsWith(shortName))
+			{
+				result = Optional.of(arg.substring(shortName.length()));
+				break;
+			}
+			if (arg.startsWith(longName))
+			{
+				result = Optional.of(arg.substring(longName.length()));
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	private static boolean isNull(String value)
     {
         return value == null;
     }
@@ -233,7 +313,55 @@ public class WildebeestCommand
 	{
 		return value == null ||	"".equals(value.trim());
 	}
-	
+
+	private static Map<ResourceType, ResourcePlugin> getResourcePlugins(
+		ResourceHelper resourceHelper)
+	{
+		if (resourceHelper == null) { throw new IllegalArgumentException("resourceHelper cannot be null"); }
+
+		Map<ResourceType, ResourcePlugin> result = new HashMap<>();
+
+		result.put(FactoryResourceTypes.MySqlDatabase, new MySqlDatabaseResourcePlugin(
+			resourceHelper));
+		result.put(FactoryResourceTypes.PostgreSqlDatabase, new PostgreSqlDatabaseResourcePlugin(
+			resourceHelper));
+		result.put(FactoryResourceTypes.SqlServerDatabase, new SqlServerDatabaseResourcePlugin(
+			resourceHelper));
+
+		return result;
+	}
+
+	private static Map<Class, MigrationPlugin> getMigrationPlugins(
+		ResourceHelper resourceHelper)
+	{
+		if (resourceHelper == null) { throw new IllegalArgumentException("resourceHelper cannot be null"); }
+
+		Map<Class, MigrationPlugin> result = new HashMap<>();
+
+		// ansisql
+		result.put(AnsiSqlCreateDatabaseMigration.class, new AnsiSqlCreateDatabaseMigrationPlugin());
+		result.put(AnsiSqlDropDatabaseMigration.class, new AnsiSqlDropDatabaseMigrationPlugin());
+
+		// composite
+		result.put(ExternalResourceMigration.class, new ExternalResourceMigrationPlugin(
+			result,
+			resourceHelper));
+
+		// database
+		result.put(SqlScriptMigration.class, new SqlScriptMigrationPlugin());
+
+		// mysql
+		result.put(MySqlCreateDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());
+		result.put(MySqlDropDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());
+
+		// sqlserver
+		result.put(SqlServerCreateDatabaseMigration.class, new SqlServerCreateDatabaseMigrationPlugin());
+		result.put(SqlServerCreateSchemaMigration.class, new SqlServerCreateSchemaMigrationPlugin());
+		result.put(SqlServerDropSchemaMigration.class, new SqlServerDropDatabaseMigrationPlugin());
+
+		return result;
+	}
+
 	private static void printBanner(PrintStream out)
 	{
 		if (out == null) { throw new IllegalArgumentException("out cannot be null"); }

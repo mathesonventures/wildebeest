@@ -26,11 +26,12 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ImmutableState;
-import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
@@ -60,14 +61,19 @@ public class SqlServerTableExistsAssertionTests
 		//
 		// Setup
 		//
-		 
-		SqlServerProperties properties = SqlServerProperties.get();
 
-		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin();
+		 ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		 SqlServerProperties properties = SqlServerProperties.get();
+
+		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin(
+			resourceHelper);
+
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.SqlServerDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 		 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -107,7 +113,7 @@ public class SqlServerTableExistsAssertionTests
 			databaseName,
 			null);
 		 
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -156,14 +162,18 @@ public class SqlServerTableExistsAssertionTests
 		// Setup
 		//
 
-		SqlServerProperties properties = SqlServerProperties.get();
+		 ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		 SqlServerProperties properties = SqlServerProperties.get();
 		 
-		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin();
+		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin(
+			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.SqlServerDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -190,7 +200,7 @@ public class SqlServerTableExistsAssertionTests
 			databaseName,
 			null);
 		 
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,

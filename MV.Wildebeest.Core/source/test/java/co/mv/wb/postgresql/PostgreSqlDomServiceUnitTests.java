@@ -16,9 +16,9 @@
 
 package co.mv.wb.postgresql;
 
-import co.mv.wb.FakeLogger;
 import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.impl.FactoryResourceTypes;
@@ -57,7 +57,7 @@ public class PostgreSqlDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new FakeLogger(),
+			new PrintStreamLogger(System.out),
 			resourceXml);
 		
 		// Execute

@@ -16,9 +16,9 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.FakeLogger;
 import co.mv.wb.Logger;
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import org.junit.Test;
 
@@ -35,7 +35,7 @@ public class SqlServerCreateDatabaseMigrationTests
 		MigrationFailedException
 	{
 		// Setup
-		Logger logger = new FakeLogger();
+		Logger logger = new PrintStreamLogger(System.out);
 
 		SqlServerProperties p = SqlServerProperties.get();
 		
@@ -75,7 +75,7 @@ public class SqlServerCreateDatabaseMigrationTests
 	@Test public void performForExistantDatabaseFails() throws SQLException
 	{
 		// Setup
-		Logger logger = new FakeLogger();
+		Logger logger = new PrintStreamLogger(System.out);
 
 		SqlServerProperties properties = SqlServerProperties.get();
 

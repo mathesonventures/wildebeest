@@ -26,11 +26,12 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ImmutableState;
-import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
@@ -60,15 +61,19 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 		// Setup
 		//
-		 
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
+			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.MySqlDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 		 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -107,7 +112,7 @@ public class MySqlTableDoesNotExistAssertionTests
 			databaseName,
 			null);
 		 
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -156,14 +161,18 @@ public class MySqlTableDoesNotExistAssertionTests
 		 // Setup
 		 //
 
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
+			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.MySqlDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -189,7 +198,7 @@ public class MySqlTableDoesNotExistAssertionTests
 			databaseName,
 			null);
 		 
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,

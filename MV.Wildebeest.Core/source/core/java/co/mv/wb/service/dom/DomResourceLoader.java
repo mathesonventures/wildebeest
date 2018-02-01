@@ -59,6 +59,7 @@ public class DomResourceLoader implements ResourceLoader
 		private static final String XA_RESOURCE_TYPE = "type";
 		private static final String XA_RESOURCE_ID = "id";
 		private static final String XA_RESOURCE_NAME = "name";
+		private static final String XA_RESOURCE_DEFAULT_TARGET = "defaultTarget";
 
 	private static final String XE_STATES = "states";
 	
@@ -282,11 +283,13 @@ public class DomResourceLoader implements ResourceLoader
 			String typeUri = resourceXe.getAttribute(XA_RESOURCE_TYPE);
 			ResourceType type = this.getResourceTypeService().forUri(typeUri);
 			String name = resourceXe.getAttribute(XA_RESOURCE_NAME);
+			Optional<String> defaultTarget = Optional.ofNullable(resourceXe.getAttribute(XA_RESOURCE_DEFAULT_TARGET));
 			
 			resource = new ResourceImpl(
 				id,
 				type,
-				name);
+				name,
+				defaultTarget);
 
 			for (int i = 0; i < resourceXe.getChildNodes().getLength(); i ++)
 			{

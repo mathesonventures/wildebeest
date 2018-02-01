@@ -26,11 +26,12 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ImmutableState;
-import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
@@ -49,25 +50,30 @@ import static org.junit.Assert.fail;
 
 public class MySqlTableExistsAssertionTests
 {
-	 @Test public void applyForExistingTableSucceeds() throws
+	@Test public void applyForExistingTableSucceeds() throws
 		 IndeterminateStateException,
 		 AssertionFailedException,
 		 MigrationNotPossibleException,
 		 MigrationFailedException,
 		 SQLException
-	 {
+	{
 		 
 		//
 		// Setup
 		//
-		 
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
+			resourceHelper);
+
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.MySqlDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 		 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -106,7 +112,7 @@ public class MySqlTableExistsAssertionTests
 			databaseName,
 			null);
 		 
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -134,28 +140,32 @@ public class MySqlTableExistsAssertionTests
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(true, "Table ProductType exists", response, "response");
 		
-	 }
+	}
 	 
-	 @Test public void applyForNonExistentTableFails() throws
+	@Test public void applyForNonExistentTableFails() throws
 		 IndeterminateStateException,
 		 AssertionFailedException,
 		 MigrationNotPossibleException,
 		 MigrationFailedException,
 		 SQLException
-	 {
+	{
 		 
 		//
 		// Setup
 		//
 
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		 
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
+			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.MySqlDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 		 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -181,7 +191,7 @@ public class MySqlTableExistsAssertionTests
 			databaseName,
 			null);
 		 
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -209,10 +219,10 @@ public class MySqlTableExistsAssertionTests
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(false, "Table ProductType does not exist", response, "response");
 		
-	 }
+	}
 	 
-	 @Test public void applyForNonExistentDatabaseFails()
-	 {
+	@Test public void applyForNonExistentDatabaseFails()
+	{
 		 
 		//
 		// Setup
@@ -250,10 +260,10 @@ public class MySqlTableExistsAssertionTests
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
 
-	 }
+	}
 	 
-	 @Test public void applyForNullInstanceFails()
-	 {
+	@Test public void applyForNullInstanceFails()
+	{
 		// Setup
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),
@@ -271,10 +281,10 @@ public class MySqlTableExistsAssertionTests
 		{
 			assertEquals("e.message", "instance cannot be null", e.getMessage());
 		}
-	 }
+	}
 	 
-	 @Test public void applyForIncorrectInstanceTypeFails()
-	 {
+	@Test public void applyForIncorrectInstanceTypeFails()
+	{
 		// Setup
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),

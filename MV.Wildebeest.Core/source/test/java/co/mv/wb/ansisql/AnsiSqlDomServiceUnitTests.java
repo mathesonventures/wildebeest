@@ -17,8 +17,8 @@
 package co.mv.wb.ansisql;
 
 import co.mv.wb.Asserts;
-import co.mv.wb.FakeLogger;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.impl.FactoryResourceTypes;
@@ -62,7 +62,7 @@ public class AnsiSqlDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new FakeLogger(),
+			new PrintStreamLogger(System.out),
 			xml);
 
 		// Execute
@@ -106,7 +106,7 @@ public class AnsiSqlDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new FakeLogger(),
+			new PrintStreamLogger(System.out),
 			xml);
 
 		// Execute
@@ -151,7 +151,7 @@ public class AnsiSqlDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new FakeLogger(),
+			new PrintStreamLogger(System.out),
 			xml);
 
 		// Execute
@@ -194,7 +194,7 @@ public class AnsiSqlDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new FakeLogger(),
+			new PrintStreamLogger(System.out),
 			xml);
 
 		// Execute

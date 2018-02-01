@@ -14,15 +14,14 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.plugin.base;
+package co.mv.wb;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import co.mv.wb.mock.ResourceHelperMockBuilder;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses(
+public class Mocks
 {
-})
-public class AllUnitTests
-{
+	public static ResourceHelperMockBuilder resourceHelper()
+	{
+		return new ResourceHelperMockBuilder();
+	}
 }

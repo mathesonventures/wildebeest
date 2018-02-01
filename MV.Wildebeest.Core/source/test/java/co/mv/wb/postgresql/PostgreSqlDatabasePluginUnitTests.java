@@ -16,11 +16,11 @@
 
 package co.mv.wb.postgresql;
 
-import co.mv.wb.FakeLogger;
 import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
@@ -42,7 +42,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 {
 	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		Logger logger = new FakeLogger();
+		Logger logger = new PrintStreamLogger(System.out);
 
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
@@ -92,7 +92,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 	
 	@Override @Test public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		Logger logger = new FakeLogger();
+		Logger logger = new PrintStreamLogger(System.out);
 
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",

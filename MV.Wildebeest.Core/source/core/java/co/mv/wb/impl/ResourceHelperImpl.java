@@ -16,7 +16,6 @@
 
 package co.mv.wb.impl;
 
-import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
@@ -29,6 +28,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
 
@@ -41,25 +41,9 @@ import java.util.UUID;
 /**
  * Provides function for working with {@link Resource}'s
  */
-public class ResourceHelper
+public class ResourceHelperImpl implements ResourceHelper
 {
-	/**
-	 * Applies the {@link Assertion}'s for this {@link Resource} and returns a collection of the results of those
-	 * Assertions.
-	 *
-	 * {@code assertState()} will first use {@link ResourcePlugin#currentState(Resource, Instance)} to determine the
-	 * current state of the Resource.  If the current state cannot be determined, then an
-	 * {@link IndeterminateStateException} is thrown.  See the {@code currentState()} method for more details.
-	 *
-	 * @param       logger                      an optional Logger service to log the activity of the assert operation.
-	 * @param       instance                    the {@link Instance} to assert the current state of
-	 * @return                                  a {@link java.util.List} of the {@link AssertionResult}s
-	 *                                          that were generated for the Assertions for this Resource's current
-	 *                                          state.
-	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
-	 * @since                                   1.0
-	 */
-	public static List<AssertionResult> assertState(
+	public List<AssertionResult> assertState(
 		Logger logger,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
@@ -74,80 +58,10 @@ public class ResourceHelper
 			resource,
 			instance);
 
-		List<AssertionResult> results = ResourceHelper.assertState(logger, instance, state);
-
-		return results;
+		return this.assertState(logger, instance, state);
 	}
 
-	private static List<AssertionResult> assertState(
-		Logger logger,
-		Instance instance,
-		State state)
-	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (state == null) { throw new IllegalArgumentException("state cannot be null"); }
-
-		List<AssertionResult> results = new ArrayList<>();
-
-		state.getAssertions().forEach(
-			assertion ->
-			{
-				AssertionResponse response = assertion.perform(instance);
-
-				logger.assertionComplete(assertion, response);
-
-				results.add(new ImmutableAssertionResult(
-					assertion.getAssertionId(),
-					response.getResult(),
-					response.getMessage()));
-			});
-
-		return results;
-	}
-
-	/**
-	 * Migrates the resource from it's current state to the specified target state.  The migration process is as
-	 * follows:
-	 *
-	 * <ul>
-	 * <li>Determine the resource's current state using {@link ResourcePlugin#currentState(Resource, Instance)}.  If the
-	 * current state cannot be determined then an {@link IndeterminateStateException} is thrown, as described in the
-	 * documentation for {@code currentState()}.
-	 * </li>
-	 * <li>Verify that the resource is valid for the current state using {@link ResourcePlugin#assertState()}.</li>
-	 * <li>Determine the series of states that the Resource will go through to arrive at the target state, including the
-	 * target state itself.
-	 * <li>For every state in the series of intermediate states (including the target state):
-	 * <ul>
-	 * <li>Apply the migration to take the resource from the current state to the next state in the series</li>
-	 * <li>Verify that the resource is valid for the new state by applying {@link ResourcePlugin#assertState()}</li>
-	 * <li>If at any state the resource is found not to be valid, then the migration is aborted with an
-	 * AssertionFailedException which conveys the state that failed validation, along with the full set of
-	 * AssertionResults that were generated.</li>
-	 * </ul>
-	 * </li>
-	 * </ul>
-	 *
-	 * If exactly one path cannot be found that will enable migration from the current state to the target state, then
-	 * a MigrationNotPossibleException is thrown.
-	 *
-	 * @param       logger                      an optional Logger service to log the activity of the assert operation.
-	 * @param       instance                    the {@link Instance} to migrate
-	 * @param       migrationPlugins            the set of available MigrationPlugins that can be used to run
-	 *                                          Migrations.
-	 * @param       targetStateId               the ID of the state to which the {@link Resource} should be migrated
-	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly at
-	 *                                          the commencement of the migration, and at each intermediate state and
-	 *                                          at the final state of the migration process.
-	 * @exception AssertionFailedException    when one or more post-migration assertions fail
-	 * @exception MigrationNotPossibleException
-	 *                                          when the number of paths from the current state to the target state is
-	 *                                          not exactly one.
-	 * @exception MigrationFailedException    when the migration failed for some other reason
-	 * @since                                   1.0
-	 */
-	public static void migrate(
+	public void migrate(
 		Logger logger,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
@@ -174,7 +88,7 @@ public class ResourceHelper
 		List<List<Migration>> paths = new ArrayList<>();
 		List<Migration> thisPath = new ArrayList<>();
 
-		findPaths(resource, paths, thisPath, currentStateId, targetStateId);
+		this.findPaths(resource, paths, thisPath, currentStateId, targetStateId);
 
 		if (paths.size() != 1)
 		{
@@ -186,11 +100,17 @@ public class ResourceHelper
 		for (Migration migration : path)
 		{
 			MigrationPlugin migrationPlugin = migrationPlugins.get(migration.getClass());
+			if (migrationPlugin == null)
+			{
+				throw new RuntimeException(String.format(
+					"No MigrationPlugin found for migration of type %s",
+					migration.getClass().getName()));
+			}
 
-			Optional<State> fromState = migration.getFromStateId().map(stateId -> ResourceHelper.stateForId(
+			Optional<State> fromState = migration.getFromStateId().map(stateId -> this.stateForId(
 				resource,
 				stateId));
-			Optional<State> toState = migration.getToStateId().map(stateId -> ResourceHelper.stateForId(
+			Optional<State> toState = migration.getToStateId().map(stateId -> this.stateForId(
 				resource,
 				stateId));
 
@@ -216,27 +136,17 @@ public class ResourceHelper
 				migration.getToStateId().get());
 
 			// Assert the new state
-			List<AssertionResult> assertionResults = ResourceHelper.assertState(
+			List<AssertionResult> assertionResults = this.assertState(
 				logger,
 				resource,
 				resourcePlugin,
 				instance);
 
-			throwIfFailed(migration.getToStateId().get(), assertionResults);
+			ResourceHelperImpl.throwIfFailed(migration.getToStateId().get(), assertionResults);
 		}
 	}
 
-	/**
-	 * Jumps the tracked state on the resource to the specified state without performing a migration.
-	 *
-	 * @param       logger                      an optional Logger service to log the actiivty of the jumpstate operation
-	 * @param       instance                    the {@link Instance} to jump to a new state
-	 * @param       targetStateId               the ID of the state to jump the instance to
-	 * @throws                                  AssertionFailedException
-	 * @throws JumpStateFailedException
-	 * @since                                   3.0
-	 */
-	public static void jumpstate(
+	public void jumpstate(
 		Logger logger,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
@@ -251,7 +161,7 @@ public class ResourceHelper
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (targetStateId == null) { throw new IllegalArgumentException("targetStateId cannot be null"); }
 
-		State targetState = ResourceHelper.stateForId(
+		State targetState = this.stateForId(
 			resource,
 			targetStateId);
 
@@ -262,12 +172,12 @@ public class ResourceHelper
 		}
 
 		// Assert the new state
-		List<AssertionResult> assertionResults = ResourceHelper.assertState(
+		List<AssertionResult> assertionResults = this.assertState(
 			logger,
 			instance,
 			targetState);
 
-		throwIfFailed(targetState.getStateId(), assertionResults);
+		ResourceHelperImpl.throwIfFailed(targetState.getStateId(), assertionResults);
 
 		resourcePlugin.setStateId(
 			logger,
@@ -276,15 +186,7 @@ public class ResourceHelper
 			targetStateId);
 	}
 
-	/**
-	 * Finds and returns the state with the supplied ID.  If no such state exists, null is returned.
-	 *
-	 * @param       stateId                     the ID of the state to find
-	 * @return                                  the State identified by the supplied ID if it could be found, or null
-	 *                                          otherwise
-	 * @since                                   1.0
-	 */
-	public static State stateForId(
+	public State stateForId(
 		Resource resource,
 		UUID stateId)
 	{
@@ -305,15 +207,7 @@ public class ResourceHelper
 		return result;
 	}
 
-	/**
-	 * Looks for a state with the supplied label, and if one exists returns it's StateId.  If no such state exists, then
-	 * null is returned.
-	 *
-	 * @param       label                       the label to search for
-	 * @return                                  the ID of the state that has the specified label
-	 * @since                                   1.0
-	 */
-	public static UUID stateIdForLabel(
+	public UUID stateIdForLabel(
 		Resource resource,
 		String label)
 	{
@@ -333,7 +227,36 @@ public class ResourceHelper
 
 		return result == null ? null : result.getStateId();
 	}
-	private static void findPaths(
+
+
+	private List<AssertionResult> assertState(
+		Logger logger,
+		Instance instance,
+		State state)
+	{
+		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (state == null) { throw new IllegalArgumentException("state cannot be null"); }
+
+		List<AssertionResult> results = new ArrayList<>();
+
+		state.getAssertions().forEach(
+			assertion ->
+			{
+				AssertionResponse response = assertion.perform(instance);
+
+				logger.assertionComplete(assertion, response);
+
+				results.add(new ImmutableAssertionResult(
+					assertion.getAssertionId(),
+					response.getResult(),
+					response.getMessage()));
+			});
+
+		return results;
+	}
+
+	private void findPaths(
 		Resource resource,
 		List<List<Migration>> paths,
 		List<Migration> thisPath,
@@ -362,7 +285,7 @@ public class ResourceHelper
 				.forEach(
 					migration ->
 					{
-						State toState = ResourceHelper.stateForId(
+						State toState = this.stateForId(
 							resource,
 							migration.getToStateId().get());
 						List<Migration> thisPathCopy = new ArrayList<>(thisPath);

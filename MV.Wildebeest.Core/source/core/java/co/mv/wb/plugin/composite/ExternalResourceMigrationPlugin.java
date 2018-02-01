@@ -27,21 +27,29 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.framework.Try;
-import co.mv.wb.impl.ResourceHelper;
 import co.mv.wb.service.MessagesException;
 
 import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * The {@link MigrationPlugin} for {@link ExternalResourceMigration}'s.
+ *
+ * @author                                      Brendon Matheson
+ * @since                                       4.0
+ */
 public class ExternalResourceMigrationPlugin implements MigrationPlugin
 {
 	public ExternalResourceMigrationPlugin(
-		Map<Class, MigrationPlugin> migrationPlugins)
+		Map<Class, MigrationPlugin> migrationPlugins,
+		ResourceHelper resourceHelper)
 	{
 		this.setMigrationPlugins(migrationPlugins);
+		this.setResourceHelper(resourceHelper);
 	}
 
 	// <editor-fold desc="MigrationPlugins" defaultstate="collapsed">
@@ -83,6 +91,46 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 
 	// </editor-fold>
 
+	// <editor-fold desc="ResourceHelper" defaultstate="collapsed">
+
+	private ResourceHelper _resourceHelper = null;
+	private boolean _resourceHelper_set = false;
+
+	private ResourceHelper getResourceHelper() {
+		if(!_resourceHelper_set) {
+			throw new IllegalStateException("resourceHelper not set.");
+		}
+		if(_resourceHelper == null) {
+			throw new IllegalStateException("resourceHelper should not be null");
+		}
+		return _resourceHelper;
+	}
+
+	private void setResourceHelper(
+		ResourceHelper value) {
+		if(value == null) {
+			throw new IllegalArgumentException("resourceHelper cannot be null");
+		}
+		boolean changing = !_resourceHelper_set || _resourceHelper != value;
+		if(changing) {
+			_resourceHelper_set = true;
+			_resourceHelper = value;
+		}
+	}
+
+	private void clearResourceHelper() {
+		if(_resourceHelper_set) {
+			_resourceHelper_set = true;
+			_resourceHelper = null;
+		}
+	}
+
+	private boolean hasResourceHelper() {
+		return _resourceHelper_set;
+	}
+
+	// </editor-fold>
+
 	@Override public void perform(
 		Logger logger,
 		Migration migration,
@@ -114,13 +162,13 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 
 		UUID targetStateId = Try
 			.tryParseUuid(migrationT.getTarget())
-			.orElseGet(() -> ResourceHelper.stateIdForLabel(
+			.orElseGet(() -> this.getResourceHelper().stateIdForLabel(
 				externalResource,
 				migrationT.getTarget()));
 
 		try
 		{
-			ResourceHelper.migrate(
+			this.getResourceHelper().migrate(
 				logger,
 				externalResource,
 				externalResourcePlugin,

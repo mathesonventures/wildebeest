@@ -16,9 +16,9 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.FakeLogger;
 import co.mv.wb.Logger;
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class MySqlCreateDatabaseMigrationTests
 		SQLException
 	{
 		// Setup
-		Logger logger = new FakeLogger();
+		Logger logger = new PrintStreamLogger(System.out);
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
@@ -72,7 +72,7 @@ public class MySqlCreateDatabaseMigrationTests
 	@Test public void performForExistantDatabaseFails()
 	{
 		// Setup
-		Logger logger = new FakeLogger();
+		Logger logger = new PrintStreamLogger(System.out);
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		

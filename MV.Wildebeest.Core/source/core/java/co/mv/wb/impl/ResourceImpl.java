@@ -23,6 +23,7 @@ import co.mv.wb.State;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -34,29 +35,28 @@ import java.util.UUID;
 public final class ResourceImpl implements Resource
 {
 	/**
-	 * Creates a new BaseResource instance.
+	 * Creates a new concrete Resource instance.
 	 * 
 	 * @param       resourceId                  the ID of the new Resource
 	 * @param       type                        the type of the new Resource
 	 * @param       name                        the name of the new Resource
+	 * @param       defaultTarget               the optional default target for this resource
 	 * @since                                   1.0
 	 */
 	public ResourceImpl(
 		UUID resourceId,
 		ResourceType type,
-		String name)
+		String name,
+		Optional<String> defaultTarget)
 	{
 		this.setResourceId(resourceId);
 		this.setType(type);
 		this.setName(name);
 		this.setStates(new ArrayList<>());
 		this.setMigrations(new ArrayList<>());
+		this.setDefaultTarget(defaultTarget);
 	}
 
-	//
-	// Properties
-	//
-	
 	// <editor-fold desc="ResourceId" defaultstate="collapsed">
 
 	private UUID _resourceId = null;
@@ -239,6 +239,45 @@ public final class ResourceImpl implements Resource
 
 	public boolean hasMigrations() {
 		return _migrations_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="DefaultTarget" defaultstate="collapsed">
+
+	private Optional<String> _defaultTarget = null;
+	private boolean _defaultTarget_set = false;
+
+	public Optional<String> getDefaultTarget() {
+		if(!_defaultTarget_set) {
+			throw new IllegalStateException("defaultTarget not set.");
+		}
+		if(_defaultTarget == null) {
+			throw new IllegalStateException("defaultTarget should not be null");
+		}
+		return _defaultTarget;
+	}
+
+	private void setDefaultTarget(Optional<String> value) {
+		if(value == null) {
+			throw new IllegalArgumentException("defaultTarget cannot be null");
+		}
+		boolean changing = !_defaultTarget_set || _defaultTarget != value;
+		if(changing) {
+			_defaultTarget_set = true;
+			_defaultTarget = value;
+		}
+	}
+
+	private void clearDefaultTarget() {
+		if(_defaultTarget_set) {
+			_defaultTarget_set = true;
+			_defaultTarget = null;
+		}
+	}
+
+	private boolean hasDefaultTarget() {
+		return _defaultTarget_set;
 	}
 
 	// </editor-fold>

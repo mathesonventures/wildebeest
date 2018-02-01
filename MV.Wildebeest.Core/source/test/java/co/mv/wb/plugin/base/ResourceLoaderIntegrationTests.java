@@ -18,7 +18,6 @@ package co.mv.wb.plugin.base;
 
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.Asserts;
-import co.mv.wb.FakeLogger;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
@@ -26,8 +25,9 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.ResourcePlugin;
-import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
@@ -66,7 +66,9 @@ public class ResourceLoaderIntegrationTests
 		//
 		// Setup
 		//
-		
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		ProductCatalogueMySqlDatabaseResource productCatalogueResource = new ProductCatalogueMySqlDatabaseResource();
 
 		DomResourceLoader resourceBuilder = DomPlugins.resourceLoader(
@@ -74,7 +76,7 @@ public class ResourceLoaderIntegrationTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new FakeLogger(),
+			new PrintStreamLogger(System.out),
 			productCatalogueResource.getResourceXml());
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -151,13 +153,14 @@ public class ResourceLoaderIntegrationTests
 		// Execute - Migrate
 		//
 
-		ResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		ResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
+			resourceHelper);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
 
 		try
 		{
-			ResourceHelper.migrate(
+			resourceHelper.migrate(
 				new PrintStreamLogger(System.out),
 				resource,
 				resourcePlugin,

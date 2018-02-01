@@ -28,6 +28,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
+import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import org.slf4j.LoggerFactory;
 
@@ -87,7 +88,13 @@ public class Slf4jLogger implements Logger
             "The state \"%s\" could not be found in this resource",
             e.getSpecifiedState()));
     }
-    
+
+	@Override public void targetNotSpecified(TargetNotSpecifiedException e)
+	{
+		logLine(String.format(
+			"No target was specified and the resource does not have a default target set"));
+	}
+
 	@Override public void migrationStart(
 		Resource resource,
 		Migration migration,

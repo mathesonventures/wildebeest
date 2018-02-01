@@ -16,8 +16,8 @@
 
 package co.mv.wb.service.dom.composite;
 
-import co.mv.wb.FakeLogger;
 import co.mv.wb.Migration;
+import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.impl.FactoryResourceTypes;
@@ -73,7 +73,7 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new FakeLogger(),
+			new PrintStreamLogger(System.out),
 			resourceXml);
 
 		// Execute

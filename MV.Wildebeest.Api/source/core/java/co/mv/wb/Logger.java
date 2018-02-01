@@ -63,10 +63,20 @@ public interface Logger
     void unknownStateSpecified(UnknownStateSpecifiedException e);
 
 	/**
+	 * Logs that a migration was requested but that no target was specified.
+	 *
+	 * @param       e                           the {@link TargetNotSpecifiedException} that was thrown.
+	 * @since                                   4.0
+	 */
+	void targetNotSpecified(TargetNotSpecifiedException e);
+
+	/**
 	 * Logs that a {@link Migration} has been started.
 	 * 
 	 * @param       resource                    the {@link Resource} that is being migrated.
 	 * @param       migration                   the {@link Migration} that has been started.
+	 * @param       fromState                   the {@link State} that is being migrated from.
+	 * @param       toState                     the {@link State} that is being migrated to.
 	 * @since                                   1.0
 	 */
 	void migrationStart(

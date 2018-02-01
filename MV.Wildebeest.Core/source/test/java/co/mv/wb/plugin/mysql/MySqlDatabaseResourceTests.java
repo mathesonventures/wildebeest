@@ -18,15 +18,18 @@ package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ImmutableState;
+import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceImpl;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 
 public class MySqlDatabaseResourceTests
@@ -42,14 +45,18 @@ public class MySqlDatabaseResourceTests
 	@Test public void currentStateForNonExistentDatabaseSucceds() throws IndeterminateStateException
 	{
 		// Setup
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
+			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.MySqlDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
@@ -71,6 +78,8 @@ public class MySqlDatabaseResourceTests
 	@Test public void currentStateForExistentDatabaseSucceds() throws IndeterminateStateException, SQLException
 	{
 		// Setup
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		UUID resourceId = UUID.randomUUID();
@@ -89,12 +98,14 @@ public class MySqlDatabaseResourceTests
 				"wb_state",
 				knownStateId);
 
-			MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+			MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
+				resourceHelper);
 
 			Resource resource = new ResourceImpl(
 				resourceId,
 				FactoryResourceTypes.MySqlDatabase,
-				"Database");
+				"Database",
+				Optional.empty());
 
 			resource.getStates().add(new ImmutableState(knownStateId));
 
@@ -122,6 +133,8 @@ public class MySqlDatabaseResourceTests
 	@Test public void currentStateForDatabaseWithUnknownStateIdDeclaredFails() throws SQLException
 	{
 		// Setup
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
 		UUID resourceId = UUID.randomUUID();
@@ -135,12 +148,14 @@ public class MySqlDatabaseResourceTests
 			"wb_state",
 			knownStateId);
 		
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
+			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			resourceId,
 			FactoryResourceTypes.MySqlDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),

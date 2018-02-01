@@ -26,11 +26,12 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
 import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ImmutableState;
-import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
@@ -60,15 +61,19 @@ public class SqlServerTableDoesNotExistAssertionTests
 		//
 		// Setup
 		//
-		 
-		SqlServerProperties properties = SqlServerProperties.get();
 
-		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin();
+		 ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		 SqlServerProperties properties = SqlServerProperties.get();
+
+		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin(
+			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.SqlServerDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -108,7 +113,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 			databaseName,
 			null);
 		 
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -146,26 +151,30 @@ public class SqlServerTableDoesNotExistAssertionTests
 		
 	 }
 	 
-	 @Test public void applyForNonExistentTableSucceeds() throws
+	@Test public void applyForNonExistentTableSucceeds() throws
 		 IndeterminateStateException,
 		 AssertionFailedException,
 		 MigrationNotPossibleException,
 		 MigrationFailedException,
 		 SQLException
-	 {
+	{
 		 
 		 //
 		 // Setup
 		 //
 
-		SqlServerProperties properties = SqlServerProperties.get();
+		 ResourceHelper resourceHelper = new ResourceHelperImpl();
 
-		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin();
+		 SqlServerProperties properties = SqlServerProperties.get();
+
+		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin(
+			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.SqlServerDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -192,7 +201,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 			databaseName,
 			null);
 		 
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -228,10 +237,10 @@ public class SqlServerTableDoesNotExistAssertionTests
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
 		
-	 }
+	}
 	 
-	 @Test public void applyForNonExistentDatabaseFails() throws SQLException
-	 {
+	@Test public void applyForNonExistentDatabaseFails() throws SQLException
+	{
 		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
 	
@@ -260,10 +269,10 @@ public class SqlServerTableDoesNotExistAssertionTests
 		Asserts.assertAssertionResponse(
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
-	 }
+	}
 	 
-	 @Test public void applyForNullInstanceFails()
-	 {
+	@Test public void applyForNullInstanceFails()
+	{
 		// Setup
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
@@ -282,10 +291,10 @@ public class SqlServerTableDoesNotExistAssertionTests
 		{
 			assertEquals("e.message", "instance cannot be null", e.getMessage());
 		}
-	 }
+	}
 	 
-	 @Test public void applyForIncorrectInstanceTypeFails()
-	 {
+	@Test public void applyForIncorrectInstanceTypeFails()
+	{
 		// Setup
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
@@ -306,5 +315,5 @@ public class SqlServerTableDoesNotExistAssertionTests
 		{
 			assertEquals("e.message", "instance must be a SqlServerDatabaseInstance", e.getMessage());
 		}
-	 }
+	}
 }

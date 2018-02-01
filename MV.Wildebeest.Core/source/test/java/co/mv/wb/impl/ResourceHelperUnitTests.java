@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.plugin.base;
+package co.mv.wb.impl;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
@@ -29,6 +29,7 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
 import co.mv.wb.fake.FakeAssertion;
 import co.mv.wb.fake.FakeInstance;
@@ -37,9 +38,6 @@ import co.mv.wb.fake.FakeMigrationPlugin;
 import co.mv.wb.fake.FakeResourcePlugin;
 import co.mv.wb.fake.TagAssertion;
 import co.mv.wb.fake.TestResourceTypes;
-import co.mv.wb.impl.ImmutableState;
-import co.mv.wb.impl.ResourceHelper;
-import co.mv.wb.impl.ResourceImpl;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -52,26 +50,32 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class BaseResourceTests
+public class ResourceHelperUnitTests
 {
 	
 	//
 	// assertState()
 	//
 	
-	@Test public void assertStateWithNoAssertionsSuccessful() throws IndeterminateStateException
+	@Test public void assertState_noAssertions_succeeds() throws IndeterminateStateException
 	{
 		// Setup
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
 		
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
 		
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		// Execute
-		List<AssertionResult> results = ResourceHelper.assertState(
+		List<AssertionResult> results = resourceHelper.assertState(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -82,12 +86,16 @@ public class BaseResourceTests
 		assertEquals("results.size", 0, results.size());
 	}
 	
-	@Test public void assertStateWithOneAssertionSuccessful() throws IndeterminateStateException
+	@Test public void assertState_oneAssertion_succeeds() throws IndeterminateStateException
 	{
 		// Setup
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
-		
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
+
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
 		
@@ -100,8 +108,10 @@ public class BaseResourceTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		// Execute
-		List<AssertionResult> results = ResourceHelper.assertState(
+		List<AssertionResult> results = resourceHelper.assertState(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -114,11 +124,15 @@ public class BaseResourceTests
 			assertion1.getAssertionId(), true, "Tag is \"Foo\"", results.get(0), "results[0]");
 	}
 	
-	@Test public void assertStateWithMultipleAssertionsSuccessful() throws IndeterminateStateException
+	@Test public void assertState_multipleAssertions_succeeds() throws IndeterminateStateException
 	{
 		// Setup
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
 
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -138,8 +152,10 @@ public class BaseResourceTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		// Execute
-		List<AssertionResult> results = ResourceHelper.assertState(
+		List<AssertionResult> results = resourceHelper.assertState(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -160,12 +176,12 @@ public class BaseResourceTests
 	 * Verifies that when the internal call to currentState() results in an IndeterminateStateException, assertState
 	 * handles that properly.
 	 */
-	@Ignore @Test public void assertStateForResourceIndeterminateState()
+	@Ignore @Test public void assertState_resourceIndeterminateState_throws()
 	{
 		throw new UnsupportedOperationException();
 	}
 
-	@Ignore @Test public void assertStateStateForFaultingAssertion()
+	@Ignore @Test public void assertState_faultingAssertion_throws()
 	{
 		throw new UnsupportedOperationException();
 	}
@@ -174,7 +190,7 @@ public class BaseResourceTests
 	// migrate()
 	//
 
-	@Test public void migrateFromNullToFirstState() throws
+	@Test public void migrate_nonExistentToFirstState_succeeds() throws
 		IndeterminateStateException,
 		AssertionFailedException,
 		MigrationNotPossibleException,
@@ -182,7 +198,11 @@ public class BaseResourceTests
 	{
 		// Setup
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
 
 		UUID state1Id = UUID.randomUUID();
 		State state = new ImmutableState(state1Id);
@@ -197,9 +217,11 @@ public class BaseResourceTests
 		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
 		
 		FakeInstance instance = new FakeInstance();
-		
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		// Execute
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -212,7 +234,7 @@ public class BaseResourceTests
 		
 	}
 	
-	@Test public void migrateFromNullToDeepState() throws
+	@Test public void migrate_nonExistentToDeepState_succeeds() throws
 		IndeterminateStateException,
 		AssertionFailedException,
 		MigrationNotPossibleException,
@@ -225,7 +247,11 @@ public class BaseResourceTests
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
 
 		// State 1
 		State state1 = new ImmutableState(UUID.randomUUID(), Optional.of("State 1"));
@@ -272,12 +298,14 @@ public class BaseResourceTests
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
-		
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		//
 		// Execute
 		//
 		
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -293,7 +321,7 @@ public class BaseResourceTests
 		
 	}
 	
-	@Test public void migrateFromNullToDeepStateWithMultipleBranches() throws
+	@Test public void migrate_nonExistentToDeepStateWithMultipleBranches_succeeds() throws
 		IndeterminateStateException,
 		AssertionFailedException,
 		MigrationNotPossibleException,
@@ -306,7 +334,11 @@ public class BaseResourceTests
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -388,12 +420,14 @@ public class BaseResourceTests
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
-		
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		//
 		// Execute
 		//
 		
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -409,17 +443,17 @@ public class BaseResourceTests
 		
 	}
 	
-	@Ignore @Test public void migrateFromStateToState()
+	@Ignore @Test public void migrate_stateToState_succeeds()
 	{
 		throw new UnsupportedOperationException();
 	}
 	
-	@Ignore @Test public void migrateFromStateToDeepState()
+	@Ignore @Test public void migrate_stateToDeepState_succeeds()
 	{
 		throw new UnsupportedOperationException();
 	}
 	
-	@Test public void migrateToSameState() throws
+	@Test public void migrate_toSameState_succeeds() throws
 		IndeterminateStateException,
 		AssertionFailedException,
 		MigrationNotPossibleException,
@@ -432,7 +466,11 @@ public class BaseResourceTests
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -456,8 +494,10 @@ public class BaseResourceTests
 		FakeInstance instance = new FakeInstance();
 		
 		PrintStreamLogger logger = new PrintStreamLogger(System.out);
-		
-		ResourceHelper.migrate(
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		resourceHelper.migrate(
 			logger,
 			resource,
 			resourcePlugin,
@@ -469,7 +509,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			logger,
 			resource,
 			resourcePlugin,
@@ -485,7 +525,7 @@ public class BaseResourceTests
 		
 	}
 	
-	@Ignore @Test public void migrateFromStateToNull() throws
+	@Ignore @Test public void migrate_stateToNonExistent_succeeds() throws
 		IndeterminateStateException,
 		AssertionFailedException,
 		MigrationNotPossibleException,
@@ -498,7 +538,11 @@ public class BaseResourceTests
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -521,7 +565,9 @@ public class BaseResourceTests
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		ResourceHelper.migrate(
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -533,7 +579,7 @@ public class BaseResourceTests
 		// Execute
 		//
 		
-		ResourceHelper.migrate(
+		resourceHelper.migrate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -549,12 +595,12 @@ public class BaseResourceTests
 		
 	}
 	
-	@Ignore @Test public void migrateFromDeepStateToNull()
+	@Ignore @Test public void migrate_deepStateToNonExistent_succeeds()
 	{
 		throw new RuntimeException("not implemented");
 	}
 
-	@Ignore @Test public void migrateWithCircularDependencyFails()
+	@Ignore @Test public void migrate_circularDependency_throws()
 	{
 		throw  new UnsupportedOperationException();
 	}
@@ -563,7 +609,7 @@ public class BaseResourceTests
 	// jumpstate()
 	//
 	
-	@Test public void jumpstateForAssertionFailThrows()
+	@Test public void jumpstate_assertionFail_throws()
 	{
 		
 		//
@@ -572,7 +618,11 @@ public class BaseResourceTests
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
+		final Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
 		
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
@@ -583,7 +633,9 @@ public class BaseResourceTests
 		// Instance
 		final FakeInstance instance = new FakeInstance();
 		instance.setTag("Bar");
-		
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		//
 		// Execute and Verify
 		//
@@ -592,7 +644,7 @@ public class BaseResourceTests
 		{
 			@Override public void invoke() throws Exception
 			{
-				ResourceHelper.jumpstate(
+				resourceHelper.jumpstate(
 					new PrintStreamLogger(System.out),
 					resource,
 					resourcePlugin,
@@ -611,7 +663,7 @@ public class BaseResourceTests
 
 	}
 	
-	@Test public void jumpstateForNonExistentStateThrows()
+	@Test public void jumpstate_nonExistentState_throws()
 	{
 		
 		//
@@ -620,14 +672,20 @@ public class BaseResourceTests
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
+		final Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
 
 		// Instance
 		final FakeInstance instance = new FakeInstance();
 		
 		// Target State ID
 		final UUID targetStateId = UUID.randomUUID();
-		
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		//
 		// Execute and Verify
 		//
@@ -636,7 +694,7 @@ public class BaseResourceTests
 		{
 			@Override public void invoke() throws Exception
 			{
-				ResourceHelper.jumpstate(
+				resourceHelper.jumpstate(
 					new PrintStreamLogger(System.out),
 					resource,
 					resourcePlugin,
@@ -657,7 +715,7 @@ public class BaseResourceTests
 		
 	}
 	
-	@Test public void jumpstateForExistentStateSucceeds() throws
+	@Test public void jumpstate_existentState_succeeds() throws
 		AssertionFailedException,
 		JumpStateFailedException
 	{
@@ -668,7 +726,11 @@ public class BaseResourceTests
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			TestResourceTypes.Fake,
+			"Resource",
+			Optional.empty());
 		
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
@@ -679,12 +741,14 @@ public class BaseResourceTests
 		// Instance
 		final FakeInstance instance = new FakeInstance();
 		instance.setTag("Foo");
-		
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		//
 		// Execute
 		//
 
-		ResourceHelper.jumpstate(
+		resourceHelper.jumpstate(
 			new PrintStreamLogger(System.out),
 			resource,
 			resourcePlugin,
@@ -697,90 +761,5 @@ public class BaseResourceTests
 		
 		assertEquals("instance.tag", "Foo", instance.getTag());
 		
-	}
-	
-	@Test public void jumpstateForNullLoggerThrows()
-	{
-		// The resource
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
-		
-		// Instance
-		final FakeInstance instance = new FakeInstance();
-
-		new ExpectException(IllegalArgumentException.class)
-		{
-			@Override public void invoke() throws Exception
-			{
-				ResourceHelper.jumpstate(
-					null,
-					resource,
-					resourcePlugin,
-					instance,
-					UUID.randomUUID());
-			}
-
-			@Override public void verify(Exception e)
-			{
-				IllegalArgumentException te = (IllegalArgumentException)e;
-				
-				assertEquals("e.message", "logger cannot be null", te.getMessage());
-			}
-		}.perform();
-	}
-	
-	@Test public void jumpstateForNullInstanceThrows()
-	{
-		// The resource
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
-
-		new ExpectException(IllegalArgumentException.class)
-		{
-			@Override public void invoke() throws Exception
-			{
-				ResourceHelper.jumpstate(
-					new PrintStreamLogger(System.out),
-					resource,
-					resourcePlugin,
-					null,
-					UUID.randomUUID());
-			}
-
-			@Override public void verify(Exception e)
-			{
-				IllegalArgumentException te = (IllegalArgumentException)e;
-
-				assertEquals("e.message", "instance cannot be null", te.getMessage());
-			}
-		}.perform();
-	}
-	
-	@Test public void jumpstateForNullTargetStateIdThrows()
-	{
-		// The resource
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(UUID.randomUUID(), TestResourceTypes.Fake, "Resource");
-		final FakeInstance instance = new FakeInstance();
-
-		new ExpectException(IllegalArgumentException.class)
-		{
-			@Override public void invoke() throws Exception
-			{
-				ResourceHelper.jumpstate(
-					new PrintStreamLogger(System.out),
-					resource,
-					resourcePlugin,
-					instance,
-					null);
-			}
-
-			@Override public void verify(Exception e)
-			{
-				IllegalArgumentException te = (IllegalArgumentException)e;
-
-				assertEquals("e.message", "targetStateId cannot be null", te.getMessage());
-			}
-		}.perform();
 	}
 }

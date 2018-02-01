@@ -18,7 +18,6 @@ package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.Asserts;
-import co.mv.wb.FakeLogger;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.MigrationFailedException;
@@ -27,11 +26,12 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
 import co.mv.wb.fixturecreator.XmlBuilder;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ImmutableState;
-import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
@@ -66,15 +66,19 @@ public class IntegrationTests
 		// Setup
 		//
 
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
 		// Resource
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
+			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FactoryResourceTypes.MySqlDatabase,
-			"Database");
+			"Database",
+			Optional.empty());
 
 		// State: Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -121,14 +125,14 @@ public class IntegrationTests
 			mySqlProperties.getPassword(),
 			databaseName,
 			null);
-		
+
 		//
 		// Execute
 		//
 		
 		try
 		{
-			ResourceHelper.migrate(
+			resourceHelper.migrate(
 				new PrintStreamLogger(System.out),
 				resource,
 				resourcePlugin,
@@ -159,7 +163,7 @@ public class IntegrationTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new FakeLogger(),
+			new PrintStreamLogger(System.out),
 			prodCatResource.getResourceXml());
 
 		// Execute
@@ -193,7 +197,9 @@ public class IntegrationTests
 		SQLException,
 		MessagesException
 	{
-		
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		//
 		// Resource
 		//
@@ -206,7 +212,7 @@ public class IntegrationTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new FakeLogger(),
+			new PrintStreamLogger(System.out),
 			prodCatResource.getResourceXml());
 		
 		// Execute
@@ -236,13 +242,14 @@ public class IntegrationTests
 		// Migrate
 		//
 
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
+			resourceHelper);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
 
 		try
 		{
-			ResourceHelper.migrate(
+			resourceHelper.migrate(
 				new PrintStreamLogger(System.out),
 				resource,
 				resourcePlugin,

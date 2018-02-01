@@ -21,9 +21,10 @@ import co.mv.wb.Instance;
 import co.mv.wb.Logger;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
-import co.mv.wb.impl.ResourceHelper;
+import co.mv.wb.impl.ResourceHelperImpl;
 
 import java.util.UUID;
 
@@ -75,8 +76,10 @@ public class FakeResourcePlugin implements ResourcePlugin
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
 		if (fake == null) { throw new IllegalArgumentException("instance must be of type FakeInstance"); }
 
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		return fake.hasStateId()
-			? ResourceHelper.stateForId(resource, fake.getStateId())
+			? resourceHelper.stateForId(resource, fake.getStateId())
 			: null;
 	}
 

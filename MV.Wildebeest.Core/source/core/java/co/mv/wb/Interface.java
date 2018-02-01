@@ -16,14 +16,7 @@
 
 package co.mv.wb;
 
-import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.impl.ResourceHelper;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
-import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
-import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
-import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
-import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
-import co.mv.wb.plugin.sqlserver.SqlServerDatabaseResourcePlugin;
 import co.mv.wb.service.InstanceLoaderFault;
 import co.mv.wb.service.Messages;
 import co.mv.wb.service.MessagesException;
@@ -37,8 +30,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -56,9 +49,16 @@ public class Interface
 	 * @param       logger                      the Logger that this Interface should use.
 	 * @since                                   1.0
 	 */
-	public Interface(Logger logger)
+	public Interface(
+		Logger logger,
+		Map<ResourceType, ResourcePlugin> resourcePlugins,
+		Map<Class, MigrationPlugin> migrationPlugins,
+		ResourceHelper resourceHelper)
 	{
 		this.setLogger(logger);
+		this.setResourcePlugins(resourcePlugins);
+		this.setMigrationPlugins(migrationPlugins);
+		this.setResourceHelper(resourceHelper);
 	}
 	
 	// <editor-fold desc="Logger" defaultstate="collapsed">
@@ -94,6 +94,124 @@ public class Interface
 
 	private boolean hasLogger() {
 		return _logger_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="ResourcePlugins" defaultstate="collapsed">
+
+	private Map<ResourceType, ResourcePlugin> _resourcePlugins = null;
+	private boolean _resourcePlugins_set = false;
+
+	private Map<ResourceType, ResourcePlugin> getResourcePlugins() {
+		if(!_resourcePlugins_set) {
+			throw new IllegalStateException("resourcePlugins not set.");
+		}
+		if(_resourcePlugins == null) {
+			throw new IllegalStateException("resourcePlugins should not be null");
+		}
+		return _resourcePlugins;
+	}
+
+	private void setResourcePlugins(Map<ResourceType, ResourcePlugin> value) {
+		if(value == null) {
+			throw new IllegalArgumentException("resourcePlugins cannot be null");
+		}
+		boolean changing = !_resourcePlugins_set || _resourcePlugins != value;
+		if(changing) {
+			_resourcePlugins_set = true;
+			_resourcePlugins = value;
+		}
+	}
+
+	private void clearResourcePlugins() {
+		if(_resourcePlugins_set) {
+			_resourcePlugins_set = true;
+			_resourcePlugins = null;
+		}
+	}
+
+	private boolean hasResourcePlugins() {
+		return _resourcePlugins_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="MigrationPlugins" defaultstate="collapsed">
+
+	private Map<Class, MigrationPlugin> _migrationPlugins = null;
+	private boolean _migrationPlugins_set = false;
+
+	private Map<Class, MigrationPlugin> getMigrationPlugins() {
+		if(!_migrationPlugins_set) {
+			throw new IllegalStateException("migrationPlugins not set.");
+		}
+		if(_migrationPlugins == null) {
+			throw new IllegalStateException("migrationPlugins should not be null");
+		}
+		return _migrationPlugins;
+	}
+
+	private void setMigrationPlugins(Map<Class, MigrationPlugin> value) {
+		if(value == null) {
+			throw new IllegalArgumentException("migrationPlugins cannot be null");
+		}
+		boolean changing = !_migrationPlugins_set || _migrationPlugins != value;
+		if(changing) {
+			_migrationPlugins_set = true;
+			_migrationPlugins = value;
+		}
+	}
+
+	private void clearMigrationPlugins() {
+		if(_migrationPlugins_set) {
+			_migrationPlugins_set = true;
+			_migrationPlugins = null;
+		}
+	}
+
+	private boolean hasMigrationPlugins() {
+		return _migrationPlugins_set;
+	}
+
+	// </editor-fold>
+
+	// <editor-fold desc="ResourceHelper" defaultstate="collapsed">
+
+	private ResourceHelper _resourceHelper = null;
+	private boolean _resourceHelper_set = false;
+
+	private ResourceHelper getResourceHelper() {
+		if(!_resourceHelper_set) {
+			throw new IllegalStateException("resourceHelper not set.");
+		}
+		if(_resourceHelper == null) {
+			throw new IllegalStateException("resourceHelper should not be null");
+		}
+		return _resourceHelper;
+	}
+
+	private void setResourceHelper(
+		ResourceHelper value) {
+		if(value == null) {
+			throw new IllegalArgumentException("resourceHelper cannot be null");
+		}
+		boolean changing = !_resourceHelper_set || _resourceHelper != value;
+		if(changing) {
+			_resourceHelper_set = true;
+			_resourceHelper = value;
+		}
+	}
+
+	private void clearResourceHelper() {
+		if(_resourceHelper_set) {
+			_resourceHelper_set = true;
+			_resourceHelper = null;
+		}
+	}
+
+	private boolean hasResourceHelper() {
+		return _resourceHelper_set;
 	}
 
 	// </editor-fold>
@@ -158,8 +276,8 @@ public class Interface
 			logMessages(this.getLogger(), e.getMessages());
 		}
 
-		ResourcePlugin resourcePlugin = Interface.getResourcePlugin(
-			Interface.getResourcePlugins(),
+		ResourcePlugin resourcePlugin = PluginHelper.getResourcePlugin(
+			this.getResourcePlugins(),
 			resource.getType());
 
 		// Load Instance
@@ -197,7 +315,7 @@ public class Interface
 						this.getLogger().logLine("Current state: " + state.getStateId().toString());
 					}
 
-					ResourceHelper.assertState(
+					this.getResourceHelper().assertState(
 						this.getLogger(),
 						resource,
 						resourcePlugin,
@@ -216,39 +334,54 @@ public class Interface
 	 * 
 	 * @param       resource                    the resource
 	 * @param       instance                    the instance
-	 * @param       targetState                 the name or unique ID of the state to which the instance should be
-	 *                                          migrated
+	 * @param       targetState                 the optional name or unique ID of the state to which the instance should
+	 *                                          be migrated.  If none is supplied then Wildebeest will use the default
+	 *                                          target if one is set on the REsource.  Otherwise a
+	 *                                          NoTargetSpecifiedException is thrown.
 	 * @since                                   1.0
 	 */
 	public void migrate(
 		Resource resource,
 		Instance instance,
-		String targetState)
+		Optional<String> targetState)
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (targetState == null) { throw new IllegalArgumentException("targetState cannot be null"); }
 
-		Map<String, ResourcePlugin> resourcePlugins = Interface.getResourcePlugins();
-
-		ResourcePlugin resourcePlugin = Interface.getResourcePlugin(
-			resourcePlugins,
+		ResourcePlugin resourcePlugin = PluginHelper.getResourcePlugin(
+			this.getResourcePlugins(),
 			resource.getType());
+
+		// Resolve the target state
+		Optional<String> ts = targetState.isPresent()
+			? targetState
+			: resource.getDefaultTarget();
 
 		// Perform migration
 		try
 		{
-            UUID targetStateId = getTargetStateId(
-            	resource,
-				resourcePlugin,
-				targetState);
+			if (!ts.isPresent())
+			{
+				throw new TargetNotSpecifiedException();
+			}
 
-			ResourceHelper.migrate(
+            UUID targetStateId = getTargetStateId(
+				this.getResourceHelper(),
+				resource,
+				ts.get());
+
+			this.getResourceHelper().migrate(
 				this.getLogger(),
 				resource,
 				resourcePlugin,
 				instance,
 				this.getMigrationPlugins(),
 				targetStateId);
+		}
+		catch(TargetNotSpecifiedException e)
+		{
+			this.getLogger().targetNotSpecified(e);
 		}
         catch (InvalidStateSpecifiedException e)
         {
@@ -288,18 +421,18 @@ public class Interface
 			throw new IllegalArgumentException("targetState cannot be empty");
 		}
 
-		ResourcePlugin resourcePlugin = Interface.getResourcePlugin(
-			 Interface.getResourcePlugins(),
+		ResourcePlugin resourcePlugin = PluginHelper.getResourcePlugin(
+			this.getResourcePlugins(),
 			resource.getType());
 
 		try
 		{
             UUID targetStateId = getTargetStateId(
+            	this.getResourceHelper(),
             	resource,
-				resourcePlugin,
 				targetState);
 
-			ResourceHelper.jumpstate(
+			this.getResourceHelper().jumpstate(
 				this.getLogger(),
 				resource,
 				resourcePlugin,
@@ -324,54 +457,15 @@ public class Interface
 		}
 	}
 
-	private static Map<String, ResourcePlugin> getResourcePlugins()
-	{
-		Map<String, ResourcePlugin> result = new HashMap<>();
-
-		result.put(FactoryResourceTypes.MySqlDatabase.getUri(), new MySqlDatabaseResourcePlugin());
-		result.put(FactoryResourceTypes.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseResourcePlugin());
-		result.put(FactoryResourceTypes.SqlServerDatabase.getUri(), new SqlServerDatabaseResourcePlugin());
-
-		return result;
-	}
-
-	private static ResourcePlugin getResourcePlugin(
-		Map<String, ResourcePlugin> resourcePlugins,
-		ResourceType resourceType)
-	{
-		if (resourcePlugins == null) { throw new IllegalArgumentException("resourcePlugins cannot be null"); }
-		if (resourceType == null) { throw new IllegalArgumentException("resourceType cannot be null"); }
-
-		ResourcePlugin resourcePlugin = resourcePlugins.get(resourceType.getUri());
-
-		if (resourcePlugin == null)
-		{
-			throw new ResourceLoaderFault(String.format(
-				"resource plugin for resource type %s not found",
-				resourceType.getUri()));
-		}
-
-		return resourcePlugin;
-	}
-
-	private static Map<Class, MigrationPlugin> getMigrationPlugins()
-	{
-		Map<Class, MigrationPlugin> result = new HashMap<>();
-
-		result.put(AnsiSqlCreateDatabaseMigration.class, new AnsiSqlCreateDatabaseMigrationPlugin());
-
-		return result;
-	}
-
 	private static UUID getTargetStateId(
+		ResourceHelper resourceHelper,
 		Resource resource,
-		ResourcePlugin resourcePlugin,
 		String targetState) throws
             InvalidStateSpecifiedException,
             UnknownStateSpecifiedException
 	{
+		if (resourceHelper == null) { throw new IllegalArgumentException("resourceHelper cannot be null"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (resourcePlugin == null) { throw new IllegalArgumentException("resourcePlugin cannot be null"); }
 
 		final String stateSpecificationRegex = "[a-zA-Z0-9][a-zA-Z0-9\\-\\_ ]+[a-zA-Z0-9]";
 		if (targetState != null && !targetState.matches(stateSpecificationRegex))
@@ -388,7 +482,7 @@ public class Interface
 			}
 			catch(IllegalArgumentException e)
 			{
-				targetStateId = ResourceHelper.stateIdForLabel(
+				targetStateId = resourceHelper.stateIdForLabel(
 					resource,
 					targetState);
 			}

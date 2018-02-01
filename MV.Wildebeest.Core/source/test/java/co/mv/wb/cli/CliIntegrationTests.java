@@ -16,9 +16,10 @@
 
 package co.mv.wb.cli;
 
-import co.mv.wb.FakeLogger;
-import co.mv.wb.Interface;
 import co.mv.wb.Instance;
+import co.mv.wb.Interface;
+import co.mv.wb.Logger;
+import co.mv.wb.framework.PredicateMatcher;
 import co.mv.wb.plugin.database.DatabaseHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlUtil;
@@ -26,10 +27,14 @@ import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import co.mv.wb.plugin.sqlserver.SqlServerDatabaseInstance;
 import co.mv.wb.plugin.sqlserver.SqlServerUtil;
 import co.mv.wb.service.MessagesException;
+import org.junit.Test;
+import org.mockito.Matchers;
+
 import java.io.File;
 import java.sql.SQLException;
-import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class CliIntegrationTests
 {
@@ -197,10 +202,10 @@ public class CliIntegrationTests
 		}
 	}
 	
-	@Test public void mySqlDatabaseMigrateToInvalidStateLabel() throws SQLException, MessagesException
+	@Test public void mySqlDatabaseMigrateToInvalidStateLabel()
 	{
 		// Setup
-        FakeLogger logger = new FakeLogger();
+		Logger logger = mock(Logger.class);
 		WildebeestCommand wb = new WildebeestCommand();
         wb.setLogger(logger);
 
@@ -213,21 +218,25 @@ public class CliIntegrationTests
             "--targetState:   "
         });
 
-        assertTrue(
-            "InvalidStateSpecifiedException expected to be thrown and logged",
-            logger.hasInvalidStateSpecifiedException());
-        assertEquals(
-            "e.specifiedState",
-            "   ",
-            logger.getInvalidStateSpecifiedException().getSpecifiedState());
+        // Verify
+		verify(logger).invalidStateSpecified(Matchers.argThat(new PredicateMatcher<>(
+			e -> "   ".equals(e.getSpecifiedState()))));
 	}
-	
+
 	@Test public void mySqlDatabaseMigrateToUnknownStateLabel() throws SQLException, MessagesException
 	{
+
+		//
 		// Setup
-        FakeLogger logger = new FakeLogger();
+		//
+
+        Logger logger = mock(Logger.class);
 		WildebeestCommand wb = new WildebeestCommand();
         wb.setLogger(logger);
+
+        //
+        // Execute
+		//
 
         // Create a database that is already in a state that matches a defined state in a Wildebeest resource.
         //
@@ -241,13 +250,12 @@ public class CliIntegrationTests
             "--targetState:Foo"
         });
 
-        assertTrue(
-            "UnknownStateSpecifiedException expected to be thrown and logged",
-            logger.hasUnknownStateSpecifiedException());
-        assertEquals(
-            "e.specifiedState",
-            "Foo",
-            logger.getUnknownStateSpecifiedException().getSpecifiedState());
+        //
+		// Verify
+		//
+
+		verify(logger).unknownStateSpecified(Matchers.argThat(new PredicateMatcher<>(
+			e -> "Foo".equals(e.getSpecifiedState()))));
 	}
 	
 	//
@@ -266,13 +274,13 @@ public class CliIntegrationTests
 			"--targetState:Core Schema Loaded"
 		};
 		
-        Instance instance = null;
-        
+        // Execute and Verify
+		Instance instance = null;
+
 		try
 		{
             instance = Interface.loadInstance(new File("SqlServerDatabase/staging_db.wbinstance.xml"));
 
-            // Execute
             wb.run(args);
 		}
 		finally
@@ -301,6 +309,7 @@ public class CliIntegrationTests
 			"--targetState:434fb1fd-e903-4b0f-a2b3-b1014360f799"
 		};
 
+		// Execute and Verify
         Instance instance = null;
         
 		try
@@ -329,5 +338,4 @@ public class CliIntegrationTests
             }
 		}
 	}
-	
 }

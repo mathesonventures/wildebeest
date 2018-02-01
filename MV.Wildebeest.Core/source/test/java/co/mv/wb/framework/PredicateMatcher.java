@@ -14,15 +14,33 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.plugin.base;
+package co.mv.wb.framework;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses(
+import java.util.function.Function;
+
+public class PredicateMatcher<T> extends BaseMatcher<T>
 {
-})
-public class AllUnitTests
-{
+	private Function<T, Boolean> _predicate;
+
+	public PredicateMatcher(Function<T, Boolean> predicate)
+	{
+		if (predicate == null) { throw new IllegalArgumentException("predicate cannot be null"); }
+
+		_predicate = predicate;
+	}
+
+	@Override public boolean matches(Object o)
+	{
+		T t = (T)o;
+
+		return _predicate.apply(t);
+	}
+
+	@Override public void describeTo(Description description)
+	{
+		throw new RuntimeException("not implemented");
+	}
 }

@@ -122,7 +122,13 @@ public class PrintStreamLogger implements Logger
             "The state \"%s\" could not be found in this resource",
             e.getSpecifiedState()));
     }
-    
+
+	@Override public void targetNotSpecified(TargetNotSpecifiedException e)
+	{
+		logLine(String.format(
+			"No target was specified and the resource does not have a default target set"));
+	}
+
 	@Override public void migrationStart(
 		Resource resource,
 		Migration migration,

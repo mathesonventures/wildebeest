@@ -17,6 +17,7 @@
 package co.mv.wb;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -65,4 +66,16 @@ public interface Resource
 	 * @since                                   1.0
 	 */
 	List<Migration> getMigrations();
+
+	/**
+	 * Gets the optional default target state for migrations where no migration is specified to Wildebeest.  This allows
+	 * users to migrate a resource to it's main / default state without having to first read the definition to figure
+	 * out what that state is.
+	 *
+	 * The default target is used for migrate commands only.  Jumpstate commands do not use the default target.
+	 *
+	 * @return                                  the optional default target for this Resource.
+	 * @since                                   4.0
+	 */
+	Optional<String> getDefaultTarget();
 }

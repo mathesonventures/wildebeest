@@ -26,6 +26,7 @@
             <mvnpackage groupId="MV" artifactId="MV.Protium.System" version="1.1.319.177" groups="tlc,tlr" />
             <mvnpackage groupId="MV" artifactId="MV.Helium.TestFramework" version="1.0.97.93" groups="tlc,tlr" />
             <mvnpackage groupId="javax" artifactId="javaee-api" version="7.0" groups="tlc,tlr" />
+            <mvnpackage groupId="org.mockito" artifactId="mockito-all" version="1.10.19" groups="tlc,tlr" />
 
         </packages>
     </dep>

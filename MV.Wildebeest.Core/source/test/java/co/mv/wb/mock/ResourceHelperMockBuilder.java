@@ -14,15 +14,38 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.plugin.base;
+package co.mv.wb.mock;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses(
+import java.util.UUID;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+public class ResourceHelperMockBuilder
 {
-})
-public class AllUnitTests
-{
+	private ResourceHelper _resourceHelper;
+
+	public ResourceHelperMockBuilder()
+	{
+		_resourceHelper = mock(ResourceHelper.class);
+	}
+
+	public ResourceHelperMockBuilder withStateIdForLabel(
+		String label,
+		UUID stateId)
+	{
+		when(_resourceHelper.stateIdForLabel(any(Resource.class), eq(label))).thenReturn(stateId);
+
+		return this;
+	}
+
+	public ResourceHelper get()
+	{
+		return _resourceHelper;
+	}
 }
