@@ -25,18 +25,18 @@ import co.mv.wb.Instance;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.LoaderFault;
+import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.ImmutableAssertionResult;
@@ -69,15 +69,12 @@ public class WildebeestApiImpl implements WildebeestApi
 	 * ResourceHelper.
 	 * 
 	 * @param       output                      the PrintStream that should be used for output to the user.
-	 * @param       resourceHelper              the ResourceHelper that implements internal Wildebeest logic.
 	 * @since                                   1.0
 	 */
 	public WildebeestApiImpl(
-		PrintStream output,
-		ResourceHelper resourceHelper)
+		PrintStream output)
 	{
 		this.setOutput(output);
-		this.setResourceHelper(resourceHelper);
 	}
 
 	// <editor-fold desc="Output" defaultstate="collapsed">
@@ -194,46 +191,6 @@ public class WildebeestApiImpl implements WildebeestApi
 
 	private boolean hasMigrationPlugins() {
 		return _migrationPlugins_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="ResourceHelper" defaultstate="collapsed">
-
-	private ResourceHelper _resourceHelper = null;
-	private boolean _resourceHelper_set = false;
-
-	private ResourceHelper getResourceHelper() {
-		if(!_resourceHelper_set) {
-			throw new IllegalStateException("resourceHelper not set.");
-		}
-		if(_resourceHelper == null) {
-			throw new IllegalStateException("resourceHelper should not be null");
-		}
-		return _resourceHelper;
-	}
-
-	private void setResourceHelper(
-		ResourceHelper value) {
-		if(value == null) {
-			throw new IllegalArgumentException("resourceHelper cannot be null");
-		}
-		boolean changing = !_resourceHelper_set || _resourceHelper != value;
-		if(changing) {
-			_resourceHelper_set = true;
-			_resourceHelper = value;
-		}
-	}
-
-	private void clearResourceHelper() {
-		if(_resourceHelper_set) {
-			_resourceHelper_set = true;
-			_resourceHelper = null;
-		}
-	}
-
-	private boolean hasResourceHelper() {
-		return _resourceHelper_set;
 	}
 
 	// </editor-fold>
@@ -393,12 +350,11 @@ public class WildebeestApiImpl implements WildebeestApi
 			IndeterminateStateException,
 			InvalidStateSpecifiedException,
 			MigrationFailedException,
-			MigrationNotPossibleException,
 			UnknownStateSpecifiedException
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (targetState == null) { throw new IllegalArgumentException("targetState cannot be null"); }
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
+		if (targetState == null) throw new ArgumentNullException("targetState");
 
 		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
 			this.getResourcePlugins(),
@@ -415,21 +371,78 @@ public class WildebeestApiImpl implements WildebeestApi
 			throw new TargetNotSpecifiedException();
 		}
 
-		UUID targetStateId = getTargetStateId(
-			this.getResourceHelper(),
+		UUID targetStateId = WildebeestApiImpl.getTargetStateId(
 			resource,
 			ts.get());
 
-		this.getResourceHelper().migrate(
-			this,
-			this.getOutput(),
+		State currentState = resourcePlugin.currentState(
 			resource,
-			resourcePlugin,
-			instance,
-			this.getMigrationPlugins(),
-			targetStateId);
+			instance);
+
+		UUID currentStateId = currentState == null ? null : currentState.getStateId();
+
+		List<List<Migration>> paths = new ArrayList<>();
+		List<Migration> thisPath = new ArrayList<>();
+
+		WildebeestApiImpl.findPaths(resource, paths, thisPath, currentStateId, targetStateId);
+
+		if (paths.size() != 1)
+		{
+			throw new RuntimeException("multiple possible paths found");
+		}
+
+		List<Migration> path = paths.get(0);
+
+		for (Migration migration : path)
+		{
+			MigrationPlugin migrationPlugin = this.getMigrationPlugins().get(migration.getClass());
+
+			if (migrationPlugin == null)
+			{
+				throw new RuntimeException(String.format(
+					"No MigrationPlugin found for migration of type %s",
+					migration.getClass().getName()));
+			}
+
+			Optional<State> fromState = migration.getFromStateId().map(stateId -> Wildebeest.stateForId(
+				resource,
+				stateId));
+			Optional<State> toState = migration.getToStateId().map(stateId -> Wildebeest.stateForId(
+				resource,
+				stateId));
+
+			// Migrate to the next state
+			this.getOutput().println(OutputFormatter.migrationStart(
+				resource,
+				migration,
+				fromState,
+				toState));
+
+			migrationPlugin.perform(
+				this.getOutput(),
+				migration,
+				instance);
+
+			this.getOutput().println(OutputFormatter.migrationComplete(
+				resource,
+				migration));
+
+			// Update the state
+			resourcePlugin.setStateId(
+				this.getOutput(),
+				resource,
+				instance,
+				migration.getToStateId().get());
+
+			// Assert the new state
+			List<AssertionResult> assertionResults = this.assertState(
+				resource,
+				instance);
+
+			WildebeestApiImpl.throwIfFailed(migration.getToStateId().get(), assertionResults);
+		}
 	}
-	
+
 	public void jumpstate(
 		Resource resource,
 		Instance instance,
@@ -452,27 +465,60 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource.getType());
 
 		UUID targetStateId = getTargetStateId(
-			this.getResourceHelper(),
 			resource,
 			targetState);
 
-		this.getResourceHelper().jumpstate(
-			this,
+		State state = Wildebeest.stateForId(
+			resource,
+			targetStateId);
+
+		if (targetState == null)
+		{
+			throw new JumpStateFailedException("This resource does not have a state with ID " +
+				targetStateId.toString());
+		}
+
+		// Assert the new state
+		List<AssertionResult> assertionResults = this.assertState(
+			resource,
+			instance);
+
+		WildebeestApiImpl.throwIfFailed(state.getStateId(), assertionResults);
+
+		resourcePlugin.setStateId(
 			this.getOutput(),
 			resource,
-			resourcePlugin,
 			instance,
 			targetStateId);
 	}
 
+	private static UUID stateIdForLabel(
+		Resource resource,
+		String label)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		if (label == null) { throw new IllegalArgumentException("label cannot be null"); }
+		if ("".equals(label)) { throw new IllegalArgumentException("label cannot be empty"); }
+
+		State result = null;
+
+		for (State check : resource.getStates())
+		{
+			if (check.getLabel().map(label::equals).orElse(false))
+			{
+				result = check;
+			}
+		}
+
+		return result == null ? null : result.getStateId();
+	}
+
 	private static UUID getTargetStateId(
-		ResourceHelper resourceHelper,
 		Resource resource,
 		String targetState) throws
             InvalidStateSpecifiedException,
             UnknownStateSpecifiedException
 	{
-		if (resourceHelper == null) { throw new IllegalArgumentException("resourceHelper cannot be null"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 
 		final String stateSpecificationRegex = "[a-zA-Z0-9][a-zA-Z0-9\\-\\_ ]+[a-zA-Z0-9]";
@@ -490,7 +536,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			}
 			catch(IllegalArgumentException e)
 			{
-				targetStateId = resourceHelper.stateIdForLabel(
+				targetStateId = WildebeestApiImpl.stateIdForLabel(
 					resource,
 					targetState);
 			}
@@ -568,5 +614,61 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		return resourcePlugin;
+	}
+
+	private static void throwIfFailed(
+		UUID stateId,
+		List<AssertionResult> assertionResults) throws AssertionFailedException
+	{
+		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
+		if (assertionResults == null) { throw new IllegalArgumentException("assertionResults cannot be null"); }
+
+		// If any assertions failed, throw
+		for(AssertionResult assertionResult : assertionResults)
+		{
+			if (!assertionResult.getResult())
+			{
+				throw new AssertionFailedException(stateId, assertionResults);
+			}
+		}
+	}
+
+	private static void findPaths(
+		Resource resource,
+		List<List<Migration>> paths,
+		List<Migration> thisPath,
+		UUID fromStateId,
+		UUID targetStateId)
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource"); }
+		if (paths == null) { throw new IllegalArgumentException("paths"); }
+		if (thisPath == null) { throw new IllegalArgumentException("thisPath"); }
+
+		// Have we reached the target state?
+		if ((fromStateId == null && targetStateId == null) ||
+			(fromStateId != null && fromStateId.equals(targetStateId)))
+		{
+			paths.add(thisPath);
+		}
+
+		// If we have not reached the target state, keep traversing the graph
+		else
+		{
+			resource.getMigrations()
+				.stream()
+				.filter(m ->
+					(!m.getFromStateId().isPresent() && fromStateId == null) ||
+						(m.getFromStateId().isPresent() && m.getFromStateId().equals(fromStateId)))
+				.forEach(
+					migration ->
+					{
+						State toState = Wildebeest.stateForId(
+							resource,
+							migration.getToStateId().get());
+						List<Migration> thisPathCopy = new ArrayList<>(thisPath);
+						thisPathCopy.add(migration);
+						findPaths(resource, paths, thisPathCopy, toState.getStateId(), targetStateId);
+					});
+		}
 	}
 }

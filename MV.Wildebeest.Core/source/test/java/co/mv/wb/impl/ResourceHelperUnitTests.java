@@ -22,14 +22,16 @@ import co.mv.wb.AssertionResult;
 import co.mv.wb.Asserts;
 import co.mv.wb.ExpectException;
 import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
@@ -79,11 +81,7 @@ public class ResourceHelperUnitTests
 		
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		// Execute
 		List<AssertionResult> results = wildebeestApi.assertState(
@@ -118,11 +116,7 @@ public class ResourceHelperUnitTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		// Execute
 		List<AssertionResult> results = wildebeestApi.assertState(
@@ -165,11 +159,7 @@ public class ResourceHelperUnitTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		// Execute
 		List<AssertionResult> results = wildebeestApi.assertState(
@@ -206,14 +196,16 @@ public class ResourceHelperUnitTests
 	//
 
 	@Test public void migrate_nonExistentToFirstState_succeeds() throws
-		IndeterminateStateException,
 		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
-		MigrationFailedException
+		MigrationFailedException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		// Setup
 		PrintStream output = System.out;
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -234,21 +226,13 @@ public class ResourceHelperUnitTests
 		
 		FakeInstance instance = new FakeInstance();
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		// Execute
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			state1Id);
+			Optional.of(state1Id.toString()));
 		
 		// Verify
 		assertEquals("instance.tag", "foo", instance.getTag());
@@ -256,10 +240,13 @@ public class ResourceHelperUnitTests
 	}
 	
 	@Test public void migrate_nonExistentToDeepState_succeeds() throws
-		IndeterminateStateException,
 		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
-		MigrationFailedException
+		MigrationFailedException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		
 		//
@@ -269,7 +256,6 @@ public class ResourceHelperUnitTests
 		PrintStream output = System.out;
 
 		// The resource
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -322,24 +308,16 @@ public class ResourceHelperUnitTests
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		//
 		// Execute
 		//
-		
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			state3.getStateId());
+			Optional.of(state3.getStateId().toString()));
 		
 		//
 		// Verify
@@ -350,10 +328,13 @@ public class ResourceHelperUnitTests
 	}
 	
 	@Test public void migrate_nonExistentToDeepStateWithMultipleBranches_succeeds() throws
-		IndeterminateStateException,
 		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
-		MigrationFailedException
+		MigrationFailedException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		
 		//
@@ -451,24 +432,16 @@ public class ResourceHelperUnitTests
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		//
 		// Execute
 		//
-		
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			stateB3Id);
+			Optional.of(stateB3Id.toString()));
 		
 		//
 		// Verify
@@ -489,10 +462,13 @@ public class ResourceHelperUnitTests
 	}
 	
 	@Test public void migrate_toSameState_succeeds() throws
-		IndeterminateStateException,
 		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
-		MigrationFailedException
+		MigrationFailedException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		
 		//
@@ -530,33 +506,21 @@ public class ResourceHelperUnitTests
 		// Instance
 		FakeInstance instance = new FakeInstance();
 		
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
-
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			state1Id);
+			Optional.of(state1Id.toString()));
 		
 		//
 		// Execute
 		//
-		
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			state1Id);
+			Optional.of(state1Id.toString()));
 		
 		//
 		// Verify
@@ -567,10 +531,13 @@ public class ResourceHelperUnitTests
 	}
 	
 	@Ignore @Test public void migrate_stateToNonExistent_succeeds() throws
-		IndeterminateStateException,
 		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
-		MigrationFailedException
+		MigrationFailedException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		
 		//
@@ -608,33 +575,21 @@ public class ResourceHelperUnitTests
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
-
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			state1Id);
+			Optional.of(state1Id.toString()));
 
 		//
 		// Execute
 		//
-		
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			null);
+			Optional.empty());
 
 		//
 		// Verify
@@ -685,11 +640,7 @@ public class ResourceHelperUnitTests
 		final FakeInstance instance = new FakeInstance();
 		instance.setTag("Bar");
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		//
 		// Execute and Verify
@@ -699,13 +650,10 @@ public class ResourceHelperUnitTests
 		{
 			@Override public void invoke() throws Exception
 			{
-				resourceHelper.jumpstate(
-					wildebeestApi,
-					output,
+				wildebeestApi.jumpstate(
 					resource,
-					resourcePlugin,
 					instance,
-					state1Id);
+					state1Id.toString());
 			}
 
 			@Override public void verify(Exception e)
@@ -742,11 +690,7 @@ public class ResourceHelperUnitTests
 		// Target State ID
 		final UUID targetStateId = UUID.randomUUID();
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		//
 		// Execute and Verify
@@ -756,13 +700,10 @@ public class ResourceHelperUnitTests
 		{
 			@Override public void invoke() throws Exception
 			{
-				resourceHelper.jumpstate(
-					wildebeestApi,
-					output,
+				wildebeestApi.jumpstate(
 					resource,
-					resourcePlugin,
 					instance,
-					targetStateId);
+					targetStateId.toString());
 			}
 
 			@Override public void verify(Exception e)
@@ -781,7 +722,9 @@ public class ResourceHelperUnitTests
 	@Test public void jumpstate_existentState_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		JumpStateFailedException
+		InvalidStateSpecifiedException,
+		JumpStateFailedException,
+		UnknownStateSpecifiedException
 	{
 		
 		//
@@ -791,7 +734,6 @@ public class ResourceHelperUnitTests
 		PrintStream output = System.out;
 
 		// Resource
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -808,23 +750,16 @@ public class ResourceHelperUnitTests
 		final FakeInstance instance = new FakeInstance();
 		instance.setTag("Foo");
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		//
 		// Execute
 		//
 
-		resourceHelper.jumpstate(
-			wildebeestApi,
-			output,
+		wildebeestApi.jumpstate(
 			resource,
-			resourcePlugin,
 			instance,
-			state1Id);
+			state1Id.toString());
 
 		//
 		// Verify

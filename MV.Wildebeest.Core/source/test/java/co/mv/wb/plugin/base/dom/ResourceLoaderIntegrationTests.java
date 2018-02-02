@@ -19,22 +19,20 @@ package co.mv.wb.plugin.base.dom;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
-import co.mv.wb.ResourcePlugin;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
-import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
 import co.mv.wb.plugin.mysql.MySqlProperties;
 import co.mv.wb.plugin.mysql.MySqlUtil;
 import org.junit.Test;
@@ -42,8 +40,6 @@ import org.junit.Test;
 import java.io.File;
 import java.io.PrintStream;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -54,11 +50,14 @@ public class ResourceLoaderIntegrationTests
 	@Test public void loadAndMigrateMySqlResourceFromXml() throws
 		AssertionFailedException,
 		IndeterminateStateException,
+		InvalidStateSpecifiedException,
+		LoaderFault,
 		MigrationFailedException,
 		MigrationNotPossibleException,
-		LoaderFault,
 		PluginBuildException,
-		SQLException
+		SQLException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		
 		//
@@ -66,8 +65,6 @@ public class ResourceLoaderIntegrationTests
 		//
 
 		PrintStream output = System.out;
-
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
 		ProductCatalogueMySqlDatabaseResource productCatalogueResource = new ProductCatalogueMySqlDatabaseResource();
 
@@ -87,7 +84,9 @@ public class ResourceLoaderIntegrationTests
 			MySqlProperties.get().getPassword(),
 			databaseName,
 			null);
-		
+
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+
 		//
 		// Execute - Load
 		//
@@ -139,25 +138,12 @@ public class ResourceLoaderIntegrationTests
 		// Execute - Migrate
 		//
 
-		ResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
-			resourceHelper);
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
-
-		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-
 		try
 		{
-			resourceHelper.migrate(
-				wildebeestApi,
-				output,
+			wildebeestApi.migrate(
 				resource,
-				resourcePlugin,
 				instance,
-				migrationPlugins,
-				ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded);
+				Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded.toString()));
 		}
 		finally
 		{

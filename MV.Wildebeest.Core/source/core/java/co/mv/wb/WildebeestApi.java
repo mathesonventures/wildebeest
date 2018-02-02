@@ -140,9 +140,9 @@ public interface WildebeestApi
 		Resource resource,
 		Instance instance,
 		String targetState) throws
-		AssertionFailedException,
-		IndeterminateStateException,
-		InvalidStateSpecifiedException,
-		JumpStateFailedException,
-		UnknownStateSpecifiedException;
+			AssertionFailedException,
+			IndeterminateStateException,
+			InvalidStateSpecifiedException,
+			JumpStateFailedException,
+			UnknownStateSpecifiedException;
 }

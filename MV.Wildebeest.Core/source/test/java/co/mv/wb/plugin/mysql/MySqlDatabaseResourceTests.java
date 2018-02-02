@@ -18,10 +18,8 @@ package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
 import co.mv.wb.WildebeestFactory;
-import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import org.junit.Assert;
@@ -45,12 +43,9 @@ public class MySqlDatabaseResourceTests
 	@Test public void currentStateForNonExistentDatabaseSucceds() throws IndeterminateStateException
 	{
 		// Setup
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
-			resourceHelper);
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -78,8 +73,6 @@ public class MySqlDatabaseResourceTests
 	@Test public void currentStateForExistentDatabaseSucceds() throws IndeterminateStateException, SQLException
 	{
 		// Setup
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		UUID resourceId = UUID.randomUUID();
@@ -98,8 +91,7 @@ public class MySqlDatabaseResourceTests
 				"wb_state",
 				knownStateId);
 
-			MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
-				resourceHelper);
+			MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
 
 			Resource resource = new ResourceImpl(
 				resourceId,
@@ -133,8 +125,6 @@ public class MySqlDatabaseResourceTests
 	@Test public void currentStateForDatabaseWithUnknownStateIdDeclaredFails() throws SQLException
 	{
 		// Setup
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
 		UUID resourceId = UUID.randomUUID();
@@ -148,8 +138,7 @@ public class MySqlDatabaseResourceTests
 			"wb_state",
 			knownStateId);
 		
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
-			resourceHelper);
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
 
 		Resource resource = new ResourceImpl(
 			resourceId,

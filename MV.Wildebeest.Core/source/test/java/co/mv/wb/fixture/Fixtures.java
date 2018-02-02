@@ -38,11 +38,6 @@ public class Fixtures
 		return new WildebeestApiMockBuilder();
 	}
 
-	public static ResourceHelperMockBuilder resourceHelper()
-	{
-		return new ResourceHelperMockBuilder();
-	}
-
 	public static Resource fakeResource()
 	{
 		return new ResourceImpl(

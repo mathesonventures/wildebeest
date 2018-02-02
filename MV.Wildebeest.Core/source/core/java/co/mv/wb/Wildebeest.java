@@ -14,44 +14,36 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.fixture;
-
-import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
+package co.mv.wb;
 
 import java.util.UUID;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 /**
- * Fluent-style builder for creating Mockito-based mocks of {@link ResourceHelper}.
+ * Global functions for Wildebeest.
  *
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class ResourceHelperMockBuilder
+public class Wildebeest
 {
-	private ResourceHelper _resourceHelper;
-
-	public ResourceHelperMockBuilder()
-	{
-		_resourceHelper = mock(ResourceHelper.class);
-	}
-
-	public ResourceHelperMockBuilder withStateIdForLabel(
-		String label,
+	public static State stateForId(
+		Resource resource,
 		UUID stateId)
 	{
-		when(_resourceHelper.stateIdForLabel(any(Resource.class), eq(label))).thenReturn(stateId);
+		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
 
-		return this;
-	}
+		State result = null;
 
-	public ResourceHelper get()
-	{
-		return _resourceHelper;
+		for(State check : resource.getStates())
+		{
+			if (stateId.equals(check.getStateId()))
+			{
+				result = check;
+				break;
+			}
+		}
+
+		return result;
 	}
 }

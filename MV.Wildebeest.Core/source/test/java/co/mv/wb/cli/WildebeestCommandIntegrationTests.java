@@ -20,9 +20,7 @@ import co.mv.wb.FileLoadException;
 import co.mv.wb.Instance;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.PluginBuildException;
-import co.mv.wb.ResourceHelper;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.database.DatabaseHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
@@ -58,11 +56,7 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -105,11 +99,7 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -164,11 +154,7 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -211,11 +197,7 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -245,11 +227,7 @@ public class WildebeestCommandIntegrationTests
 
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -290,11 +268,7 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -339,11 +313,7 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,

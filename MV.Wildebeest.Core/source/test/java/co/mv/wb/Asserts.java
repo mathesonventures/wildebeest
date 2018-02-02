@@ -28,6 +28,8 @@ import org.junit.Assert;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Helpers for asserting the state of Wildebeest entities.
  *
@@ -50,8 +52,8 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
-		Assert.assertEquals(name + ".resourceId", expectedResourceId, actual.getResourceId());
-		Assert.assertEquals(name + ".name", expectedName, actual.getName());
+		assertEquals(name + ".resourceId", expectedResourceId, actual.getResourceId());
+		assertEquals(name + ".name", expectedName, actual.getName());
 	}
 	
 	public static void assertState(
@@ -63,8 +65,8 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
-		Assert.assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
-		Assert.assertEquals(name + ".label", expectedLabel, actual.getLabel());
+		assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
+		assertEquals(name + ".label", expectedLabel, actual.getLabel());
 	}
 	
 	public static void assertAssertion(
@@ -76,8 +78,8 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
-		Assert.assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
-		Assert.assertEquals(name + ".seqNum", expectedSeqNum, actual.getSeqNum());
+		assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
+		assertEquals(name + ".seqNum", expectedSeqNum, actual.getSeqNum());
 	}
 	
 	public static void assertFakeAssertion(
@@ -91,7 +93,7 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
-		Assert.assertEquals(name + ".tag", expectedTag, actual.getTag());
+		assertEquals(name + ".tag", expectedTag, actual.getTag());
 	}
 	
 	public static void assertMigration(
@@ -104,7 +106,7 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
-		Assert.assertEquals(name + ".migrationId", expectedMigrationId, actual.getMigrationId());
+		assertEquals(name + ".migrationId", expectedMigrationId, actual.getMigrationId());
 
 		if (expectedFromStateId == null)
 		{
@@ -112,7 +114,7 @@ public class Asserts
 		}
 		else
 		{
-			Assert.assertEquals(name + ".fromStateId", expectedFromStateId, actual.getFromStateId());
+			assertEquals(name + ".fromStateId", expectedFromStateId, actual.getFromStateId());
 		}
 
 		if (expectedToStateId == null)
@@ -121,7 +123,7 @@ public class Asserts
 		}
 		else
 		{
-			Assert.assertEquals(name + ".toStateId", expectedToStateId, actual.getToStateId());
+			assertEquals(name + ".toStateId", expectedToStateId, actual.getToStateId());
 		}
 	}
 	
@@ -134,8 +136,8 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
-		Assert.assertEquals(name + ".result", expectedResult, actual.getResult());
-		Assert.assertEquals(name + ".message", expectedMessage, actual.getMessage());
+		assertEquals(name + ".result", expectedResult, actual.getResult());
+		assertEquals(name + ".message", expectedMessage, actual.getMessage());
 	}
 	
 	public static void assertAssertionResult(
@@ -148,9 +150,9 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be blank"); }
 
-		Assert.assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
-		Assert.assertEquals(name + ".result", expectedResult, actual.getResult());
-		Assert.assertEquals(name + ".message", expectedMessage, actual.getMessage());
+		assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
+		assertEquals(name + ".result", expectedResult, actual.getResult());
+		assertEquals(name + ".message", expectedMessage, actual.getMessage());
 	}
 	
 	public static void assertInstance(
@@ -161,7 +163,7 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) {throw new IllegalArgumentException("name cannot be blank"); }
 		
-		Assert.assertEquals("actual.class", expectedClass, actual.getClass());
+		assertEquals("actual.class", expectedClass, actual.getClass());
 	}
 	
 	//
@@ -181,6 +183,21 @@ public class Asserts
 		result &= expectedName.equals(actual.getName());
 
 		return result;
+	}
+
+	public static void assertFakeInstance(
+		String tag,
+		Instance actual,
+		String name)
+	{
+		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
+		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+
+		assertEquals(name + ".class", FakeInstance.class, actual.getClass());
+
+		FakeInstance actualT = (FakeInstance)actual;
+
+		assertEquals(name + ".tag", tag, actualT.getTag());
 	}
 
 	public static boolean verifyFakeInstance(
@@ -206,7 +223,7 @@ public class Asserts
 
 		Asserts.assertMigration(expectedMigrationId, expectedFromStateId, expectedToStateId, actual, name);
 		
-		Assert.assertEquals(name + ".tag", expectedTag, actual.getTag());
+		assertEquals(name + ".tag", expectedTag, actual.getTag());
 	}
 
 	//
@@ -227,9 +244,9 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
-		Assert.assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
-		Assert.assertEquals(name + ".schemaName", expectedSchemaName, actual.getSchemaName());
-		Assert.assertEquals(name + ".tableName", expectedTableName, actual.getTableName());
+		assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
+		assertEquals(name + ".schemaName", expectedSchemaName, actual.getSchemaName());
+		assertEquals(name + ".tableName", expectedTableName, actual.getTableName());
 	}
 	
 	public static void assertAnsiSqlTableDoesNotExistAssertion(
@@ -246,9 +263,9 @@ public class Asserts
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 		
-		Assert.assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
-		Assert.assertEquals(name + ".schemaName", expectedSchemaName, actual.getSchemaName());
-		Assert.assertEquals(name + ".tableName", expectedTableName, actual.getTableName());
+		assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
+		assertEquals(name + ".schemaName", expectedSchemaName, actual.getSchemaName());
+		assertEquals(name + ".tableName", expectedTableName, actual.getTableName());
 	}
 	
 	//
@@ -271,11 +288,11 @@ public class Asserts
 		
 		MySqlDatabaseInstance db = (MySqlDatabaseInstance)actual;
 		
-		Assert.assertEquals("hostName", expectedHostName, db.getHostName());
-		Assert.assertEquals("port", expectedPort, db.getPort());
-		Assert.assertEquals("adminUsername", expectedAdminUsername, db.getAdminUsername());
-		Assert.assertEquals("adminPassword", expectedAdminPassword, db.getAdminPassword());
-		Assert.assertEquals("databaseName", expectedDatabaseName, db.getDatabaseName());
+		assertEquals("hostName", expectedHostName, db.getHostName());
+		assertEquals("port", expectedPort, db.getPort());
+		assertEquals("adminUsername", expectedAdminUsername, db.getAdminUsername());
+		assertEquals("adminPassword", expectedAdminPassword, db.getAdminPassword());
+		assertEquals("databaseName", expectedDatabaseName, db.getDatabaseName());
 	}
 
 	public static boolean verifyMySqlDatabaseInstance(

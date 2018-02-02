@@ -20,16 +20,17 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.WildebeestFactory;
-import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
@@ -63,7 +64,7 @@ public class MySqlTableDoesNotExistAssertionTests
 		AssertionFailedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
-		SQLException
+		SQLException, TargetNotSpecifiedException, UnknownStateSpecifiedException, InvalidStateSpecifiedException
 	{
 		 
 		//
@@ -72,16 +73,11 @@ public class MySqlTableDoesNotExistAssertionTests
 
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
-			resourceHelper);
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -125,15 +121,11 @@ public class MySqlTableDoesNotExistAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName,
 			null);
-		 
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			schemaLoaded.getStateId());
+			Optional.of(schemaLoaded.getStateId().toString()));
 		
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),
@@ -165,11 +157,14 @@ public class MySqlTableDoesNotExistAssertionTests
 	}
 	 
 	@Test public void applyForNonExistentTableSucceeds() throws
-		IndeterminateStateException,
 		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
-		SQLException
+		SQLException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		 
 		//
@@ -178,16 +173,9 @@ public class MySqlTableDoesNotExistAssertionTests
 
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
-
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
-			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -218,15 +206,11 @@ public class MySqlTableDoesNotExistAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName,
 			null);
-		 
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			created.getStateId());
+			Optional.of(created.getStateId().toString()));
 		
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
 			UUID.randomUUID(),

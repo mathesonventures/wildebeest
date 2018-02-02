@@ -20,19 +20,20 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
+import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.WildebeestFactory;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.fixture.XmlBuilder;
-import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.base.ImmutableState;
@@ -64,11 +65,14 @@ import static org.junit.Assert.assertNotNull;
 public class IntegrationTests
 {
 	@Test public void createDatabaseAddTableInsertRows() throws
-		IndeterminateStateException,
 		AssertionFailedException,
-		MigrationNotPossibleException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
 		MigrationFailedException,
-		SQLException
+		MigrationNotPossibleException,
+		SQLException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 	
 		//
@@ -77,17 +81,12 @@ public class IntegrationTests
 
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
 		// Resource
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
-			resourceHelper);
+		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -147,14 +146,10 @@ public class IntegrationTests
 		
 		try
 		{
-			resourceHelper.migrate(
-				wildebeestApi,
-				output,
+			wildebeestApi.migrate(
 				resource,
-				resourcePlugin,
 				instance,
-				migrationPlugins,
-				populated.getStateId());
+				Optional.of(populated.getStateId().toString()));
 		}
 		finally
 		{
@@ -211,20 +206,19 @@ public class IntegrationTests
 	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
 		AssertionFailedException,
 		IndeterminateStateException,
+		InvalidStateSpecifiedException,
+		LoaderFault,
 		MigrationFailedException,
 		MigrationNotPossibleException,
-		LoaderFault,
 		PluginBuildException,
-		SQLException
+		SQLException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		//
 		// Resource
@@ -267,21 +261,12 @@ public class IntegrationTests
 		// Migrate
 		//
 
-		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
-			resourceHelper);
-
-		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-
 		try
 		{
-			resourceHelper.migrate(
-				wildebeestApi,
-				output,
+			wildebeestApi.migrate(
 				resource,
-				resourcePlugin,
 				instance,
-				migrationPlugins,
-				ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded);
+				Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded.toString()));
 		}
 		finally
 		{

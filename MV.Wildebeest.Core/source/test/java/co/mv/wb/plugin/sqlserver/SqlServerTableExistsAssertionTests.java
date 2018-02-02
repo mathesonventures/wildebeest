@@ -20,16 +20,17 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.WildebeestFactory;
-import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
@@ -60,8 +61,11 @@ public class SqlServerTableExistsAssertionTests
 	@Test public void applyForExistingTableSucceeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
+		InvalidStateSpecifiedException,
 		MigrationFailedException,
-		MigrationNotPossibleException
+		MigrationNotPossibleException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		 
 		//
@@ -70,16 +74,10 @@ public class SqlServerTableExistsAssertionTests
 
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
 		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+			output);
 
 		SqlServerProperties properties = SqlServerProperties.get();
-
-		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin(
-			resourceHelper);
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -124,15 +122,11 @@ public class SqlServerTableExistsAssertionTests
 			properties.getPassword(),
 			databaseName,
 			null);
-		 
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			schemaLoaded.getStateId());
+			Optional.of(schemaLoaded.getStateId().toString()));
 		
 		SqlServerTableExistsAssertion assertion = new SqlServerTableExistsAssertion(
 			UUID.randomUUID(),
@@ -166,8 +160,11 @@ public class SqlServerTableExistsAssertionTests
 	@Test public void applyForNonExistentTableFails() throws
 		AssertionFailedException,
 		IndeterminateStateException,
+		InvalidStateSpecifiedException,
 		MigrationFailedException,
-		MigrationNotPossibleException
+		MigrationNotPossibleException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		 
 		//
@@ -176,16 +173,11 @@ public class SqlServerTableExistsAssertionTests
 
 		PrintStream output = System.out;
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
 
 		SqlServerProperties properties = SqlServerProperties.get();
 		 
-		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin(
-			resourceHelper);
+		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin();
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -217,15 +209,11 @@ public class SqlServerTableExistsAssertionTests
 			properties.getPassword(),
 			databaseName,
 			null);
-		 
-		resourceHelper.migrate(
-			wildebeestApi,
-			output,
+
+		wildebeestApi.migrate(
 			resource,
-			resourcePlugin,
 			instance,
-			migrationPlugins,
-			created.getStateId());
+			Optional.of(created.getStateId().toString()));
 		
 		SqlServerTableExistsAssertion assertion = new SqlServerTableExistsAssertion(
 			UUID.randomUUID(),

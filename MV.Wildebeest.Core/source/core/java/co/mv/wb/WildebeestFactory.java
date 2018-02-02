@@ -17,7 +17,6 @@
 package co.mv.wb;
 
 import co.mv.wb.framework.ArgumentNullException;
-import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
@@ -61,31 +60,22 @@ public class WildebeestFactory
 	{
 		if (output == null) throw new ArgumentNullException("output");
 
-		ResourceHelper resourceHelper = new ResourceHelperImpl();
-
 		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+			output);
 
-		wildebeestApi.setResourcePlugins(WildebeestFactory.getResourcePlugins(resourceHelper));
+		wildebeestApi.setResourcePlugins(WildebeestFactory.getResourcePlugins());
 		wildebeestApi.setMigrationPlugins(WildebeestFactory.getMigrationPlugins(wildebeestApi));
 
 		return wildebeestApi;
 	}
 
-	private static Map<ResourceType, ResourcePlugin> getResourcePlugins(
-		ResourceHelper resourceHelper)
+	private static Map<ResourceType, ResourcePlugin> getResourcePlugins()
 	{
-		if (resourceHelper == null) { throw new IllegalArgumentException("resourceHelper cannot be null"); }
-
 		Map<ResourceType, ResourcePlugin> result = new HashMap<>();
 
-		result.put(WildebeestFactory.MySqlDatabase, new MySqlDatabaseResourcePlugin(
-			resourceHelper));
-		result.put(WildebeestFactory.PostgreSqlDatabase, new PostgreSqlDatabaseResourcePlugin(
-			resourceHelper));
-		result.put(WildebeestFactory.SqlServerDatabase, new SqlServerDatabaseResourcePlugin(
-			resourceHelper));
+		result.put(WildebeestFactory.MySqlDatabase, new MySqlDatabaseResourcePlugin());
+		result.put(WildebeestFactory.PostgreSqlDatabase, new PostgreSqlDatabaseResourcePlugin());
+		result.put(WildebeestFactory.SqlServerDatabase, new SqlServerDatabaseResourcePlugin());
 
 		return result;
 	}

@@ -18,34 +18,18 @@ package co.mv.wb.impl;
 
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.Instance;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
-import co.mv.wb.ResourcePlugin;
-import co.mv.wb.ResourceType;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.WildebeestApi;
-import co.mv.wb.fixture.Fixtures;
-import co.mv.wb.plugin.base.ImmutableState;
-import co.mv.wb.plugin.base.ResourceImpl;
-import co.mv.wb.plugin.fake.FakeConstants;
-import co.mv.wb.plugin.fake.FakeResourcePlugin;
+import co.mv.wb.fixture.TestContext_SimpleFakeResource;
+import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import org.junit.Test;
 
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static co.mv.wb.Asserts.assertFakeInstance;
 
 /**
  * Unit tests for WildebeestApiImpl.
@@ -62,7 +46,6 @@ public class WildebeestApiImplUnitTests
 	 * @since                                   4.0
 	 */
 	@Test public void migrate_targetSpecifiedNoDefault_succeeds() throws
-		MigrationNotPossibleException,
 		IndeterminateStateException,
 		MigrationFailedException,
 		AssertionFailedException,
@@ -71,44 +54,27 @@ public class WildebeestApiImplUnitTests
 		TargetNotSpecifiedException
 	{
 		// Setup
-		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
-		resourcePlugins.put(FakeConstants.Fake, new FakeResourcePlugin());
+		PrintStream output = System.out;
 
-		Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"MyResource",
-			Optional.empty());
-
-		UUID fooId = UUID.randomUUID();
-		resource.getStates().add(new ImmutableState(
-			fooId,
-			Optional.of("foo")));
-
-		ResourceHelper resourceHelper = Fixtures
-			.resourceHelper()
-			.withStateIdForLabel("foo", fooId)
+		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
+			.create()
+			.withDefaultTarget("bar")
 			.get();
 
 		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
-			mock(PrintStream.class),
-			resourceHelper);
+			output);
 
 		// Execute
 		wildebeestApi.migrate(
-			resource,
-			mock(Instance.class),
+			context.resource,
+			context.instance,
 			Optional.of("foo"));
 
 		// Verify
-		verify(resourceHelper).migrate(
-			any(WildebeestApi.class),
-			any(PrintStream.class),
-			any(Resource.class),
-			any(ResourcePlugin.class),
-			any(Instance.class),
-			any(),
-			eq(fooId));
+		assertFakeInstance(
+			"Foo",
+			context.instance,
+			"instance");
 	}
 
 	/**
@@ -118,7 +84,6 @@ public class WildebeestApiImplUnitTests
 	 * @since                                   4.0
 	 */
 	@Test public void migrate_targetSpecifiedWithDefault_succeeds() throws
-		MigrationNotPossibleException,
 		IndeterminateStateException,
 		MigrationFailedException,
 		AssertionFailedException,
@@ -127,49 +92,24 @@ public class WildebeestApiImplUnitTests
 		TargetNotSpecifiedException
 	{
 		// Setup
-		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
-		resourcePlugins.put(FakeConstants.Fake, new FakeResourcePlugin());
-
-		Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"MyResource",
-			Optional.of("bar"));
-
-		UUID fooId = UUID.randomUUID();
-		resource.getStates().add(new ImmutableState(
-			fooId,
-			Optional.of("foo")));
-
-		UUID barId = UUID.randomUUID();
-		resource.getStates().add(new ImmutableState(
-			barId,
-			Optional.of("bar")));
-
-		ResourceHelper resourceHelper = Fixtures
-			.resourceHelper()
-			.withStateIdForLabel("foo", fooId)
+		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
+			.create()
+			.withDefaultTarget("bar")
 			.get();
 
-		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
-			mock(PrintStream.class),
-			resourceHelper);
+		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
 
 		// Execute
 		wildebeestApi.migrate(
-			resource,
-			mock(Instance.class),
+			context.resource,
+			context.instance,
 			Optional.of("foo"));
 
 		// Verify
-		verify(resourceHelper).migrate(
-			any(WildebeestApi.class),
-			any(PrintStream.class),
-			any(Resource.class),
-			any(ResourcePlugin.class),
-			any(Instance.class),
-			any(),
-			eq(fooId));
+		assertFakeInstance(
+			"Foo",
+			context.instance,
+			"instance");
 	}
 
 	/**
@@ -179,7 +119,6 @@ public class WildebeestApiImplUnitTests
 	 * @since                                   4.0
 	 */
 	@Test public void migrate_targetNotSpecifiedNoDefault_throws() throws
-		MigrationNotPossibleException,
 		AssertionFailedException,
 		UnknownStateSpecifiedException,
 		TargetNotSpecifiedException,
@@ -188,36 +127,17 @@ public class WildebeestApiImplUnitTests
 		InvalidStateSpecifiedException
 	{
 		// Setup
-		PrintStream output = System.out;
-		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
-		resourcePlugins.put(FakeConstants.Fake, new FakeResourcePlugin());
-
-		Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"MyResource",
-			Optional.empty());
-
-		UUID fooId = UUID.randomUUID();
-		resource.getStates().add(new ImmutableState(
-			fooId,
-			Optional.of("foo")));
-
-		ResourceHelper resourceHelper = Fixtures
-			.resourceHelper()
-			.withStateIdForLabel("foo", fooId)
+		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
+			.create()
 			.get();
 
-		WildebeestApiImpl iface = new WildebeestApiImpl(
-			output,
-			resourceHelper);
+		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
 
 		// Execute and Verify
-		iface.migrate(
-			resource,
-			mock(Instance.class),
+		wildebeestApi.migrate(
+			context.resource,
+			context.instance,
 			Optional.empty());
-		// TODO: Verify target not specified
 	}
 
 	/**
@@ -227,7 +147,6 @@ public class WildebeestApiImplUnitTests
 	 * @since                                   4.0
 	 */
 	@Test public void migrate_targetNotSpecifiedWithDefault_succeeds() throws
-		MigrationNotPossibleException,
 		IndeterminateStateException,
 		MigrationFailedException,
 		AssertionFailedException,
@@ -236,49 +155,26 @@ public class WildebeestApiImplUnitTests
 		TargetNotSpecifiedException
 	{
 		// Setup
-		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
-		resourcePlugins.put(FakeConstants.Fake, new FakeResourcePlugin());
+		PrintStream output =  System.out;
 
-		Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"MyResource",
-			Optional.of("bar"));
-
-		UUID fooId = UUID.randomUUID();
-		resource.getStates().add(new ImmutableState(
-			fooId,
-			Optional.of("foo")));
-
-		UUID barId = UUID.randomUUID();
-		resource.getStates().add(new ImmutableState(
-			barId,
-			Optional.of("bar")));
-
-		ResourceHelper resourceHelper = Fixtures
-			.resourceHelper()
-			.withStateIdForLabel("foo", fooId)
-			.withStateIdForLabel("bar", barId)
+		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
+			.create()
+			.withDefaultTarget("bar")
 			.get();
 
 		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
-			mock(PrintStream.class),
-			resourceHelper);
+			output);
 
 		// Execute
 		wildebeestApi.migrate(
-			resource,
-			mock(Instance.class),
+			context.resource,
+			context.instance,
 			Optional.empty());
 
 		// Verify
-		verify(resourceHelper).migrate(
-			any(WildebeestApi.class),
-			any(PrintStream.class),
-			any(Resource.class),
-			any(ResourcePlugin.class),
-			any(Instance.class),
-			any(),
-			eq(barId));
+		assertFakeInstance(
+			"Bar",
+			context.instance,
+			"instance");
 	}
 }
