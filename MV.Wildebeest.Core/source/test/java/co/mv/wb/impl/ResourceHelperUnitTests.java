@@ -30,13 +30,13 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
-import co.mv.wb.fake.FakeAssertion;
-import co.mv.wb.fake.FakeInstance;
-import co.mv.wb.fake.FakeMigration;
-import co.mv.wb.fake.FakeMigrationPlugin;
-import co.mv.wb.fake.FakeResourcePlugin;
-import co.mv.wb.fake.TagAssertion;
-import co.mv.wb.fake.TestResourceTypes;
+import co.mv.wb.plugin.fake.FakeAssertion;
+import co.mv.wb.plugin.fake.FakeConstants;
+import co.mv.wb.plugin.fake.FakeInstance;
+import co.mv.wb.plugin.fake.FakeMigration;
+import co.mv.wb.plugin.fake.FakeMigrationPlugin;
+import co.mv.wb.plugin.fake.FakeResourcePlugin;
+import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -64,7 +64,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 		
@@ -94,7 +94,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 
@@ -133,7 +133,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 
@@ -204,7 +204,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 
@@ -255,7 +255,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 
@@ -344,7 +344,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 
@@ -478,7 +478,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 
@@ -550,7 +550,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 
@@ -632,7 +632,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		final Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 		
@@ -688,7 +688,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		final Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 
@@ -744,7 +744,7 @@ public class ResourceHelperUnitTests
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
 		

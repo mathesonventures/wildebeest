@@ -17,9 +17,11 @@
 package co.mv.wb.plugin.composite;
 
 import co.mv.wb.AssertionFailedException;
+import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
@@ -31,8 +33,6 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.impl.OutputFormatter;
-import co.mv.wb.service.FileLoadException;
-import co.mv.wb.service.LoaderFault;
 
 import java.io.File;
 import java.io.PrintStream;

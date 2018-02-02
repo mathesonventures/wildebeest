@@ -17,17 +17,17 @@
 package co.mv.wb.plugin.database;
 
 import co.mv.wb.Assertion;
+import co.mv.wb.AssertionBuilder;
+import co.mv.wb.LoaderFault;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.fixturecreator.FixtureCreator;
+import co.mv.wb.fixture.FixtureCreator;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
-import co.mv.wb.service.AssertionBuilder;
-import co.mv.wb.service.LoaderFault;
-import co.mv.wb.service.dom.DomResourceLoader;
-import co.mv.wb.service.dom.database.DatabaseDoesNotExistDomAssertionBuilder;
-import co.mv.wb.service.dom.database.DatabaseExistsDomAssertionBuilder;
+import co.mv.wb.plugin.base.dom.DomResourceLoader;
+import co.mv.wb.plugin.database.dom.DatabaseDoesNotExistDomAssertionBuilder;
+import co.mv.wb.plugin.database.dom.DatabaseExistsDomAssertionBuilder;
 import org.junit.Test;
 
 import java.io.File;

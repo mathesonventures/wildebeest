@@ -20,27 +20,27 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
+import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PluginBuildException;
-import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
-import co.mv.wb.fixturecreator.XmlBuilder;
+import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
+import co.mv.wb.fixture.XmlBuilder;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ImmutableState;
 import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
+import co.mv.wb.plugin.base.dom.DomInstanceLoader;
+import co.mv.wb.plugin.base.dom.DomPlugins;
+import co.mv.wb.plugin.base.dom.DomResourceLoader;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
-import co.mv.wb.service.LoaderFault;
-import co.mv.wb.service.dom.DomInstanceLoader;
-import co.mv.wb.service.dom.DomPlugins;
-import co.mv.wb.service.dom.DomResourceLoader;
 import org.junit.Test;
 
 import java.io.File;
@@ -53,6 +53,12 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * Integration tests for the MySQL plugin suite.
+ *
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class IntegrationTests
 {
 	@Test public void createDatabaseAddTableInsertRows() throws

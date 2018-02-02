@@ -22,15 +22,15 @@ import co.mv.wb.Instance;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.Mocks;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.fake.FakeResourcePlugin;
-import co.mv.wb.fake.TestResourceTypes;
+import co.mv.wb.fixture.Fixtures;
+import co.mv.wb.plugin.fake.FakeConstants;
+import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import org.junit.Test;
 
 import java.io.PrintStream;
@@ -69,11 +69,11 @@ public class WildebeestApiImplUnitTests
 	{
 		// Setup
 		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
-		resourcePlugins.put(TestResourceTypes.Fake, new FakeResourcePlugin());
+		resourcePlugins.put(FakeConstants.Fake, new FakeResourcePlugin());
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"MyResource",
 			Optional.empty());
 
@@ -82,7 +82,7 @@ public class WildebeestApiImplUnitTests
 			fooId,
 			Optional.of("foo")));
 
-		ResourceHelper resourceHelper = Mocks
+		ResourceHelper resourceHelper = Fixtures
 			.resourceHelper()
 			.withStateIdForLabel("foo", fooId)
 			.get();
@@ -124,11 +124,11 @@ public class WildebeestApiImplUnitTests
 	{
 		// Setup
 		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
-		resourcePlugins.put(TestResourceTypes.Fake, new FakeResourcePlugin());
+		resourcePlugins.put(FakeConstants.Fake, new FakeResourcePlugin());
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"MyResource",
 			Optional.of("bar"));
 
@@ -142,7 +142,7 @@ public class WildebeestApiImplUnitTests
 			barId,
 			Optional.of("bar")));
 
-		ResourceHelper resourceHelper = Mocks
+		ResourceHelper resourceHelper = Fixtures
 			.resourceHelper()
 			.withStateIdForLabel("foo", fooId)
 			.get();
@@ -185,11 +185,11 @@ public class WildebeestApiImplUnitTests
 		// Setup
 		PrintStream output = System.out;
 		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
-		resourcePlugins.put(TestResourceTypes.Fake, new FakeResourcePlugin());
+		resourcePlugins.put(FakeConstants.Fake, new FakeResourcePlugin());
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"MyResource",
 			Optional.empty());
 
@@ -198,7 +198,7 @@ public class WildebeestApiImplUnitTests
 			fooId,
 			Optional.of("foo")));
 
-		ResourceHelper resourceHelper = Mocks
+		ResourceHelper resourceHelper = Fixtures
 			.resourceHelper()
 			.withStateIdForLabel("foo", fooId)
 			.get();
@@ -232,11 +232,11 @@ public class WildebeestApiImplUnitTests
 	{
 		// Setup
 		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
-		resourcePlugins.put(TestResourceTypes.Fake, new FakeResourcePlugin());
+		resourcePlugins.put(FakeConstants.Fake, new FakeResourcePlugin());
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			TestResourceTypes.Fake,
+			FakeConstants.Fake,
 			"MyResource",
 			Optional.of("bar"));
 
@@ -250,7 +250,7 @@ public class WildebeestApiImplUnitTests
 			barId,
 			Optional.of("bar")));
 
-		ResourceHelper resourceHelper = Mocks
+		ResourceHelper resourceHelper = Fixtures
 			.resourceHelper()
 			.withStateIdForLabel("foo", fooId)
 			.withStateIdForLabel("bar", barId)

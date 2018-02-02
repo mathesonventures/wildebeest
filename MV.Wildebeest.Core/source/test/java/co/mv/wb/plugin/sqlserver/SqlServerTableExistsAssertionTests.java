@@ -27,7 +27,6 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
-import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ImmutableState;
 import co.mv.wb.impl.ResourceHelperImpl;
@@ -35,6 +34,7 @@ import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
+import co.mv.wb.plugin.fake.FakeInstance;
 import org.junit.Test;
 
 import java.io.PrintStream;
@@ -47,6 +47,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+/**
+ * Unit tests for {@link SqlServerTableExistsAssertion}.
+ *
+ * @author                                      Brendon Matheson
+ * @since                                       2.0
+ */
 public class SqlServerTableExistsAssertionTests
 {
 	@Test public void applyForExistingTableSucceeds() throws

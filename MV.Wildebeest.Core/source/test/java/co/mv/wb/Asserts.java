@@ -16,16 +16,22 @@
 
 package co.mv.wb;
 
-import co.mv.wb.fake.FakeAssertion;
-import co.mv.wb.fake.FakeMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
+import co.mv.wb.plugin.fake.FakeAssertion;
+import co.mv.wb.plugin.fake.FakeMigration;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import org.junit.Assert;
 
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Helpers for asserting the state of Wildebeest entities.
+ *
+ * @author                                      Brendon Matheson
+ * @since                                       1.0
+ */
 public class Asserts
 {
 	

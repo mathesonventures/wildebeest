@@ -22,8 +22,12 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
-	AllUnitTests.class,
-	AllIntegrationTests.class
+	co.mv.wb.plugin.base.AllTests.class,
+	co.mv.wb.plugin.composite.AllTests.class,
+	co.mv.wb.plugin.database.AllTests.class,
+	co.mv.wb.plugin.mysql.AllTests.class,
+	co.mv.wb.plugin.postgresql.AllTests.class,
+	co.mv.wb.plugin.sqlserver.AllTests.class
 })
 public class AllTests
 {

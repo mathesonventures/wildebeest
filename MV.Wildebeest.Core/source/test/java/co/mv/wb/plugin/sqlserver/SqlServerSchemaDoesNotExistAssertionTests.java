@@ -21,8 +21,8 @@ import co.mv.wb.Asserts;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.fake.FakeInstance;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.plugin.fake.FakeInstance;
 import org.junit.Test;
 
 import java.io.PrintStream;
@@ -33,6 +33,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+/**
+ * Unit tests for {@link SqlServerSchemaDoesNotExistAssertion}.
+ *
+ * @author                              Brendon Matheson
+ * @since                               2.0
+ */
 public class SqlServerSchemaDoesNotExistAssertionTests
 {
 	@Test public void applyForExistingSchemaFails() throws

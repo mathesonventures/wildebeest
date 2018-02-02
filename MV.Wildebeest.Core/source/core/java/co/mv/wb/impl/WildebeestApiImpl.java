@@ -17,10 +17,12 @@
 package co.mv.wb.impl;
 
 import co.mv.wb.AssertionFailedException;
+import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.JumpStateFailedException;
+import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
@@ -33,16 +35,12 @@ import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.service.FileLoadException;
-import co.mv.wb.service.InstanceLoaderFault;
-import co.mv.wb.service.LoaderFault;
-import co.mv.wb.service.dom.DomInstanceLoader;
-import co.mv.wb.service.dom.DomPlugins;
-import co.mv.wb.service.dom.DomResourceLoader;
+import co.mv.wb.plugin.base.dom.DomInstanceLoader;
+import co.mv.wb.plugin.base.dom.DomPlugins;
+import co.mv.wb.plugin.base.dom.DomResourceLoader;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -289,12 +287,6 @@ public class WildebeestApiImpl implements WildebeestApi
 		try
 		{
 			instanceXml = readAllText(instanceFile);
-		}
-		catch (FileNotFoundException ex)
-		{
-			throw new InstanceLoaderFault(String.format(
-				"Instance file %s does not exist",
-				instanceFile.getAbsolutePath()));
 		}
 		catch (IOException ex)
 		{
