@@ -28,11 +28,13 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.WildebeestFactory;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.fixture.XmlBuilder;
 import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
+import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
@@ -76,6 +78,10 @@ public class IntegrationTests
 		PrintStream output = System.out;
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
@@ -142,6 +148,7 @@ public class IntegrationTests
 		try
 		{
 			resourceHelper.migrate(
+				wildebeestApi,
 				output,
 				resource,
 				resourcePlugin,
@@ -215,6 +222,10 @@ public class IntegrationTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		//
 		// Resource
 		//
@@ -264,6 +275,7 @@ public class IntegrationTests
 		try
 		{
 			resourceHelper.migrate(
+				wildebeestApi,
 				output,
 				resource,
 				resourcePlugin,

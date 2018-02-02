@@ -27,8 +27,10 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.WildebeestFactory;
 import co.mv.wb.impl.ResourceHelperImpl;
+import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
@@ -71,6 +73,10 @@ public class MySqlTableDoesNotExistAssertionTests
 		PrintStream output = System.out;
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
@@ -121,6 +127,7 @@ public class MySqlTableDoesNotExistAssertionTests
 			null);
 		 
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,
@@ -173,6 +180,10 @@ public class MySqlTableDoesNotExistAssertionTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
@@ -209,6 +220,7 @@ public class MySqlTableDoesNotExistAssertionTests
 			null);
 		 
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,

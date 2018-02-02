@@ -27,11 +27,11 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.ResourcePlugin;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
-import co.mv.wb.plugin.base.dom.DomPlugins;
-import co.mv.wb.plugin.base.dom.DomResourceLoader;
+import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
@@ -142,11 +142,16 @@ public class ResourceLoaderIntegrationTests
 		ResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin(
 			resourceHelper);
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
 
 		try
 		{
 			resourceHelper.migrate(
+				wildebeestApi,
 				output,
 				resource,
 				resourcePlugin,

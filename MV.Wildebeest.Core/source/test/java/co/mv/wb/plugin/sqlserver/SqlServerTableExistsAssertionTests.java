@@ -27,8 +27,10 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.WildebeestFactory;
 import co.mv.wb.impl.ResourceHelperImpl;
+import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
@@ -69,6 +71,10 @@ public class SqlServerTableExistsAssertionTests
 		PrintStream output = System.out;
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
 
 		SqlServerProperties properties = SqlServerProperties.get();
 
@@ -120,6 +126,7 @@ public class SqlServerTableExistsAssertionTests
 			null);
 		 
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,
@@ -171,6 +178,10 @@ public class SqlServerTableExistsAssertionTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		SqlServerProperties properties = SqlServerProperties.get();
 		 
 		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin(
@@ -208,6 +219,7 @@ public class SqlServerTableExistsAssertionTests
 			null);
 		 
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,

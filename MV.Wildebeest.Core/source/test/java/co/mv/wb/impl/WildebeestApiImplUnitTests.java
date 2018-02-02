@@ -28,6 +28,7 @@ import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
@@ -89,18 +90,19 @@ public class WildebeestApiImplUnitTests
 			.withStateIdForLabel("foo", fooId)
 			.get();
 
-		WildebeestApiImpl iface = new WildebeestApiImpl(
+		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
 			mock(PrintStream.class),
 			resourceHelper);
 
 		// Execute
-		iface.migrate(
+		wildebeestApi.migrate(
 			resource,
 			mock(Instance.class),
 			Optional.of("foo"));
 
 		// Verify
 		verify(resourceHelper).migrate(
+			any(WildebeestApi.class),
 			any(PrintStream.class),
 			any(Resource.class),
 			any(ResourcePlugin.class),
@@ -149,18 +151,19 @@ public class WildebeestApiImplUnitTests
 			.withStateIdForLabel("foo", fooId)
 			.get();
 
-		WildebeestApiImpl iface = new WildebeestApiImpl(
+		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
 			mock(PrintStream.class),
 			resourceHelper);
 
 		// Execute
-		iface.migrate(
+		wildebeestApi.migrate(
 			resource,
 			mock(Instance.class),
 			Optional.of("foo"));
 
 		// Verify
 		verify(resourceHelper).migrate(
+			any(WildebeestApi.class),
 			any(PrintStream.class),
 			any(Resource.class),
 			any(ResourcePlugin.class),
@@ -258,18 +261,19 @@ public class WildebeestApiImplUnitTests
 			.withStateIdForLabel("bar", barId)
 			.get();
 
-		WildebeestApiImpl iface = new WildebeestApiImpl(
+		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
 			mock(PrintStream.class),
 			resourceHelper);
 
 		// Execute
-		iface.migrate(
+		wildebeestApi.migrate(
 			resource,
 			mock(Instance.class),
 			Optional.empty());
 
 		// Verify
 		verify(resourceHelper).migrate(
+			any(WildebeestApi.class),
 			any(PrintStream.class),
 			any(Resource.class),
 			any(ResourcePlugin.class),

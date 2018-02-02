@@ -30,6 +30,7 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeAssertion;
@@ -63,25 +64,30 @@ public class ResourceHelperUnitTests
 	{
 		// Setup
 		PrintStream output = System.out;
+
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
+
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
-		
+
 		State state = new ImmutableState(UUID.randomUUID());
+
 		resource.getStates().add(state);
 		
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
-		// Execute
-		List<AssertionResult> results = resourceHelper.assertState(
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
 			output,
+			resourceHelper);
+
+		// Execute
+		List<AssertionResult> results = wildebeestApi.assertState(
 			resource,
-			resourcePlugin,
 			instance);
 
 		// Verify
@@ -114,11 +120,13 @@ public class ResourceHelperUnitTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
-		// Execute
-		List<AssertionResult> results = resourceHelper.assertState(
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
 			output,
+			resourceHelper);
+
+		// Execute
+		List<AssertionResult> results = wildebeestApi.assertState(
 			resource,
-			resourcePlugin,
 			instance);
 
 		// Verify
@@ -159,11 +167,13 @@ public class ResourceHelperUnitTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
-		// Execute
-		List<AssertionResult> results = resourceHelper.assertState(
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
 			output,
+			resourceHelper);
+
+		// Execute
+		List<AssertionResult> results = wildebeestApi.assertState(
 			resource,
-			resourcePlugin,
 			instance);
 
 		// Verify
@@ -226,8 +236,13 @@ public class ResourceHelperUnitTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		// Execute
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,
@@ -309,11 +324,16 @@ public class ResourceHelperUnitTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		//
 		// Execute
 		//
 		
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,
@@ -433,11 +453,16 @@ public class ResourceHelperUnitTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		//
 		// Execute
 		//
 		
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,
@@ -507,7 +532,12 @@ public class ResourceHelperUnitTests
 		
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,
@@ -520,6 +550,7 @@ public class ResourceHelperUnitTests
 		//
 		
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,
@@ -579,7 +610,12 @@ public class ResourceHelperUnitTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,
@@ -592,6 +628,7 @@ public class ResourceHelperUnitTests
 		//
 		
 		resourceHelper.migrate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,
@@ -650,6 +687,10 @@ public class ResourceHelperUnitTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		//
 		// Execute and Verify
 		//
@@ -659,6 +700,7 @@ public class ResourceHelperUnitTests
 			@Override public void invoke() throws Exception
 			{
 				resourceHelper.jumpstate(
+					wildebeestApi,
 					output,
 					resource,
 					resourcePlugin,
@@ -702,6 +744,10 @@ public class ResourceHelperUnitTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		//
 		// Execute and Verify
 		//
@@ -711,6 +757,7 @@ public class ResourceHelperUnitTests
 			@Override public void invoke() throws Exception
 			{
 				resourceHelper.jumpstate(
+					wildebeestApi,
 					output,
 					resource,
 					resourcePlugin,
@@ -733,6 +780,7 @@ public class ResourceHelperUnitTests
 	
 	@Test public void jumpstate_existentState_succeeds() throws
 		AssertionFailedException,
+		IndeterminateStateException,
 		JumpStateFailedException
 	{
 		
@@ -762,11 +810,16 @@ public class ResourceHelperUnitTests
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
 		//
 		// Execute
 		//
 
 		resourceHelper.jumpstate(
+			wildebeestApi,
 			output,
 			resource,
 			resourcePlugin,

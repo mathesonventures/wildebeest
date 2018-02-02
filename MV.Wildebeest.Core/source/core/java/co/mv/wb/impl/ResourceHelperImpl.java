@@ -17,21 +17,20 @@
 package co.mv.wb.impl;
 
 import co.mv.wb.AssertionFailedException;
-import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
-import co.mv.wb.plugin.base.ImmutableAssertionResult;
+import co.mv.wb.WildebeestApi;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -45,25 +44,8 @@ import java.util.UUID;
  */
 public class ResourceHelperImpl implements ResourceHelper
 {
-	public List<AssertionResult> assertState(
-		PrintStream output,
-		Resource resource,
-		ResourcePlugin resourcePlugin,
-		Instance instance) throws IndeterminateStateException
-	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (resourcePlugin == null) { throw new IllegalArgumentException("resourcePlugin cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-
-		State state = resourcePlugin.currentState(
-			resource,
-			instance);
-
-		return this.assertState(output, instance, state);
-	}
-
 	public void migrate(
+		WildebeestApi wildebeestApi,
 		PrintStream output,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
@@ -72,20 +54,19 @@ public class ResourceHelperImpl implements ResourceHelper
 		UUID targetStateId) throws
 			IndeterminateStateException,
 			AssertionFailedException,
-			MigrationNotPossibleException,
 			MigrationFailedException
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (resourcePlugin == null) { throw new IllegalArgumentException("resourcePlugin cannot be null"); }
-		if (migrationPlugins == null) { throw new IllegalArgumentException("migrationPlugins cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
+		if (wildebeestApi == null) { throw new ArgumentNullException("wildebeestApi"); }
+		if (output == null) { throw new ArgumentNullException("output"); }
+		if (resource == null) { throw new ArgumentNullException("resource"); }
+		if (resourcePlugin == null) { throw new ArgumentNullException("resourcePlugin"); }
+		if (migrationPlugins == null) { throw new ArgumentNullException("migrationPlugins"); }
+		if (instance == null) { throw new ArgumentNullException("instance"); }
 
 		State currentState = resourcePlugin.currentState(
 			resource,
 			instance);
 		UUID currentStateId = currentState == null ? null : currentState.getStateId();
-		List<UUID> workList = new ArrayList<>();
 
 		List<List<Migration>> paths = new ArrayList<>();
 		List<Migration> thisPath = new ArrayList<>();
@@ -140,10 +121,8 @@ public class ResourceHelperImpl implements ResourceHelper
 				migration.getToStateId().get());
 
 			// Assert the new state
-			List<AssertionResult> assertionResults = this.assertState(
-				output,
+			List<AssertionResult> assertionResults = wildebeestApi.assertState(
 				resource,
-				resourcePlugin,
 				instance);
 
 			ResourceHelperImpl.throwIfFailed(migration.getToStateId().get(), assertionResults);
@@ -151,19 +130,22 @@ public class ResourceHelperImpl implements ResourceHelper
 	}
 
 	public void jumpstate(
+		WildebeestApi wildebeestApi,
 		PrintStream output,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
 		Instance instance,
 		UUID targetStateId) throws
 			AssertionFailedException,
+			IndeterminateStateException,
 			JumpStateFailedException
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (resourcePlugin == null) { throw new IllegalArgumentException("resourcePlugin cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (targetStateId == null) { throw new IllegalArgumentException("targetStateId cannot be null"); }
+		if (wildebeestApi == null) { throw new ArgumentNullException("wildebeestApi"); }
+		if (output == null) { throw new ArgumentNullException("output"); }
+		if (resource == null) { throw new ArgumentNullException("resource"); }
+		if (resourcePlugin == null) { throw new ArgumentNullException("resourcePlugin"); }
+		if (instance == null) { throw new ArgumentNullException("instance"); }
+		if (targetStateId == null) { throw new ArgumentNullException("targetStateId"); }
 
 		State targetState = this.stateForId(
 			resource,
@@ -176,10 +158,9 @@ public class ResourceHelperImpl implements ResourceHelper
 		}
 
 		// Assert the new state
-		List<AssertionResult> assertionResults = this.assertState(
-			output,
-			instance,
-			targetState);
+		List<AssertionResult> assertionResults = wildebeestApi.assertState(
+			resource,
+			instance);
 
 		ResourceHelperImpl.throwIfFailed(targetState.getStateId(), assertionResults);
 
@@ -230,36 +211,6 @@ public class ResourceHelperImpl implements ResourceHelper
 		}
 
 		return result == null ? null : result.getStateId();
-	}
-
-
-	private List<AssertionResult> assertState(
-		PrintStream output,
-		Instance instance,
-		State state)
-	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (state == null) { throw new IllegalArgumentException("state cannot be null"); }
-
-		List<AssertionResult> results = new ArrayList<>();
-
-		state.getAssertions().forEach(
-			assertion ->
-			{
-				AssertionResponse response = assertion.perform(instance);
-
-				output.println(OutputFormatter.assertionComplete(
-					assertion,
-					response));
-
-				results.add(new ImmutableAssertionResult(
-					assertion.getAssertionId(),
-					response.getResult(),
-					response.getMessage()));
-			});
-
-		return results;
 	}
 
 	private void findPaths(

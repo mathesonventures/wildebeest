@@ -17,6 +17,8 @@
 package co.mv.wb.impl;
 
 import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.AssertionResult;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
@@ -26,6 +28,7 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
@@ -35,6 +38,8 @@ import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.plugin.base.ImmutableAssertionResult;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
@@ -44,6 +49,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -231,10 +238,6 @@ public class WildebeestApiImpl implements WildebeestApi
 
 	// </editor-fold>
 
-	//
-	// Loader
-	//
-
 	public Resource loadResource(
 		File resourceFile) throws
 			FileLoadException,
@@ -306,9 +309,43 @@ public class WildebeestApiImpl implements WildebeestApi
 		return instance;
 	}
 
-	//
-	// Commands
-	//
+	public List<AssertionResult> assertState(
+		Resource resource,
+		Instance instance) throws
+			IndeterminateStateException
+	{
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
+
+		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
+			this.getResourcePlugins(),
+			resource.getType());
+
+		State state = resourcePlugin.currentState(
+			resource,
+			instance);
+
+		List<AssertionResult> result = new ArrayList<>();
+
+		state.getAssertions().forEach(
+			assertion ->
+			{
+				this.getOutput().println(OutputFormatter.assertionStart(assertion));
+
+				AssertionResponse response = assertion.perform(instance);
+
+				this.getOutput().println(OutputFormatter.assertionComplete(
+					assertion,
+					response));
+
+				result.add(new ImmutableAssertionResult(
+					assertion.getAssertionId(),
+					response.getResult(),
+					response.getMessage()));
+			});
+
+		return result;
+	}
 
 	public void state(
 		Resource resource,
@@ -341,10 +378,8 @@ public class WildebeestApiImpl implements WildebeestApi
 				this.getOutput().println(String.format("Current state: %s", state.getStateId().toString()));
 			}
 
-			this.getResourceHelper().assertState(
-				this.getOutput(),
+			this.assertState(
 				resource,
-				resourcePlugin,
 				instance);
 		}
 	}
@@ -386,6 +421,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			ts.get());
 
 		this.getResourceHelper().migrate(
+			this,
 			this.getOutput(),
 			resource,
 			resourcePlugin,
@@ -399,6 +435,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		Instance instance,
 		String targetState) throws
 			AssertionFailedException,
+			IndeterminateStateException,
 			InvalidStateSpecifiedException,
 			JumpStateFailedException,
 			UnknownStateSpecifiedException
@@ -420,6 +457,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			targetState);
 
 		this.getResourceHelper().jumpstate(
+			this,
 			this.getOutput(),
 			resource,
 			resourcePlugin,

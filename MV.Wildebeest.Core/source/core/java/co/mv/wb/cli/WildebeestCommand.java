@@ -322,6 +322,10 @@ public class WildebeestCommand
 						{
 							this.getOutput().println(OutputFormatter.unknownStateSpecified(e));
 						}
+						catch (IndeterminateStateException e)
+						{
+							this.getOutput().println(OutputFormatter.indeterminateState(e));
+						}
 						catch (InvalidStateSpecifiedException e)
 						{
 							this.getOutput().println(OutputFormatter.invalidStateSpecified(e));

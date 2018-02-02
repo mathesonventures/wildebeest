@@ -17,6 +17,7 @@
 package co.mv.wb;
 
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,11 +28,6 @@ import java.util.Optional;
  */
 public interface WildebeestApi
 {
-
-	//
-	// Loaders
-	//
-
 	/**
 	 * Deserializes a {@link Resource} from the specified descriptor file.
 	 *
@@ -64,9 +60,21 @@ public interface WildebeestApi
 			LoaderFault,
 			PluginBuildException;
 
-	//
-	// Commands
-	//
+	/**
+	 * Performs the assertions for the instance's current state.
+	 *
+	 * @param       resource                    the {@link Resource} to be asserted.
+	 * @param       instance                    the {@link Instance} to be asserted.
+	 * @return                                  a {@link java.util.List} of the {@link AssertionResult}s
+	 *                                          that were generated for the Assertions for this Resource's current
+	 *                                          state.
+	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
+	 * @since                                   1.0
+	 */
+	List<AssertionResult> assertState(
+		Resource resource,
+		Instance instance) throws
+			IndeterminateStateException;
 
 	/**
 	 * Checks the state of an instance of a resource.
@@ -123,6 +131,7 @@ public interface WildebeestApi
 	 * @param       instance                    the instance to jump the tracked state on.
 	 * @param       targetState                 the state to jump to.
 	 * @throws      AssertionFailedException    if one or more assertions of the target state fail after jumping state.
+	 * @throws      IndeterminateStateException if the current state of the instance cannot be determined.
 	 * @throws      InvalidStateSpecifiedException  if the specified state is not a valid state identifier.
 	 * @throws      JumpStateFailedException    if the jumpstate operation fails for any reason.
 	 * @throws      UnknownStateSpecifiedException  if the specified state does not exist in the resource.
@@ -131,9 +140,9 @@ public interface WildebeestApi
 		Resource resource,
 		Instance instance,
 		String targetState) throws
-			AssertionFailedException,
-			InvalidStateSpecifiedException,
-			JumpStateFailedException,
-			UnknownStateSpecifiedException;
-
+		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
+		JumpStateFailedException,
+		UnknownStateSpecifiedException;
 }

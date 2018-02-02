@@ -17,34 +17,11 @@
 package co.mv.wb;
 
 import java.io.PrintStream;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public interface ResourceHelper
 {
-	/**
-	 * Applies the {@link Assertion}'s for this {@link Resource} and returns a collection of the results of those
-	 * Assertions.
-	 *
-	 * {@code assertState()} will first use {@link ResourcePlugin#currentState(Resource, Instance)} to determine the
-	 * current state of the Resource.  If the current state cannot be determined, then an
-	 * {@link IndeterminateStateException} is thrown.  See the {@code currentState()} method for more details.
-	 *
-	 * @param       output                      the PrintStream for user output.
-	 * @param       instance                    the {@link Instance} to assert the current state of
-	 * @return                                  a {@link java.util.List} of the {@link AssertionResult}s
-	 *                                          that were generated for the Assertions for this Resource's current
-	 *                                          state.
-	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
-	 * @since                                   1.0
-	 */
-	List<AssertionResult> assertState(
-		PrintStream output,
-		Resource resource,
-		ResourcePlugin resourcePlugin,
-		Instance instance) throws IndeterminateStateException;
-
 	/**
 	 * Migrates the resource from it's current state to the specified target state.  The migration process is as
 	 * follows:
@@ -71,6 +48,7 @@ public interface ResourceHelper
 	 * If exactly one path cannot be found that will enable migration from the current state to the target state, then
 	 * a MigrationNotPossibleException is thrown.
 	 *
+	 * @param       wildebeestApi               the WildebeestApi to use for assertions.
 	 * @param       output                      the PrintStream for user output.
 	 * @param       instance                    the {@link Instance} to migrate
 	 * @param       migrationPlugins            the set of available MigrationPlugins that can be used to run
@@ -87,6 +65,7 @@ public interface ResourceHelper
 	 * @since                                   1.0
 	 */
 	void migrate(
+		WildebeestApi wildebeestApi,
 		PrintStream output,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
@@ -101,6 +80,7 @@ public interface ResourceHelper
 	/**
 	 * Jumps the tracked state on the resource to the specified state without performing a migration.
 	 *
+	 * @param       wildebeestApi               the WildebeestApi to use for assertions.
 	 * @param       output                      the PrintStream for user output.
 	 * @param       instance                    the {@link Instance} to jump to a new state
 	 * @param       targetStateId               the ID of the state to jump the instance to
@@ -109,12 +89,14 @@ public interface ResourceHelper
 	 * @since                                   3.0
 	 */
 	void jumpstate(
+		WildebeestApi wildebeestApi,
 		PrintStream output,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
 		Instance instance,
 		UUID targetStateId) throws
 			AssertionFailedException,
+			IndeterminateStateException,
 			JumpStateFailedException;
 
 	/**
