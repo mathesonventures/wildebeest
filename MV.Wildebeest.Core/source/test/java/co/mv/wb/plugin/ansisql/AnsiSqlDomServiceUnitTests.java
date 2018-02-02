@@ -21,8 +21,8 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
+import co.mv.wb.WildebeestFactory;
 import co.mv.wb.fixture.FixtureCreator;
-import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
@@ -51,7 +51,7 @@ public class AnsiSqlDomServiceUnitTests
 		UUID toStateId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
+			.resource(WildebeestFactory.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.migration("AnsiSqlCreateDatabase", migrationId, fromStateId, toStateId)
 			.render();
 
@@ -96,7 +96,7 @@ public class AnsiSqlDomServiceUnitTests
 		UUID toStateId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
+			.resource(WildebeestFactory.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.migration("AnsiSqlDropDatabase", migrationId, fromStateId, toStateId)
 			.render();
 
@@ -139,7 +139,7 @@ public class AnsiSqlDomServiceUnitTests
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
+			.resource(WildebeestFactory.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.state(UUID.randomUUID(), null)
 					.assertion("AnsiSqlTableExists", assertionId)
 						.appendInnerXml("<schemaName>sch</schemaName>")
@@ -183,7 +183,7 @@ public class AnsiSqlDomServiceUnitTests
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource(FactoryResourceTypes.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
+			.resource(WildebeestFactory.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.state(UUID.randomUUID(), null)
 					.assertion("AnsiSqlTableDoesNotExist", assertionId)
 						.appendInnerXml("<schemaName>sch</schemaName>")

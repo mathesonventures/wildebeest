@@ -18,7 +18,6 @@ package co.mv.wb.cli;
 
 import co.mv.wb.About;
 import co.mv.wb.AssertionFailedException;
-import co.mv.wb.Factory;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
@@ -33,6 +32,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestFactory;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.WildebeestApiImpl;
 
@@ -93,7 +93,7 @@ public class WildebeestCommand
 		{
 			String command = args[0];
 
-			WildebeestApi wildebeestApi = Factory.wildebeestApi(output);
+			WildebeestApi wildebeestApi = WildebeestFactory.wildebeestApi(output);
 
 			if ("about".equals(command))
 			{

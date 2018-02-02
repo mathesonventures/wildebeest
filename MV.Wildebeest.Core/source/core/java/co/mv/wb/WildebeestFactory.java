@@ -17,7 +17,6 @@
 package co.mv.wb;
 
 import co.mv.wb.framework.ArgumentNullException;
-import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
@@ -45,8 +44,18 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Factory
+public class WildebeestFactory
 {
+	public static final ResourceType MySqlDatabase = new ResourceType(
+		"co.mv.wb.MySqlDatabase",
+		"MySQL Database");
+	public static final ResourceType PostgreSqlDatabase = new ResourceType(
+		"co.mv.wb.PostgreSqlDatabase",
+		"PostgreSQL Database");
+	public static final ResourceType SqlServerDatabase = new ResourceType(
+		"co.mv.wb.SqlServerDatabase",
+		"SQL Server Database");
+
 	public static WildebeestApi wildebeestApi(
 		PrintStream output)
 	{
@@ -58,8 +67,8 @@ public class Factory
 			output,
 			resourceHelper);
 
-		wildebeestApi.setResourcePlugins(Factory.getResourcePlugins(resourceHelper));
-		wildebeestApi.setMigrationPlugins(Factory.getMigrationPlugins(wildebeestApi));
+		wildebeestApi.setResourcePlugins(WildebeestFactory.getResourcePlugins(resourceHelper));
+		wildebeestApi.setMigrationPlugins(WildebeestFactory.getMigrationPlugins(wildebeestApi));
 
 		return wildebeestApi;
 	}
@@ -71,11 +80,11 @@ public class Factory
 
 		Map<ResourceType, ResourcePlugin> result = new HashMap<>();
 
-		result.put(FactoryResourceTypes.MySqlDatabase, new MySqlDatabaseResourcePlugin(
+		result.put(WildebeestFactory.MySqlDatabase, new MySqlDatabaseResourcePlugin(
 			resourceHelper));
-		result.put(FactoryResourceTypes.PostgreSqlDatabase, new PostgreSqlDatabaseResourcePlugin(
+		result.put(WildebeestFactory.PostgreSqlDatabase, new PostgreSqlDatabaseResourcePlugin(
 			resourceHelper));
-		result.put(FactoryResourceTypes.SqlServerDatabase, new SqlServerDatabaseResourcePlugin(
+		result.put(WildebeestFactory.SqlServerDatabase, new SqlServerDatabaseResourcePlugin(
 			resourceHelper));
 
 		return result;

@@ -17,7 +17,7 @@
 package co.mv.wb.fixture;
 
 /**
- * Factory for mocks and fixtures
+ * WildebeestFactory for mocks and fixtures
  *
  * @author                                      Brendon Matheson
  * @since                                       4.0

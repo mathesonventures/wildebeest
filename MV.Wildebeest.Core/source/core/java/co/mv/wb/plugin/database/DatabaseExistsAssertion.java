@@ -21,7 +21,7 @@ import co.mv.wb.AssertionResponse;
 import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
-import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.WildebeestFactory;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
@@ -59,9 +59,9 @@ public class DatabaseExistsAssertion extends BaseAssertion
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			FactoryResourceTypes.MySqlDatabase,
-			FactoryResourceTypes.PostgreSqlDatabase,
-			FactoryResourceTypes.SqlServerDatabase);
+			WildebeestFactory.MySqlDatabase,
+			WildebeestFactory.PostgreSqlDatabase,
+			WildebeestFactory.SqlServerDatabase);
 	}
 
 	@Override public AssertionResponse perform(Instance instance)

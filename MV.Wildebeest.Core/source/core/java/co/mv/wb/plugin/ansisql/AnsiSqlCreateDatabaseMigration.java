@@ -18,7 +18,7 @@ package co.mv.wb.plugin.ansisql;
 
 import co.mv.wb.Migration;
 import co.mv.wb.ResourceType;
-import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.WildebeestFactory;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
@@ -45,6 +45,6 @@ public class AnsiSqlCreateDatabaseMigration extends BaseMigration
     @Override public List<ResourceType> getApplicableTypes()
     {
 		return Arrays.asList(
-			FactoryResourceTypes.PostgreSqlDatabase);
+			WildebeestFactory.PostgreSqlDatabase);
     }
 }

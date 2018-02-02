@@ -20,7 +20,7 @@ import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
-import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.WildebeestFactory;
 import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
@@ -54,7 +54,7 @@ public class MySqlDatabaseResourceTests
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			FactoryResourceTypes.MySqlDatabase,
+			WildebeestFactory.MySqlDatabase,
 			"Database",
 			Optional.empty());
 
@@ -103,7 +103,7 @@ public class MySqlDatabaseResourceTests
 
 			Resource resource = new ResourceImpl(
 				resourceId,
-				FactoryResourceTypes.MySqlDatabase,
+				WildebeestFactory.MySqlDatabase,
 				"Database",
 				Optional.empty());
 
@@ -153,7 +153,7 @@ public class MySqlDatabaseResourceTests
 
 		Resource resource = new ResourceImpl(
 			resourceId,
-			FactoryResourceTypes.MySqlDatabase,
+			WildebeestFactory.MySqlDatabase,
 			"Database",
 			Optional.empty());
 

@@ -18,6 +18,7 @@ package co.mv.wb.impl;
 
 import co.mv.wb.ResourceType;
 import co.mv.wb.ResourceTypeService;
+import co.mv.wb.WildebeestFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +50,9 @@ public class ResourceTypeServiceBuilder
 		List<ResourceType> resourceTypes = new ArrayList<>();
 		resourceTypes.addAll(_resourceTypes);
 
-		resourceTypes.add(FactoryResourceTypes.MySqlDatabase);
-		resourceTypes.add(FactoryResourceTypes.PostgreSqlDatabase);
-		resourceTypes.add(FactoryResourceTypes.SqlServerDatabase);
+		resourceTypes.add(WildebeestFactory.MySqlDatabase);
+		resourceTypes.add(WildebeestFactory.PostgreSqlDatabase);
+		resourceTypes.add(WildebeestFactory.SqlServerDatabase);
 
 		return new ResourceTypeServiceBuilder(resourceTypes);
 	}

@@ -28,9 +28,9 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
+import co.mv.wb.WildebeestFactory;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.fixture.XmlBuilder;
-import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ResourceHelperImpl;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.ImmutableState;
@@ -85,7 +85,7 @@ public class IntegrationTests
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			FactoryResourceTypes.MySqlDatabase,
+			WildebeestFactory.MySqlDatabase,
 			"Database",
 			Optional.empty());
 
