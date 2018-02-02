@@ -26,6 +26,12 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Fluent-style builder for creating Mockito-based mocks of {@link ResourceHelper}.
+ *
+ * @author                                      Brendon Matheson
+ * @since                                       4.0
+ */
 public class ResourceHelperMockBuilder
 {
 	private ResourceHelper _resourceHelper;

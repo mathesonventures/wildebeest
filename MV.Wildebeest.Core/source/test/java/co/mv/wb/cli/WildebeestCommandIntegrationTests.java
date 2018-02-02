@@ -37,38 +37,19 @@ import java.io.PrintStream;
 import java.sql.SQLException;
 
 /**
- * Unit tests for WildebeestCommand.
+ * Full integration tests for Wildebeest that invoke the CLI with real plugins and back-ends.
  *
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class WildebeestCommandIntegrationTests
 {
-	@Test public void about()
-	{
-		// Setup
-		WildebeestCommand wb = new WildebeestCommand();
-		String[] args = new String[]
-		{
-			"about"
-		};
 
-		// Execute
-		wb.run(args);
-	}
-	
-	@Test public void invokeWithNoCommand()
-	{
-		// Setup
-		WildebeestCommand wb = new WildebeestCommand();
-		wb.run(new String[] { });
-	}
-	
 	//
 	// MySql
 	//
 	
-	@Test public void mySqlDatabaseMigrate() throws
+	@Test public void wildebeestCommand_mySqlMigrate_succeeds() throws
 		FileLoadException,
 		LoaderFault,
 		PluginBuildException,
@@ -76,11 +57,17 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
+
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		WildebeestApi wildebeestApi = new WildebeestApiImpl(
 			output,
 			resourceHelper);
-		WildebeestCommand wb = new WildebeestCommand();
+
+		WildebeestCommand wb = new WildebeestCommand(
+			output,
+			wildebeestApi);
+
 		String[] args = new String[]
 		{
 			"migrate",
@@ -108,34 +95,7 @@ public class WildebeestCommandIntegrationTests
 		}
 	}
 	
-	@Test public void mySqlDatabaseMigrateWithMissingInstanceArg()
-	{
-		// Setup
-		WildebeestCommand wb = new WildebeestCommand();
 
-		// Execute
-		wb.run(new String[]
-		{
-			"migrate",
-			"--resource:MySqlDatabase/database.wbresource.xml",
-			"--targetState:Core Schema Loaded"
-		});
-	}
-	
-	@Test public void mySqlDatabaseMigrateWithMissingResourceArg()
-	{
-		// Setup
-		WildebeestCommand wb = new WildebeestCommand();
-
-		// Execute
-		wb.run(new String[]
-		{
-			"migrate",
-			"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-			"--targetState:Core Schema Loaded"
-		});
-	}
-	
 	@Test public void mySqlDatabaseJumpState() throws
 		FileLoadException,
 		LoaderFault,
@@ -144,9 +104,17 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
+
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output, resourceHelper);
-		WildebeestCommand wb = new WildebeestCommand();
+
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
+		WildebeestCommand wb = new WildebeestCommand(
+			output,
+			wildebeestApi);
+
         MySqlDatabaseInstance instanceT = null;
         
 		try
@@ -195,11 +163,16 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
+
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		WildebeestApi wildebeestApi = new WildebeestApiImpl(
 			output,
 			resourceHelper);
-		WildebeestCommand wb = new WildebeestCommand();
+
+		WildebeestCommand wb = new WildebeestCommand(
+			output,
+			wildebeestApi);
 
         Instance instance = null;
         
@@ -236,7 +209,17 @@ public class WildebeestCommandIntegrationTests
 	@Test public void mySqlDatabaseMigrateToInvalidStateLabel()
 	{
 		// Setup
-		WildebeestCommand wb = new WildebeestCommand();
+		PrintStream output = System.out;
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
+		WildebeestCommand wb = new WildebeestCommand(
+			output,
+			wildebeestApi);
 
         // Execute
         wb.run(new String[]
@@ -260,7 +243,17 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		//
 
-		WildebeestCommand wb = new WildebeestCommand();
+		PrintStream output = System.out;
+
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(
+			output,
+			resourceHelper);
+
+		WildebeestCommand wb = new WildebeestCommand(
+			output,
+			wildebeestApi);
 
         //
         // Execute
@@ -296,11 +289,17 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
+
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		WildebeestApi wildebeestApi = new WildebeestApiImpl(
 			output,
 			resourceHelper);
-		WildebeestCommand wb = new WildebeestCommand();
+
+		WildebeestCommand wb = new WildebeestCommand(
+			output,
+			wildebeestApi);
+
 		String[] args = new String[]
 		{
 			"migrate",
@@ -339,11 +338,17 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
+
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
 		WildebeestApi wildebeestApi = new WildebeestApiImpl(
 			output,
 			resourceHelper);
-		WildebeestCommand wb = new WildebeestCommand();
+
+		WildebeestCommand wb = new WildebeestCommand(
+			output,
+			wildebeestApi);
+
 		String[] args = new String[]
 		{
 			"migrate",

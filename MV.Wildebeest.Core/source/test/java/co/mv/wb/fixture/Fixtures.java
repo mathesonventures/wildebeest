@@ -16,16 +16,44 @@
 
 package co.mv.wb.fixture;
 
+import co.mv.wb.Instance;
+import co.mv.wb.Resource;
+import co.mv.wb.plugin.base.ResourceImpl;
+import co.mv.wb.plugin.fake.FakeConstants;
+import co.mv.wb.plugin.fake.FakeInstance;
+
+import java.util.Optional;
+import java.util.UUID;
+
 /**
- * WildebeestFactory for mocks and fixtures
+ * Factory for mocks and fixtures
  *
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class Fixtures
 {
+	public static WildebeestApiMockBuilder wildebeestApi()
+	{
+		return new WildebeestApiMockBuilder();
+	}
+
 	public static ResourceHelperMockBuilder resourceHelper()
 	{
 		return new ResourceHelperMockBuilder();
+	}
+
+	public static Resource fakeResource()
+	{
+		return new ResourceImpl(
+			UUID.randomUUID(),
+			FakeConstants.Fake,
+			"Fake",
+			Optional.empty());
+	}
+
+	public static Instance fakeInstance()
+	{
+		return new FakeInstance();
 	}
 }

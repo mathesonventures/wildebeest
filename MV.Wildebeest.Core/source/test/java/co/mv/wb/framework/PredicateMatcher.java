@@ -41,6 +41,5 @@ public class PredicateMatcher<T> extends BaseMatcher<T>
 
 	@Override public void describeTo(Description description)
 	{
-		throw new RuntimeException("not implemented");
 	}
 }

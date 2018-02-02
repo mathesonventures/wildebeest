@@ -16,9 +16,11 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
 import co.mv.wb.plugin.fake.FakeAssertion;
+import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.FakeMigration;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import org.junit.Assert;
@@ -165,7 +167,32 @@ public class Asserts
 	//
 	// Fake
 	//
-	
+
+	public static boolean verifyFakeResource(
+		UUID expectedResourceId,
+		ResourceType expectedResourceType,
+		String expectedName,
+		Resource actual)
+	{
+		boolean result = true;
+
+		result &= expectedResourceId.equals(actual.getResourceId());
+		result &= expectedResourceType.getUri().equals(actual.getType().getUri());
+		result &= expectedName.equals(actual.getName());
+
+		return result;
+	}
+
+	public static boolean verifyFakeInstance(
+		Instance actual)
+	{
+		boolean result = true;
+
+		result &= FakeInstance.class.equals(actual.getClass());
+
+		return result;
+	}
+
 	public static void assertFakeMigration(
 		UUID expectedMigrationId,
 		Optional<UUID> expectedFromStateId,
@@ -174,7 +201,6 @@ public class Asserts
 		FakeMigration actual,
 		String name)
 	{
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
 		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
 
@@ -238,15 +264,8 @@ public class Asserts
 		Instance actual,
 		String name)
 	{
-		if (expectedHostName == null) { throw new IllegalArgumentException("expectedHostName cannot be null"); }
-		if ("".equals(expectedHostName)) { throw new IllegalArgumentException("expectedHostName cannot be empty"); }
-		if (expectedAdminUsername == null) { throw new IllegalArgumentException("expectedAdminUsername cannot be null"); }
-		if ("".equals(expectedAdminUsername)) { throw new IllegalArgumentException("expectedAdminUsername cannot be empty"); }
-		if (expectedAdminPassword == null) { throw new IllegalArgumentException("expectedAdminPassword cannot be null"); }
-		if ("".equals(expectedAdminPassword)) { throw new IllegalArgumentException("expectedAdminPassword cannot be empty"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) {throw new IllegalArgumentException("name cannot be blank"); }
+		if (name == null) throw new ArgumentNullException("name");
+		if ("".equals(name)) throw new ArgumentNullException("name cannot be blank");
 		
 		Asserts.assertInstance(MySqlDatabaseInstance.class, actual, name);
 		
@@ -257,5 +276,35 @@ public class Asserts
 		Assert.assertEquals("adminUsername", expectedAdminUsername, db.getAdminUsername());
 		Assert.assertEquals("adminPassword", expectedAdminPassword, db.getAdminPassword());
 		Assert.assertEquals("databaseName", expectedDatabaseName, db.getDatabaseName());
+	}
+
+	public static boolean verifyMySqlDatabaseInstance(
+		String expectedHostName,
+		int expectedPort,
+		String expectedAdminUsername,
+		String expectedAdminPassword,
+		String expectedDatabaseName,
+		Instance actual,
+		String name)
+	{
+		if (name == null) throw new ArgumentNullException("name");
+		if ("".equals(name)) throw new ArgumentNullException("name cannot be blank");
+
+		boolean result = true;
+
+		result &= MySqlDatabaseInstance.class.equals(actual.getClass());
+
+		if (result)
+		{
+			MySqlDatabaseInstance db = (MySqlDatabaseInstance) actual;
+
+			result &= expectedHostName.equals(db.getHostName());
+			result &= expectedPort == db.getPort();
+			result &= expectedAdminUsername.equals(db.getAdminUsername());
+			result &= expectedAdminPassword.equals(db.getAdminPassword());
+			result &= expectedDatabaseName.equals(db.getDatabaseName());
+		}
+
+		return result;
 	}
 }
