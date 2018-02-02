@@ -16,6 +16,7 @@
 
 package co.mv.wb;
 
+import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -30,7 +31,7 @@ public interface ResourceHelper
 	 * current state of the Resource.  If the current state cannot be determined, then an
 	 * {@link IndeterminateStateException} is thrown.  See the {@code currentState()} method for more details.
 	 *
-	 * @param       logger                      an optional Logger service to log the activity of the assert operation.
+	 * @param       output                      the PrintStream for user output.
 	 * @param       instance                    the {@link Instance} to assert the current state of
 	 * @return                                  a {@link java.util.List} of the {@link AssertionResult}s
 	 *                                          that were generated for the Assertions for this Resource's current
@@ -39,7 +40,7 @@ public interface ResourceHelper
 	 * @since                                   1.0
 	 */
 	List<AssertionResult> assertState(
-		Logger logger,
+		PrintStream output,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
 		Instance instance) throws IndeterminateStateException;
@@ -70,7 +71,7 @@ public interface ResourceHelper
 	 * If exactly one path cannot be found that will enable migration from the current state to the target state, then
 	 * a MigrationNotPossibleException is thrown.
 	 *
-	 * @param       logger                      an optional Logger service to log the activity of the assert operation.
+	 * @param       output                      the PrintStream for user output.
 	 * @param       instance                    the {@link Instance} to migrate
 	 * @param       migrationPlugins            the set of available MigrationPlugins that can be used to run
 	 *                                          Migrations.
@@ -86,7 +87,7 @@ public interface ResourceHelper
 	 * @since                                   1.0
 	 */
 	void migrate(
-		Logger logger,
+		PrintStream output,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
 		Instance instance,
@@ -100,7 +101,7 @@ public interface ResourceHelper
 	/**
 	 * Jumps the tracked state on the resource to the specified state without performing a migration.
 	 *
-	 * @param       logger                      an optional Logger service to log the actiivty of the jumpstate operation
+	 * @param       output                      the PrintStream for user output.
 	 * @param       instance                    the {@link Instance} to jump to a new state
 	 * @param       targetStateId               the ID of the state to jump the instance to
 	 * @throws      AssertionFailedException    if an assertion failed after the jumpstate was performed
@@ -108,7 +109,7 @@ public interface ResourceHelper
 	 * @since                                   3.0
 	 */
 	void jumpstate(
-		Logger logger,
+		PrintStream output,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
 		Instance instance,

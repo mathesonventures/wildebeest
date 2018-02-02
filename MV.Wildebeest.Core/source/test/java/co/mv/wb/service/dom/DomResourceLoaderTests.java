@@ -17,6 +17,7 @@
 package co.mv.wb.service.dom;
 
 import co.mv.wb.Asserts;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.fake.DomFakeAssertionBuilder;
 import co.mv.wb.fake.DomFakeMigrationBuilder;
@@ -26,7 +27,7 @@ import co.mv.wb.fake.TestResourceTypes;
 import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.service.AssertionBuilder;
-import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.LoaderFault;
 import co.mv.wb.service.MigrationBuilder;
 import org.junit.Test;
 
@@ -41,7 +42,9 @@ import static org.junit.Assert.assertNotNull;
 
 public class DomResourceLoaderTests
 {
-	@Test public void loadResource() throws MessagesException
+	@Test public void loadResource() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		
 		//
@@ -98,7 +101,9 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForStateWithLabel() throws MessagesException
+	@Test public void loadResourceForStateWithLabel() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		
 		//
@@ -162,7 +167,9 @@ public class DomResourceLoaderTests
 
 	}
 	
-	@Test public void loadResourceForStateWithNoLabel() throws MessagesException
+	@Test public void loadResourceForStateWithNoLabel() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		
 		//
@@ -227,7 +234,9 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForMultipleStates() throws MessagesException
+	@Test public void loadResourceForMultipleStates() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		
 		//
@@ -298,7 +307,9 @@ public class DomResourceLoaderTests
 
 	}
 	
-	@Test public void loadResourceForStateWithOneAssertion() throws MessagesException
+	@Test public void loadResourceForStateWithOneAssertion() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		
 		//
@@ -365,7 +376,9 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForStateWithMultipleAssertions() throws MessagesException
+	@Test public void loadResourceForStateWithMultipleAssertions() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		
 		//
@@ -434,7 +447,9 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForMigrationWithFromStateId() throws MessagesException
+	@Test public void loadResourceForMigrationWithFromStateId() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		
 		//
@@ -492,7 +507,9 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForMigrationsWithToStateId() throws MessagesException
+	@Test public void loadResourceForMigrationsWithToStateId() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		
 		//
@@ -550,7 +567,9 @@ public class DomResourceLoaderTests
 		
 	}
 	
-	@Test public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws MessagesException
+	@Test public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		
 		//

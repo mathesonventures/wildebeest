@@ -19,7 +19,6 @@ package co.mv.wb.plugin.mysql;
 import co.mv.wb.FaultException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
-import co.mv.wb.Logger;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
@@ -27,6 +26,7 @@ import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
 import co.mv.wb.plugin.database.Extensions;
 
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -125,12 +125,12 @@ public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 	}
 	
 	@Override public void setStateId(
-		Logger logger,
+		PrintStream output,
 		Resource resource,
 		Instance instance,
 		UUID stateId)
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger"); }
+		if (output == null) { throw new IllegalArgumentException("output"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);

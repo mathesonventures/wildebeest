@@ -19,6 +19,7 @@ package co.mv.wb.service.dom;
 import co.mv.wb.Assertion;
 import co.mv.wb.Migration;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceType;
 import co.mv.wb.ResourceTypeService;
@@ -26,11 +27,10 @@ import co.mv.wb.State;
 import co.mv.wb.impl.ImmutableState;
 import co.mv.wb.impl.ResourceImpl;
 import co.mv.wb.service.AssertionBuilder;
+import co.mv.wb.service.LoaderFault;
 import co.mv.wb.service.Messages;
-import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.MigrationBuilder;
 import co.mv.wb.service.ResourceLoader;
-import co.mv.wb.service.ResourceLoaderFault;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -248,7 +248,9 @@ public class DomResourceLoader implements ResourceLoader
 
 	// </editor-fold>
 
-	@Override public Resource load(File baseDir) throws MessagesException
+	@Override public Resource load(File baseDir) throws
+		LoaderFault,
+		PluginBuildException
 	{
 		if (baseDir == null) { throw new IllegalArgumentException("baseDir cannot be null"); }
 		
@@ -261,7 +263,7 @@ public class DomResourceLoader implements ResourceLoader
 		}
 		catch (ParserConfigurationException e)
 		{
-			throw new ResourceLoaderFault(e);
+			throw new LoaderFault(e);
 		}
 		
 		Document resourceXd;
@@ -271,7 +273,7 @@ public class DomResourceLoader implements ResourceLoader
 		}
 		catch (IOException | SAXException e)
 		{
-			throw new ResourceLoaderFault(e);
+			throw new LoaderFault(e);
 		}
 		
 		Element resourceXe = resourceXd.getDocumentElement();
@@ -411,7 +413,9 @@ public class DomResourceLoader implements ResourceLoader
 	private static Assertion buildAssertion(
 		Map<String, AssertionBuilder> assertionBuilders,
 		Element element,
-		int seqNum) throws MessagesException
+		int seqNum) throws
+		PluginBuildException,
+		LoaderFault
 	{
 		if (assertionBuilders == null) { throw new IllegalArgumentException("assertionBuilders cannot be null"); }
 		if (element == null) { throw new IllegalArgumentException("element cannot be null"); }
@@ -424,7 +428,7 @@ public class DomResourceLoader implements ResourceLoader
 		
 		if (builder == null)
 		{
-			throw new ResourceLoaderFault(String.format(
+			throw new LoaderFault(String.format(
 				"assertion builder of type %s not found",
 				type));
 		}
@@ -437,7 +441,9 @@ public class DomResourceLoader implements ResourceLoader
 	private static Migration buildMigration(
 		Map<String, MigrationBuilder> migrationBuilders,
 		Element element,
-		File baseDir) throws MessagesException
+		File baseDir) throws
+			LoaderFault,
+			PluginBuildException
 	{
 		if (migrationBuilders == null) { throw new IllegalArgumentException("migrationBuilders cannot be null"); }
 		if (element == null) { throw new IllegalArgumentException("element cannot be null"); }
@@ -457,7 +463,7 @@ public class DomResourceLoader implements ResourceLoader
 		
 		if (builder == null)
 		{
-			throw new ResourceLoaderFault(String.format(
+			throw new LoaderFault(String.format(
 				"migration builder of type %s not found",
 				type));
 		}

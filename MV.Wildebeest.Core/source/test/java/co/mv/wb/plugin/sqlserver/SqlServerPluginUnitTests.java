@@ -16,15 +16,14 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.plugin.database.BaseDatabasePluginUnitTests;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,7 +37,7 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 {
 	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
@@ -58,7 +57,7 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 		MigrationPlugin dropRunner = new SqlServerDropDatabaseMigrationPlugin();
 
 		this.databaseExistsAssertionForExistentDatabase(
-			logger,
+			output,
 			instance,
 			create,
 			createRunner,
@@ -76,7 +75,7 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 	
 	@Override @Test public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
@@ -96,7 +95,7 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 		MigrationPlugin dropRunner = new SqlServerDropDatabaseMigrationPlugin();
 
 		this.databaseDoesNotExistAssertionForExistentDatabase(
-			logger,
+			output,
 			instance,
 			create,
 			createRunner,

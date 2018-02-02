@@ -22,7 +22,6 @@ import co.mv.wb.AssertionResult;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.JumpStateFailedException;
-import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
@@ -32,6 +31,7 @@ import co.mv.wb.ResourceHelper;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,12 +44,12 @@ import java.util.UUID;
 public class ResourceHelperImpl implements ResourceHelper
 {
 	public List<AssertionResult> assertState(
-		Logger logger,
+		PrintStream output,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
 		Instance instance) throws IndeterminateStateException
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (resourcePlugin == null) { throw new IllegalArgumentException("resourcePlugin cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
@@ -58,11 +58,11 @@ public class ResourceHelperImpl implements ResourceHelper
 			resource,
 			instance);
 
-		return this.assertState(logger, instance, state);
+		return this.assertState(output, instance, state);
 	}
 
 	public void migrate(
-		Logger logger,
+		PrintStream output,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
 		Instance instance,
@@ -73,7 +73,7 @@ public class ResourceHelperImpl implements ResourceHelper
 			MigrationNotPossibleException,
 			MigrationFailedException
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (resourcePlugin == null) { throw new IllegalArgumentException("resourcePlugin cannot be null"); }
 		if (migrationPlugins == null) { throw new IllegalArgumentException("migrationPlugins cannot be null"); }
@@ -115,29 +115,31 @@ public class ResourceHelperImpl implements ResourceHelper
 				stateId));
 
 			// Migrate to the next state
-			logger.migrationStart(
+			output.println(OutputFormatter.migrationStart(
 				resource,
 				migration,
 				fromState,
-				toState);
+				toState));
 
 			migrationPlugin.perform(
-				logger,
+				output,
 				migration,
 				instance);
 
-			logger.migrationComplete(resource, migration);
+			output.println(OutputFormatter.migrationComplete(
+				resource,
+				migration));
 
 			// Update the state
 			resourcePlugin.setStateId(
-				logger,
+				output,
 				resource,
 				instance,
 				migration.getToStateId().get());
 
 			// Assert the new state
 			List<AssertionResult> assertionResults = this.assertState(
-				logger,
+				output,
 				resource,
 				resourcePlugin,
 				instance);
@@ -147,7 +149,7 @@ public class ResourceHelperImpl implements ResourceHelper
 	}
 
 	public void jumpstate(
-		Logger logger,
+		PrintStream output,
 		Resource resource,
 		ResourcePlugin resourcePlugin,
 		Instance instance,
@@ -155,7 +157,7 @@ public class ResourceHelperImpl implements ResourceHelper
 			AssertionFailedException,
 			JumpStateFailedException
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (resourcePlugin == null) { throw new IllegalArgumentException("resourcePlugin cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
@@ -173,14 +175,14 @@ public class ResourceHelperImpl implements ResourceHelper
 
 		// Assert the new state
 		List<AssertionResult> assertionResults = this.assertState(
-			logger,
+			output,
 			instance,
 			targetState);
 
 		ResourceHelperImpl.throwIfFailed(targetState.getStateId(), assertionResults);
 
 		resourcePlugin.setStateId(
-			logger,
+			output,
 			resource,
 			instance,
 			targetStateId);
@@ -230,11 +232,11 @@ public class ResourceHelperImpl implements ResourceHelper
 
 
 	private List<AssertionResult> assertState(
-		Logger logger,
+		PrintStream output,
 		Instance instance,
 		State state)
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (state == null) { throw new IllegalArgumentException("state cannot be null"); }
 
@@ -245,7 +247,9 @@ public class ResourceHelperImpl implements ResourceHelper
 			{
 				AssertionResponse response = assertion.perform(instance);
 
-				logger.assertionComplete(assertion, response);
+				output.println(OutputFormatter.assertionComplete(
+					assertion,
+					response));
 
 				results.add(new ImmutableAssertionResult(
 					assertion.getAssertionId(),

@@ -16,12 +16,11 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.Logger;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,7 +34,7 @@ public class SqlServerCreateSchemaMigrationTests
 		MigrationFailedException
 	{
 		// Setup
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
@@ -49,7 +48,7 @@ public class SqlServerCreateSchemaMigrationTests
 		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 		
 		createDatabaseRunner.perform(
-			logger,
+			output,
 			createDatabase,
 			instance);
 		
@@ -66,7 +65,7 @@ public class SqlServerCreateSchemaMigrationTests
 		{
 			// Execute
 			createSchemaRunner.perform(
-				logger,
+				output,
 				createSchema,
 				instance);
 		}
@@ -80,7 +79,7 @@ public class SqlServerCreateSchemaMigrationTests
 	@Test public void performForExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
 		// Setup
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
@@ -94,7 +93,7 @@ public class SqlServerCreateSchemaMigrationTests
 		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
 		createDatabaseRunner.perform(
-			logger,
+			output,
 			createDatabase,
 			instance);
 		
@@ -108,7 +107,7 @@ public class SqlServerCreateSchemaMigrationTests
 		SqlServerCreateSchemaMigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
 		
 		createSchemaRunner.perform(
-			logger,
+			output,
 			createSchema,
 			instance);
 		
@@ -118,7 +117,7 @@ public class SqlServerCreateSchemaMigrationTests
 		try
 		{
 			createSchemaRunner.perform(
-				logger,
+				output,
 				createSchema,
 				instance);
 			

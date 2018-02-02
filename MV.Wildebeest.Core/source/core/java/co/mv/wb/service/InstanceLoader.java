@@ -17,6 +17,7 @@
 package co.mv.wb.service;
 
 import co.mv.wb.Instance;
+import co.mv.wb.PluginBuildException;
 
 /**
  * An InstanceLoader is responsible for the overall deserialization of an instance descriptor from some persistent
@@ -31,8 +32,10 @@ public interface InstanceLoader
 	 * Loads an Instance according to the configuration of this InstanceLoader.
 	 * 
 	 * @return                                  the deserialized Instance.
-	 * @throws      MessagesException           if any user-resolvable errors occurred during deserialization.
+	 * @throws      LoaderFault                 if any user-resolvable errors occurred during deserialization.
 	 * @since                                   1.0
 	 */
-	Instance load() throws MessagesException;
+	Instance load() throws
+		LoaderFault,
+		PluginBuildException;
 }

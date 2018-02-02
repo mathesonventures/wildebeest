@@ -18,13 +18,13 @@ package co.mv.wb.postgresql;
 
 import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
-import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
-import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.LoaderFault;
 import co.mv.wb.service.dom.DomInstanceLoader;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
@@ -42,7 +42,9 @@ import java.util.UUID;
  */
 public class PostgreSqlDomServiceUnitTests
 {
-	@Test public void postgreSqlDatabaseResourceLoadFromValidDocumentSucceeds() throws MessagesException
+	@Test public void postgreSqlDatabaseResourceLoadFromValidDocumentSucceeds() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		// Setup
 		UUID resourceId = UUID.randomUUID();
@@ -57,7 +59,6 @@ public class PostgreSqlDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new PrintStreamLogger(System.out),
 			resourceXml);
 		
 		// Execute
@@ -69,7 +70,9 @@ public class PostgreSqlDomServiceUnitTests
 		Assert.assertEquals("resource.name", resourceName, resource.getName());
 	}
 	
-	@Test public void postgreSqlDatabaseInstanceLoadFromValidDocumentSucceeds() throws MessagesException
+	@Test public void postgreSqlDatabaseInstanceLoadFromValidDocumentSucceeds() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		// Setup
 		StringBuilder xml = new StringBuilder();

@@ -23,7 +23,7 @@ import co.mv.wb.Instance;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
@@ -37,13 +37,14 @@ import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
-import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.LoaderFault;
 import co.mv.wb.service.dom.DomInstanceLoader;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +66,8 @@ public class IntegrationTests
 		//
 		// Setup
 		//
+
+		PrintStream output = System.out;
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
@@ -133,7 +136,7 @@ public class IntegrationTests
 		try
 		{
 			resourceHelper.migrate(
-				new PrintStreamLogger(System.out),
+				output,
 				resource,
 				resourcePlugin,
 				instance,
@@ -153,7 +156,9 @@ public class IntegrationTests
 		
 	}
 	
-	@Test public void loadMySqlDatabaseResource() throws MessagesException
+	@Test public void loadMySqlDatabaseResource() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		// Setup
 		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
@@ -163,7 +168,6 @@ public class IntegrationTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new PrintStreamLogger(System.out),
 			prodCatResource.getResourceXml());
 
 		// Execute
@@ -173,7 +177,9 @@ public class IntegrationTests
 		assertResource(resource);
 	}
 	
-	@Test public void loadMySqlDatabaseInstance() throws MessagesException
+	@Test public void loadMySqlDatabaseInstance() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		// Setup
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -190,13 +196,16 @@ public class IntegrationTests
 	}
 	
 	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
-		IndeterminateStateException,
 		AssertionFailedException,
-		MigrationNotPossibleException,
+		IndeterminateStateException,
 		MigrationFailedException,
-		SQLException,
-		MessagesException
+		MigrationNotPossibleException,
+		LoaderFault,
+		PluginBuildException,
+		SQLException
 	{
+
+		PrintStream output = System.out;
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
@@ -212,7 +221,6 @@ public class IntegrationTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new PrintStreamLogger(System.out),
 			prodCatResource.getResourceXml());
 		
 		// Execute
@@ -250,7 +258,7 @@ public class IntegrationTests
 		try
 		{
 			resourceHelper.migrate(
-				new PrintStreamLogger(System.out),
+				output,
 				resource,
 				resourcePlugin,
 				instance,

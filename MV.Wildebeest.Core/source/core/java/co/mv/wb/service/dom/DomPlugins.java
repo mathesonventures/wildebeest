@@ -16,7 +16,6 @@
 
 package co.mv.wb.service.dom;
 
-import co.mv.wb.Logger;
 import co.mv.wb.ResourceTypeService;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.service.AssertionBuilder;
@@ -93,15 +92,11 @@ public class DomPlugins
 	/**
 	 * Builds and returns the collection of factory-shipped {@link MigrationBuilder}s.
 	 * 
-	 * @param       logger                      the {@link Logger} instance to provide to plugins that require one.
 	 * @return                                  a Map that maps the XML element name to the builder instance.
 	 * @since                                   1.0
 	 */
-	public static Map<String, MigrationBuilder> migrationBuilders(
-		Logger logger)
+	public static Map<String, MigrationBuilder> migrationBuilders()
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
-
 		Map<String, MigrationBuilder> result = new HashMap<>();
 
 		// Database
@@ -120,7 +115,7 @@ public class DomPlugins
 		result.put("SqlServerDropSchema", new SqlServerDropSchemaDomMigrationBuilder());
 
 		// Composite
-		result.put("External", new ExternalResourceDomMigrationBuilder(logger));
+		result.put("External", new ExternalResourceDomMigrationBuilder());
 
 		return result;
 	}
@@ -146,20 +141,18 @@ public class DomPlugins
 	 * Returns a {@link DomResourceLoader} for the supplied resource XML, configured with the standard builders.
 	 *
 	 * @param       resourceTypeService         the {@link ResourceTypeService} to use to lookup resource types.
-	 * @param       logger                      the {@link Logger} to provide to plugins that require one.
 	 * @param       resourceXml                 the &lt;resource&gt; XML to be loaded by the DomResourceLoader.
 	 * @return                                  a DomResourceLoader configured with the standard builders.
 	 * @since                                   4.0
 	 */
 	public static DomResourceLoader resourceLoader(
 		ResourceTypeService resourceTypeService,
-		Logger logger,
 		String resourceXml)
 	{
 		return new DomResourceLoader(
 			resourceTypeService,
 			DomPlugins.assertionBuilders(),
-			DomPlugins.migrationBuilders(logger),
+			DomPlugins.migrationBuilders(),
 			resourceXml);
 	}
 	

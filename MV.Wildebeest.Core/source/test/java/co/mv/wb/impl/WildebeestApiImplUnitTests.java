@@ -14,14 +14,26 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb;
+package co.mv.wb.impl;
 
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Instance;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.Mocks;
+import co.mv.wb.Resource;
+import co.mv.wb.ResourceHelper;
+import co.mv.wb.ResourcePlugin;
+import co.mv.wb.ResourceType;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.fake.FakeResourcePlugin;
 import co.mv.wb.fake.TestResourceTypes;
-import co.mv.wb.impl.ImmutableState;
-import co.mv.wb.impl.ResourceImpl;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,15 +45,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
- * Unit tests for Interface.
+ * Unit tests for WildebeestApiImpl.
  *
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
-public class InterfaceUnitTests
+public class WildebeestApiImplUnitTests
 {
 	/**
-	 * A call to migrate specified a target and the resource does not have a default.  Interface correctly resolves the
+	 * A call to migrate specified a target and the resource does not have a default.  WildebeestApiImpl correctly resolves the
 	 * specified target and passes it to ResourceHelperImpl.
 	 *
 	 * @since                                   4.0
@@ -50,7 +62,10 @@ public class InterfaceUnitTests
 		MigrationNotPossibleException,
 		IndeterminateStateException,
 		MigrationFailedException,
-		AssertionFailedException
+		AssertionFailedException,
+		InvalidStateSpecifiedException,
+		UnknownStateSpecifiedException,
+		TargetNotSpecifiedException
 	{
 		// Setup
 		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
@@ -72,10 +87,8 @@ public class InterfaceUnitTests
 			.withStateIdForLabel("foo", fooId)
 			.get();
 
-		Interface iface = new Interface(
-			mock(Logger.class),
-			resourcePlugins,
-			new HashMap<>(),
+		WildebeestApiImpl iface = new WildebeestApiImpl(
+			mock(PrintStream.class),
 			resourceHelper);
 
 		// Execute
@@ -86,7 +99,7 @@ public class InterfaceUnitTests
 
 		// Verify
 		verify(resourceHelper).migrate(
-			any(Logger.class),
+			any(PrintStream.class),
 			any(Resource.class),
 			any(ResourcePlugin.class),
 			any(Instance.class),
@@ -95,7 +108,7 @@ public class InterfaceUnitTests
 	}
 
 	/**
-	 * A call to migrate specified a target and the resource has a default.  Interface correctly resolves the specified
+	 * A call to migrate specified a target and the resource has a default.  WildebeestApiImpl correctly resolves the specified
 	 * target and passes it to ResourceHelperImpl.
 	 *
 	 * @since                                   4.0
@@ -104,7 +117,10 @@ public class InterfaceUnitTests
 		MigrationNotPossibleException,
 		IndeterminateStateException,
 		MigrationFailedException,
-		AssertionFailedException
+		AssertionFailedException,
+		InvalidStateSpecifiedException,
+		UnknownStateSpecifiedException,
+		TargetNotSpecifiedException
 	{
 		// Setup
 		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
@@ -131,10 +147,8 @@ public class InterfaceUnitTests
 			.withStateIdForLabel("foo", fooId)
 			.get();
 
-		Interface iface = new Interface(
-			mock(Logger.class),
-			resourcePlugins,
-			new HashMap<>(),
+		WildebeestApiImpl iface = new WildebeestApiImpl(
+			mock(PrintStream.class),
 			resourceHelper);
 
 		// Execute
@@ -145,7 +159,7 @@ public class InterfaceUnitTests
 
 		// Verify
 		verify(resourceHelper).migrate(
-			any(Logger.class),
+			any(PrintStream.class),
 			any(Resource.class),
 			any(ResourcePlugin.class),
 			any(Instance.class),
@@ -154,15 +168,22 @@ public class InterfaceUnitTests
 	}
 
 	/**
-	 * A call to migrate did not specify a target and the resource does not have a default.  Interface raises the error
+	 * A call to migrate did not specify a target and the resource does not have a default.  WildebeestApiImpl raises the error
 	 * by throwing a TargetNotSpecifiedException.
 	 *
 	 * @since                                   4.0
 	 */
-	@Test public void migrate_targetNotSpecifiedNoDefault_throws()
+	@Test public void migrate_targetNotSpecifiedNoDefault_throws() throws
+		MigrationNotPossibleException,
+		AssertionFailedException,
+		UnknownStateSpecifiedException,
+		TargetNotSpecifiedException,
+		MigrationFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException
 	{
 		// Setup
-		Logger logger = mock(Logger.class);
+		PrintStream output = System.out;
 		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
 		resourcePlugins.put(TestResourceTypes.Fake, new FakeResourcePlugin());
 
@@ -182,24 +203,20 @@ public class InterfaceUnitTests
 			.withStateIdForLabel("foo", fooId)
 			.get();
 
-		Interface iface = new Interface(
-			logger,
-			resourcePlugins,
-			new HashMap<>(),
+		WildebeestApiImpl iface = new WildebeestApiImpl(
+			output,
 			resourceHelper);
 
-		// Execute
+		// Execute and Verify
 		iface.migrate(
 			resource,
 			mock(Instance.class),
 			Optional.empty());
-
-		// Verify
-		verify(logger).targetNotSpecified(any(TargetNotSpecifiedException.class));
+		// TODO: Verify target not specified
 	}
 
 	/**
-	 * A call to migrate did not specify a target but the resource has a default.  Interface correctly resolves the
+	 * A call to migrate did not specify a target but the resource has a default.  WildebeestApiImpl correctly resolves the
 	 * default target and passes it to ResourceHelperImpl
 	 *
 	 * @since                                   4.0
@@ -208,7 +225,10 @@ public class InterfaceUnitTests
 		MigrationNotPossibleException,
 		IndeterminateStateException,
 		MigrationFailedException,
-		AssertionFailedException
+		AssertionFailedException,
+		InvalidStateSpecifiedException,
+		UnknownStateSpecifiedException,
+		TargetNotSpecifiedException
 	{
 		// Setup
 		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
@@ -236,10 +256,8 @@ public class InterfaceUnitTests
 			.withStateIdForLabel("bar", barId)
 			.get();
 
-		Interface iface = new Interface(
-			mock(Logger.class),
-			resourcePlugins,
-			new HashMap<>(),
+		WildebeestApiImpl iface = new WildebeestApiImpl(
+			mock(PrintStream.class),
 			resourceHelper);
 
 		// Execute
@@ -250,7 +268,7 @@ public class InterfaceUnitTests
 
 		// Verify
 		verify(resourceHelper).migrate(
-			any(Logger.class),
+			any(PrintStream.class),
 			any(Resource.class),
 			any(ResourcePlugin.class),
 			any(Instance.class),

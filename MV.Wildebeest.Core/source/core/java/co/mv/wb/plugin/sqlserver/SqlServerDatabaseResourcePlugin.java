@@ -19,7 +19,6 @@ package co.mv.wb.plugin.sqlserver;
 import co.mv.wb.FaultException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
-import co.mv.wb.Logger;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
@@ -27,6 +26,7 @@ import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
 import co.mv.wb.plugin.database.Extensions;
 
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -89,7 +89,8 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 
 	@Override public State currentState(
 		Resource resource,
-		Instance instance) throws IndeterminateStateException
+		Instance instance) throws
+			IndeterminateStateException
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
@@ -129,12 +130,12 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 	}
 
 	@Override public void setStateId(
-		Logger logger,
+		PrintStream output,
 		Resource resource,
 		Instance instance,
 		UUID stateId)
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);

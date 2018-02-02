@@ -17,15 +17,14 @@
 package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.Instance;
-import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,7 +38,7 @@ public class SqlScriptMigrationTests
 	public void performSuccessfully() throws MigrationFailedException
 	{
 		// Setup
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
@@ -61,11 +60,11 @@ public class SqlScriptMigrationTests
 			databaseName,
 			null);
 		
-		// Execute
+		// Execute and Verify
 		try
 		{
 			migrationPlugin.perform(
-				logger,
+				output,
 				migration,
 				instance);
 		}
@@ -73,8 +72,5 @@ public class SqlScriptMigrationTests
 		{
 			MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 		}
-		
-		// Verify
-		// (none)
 	}
 }

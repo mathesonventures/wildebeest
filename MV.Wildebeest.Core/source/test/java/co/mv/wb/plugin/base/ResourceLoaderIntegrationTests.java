@@ -22,7 +22,7 @@ import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
@@ -34,14 +34,13 @@ import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
 import co.mv.wb.plugin.mysql.MySqlProperties;
 import co.mv.wb.plugin.mysql.MySqlUtil;
-import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.LoaderFault;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,20 +51,21 @@ import static org.junit.Assert.assertNotNull;
 
 public class ResourceLoaderIntegrationTests
 {
-	private static final Logger LOG = LoggerFactory.getLogger(ResourceLoaderIntegrationTests.class);
-
 	@Test public void loadAndMigrateMySqlResourceFromXml() throws
-		IndeterminateStateException,
 		AssertionFailedException,
-		MigrationNotPossibleException,
+		IndeterminateStateException,
 		MigrationFailedException,
-		SQLException,
-		MessagesException
+		MigrationNotPossibleException,
+		LoaderFault,
+		PluginBuildException,
+		SQLException
 	{
 		
 		//
 		// Setup
 		//
+
+		PrintStream output = System.out;
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
@@ -76,7 +76,6 @@ public class ResourceLoaderIntegrationTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new PrintStreamLogger(System.out),
 			productCatalogueResource.getResourceXml());
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -93,21 +92,8 @@ public class ResourceLoaderIntegrationTests
 		// Execute - Load
 		//
 		
-		Resource resource = null;
-		try
-		{
-			resource = resourceBuilder.load(new File("."));
-		}
-		catch (MessagesException e)
-		{
-			for (String message : e.getMessages().getMessages())
-			{
-				LOG.error(message);
-			}
-			
-			throw e;
-		}
-		
+		Resource resource = resourceBuilder.load(new File("."));
+
 		//
 		// Verify - Model
 		//
@@ -161,7 +147,7 @@ public class ResourceLoaderIntegrationTests
 		try
 		{
 			resourceHelper.migrate(
-				new PrintStreamLogger(System.out),
+				output,
 				resource,
 				resourcePlugin,
 				instance,

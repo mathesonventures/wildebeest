@@ -17,11 +17,13 @@
 package co.mv.wb.service.dom.sqlserver;
 
 import co.mv.wb.Instance;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.plugin.sqlserver.SqlServerDatabaseInstance;
+import co.mv.wb.service.InstanceBuilder;
 import co.mv.wb.service.Messages;
-import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomInstanceBuilder;
+
 import java.util.Optional;
 
 /**
@@ -32,7 +34,8 @@ import java.util.Optional;
  */
 public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
-	@Override public Instance build() throws MessagesException
+	@Override public Instance build() throws
+		PluginBuildException
 	{
 		Optional<String> hostName = this.tryGetString("hostName");
 		Optional<String> instanceName = this.tryGetString("instanceName");
@@ -61,7 +64,7 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 
 		if (messages.size() > 0)
 		{
-			throw new MessagesException(messages);
+			throw new PluginBuildException(messages);
 		}
 		
 		Instance result = new SqlServerDatabaseInstance(

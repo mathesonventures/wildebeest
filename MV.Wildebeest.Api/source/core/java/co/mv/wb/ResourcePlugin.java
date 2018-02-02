@@ -16,6 +16,7 @@
 
 package co.mv.wb;
 
+import java.io.PrintStream;
 import java.util.UUID;
 
 /**
@@ -52,13 +53,13 @@ public interface ResourcePlugin
 
 	/**
 	 * Registers resource-type-specific meta data to record that it is in the specified state.
-	 * @param       logger                      an optional Logger service to log the activity of this setStateId operation
+	 * @param       output                      the PrintStream for user output.
 	 * @param       resource                    the resource for which the state should be set in the specified {@link Instance}
 	 * @param       instance                    the {@link Instance} to record the state against
 	 * @param       stateId                     the state to record against the instance
 	 */
 	void setStateId(
-		Logger logger,
+		PrintStream output,
 		Resource resource,
 		Instance instance,
 		UUID stateId);

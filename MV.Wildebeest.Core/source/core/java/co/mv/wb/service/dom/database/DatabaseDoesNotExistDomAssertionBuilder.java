@@ -17,9 +17,10 @@
 package co.mv.wb.service.dom.database;
 
 import co.mv.wb.Assertion;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.plugin.database.DatabaseDoesNotExistAssertion;
-import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.dom.BaseDomAssertionBuilder;
+
 import java.util.UUID;
 
 /**
@@ -33,7 +34,8 @@ public class DatabaseDoesNotExistDomAssertionBuilder extends BaseDomAssertionBui
 {
 	@Override public Assertion build(
 		UUID assertionId,
-		int seqNum) throws MessagesException
+		int seqNum) throws
+			PluginBuildException
 	{
 		return new DatabaseDoesNotExistAssertion(assertionId, seqNum);
 	}

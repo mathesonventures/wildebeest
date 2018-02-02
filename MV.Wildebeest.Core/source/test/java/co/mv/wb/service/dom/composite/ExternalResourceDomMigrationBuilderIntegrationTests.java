@@ -17,20 +17,19 @@
 package co.mv.wb.service.dom.composite;
 
 import co.mv.wb.Migration;
-import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.impl.FactoryResourceTypes;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.composite.ExternalResourceMigration;
-import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.LoaderFault;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -44,13 +43,14 @@ import static org.junit.Assert.assertNotNull;
  */
 public class ExternalResourceDomMigrationBuilderIntegrationTests
 {
-	private static final Logger LOG = LoggerFactory.getLogger(ExternalResourceDomMigrationBuilderIntegrationTests.class);
-	
+
 	//
 	// build
 	//
 	
-	@Test public void build_forValidDocument_succeeds() throws MessagesException
+	@Test public void build_forValidDocument_succeeds() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		// Setup
 		UUID resourceId = UUID.randomUUID();
@@ -73,7 +73,6 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new PrintStreamLogger(System.out),
 			resourceXml);
 
 		// Execute
@@ -85,6 +84,7 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 		
 		ExternalResourceMigration migrationT = (ExternalResourceMigration)migration;
 		assertEquals("migration.filename", "foo.wbr", migrationT.getFileName());
-		assertEquals("migration.target", "bar", migrationT.getTarget());
+		assertEquals("migration.target", Optional.of("bar"), migrationT.getTarget());
 	}
+
 }

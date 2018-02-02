@@ -34,7 +34,7 @@ public class ExternalResourceMigration extends BaseMigration
 		Optional<UUID> toStateId,
 		File baseDir,
 		String fileName,
-		String target)
+		Optional<String> target)
 	{
 		super(migrationId, fromStateId, toStateId);
 
@@ -125,10 +125,10 @@ public class ExternalResourceMigration extends BaseMigration
 
 	// <editor-fold desc="Target" defaultstate="collapsed">
 
-	private String _target = null;
+	private Optional<String> _target = null;
 	private boolean _target_set = false;
 
-	public String getTarget() {
+	public Optional<String> getTarget() {
 		if(!_target_set) {
 			throw new IllegalStateException("target not set.");
 		}
@@ -139,7 +139,7 @@ public class ExternalResourceMigration extends BaseMigration
 	}
 
 	private void setTarget(
-		String value) {
+		Optional<String> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("target cannot be null");
 		}

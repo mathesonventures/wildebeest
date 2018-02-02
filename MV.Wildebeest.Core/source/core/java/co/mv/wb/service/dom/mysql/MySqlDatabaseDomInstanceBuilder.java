@@ -17,11 +17,12 @@
 package co.mv.wb.service.dom.mysql;
 
 import co.mv.wb.Instance;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.service.Messages;
-import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomInstanceBuilder;
+
 import java.util.Optional;
 
 /**
@@ -32,7 +33,8 @@ import java.util.Optional;
  */
 public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
-	@Override public Instance build() throws MessagesException
+	@Override public Instance build() throws
+		PluginBuildException
 	{
 		Optional<String> hostName = this.tryGetString("hostName");
 		Optional<Integer> port = this.tryGetInteger("port");
@@ -50,7 +52,7 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 
 		if (messages.size() > 0)
 		{
-			throw new MessagesException(messages);
+			throw new PluginBuildException(messages);
 		}
 		
 		Instance result = new MySqlDatabaseInstance(

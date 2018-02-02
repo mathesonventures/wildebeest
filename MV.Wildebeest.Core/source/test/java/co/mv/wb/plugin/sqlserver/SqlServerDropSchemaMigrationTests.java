@@ -16,12 +16,11 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.Logger;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,7 +34,7 @@ public class SqlServerDropSchemaMigrationTests
 		MigrationFailedException
 	{
 		// Setup
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		SqlServerProperties p = SqlServerProperties.get();
 
@@ -58,7 +57,7 @@ public class SqlServerDropSchemaMigrationTests
 			null);
 		
 		createDatabaseRunner.perform(
-			logger,
+			output,
 			createDatabase,
 			instance);
 		
@@ -71,7 +70,7 @@ public class SqlServerDropSchemaMigrationTests
 		SqlServerCreateSchemaMigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
 
 		createSchemaRunner.perform(
-			logger,
+			output,
 			createSchema,
 			instance);
 		
@@ -87,7 +86,7 @@ public class SqlServerDropSchemaMigrationTests
 		{
 			// Execute
 			dropSchemaRunner.perform(
-				logger,
+				output,
 				dropSchema,
 				instance);
 		}
@@ -101,7 +100,7 @@ public class SqlServerDropSchemaMigrationTests
 	@Test public void performForNonExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
 		// Setup
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		SqlServerProperties p = SqlServerProperties.get();
 
@@ -124,7 +123,7 @@ public class SqlServerDropSchemaMigrationTests
 			null);
 
 		createDatabaseRunner.perform(
-			logger,
+			output,
 			createDatabase,
 			instance);
 		
@@ -140,7 +139,7 @@ public class SqlServerDropSchemaMigrationTests
 		{
 			// Execute
 			dropSchemaRunner.perform(
-				logger,
+				output,
 				dropSchema,
 				instance);
 			

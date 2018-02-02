@@ -17,6 +17,8 @@
 package co.mv.wb.service;
 
 import co.mv.wb.Migration;
+import co.mv.wb.PluginBuildException;
+
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,14 +48,15 @@ public interface MigrationBuilder
 	 *                                          the non-existent state.
 	 * @param       baseDir                     the base directory to use for resolving relative paths.
 	 * @return                                  the new {@link Migration} instance.
-	 * @throws      MessagesException           if migration fails.
+	 * @throws      PluginBuildException        if the plugin fails to build.
 	 * @since                                   1.0
 	 */
 	Migration build(
 		UUID migrationId,
 		Optional<UUID> fromStateId,
 		Optional<UUID> toStateId,
-		File baseDir) throws MessagesException;
+		File baseDir) throws
+			PluginBuildException;
 	
 	/**
 	 * Resets the MigrationBuilder, making it ready to build a new instance.

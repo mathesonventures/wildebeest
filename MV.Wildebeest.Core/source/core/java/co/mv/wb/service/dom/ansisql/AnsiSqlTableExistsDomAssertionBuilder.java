@@ -17,11 +17,13 @@
 package co.mv.wb.service.dom.ansisql;
 
 import co.mv.wb.Assertion;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
+import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.Messages;
-import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomAssertionBuilder;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,7 +38,8 @@ public class AnsiSqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuild
 {
 	@Override public Assertion build(
 		UUID assertionId,
-		int seqNum) throws MessagesException
+		int seqNum) throws
+			PluginBuildException
 	{
 		Optional<String> schemaName = this.tryGetString("schemaName");
 		Optional<String> tableName = this.tryGetString("tableName");
@@ -48,7 +51,7 @@ public class AnsiSqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuild
 		
 		if (messages.size() > 0)
 		{
-			throw new MessagesException(messages);
+			throw new PluginBuildException(messages);
 		}
 		
 		Assertion result = new AnsiSqlTableExistsAssertion(

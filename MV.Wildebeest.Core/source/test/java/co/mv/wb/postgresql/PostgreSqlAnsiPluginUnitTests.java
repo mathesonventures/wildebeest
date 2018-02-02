@@ -16,11 +16,9 @@
 
 package co.mv.wb.postgresql;
 
-import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
@@ -31,6 +29,7 @@ import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,7 +43,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 {
 	@Override @Test public void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException
 	{
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
@@ -70,7 +69,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 		
 		this.ansiSqlCreateDatabaseMigrationSucceeds(
-			logger,
+			output,
 			instance,
 			create,
 			createRunner,
@@ -80,7 +79,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 
 	@Override @Test public void tableExistsForExistentTable() throws MigrationFailedException
 	{
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
@@ -114,7 +113,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 		MigrationPlugin dropDatabaseRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 		
 		this.tableExistsForExistentTable(
-			logger,
+			output,
 			instance,
 			createDatabase,
 			createDatabaseRunner,
@@ -126,7 +125,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 
 	@Override @Test public void tableExistsForNonExistentTable() throws MigrationFailedException
 	{
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
@@ -152,7 +151,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 
 		this.tableExistsForNonExistentTable(
-			logger,
+			output,
 			instance,
 			create,
 			createRunner,

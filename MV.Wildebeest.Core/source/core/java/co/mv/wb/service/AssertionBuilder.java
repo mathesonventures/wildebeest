@@ -17,6 +17,8 @@
 package co.mv.wb.service;
 
 import co.mv.wb.Assertion;
+import co.mv.wb.PluginBuildException;
+
 import java.util.UUID;
 
 /**
@@ -40,13 +42,12 @@ public interface AssertionBuilder
 	 * @param       seqNum                      the ordinal sequence number of the Assertion within the set it belongs
 	 *                                          to.
 	 * @return                                  a deserialized Assertion instance
-	 * @throws      MessagesException           containing error messages if for any reason the deserialization could
-	 *                                          not be carried out
 	 * @since                                   1.0
 	 */
 	Assertion build(
 		UUID assertionId,
-		int seqNum) throws MessagesException;
+		int seqNum) throws
+			PluginBuildException;
 	
 	/**
 	 * Resets the AssertionBuilder, making it ready to build a new instance.

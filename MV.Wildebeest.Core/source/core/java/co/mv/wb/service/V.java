@@ -45,15 +45,29 @@ public class V
 		if (elementName == null) { throw new IllegalArgumentException("elementName cannot be null"); }
 		if ("".equals(elementName.trim())) { throw new IllegalArgumentException("elementName cannot be empty"); }
 		if (itemType == null) { throw new IllegalArgumentException("itemType cannot be null"); }
-		
-		if (itemId == null)
-		{
-			messages.addMessage("Element %s is missing from %s", elementName, itemType.getName());
-		}
-		else
-		{
-			messages.addMessage("Element %s is missing from %s with ID %s", elementName, itemType.getName(), itemId);
-		}
+
+		messages.addMessage(V.elementMissing(itemId, elementName, itemType));
+	}
+
+	public static String elementMissing(
+		UUID itemId,
+		String elementName,
+		Class itemType)
+	{
+		if (elementName == null) { throw new IllegalArgumentException("elementName cannot be null"); }
+		if ("".equals(elementName.trim())) { throw new IllegalArgumentException("elementName cannot be empty"); }
+		if (itemType == null) { throw new IllegalArgumentException("itemType cannot be null"); }
+
+		return itemId == null
+			? String.format(
+				"Element %s is missing from %s",
+				elementName,
+				itemType.getName())
+			: String.format(
+				"Element %s is missing from %s with ID %s",
+				elementName,
+				itemType.getName(),
+				itemId);
 	}
 	
 	public static void elementInvalidValue(

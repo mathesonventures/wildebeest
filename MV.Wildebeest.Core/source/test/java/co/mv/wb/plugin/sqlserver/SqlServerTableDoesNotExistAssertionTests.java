@@ -24,7 +24,6 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
@@ -38,6 +37,7 @@ import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,21 +50,22 @@ import static org.junit.Assert.fail;
 
 public class SqlServerTableDoesNotExistAssertionTests
 {
-	 @Test public void applyForExistingTableFails() throws
+	@Test public void applyForExistingTableFails() throws
 		 IndeterminateStateException,
 		 AssertionFailedException,
 		 MigrationNotPossibleException,
-		 MigrationFailedException,
-		 SQLException
-	 {
+		 MigrationFailedException
+	{
 		 
 		//
 		// Setup
 		//
 
-		 ResourceHelper resourceHelper = new ResourceHelperImpl();
+		PrintStream output = System.out;
 
-		 SqlServerProperties properties = SqlServerProperties.get();
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		SqlServerProperties properties = SqlServerProperties.get();
 
 		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin(
 			resourceHelper);
@@ -114,7 +115,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 			null);
 		 
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -149,23 +150,24 @@ public class SqlServerTableDoesNotExistAssertionTests
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(false, "Table ProductType exists", response, "response");
 		
-	 }
+	}
 	 
 	@Test public void applyForNonExistentTableSucceeds() throws
 		 IndeterminateStateException,
 		 AssertionFailedException,
 		 MigrationNotPossibleException,
-		 MigrationFailedException,
-		 SQLException
+		 MigrationFailedException
 	{
 		 
-		 //
-		 // Setup
-		 //
+		//
+		// Setup
+		//
 
-		 ResourceHelper resourceHelper = new ResourceHelperImpl();
+		PrintStream output = System.out;
 
-		 SqlServerProperties properties = SqlServerProperties.get();
+		ResourceHelper resourceHelper = new ResourceHelperImpl();
+
+		SqlServerProperties properties = SqlServerProperties.get();
 
 		SqlServerDatabaseResourcePlugin resourcePlugin = new SqlServerDatabaseResourcePlugin(
 			resourceHelper);
@@ -202,7 +204,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 			null);
 		 
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,

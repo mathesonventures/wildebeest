@@ -24,7 +24,6 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
@@ -38,6 +37,7 @@ import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +61,8 @@ public class MySqlTableExistsAssertionTests
 		//
 		// Setup
 		//
+
+		PrintStream output = System.out;
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
@@ -113,7 +115,7 @@ public class MySqlTableExistsAssertionTests
 			null);
 		 
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -154,6 +156,8 @@ public class MySqlTableExistsAssertionTests
 		// Setup
 		//
 
+		PrintStream output = System.out;
+
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -192,7 +196,7 @@ public class MySqlTableExistsAssertionTests
 			null);
 		 
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,

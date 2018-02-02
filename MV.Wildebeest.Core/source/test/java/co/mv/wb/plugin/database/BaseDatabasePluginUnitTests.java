@@ -17,11 +17,11 @@
 package co.mv.wb.plugin.database;
 
 import co.mv.wb.AssertionResponse;
-import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
 
+import java.io.PrintStream;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -34,14 +34,14 @@ public abstract class BaseDatabasePluginUnitTests
 	public abstract void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException;
 	
 	protected void databaseExistsAssertionForExistentDatabase(
-		Logger logger,
+		PrintStream output,
 		DatabaseInstance instance,
 		Migration create,
 		MigrationPlugin createRunner,
 		Migration drop,
 		MigrationPlugin dropRunner) throws MigrationFailedException
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (create == null) { throw new IllegalArgumentException("create cannot be null"); }
 		if (createRunner == null) { throw new IllegalArgumentException("createRunner cannot be null"); }
@@ -60,7 +60,7 @@ public abstract class BaseDatabasePluginUnitTests
 		{
 			// Use the migration to create the database
 			createRunner.perform(
-				logger,
+				output,
 				create,
 				instance);
 		
@@ -85,7 +85,7 @@ public abstract class BaseDatabasePluginUnitTests
 		finally
 		{
 			dropRunner.perform(
-				logger,
+				output,
 				drop,
 				instance);
 		}
@@ -118,13 +118,14 @@ public abstract class BaseDatabasePluginUnitTests
 	public abstract void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException;
 	
 	protected void databaseDoesNotExistAssertionForExistentDatabase(
-		Logger logger,
+		PrintStream output,
 		DatabaseInstance instance,
 		Migration create,
 		MigrationPlugin createRunner,
 		Migration drop,
 		MigrationPlugin dropRunner) throws MigrationFailedException
 	{
+		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 		if (create == null) { throw new IllegalArgumentException("create cannot be null"); }
 		if (createRunner == null) { throw new IllegalArgumentException("createRunner cannot be null"); }
@@ -139,7 +140,7 @@ public abstract class BaseDatabasePluginUnitTests
 		try
 		{
 			createRunner.perform(
-				logger,
+				output,
 				create,
 				instance);
 		
@@ -157,7 +158,7 @@ public abstract class BaseDatabasePluginUnitTests
 		finally
 		{
 			dropRunner.perform(
-				logger,
+				output,
 				drop,
 				instance);
 		}

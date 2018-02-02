@@ -17,20 +17,21 @@
 package co.mv.wb.service.dom;
 
 import co.mv.wb.Instance;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.service.InstanceBuilder;
 import co.mv.wb.service.InstanceLoader;
-import co.mv.wb.service.MessagesException;
-import co.mv.wb.service.ResourceLoaderFault;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Map;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import co.mv.wb.service.LoaderFault;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Map;
 
 /**
  * An {@link InstanceBuilder} deserializes {@link Instance} descriptors from XML.
@@ -137,28 +138,31 @@ public class DomInstanceLoader implements InstanceLoader
 
 	// </editor-fold>
 
-	@Override public Instance load() throws MessagesException
+	@Override public Instance load() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		InputSource inputSource = new InputSource(new StringReader(this.getInstanceXml()));
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = null;
+
+		DocumentBuilder db;
 		try
 		{
 			db = dbf.newDocumentBuilder();
 		}
 		catch (ParserConfigurationException e)
 		{
-			throw new ResourceLoaderFault(e);
+			throw new LoaderFault(e);
 		}
 		
-		Document resourceXd = null;
+		Document resourceXd;
 		try
 		{
 			resourceXd = db.parse(inputSource);
 		}
 		catch (IOException | SAXException e)
 		{
-			throw new ResourceLoaderFault(e);
+			throw new LoaderFault(e);
 		}
 		
 		Element instanceXe = resourceXd.getDocumentElement();
@@ -176,7 +180,9 @@ public class DomInstanceLoader implements InstanceLoader
 	
 	private static Instance buildInstance(
 		Map<String, InstanceBuilder> instanceBuilders,
-		Element instanceXe) throws MessagesException
+		Element instanceXe) throws
+			LoaderFault,
+			PluginBuildException
 	{
 		if (instanceBuilders == null) { throw new IllegalArgumentException("instanceBuilders"); }
 		if (instanceXe == null) { throw new IllegalArgumentException("instanceXe"); }
@@ -187,7 +193,7 @@ public class DomInstanceLoader implements InstanceLoader
 			
 		if (builder == null)
 		{
-			throw new ResourceLoaderFault(String.format(
+			throw new LoaderFault(String.format(
 				"instance builder of type %s not found",
 				type));
 		}

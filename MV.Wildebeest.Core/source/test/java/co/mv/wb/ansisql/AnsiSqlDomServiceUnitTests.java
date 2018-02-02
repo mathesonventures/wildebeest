@@ -18,7 +18,7 @@ package co.mv.wb.ansisql;
 
 import co.mv.wb.Asserts;
 import co.mv.wb.ModelExtensions;
-import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.fixturecreator.FixtureCreator;
 import co.mv.wb.impl.FactoryResourceTypes;
@@ -27,7 +27,7 @@ import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
 import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
-import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.LoaderFault;
 import co.mv.wb.service.dom.DomPlugins;
 import co.mv.wb.service.dom.DomResourceLoader;
 import org.junit.Assert;
@@ -45,7 +45,9 @@ import java.util.UUID;
  */
 public class AnsiSqlDomServiceUnitTests
 {
-	@Test public void ansiSqlCreateDatabaseMigrationLoadFromValidDocument() throws MessagesException
+	@Test public void ansiSqlCreateDatabaseMigrationLoadFromValidDocument() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
@@ -62,7 +64,6 @@ public class AnsiSqlDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new PrintStreamLogger(System.out),
 			xml);
 
 		// Execute
@@ -89,7 +90,9 @@ public class AnsiSqlDomServiceUnitTests
 			mT.getToStateId());
 	}
 
-	@Test public void ansiSqlDropDatabaseMigrationLoadFromValidDocument() throws MessagesException
+	@Test public void ansiSqlDropDatabaseMigrationLoadFromValidDocument() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
@@ -106,7 +109,6 @@ public class AnsiSqlDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new PrintStreamLogger(System.out),
 			xml);
 
 		// Execute
@@ -133,7 +135,9 @@ public class AnsiSqlDomServiceUnitTests
 			mT.getToStateId());
 	}
 	
-	@Test public void ansiSqlTableExistsAssertionLoadFromValidDocument() throws MessagesException
+	@Test public void ansiSqlTableExistsAssertionLoadFromValidDocument() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
@@ -151,7 +155,6 @@ public class AnsiSqlDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new PrintStreamLogger(System.out),
 			xml);
 
 		// Execute
@@ -176,7 +179,9 @@ public class AnsiSqlDomServiceUnitTests
 			"resource.states[0].assertions[0]");
 	}
 	
-	@Test public void ansiSqlTableDoesNotExistAssertionLoadFromValidDocument() throws MessagesException
+	@Test public void ansiSqlTableDoesNotExistAssertionLoadFromValidDocument() throws
+		LoaderFault,
+		PluginBuildException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
@@ -194,7 +199,6 @@ public class AnsiSqlDomServiceUnitTests
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
-			new PrintStreamLogger(System.out),
 			xml);
 
 		// Execute

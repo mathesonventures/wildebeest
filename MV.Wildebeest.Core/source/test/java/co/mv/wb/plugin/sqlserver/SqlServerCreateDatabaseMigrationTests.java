@@ -16,12 +16,11 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.Logger;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.plugin.database.DatabaseFixtureHelper;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,7 +34,7 @@ public class SqlServerCreateDatabaseMigrationTests
 		MigrationFailedException
 	{
 		// Setup
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		SqlServerProperties p = SqlServerProperties.get();
 		
@@ -61,7 +60,7 @@ public class SqlServerCreateDatabaseMigrationTests
 		try
 		{
 			migrationPlugin.perform(
-				logger,
+				output,
 				migration,
 				instance);
 		}
@@ -75,7 +74,7 @@ public class SqlServerCreateDatabaseMigrationTests
 	@Test public void performForExistantDatabaseFails() throws SQLException
 	{
 		// Setup
-		Logger logger = new PrintStreamLogger(System.out);
+		PrintStream output = System.out;
 
 		SqlServerProperties properties = SqlServerProperties.get();
 
@@ -98,12 +97,10 @@ public class SqlServerCreateDatabaseMigrationTests
 		SqlServerCreateDatabaseMigrationPlugin migrationPlugin = new SqlServerCreateDatabaseMigrationPlugin();
 
 		// Execute
-		MigrationFailedException caught = null;
-		
 		try
 		{
 			migrationPlugin.perform(
-				logger,
+				output,
 				migration,
 				instance);
 			

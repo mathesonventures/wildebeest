@@ -19,22 +19,23 @@ package co.mv.wb.plugin.composite;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
-import co.mv.wb.Interface;
-import co.mv.wb.Logger;
+import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
-import co.mv.wb.ResourcePlugin;
-import co.mv.wb.framework.Try;
-import co.mv.wb.service.MessagesException;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.WildebeestApi;
+import co.mv.wb.impl.OutputFormatter;
+import co.mv.wb.service.FileLoadException;
+import co.mv.wb.service.LoaderFault;
 
 import java.io.File;
-import java.util.Map;
-import java.util.UUID;
+import java.io.PrintStream;
 
 /**
  * The {@link MigrationPlugin} for {@link ExternalResourceMigration}'s.
@@ -44,99 +45,61 @@ import java.util.UUID;
  */
 public class ExternalResourceMigrationPlugin implements MigrationPlugin
 {
+	private static String ExceptionFormatString = "Migration of external resource failed: %s";
+
 	public ExternalResourceMigrationPlugin(
-		Map<Class, MigrationPlugin> migrationPlugins,
-		ResourceHelper resourceHelper)
+		WildebeestApi wildebeestApi)
 	{
-		this.setMigrationPlugins(migrationPlugins);
-		this.setResourceHelper(resourceHelper);
+		this.setWildebeestApi(wildebeestApi);
 	}
 
-	// <editor-fold desc="MigrationPlugins" defaultstate="collapsed">
+	// <editor-fold desc="WildebeestApi" defaultstate="collapsed">
 
-	private Map<Class, MigrationPlugin> _migrationPlugins = null;
-	private boolean _migrationPlugins_set = false;
+	private WildebeestApi _wildebeestApi = null;
+	private boolean _wildebeestApi_set = false;
 
-	private Map<Class, MigrationPlugin> getMigrationPlugins() {
-		if(!_migrationPlugins_set) {
-			throw new IllegalStateException("migrationPlugins not set.");
+	private WildebeestApi getWildebeestApi() {
+		if(!_wildebeestApi_set) {
+			throw new IllegalStateException("wildebeestApi not set.");
 		}
-		if(_migrationPlugins == null) {
-			throw new IllegalStateException("migrationPlugins should not be null");
+		if(_wildebeestApi == null) {
+			throw new IllegalStateException("wildebeestApi should not be null");
 		}
-		return _migrationPlugins;
+		return _wildebeestApi;
 	}
 
-	private void setMigrationPlugins(Map<Class, MigrationPlugin> value) {
+	private void setWildebeestApi(
+		WildebeestApi value) {
 		if(value == null) {
-			throw new IllegalArgumentException("migrationPlugins cannot be null");
+			throw new IllegalArgumentException("wildebeestApi cannot be null");
 		}
-		boolean changing = !_migrationPlugins_set || _migrationPlugins != value;
+		boolean changing = !_wildebeestApi_set || _wildebeestApi != value;
 		if(changing) {
-			_migrationPlugins_set = true;
-			_migrationPlugins = value;
+			_wildebeestApi_set = true;
+			_wildebeestApi = value;
 		}
 	}
 
-	private void clearMigrationPlugins() {
-		if(_migrationPlugins_set) {
-			_migrationPlugins_set = true;
-			_migrationPlugins = null;
+	private void clearWildebeestApi() {
+		if(_wildebeestApi_set) {
+			_wildebeestApi_set = true;
+			_wildebeestApi = null;
 		}
 	}
 
-	private boolean hasMigrationPlugins() {
-		return _migrationPlugins_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="ResourceHelper" defaultstate="collapsed">
-
-	private ResourceHelper _resourceHelper = null;
-	private boolean _resourceHelper_set = false;
-
-	private ResourceHelper getResourceHelper() {
-		if(!_resourceHelper_set) {
-			throw new IllegalStateException("resourceHelper not set.");
-		}
-		if(_resourceHelper == null) {
-			throw new IllegalStateException("resourceHelper should not be null");
-		}
-		return _resourceHelper;
-	}
-
-	private void setResourceHelper(
-		ResourceHelper value) {
-		if(value == null) {
-			throw new IllegalArgumentException("resourceHelper cannot be null");
-		}
-		boolean changing = !_resourceHelper_set || _resourceHelper != value;
-		if(changing) {
-			_resourceHelper_set = true;
-			_resourceHelper = value;
-		}
-	}
-
-	private void clearResourceHelper() {
-		if(_resourceHelper_set) {
-			_resourceHelper_set = true;
-			_resourceHelper = null;
-		}
-	}
-
-	private boolean hasResourceHelper() {
-		return _resourceHelper_set;
+	private boolean hasWildebeestApi() {
+		return _wildebeestApi_set;
 	}
 
 	// </editor-fold>
 
 	@Override public void perform(
-		Logger logger,
+		PrintStream output,
 		Migration migration,
-		Instance instance) throws MigrationFailedException
+		Instance instance) throws
+			MigrationFailedException
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 
@@ -146,53 +109,73 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		// Load the resource
-		Resource externalResource;
+		Resource resource;
+
 		try
 		{
-			File file = new File(migrationT.getBaseDir(), migrationT.getFileName());
-			externalResource = Interface.loadResource(logger, file);
+			resource = this.getWildebeestApi().loadResource(new File(
+				migrationT.getBaseDir(),
+				migrationT.getFileName()));
 		}
-		catch(MessagesException e)
+		catch (FileLoadException | LoaderFault | PluginBuildException e)
 		{
 			throw new MigrationFailedException(migration.getMigrationId(), "Unable to load");
 		}
 
-		ResourcePlugin externalResourcePlugin = null;
-
-		UUID targetStateId = Try
-			.tryParseUuid(migrationT.getTarget())
-			.orElseGet(() -> this.getResourceHelper().stateIdForLabel(
-				externalResource,
-				migrationT.getTarget()));
-
 		try
 		{
-			this.getResourceHelper().migrate(
-				logger,
-				externalResource,
-				externalResourcePlugin,
+			this.getWildebeestApi().migrate(
+				resource,
 				instance,
-				this.getMigrationPlugins(),
-				targetStateId);
+				migrationT.getTarget());
 		}
-		catch (IndeterminateStateException ex)
+		catch (TargetNotSpecifiedException e)
 		{
 			throw new MigrationFailedException(
 				migration.getMigrationId(),
-				"Indeterminate exception in external resource");
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.targetNotSpecified(e)));
 		}
-		catch (AssertionFailedException ex)
+		catch (UnknownStateSpecifiedException e)
 		{
 			throw new MigrationFailedException(
 				migration.getMigrationId(),
-				"Assertion failed in external resource");
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.unknownStateSpecified(e)));
 		}
-		catch (MigrationNotPossibleException ex)
+		catch (InvalidStateSpecifiedException e)
 		{
 			throw new MigrationFailedException(
 				migration.getMigrationId(),
-				"Migration not possible in external resource");
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.invalidStateSpecified(e)));
+		}
+		catch (MigrationNotPossibleException e)
+		{
+			throw new MigrationFailedException(
+				migration.getMigrationId(),
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.migrationNotPossible(e)));
+		}
+		catch (IndeterminateStateException e)
+		{
+			throw new MigrationFailedException(
+				migration.getMigrationId(),
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.indeterminateState(e)));
+		}
+		catch (AssertionFailedException e)
+		{
+			throw new MigrationFailedException(
+				migration.getMigrationId(),
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.assertionFailed(e)));
 		}
 	}
 }

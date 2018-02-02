@@ -24,7 +24,6 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
@@ -38,6 +37,7 @@ import co.mv.wb.plugin.database.SqlScriptMigration;
 import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +61,8 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 		// Setup
 		//
+
+		PrintStream output = System.out;
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
@@ -113,7 +115,7 @@ public class MySqlTableDoesNotExistAssertionTests
 			null);
 		 
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -157,9 +159,11 @@ public class MySqlTableDoesNotExistAssertionTests
 		SQLException
 	{
 		 
-		 //
-		 // Setup
-		 //
+		//
+		// Setup
+		//
+
+		PrintStream output = System.out;
 
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
@@ -199,7 +203,7 @@ public class MySqlTableDoesNotExistAssertionTests
 			null);
 		 
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -232,7 +236,6 @@ public class MySqlTableDoesNotExistAssertionTests
 
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
-		
 	}
 	 
 	@Test public void applyForNonExistentDatabaseFails() throws SQLException

@@ -17,11 +17,13 @@
 package co.mv.wb.service.dom.mysql;
 
 import co.mv.wb.Assertion;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.plugin.mysql.MySqlTableExistsAssertion;
+import co.mv.wb.service.AssertionBuilder;
 import co.mv.wb.service.Messages;
-import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomAssertionBuilder;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,7 +38,8 @@ public class MySqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {
 	@Override public Assertion build(
 		UUID assertionId,
-		int seqNum) throws MessagesException
+		int seqNum) throws
+			PluginBuildException
 	{
 		Optional<String> tableName = this.tryGetString("tableName");
 		
@@ -48,7 +51,7 @@ public class MySqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 		
 		if (messages.size() > 0)
 		{
-			throw new MessagesException(messages);
+			throw new PluginBuildException(messages);
 		}
 		
 		Assertion result = new MySqlTableExistsAssertion(

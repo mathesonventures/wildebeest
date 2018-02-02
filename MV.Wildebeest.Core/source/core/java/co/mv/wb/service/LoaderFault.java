@@ -22,26 +22,26 @@ package co.mv.wb.service;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public class ResourceLoaderFault extends RuntimeException
+public class LoaderFault extends Exception
 {
 	/**
-	 * Creates a new ResourceLoaderFault with the supplied cause.
+	 * Creates a new LoaderFault with the supplied cause.
 	 * 
 	 * @param       cause                       the root cause of the fault.
 	 * @since                                   1.0
 	 */
-	public ResourceLoaderFault(Exception cause)
+	public LoaderFault(Exception cause)
 	{
 		super(cause);
 	}
 	
 	/**
-	 * Creates a new ResourceLoaderFault with the supplied message.
+	 * Creates a new LoaderFault with the supplied message.
 	 * 
 	 * @param       message                     the message for this fault.
 	 * @since                                   1.0
 	 */
-	public ResourceLoaderFault(String message)
+	public LoaderFault(String message)
 	{
 		super(message);
 	}

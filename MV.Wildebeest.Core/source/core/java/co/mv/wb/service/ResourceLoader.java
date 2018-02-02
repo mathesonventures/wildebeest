@@ -16,6 +16,7 @@
 
 package co.mv.wb.service;
 
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 
 import java.io.File;
@@ -34,8 +35,11 @@ public interface ResourceLoader
 	 * 
 	 * @param       baseDir                     the base directory for relative paths.
 	 * @return                                  the deserialized Resource.
-	 * @throws      MessagesException           if any user-resolvable errors occurred during deserialization.
+	 * @throws      LoaderFault                 if the resource fails to load.
+	 * @throws      PluginBuildException        if the plugin fails to build.
 	 * @since                                   1.0
 	 */
-	Resource load(File baseDir) throws MessagesException;
+	Resource load(File baseDir) throws
+		LoaderFault,
+		PluginBuildException;
 }

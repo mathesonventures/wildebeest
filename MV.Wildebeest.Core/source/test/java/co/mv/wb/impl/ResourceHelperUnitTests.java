@@ -27,7 +27,6 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PrintStreamLogger;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
@@ -41,6 +40,7 @@ import co.mv.wb.fake.TestResourceTypes;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +60,7 @@ public class ResourceHelperUnitTests
 	@Test public void assertState_noAssertions_succeeds() throws IndeterminateStateException
 	{
 		// Setup
+		PrintStream output = System.out;
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -76,7 +77,7 @@ public class ResourceHelperUnitTests
 
 		// Execute
 		List<AssertionResult> results = resourceHelper.assertState(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance);
@@ -89,6 +90,7 @@ public class ResourceHelperUnitTests
 	@Test public void assertState_oneAssertion_succeeds() throws IndeterminateStateException
 	{
 		// Setup
+		PrintStream output = System.out;
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -112,7 +114,7 @@ public class ResourceHelperUnitTests
 
 		// Execute
 		List<AssertionResult> results = resourceHelper.assertState(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance);
@@ -127,6 +129,7 @@ public class ResourceHelperUnitTests
 	@Test public void assertState_multipleAssertions_succeeds() throws IndeterminateStateException
 	{
 		// Setup
+		PrintStream output = System.out;
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -156,7 +159,7 @@ public class ResourceHelperUnitTests
 
 		// Execute
 		List<AssertionResult> results = resourceHelper.assertState(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance);
@@ -197,6 +200,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException
 	{
 		// Setup
+		PrintStream output = System.out;
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -222,7 +226,7 @@ public class ResourceHelperUnitTests
 
 		// Execute
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -244,6 +248,8 @@ public class ResourceHelperUnitTests
 		//
 		// Setup
 		//
+
+		PrintStream output = System.out;
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -306,7 +312,7 @@ public class ResourceHelperUnitTests
 		//
 		
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -331,6 +337,8 @@ public class ResourceHelperUnitTests
 		//
 		// Setup
 		//
+
+		PrintStream output = System.out;
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -428,7 +436,7 @@ public class ResourceHelperUnitTests
 		//
 		
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -464,6 +472,8 @@ public class ResourceHelperUnitTests
 		// Setup
 		//
 
+		PrintStream output = System.out;
+
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
@@ -493,12 +503,10 @@ public class ResourceHelperUnitTests
 		// Instance
 		FakeInstance instance = new FakeInstance();
 		
-		PrintStreamLogger logger = new PrintStreamLogger(System.out);
-
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
 		resourceHelper.migrate(
-			logger,
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -510,7 +518,7 @@ public class ResourceHelperUnitTests
 		//
 		
 		resourceHelper.migrate(
-			logger,
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -536,6 +544,8 @@ public class ResourceHelperUnitTests
 		// Setup
 		//
 
+		PrintStream output = System.out;
+
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
@@ -568,7 +578,7 @@ public class ResourceHelperUnitTests
 		ResourceHelper resourceHelper = new ResourceHelperImpl();
 
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -580,7 +590,7 @@ public class ResourceHelperUnitTests
 		//
 		
 		resourceHelper.migrate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,
@@ -616,6 +626,8 @@ public class ResourceHelperUnitTests
 		// Setup
 		//
 
+		PrintStream output = System.out;
+
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		final Resource resource = new ResourceImpl(
@@ -645,7 +657,7 @@ public class ResourceHelperUnitTests
 			@Override public void invoke() throws Exception
 			{
 				resourceHelper.jumpstate(
-					new PrintStreamLogger(System.out),
+					output,
 					resource,
 					resourcePlugin,
 					instance,
@@ -669,6 +681,8 @@ public class ResourceHelperUnitTests
 		//
 		// Setup
 		//
+
+		PrintStream output = System.out;
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -695,7 +709,7 @@ public class ResourceHelperUnitTests
 			@Override public void invoke() throws Exception
 			{
 				resourceHelper.jumpstate(
-					new PrintStreamLogger(System.out),
+					output,
 					resource,
 					resourcePlugin,
 					instance,
@@ -724,6 +738,8 @@ public class ResourceHelperUnitTests
 		// Setup
 		//
 
+		PrintStream output = System.out;
+
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
@@ -749,7 +765,7 @@ public class ResourceHelperUnitTests
 		//
 
 		resourceHelper.jumpstate(
-			new PrintStreamLogger(System.out),
+			output,
 			resource,
 			resourcePlugin,
 			instance,

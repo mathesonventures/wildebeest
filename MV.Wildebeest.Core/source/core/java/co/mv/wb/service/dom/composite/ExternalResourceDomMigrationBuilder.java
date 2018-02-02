@@ -16,11 +16,10 @@
 
 package co.mv.wb.service.dom.composite;
 
-import co.mv.wb.Logger;
 import co.mv.wb.Migration;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.plugin.composite.ExternalResourceMigration;
 import co.mv.wb.service.Messages;
-import co.mv.wb.service.MessagesException;
 import co.mv.wb.service.MigrationBuilder;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomMigrationBuilder;
@@ -37,21 +36,16 @@ import java.util.UUID;
  */
 public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 {
-	private Logger _logger = null;
-	
-	public ExternalResourceDomMigrationBuilder(
-		Logger logger)
+	public ExternalResourceDomMigrationBuilder()
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
-		
-		_logger = logger;
 	}
-	
+
 	@Override public Migration build(
 		UUID migrationId,
 		Optional<UUID> fromStateId,
 		Optional<UUID> toStateId,
-		File baseDir) throws MessagesException
+		File baseDir) throws
+			PluginBuildException
 	{
 		Migration result;
 
@@ -62,16 +56,16 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 		Messages messages = new Messages();
 		if (!filename.isPresent())
 		{
-			V.elementMissing(messages, migrationId, "filename", ExternalResourceMigration.class);
+			messages.addMessage(V.elementMissing(migrationId, "filename", ExternalResourceMigration.class));
 		}
 		if (!target.isPresent())
 		{
-			V.elementMissing(messages, migrationId, "target", ExternalResourceMigration.class);
+			messages.addMessage(V.elementMissing(migrationId, "target", ExternalResourceMigration.class));
 		}
 		
 		if (messages.size() > 0)
 		{
-			throw new MessagesException(messages);
+			throw new PluginBuildException(messages);
 		}
 
 		result = new ExternalResourceMigration(
@@ -80,8 +74,8 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 			toStateId,
 			baseDir,
 			filename.get(),
-			target.get());
-		
+			target);
+
 		return result;
 	}
 }

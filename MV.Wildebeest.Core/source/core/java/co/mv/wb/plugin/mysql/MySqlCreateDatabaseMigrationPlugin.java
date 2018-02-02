@@ -17,7 +17,6 @@
 package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.Instance;
-import co.mv.wb.Logger;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationFaultException;
@@ -25,16 +24,18 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.plugin.database.DatabaseHelper;
 
+import java.io.PrintStream;
 import java.sql.SQLException;
 
 public class MySqlCreateDatabaseMigrationPlugin implements MigrationPlugin
 {
 	@Override public void perform(
-		Logger logger,
+		PrintStream output,
 		Migration migration,
-		Instance instance) throws MigrationFailedException
+		Instance instance) throws
+			MigrationFailedException
 	{
-		if (logger == null) { throw new IllegalArgumentException("logger cannot be null"); }
+		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 

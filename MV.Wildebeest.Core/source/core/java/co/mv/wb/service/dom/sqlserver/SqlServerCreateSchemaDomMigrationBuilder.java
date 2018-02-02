@@ -17,11 +17,13 @@
 package co.mv.wb.service.dom.sqlserver;
 
 import co.mv.wb.Migration;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigration;
 import co.mv.wb.service.Messages;
-import co.mv.wb.service.MessagesException;
+import co.mv.wb.service.MigrationBuilder;
 import co.mv.wb.service.V;
 import co.mv.wb.service.dom.BaseDomMigrationBuilder;
+
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,7 +41,8 @@ public class SqlServerCreateSchemaDomMigrationBuilder extends BaseDomMigrationBu
 		UUID migrationId,
 		Optional<UUID> fromStateId,
 		Optional<UUID> toStateId,
-		File baseDir) throws MessagesException
+		File baseDir) throws
+			PluginBuildException
 	{
 		Optional<String> schemaName = this.tryGetString("schemaName");
 		
@@ -51,7 +54,7 @@ public class SqlServerCreateSchemaDomMigrationBuilder extends BaseDomMigrationBu
 		
 		if (messages.size() > 0)
 		{
-			throw new MessagesException(messages);
+			throw new PluginBuildException(messages);
 		}
 		
 		return new SqlServerCreateSchemaMigration(

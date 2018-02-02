@@ -17,6 +17,7 @@
 package co.mv.wb.service;
 
 import co.mv.wb.Instance;
+import co.mv.wb.PluginBuildException;
 
 /**
  * An InstanceBuilder is a factory component for building {@link Intances}s.
@@ -35,11 +36,10 @@ public interface InstanceBuilder
 	 * Builds and returns a new {@link Instance}.
 	 * 
 	 * @return                                  the newly built instance.
-	 * @throws      MessagesException           contains any user-resolvable errors that occur when attempting to build
-	 *                                          the Instance.
+	 * @throws      PluginBuildException        if the instance fails to build.
 	 * @since                                   1.0
 	 */
-	Instance build() throws MessagesException;
+	Instance build() throws PluginBuildException;
 
 	/**
 	 * Resets the InstanceBuilder, ready to build a new instance.

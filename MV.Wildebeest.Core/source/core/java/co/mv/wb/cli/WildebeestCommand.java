@@ -17,46 +17,32 @@
 package co.mv.wb.cli;
 
 import co.mv.wb.About;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.Factory;
+import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
-import co.mv.wb.Interface;
-import co.mv.wb.Logger;
-import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PrintStreamLogger;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.JumpStateFailedException;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceHelper;
-import co.mv.wb.ResourcePlugin;
-import co.mv.wb.ResourceType;
-import co.mv.wb.impl.FactoryResourceTypes;
-import co.mv.wb.impl.ResourceHelperImpl;
-import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
-import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
-import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
-import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigrationPlugin;
-import co.mv.wb.plugin.composite.ExternalResourceMigration;
-import co.mv.wb.plugin.composite.ExternalResourceMigrationPlugin;
-import co.mv.wb.plugin.database.SqlScriptMigration;
-import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
-import co.mv.wb.plugin.mysql.MySqlCreateDatabaseMigration;
-import co.mv.wb.plugin.mysql.MySqlCreateDatabaseMigrationPlugin;
-import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
-import co.mv.wb.plugin.mysql.MySqlDropDatabaseMigration;
-import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
-import co.mv.wb.plugin.sqlserver.SqlServerCreateDatabaseMigration;
-import co.mv.wb.plugin.sqlserver.SqlServerCreateDatabaseMigrationPlugin;
-import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigration;
-import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigrationPlugin;
-import co.mv.wb.plugin.sqlserver.SqlServerDatabaseResourcePlugin;
-import co.mv.wb.plugin.sqlserver.SqlServerDropDatabaseMigrationPlugin;
-import co.mv.wb.plugin.sqlserver.SqlServerDropSchemaMigration;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.WildebeestApi;
+import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.impl.OutputFormatter;
+import co.mv.wb.impl.WildebeestApiImpl;
+import co.mv.wb.service.FileLoadException;
+import co.mv.wb.service.LoaderFault;
 
+import java.io.File;
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
  * The Wildebeest command-line interface.  WildebeestCommand parses command-line invocations, and delegates to
- * {@link co.mv.wb.Interface} to carry out the command.
+ * {@link WildebeestApiImpl} to carry out the command.
  * 
  * @author                                      Brendon Matheson
  * @since                                       1.0
@@ -82,46 +68,8 @@ public class WildebeestCommand
 	 */
 	public WildebeestCommand()
 	{
-		this.setLogger(new PrintStreamLogger(System.out));
 	}
 
-	// <editor-fold desc="Logger" defaultstate="collapsed">
-
-	private Logger _logger = null;
-	private boolean _logger_set = false;
-
-	public final Logger getLogger() {
-		if(!_logger_set) {
-			throw new IllegalStateException("logger not set.  Use the HasLogger() method to check its state before accessing it.");
-		}
-		return _logger;
-	}
-
-	public final void setLogger(
-		Logger value) {
-		if(value == null) {
-			throw new IllegalArgumentException("logger cannot be null");
-		}
-		boolean changing = !_logger_set || _logger != value;
-		if(changing) {
-			_logger_set = true;
-			_logger = value;
-		}
-	}
-
-	private void clearLogger() {
-		if(_logger_set) {
-			_logger_set = true;
-			_logger = null;
-		}
-	}
-
-	private boolean hasLogger() {
-		return _logger_set;
-	}
-
-	// </editor-fold>
-	
 	/**
 	 * Runs the command using the supplied command-line arguments.
 	 * 
@@ -131,101 +79,177 @@ public class WildebeestCommand
 	public void run(String[] args)
 	{
 		if(args == null) { throw new IllegalArgumentException("args cannot be null"); }
-		
-		WildebeestCommand.printBanner(System.out);
-		
+
+		PrintStream output = System.out;
+
+		WildebeestCommand.printBanner(output);
+
 		if (args.length == 0)
 		{
-			WildebeestCommand.printUsage(System.out);
+			WildebeestCommand.printUsage(output);
 		}
 		
 		else
 		{
 			String command = args[0];
 
-			ResourceHelper resourceHelper = new ResourceHelperImpl();
-			Map<ResourceType, ResourcePlugin> resourcePlugins = WildebeestCommand.getResourcePlugins(
-				resourceHelper);
-			Map<Class, MigrationPlugin> migrationPlugins = WildebeestCommand.getMigrationPlugins(
-				resourceHelper);
+			WildebeestApi wildebeestApi = Factory.wildebeestApi(output);
 
 			if ("about".equals(command))
 			{
 				About about = new About();
-				this.getLogger().logLine(about.getProjectName() + " " + about.getVersionFullDotted());
-				this.getLogger().logLine(about.getCopyrightAssertion());
+				output.println(about.getProjectName() + " " + about.getVersionFullDotted());
+				output.println(about.getCopyrightAssertion());
 			}
 
 			else if ("state".equals(command))
 			{
-				String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
-				String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
+				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
+				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
 
-				if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName))
+				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
 				{
-					WildebeestCommand.printUsage(System.out);
+					WildebeestCommand.printUsage(output);
 				}
 				else
 				{
-					Interface iface = new Interface(
-						this.getLogger(),
-						resourcePlugins,
-						migrationPlugins,
-						resourceHelper);
-					iface.state(resourceFileName, instanceFileName);
+					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
+						wildebeestApi,
+						resourceFilename,
+						output);
+
+					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
+						wildebeestApi,
+						instanceFilename,
+						output);
+
+					if (resource.isPresent() && instance.isPresent())
+					{
+						try
+						{
+							wildebeestApi.state(
+								resource.get(),
+								instance.get());
+						}
+						catch (IndeterminateStateException e)
+						{
+							output.println(e.getMessage());
+						}
+					}
 				}
 			}
 
 			else if ("migrate".equals(command))
 			{
-				String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
-				String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
+				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
+				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
 				Optional<String> targetState = WildebeestCommand.getOptionalArg(args, "t", "targetState");
 
-				if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName))
+				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
 				{
 					WildebeestCommand.printUsage(System.out);
 				}
 				else
 				{
-					Interface iface = new Interface(
-						this.getLogger(),
-						resourcePlugins,
-						migrationPlugins,
-						resourceHelper);
+					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
+						wildebeestApi,
+						resourceFilename,
+						output);
 
-					Resource resource = iface.tryLoadResource(
-						resourceFileName);
+					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
+						wildebeestApi,
+						instanceFilename,
+						output);
 
-					Instance instance = iface.tryLoadInstance(instanceFileName);
-
-					iface.migrate(resource, instance, targetState);
+					if (resource.isPresent() && instance.isPresent())
+					{
+						try
+						{
+							wildebeestApi.migrate(
+								resource.get(),
+								instance.get(),
+								targetState);
+						}
+						catch (TargetNotSpecifiedException e)
+						{
+							output.println(OutputFormatter.targetNotSpecified(e));
+						}
+						catch (UnknownStateSpecifiedException e)
+						{
+							output.println(OutputFormatter.unknownStateSpecified(e));
+						}
+						catch (InvalidStateSpecifiedException e)
+						{
+							output.println(OutputFormatter.invalidStateSpecified(e));
+						}
+						catch (MigrationNotPossibleException e)
+						{
+							output.println(OutputFormatter.migrationNotPossible(e));
+						}
+						catch (IndeterminateStateException e)
+						{
+							output.println(OutputFormatter.indeterminateState(e));
+						}
+						catch (MigrationFailedException e)
+						{
+							output.print(OutputFormatter.migrationFailed(e));
+						}
+						catch (AssertionFailedException e)
+						{
+							output.println(OutputFormatter.assertionFailed(e));
+						}
+					}
 				}
 			}
 
 			else if (("jumpstate").equals(command))
 			{
-				String resourceFileName = WildebeestCommand.getArg(args, "r", "resource");
-				String instanceFileName = WildebeestCommand.getArg(args, "i", "instance");
+				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
+				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
 				String targetState = WildebeestCommand.getArg(args, "t", "targetState");
 
-				if (isNullOrWhiteSpace(resourceFileName) || isNullOrWhiteSpace(instanceFileName) || isNull(targetState))
+				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename) || isNull(targetState))
 				{
 					WildebeestCommand.printUsage(System.out);
 				}
 				else
 				{
-					Interface iface = new Interface(
-						this.getLogger(),
-						resourcePlugins,
-						migrationPlugins,
-						resourceHelper);
+					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
+						wildebeestApi,
+						resourceFilename,
+						output);
 
-					Resource resource = iface.tryLoadResource(
-						resourceFileName);
-					Instance instance = iface.tryLoadInstance(instanceFileName);
+					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
+						wildebeestApi,
+						instanceFilename,
+						output);
 
-					iface.jumpstate(resource, instance, targetState);
+					if (resource.isPresent() && instance.isPresent())
+					{
+						try
+						{
+							wildebeestApi.jumpstate(
+								resource.get(),
+								instance.get(),
+								targetState);
+						}
+						catch (UnknownStateSpecifiedException e)
+						{
+							output.println(OutputFormatter.unknownStateSpecified(e));
+						}
+						catch (InvalidStateSpecifiedException e)
+						{
+							output.println(OutputFormatter.invalidStateSpecified(e));
+						}
+						catch (AssertionFailedException e)
+						{
+							output.println(OutputFormatter.assertionFailed(e));
+						}
+						catch (JumpStateFailedException e)
+						{
+							output.println(OutputFormatter.jumpStateFailed(e));
+						}
+					}
 				}
 			}
 
@@ -234,6 +258,72 @@ public class WildebeestCommand
 				WildebeestCommand.printUsage(System.out);
 			}
 		}
+	}
+
+	private static Optional<Resource> tryLoadResource(
+		WildebeestApi wildebeestApi,
+		String resourceFilename,
+		PrintStream out)
+	{
+		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
+		if (resourceFilename == null) throw new ArgumentNullException("resourceFilename");
+		if (out == null) throw new ArgumentNullException("out");
+
+		File resourceFile = new File(resourceFilename);
+
+		Resource resource = null;
+
+		try
+		{
+			resource = wildebeestApi.loadResource(resourceFile);
+		}
+		catch (FileLoadException e)
+		{
+			out.println(OutputFormatter.fileLoad(e, "resource"));
+		}
+		catch (LoaderFault e)
+		{
+			out.println(OutputFormatter.loaderFault(e, "resource"));
+		}
+		catch (PluginBuildException e)
+		{
+			out.println(OutputFormatter.pluginBuild(e));
+		}
+
+		return Optional.ofNullable(resource);
+	}
+
+	private static Optional<Instance> tryLoadInstance(
+		WildebeestApi wildebeestApi,
+		String instanceFilename,
+		PrintStream out)
+	{
+		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
+		if (instanceFilename == null) throw new ArgumentNullException("instanceFilename");
+		if (out == null) throw new ArgumentNullException("out");
+
+		File instanceFile = new File(instanceFilename);
+
+		Instance instance = null;
+
+		try
+		{
+			instance = wildebeestApi.loadInstance(instanceFile);
+		}
+		catch (FileLoadException e)
+		{
+			out.println(OutputFormatter.fileLoad(e, "instance"));
+		}
+		catch (LoaderFault e)
+		{
+			out.println(OutputFormatter.loaderFault(e, "instance"));
+		}
+		catch (PluginBuildException e)
+		{
+			out.println(OutputFormatter.pluginBuild(e));
+		}
+
+		return Optional.ofNullable(instance);
 	}
 
 	private static String getArg(
@@ -310,54 +400,6 @@ public class WildebeestCommand
 	private static boolean isNullOrWhiteSpace(String value)
 	{
 		return value == null ||	"".equals(value.trim());
-	}
-
-	private static Map<ResourceType, ResourcePlugin> getResourcePlugins(
-		ResourceHelper resourceHelper)
-	{
-		if (resourceHelper == null) { throw new IllegalArgumentException("resourceHelper cannot be null"); }
-
-		Map<ResourceType, ResourcePlugin> result = new HashMap<>();
-
-		result.put(FactoryResourceTypes.MySqlDatabase, new MySqlDatabaseResourcePlugin(
-			resourceHelper));
-		result.put(FactoryResourceTypes.PostgreSqlDatabase, new PostgreSqlDatabaseResourcePlugin(
-			resourceHelper));
-		result.put(FactoryResourceTypes.SqlServerDatabase, new SqlServerDatabaseResourcePlugin(
-			resourceHelper));
-
-		return result;
-	}
-
-	private static Map<Class, MigrationPlugin> getMigrationPlugins(
-		ResourceHelper resourceHelper)
-	{
-		if (resourceHelper == null) { throw new IllegalArgumentException("resourceHelper cannot be null"); }
-
-		Map<Class, MigrationPlugin> result = new HashMap<>();
-
-		// ansisql
-		result.put(AnsiSqlCreateDatabaseMigration.class, new AnsiSqlCreateDatabaseMigrationPlugin());
-		result.put(AnsiSqlDropDatabaseMigration.class, new AnsiSqlDropDatabaseMigrationPlugin());
-
-		// composite
-		result.put(ExternalResourceMigration.class, new ExternalResourceMigrationPlugin(
-			result,
-			resourceHelper));
-
-		// database
-		result.put(SqlScriptMigration.class, new SqlScriptMigrationPlugin());
-
-		// mysql
-		result.put(MySqlCreateDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());
-		result.put(MySqlDropDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());
-
-		// sqlserver
-		result.put(SqlServerCreateDatabaseMigration.class, new SqlServerCreateDatabaseMigrationPlugin());
-		result.put(SqlServerCreateSchemaMigration.class, new SqlServerCreateSchemaMigrationPlugin());
-		result.put(SqlServerDropSchemaMigration.class, new SqlServerDropDatabaseMigrationPlugin());
-
-		return result;
 	}
 
 	private static void printBanner(PrintStream out)
