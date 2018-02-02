@@ -17,8 +17,8 @@
 package co.mv.wb.plugin.composite;
 
 import co.mv.wb.ResourceType;
-import co.mv.wb.impl.BaseMigration;
 import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.plugin.base.BaseMigration;
 
 import java.io.File;
 import java.util.Arrays;

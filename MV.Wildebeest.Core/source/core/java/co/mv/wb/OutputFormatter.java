@@ -14,24 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.impl;
-
-import co.mv.wb.Assertion;
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.AssertionResponse;
-import co.mv.wb.FileLoadException;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.JumpStateFailedException;
-import co.mv.wb.LoaderFault;
-import co.mv.wb.Migration;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.PluginBuildException;
-import co.mv.wb.Resource;
-import co.mv.wb.State;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
+package co.mv.wb;
 
 import java.util.Optional;
 

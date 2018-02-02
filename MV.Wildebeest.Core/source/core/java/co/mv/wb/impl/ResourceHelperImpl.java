@@ -26,10 +26,12 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.OutputFormatter;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
+import co.mv.wb.plugin.base.ImmutableAssertionResult;
 
 import java.io.PrintStream;
 import java.util.ArrayList;

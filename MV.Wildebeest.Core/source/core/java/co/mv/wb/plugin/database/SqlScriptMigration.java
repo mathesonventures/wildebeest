@@ -18,8 +18,8 @@ package co.mv.wb.plugin.database;
 
 import co.mv.wb.Migration;
 import co.mv.wb.ResourceType;
-import co.mv.wb.impl.BaseMigration;
 import co.mv.wb.impl.FactoryResourceTypes;
+import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
 import java.util.List;

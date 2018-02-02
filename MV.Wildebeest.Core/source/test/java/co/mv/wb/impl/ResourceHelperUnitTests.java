@@ -30,6 +30,8 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceHelper;
 import co.mv.wb.State;
+import co.mv.wb.plugin.base.ImmutableState;
+import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeAssertion;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;

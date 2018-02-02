@@ -14,73 +14,31 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.impl;
+package co.mv.wb.plugin.base;
 
-import co.mv.wb.AssertionResult;
-
-import java.util.UUID;
+import co.mv.wb.AssertionResponse;
 
 /**
- * An {@link AssertionResult} that cannot be modified after it's initial construction.
+ * An {@link AssertionResponse} that cannot be modified after it's initial construction.
  * 
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public class ImmutableAssertionResult implements AssertionResult
+public class ImmutableAssertionResponse implements AssertionResponse
 {
 	/**
-	 * Creates a new ImmutableAssertionResult for the specified assertion, with the supplied result value and message.
+	 * Creates a new ImmutableAssertionResponse instance.
 	 * 
-	 * @param       assertionId                 the ID of the assertion that was applied to get this result
-	 * @param       result                      indicator whether the assertion succeeded or failed
-	 * @param       message                     the textual message describing the assertion result
+	 * @param       result                      the result for the new AssertionResponse
+	 * @param       message                     the message for the new AssertionResponse
 	 */
-	public ImmutableAssertionResult(
-		UUID assertionId,
+	public ImmutableAssertionResponse(
 		boolean result,
 		String message)
 	{
-		this.setAssertionId(assertionId);
 		this.setResult(result);
 		this.setMessage(message);
 	}
-	
-	// <editor-fold desc="AssertionId" defaultstate="collapsed">
-
-	private UUID _assertionId = null;
-	private boolean _assertionId_set = false;
-
-	@Override public UUID getAssertionId() {
-		if(!_assertionId_set) {
-			throw new IllegalStateException("assertionId not set.  Use the HasAssertionId() method to check its state before accessing it.");
-		}
-		return _assertionId;
-	}
-
-	private void setAssertionId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("assertionId cannot be null");
-		}
-		boolean changing = !_assertionId_set || _assertionId != value;
-		if(changing) {
-			_assertionId_set = true;
-			_assertionId = value;
-		}
-	}
-
-	private void clearAssertionId() {
-		if(_assertionId_set) {
-			_assertionId_set = true;
-			_assertionId = null;
-		}
-	}
-
-	private boolean hasAssertionId() {
-		return _assertionId_set;
-	}
-
-	// </editor-fold>
 	
 	// <editor-fold desc="Result" defaultstate="collapsed">
 

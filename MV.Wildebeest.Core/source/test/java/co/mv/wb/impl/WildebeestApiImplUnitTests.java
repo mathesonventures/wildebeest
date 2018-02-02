@@ -29,6 +29,8 @@ import co.mv.wb.ResourceType;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.fixture.Fixtures;
+import co.mv.wb.plugin.base.ImmutableState;
+import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import org.junit.Test;

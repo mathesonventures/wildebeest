@@ -27,12 +27,12 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.impl.OutputFormatter;
 
 import java.io.File;
 import java.io.PrintStream;

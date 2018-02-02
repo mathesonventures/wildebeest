@@ -27,13 +27,13 @@ import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.framework.ArgumentNullException;
-import co.mv.wb.impl.OutputFormatter;
 import co.mv.wb.impl.WildebeestApiImpl;
 
 import java.io.File;
