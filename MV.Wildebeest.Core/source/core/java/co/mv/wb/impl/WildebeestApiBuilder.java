@@ -16,6 +16,7 @@
 
 package co.mv.wb.impl;
 
+import co.mv.wb.PluginGroup;
 import co.mv.wb.PluginManager;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
@@ -26,6 +27,7 @@ import co.mv.wb.framework.ArgumentNullException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,6 +51,7 @@ public class WildebeestApiBuilder
 			new WildebeestApiImpl(output),
 			new HashMap<>(),
 			new PluginManagerImpl(
+				new ArrayList<>(),
 				new ArrayList<>()));
 	}
 
@@ -80,6 +83,7 @@ public class WildebeestApiBuilder
 	public WildebeestApiBuilder withFactoryPluginManager()
 	{
 		return this.withPluginManager(new PluginManagerImpl(
+			Wildebeest.getPluginGroups(),
 			Wildebeest.getMigrationPlugins(_wildebeestApi)));
 	}
 

@@ -145,4 +145,12 @@ public interface WildebeestApi
 			InvalidStateSpecifiedException,
 			JumpStateFailedException,
 			UnknownStateSpecifiedException;
+
+	/**
+	 * Produces an XML description of the plugins known to this instance of Wildebeest.
+	 *
+	 * @author                                  Brendon Matheson
+	 * @since                                   4.0
+	 */
+	String describePlugins();
 }

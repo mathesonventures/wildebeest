@@ -16,26 +16,42 @@
 
 package co.mv.wb.impl;
 
+import co.mv.wb.AssertionType;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationPluginType;
 import co.mv.wb.MigrationType;
 import co.mv.wb.MigrationTypeInfo;
+import co.mv.wb.PluginGroup;
 import co.mv.wb.PluginManager;
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.framework.Util;
 import org.reflections.Reflections;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Default implementation of {@link PluginManager}.
+ *
+ * @author                                      Brendon Matheson
+ * @since                                       4.0
+ */
 public class PluginManagerImpl implements PluginManager
 {
+	private static final String ScanPackage = "co.mv.wb";
+
+	private final List<PluginGroup> _pluginGroups;
 	private final Map<String, MigrationPlugin> _migrationPlugins;
 
 	public PluginManagerImpl(
+		List<PluginGroup> pluginGroups,
 		List<MigrationPlugin> migrationPlugins)
 	{
+		if (pluginGroups == null) throw new ArgumentNullException("pluginGroups");
 		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
+
+		_pluginGroups = pluginGroups;
 
 		_migrationPlugins = migrationPlugins
 			.stream()
@@ -56,9 +72,14 @@ public class PluginManagerImpl implements PluginManager
 				x -> x));
 	}
 
+	@Override public List<PluginGroup> getPluginGroups()
+	{
+		return _pluginGroups;
+	}
+
 	@Override public List<MigrationTypeInfo> getMigrationTypeInfos()
 	{
-		Reflections reflections = new Reflections("co.mv.wb");
+		Reflections reflections = new Reflections(ScanPackage);
 
 		List<MigrationTypeInfo> result = reflections
 			.getTypesAnnotatedWith(MigrationType.class)
@@ -71,6 +92,8 @@ public class PluginManagerImpl implements PluginManager
 					return new MigrationTypeInfo(
 						migrationType.pluginGroupUri(),
 						migrationType.uri(),
+						Util.nameFromUri(migrationType.uri()),
+						migrationType.description(),
 						migrationClass);
 				})
 			.collect(Collectors.toList());
@@ -89,5 +112,18 @@ public class PluginManagerImpl implements PluginManager
 		}
 
 		return _migrationPlugins.get(uri);
+	}
+
+	@Override public List<AssertionType> getAssertionTypes()
+	{
+		Reflections reflections = new Reflections(ScanPackage);
+
+		List<AssertionType> result = reflections
+			.getTypesAnnotatedWith(AssertionType.class)
+			.stream()
+			.map(assertionClass -> assertionClass.getAnnotation(AssertionType.class))
+			.collect(Collectors.toList());
+
+		return result;
 	}
 }

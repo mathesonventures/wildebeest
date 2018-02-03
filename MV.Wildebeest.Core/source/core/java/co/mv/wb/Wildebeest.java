@@ -17,6 +17,7 @@
 package co.mv.wb;
 
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.impl.PluginManagerImpl;
 import co.mv.wb.impl.WildebeestApiBuilder;
 import co.mv.wb.plugin.composite.ExternalResourceMigrationPlugin;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;

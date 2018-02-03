@@ -293,7 +293,7 @@ public class WildebeestCommand
 				}
 			}
 
-			else if (("jumpstate").equals(command))
+			else if ("jumpstate".equals(command))
 			{
 				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
 				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
@@ -346,6 +346,13 @@ public class WildebeestCommand
 						}
 					}
 				}
+			}
+
+			else if ("plugins".equals(command))
+			{
+				String xml = this.getWildebeestApi().describePlugins();
+
+				this.getOutput().println(xml);
 			}
 
 			else

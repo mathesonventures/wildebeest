@@ -19,6 +19,7 @@ package co.mv.wb.impl;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
+import co.mv.wb.AssertionType;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
@@ -29,6 +30,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationType;
+import co.mv.wb.MigrationTypeInfo;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.PluginManager;
@@ -41,6 +43,7 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.framework.Util;
 import co.mv.wb.plugin.base.ImmutableAssertionResult;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
@@ -451,6 +454,79 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource,
 			instance,
 			targetStateId);
+	}
+
+	@Override public String describePlugins()
+	{
+		StringBuilder output = new StringBuilder();
+
+		output.append("<manifest>");
+
+		output.append("<groups>");
+		this.getPluginManager()
+			.getPluginGroups()
+			.stream()
+			.forEach(x -> output.append("<group uri=\"").append(x.getUri()).append("\" name=\"").append(x.getName()).append("\" />"));
+		output.append("</groups>");
+
+		output.append("<plugins>");
+
+		// Migrations
+		for (MigrationTypeInfo info : this.getPluginManager().getMigrationTypeInfos())
+		{
+			WildebeestApiImpl.pluginElement(
+				output,
+				"migration",
+				info.getPluginGroupUri(),
+				info.getUri(),
+				info.getName(),
+				info.getDescription());
+		}
+
+		// Assertions
+		for (AssertionType info : this.getPluginManager().getAssertionTypes())
+		{
+			WildebeestApiImpl.pluginElement(
+				output,
+				"assertion",
+				info.pluginGroupUri(),
+				info.uri(),
+				Util.nameFromUri(info.uri()),
+				info.description());
+		}
+
+		output.append("</plugins>");
+
+		output.append("</manifest>");
+
+		return output.toString();
+	}
+
+	private static void pluginElement(
+		StringBuilder output,
+		String type,
+		String groupUri,
+		String uri,
+		String name,
+		String description)
+	{
+		output
+			.append("<plugin type=\"").append(type).append("\">")
+			.append("<group>").append(groupUri).append("</group>")
+			.append("<uri>").append(uri).append("</uri>")
+			.append("<name>").append(name).append("</name>")
+			.append("<description>");
+
+		String[] descriptionLines = description.split("\\n");
+
+		for (String descriptionLine : descriptionLines)
+		{
+			output.append("<line>").append(descriptionLine).append("</line>");
+		}
+
+		output
+			.append("</description>")
+			.append("</plugin>");
 	}
 
 	private static UUID stateIdForLabel(

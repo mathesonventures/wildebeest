@@ -27,6 +27,7 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.fixture.TestContext_WildebeestCommandUnit;
@@ -177,5 +178,31 @@ public class WildebeestCommandUnitTests
 
 		// Verify
 		throw new RuntimeException("verification required");
+	}
+
+	@Test public void plugins_succeeds()
+	{
+		// Setup
+		PrintStream output = System.out;
+
+		WildebeestApi wildebeestApi = Wildebeest
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryPluginManager()
+			.get();
+
+		WildebeestCommand wb = new WildebeestCommand(
+			output,
+			wildebeestApi);
+
+		// Execute
+		wb.run(new String[]
+			{
+				"plugins"
+			});
+
+		// Verify
+
+		// (none)
 	}
 }
