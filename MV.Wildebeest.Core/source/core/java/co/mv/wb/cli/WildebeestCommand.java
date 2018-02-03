@@ -175,10 +175,10 @@ public class WildebeestCommand
 	{
 		if(args == null) { throw new IllegalArgumentException("args cannot be null"); }
 
-		WildebeestCommand.printBanner(this.getOutput());
-
 		if (args.length == 0)
 		{
+			WildebeestCommand.printBanner(this.getOutput());
+
 			WildebeestCommand.printUsage(this.getOutput());
 		}
 		
@@ -200,6 +200,8 @@ public class WildebeestCommand
 
 				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
 				{
+					WildebeestCommand.printBanner(this.getOutput());
+
 					WildebeestCommand.printUsage(this.getOutput());
 				}
 				else
@@ -238,6 +240,8 @@ public class WildebeestCommand
 
 				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
 				{
+					WildebeestCommand.printBanner(this.getOutput());
+
 					WildebeestCommand.printUsage(System.out);
 				}
 				else
@@ -301,6 +305,8 @@ public class WildebeestCommand
 
 				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename) || isNull(targetState))
 				{
+					WildebeestCommand.printBanner(this.getOutput());
+
 					WildebeestCommand.printUsage(System.out);
 				}
 				else
@@ -357,6 +363,8 @@ public class WildebeestCommand
 
 			else
 			{
+				WildebeestCommand.printBanner(this.getOutput());
+
 				WildebeestCommand.printUsage(System.out);
 			}
 		}
