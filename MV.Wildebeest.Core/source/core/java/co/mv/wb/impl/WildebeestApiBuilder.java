@@ -19,8 +19,8 @@ package co.mv.wb.impl;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.WildebeestFactory;
 import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.PrintStream;
@@ -67,7 +67,7 @@ public class WildebeestApiBuilder
 	public WildebeestApiBuilder withFactoryResourcePlugins()
 	{
 		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>(_resourcePlugins);
-		_resourcePlugins.putAll(WildebeestFactory.getResourcePlugins());
+		_resourcePlugins.putAll(Wildebeest.getResourcePlugins());
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>(_migrationPlugins);
 
@@ -83,7 +83,7 @@ public class WildebeestApiBuilder
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
 		migrationPlugins.putAll(_migrationPlugins);
-		migrationPlugins.putAll(WildebeestFactory.getMigrationPlugins(_wildebeestApi));
+		migrationPlugins.putAll(Wildebeest.getMigrationPlugins(_wildebeestApi));
 
 		return new WildebeestApiBuilder(
 			_wildebeestApi,

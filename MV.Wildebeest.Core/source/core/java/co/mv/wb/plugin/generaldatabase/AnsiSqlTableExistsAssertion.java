@@ -22,7 +22,7 @@ import co.mv.wb.AssertionType;
 import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
-import co.mv.wb.WildebeestFactory;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
@@ -158,7 +158,7 @@ public class AnsiSqlTableExistsAssertion extends BaseAssertion
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			WildebeestFactory.PostgreSqlDatabase);
+			Wildebeest.PostgreSqlDatabase);
 	}
 
 	@Override public AssertionResponse perform(Instance instance)

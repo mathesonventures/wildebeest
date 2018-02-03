@@ -18,7 +18,7 @@ package co.mv.wb.plugin.composite;
 
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
-import co.mv.wb.WildebeestFactory;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.io.File;
@@ -180,8 +180,8 @@ public class ExternalResourceMigration extends BaseMigration
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			WildebeestFactory.MySqlDatabase,
-			WildebeestFactory.PostgreSqlDatabase,
-			WildebeestFactory.SqlServerDatabase);
+			Wildebeest.MySqlDatabase,
+			Wildebeest.PostgreSqlDatabase,
+			Wildebeest.SqlServerDatabase);
 	}
 }

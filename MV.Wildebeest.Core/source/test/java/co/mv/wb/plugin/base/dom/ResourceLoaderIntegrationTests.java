@@ -27,8 +27,8 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.WildebeestFactory;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
@@ -85,7 +85,7 @@ public class ResourceLoaderIntegrationTests
 			databaseName,
 			null);
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()

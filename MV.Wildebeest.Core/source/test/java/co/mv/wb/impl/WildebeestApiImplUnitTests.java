@@ -23,8 +23,8 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.WildebeestFactory;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import org.junit.Test;
@@ -60,7 +60,7 @@ public class WildebeestApiImplUnitTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.get();
 
@@ -105,7 +105,7 @@ public class WildebeestApiImplUnitTests
 
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.get();
 
@@ -140,7 +140,7 @@ public class WildebeestApiImplUnitTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.get();
 
@@ -173,7 +173,7 @@ public class WildebeestApiImplUnitTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.get();
 

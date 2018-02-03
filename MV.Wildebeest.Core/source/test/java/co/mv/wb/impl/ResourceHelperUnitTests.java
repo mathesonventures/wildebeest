@@ -32,8 +32,8 @@ import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.WildebeestFactory;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -81,7 +81,7 @@ public class ResourceHelperUnitTests
 		
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -120,7 +120,7 @@ public class ResourceHelperUnitTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -167,7 +167,7 @@ public class ResourceHelperUnitTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -238,7 +238,7 @@ public class ResourceHelperUnitTests
 		
 		FakeInstance instance = new FakeInstance();
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -324,7 +324,7 @@ public class ResourceHelperUnitTests
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -452,7 +452,7 @@ public class ResourceHelperUnitTests
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -530,7 +530,7 @@ public class ResourceHelperUnitTests
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -603,7 +603,7 @@ public class ResourceHelperUnitTests
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -672,7 +672,7 @@ public class ResourceHelperUnitTests
 		final FakeInstance instance = new FakeInstance();
 		instance.setTag("Bar");
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -726,7 +726,7 @@ public class ResourceHelperUnitTests
 		// Target State ID
 		final UUID targetStateId = UUID.randomUUID();
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -790,7 +790,7 @@ public class ResourceHelperUnitTests
 		final FakeInstance instance = new FakeInstance();
 		instance.setTag("Foo");
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()

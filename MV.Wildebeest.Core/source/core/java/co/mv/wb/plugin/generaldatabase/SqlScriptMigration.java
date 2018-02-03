@@ -19,7 +19,7 @@ package co.mv.wb.plugin.generaldatabase;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
-import co.mv.wb.WildebeestFactory;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
@@ -100,8 +100,8 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			WildebeestFactory.MySqlDatabase,
-			WildebeestFactory.PostgreSqlDatabase,
-			WildebeestFactory.SqlServerDatabase);
+			Wildebeest.MySqlDatabase,
+			Wildebeest.PostgreSqlDatabase,
+			Wildebeest.SqlServerDatabase);
 	}
 }

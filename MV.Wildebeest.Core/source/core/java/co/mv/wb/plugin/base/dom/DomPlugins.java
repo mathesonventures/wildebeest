@@ -20,7 +20,7 @@ import co.mv.wb.AssertionBuilder;
 import co.mv.wb.InstanceBuilder;
 import co.mv.wb.MigrationBuilder;
 import co.mv.wb.ResourceTypeService;
-import co.mv.wb.WildebeestFactory;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.plugin.composite.dom.ExternalResourceDomMigrationBuilder;
 import co.mv.wb.plugin.generaldatabase.dom.AnsiSqlCreateDatabaseDomMigrationBuilder;
 import co.mv.wb.plugin.generaldatabase.dom.AnsiSqlDropDatabaseDomMigrationBuilder;
@@ -130,9 +130,9 @@ public class DomPlugins
 	{
 		Map<String, InstanceBuilder> result = new HashMap<>();
 		
-		result.put(WildebeestFactory.MySqlDatabase.getUri(), new MySqlDatabaseDomInstanceBuilder());
-		result.put(WildebeestFactory.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomInstanceBuilder());
-		result.put(WildebeestFactory.SqlServerDatabase.getUri(), new SqlServerDatabaseDomInstanceBuilder());
+		result.put(Wildebeest.MySqlDatabase.getUri(), new MySqlDatabaseDomInstanceBuilder());
+		result.put(Wildebeest.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomInstanceBuilder());
+		result.put(Wildebeest.SqlServerDatabase.getUri(), new SqlServerDatabaseDomInstanceBuilder());
 
 		return result;
 	}

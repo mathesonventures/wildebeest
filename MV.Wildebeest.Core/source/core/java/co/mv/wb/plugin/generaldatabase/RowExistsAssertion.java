@@ -23,7 +23,7 @@ import co.mv.wb.Instance;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
-import co.mv.wb.WildebeestFactory;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
@@ -146,9 +146,9 @@ public class RowExistsAssertion extends BaseAssertion implements Assertion
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			WildebeestFactory.MySqlDatabase,
-			WildebeestFactory.PostgreSqlDatabase,
-			WildebeestFactory.SqlServerDatabase);
+			Wildebeest.MySqlDatabase,
+			Wildebeest.PostgreSqlDatabase,
+			Wildebeest.SqlServerDatabase);
 	}
 	
 	@Override public AssertionResponse perform(Instance instance)

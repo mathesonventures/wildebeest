@@ -22,7 +22,7 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.WildebeestFactory;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.FixtureCreator;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
@@ -54,7 +54,7 @@ public class DatabaseDomServiceUnitTests
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource(WildebeestFactory.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Product Catalogue Database")
+			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Product Catalogue Database")
 				.state(UUID.randomUUID(), null)
 					.assertion("DatabaseExists", assertionId)
 			.render();
@@ -96,7 +96,7 @@ public class DatabaseDomServiceUnitTests
 		UUID assertionId = UUID.randomUUID();
 		
 		String xml = FixtureCreator.create()
-			.resource(WildebeestFactory.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Product Catalogue Database")
+			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Product Catalogue Database")
 				.state(UUID.randomUUID(), null)
 					.assertion("DatabaseDoesNotExist", assertionId)
 			.render();

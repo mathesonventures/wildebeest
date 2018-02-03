@@ -19,7 +19,7 @@ package co.mv.wb.plugin.mysql;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
-import co.mv.wb.WildebeestFactory;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
@@ -63,6 +63,6 @@ public class MySqlCreateDatabaseMigration extends BaseMigration
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			WildebeestFactory.MySqlDatabase);
+			Wildebeest.MySqlDatabase);
 	}
 }

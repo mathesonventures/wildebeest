@@ -20,7 +20,7 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.WildebeestFactory;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.FixtureCreator;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomPlugins;
@@ -59,7 +59,7 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 		UUID migration1Id = UUID.randomUUID();
 		
 		String resourceXml = FixtureCreator.create()
-			.resource(WildebeestFactory.PostgreSqlDatabase.getUri(), resourceId, "Test")
+			.resource(Wildebeest.PostgreSqlDatabase.getUri(), resourceId, "Test")
 			.state(state1Id, "state1")
 			.state(state2Id, "state2")
 			.migration("External", migration1Id, state1Id, state2Id)

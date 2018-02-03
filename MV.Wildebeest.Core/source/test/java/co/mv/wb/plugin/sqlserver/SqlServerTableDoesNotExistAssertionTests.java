@@ -29,8 +29,8 @@ import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.WildebeestFactory;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeInstance;
@@ -74,7 +74,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -84,7 +84,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			WildebeestFactory.SqlServerDatabase,
+			Wildebeest.SqlServerDatabase,
 			"Database",
 			Optional.empty());
 
@@ -177,7 +177,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = WildebeestFactory
+		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -187,7 +187,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			WildebeestFactory.SqlServerDatabase,
+			Wildebeest.SqlServerDatabase,
 			"Database",
 			Optional.empty());
 

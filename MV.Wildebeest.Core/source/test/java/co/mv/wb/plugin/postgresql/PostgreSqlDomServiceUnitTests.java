@@ -21,7 +21,7 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.WildebeestFactory;
+import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.FixtureCreator;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
@@ -50,7 +50,7 @@ public class PostgreSqlDomServiceUnitTests
 		String resourceName = "Foo";
 		
 		String resourceXml = FixtureCreator.create()
-			.resource(WildebeestFactory.PostgreSqlDatabase.getUri(), resourceId, resourceName)
+			.resource(Wildebeest.PostgreSqlDatabase.getUri(), resourceId, resourceName)
 			.render();
 		
 		DomResourceLoader loader = DomPlugins.resourceLoader(
@@ -75,7 +75,7 @@ public class PostgreSqlDomServiceUnitTests
 	{
 		// Setup
 		StringBuilder xml = new StringBuilder();
-		xml.append("<instance type=\"").append(WildebeestFactory.PostgreSqlDatabase.getUri()).append("\">\n")
+		xml.append("<instance type=\"").append(Wildebeest.PostgreSqlDatabase.getUri()).append("\">\n")
 			.append("<hostName>127.0.0.1</hostName>\n")
 			.append("<port>5432</port>\n")
 			.append("<adminUsername>wb</adminUsername>\n")
