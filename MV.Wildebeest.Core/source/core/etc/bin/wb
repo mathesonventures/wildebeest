@@ -16,11 +16,19 @@
 
 #!/bin/sh
 
+# Wildebeest
 WB_CLASSPATH=$WB_HOME/lib/MV.Wildebeest.Api-@meta.project.version.full.dotted@.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/MV.Wildebeest.Core-@meta.project.version.full.dotted@.jar
+
+# Plugin Support
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/mysql-connector-java-5.1.22.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/postgresql-9.3-1100-jdbc41.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/sqljdbc4.jar
+
+# Other Libraries
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/guava-20.0.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/javassist-3.21.0-GA.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/reflections-0.9.11.jar
 
 java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand $*
 

@@ -18,11 +18,19 @@ REM Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
 if "%WB_HOME%"=="" goto noWbHome
 
+REM Wildebeest
 SET WB_CLASSPATH=%WB_HOME%\lib\MV.Wildebeest.Api-@meta.project.version.full.dotted@.jar
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\MV.Wildebeest.Core-@meta.project.version.full.dotted@.jar
+
+REM Plugin Support
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\mysql-connector-java-5.1.22.jar
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\postgresql-9.3-1100-jdbc41.jar
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\sqljdbc4.jar
+
+REM Other Libraries
+SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\guava-20.0.jar
+SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\javassist-3.21.0-GA.jar
+SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\reflections-0.9.11.jar
 
 java -classpath "%WB_CLASSPATH%" co.mv.wb.cli.WildebeestCommand %1 %2 %3 %4
 

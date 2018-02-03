@@ -30,6 +30,6 @@ public class Util
 			throw new RuntimeException(String.format("invalid URI: %s", uri));
 		}
 
-		return uri.substring(index);
+		return uri.substring(index + 1);
 	}
 }
