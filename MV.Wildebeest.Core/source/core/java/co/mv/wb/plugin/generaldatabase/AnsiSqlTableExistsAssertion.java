@@ -18,6 +18,7 @@ package co.mv.wb.plugin.generaldatabase;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionResponse;
+import co.mv.wb.AssertionType;
 import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
@@ -35,6 +36,11 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       4.0
  */
+@AssertionType(
+	pluginGroupUri = "co.mv.wb:GeneralDatabase",
+	uri = "co.mv.wb.generaldatabase:DatabaseExists",
+	description =
+		"Asserts that a table exists using an ANSI-SQL compliant query.")
 public class AnsiSqlTableExistsAssertion extends BaseAssertion
 {
 	/**

@@ -26,8 +26,8 @@ import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
-import co.mv.wb.plugin.fake.FakeMigration;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
+import co.mv.wb.plugin.fake.SetTagMigration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,14 +84,14 @@ public class TestContext_SimpleFakeResource_Builder
 		resource.getStates().add(barState);
 
 		// Migrate non-existant to Foo
-		resource.getMigrations().add(new FakeMigration(
+		resource.getMigrations().add(new SetTagMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(fooStateId),
 			"Foo"));
 
 		// Migrate non-existant to Foo
-		resource.getMigrations().add(new FakeMigration(
+		resource.getMigrations().add(new SetTagMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(barStateId),

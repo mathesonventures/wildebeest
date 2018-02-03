@@ -17,11 +17,11 @@
 package co.mv.wb;
 
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.plugin.fake.FakeInstance;
+import co.mv.wb.plugin.fake.SetTagMigration;
+import co.mv.wb.plugin.fake.TagAssertion;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlTableDoesNotExistAssertion;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlTableExistsAssertion;
-import co.mv.wb.plugin.fake.FakeAssertion;
-import co.mv.wb.plugin.fake.FakeInstance;
-import co.mv.wb.plugin.fake.FakeMigration;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import org.junit.Assert;
 
@@ -82,12 +82,12 @@ public class Asserts
 		assertEquals(name + ".seqNum", expectedSeqNum, actual.getSeqNum());
 	}
 	
-	public static void assertFakeAssertion(
+	public static void assertTagAssertion(
 		UUID expectedAssertionId,
 		String expectedName,
 		int expectedSeqNum,
 		String expectedTag,
-		FakeAssertion actual,
+		TagAssertion actual,
 		String name)
 	{
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
@@ -215,7 +215,7 @@ public class Asserts
 		Optional<UUID> expectedFromStateId,
 		Optional<UUID> expectedToStateId,
 		String expectedTag,
-		FakeMigration actual,
+		SetTagMigration actual,
 		String name)
 	{
 		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }

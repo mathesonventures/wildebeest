@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.fake;
 
 import co.mv.wb.Migration;
+import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.plugin.base.BaseMigration;
 
@@ -31,9 +32,13 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public class FakeMigration extends BaseMigration
+@MigrationType(
+	pluginGroupUri = "co.mv.wb:Fake",
+	uri = "co.mv.wb.fake.SetTag",
+	description = "Sets the tag on a FakeInstance to the supplied value")
+public class SetTagMigration extends BaseMigration
 {
-	public FakeMigration(
+	public SetTagMigration(
 		UUID migrationId,
 		Optional<UUID> fromStateId,
 		Optional<UUID> toStateId,

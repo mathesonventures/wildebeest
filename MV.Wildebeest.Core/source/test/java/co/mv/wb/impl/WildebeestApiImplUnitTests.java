@@ -20,8 +20,11 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestFactory;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import org.junit.Test;
@@ -46,23 +49,25 @@ public class WildebeestApiImplUnitTests
 	 * @since                                   4.0
 	 */
 	@Test public void migrate_targetSpecifiedNoDefault_succeeds() throws
-		IndeterminateStateException,
-		MigrationFailedException,
 		AssertionFailedException,
+		IndeterminateStateException,
 		InvalidStateSpecifiedException,
-		UnknownStateSpecifiedException,
-		TargetNotSpecifiedException
+		MigrationFailedException,
+		MigrationNotPossibleException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		// Setup
 		PrintStream output = System.out;
+
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.get();
 
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withDefaultTarget("bar")
 			.get();
-
-		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
-			output);
 
 		// Execute
 		wildebeestApi.migrate(
@@ -84,12 +89,13 @@ public class WildebeestApiImplUnitTests
 	 * @since                                   4.0
 	 */
 	@Test public void migrate_targetSpecifiedWithDefault_succeeds() throws
-		IndeterminateStateException,
-		MigrationFailedException,
 		AssertionFailedException,
+		IndeterminateStateException,
 		InvalidStateSpecifiedException,
-		UnknownStateSpecifiedException,
-		TargetNotSpecifiedException
+		MigrationFailedException,
+		MigrationNotPossibleException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		// Setup
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
@@ -97,7 +103,11 @@ public class WildebeestApiImplUnitTests
 			.withDefaultTarget("bar")
 			.get();
 
-		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
+		PrintStream output = System.out;
+
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.get();
 
 		// Execute
 		wildebeestApi.migrate(
@@ -120,18 +130,23 @@ public class WildebeestApiImplUnitTests
 	 */
 	@Test public void migrate_targetNotSpecifiedNoDefault_throws() throws
 		AssertionFailedException,
-		UnknownStateSpecifiedException,
-		TargetNotSpecifiedException,
-		MigrationFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException
+		InvalidStateSpecifiedException,
+		MigrationFailedException,
+		MigrationNotPossibleException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		// Setup
+		PrintStream output = System.out;
+
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.get();
+
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.get();
-
-		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
 
 		// Execute and Verify
 		wildebeestApi.migrate(
@@ -147,23 +162,25 @@ public class WildebeestApiImplUnitTests
 	 * @since                                   4.0
 	 */
 	@Test public void migrate_targetNotSpecifiedWithDefault_succeeds() throws
-		IndeterminateStateException,
-		MigrationFailedException,
 		AssertionFailedException,
+		IndeterminateStateException,
 		InvalidStateSpecifiedException,
-		UnknownStateSpecifiedException,
-		TargetNotSpecifiedException
+		MigrationFailedException,
+		MigrationNotPossibleException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException
 	{
 		// Setup
-		PrintStream output =  System.out;
+		PrintStream output = System.out;
+
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.get();
 
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withDefaultTarget("bar")
 			.get();
-
-		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
-			output);
 
 		// Execute
 		wildebeestApi.migrate(

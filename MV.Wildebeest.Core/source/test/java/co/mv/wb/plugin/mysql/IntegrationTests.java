@@ -35,7 +35,6 @@ import co.mv.wb.WildebeestFactory;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.fixture.XmlBuilder;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
-import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
@@ -81,7 +80,11 @@ public class IntegrationTests
 
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 		
@@ -218,7 +221,11 @@ public class IntegrationTests
 
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		//
 		// Resource

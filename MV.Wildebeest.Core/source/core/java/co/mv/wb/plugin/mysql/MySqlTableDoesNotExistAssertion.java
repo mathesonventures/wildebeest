@@ -18,6 +18,7 @@ package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Instance;
+import co.mv.wb.MigrationType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.WildebeestFactory;
@@ -34,6 +35,11 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
+@MigrationType(
+	pluginGroupUri = "co.mv.wb:MySqlDatabase",
+	uri = "co.mv.wb.mysql:MySqlTableDoesNotExist",
+	description =
+		"Used to assert that a specific table does not exist within the MySQL database.")
 public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 {
 	/**

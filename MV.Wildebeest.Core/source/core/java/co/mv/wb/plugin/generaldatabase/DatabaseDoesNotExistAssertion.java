@@ -18,6 +18,7 @@ package co.mv.wb.plugin.generaldatabase;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionResponse;
+import co.mv.wb.AssertionType;
 import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
@@ -35,10 +36,15 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
+@AssertionType(
+	pluginGroupUri = "co.mv.wb:GeneralDatabase",
+	uri = "co.mv.wb.generaldatabase:DatabaseDoesNotExist",
+	description =
+		"Asserts that the database specified by the instance does not exist.")
 public class DatabaseDoesNotExistAssertion extends BaseAssertion
 {
 	/**
-	 * Creates a new MySqlDatabaseDoesNotExistAssertion
+	 * Creates a new DatabaseDoesNotExistAssertion
 	 * 
 	 * @param       assertionId                 the ID of the new assertion.
 	 * @param       seqNum                      the ordinal index of the new assertion within it's containing set.

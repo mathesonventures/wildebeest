@@ -34,7 +34,6 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.WildebeestFactory;
 import co.mv.wb.framework.ArgumentNullException;
-import co.mv.wb.impl.WildebeestApiImpl;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -42,7 +41,7 @@ import java.util.Optional;
 
 /**
  * The Wildebeest command-line interface.  WildebeestCommand parses command-line invocations, and delegates to
- * {@link WildebeestApiImpl} to carry out the command.
+ * {@link WildebeestApi} to carry out the command.
  * 
  * @author                                      Brendon Matheson
  * @since                                       1.0
@@ -139,9 +138,15 @@ public class WildebeestCommand
 	{
 		PrintStream output = System.out;
 
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryMigrationPlugins()
+			.withFactoryMigrationPlugins()
+			.get();
+
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
-			WildebeestFactory.wildebeestApi(output));
+			wildebeestApi);
 
 		wb.run(args);
 	}

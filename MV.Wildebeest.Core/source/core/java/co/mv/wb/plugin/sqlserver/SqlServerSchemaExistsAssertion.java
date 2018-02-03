@@ -19,6 +19,7 @@ package co.mv.wb.plugin.sqlserver;
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Instance;
+import co.mv.wb.MigrationType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.WildebeestFactory;
@@ -35,6 +36,11 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       2.0
  */
+@MigrationType(
+	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
+	uri = "co.mv.wb.sqlserver:SqlServerSchemaExists",
+	description =
+		"Verifies that a schema exists in a SQL Server database resource.")
 public class SqlServerSchemaExistsAssertion extends BaseAssertion
 {
 	/**

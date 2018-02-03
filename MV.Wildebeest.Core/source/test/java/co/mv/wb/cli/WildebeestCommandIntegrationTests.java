@@ -21,7 +21,7 @@ import co.mv.wb.Instance;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.impl.WildebeestApiImpl;
+import co.mv.wb.WildebeestFactory;
 import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlUtil;
@@ -56,7 +56,11 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -99,7 +103,11 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -154,7 +162,11 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -197,7 +209,11 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -227,7 +243,11 @@ public class WildebeestCommandIntegrationTests
 
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -268,7 +288,11 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,
@@ -313,7 +337,11 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
 			output,

@@ -18,6 +18,7 @@ package co.mv.wb.plugin.fake;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionResponse;
+import co.mv.wb.AssertionType;
 import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
@@ -34,6 +35,10 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
+@AssertionType(
+	pluginGroupUri = "co.mv.wb:Fake",
+	uri = "co.mv.wb.fake:TagAssertion",
+	description = "Verifies that the Tag value of the FakeIntance is as expected")
 public class TagAssertion extends BaseAssertion
 {
 	public TagAssertion(

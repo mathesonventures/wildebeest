@@ -17,7 +17,7 @@
 package co.mv.wb;
 
 import co.mv.wb.framework.ArgumentNullException;
-import co.mv.wb.impl.WildebeestApiImpl;
+import co.mv.wb.impl.WildebeestApiBuilder;
 import co.mv.wb.plugin.composite.ExternalResourceMigration;
 import co.mv.wb.plugin.composite.ExternalResourceMigrationPlugin;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigration;
@@ -106,7 +106,7 @@ public class WildebeestFactory
 			WildebeestFactory.SqlServerDatabase);
 	}
 
-	private static Map<ResourceType, ResourcePlugin> getResourcePluginMap()
+	public static Map<ResourceType, ResourcePlugin> getResourcePlugins()
 	{
 		Map<ResourceType, ResourcePlugin> result = new HashMap<>();
 
@@ -121,7 +121,7 @@ public class WildebeestFactory
 	// Migration
 	//
 
-	private static Map<Class, MigrationPlugin> getMigrationPlugins(
+	public static Map<Class, MigrationPlugin> getMigrationPlugins(
 		WildebeestApi wildebeestApi)
 	{
 		if (wildebeestApi == null) { throw new IllegalArgumentException("wildebeestApi cannot be null"); }
@@ -155,17 +155,11 @@ public class WildebeestFactory
 	// Services
 	//
 
-	public static WildebeestApi wildebeestApi(
+	public static WildebeestApiBuilder wildebeestApi(
 		PrintStream output)
 	{
 		if (output == null) throw new ArgumentNullException("output");
 
-		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
-			output);
-
-		wildebeestApi.setResourcePlugins(WildebeestFactory.getResourcePluginMap());
-		wildebeestApi.setMigrationPlugins(WildebeestFactory.getMigrationPlugins(wildebeestApi));
-
-		return wildebeestApi;
+		return WildebeestApiBuilder.build(output);
 	}
 }

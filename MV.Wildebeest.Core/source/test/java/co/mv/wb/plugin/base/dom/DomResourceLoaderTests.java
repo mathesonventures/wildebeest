@@ -24,12 +24,11 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.fixture.FixtureCreator;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
-import co.mv.wb.plugin.base.dom.DomResourceLoader;
-import co.mv.wb.plugin.fake.DomFakeAssertionBuilder;
-import co.mv.wb.plugin.fake.DomFakeMigrationBuilder;
-import co.mv.wb.plugin.fake.FakeAssertion;
 import co.mv.wb.plugin.fake.FakeConstants;
-import co.mv.wb.plugin.fake.FakeMigration;
+import co.mv.wb.plugin.fake.SetTagMigration;
+import co.mv.wb.plugin.fake.TagAssertion;
+import co.mv.wb.plugin.fake.dom.DomSetTagMigrationBuilder;
+import co.mv.wb.plugin.fake.dom.DomTagAssertionBuilder;
 import org.junit.Test;
 
 import java.io.File;
@@ -334,7 +333,7 @@ public class DomResourceLoaderTests
 			.render();
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		assertionBuilders.put(FakeConstants.Fake.getUri(), new DomFakeAssertionBuilder());
+		assertionBuilders.put(FakeConstants.Fake.getUri(), new DomTagAssertionBuilder());
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
@@ -373,9 +372,9 @@ public class DomResourceLoaderTests
 			"resource.states[0].assertions.size",
 			1,
 			resource.getStates().get(0).getAssertions().size());
-		Asserts.assertFakeAssertion(
+		Asserts.assertTagAssertion(
 			assertion1Id, "Tag is Foo", 0, "Foo",
-			(FakeAssertion)resource.getStates().get(0).getAssertions().get(0),
+			(TagAssertion)resource.getStates().get(0).getAssertions().get(0),
 			"resource.states[0].assertions[0]");
 		
 		// Migrations
@@ -405,7 +404,7 @@ public class DomResourceLoaderTests
 			.render();
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		assertionBuilders.put(FakeConstants.Fake.getUri(), new DomFakeAssertionBuilder());
+		assertionBuilders.put(FakeConstants.Fake.getUri(), new DomTagAssertionBuilder());
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 		
@@ -440,13 +439,13 @@ public class DomResourceLoaderTests
 			"resource.states[0].assertions.size",
 			2,
 			resource.getStates().get(0).getAssertions().size());
-		Asserts.assertFakeAssertion(
+		Asserts.assertTagAssertion(
 			assertion1Id, "Tag is Foo", 0, "Foo",
-			(FakeAssertion)resource.getStates().get(0).getAssertions().get(0),
+			(TagAssertion)resource.getStates().get(0).getAssertions().get(0),
 			"resource.states[0].assertions[0]");
-		Asserts.assertFakeAssertion(
+		Asserts.assertTagAssertion(
 			assertion2Id, "Tag is Bar", 1, "Bar",
-			(FakeAssertion)resource.getStates().get(0).getAssertions().get(1),
+			(TagAssertion)resource.getStates().get(0).getAssertions().get(1),
 			"resource.states[0].assertions[1]");
 		
 		// Migrations
@@ -476,7 +475,7 @@ public class DomResourceLoaderTests
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomFakeMigrationBuilder());
+		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			ResourceTypeServiceBuilder
@@ -509,7 +508,7 @@ public class DomResourceLoaderTests
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
 			migrationId, Optional.of(state1Id), Optional.empty(), "Blah",
-			(FakeMigration)resource.getMigrations().get(0),
+			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 		
 	}
@@ -536,7 +535,7 @@ public class DomResourceLoaderTests
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomFakeMigrationBuilder());
+		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			ResourceTypeServiceBuilder
@@ -569,7 +568,7 @@ public class DomResourceLoaderTests
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
 			migrationId, Optional.empty(), Optional.of(state1Id), "Blah",
-			(FakeMigration)resource.getMigrations().get(0),
+			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 		
 	}
@@ -598,7 +597,7 @@ public class DomResourceLoaderTests
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		
 		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomFakeMigrationBuilder());
+		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
 		
 		DomResourceLoader resourceBuilder = new DomResourceLoader(
 			ResourceTypeServiceBuilder
@@ -632,7 +631,7 @@ public class DomResourceLoaderTests
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
 			migrationId, Optional.of(state1Id), Optional.of(state2Id), "Blah",
-			(FakeMigration)resource.getMigrations().get(0),
+			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 		
 	}

@@ -14,31 +14,26 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.plugin.fake;
+package co.mv.wb;
 
-import co.mv.wb.Migration;
-import co.mv.wb.plugin.base.dom.BaseDomMigrationBuilder;
-
-import java.io.File;
-import java.util.Optional;
-import java.util.UUID;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * DOM-based {@link co.mv.wb.MigrationBuilder} for the Fake plugin implementation.
+ * Annotates additional information onto {@link Assertion} implementations for use in documentation and user tools.
  *
  * @author                                      Brendon Matheson
- * @since                                       1.0
+ * @since                                       4.0
  */
-public class DomFakeMigrationBuilder extends BaseDomMigrationBuilder
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AssertionType
 {
-	@Override public Migration build(
-		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId,
-		File baseDir)
-	{
-		String tag = this.getElement().getChildNodes().item(0).getTextContent();
-		
-		return new FakeMigration(migrationId, fromStateId, toStateId, tag);
-	}
+	String pluginGroupUri();
+
+	String uri();
+
+	String description();
 }

@@ -33,14 +33,14 @@ import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestFactory;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
-import co.mv.wb.plugin.fake.FakeAssertion;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
-import co.mv.wb.plugin.fake.FakeMigration;
-import co.mv.wb.plugin.fake.FakeMigrationPlugin;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
+import co.mv.wb.plugin.fake.SetTagMigration;
+import co.mv.wb.plugin.fake.SetTagMigrationPlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -81,7 +81,11 @@ public class ResourceHelperUnitTests
 		
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		// Execute
 		List<AssertionResult> results = wildebeestApi.assertState(
@@ -107,7 +111,7 @@ public class ResourceHelperUnitTests
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
 		
-		Assertion assertion1 = new FakeAssertion(
+		Assertion assertion1 = new TagAssertion(
 			UUID.randomUUID(),
 			0,
 			"Foo");
@@ -116,7 +120,11 @@ public class ResourceHelperUnitTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		// Execute
 		List<AssertionResult> results = wildebeestApi.assertState(
@@ -145,13 +153,13 @@ public class ResourceHelperUnitTests
 		resource.getStates().add(state);
 
 		UUID assertion1Id = UUID.randomUUID();
-		state.getAssertions().add(new FakeAssertion(
+		state.getAssertions().add(new TagAssertion(
 			assertion1Id,
 			0,
 			"Foo"));
 		
 		UUID assertion2Id = UUID.randomUUID();
-		state.getAssertions().add(new FakeAssertion(
+		state.getAssertions().add(new TagAssertion(
 			assertion2Id,
 			1,
 			"Bar"));
@@ -159,7 +167,11 @@ public class ResourceHelperUnitTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		// Execute
 		List<AssertionResult> results = wildebeestApi.assertState(
@@ -218,15 +230,19 @@ public class ResourceHelperUnitTests
 		resource.getStates().add(state);
 		
 		UUID migration1Id = UUID.randomUUID();
-		Migration tran1 = new FakeMigration(migration1Id, Optional.empty(), Optional.of(state1Id), "foo");
+		Migration tran1 = new SetTagMigration(migration1Id, Optional.empty(), Optional.of(state1Id), "foo");
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
 		
 		FakeInstance instance = new FakeInstance();
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		// Execute
 		wildebeestApi.migrate(
@@ -278,7 +294,7 @@ public class ResourceHelperUnitTests
 		resource.getStates().add(state3);
 		
 		// Migrate null -> State1
-		Migration tran1 = new FakeMigration(
+		Migration tran1 = new SetTagMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(state1.getStateId()),
@@ -286,7 +302,7 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(tran1);
 		
 		// Migrate State1 -> State2
-		Migration tran2 = new FakeMigration(
+		Migration tran2 = new SetTagMigration(
 			UUID.randomUUID(),
 			Optional.of(state1.getStateId()),
 			Optional.of(state2.getStateId()),
@@ -295,7 +311,7 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(tran2);
 		
 		// Migrate State2 -> State3
-		Migration tran3 = new FakeMigration(
+		Migration tran3 = new SetTagMigration(
 			UUID.randomUUID(),
 			Optional.of(state2.getStateId()),
 			Optional.of(state3.getStateId()),
@@ -303,12 +319,16 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(tran3);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		//
 		// Execute
@@ -383,7 +403,7 @@ public class ResourceHelperUnitTests
 		
 		// Migrate null -> State1
 		UUID migration1Id = UUID.randomUUID();
-		Migration migration1 = new FakeMigration(
+		Migration migration1 = new SetTagMigration(
 			migration1Id,
 			Optional.empty(),
 			Optional.of(state1Id),
@@ -392,7 +412,7 @@ public class ResourceHelperUnitTests
 		
 		// Migrate State1 -> StateB2
 		UUID migration2Id = UUID.randomUUID();
-		Migration migration2 = new FakeMigration(
+		Migration migration2 = new SetTagMigration(
 			migration2Id,
 			Optional.of(state1Id),
 			Optional.of(stateB2Id),
@@ -401,7 +421,7 @@ public class ResourceHelperUnitTests
 		
 		// Migrate StateB2 -> StateB3
 		UUID migration3Id = UUID.randomUUID();
-		Migration migration3 = new FakeMigration(
+		Migration migration3 = new SetTagMigration(
 			migration3Id,
 			Optional.of(stateB2Id),
 			Optional.of(stateB3Id),
@@ -410,7 +430,7 @@ public class ResourceHelperUnitTests
 		
 		// Migrate State1 -> StateC2
 		UUID migration4Id = UUID.randomUUID();
-		Migration migration4 = new FakeMigration(
+		Migration migration4 = new SetTagMigration(
 			migration4Id,
 			Optional.of(state1Id),
 			Optional.of(stateC2Id),
@@ -419,7 +439,7 @@ public class ResourceHelperUnitTests
 		
 		// Migrate StateC2 -> StateC3
 		UUID migration5Id = UUID.randomUUID();
-		Migration migration5 = new FakeMigration(
+		Migration migration5 = new SetTagMigration(
 			migration5Id,
 			Optional.of(stateC2Id),
 			Optional.of(stateC3Id),
@@ -427,12 +447,16 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(migration5);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		//
 		// Execute
@@ -493,7 +517,7 @@ public class ResourceHelperUnitTests
 		
 		// Migration 1
 		UUID migration1Id = UUID.randomUUID();
-		Migration tran1 = new FakeMigration(
+		Migration tran1 = new SetTagMigration(
 			migration1Id,
 			Optional.empty(),
 			Optional.of(state1Id),
@@ -501,12 +525,16 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
-		
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		wildebeestApi.migrate(
 			resource,
@@ -562,7 +590,7 @@ public class ResourceHelperUnitTests
 		
 		// Migration 1
 		UUID migration1Id = UUID.randomUUID();
-		Migration tran1 = new FakeMigration(
+		Migration tran1 = new SetTagMigration(
 			migration1Id,
 			Optional.empty(),
 			Optional.of(state1Id),
@@ -570,12 +598,16 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(FakeMigration.class, new FakeMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		wildebeestApi.migrate(
 			resource,
@@ -640,7 +672,11 @@ public class ResourceHelperUnitTests
 		final FakeInstance instance = new FakeInstance();
 		instance.setTag("Bar");
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		//
 		// Execute and Verify
@@ -690,7 +726,11 @@ public class ResourceHelperUnitTests
 		// Target State ID
 		final UUID targetStateId = UUID.randomUUID();
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		//
 		// Execute and Verify
@@ -750,7 +790,11 @@ public class ResourceHelperUnitTests
 		final FakeInstance instance = new FakeInstance();
 		instance.setTag("Foo");
 
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(output);
+		WildebeestApi wildebeestApi = WildebeestFactory
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		//
 		// Execute

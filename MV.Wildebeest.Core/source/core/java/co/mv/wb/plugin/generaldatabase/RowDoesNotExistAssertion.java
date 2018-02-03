@@ -20,6 +20,7 @@ import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFaultException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Instance;
+import co.mv.wb.MigrationType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.WildebeestFactory;
@@ -42,6 +43,11 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
+@MigrationType(
+	pluginGroupUri = "co.mv.wb:GeneralDatabase",
+	uri = "co.mv.wb.generaldatabase:RowDoesNotExist",
+	description =
+		"Asserts that a query results in zero rows.")
 public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 {
 	/**

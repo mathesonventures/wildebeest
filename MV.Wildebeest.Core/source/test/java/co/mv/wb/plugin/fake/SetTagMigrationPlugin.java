@@ -29,7 +29,7 @@ import java.io.PrintStream;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
-public class FakeMigrationPlugin implements MigrationPlugin
+public class SetTagMigrationPlugin implements MigrationPlugin
 {
 	@Override public void perform(
 		PrintStream output,
@@ -40,10 +40,10 @@ public class FakeMigrationPlugin implements MigrationPlugin
 		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
 		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
 
-		FakeMigration migrationT = ModelExtensions.As(migration, FakeMigration.class);
+		SetTagMigration migrationT = ModelExtensions.As(migration, SetTagMigration.class);
 		if (migrationT == null)
 		{
-			throw new IllegalArgumentException("migration must be a FakeMigration");
+			throw new IllegalArgumentException("migration must be a SetTagMigration");
 		}
 
 		FakeInstance instanceT = ModelExtensions.As(instance, FakeInstance.class);

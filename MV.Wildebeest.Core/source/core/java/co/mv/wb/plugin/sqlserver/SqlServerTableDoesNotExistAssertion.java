@@ -18,6 +18,7 @@ package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Instance;
+import co.mv.wb.MigrationType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.WildebeestFactory;
@@ -34,6 +35,11 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       2.0
  */
+@MigrationType(
+	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
+	uri = "co.mv.wb.sqlserver:SqlServerTableDoesNotExist",
+	description =
+		"Verifies that a table does not exist in a SQL Server database resource.")
 public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 {
 	/**
