@@ -88,7 +88,7 @@ public class ResourceLoaderIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		//

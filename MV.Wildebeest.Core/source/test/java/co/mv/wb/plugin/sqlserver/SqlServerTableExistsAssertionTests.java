@@ -76,7 +76,7 @@ public class SqlServerTableExistsAssertionTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -178,7 +178,7 @@ public class SqlServerTableExistsAssertionTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		SqlServerProperties properties = SqlServerProperties.get();

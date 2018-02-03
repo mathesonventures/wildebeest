@@ -59,7 +59,7 @@ public class WildebeestCommandIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -106,7 +106,7 @@ public class WildebeestCommandIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -165,7 +165,7 @@ public class WildebeestCommandIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -212,7 +212,7 @@ public class WildebeestCommandIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -246,7 +246,7 @@ public class WildebeestCommandIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -291,7 +291,7 @@ public class WildebeestCommandIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -340,7 +340,7 @@ public class WildebeestCommandIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(

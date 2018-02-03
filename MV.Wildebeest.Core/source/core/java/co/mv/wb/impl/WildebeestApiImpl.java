@@ -28,8 +28,10 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.MigrationType;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
+import co.mv.wb.PluginManager;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
@@ -64,6 +66,8 @@ import java.util.UUID;
  */
 public class WildebeestApiImpl implements WildebeestApi
 {
+	private final PrintStream _output;
+
 	/**
 	 * Creates a new WildebeestApiImpl using the supplied {@link PrintStream} for user output and the supplied
 	 * ResourceHelper.
@@ -74,48 +78,10 @@ public class WildebeestApiImpl implements WildebeestApi
 	public WildebeestApiImpl(
 		PrintStream output)
 	{
-		this.setOutput(output);
+		if (output == null) throw new ArgumentNullException("output");
+
+		_output = output;
 	}
-
-	// <editor-fold desc="Output" defaultstate="collapsed">
-
-	private PrintStream _output = null;
-	private boolean _output_set = false;
-
-	private PrintStream getOutput() {
-		if(!_output_set) {
-			throw new IllegalStateException("output not set.");
-		}
-		if(_output == null) {
-			throw new IllegalStateException("output should not be null");
-		}
-		return _output;
-	}
-
-	private void setOutput(
-		PrintStream value) {
-		if(value == null) {
-			throw new IllegalArgumentException("output cannot be null");
-		}
-		boolean changing = !_output_set || _output != value;
-		if(changing) {
-			_output_set = true;
-			_output = value;
-		}
-	}
-
-	private void clearOutput() {
-		if(_output_set) {
-			_output_set = true;
-			_output = null;
-		}
-	}
-
-	private boolean hasOutput() {
-		return _output_set;
-	}
-
-	// </editor-fold>
 
 	// <editor-fold desc="ResourcePlugins" defaultstate="collapsed">
 
@@ -156,41 +122,42 @@ public class WildebeestApiImpl implements WildebeestApi
 
 	// </editor-fold>
 
-	// <editor-fold desc="MigrationPlugins" defaultstate="collapsed">
+	// <editor-fold desc="PluginManager" defaultstate="collapsed">
 
-	private Map<Class, MigrationPlugin> _migrationPlugins = null;
-	private boolean _migrationPlugins_set = false;
+	private PluginManager _pluginManager = null;
+	private boolean _pluginManager_set = false;
 
-	private Map<Class, MigrationPlugin> getMigrationPlugins() {
-		if(!_migrationPlugins_set) {
-			throw new IllegalStateException("migrationPlugins not set.");
+	public PluginManager getPluginManager() {
+		if(!_pluginManager_set) {
+			throw new IllegalStateException("pluginManager not set.");
 		}
-		if(_migrationPlugins == null) {
-			throw new IllegalStateException("migrationPlugins should not be null");
+		if(_pluginManager == null) {
+			throw new IllegalStateException("pluginManager should not be null");
 		}
-		return _migrationPlugins;
+		return _pluginManager;
 	}
 
-	public void setMigrationPlugins(Map<Class, MigrationPlugin> value) {
+	public void setPluginManager(
+		PluginManager value) {
 		if(value == null) {
-			throw new IllegalArgumentException("migrationPlugins cannot be null");
+			throw new IllegalArgumentException("pluginManager cannot be null");
 		}
-		boolean changing = !_migrationPlugins_set || _migrationPlugins != value;
+		boolean changing = !_pluginManager_set || _pluginManager != value;
 		if(changing) {
-			_migrationPlugins_set = true;
-			_migrationPlugins = value;
+			_pluginManager_set = true;
+			_pluginManager = value;
 		}
 	}
 
-	private void clearMigrationPlugins() {
-		if(_migrationPlugins_set) {
-			_migrationPlugins_set = true;
-			_migrationPlugins = null;
+	private void clearPluginManager() {
+		if(_pluginManager_set) {
+			_pluginManager_set = true;
+			_pluginManager = null;
 		}
 	}
 
-	private boolean hasMigrationPlugins() {
-		return _migrationPlugins_set;
+	private boolean hasPluginManager() {
+		return _pluginManager_set;
 	}
 
 	// </editor-fold>
@@ -287,11 +254,11 @@ public class WildebeestApiImpl implements WildebeestApi
 		state.getAssertions().forEach(
 			assertion ->
 			{
-				this.getOutput().println(OutputFormatter.assertionStart(assertion));
+				_output.println(OutputFormatter.assertionStart(assertion));
 
 				AssertionResponse response = assertion.perform(instance);
 
-				this.getOutput().println(OutputFormatter.assertionComplete(
+				_output.println(OutputFormatter.assertionComplete(
 					assertion,
 					response));
 
@@ -322,17 +289,17 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		if (state == null)
 		{
-			this.getOutput().println("Current state: non-existent");
+			_output.println("Current state: non-existent");
 		}
 		else
 		{
 			if (state.getLabel().isPresent())
 			{
-				this.getOutput().println(String.format("Current state: %s", state.getLabel()));
+				_output.println(String.format("Current state: %s", state.getLabel()));
 			}
 			else
 			{
-				this.getOutput().println(String.format("Current state: %s", state.getStateId().toString()));
+				_output.println(String.format("Current state: %s", state.getStateId().toString()));
 			}
 
 			this.assertState(
@@ -395,14 +362,8 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		for (Migration migration : path)
 		{
-			MigrationPlugin migrationPlugin = this.getMigrationPlugins().get(migration.getClass());
-
-			if (migrationPlugin == null)
-			{
-				throw new RuntimeException(String.format(
-					"No MigrationPlugin found for migration of type %s",
-					migration.getClass().getName()));
-			}
+			String migrationTypeUri = migration.getClass().getAnnotation(MigrationType.class).uri();
+			MigrationPlugin migrationPlugin = this.getPluginManager().getMigrationPlugin(migrationTypeUri);
 
 			Optional<State> fromState = migration.getFromStateId().map(stateId -> Wildebeest.stateForId(
 				resource,
@@ -412,24 +373,24 @@ public class WildebeestApiImpl implements WildebeestApi
 				stateId));
 
 			// Migrate to the next state
-			this.getOutput().println(OutputFormatter.migrationStart(
+			_output.println(OutputFormatter.migrationStart(
 				resource,
 				migration,
 				fromState,
 				toState));
 
 			migrationPlugin.perform(
-				this.getOutput(),
+				_output,
 				migration,
 				instance);
 
-			this.getOutput().println(OutputFormatter.migrationComplete(
+			_output.println(OutputFormatter.migrationComplete(
 				resource,
 				migration));
 
 			// Update the state
 			resourcePlugin.setStateId(
-				this.getOutput(),
+				_output,
 				resource,
 				instance,
 				migration.getToStateId().get());
@@ -486,7 +447,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		WildebeestApiImpl.throwIfFailed(state.getStateId(), assertionResults);
 
 		resourcePlugin.setStateId(
-			this.getOutput(),
+			_output,
 			resource,
 			instance,
 			targetStateId);

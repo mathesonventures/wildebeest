@@ -14,9 +14,9 @@
         <packages>
             <mvnpackage groupId="org.slf4j" artifactId="slf4j-api" version="1.7.5" groups="tlc,tlr" />
             <mvnpackage groupId="org.slf4j" artifactId="slf4j-simple" version="1.7.5" groups="tlc,tlr" />
-<!--
-            <mvnpackage groupId="junit" artifactId="junit" version="4.11" groups="tlc,tlr" />
--->
+
+            <mvnpackage groupId="org.reflections" artifactId="reflections" version="0.9.11" groups="clc,clr,tlc,tlr" />
+
             <mvnpackage groupId="mysql" artifactId="mysql-connector-java" version="5.1.22" groups="clc,clr,tlr" />
             <mvnpackage groupId="org.postgresql" artifactId="postgresql" version="9.3-1100-jdbc41" groups="clc,clr,tlr" />
 

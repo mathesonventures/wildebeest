@@ -21,12 +21,20 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationFaultException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.MigrationPluginType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.framework.DatabaseHelper;
 
 import java.io.PrintStream;
 import java.sql.SQLException;
 
+/**
+ * {@link MigrationPlugin} for {@link AnsiSqlDropDatabaseMigration}.
+ *
+ * @author                                      Brendon Matheson
+ * @since                                       4.0
+ */
+@MigrationPluginType(uri = "co.mv.wb.generaldatabase:AnsiSqlDropDatabaseMigration")
 public class AnsiSqlDropDatabaseMigrationPlugin implements MigrationPlugin
 {
 	@Override public void perform(

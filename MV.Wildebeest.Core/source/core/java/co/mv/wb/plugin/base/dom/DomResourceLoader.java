@@ -24,6 +24,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
+import co.mv.wb.PluginManager;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceLoader;
 import co.mv.wb.ResourceType;

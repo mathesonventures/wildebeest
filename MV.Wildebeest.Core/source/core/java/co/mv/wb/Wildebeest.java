@@ -18,34 +18,29 @@ package co.mv.wb;
 
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.WildebeestApiBuilder;
-import co.mv.wb.plugin.composite.ExternalResourceMigration;
 import co.mv.wb.plugin.composite.ExternalResourceMigrationPlugin;
-import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigration;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;
-import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigration;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigrationPlugin;
-import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
 import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
-import co.mv.wb.plugin.mysql.MySqlCreateDatabaseMigration;
 import co.mv.wb.plugin.mysql.MySqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
-import co.mv.wb.plugin.mysql.MySqlDropDatabaseMigration;
+import co.mv.wb.plugin.mysql.MySqlDropDatabaseMigrationPlugin;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
-import co.mv.wb.plugin.sqlserver.SqlServerCreateDatabaseMigration;
 import co.mv.wb.plugin.sqlserver.SqlServerCreateDatabaseMigrationPlugin;
-import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigration;
 import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigrationPlugin;
 import co.mv.wb.plugin.sqlserver.SqlServerDatabaseResourcePlugin;
-import co.mv.wb.plugin.sqlserver.SqlServerDropDatabaseMigration;
 import co.mv.wb.plugin.sqlserver.SqlServerDropDatabaseMigrationPlugin;
-import co.mv.wb.plugin.sqlserver.SqlServerDropSchemaMigration;
+import co.mv.wb.plugin.sqlserver.SqlServerDropSchemaMigrationPlugin;
+import org.reflections.Reflections;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Global definitions and functions for Wildebeest.
@@ -105,14 +100,6 @@ public class Wildebeest
 		"co.mv.wb.SqlServerDatabase",
 		"SQL Server Database");
 
-	public static List<ResourceType> getResourceTypes()
-	{
-		return Arrays.asList(
-			Wildebeest.MySqlDatabase,
-			Wildebeest.PostgreSqlDatabase,
-			Wildebeest.SqlServerDatabase);
-	}
-
 	public static Map<ResourceType, ResourcePlugin> getResourcePlugins()
 	{
 		Map<ResourceType, ResourcePlugin> result = new HashMap<>();
@@ -128,34 +115,51 @@ public class Wildebeest
 	// Migration
 	//
 
-	public static Map<Class, MigrationPlugin> getMigrationPlugins(
+	public static List<MigrationPlugin> getMigrationPlugins(
 		WildebeestApi wildebeestApi)
 	{
-		if (wildebeestApi == null) { throw new IllegalArgumentException("wildebeestApi cannot be null"); }
+		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
 
-		Map<Class, MigrationPlugin> result = new HashMap<>();
+		List<MigrationPlugin> result = new ArrayList<>();
 
 		// ansisql
-		result.put(AnsiSqlCreateDatabaseMigration.class, new AnsiSqlCreateDatabaseMigrationPlugin());
-		result.put(AnsiSqlDropDatabaseMigration.class, new AnsiSqlDropDatabaseMigrationPlugin());
+		result.add(new AnsiSqlCreateDatabaseMigrationPlugin());
+		result.add(new AnsiSqlDropDatabaseMigrationPlugin());
 
 		// composite
-		result.put(ExternalResourceMigration.class, new ExternalResourceMigrationPlugin(wildebeestApi));
+		result.add(new ExternalResourceMigrationPlugin(wildebeestApi));
 
 		// database
-		result.put(SqlScriptMigration.class, new SqlScriptMigrationPlugin());
+		result.add(new SqlScriptMigrationPlugin());
 
 		// mysql
-		result.put(MySqlCreateDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());
-		result.put(MySqlDropDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());
+		result.add(new MySqlCreateDatabaseMigrationPlugin());
+		result.add(new MySqlDropDatabaseMigrationPlugin());
 
 		// sqlserver
-		result.put(SqlServerCreateDatabaseMigration.class, new SqlServerCreateDatabaseMigrationPlugin());
-		result.put(SqlServerCreateSchemaMigration.class, new SqlServerCreateSchemaMigrationPlugin());
-		result.put(SqlServerDropDatabaseMigration.class, new SqlServerDropDatabaseMigrationPlugin());
-		result.put(SqlServerDropSchemaMigration.class, new SqlServerDropDatabaseMigrationPlugin());
+		result.add(new SqlServerCreateDatabaseMigrationPlugin());
+		result.add(new SqlServerCreateSchemaMigrationPlugin());
+		result.add(new SqlServerDropDatabaseMigrationPlugin());
+		result.add(new SqlServerDropSchemaMigrationPlugin());
 
 		return result;
+	}
+
+	//
+	// Assertion
+	//
+
+	public static List<AssertionType> findAssertionTypes()
+	{
+		Reflections reflections = new Reflections("co.mv.wb");
+
+		List<AssertionType> assertionTypes = reflections
+			.getTypesAnnotatedWith(AssertionType.class)
+			.stream()
+			.map(x -> x.getAnnotation(AssertionType.class))
+			.collect(Collectors.toList());
+
+		return assertionTypes;
 	}
 
 	//

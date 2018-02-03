@@ -84,7 +84,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		// Execute
@@ -123,7 +123,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		// Execute
@@ -170,7 +170,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		// Execute
@@ -241,7 +241,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		// Execute
@@ -327,7 +327,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		//
@@ -455,7 +455,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		//
@@ -533,7 +533,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		wildebeestApi.migrate(
@@ -606,7 +606,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		wildebeestApi.migrate(
@@ -675,7 +675,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		//
@@ -729,7 +729,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		//
@@ -793,7 +793,7 @@ public class ResourceHelperUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withFactoryPluginManager()
 			.get();
 
 		//
