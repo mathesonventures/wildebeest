@@ -34,9 +34,9 @@ import co.mv.wb.WildebeestFactory;
 import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
-import co.mv.wb.plugin.database.DatabaseFixtureHelper;
-import co.mv.wb.plugin.database.SqlScriptMigration;
-import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
+import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
+import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
 import co.mv.wb.plugin.fake.FakeInstance;
 import org.junit.Test;
 

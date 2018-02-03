@@ -22,7 +22,7 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.impl.WildebeestApiImpl;
-import co.mv.wb.plugin.database.DatabaseHelper;
+import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlUtil;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;

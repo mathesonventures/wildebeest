@@ -24,8 +24,8 @@ import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
-import co.mv.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
-import co.mv.wb.plugin.database.Extensions;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlDatabaseInstance;
+import co.mv.wb.plugin.generaldatabase.Extensions;
 
 import java.io.PrintStream;
 import java.sql.SQLException;

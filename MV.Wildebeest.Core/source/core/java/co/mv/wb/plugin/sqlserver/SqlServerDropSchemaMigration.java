@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.Migration;
+import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.WildebeestFactory;
 import co.mv.wb.plugin.base.BaseMigration;
@@ -32,6 +33,10 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       2.0
  */
+@MigrationType(
+	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
+	uri = "co.mv.wb.sqlserver:SqlServerDropSchema",
+	description = "Drops a schema from a SQL Server database resource.")
 public class SqlServerDropSchemaMigration extends BaseMigration
 {
 	/**

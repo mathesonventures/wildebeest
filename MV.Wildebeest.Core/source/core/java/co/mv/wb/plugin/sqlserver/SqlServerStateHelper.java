@@ -18,13 +18,14 @@ package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.FaultException;
 import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.plugin.database.DatabaseHelper;
+import co.mv.wb.framework.DatabaseHelper;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
-import javax.sql.DataSource;
 
 /**
  * Centralizes state tracking operations for SqlServerDatabaseInstances.

@@ -17,7 +17,7 @@
 package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
 
 import java.io.PrintStream;

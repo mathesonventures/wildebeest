@@ -17,8 +17,8 @@
 package co.mv.wb;
 
 import co.mv.wb.framework.ArgumentNullException;
-import co.mv.wb.plugin.ansisql.AnsiSqlTableDoesNotExistAssertion;
-import co.mv.wb.plugin.ansisql.AnsiSqlTableExistsAssertion;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlTableDoesNotExistAssertion;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlTableExistsAssertion;
 import co.mv.wb.plugin.fake.FakeAssertion;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.FakeMigration;

@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.Migration;
+import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.WildebeestFactory;
 import co.mv.wb.plugin.base.BaseMigration;
@@ -32,6 +33,14 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       2.0
  */
+@MigrationType(
+	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
+	uri = "co.mv.wb.sqlserver:SqlServerCreateDatabase",
+	description =
+		"Typically this will be the first migration in the definition of any SQL Server database resource managed by " +
+			"Wildebeest. It creates a new database.\n" +
+		"This migration takes the name of the database to create from the SqlServerDatabaseInstance it is applied to."
+)
 public class SqlServerCreateDatabaseMigration extends BaseMigration
 {
 	/**

@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.plugin.database.DatabaseConstants;
+import co.mv.wb.plugin.generaldatabase.DatabaseConstants;
 import java.util.UUID;
 
 public class SqlServerElementFixtures

@@ -20,8 +20,8 @@ import co.mv.wb.Instance;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.plugin.database.SqlScriptMigration;
-import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
+import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
 import org.junit.Test;
 
 import java.io.PrintStream;

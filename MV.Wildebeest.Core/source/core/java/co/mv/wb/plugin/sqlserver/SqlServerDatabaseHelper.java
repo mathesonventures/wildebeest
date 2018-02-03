@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.plugin.database.DatabaseHelper;
+import co.mv.wb.framework.DatabaseHelper;
 
 /**
  * Functional helper methods for working with SQL Server databases.

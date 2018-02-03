@@ -22,7 +22,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationFaultException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.ModelExtensions;
-import co.mv.wb.plugin.database.DatabaseHelper;
+import co.mv.wb.framework.DatabaseHelper;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.io.PrintStream;

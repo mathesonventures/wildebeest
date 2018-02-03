@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.Migration;
+import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.WildebeestFactory;
 import co.mv.wb.plugin.base.BaseMigration;
@@ -32,6 +33,12 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
+@MigrationType(
+	pluginGroupUri = "co.mv.wb:MySqlDatabase",
+	uri = "co.mv.wb.mysql:MySqlDropDatabase",
+	description =
+		"Drops the MySQL database defined by the instance definition.  This migration can be used to transition a " +
+			"MySQL database from a state to non-existant")
 public class MySqlDropDatabaseMigration extends BaseMigration
 {
 	/**

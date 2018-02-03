@@ -25,9 +25,11 @@ import org.junit.runners.Suite;
 	IntegrationTests.class,
 	MySqlCreateDatabaseMigrationTests.class,
 	MySqlDatabaseResourceTests.class,
+	MySqlPluginUnitTests.class,
+	MySqlRowDoesNotExistAssertionTests.class,
+	MySqlRowExistsAssertionTests.class,
 	MySqlTableDoesNotExistAssertionTests.class,
 	MySqlTableExistsAssertionTests.class,
-	MySqlPluginUnitTests.class,
 	SqlScriptMigrationTests.class
 })
 public class AllTests

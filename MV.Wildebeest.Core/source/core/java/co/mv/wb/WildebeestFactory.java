@@ -18,14 +18,14 @@ package co.mv.wb;
 
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.WildebeestApiImpl;
-import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
-import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
-import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
-import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigrationPlugin;
 import co.mv.wb.plugin.composite.ExternalResourceMigration;
 import co.mv.wb.plugin.composite.ExternalResourceMigrationPlugin;
-import co.mv.wb.plugin.database.SqlScriptMigration;
-import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigration;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigration;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
+import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
 import co.mv.wb.plugin.mysql.MySqlCreateDatabaseMigration;
 import co.mv.wb.plugin.mysql.MySqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
@@ -36,15 +36,58 @@ import co.mv.wb.plugin.sqlserver.SqlServerCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigration;
 import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigrationPlugin;
 import co.mv.wb.plugin.sqlserver.SqlServerDatabaseResourcePlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerDropDatabaseMigration;
 import co.mv.wb.plugin.sqlserver.SqlServerDropDatabaseMigrationPlugin;
 import co.mv.wb.plugin.sqlserver.SqlServerDropSchemaMigration;
 
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WildebeestFactory
 {
+
+	//
+	// PluginGroup
+	//
+
+	public static final PluginGroup CompositeResourcePluginGroup = new PluginGroup(
+		"co.mv.wb:Composite",
+		"Composite Resource",
+		"Works with higher-order resources composed of multiple other Wildebeest resources");
+	public static final PluginGroup GeneralDatabasePluginGroup = new PluginGroup(
+		"co.mv.wb:GeneralDatabase",
+		"General Database",
+		"Plugins that can be used for most relational database management systems");
+	public static final PluginGroup MySqlPluginGroup = new PluginGroup(
+		"co.mv.wb:MySqlDatabase",
+		"MySQL",
+		"Plugins for MySQL database resources");
+	public static final PluginGroup PostgreSqlPluginGroup = new PluginGroup(
+		"co.mv.wb:PostgreSqlDatabase",
+		"PostgreSQL",
+		"Plugins for PostgreSQL database resources");
+	public static final PluginGroup SqlServerPluginGroup = new PluginGroup(
+		"co.mv.wb:SqlServerDatabase",
+		"SQL Server",
+		"Plugins for SQL Server database resources");
+
+	public static List<PluginGroup> getPluginGroups()
+	{
+		return Arrays.asList(
+			WildebeestFactory.CompositeResourcePluginGroup,
+			WildebeestFactory.GeneralDatabasePluginGroup,
+			WildebeestFactory.MySqlPluginGroup,
+			WildebeestFactory.PostgreSqlPluginGroup,
+			WildebeestFactory.SqlServerPluginGroup);
+	}
+
+	//
+	// ResourceType
+	//
+
 	public static final ResourceType MySqlDatabase = new ResourceType(
 		"co.mv.wb.MySqlDatabase",
 		"MySQL Database");
@@ -55,21 +98,15 @@ public class WildebeestFactory
 		"co.mv.wb.SqlServerDatabase",
 		"SQL Server Database");
 
-	public static WildebeestApi wildebeestApi(
-		PrintStream output)
+	public static List<ResourceType> getResourceTypes()
 	{
-		if (output == null) throw new ArgumentNullException("output");
-
-		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
-			output);
-
-		wildebeestApi.setResourcePlugins(WildebeestFactory.getResourcePlugins());
-		wildebeestApi.setMigrationPlugins(WildebeestFactory.getMigrationPlugins(wildebeestApi));
-
-		return wildebeestApi;
+		return Arrays.asList(
+			WildebeestFactory.MySqlDatabase,
+			WildebeestFactory.PostgreSqlDatabase,
+			WildebeestFactory.SqlServerDatabase);
 	}
 
-	private static Map<ResourceType, ResourcePlugin> getResourcePlugins()
+	private static Map<ResourceType, ResourcePlugin> getResourcePluginMap()
 	{
 		Map<ResourceType, ResourcePlugin> result = new HashMap<>();
 
@@ -79,6 +116,10 @@ public class WildebeestFactory
 
 		return result;
 	}
+
+	//
+	// Migration
+	//
 
 	private static Map<Class, MigrationPlugin> getMigrationPlugins(
 		WildebeestApi wildebeestApi)
@@ -104,8 +145,27 @@ public class WildebeestFactory
 		// sqlserver
 		result.put(SqlServerCreateDatabaseMigration.class, new SqlServerCreateDatabaseMigrationPlugin());
 		result.put(SqlServerCreateSchemaMigration.class, new SqlServerCreateSchemaMigrationPlugin());
+		result.put(SqlServerDropDatabaseMigration.class, new SqlServerDropDatabaseMigrationPlugin());
 		result.put(SqlServerDropSchemaMigration.class, new SqlServerDropDatabaseMigrationPlugin());
 
 		return result;
+	}
+
+	//
+	// Services
+	//
+
+	public static WildebeestApi wildebeestApi(
+		PrintStream output)
+	{
+		if (output == null) throw new ArgumentNullException("output");
+
+		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(
+			output);
+
+		wildebeestApi.setResourcePlugins(WildebeestFactory.getResourcePluginMap());
+		wildebeestApi.setMigrationPlugins(WildebeestFactory.getMigrationPlugins(wildebeestApi));
+
+		return wildebeestApi;
 	}
 }

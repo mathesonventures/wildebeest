@@ -41,9 +41,9 @@ import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
-import co.mv.wb.plugin.database.DatabaseFixtureHelper;
-import co.mv.wb.plugin.database.SqlScriptMigration;
-import co.mv.wb.plugin.database.SqlScriptMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
+import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
+import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
 import org.junit.Test;
 
 import java.io.File;

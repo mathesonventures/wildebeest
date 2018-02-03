@@ -16,6 +16,7 @@
 
 package co.mv.wb.plugin.composite;
 
+import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.WildebeestFactory;
 import co.mv.wb.plugin.base.BaseMigration;
@@ -26,6 +27,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Applies a migration in an external resource definition, and tracks both the external resource state and the composite
+ * state.
+ *
+ * @author                                      Brendon Matheson
+ * @since                                       4.0
+ */
+@MigrationType(
+	pluginGroupUri = "co.mv.wb:Composite",
+	uri = "co.mv.wb.composite:ExternalResourceMigration",
+	description =
+		"Applies a migration in another resource definition, and tracks both the external resource state and the " +
+			"composite resource state")
 public class ExternalResourceMigration extends BaseMigration
 {
 	public ExternalResourceMigration(

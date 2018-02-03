@@ -18,15 +18,16 @@ package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.FaultException;
 import co.mv.wb.Instance;
-import co.mv.wb.plugin.database.BaseDatabaseInstance;
-import co.mv.wb.plugin.database.DatabaseHelper;
-import co.mv.wb.plugin.database.JdbcDatabaseInstance;
+import co.mv.wb.framework.DatabaseHelper;
+import co.mv.wb.plugin.generaldatabase.BaseDatabaseInstance;
+import co.mv.wb.plugin.generaldatabase.JdbcDatabaseInstance;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.sql.DataSource;
 
 /**
  * A resource {@link Instance} that describes a MySQL database.

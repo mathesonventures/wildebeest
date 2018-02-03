@@ -21,7 +21,7 @@ import co.mv.wb.Asserts;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import co.mv.wb.plugin.fake.FakeInstance;
 import org.junit.Test;
 

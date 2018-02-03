@@ -16,10 +16,10 @@
 
 package co.mv.wb.plugin.postgresql;
 
-import co.mv.wb.plugin.ansisql.AnsiSqlDatabaseInstance;
-import co.mv.wb.plugin.database.BaseDatabaseInstance;
-import co.mv.wb.plugin.database.DatabaseHelper;
-import co.mv.wb.plugin.database.JdbcDatabaseInstance;
+import co.mv.wb.framework.DatabaseHelper;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlDatabaseInstance;
+import co.mv.wb.plugin.generaldatabase.BaseDatabaseInstance;
+import co.mv.wb.plugin.generaldatabase.JdbcDatabaseInstance;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;

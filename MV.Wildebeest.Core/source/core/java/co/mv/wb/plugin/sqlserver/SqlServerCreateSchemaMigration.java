@@ -16,6 +16,7 @@
 
 package co.mv.wb.plugin.sqlserver;
 
+import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.WildebeestFactory;
 import co.mv.wb.plugin.base.BaseMigration;
@@ -31,6 +32,10 @@ import java.util.UUID;
  * @author                                      Brendon Matheson
  * @since                                       2.0
  */
+@MigrationType(
+	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
+	uri = "co.mv.wb.sqlserver:SqlServerCreateSchema",
+	description = "Creates a schema in a SQL Server database resource.")
 public class SqlServerCreateSchemaMigration extends BaseMigration
 {
 	/**

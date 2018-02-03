@@ -19,8 +19,8 @@ package co.mv.wb.plugin.mysql;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.plugin.database.BaseDatabasePluginUnitTests;
-import co.mv.wb.plugin.database.DatabaseFixtureHelper;
+import co.mv.wb.plugin.generaldatabase.BaseDatabasePluginUnitTests;
+import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
 
 import java.io.PrintStream;

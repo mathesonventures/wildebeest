@@ -19,11 +19,11 @@ package co.mv.wb.plugin.postgresql;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigration;
-import co.mv.wb.plugin.ansisql.AnsiSqlCreateDatabaseMigrationPlugin;
-import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigration;
-import co.mv.wb.plugin.ansisql.AnsiSqlDropDatabaseMigrationPlugin;
-import co.mv.wb.plugin.database.BaseDatabasePluginUnitTests;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigration;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigration;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.BaseDatabasePluginUnitTests;
 import org.junit.Test;
 
 import java.io.PrintStream;

@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.plugin.database.DatabaseHelper;
+import co.mv.wb.framework.DatabaseHelper;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.sql.SQLException;
 import javax.sql.DataSource;
