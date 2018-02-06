@@ -94,7 +94,7 @@ public class WildebeestApiBuilder
 		return new WildebeestApiBuilder(
 			_wildebeestApi,
 			_resourcePlugins,
-			_pluginManager);
+			pluginManager);
 	}
 
 	public WildebeestApi get()

@@ -463,10 +463,12 @@ public class WildebeestApiImpl implements WildebeestApi
 		output.append("<manifest>");
 
 		output.append("<groups>");
+
 		this.getPluginManager()
 			.getPluginGroups()
 			.stream()
 			.forEach(x -> output.append("<group uri=\"").append(x.getUri()).append("\" name=\"").append(x.getName()).append("\" />"));
+
 		output.append("</groups>");
 
 		output.append("<plugins>");
