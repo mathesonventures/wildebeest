@@ -20,6 +20,10 @@
 WB_CLASSPATH=$WB_HOME/lib/MV.Wildebeest.Api-@meta.project.version.full.dotted@.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/MV.Wildebeest.Core-@meta.project.version.full.dotted@.jar
 
+# Logging
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/slf4j-api-1.7.5.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/slf4j-simple-1.7.5.jar
+
 # Plugin Support
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/mysql-connector-java-5.1.22.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/postgresql-9.3-1100-jdbc41.jar

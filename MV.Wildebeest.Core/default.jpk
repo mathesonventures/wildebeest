@@ -12,8 +12,8 @@
             <group name="tlr" />
         </groups>
         <packages>
-            <mvnpackage groupId="org.slf4j" artifactId="slf4j-api" version="1.7.5" groups="tlc,tlr" />
-            <mvnpackage groupId="org.slf4j" artifactId="slf4j-simple" version="1.7.5" groups="tlc,tlr" />
+            <mvnpackage groupId="org.slf4j" artifactId="slf4j-api" version="1.7.5" groups="clc,clr,tlc,tlr" />
+            <mvnpackage groupId="org.slf4j" artifactId="slf4j-simple" version="1.7.5" groups="clr,tlr" />
 
             <mvnpackage groupId="org.reflections" artifactId="reflections" version="0.9.11" groups="clc,clr,tlc,tlr" />
 

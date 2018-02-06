@@ -22,6 +22,10 @@ REM Wildebeest
 SET WB_CLASSPATH=%WB_HOME%\lib\MV.Wildebeest.Api-@meta.project.version.full.dotted@.jar
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\MV.Wildebeest.Core-@meta.project.version.full.dotted@.jar
 
+REM Logging
+SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\slf4j-api-1.7.5.jar
+SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\slf4j-simple-1.7.5.jar
+
 REM Plugin Support
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\mysql-connector-java-5.1.22.jar
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\postgresql-9.3-1100-jdbc41.jar
