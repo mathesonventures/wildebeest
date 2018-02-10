@@ -35,10 +35,17 @@ import java.util.UUID;
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
-	uri = "co.mv.wb.generaldatabase:AnsiSqlDropDatabaseMigration",
+	uri = "co.mv.wb.generaldatabase:AnsiSqlDropDatabase",
 	description =
 		"Drops the database defined by the instance definition.  This migration can be used to transition a database " +
-			"from a state to non-existant")
+			"from a state to non-existant",
+    example =
+        "<migration\n" +
+        "    type=\"AnsiSqlDropDatabase\"\n" +
+        "    id=\"c3376639-40c1-4795-adc4-258de2b07176\"\n" +
+        "    fromStateId=\"a7d7f4c8-ea65-447f-bd59-aa73c00cd8c2\">\n" +
+        "</migration>"
+)
 public class AnsiSqlDropDatabaseMigration extends BaseMigration
 {
     public AnsiSqlDropDatabaseMigration(

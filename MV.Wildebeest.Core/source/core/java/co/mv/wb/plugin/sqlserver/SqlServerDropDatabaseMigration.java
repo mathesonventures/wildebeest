@@ -38,7 +38,15 @@ import java.util.UUID;
 	uri = "co.mv.wb.sqlserver:SqlServerDropDatabase",
 	description =
 		"Drops the SQL Server database defined by the instance definition.  This migration can be used to transition " +
-			"a SQL Server database from a state to non-existant")
+			"a SQL Server database from a state to non-existant",
+	example =
+		"<migration\n" +
+		"    type=\"SqlServerDropDatabase\"\n" +
+		"    id=\"ffe636f4-563f-4725-bcf2-124e7bb38d76\"\n" +
+		"    fromStateId=\"0cae6740-cb35-4028-af8a-14d565414078\">\n" +
+		"    <schemaName>prd</schemaName>\n" +
+		"</migration>"
+)
 public class SqlServerDropDatabaseMigration extends BaseMigration
 {
 	/**

@@ -94,6 +94,7 @@ public class PluginManagerImpl implements PluginManager
 						migrationType.uri(),
 						Util.nameFromUri(migrationType.uri()),
 						migrationType.description(),
+						migrationType.example(),
 						migrationClass);
 				})
 			.collect(Collectors.toList());

@@ -36,7 +36,16 @@ import java.util.UUID;
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
 	uri = "co.mv.wb.sqlserver:SqlServerDropSchema",
-	description = "Drops a schema from a SQL Server database resource.")
+	description = "Drops a schema from a SQL Server database resource.",
+	example =
+		"<migration\n" +
+		"    type=\"SqlServerDropSchema\"\n" +
+		"    id=\"ffe636f4-563f-4725-bcf2-124e7bb38d76\"\n" +
+		"    fromStateId=\"0cae6740-cb35-4028-af8a-14d565414078\"\n" +
+		"    toStateId=\"cc24394e-0f5b-42b9-8216-c95c81ff07dc\">\n" +
+		"    <schemaName>prd</schemaName>\n" +
+		"</migration>"
+)
 public class SqlServerDropSchemaMigration extends BaseMigration
 {
 	/**

@@ -46,8 +46,17 @@ import java.util.UUID;
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
 	uri = "co.mv.wb.generaldatabase:RowExists",
-	description =
-		"Asserts that a query results in exactly one row.")
+	description = "Asserts that a query results in exactly one row.",
+	example =
+		"<assertion\n" +
+		"    type=\"RowExists\"\n" +
+		"    id=\"c1ea9cfb-bbf5-4262-8512-4bc13ebb05a4\"\n" +
+		"    name=\"ProductType HW exists\">\n" +
+		"    <sql><![CDATA[\n" +
+		"        SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';\n" +
+		"    ]]></sql>\n" +
+		"</assertion> "
+)
 public class RowExistsAssertion extends BaseAssertion implements Assertion
 {
 	/**

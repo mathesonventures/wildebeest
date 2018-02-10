@@ -35,7 +35,16 @@ import java.util.UUID;
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
 	uri = "co.mv.wb.sqlserver:SqlServerCreateSchema",
-	description = "Creates a schema in a SQL Server database resource.")
+	description = "Creates a schema in a SQL Server database resource.",
+	example =
+		"<migration\n" +
+		"    type=\"SqlServerCreateSchema\"\n" +
+		"    id=\"675db93a-bd49-42a0-b36e-eef861c661f7\"\n" +
+		"    fromStateId=\"81806637-adbe-4123-9677-b8da2333c1a9\"\n" +
+		"    toStateId=\"85819eed-05d8-4cee-a34c-ff9b64f6d72b\">\n" +
+		"    <schemaName>prd</schemaName>\n" +
+		"</migration>"
+)
 public class SqlServerCreateSchemaMigration extends BaseMigration
 {
 	/**

@@ -40,7 +40,14 @@ import java.util.UUID;
 	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
 	uri = "co.mv.wb.sqlserver:SqlServerSchemaDoesNotExist",
 	description =
-		"Verifies that a schema does not exist in a SQL Server database resource.")
+		"Verifies that a schema does not exist in a SQL Server database resource.",
+	example =
+		"<assertion\n" +
+		"    type=\"SqlServerSchemaDoesNotExist\"\n" +
+		"    id=\"b7b780b0-ed01-4f5d-b1b1-f2f503ebfeaf\"\n" +
+		"    <schemaName>prd</schemaName>\n" +
+		"</assertion>"
+)
 public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 {
 	/**

@@ -35,11 +35,18 @@ import java.util.UUID;
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:MySqlDatabase",
-	uri = "co.mv.wb.mysql:MySqlCreateDatabaseMigration",
+	uri = "co.mv.wb.mysql:MySqlCreateDatabase",
 	description =
-		"Typically this will be the first migration in the definition of any MySQL resource managed by Wildebeest. " +
+		"This will usually be the first migration in the definition of any MySQL resource managed by Wildebeest. " +
 			"It creates a new schema.\n" +
-		"This migration takes the name of the schema to create from the MySqlDatabaseInstance it is applied to.")
+		"This migration takes the name of the schema to create from the MySqlDatabaseInstance it is applied to.",
+	example =
+		"<migration\n" +
+		"    type=\"MySqlCreateDatabase\"\n" +
+		"    id=\"6b21e1e3-ff3a-44b3-84ec-e21fb01c0110\"\n" +
+		"    toStateId=\"199b7cc1-3cc6-48ca-b012-a70d05d5b5e7\">\n" +
+		"</migration>"
+)
 public class MySqlCreateDatabaseMigration extends BaseMigration
 {
 	/**

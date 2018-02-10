@@ -34,7 +34,6 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.framework.ArgumentNullException;
-import co.mv.wb.impl.PluginManagerImpl;
 
 import java.io.File;
 import java.io.PrintStream;

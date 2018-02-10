@@ -38,9 +38,18 @@ import java.util.UUID;
  */
 @AssertionType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
-	uri = "co.mv.wb.generaldatabase:DatabaseExists",
+	uri = "co.mv.wb.generaldatabase:AnsiSqlTableExists",
 	description =
-		"Asserts that a table exists using an ANSI-SQL compliant query.")
+		"Asserts that a table exists using an ANSI-SQL compliant query.",
+	example =
+		"<assertion\n" +
+		"    type=\"AnsiSqlTableExists\"\n" +
+		"    id=\"bf9fe573-2586-4586-bf7d-a020a33a5f09\"\n" +
+		"    name=\"ProductType table does not exist\">\n" +
+		"    <schemaName>prdcat</schemaName>\n" +
+		"    <tableName>ProductType</tableName>\n" +
+		"</assertion>"
+)
 public class AnsiSqlTableExistsAssertion extends BaseAssertion
 {
 	/**

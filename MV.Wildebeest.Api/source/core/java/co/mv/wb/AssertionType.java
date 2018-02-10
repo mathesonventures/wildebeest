@@ -36,4 +36,6 @@ public @interface AssertionType
 	String uri();
 
 	String description();
+
+	String example();
 }

@@ -40,7 +40,13 @@ import java.util.UUID;
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
 	uri = "co.mv.wb.generaldatabase:DatabaseExists",
 	description =
-		"Asserts that the database specified by the instance exists.")
+		"Asserts that the database specified by the instance exists.",
+	example =
+		"<assertion\n" +
+		"    type=\"DatabaseExists\"\n" +
+		"    id=\"c5eccbf0-3d2a-4906-8f46-c380517628d7\">\n" +
+		"</assertion>"
+)
 public class DatabaseExistsAssertion extends BaseAssertion
 {
 	/**

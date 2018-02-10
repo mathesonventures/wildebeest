@@ -39,8 +39,14 @@ import java.util.UUID;
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
 	uri = "co.mv.wb.sqlserver:SqlServerSchemaExists",
-	description =
-		"Verifies that a schema exists in a SQL Server database resource.")
+	description = "Verifies that a schema exists in a SQL Server database resource.",
+	example =
+		"<assertion\n" +
+		"    type=\"SqlServerSchemaExists\"\n" +
+		"    id=\"f4bb0ea1-0913-4447-815f-bc3152da1ad1\"\n" +
+		"    <schemaName>prd</schemaName>\n" +
+		"</assertion>"
+)
 public class SqlServerSchemaExistsAssertion extends BaseAssertion
 {
 	/**

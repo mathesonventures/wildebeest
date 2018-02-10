@@ -39,7 +39,17 @@ import java.util.UUID;
 	uri = "co.mv.wb.composite:ExternalResourceMigration",
 	description =
 		"Applies a migration in another resource definition, and tracks both the external resource state and the " +
-			"composite resource state")
+			"composite resource state",
+	example =
+		"<migration\n" +
+		"    type=\"ExternalResourceMigration\"\n" +
+		"    id=\"dd7a708f-bf6d-4e18-aaec-c1fdf3de965d\"\n" +
+		"    fromStateId=\"d364f2ba-3972-4a76-944d-d9767cbfc2d7\"\n" +
+		"    toStateId=\"f488f17b-71d3-4672-9216-afd1e73884cf\">\n" +
+		"    <filename>AnotherResource.wbr</filename>\n" +
+		"    <target>SomeExternalTarget</target>\n" +
+		"</migration>"
+)
 public class ExternalResourceMigration extends BaseMigration
 {
 	public ExternalResourceMigration(

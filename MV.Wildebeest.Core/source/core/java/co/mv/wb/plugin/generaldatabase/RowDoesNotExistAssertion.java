@@ -46,8 +46,17 @@ import java.util.UUID;
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
 	uri = "co.mv.wb.generaldatabase:RowDoesNotExist",
-	description =
-		"Asserts that a query results in zero rows.")
+	description = "Asserts that a query results in zero rows.",
+	example =
+		"<assertion\n" +
+		"    type=\"RowDoesNotExist\"\n" +
+		"    id=\"c8b0941e-83bc-4151-83e3-8ca633735fbf\"\n" +
+		"    name=\"ProductType XY does not exist\">\n" +
+		"    <sql><![CDATA[\n" +
+		"        SELECT * FROM ProductType WHERE ProductTypeCode = 'XY';\n" +
+		"    ]]></sql>\n" +
+		"</assertion>"
+)
 public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 {
 	/**

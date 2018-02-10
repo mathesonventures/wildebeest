@@ -38,7 +38,10 @@ import java.util.UUID;
 @AssertionType(
 	pluginGroupUri = "co.mv.wb:Fake",
 	uri = "co.mv.wb.fake:TagAssertion",
-	description = "Verifies that the Tag value of the FakeIntance is as expected")
+	description = "Verifies that the Tag value of the FakeIntance is as expected",
+	example =
+		""
+)
 public class TagAssertion extends BaseAssertion
 {
 	public TagAssertion(

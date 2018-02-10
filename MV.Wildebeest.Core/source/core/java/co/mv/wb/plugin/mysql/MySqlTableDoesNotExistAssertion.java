@@ -39,7 +39,15 @@ import java.util.UUID;
 	pluginGroupUri = "co.mv.wb:MySqlDatabase",
 	uri = "co.mv.wb.mysql:MySqlTableDoesNotExist",
 	description =
-		"Used to assert that a specific table does not exist within the MySQL database.")
+		"Used to assert that a specific table does not exist within the MySQL database.",
+	example =
+		"<assertion\n" +
+		"    type=\"MySqlTableDoesNotExist\"\n" +
+		"    id=\"f112b36f-8312-4f8a-b7a5-e30d17be3c9b\"\n" +
+		"    name=\"ProductType table does not exist\">\n" +
+		"    <tableName>ProductType</tableName>\n" +
+		"</assertion>"
+)
 public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 {
 	/**

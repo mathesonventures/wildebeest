@@ -30,6 +30,7 @@ public class MigrationTypeInfo
 	private final String _uri;
 	private final String _name;
 	private final String _description;
+	private final String _example;
 	private final Class _migrationClass;
 
 	public MigrationTypeInfo(
@@ -37,18 +38,21 @@ public class MigrationTypeInfo
 		String uri,
 		String name,
 		String description,
+		String example,
 		Class migrationClass)
 	{
 		if (pluginGroupUri == null) throw new ArgumentNullException("pluginGroupUri");
 		if (uri == null) throw new ArgumentNullException("uri");
 		if (name == null) throw new ArgumentNullException("name");
 		if (description == null) throw new ArgumentNullException("description");
+		if (example == null) throw new ArgumentNullException("example");
 		if (migrationClass == null) throw new ArgumentNullException("migrationClass");
 
 		_pluginGroupUri = pluginGroupUri;
 		_uri = uri;
 		_name = name;
 		_description = description;
+		_example = example;
 		_migrationClass = migrationClass;
 	}
 
@@ -70,6 +74,11 @@ public class MigrationTypeInfo
 	public String getDescription()
 	{
 		return _description;
+	}
+
+	public String getExample()
+	{
+		return _example;
 	}
 
 	public Class getMigrationClass()

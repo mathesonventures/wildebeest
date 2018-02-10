@@ -467,7 +467,12 @@ public class WildebeestApiImpl implements WildebeestApi
 		this.getPluginManager()
 			.getPluginGroups()
 			.stream()
-			.forEach(x -> output.append("<group uri=\"").append(x.getUri()).append("\" name=\"").append(x.getName()).append("\" />"));
+			.forEach(x -> output
+				.append("<group ")
+					.append("uri=\"").append(x.getUri()).append("\" ")
+					.append("name=\"").append(x.getName()).append("\" ")
+					.append("title=\"").append(x.getTitle()).append("\" ")
+					.append(" />"));
 
 		output.append("</groups>");
 
@@ -482,7 +487,8 @@ public class WildebeestApiImpl implements WildebeestApi
 				info.getPluginGroupUri(),
 				info.getUri(),
 				info.getName(),
-				info.getDescription());
+				info.getDescription(),
+				info.getExample());
 		}
 
 		// Assertions
@@ -494,7 +500,8 @@ public class WildebeestApiImpl implements WildebeestApi
 				info.pluginGroupUri(),
 				info.uri(),
 				Util.nameFromUri(info.uri()),
-				info.description());
+				info.description(),
+				info.example());
 		}
 
 		output.append("</plugins>");
@@ -510,8 +517,15 @@ public class WildebeestApiImpl implements WildebeestApi
 		String groupUri,
 		String uri,
 		String name,
-		String description)
+		String description,
+		String example)
 	{
+		String exampleEsc = example
+			.replaceAll("\\<", "&lt;")
+			.replaceAll("\\>", "&gt;")
+			.replaceAll("\"", "&quot;")
+			.replaceAll("'", "&apos;");
+
 		output
 			.append("<plugin type=\"").append(type).append("\">")
 			.append("<group>").append(groupUri).append("</group>")
@@ -528,6 +542,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		output
 			.append("</description>")
+			.append("<example>").append(exampleEsc).append("</example>")
 			.append("</plugin>");
 	}
 

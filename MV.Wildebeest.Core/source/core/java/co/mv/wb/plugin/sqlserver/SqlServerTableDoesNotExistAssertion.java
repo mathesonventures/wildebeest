@@ -39,7 +39,15 @@ import java.util.UUID;
 	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
 	uri = "co.mv.wb.sqlserver:SqlServerTableDoesNotExist",
 	description =
-		"Verifies that a table does not exist in a SQL Server database resource.")
+		"Verifies that a table does not exist in a SQL Server database resource.",
+	example =
+		"<assertion\n" +
+		"    type=\"SqlServerTableDoesNotExist\"\n" +
+		"    id=\"76455254-dc96-4707-8348-41213bb4aa58\"\n" +
+		"    <schemaName>prdcat</schemaName>\n" +
+		"    <tableName>Product</tableName>\n" +
+		"</assertion>"
+)
 public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 {
 	/**

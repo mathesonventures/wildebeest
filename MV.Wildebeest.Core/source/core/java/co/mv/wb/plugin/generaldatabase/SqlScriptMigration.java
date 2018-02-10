@@ -35,8 +35,32 @@ import java.util.UUID;
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
-	uri = "co.mv.wb.generaldatabase:SqlScriptMigration",
-	description = "Migrates a database resource by applying a SQL script")
+	uri = "co.mv.wb.generaldatabase:SqlScript",
+	description = "Migrates a database resource by applying a SQL script.  This migration can be used for any " +
+			"dialect of SQL, as long as the DBMS supports it.",
+	example =
+		"<migration\n" +
+		"    type=\"SqlScript\"\n" +
+		"    id=\"8b57f16d-c690-4f10-b68f-6f1ee75fe32b\"\n" +
+		"    fromStateId=\"199b7cc1-3cc6-48ca-b012-a70d05d5b5e7\"\n" +
+		"    toStateId=\"363568f1-aaed-4a50-bea0-9ddee713cc11\">\n" +
+		"    <sql><![CDATA[\n" +
+		"\n" +
+		"/* ProductType */\n" +
+		"CREATE TABLE  `ProductType` (\n" +
+		"  `ProductTypeCode` char(2) NOT NULL,\n" +
+		"  `Name` varchar(10) NOT NULL,\n" +
+		"  PRIMARY KEY (`ProductTypeCode`)\n" +
+		") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n" +
+		"\n" +
+		"INSERT INTO\n" +
+		"    ProductType(ProductTypeCode, Name)\n" +
+		"VALUES\n" +
+		"    ('HW', 'Hardware'),\n" +
+		"    ('SW', 'Software');\n" +
+		"\n" +
+		"</migration>"
+)
 public class SqlScriptMigration extends BaseMigration implements Migration
 {
 	/**

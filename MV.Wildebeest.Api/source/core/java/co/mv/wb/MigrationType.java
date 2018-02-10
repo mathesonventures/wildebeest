@@ -36,4 +36,6 @@ public @interface MigrationType
 	String uri();
 
 	String description();
+
+	String example();
 }

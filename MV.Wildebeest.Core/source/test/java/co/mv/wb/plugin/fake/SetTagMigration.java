@@ -35,7 +35,10 @@ import java.util.UUID;
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:Fake",
 	uri = "co.mv.wb.fake:SetTag",
-	description = "Sets the tag on a FakeInstance to the supplied value")
+	description = "Sets the tag on a FakeInstance to the supplied value",
+	example =
+		""
+)
 public class SetTagMigration extends BaseMigration
 {
 	public SetTagMigration(

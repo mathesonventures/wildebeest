@@ -40,7 +40,15 @@ import java.util.UUID;
 	pluginGroupUri = "co.mv.wb:MySqlDatabase",
 	uri = "co.mv.wb.mysql:MySqlTableExists",
 	description =
-		"Used to assert that a specific table exists within the database.")
+		"Used to assert that a specific table exists within the database.",
+	example =
+		"<assertion\n" +
+		"    type=\"MySqlTableExists\"\n" +
+		"    id=\"3808ba63-f055-4bf7-88fe-023546e6ed16\"\n" +
+		"    name=\"ProductType table exists\">\n" +
+		"    <tableName>ProductType</tableName>\n" +
+		"</assertion>"
+)
 public class MySqlTableExistsAssertion extends BaseAssertion
 {
 	/**

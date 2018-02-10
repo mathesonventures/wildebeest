@@ -28,20 +28,20 @@ import co.mv.wb.framework.ArgumentNullException;
 public class PluginGroup
 {
 	private final String _uri;
-	private final String _name;
+	private final String _title;
 	private final String _description;
 
 	public PluginGroup(
 		String uri,
-		String name,
+		String title,
 		String description)
 	{
 		if (uri == null) throw new ArgumentNullException("uri");
-		if (name == null) throw new ArgumentNullException("name");
+		if (title == null) throw new ArgumentNullException("title");
 		if (description == null) throw new ArgumentNullException("description");
 
 		_uri = uri;
-		_name = name;
+		_title = title;
 		_description = description;
 	}
 
@@ -52,7 +52,13 @@ public class PluginGroup
 
 	public String getName()
 	{
-		return _name;
+		int index = this.getUri().lastIndexOf(":");
+		return this.getUri().substring(index + 1);
+	}
+
+	public String getTitle()
+	{
+		return _title;
 	}
 
 	public String getDescription()

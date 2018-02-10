@@ -38,7 +38,14 @@ import java.util.UUID;
 	uri = "co.mv.wb.mysql:MySqlDropDatabase",
 	description =
 		"Drops the MySQL database defined by the instance definition.  This migration can be used to transition a " +
-			"MySQL database from a state to non-existant")
+			"MySQL database from a state to non-existant",
+	example =
+		"<migration\n" +
+		"    type=\"MySqlDropDatabase\"\n" +
+		"    id=\"dfdafb03-4653-4641-9eb6-07f63aadb2af\"\n" +
+		"    fromStateId=\"3bab9e8c-4ede-4a61-b682-62cec77f8a10\">\n" +
+		"</migration>"
+)
 public class MySqlDropDatabaseMigration extends BaseMigration
 {
 	/**
