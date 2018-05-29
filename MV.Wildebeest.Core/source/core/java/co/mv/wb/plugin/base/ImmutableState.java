@@ -38,6 +38,8 @@ public class ImmutableState implements State {
 	private boolean labelSet = false;
 	private List<Assertion> assertions = null;
 	private boolean assertionsSet = false;
+	private Optional<String> stateDescription = null;
+	private boolean stateDescriptionSet = false;
 
 	/**
 	 * Creates a new ImmutableState with the supplied ID.
@@ -101,6 +103,47 @@ public class ImmutableState implements State {
 		this.setStateId(stateId);
 		this.setLabel(label);
 		this.setAssertions(assertions);
+	}
+
+	/**
+	 * Creates a new ImmutableState with an ID and a label, and with a set of {@link Assertion}s.
+	 *
+	 * @param stateId     the ID of the new state
+	 * @param label       the unique label of the new state
+	 * @param description the description that apply to this state
+	 */
+	public ImmutableState(
+			UUID stateId,
+			Optional<String> label,
+			Optional<String> description) {
+		if (stateId == null || label == null || description == null) {
+			throw new IllegalStateException("Passed values should not be null");
+		}
+		this.setStateId(stateId);
+		this.setLabel(label);
+		this.setStateDescription(description);
+	}
+
+	/**
+	 * Creates a new ImmutableState with an ID and a label, and with a set of {@link Assertion}s.
+	 *
+	 * @param stateId     the ID of the new state
+	 * @param label       the unique label of the new state
+	 * @param assertions  the assertions that apply to this state
+	 * @param description the description that apply to this state
+	 */
+	public ImmutableState(
+			UUID stateId,
+			Optional<String> label,
+			List<Assertion> assertions,
+			Optional<String> description) {
+		if (stateId == null || label == null || assertions == null || description == null ) {
+			throw new IllegalStateException("Passed values should not be null");
+		}
+		this.setStateId(stateId);
+		this.setLabel(label);
+		this.setAssertions(assertions);
+		this.setStateDescription(description);
 	}
 
 	@Override
@@ -167,5 +210,15 @@ public class ImmutableState implements State {
 	@Override
 	public String getDisplayName() {
 		return this.getLabel().orElse(this.getStateId().toString());
+	}
+
+	@Override
+	public Optional<String> getStateDescription() {
+		return stateDescription;
+	}
+
+	public void setStateDescription(Optional<String> value) {
+		boolean changing = !stateDescriptionSet || this.stateDescription != value;
+		this.stateDescription = value;
 	}
 }
