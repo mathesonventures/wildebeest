@@ -26,35 +26,43 @@ import java.util.UUID;
 
 /**
  * A {@link State} that cannot be modified after it's initial construction.
- * 
- * @author                                      Brendon Matheson
- * @since                                       1.0
+ *
+ * @author Brendon Matheson
+ * @since 1.0
  */
-public class ImmutableState implements State
-{
+public class ImmutableState implements State {
+
+	private UUID stateId = null;
+	private boolean stateIdSet = false;
+	private Optional<String> label = null;
+	private boolean labelSet = false;
+	private List<Assertion> assertions = null;
+	private boolean assertionsSet = false;
+
 	/**
 	 * Creates a new ImmutableState with the supplied ID.
-	 * 
-	 * @param       stateId                     the ID of the new state
+	 *
+	 * @param stateId the ID of the new state
 	 */
 	public ImmutableState(
-		UUID stateId)
-	{
+			UUID stateId) {
 		this.setStateId(stateId);
 		this.setLabel(Optional.empty());
 		this.setAssertions(new ArrayList<>());
 	}
-	
+
 	/**
 	 * Creates a new ImmutableState with an ID and a label.
-	 * 
-	 * @param       stateId                     the ID of the new state
-	 * @param       label                       the unique label of the new state
+	 *
+	 * @param stateId the ID of the new state
+	 * @param label   the unique label of the new state
 	 */
 	public ImmutableState(
-		UUID stateId,
-		Optional<String> label)
-	{
+			UUID stateId,
+			Optional<String> label) {
+		if (stateId == null || label == null ) {
+			throw new IllegalStateException("label should not be null");
+		}
 		this.setStateId(stateId);
 		this.setLabel(label);
 		this.setAssertions(new ArrayList<>());
@@ -62,138 +70,102 @@ public class ImmutableState implements State
 
 	/**
 	 * Creates a new ImmutableState with the supplied ID and set of {@link Assertion}s.
-	 * 
-	 * @param       stateId                     the ID of the new state
-	 * @param       assertions                  the assertions that apply to this state
+	 *
+	 * @param stateId    the ID of the new state
+	 * @param assertions the assertions that apply to this state
 	 */
 	public ImmutableState(
-		UUID stateId,
-		List<Assertion> assertions)
-	{
+			UUID stateId,
+			List<Assertion> assertions) {
+		if (stateId == null|| assertions == null) {
+			throw new IllegalStateException("label should not be null");
+		}
 		this.setStateId(stateId);
 		this.setAssertions(assertions);
 	}
-	
+
 	/**
 	 * Creates a new ImmutableState with an ID and a label, and with a set of {@link Assertion}s.
-	 * 
-	 * @param       stateId                     the ID of the new state
-	 * @param       label                       the unique label of the new state
-	 * @param       assertions                  the assertions that apply to this state
+	 *
+	 * @param stateId    the ID of the new state
+	 * @param label      the unique label of the new state
+	 * @param assertions the assertions that apply to this state
 	 */
 	public ImmutableState(
-		UUID stateId,
-		Optional<String> label,
-		List<Assertion> assertions)
-	{
+			UUID stateId,
+			Optional<String> label,
+			List<Assertion> assertions) {
+		if (stateId == null || label == null || assertions == null) {
+			throw new IllegalStateException("label should not be null");
+		}
 		this.setStateId(stateId);
 		this.setLabel(label);
 		this.setAssertions(assertions);
 	}
 
-	// <editor-fold desc="StateId" defaultstate="collapsed">
-
-	private UUID _stateId = null;
-	private boolean _stateId_set = false;
-
-	@Override public UUID getStateId() {
-		if(!_stateId_set) {
-			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
-		}
-		return _stateId;
+	@Override
+	public UUID getStateId() {
+		return stateId;
 	}
 
 	private void setStateId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("stateId cannot be null");
-		}
-		boolean changing = !_stateId_set || _stateId != value;
-		if(changing) {
-			_stateId_set = true;
-			_stateId = value;
+			UUID value) {
+		boolean changing = !stateIdSet || stateId != value;
+		if (changing) {
+			stateIdSet = true;
+			stateId = value;
 		}
 	}
 
 	private void clearStateId() {
-		if(_stateId_set) {
-			_stateId_set = true;
-			_stateId = null;
+		if (stateIdSet) {
+			stateIdSet = true;
+			stateId = null;
 		}
 	}
 
 	private boolean hasStateId() {
-		return _stateId_set;
+		return stateIdSet;
 	}
 
-	// </editor-fold>
-	
-	// <editor-fold desc="Label" defaultstate="collapsed">
-
-	private Optional<String> _label = null;
-	private boolean _label_set = false;
-
 	public Optional<String> getLabel() {
-		if(!_label_set) {
-			throw new IllegalStateException("label not set.");
-		}
-		if(_label == null) {
-			throw new IllegalStateException("label should not be null");
-		}
-		return _label;
+		return label;
 	}
 
 	private void setLabel(Optional<String> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("label cannot be null");
-		}
-		boolean changing = !_label_set || _label != value;
-		if(changing) {
-			_label_set = true;
-			_label = value;
+		boolean changing = !labelSet || label != value;
+		if (changing) {
+			labelSet = true;
+			label = value;
 		}
 	}
 
-	// </editor-fold>
-	
-	// <editor-fold desc="Assertions" defaultstate="collapsed">
-
-	private List<Assertion> _assertions = null;
-	private boolean _assertions_set = false;
-
-	@Override public List<Assertion> getAssertions() {
-		if(!_assertions_set) {
-			throw new IllegalStateException("assertions not set.  Use the HasAssertions() method to check its state before accessing it.");
-		}
-		return _assertions;
+	@Override
+	public List<Assertion> getAssertions() {
+		return assertions;
 	}
 
 	private void setAssertions(List<Assertion> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("assertions cannot be null");
-		}
-		boolean changing = !_assertions_set || _assertions != value;
-		if(changing) {
-			_assertions_set = true;
-			_assertions = value;
+		boolean changing = !assertionsSet || assertions != value;
+		if (changing) {
+			assertionsSet = true;
+			assertions = value;
 		}
 	}
 
 	private void clearAssertions() {
-		if(_assertions_set) {
-			_assertions_set = true;
-			_assertions = null;
+		if (assertionsSet) {
+			assertionsSet = true;
+			assertions = null;
 		}
 	}
 
 	private boolean hasAssertions() {
-		return _assertions_set;
+		return assertionsSet;
 	}
 
-	// </editor-fold>
-	
-	@Override public String getDisplayName()
-	{
+	@Override
+	public String getDisplayName() {
 		return this.getLabel().orElse(this.getStateId().toString());
 	}
 }
