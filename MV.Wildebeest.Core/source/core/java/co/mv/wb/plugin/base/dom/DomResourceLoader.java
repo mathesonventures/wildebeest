@@ -54,400 +54,400 @@ import java.util.UUID;
  * @since 1.0
  */
 public class DomResourceLoader implements ResourceLoader {
-	private static final String XE_RESOURCE = "resource";
-	private static final String XA_RESOURCE_TYPE = "type";
-	private static final String XA_RESOURCE_ID = "id";
-	private static final String XA_RESOURCE_NAME = "name";
-	private static final String XA_RESOURCE_DEFAULT_TARGET = "defaultTarget";
+    private static final String XE_RESOURCE = "resource";
+    private static final String XA_RESOURCE_TYPE = "type";
+    private static final String XA_RESOURCE_ID = "id";
+    private static final String XA_RESOURCE_NAME = "name";
+    private static final String XA_RESOURCE_DEFAULT_TARGET = "defaultTarget";
 
-	private static final String XE_STATES = "states";
+    private static final String XE_STATES = "states";
 
-	private static final String XE_STATE = "state";
-	private static final String XA_STATE_ID = "id";
-	private static final String XA_STATE_LABEL = "label";
+    private static final String XE_STATE = "state";
+    private static final String XA_STATE_ID = "id";
+    private static final String XA_STATE_LABEL = "label";
 
-	private static final String XE_ASSERTIONS = "assertions";
-	private static final String XA_ASSERTION_TYPE = "type";
-	private static final String XA_ASSERTION_ID = "id";
-	private static final String XA_ASSERTION_NAME = "name";
+    private static final String XE_ASSERTIONS = "assertions";
+    private static final String XA_ASSERTION_TYPE = "type";
+    private static final String XA_ASSERTION_ID = "id";
+    private static final String XA_ASSERTION_NAME = "name";
 
-	private static final String XE_MIGRATIONS = "migrations";
-	private static final String XA_MIGRATION_TYPE = "type";
-	private static final String XA_MIGRATION_ID = "id";
-	private static final String XA_MIGRATION_FROM_STATE_ID = "fromStateId";
-	private static final String XA_MIGRATION_TO_STATE_ID = "toStateId";
+    private static final String XE_MIGRATIONS = "migrations";
+    private static final String XA_MIGRATION_TYPE = "type";
+    private static final String XA_MIGRATION_ID = "id";
+    private static final String XA_MIGRATION_FROM_STATE_ID = "fromStateId";
+    private static final String XA_MIGRATION_TO_STATE_ID = "toStateId";
 
-	private ResourceTypeService resourceTypeService = null;
-	private boolean resourceTypeServiceSet = false;
-	private Map<String, AssertionBuilder> assertionBuilders = null;
-	private boolean assertionBuildersSet = false;
-	private Map<String, MigrationBuilder> migrationBuilders = null;
-	private boolean migrationBuildersSet = false;
-	private String resourceXml = null;
-	private boolean resourceXmlSet = false;
+    private ResourceTypeService resourceTypeService = null;
+    private boolean resourceTypeServiceSet = false;
+    private Map<String, AssertionBuilder> assertionBuilders = null;
+    private boolean assertionBuildersSet = false;
+    private Map<String, MigrationBuilder> migrationBuilders = null;
+    private boolean migrationBuildersSet = false;
+    private String resourceXml = null;
+    private boolean resourceXmlSet = false;
 
-	/**
-	 * Creates a new DomResourceBuilder.
-	 *
-	 * @param resourceTypeService the {@link ResourceTypeService} to use to look up resource types.
-	 * @param assertionBuilders   the set of available {@link AssertionBuilder}s.
-	 * @param migrationBuilders   the set of available {@link MigrationBuilder}s.
-	 * @param resourceXml         the XML representation of the {@link Resource} to be loaded.
-	 * @since 1.0
-	 */
-	public DomResourceLoader(
-			ResourceTypeService resourceTypeService,
-			Map<String, AssertionBuilder> assertionBuilders,
-			Map<String, MigrationBuilder> migrationBuilders,
-			String resourceXml) {
-		this.setResourceTypeService(resourceTypeService);
-		this.setAssertionBuilders(assertionBuilders);
-		this.setMigrationBuilders(migrationBuilders);
-		this.setResourceXml(resourceXml);
-	}
+    /**
+     * Creates a new DomResourceBuilder.
+     *
+     * @param resourceTypeService the {@link ResourceTypeService} to use to look up resource types.
+     * @param assertionBuilders   the set of available {@link AssertionBuilder}s.
+     * @param migrationBuilders   the set of available {@link MigrationBuilder}s.
+     * @param resourceXml         the XML representation of the {@link Resource} to be loaded.
+     * @since 1.0
+     */
+    public DomResourceLoader(
+            ResourceTypeService resourceTypeService,
+            Map<String, AssertionBuilder> assertionBuilders,
+            Map<String, MigrationBuilder> migrationBuilders,
+            String resourceXml) {
+        this.setResourceTypeService(resourceTypeService);
+        this.setAssertionBuilders(assertionBuilders);
+        this.setMigrationBuilders(migrationBuilders);
+        this.setResourceXml(resourceXml);
+    }
 
-	public ResourceTypeService getResourceTypeService() {
-		if (!resourceTypeServiceSet) {
-			throw new IllegalStateException("resourceTypeService not set.");
-		}
-		if (resourceTypeService == null) {
-			throw new IllegalStateException("resourceTypeService should not be null");
-		}
-		return resourceTypeService;
-	}
+    public ResourceTypeService getResourceTypeService() {
+        if (!resourceTypeServiceSet) {
+            throw new IllegalStateException("resourceTypeService not set.");
+        }
+        if (resourceTypeService == null) {
+            throw new IllegalStateException("resourceTypeService should not be null");
+        }
+        return resourceTypeService;
+    }
 
-	private void setResourceTypeService(
-			ResourceTypeService value) {
-		if (value == null) {
-			throw new IllegalArgumentException("resourceTypeService cannot be null");
-		}
-		boolean changing = !resourceTypeServiceSet || resourceTypeService != value;
-		if (changing) {
-			resourceTypeServiceSet = true;
-			resourceTypeService = value;
-		}
-	}
+    private void setResourceTypeService(
+            ResourceTypeService value) {
+        if (value == null) {
+            throw new IllegalArgumentException("resourceTypeService cannot be null");
+        }
+        boolean changing = !resourceTypeServiceSet || resourceTypeService != value;
+        if (changing) {
+            resourceTypeServiceSet = true;
+            resourceTypeService = value;
+        }
+    }
 
-	private void clearResourceTypeService() {
-		if (resourceTypeServiceSet) {
-			resourceTypeServiceSet = true;
-			resourceTypeService = null;
-		}
-	}
+    private void clearResourceTypeService() {
+        if (resourceTypeServiceSet) {
+            resourceTypeServiceSet = true;
+            resourceTypeService = null;
+        }
+    }
 
-	private boolean hasResourceTypeService() {
-		return resourceTypeServiceSet;
-	}
+    private boolean hasResourceTypeService() {
+        return resourceTypeServiceSet;
+    }
 
-	private Map<String, AssertionBuilder> getAssertionBuilders() {
-		if (!assertionBuildersSet) {
-			throw new IllegalStateException("assertionBuilders not set.  Use the HasAssertionBuilders() method to check its state before accessing it.");
-		}
-		return assertionBuilders;
-	}
+    private Map<String, AssertionBuilder> getAssertionBuilders() {
+        if (!assertionBuildersSet) {
+            throw new IllegalStateException("assertionBuilders not set.  Use the HasAssertionBuilders() method to check its state before accessing it.");
+        }
+        return assertionBuilders;
+    }
 
-	private void setAssertionBuilders(Map<String, AssertionBuilder> value) {
-		if (value == null) {
-			throw new IllegalArgumentException("assertionBuilders cannot be null");
-		}
-		boolean changing = !assertionBuildersSet || assertionBuilders != value;
-		if (changing) {
-			assertionBuildersSet = true;
-			assertionBuilders = value;
-		}
-	}
+    private void setAssertionBuilders(Map<String, AssertionBuilder> value) {
+        if (value == null) {
+            throw new IllegalArgumentException("assertionBuilders cannot be null");
+        }
+        boolean changing = !assertionBuildersSet || assertionBuilders != value;
+        if (changing) {
+            assertionBuildersSet = true;
+            assertionBuilders = value;
+        }
+    }
 
-	private void clearAssertionBuilders() {
-		if (assertionBuildersSet) {
-			assertionBuildersSet = true;
-			assertionBuilders = null;
-		}
-	}
+    private void clearAssertionBuilders() {
+        if (assertionBuildersSet) {
+            assertionBuildersSet = true;
+            assertionBuilders = null;
+        }
+    }
 
-	private boolean hasAssertionBuilders() {
-		return assertionBuildersSet;
-	}
+    private boolean hasAssertionBuilders() {
+        return assertionBuildersSet;
+    }
 
-	private Map<String, MigrationBuilder> getMigrationBuilders() {
-		if (!migrationBuildersSet) {
-			throw new IllegalStateException("migrationBuilders not set.  Use the HasMigrationBuilders() method to check its state before accessing it.");
-		}
-		return migrationBuilders;
-	}
+    private Map<String, MigrationBuilder> getMigrationBuilders() {
+        if (!migrationBuildersSet) {
+            throw new IllegalStateException("migrationBuilders not set.  Use the HasMigrationBuilders() method to check its state before accessing it.");
+        }
+        return migrationBuilders;
+    }
 
-	private void setMigrationBuilders(Map<String, MigrationBuilder> value) {
-		if (value == null) {
-			throw new IllegalArgumentException("migrationBuilders cannot be null");
-		}
-		boolean changing = !migrationBuildersSet || migrationBuilders != value;
-		if (changing) {
-			migrationBuildersSet = true;
-			migrationBuilders = value;
-		}
-	}
+    private void setMigrationBuilders(Map<String, MigrationBuilder> value) {
+        if (value == null) {
+            throw new IllegalArgumentException("migrationBuilders cannot be null");
+        }
+        boolean changing = !migrationBuildersSet || migrationBuilders != value;
+        if (changing) {
+            migrationBuildersSet = true;
+            migrationBuilders = value;
+        }
+    }
 
-	private void clearMigrationBuilders() {
-		if (migrationBuildersSet) {
-			migrationBuildersSet = true;
-			migrationBuilders = null;
-		}
-	}
+    private void clearMigrationBuilders() {
+        if (migrationBuildersSet) {
+            migrationBuildersSet = true;
+            migrationBuilders = null;
+        }
+    }
 
-	private boolean hasMigrationBuilders() {
-		return migrationBuildersSet;
-	}
+    private boolean hasMigrationBuilders() {
+        return migrationBuildersSet;
+    }
 
-	private String getResourceXml() {
-		if (!resourceXmlSet) {
-			throw new IllegalStateException("resourceXml not set.  Use the HasResourceXml() method to check its state before accessing it.");
-		}
-		return resourceXml;
-	}
+    private String getResourceXml() {
+        if (!resourceXmlSet) {
+            throw new IllegalStateException("resourceXml not set.  Use the HasResourceXml() method to check its state before accessing it.");
+        }
+        return resourceXml;
+    }
 
-	private void setResourceXml(
-			String value) {
-		if (value == null) {
-			throw new IllegalArgumentException("resourceXml cannot be null");
-		}
-		boolean changing = !resourceXmlSet || !resourceXml.equals(value);
-		if (changing) {
-			resourceXmlSet = true;
-			resourceXml = value;
-		}
-	}
+    private void setResourceXml(
+            String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("resourceXml cannot be null");
+        }
+        boolean changing = !resourceXmlSet || !resourceXml.equals(value);
+        if (changing) {
+            resourceXmlSet = true;
+            resourceXml = value;
+        }
+    }
 
-	private void clearResourceXml() {
-		if (resourceXmlSet) {
-			resourceXmlSet = true;
-			resourceXml = null;
-		}
-	}
+    private void clearResourceXml() {
+        if (resourceXmlSet) {
+            resourceXmlSet = true;
+            resourceXml = null;
+        }
+    }
 
-	private boolean hasResourceXml() {
-		return resourceXmlSet;
-	}
+    private boolean hasResourceXml() {
+        return resourceXmlSet;
+    }
 
-	@Override
-	public Resource load(File baseDir) throws
-			LoaderFault,
-			PluginBuildException {
-		if (baseDir == null) {
-			throw new IllegalArgumentException("baseDir cannot be null");
-		}
+    @Override
+    public Resource load(File baseDir) throws
+            LoaderFault,
+            PluginBuildException {
+        if (baseDir == null) {
+            throw new IllegalArgumentException("baseDir cannot be null");
+        }
 
-		InputSource inputSource = new InputSource(new StringReader(this.getResourceXml()));
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db;
-		try {
-			db = dbf.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			throw new LoaderFault(e);
-		}
+        InputSource inputSource = new InputSource(new StringReader(this.getResourceXml()));
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db;
+        try {
+            db = dbf.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            throw new LoaderFault(e);
+        }
 
-		Document resourceXd;
-		try {
-			resourceXd = db.parse(inputSource);
-		} catch (IOException | SAXException e) {
-			throw new LoaderFault(e);
-		}
+        Document resourceXd;
+        try {
+            resourceXd = db.parse(inputSource);
+        } catch (IOException | SAXException e) {
+            throw new LoaderFault(e);
+        }
 
-		Element resourceXe = resourceXd.getDocumentElement();
-		Resource resource = null;
+        Element resourceXe = resourceXd.getDocumentElement();
+        Resource resource = null;
 
-		if (XE_RESOURCE.equals(resourceXe.getTagName())) {
-			UUID id = UUID.fromString(resourceXe.getAttribute(XA_RESOURCE_ID));
-			String typeUri = resourceXe.getAttribute(XA_RESOURCE_TYPE);
-			ResourceType type = this.getResourceTypeService().forUri(typeUri);
-			String name = resourceXe.getAttribute(XA_RESOURCE_NAME);
-			Optional<String> defaultTarget = Optional.ofNullable(resourceXe.getAttribute(XA_RESOURCE_DEFAULT_TARGET));
+        if (XE_RESOURCE.equals(resourceXe.getTagName())) {
+            UUID id = UUID.fromString(resourceXe.getAttribute(XA_RESOURCE_ID));
+            String typeUri = resourceXe.getAttribute(XA_RESOURCE_TYPE);
+            ResourceType type = this.getResourceTypeService().forUri(typeUri);
+            String name = resourceXe.getAttribute(XA_RESOURCE_NAME);
+            Optional<String> defaultTarget = Optional.ofNullable(resourceXe.getAttribute(XA_RESOURCE_DEFAULT_TARGET));
 
-			resource = new ResourceImpl(
-					id,
-					type,
-					name,
-					defaultTarget);
+            resource = new ResourceImpl(
+                    id,
+                    type,
+                    name,
+                    defaultTarget);
 
-			for (int i = 0; i < resourceXe.getChildNodes().getLength(); i++) {
-				Element childXe = ModelExtensions.As(resourceXe.getChildNodes().item(i), Element.class);
+            for (int i = 0; i < resourceXe.getChildNodes().getLength(); i++) {
+                Element childXe = ModelExtensions.As(resourceXe.getChildNodes().item(i), Element.class);
 
-				if (childXe != null && XE_STATES.equals(childXe.getTagName())) {
-					for (int stateIndex = 0; stateIndex < childXe.getChildNodes().getLength(); stateIndex++) {
-						Element stateXe = ModelExtensions.As(childXe.getChildNodes().item(stateIndex), Element.class);
+                if (childXe != null && XE_STATES.equals(childXe.getTagName())) {
+                    for (int stateIndex = 0; stateIndex < childXe.getChildNodes().getLength(); stateIndex++) {
+                        Element stateXe = ModelExtensions.As(childXe.getChildNodes().item(stateIndex), Element.class);
 
-						if (stateXe != null) {
-							State state = buildState(stateXe);
-							resource.getStates().add(state);
+                        if (stateXe != null) {
+                            State state = buildState(stateXe);
+                            resource.getStates().add(state);
 
-							for (int stChildIndex = 0; stChildIndex < stateXe.getChildNodes().getLength(); stChildIndex++) {
-								Element stChildXe = ModelExtensions.As(stateXe.getChildNodes().item(stChildIndex),
-										Element.class);
+                            for (int stChildIndex = 0; stChildIndex < stateXe.getChildNodes().getLength(); stChildIndex++) {
+                                Element stChildXe = ModelExtensions.As(stateXe.getChildNodes().item(stChildIndex),
+                                        Element.class);
 
-								if (stChildXe != null && XE_ASSERTIONS.equals(stChildXe.getTagName())) {
-									for (int asrIndex = 0; asrIndex < stChildXe.getChildNodes().getLength(); asrIndex++) {
-										Element asrXe = ModelExtensions.As(stChildXe.getChildNodes().item(asrIndex),
-												Element.class);
+                                if (stChildXe != null && XE_ASSERTIONS.equals(stChildXe.getTagName())) {
+                                    for (int asrIndex = 0; asrIndex < stChildXe.getChildNodes().getLength(); asrIndex++) {
+                                        Element asrXe = ModelExtensions.As(stChildXe.getChildNodes().item(asrIndex),
+                                                Element.class);
 
-										if (asrXe != null) {
-											Assertion asr = buildAssertion(
-													this.getAssertionBuilders(),
-													asrXe,
-													asrIndex);
+                                        if (asrXe != null) {
+                                            Assertion asr = buildAssertion(
+                                                    this.getAssertionBuilders(),
+                                                    asrXe,
+                                                    asrIndex);
 
-											// Verify that this assertion can be used with the Resource.
-											if (!DomResourceLoader.isApplicable(
-													asr.getApplicableTypes(),
-													resource.getType())) {
-												Messages messages = new Messages();
-												messages.addMessage(
-														"%s assertions cannot be applied to %s resources",
-														asr.getClass().getName(),
-														resource.getClass().getName());
-											}
+                                            // Verify that this assertion can be used with the Resource.
+                                            if (!DomResourceLoader.isApplicable(
+                                                    asr.getApplicableTypes(),
+                                                    resource.getType())) {
+                                                Messages messages = new Messages();
+                                                messages.addMessage(
+                                                        "%s assertions cannot be applied to %s resources",
+                                                        asr.getClass().getName(),
+                                                        resource.getClass().getName());
+                                            }
 
-											state.getAssertions().add(asr);
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+                                            state.getAssertions().add(asr);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
-				if (childXe != null && XE_MIGRATIONS.equals(childXe.getTagName())) {
-					for (int tranIndex = 0; tranIndex < childXe.getChildNodes().getLength(); tranIndex++) {
-						Element migrationXe = ModelExtensions.As(childXe.getChildNodes().item(tranIndex),
-								Element.class);
-						if (migrationXe != null) {
-							Migration migration = buildMigration(
-									this.getMigrationBuilders(),
-									migrationXe,
-									baseDir);
+                if (childXe != null && XE_MIGRATIONS.equals(childXe.getTagName())) {
+                    for (int tranIndex = 0; tranIndex < childXe.getChildNodes().getLength(); tranIndex++) {
+                        Element migrationXe = ModelExtensions.As(childXe.getChildNodes().item(tranIndex),
+                                Element.class);
+                        if (migrationXe != null) {
+                            Migration migration = buildMigration(
+                                    this.getMigrationBuilders(),
+                                    migrationXe,
+                                    baseDir);
 
-							// Verify that this assertion can be used with the Resource.
-							if (!DomResourceLoader.isApplicable(
-									migration.getApplicableTypes(),
-									resource.getType())) {
-								Messages messages = new Messages();
-								messages.addMessage(
-										"%s migrations cannot be applied to %s resources",
-										migration.getClass().getName(),
-										resource.getClass().getName());
-							}
+                            // Verify that this assertion can be used with the Resource.
+                            if (!DomResourceLoader.isApplicable(
+                                    migration.getApplicableTypes(),
+                                    resource.getType())) {
+                                Messages messages = new Messages();
+                                messages.addMessage(
+                                        "%s migrations cannot be applied to %s resources",
+                                        migration.getClass().getName(),
+                                        resource.getClass().getName());
+                            }
 
-							resource.getMigrations().add(migration);
-						}
-					}
-				}
-			}
-		}
+                            resource.getMigrations().add(migration);
+                        }
+                    }
+                }
+            }
+        }
 
-		return resource;
-	}
+        return resource;
+    }
 
-	private static boolean isApplicable(List<ResourceType> applicableTypes, ResourceType actualType) {
-		if (applicableTypes == null) {
-			throw new IllegalArgumentException("applicableTypes cannot be null");
-		}
-		if (actualType == null) {
-			throw new IllegalArgumentException("actualType cannot be null");
-		}
+    private static boolean isApplicable(List<ResourceType> applicableTypes, ResourceType actualType) {
+        if (applicableTypes == null) {
+            throw new IllegalArgumentException("applicableTypes cannot be null");
+        }
+        if (actualType == null) {
+            throw new IllegalArgumentException("actualType cannot be null");
+        }
 
-		return applicableTypes.stream().anyMatch(x -> x.getUri().equals(actualType.getUri()));
-	}
+        return applicableTypes.stream().anyMatch(x -> x.getUri().equals(actualType.getUri()));
+    }
 
-	private static State buildState(
-			Element element) {
-		if (element == null) {
-			throw new IllegalArgumentException("element");
-		}
+    private static State buildState(
+            Element element) {
+        if (element == null) {
+            throw new IllegalArgumentException("element");
+        }
 
-		UUID id = UUID.fromString(element.getAttribute(XA_STATE_ID));
-		String label = null;
-		if (element.hasAttribute(XA_STATE_LABEL)) {
-			label = element.getAttribute(XA_STATE_LABEL);
-		}
+        UUID id = UUID.fromString(element.getAttribute(XA_STATE_ID));
+        String label = null;
+        if (element.hasAttribute(XA_STATE_LABEL)) {
+            label = element.getAttribute(XA_STATE_LABEL);
+        }
 
-		State result = label == null
-				? new ImmutableState(id)
-				: new ImmutableState(id, Optional.of(label));
+        State result = label == null
+                ? new ImmutableState(id)
+                : new ImmutableState(id, Optional.of(label));
 
-		return result;
-	}
+        return result;
+    }
 
-	private static Assertion buildAssertion(
-			Map<String, AssertionBuilder> assertionBuilders,
-			Element element,
-			int seqNum) throws
-			PluginBuildException,
-			LoaderFault {
-		if (assertionBuilders == null) {
-			throw new IllegalArgumentException("assertionBuilders cannot be null");
-		}
-		if (element == null) {
-			throw new IllegalArgumentException("element cannot be null");
-		}
+    private static Assertion buildAssertion(
+            Map<String, AssertionBuilder> assertionBuilders,
+            Element element,
+            int seqNum) throws
+            PluginBuildException,
+            LoaderFault {
+        if (assertionBuilders == null) {
+            throw new IllegalArgumentException("assertionBuilders cannot be null");
+        }
+        if (element == null) {
+            throw new IllegalArgumentException("element cannot be null");
+        }
 
-		String type = element.getAttribute(XA_ASSERTION_TYPE);
-		UUID id = UUID.fromString(element.getAttribute(XA_ASSERTION_ID));
-		String name = element.getAttribute(XA_ASSERTION_NAME);
+        String type = element.getAttribute(XA_ASSERTION_TYPE);
+        UUID id = UUID.fromString(element.getAttribute(XA_ASSERTION_ID));
+        String name = element.getAttribute(XA_ASSERTION_NAME);
 
-		AssertionBuilder builder = assertionBuilders.get(type);
+        AssertionBuilder builder = assertionBuilders.get(type);
 
-		if (builder == null) {
-			Messages messages = new Messages();
-			messages.addMessage(String.format(
-					"assertion builder of type %s not found",
-					type));
-			throw new PluginBuildException(messages);
-		}
+        if (builder == null) {
+            Messages messages = new Messages();
+            messages.addMessage(String.format(
+                    "assertion builder of type %s not found",
+                    type));
+            throw new PluginBuildException(messages);
+        }
 
-		builder.reset();
-		((DomBuilder) builder).setElement(element);
-		return builder.build(id, seqNum);
-	}
+        builder.reset();
+        ((DomBuilder) builder).setElement(element);
+        return builder.build(id, seqNum);
+    }
 
-	private static Migration buildMigration(
-			Map<String, MigrationBuilder> migrationBuilders,
-			Element element,
-			File baseDir) throws
-			LoaderFault,
-			PluginBuildException {
-		if (migrationBuilders == null) {
-			throw new IllegalArgumentException("migrationBuilders cannot be null");
-		}
-		if (element == null) {
-			throw new IllegalArgumentException("element cannot be null");
-		}
-		if (baseDir == null) {
-			throw new IllegalArgumentException("baseDir cannot be null");
-		}
+    private static Migration buildMigration(
+            Map<String, MigrationBuilder> migrationBuilders,
+            Element element,
+            File baseDir) throws
+            LoaderFault,
+            PluginBuildException {
+        if (migrationBuilders == null) {
+            throw new IllegalArgumentException("migrationBuilders cannot be null");
+        }
+        if (element == null) {
+            throw new IllegalArgumentException("element cannot be null");
+        }
+        if (baseDir == null) {
+            throw new IllegalArgumentException("baseDir cannot be null");
+        }
 
-		String type = element.getAttribute(XA_MIGRATION_TYPE);
-		UUID id = UUID.fromString(element.getAttribute(XA_MIGRATION_ID));
-		Optional<UUID> fromStateId = element.hasAttribute(XA_MIGRATION_FROM_STATE_ID)
-				? Optional.of(UUID.fromString(element.getAttribute(XA_MIGRATION_FROM_STATE_ID)))
-				: Optional.empty();
+        String type = element.getAttribute(XA_MIGRATION_TYPE);
+        UUID id = UUID.fromString(element.getAttribute(XA_MIGRATION_ID));
+        Optional<UUID> fromStateId = element.hasAttribute(XA_MIGRATION_FROM_STATE_ID)
+                ? Optional.of(UUID.fromString(element.getAttribute(XA_MIGRATION_FROM_STATE_ID)))
+                : Optional.empty();
 
-		Optional<UUID> toStateId = element.hasAttribute(XA_MIGRATION_TO_STATE_ID)
-				? Optional.of(UUID.fromString(element.getAttribute(XA_MIGRATION_TO_STATE_ID)))
-				: Optional.empty();
+        Optional<UUID> toStateId = element.hasAttribute(XA_MIGRATION_TO_STATE_ID)
+                ? Optional.of(UUID.fromString(element.getAttribute(XA_MIGRATION_TO_STATE_ID)))
+                : Optional.empty();
 
-		MigrationBuilder builder = migrationBuilders.get(type);
+        MigrationBuilder builder = migrationBuilders.get(type);
 
-		if (builder == null) {
-			Messages messages = new Messages();
-			messages.addMessage(String.format(
-					"migration builder of type %s not found",
-					type));
-			throw new PluginBuildException(messages);
-		}
+        if (builder == null) {
+            Messages messages = new Messages();
+            messages.addMessage(String.format(
+                    "migration builder of type %s not found",
+                    type));
+            throw new PluginBuildException(messages);
+        }
 
-		builder.reset();
-		((DomBuilder) builder).setElement(element);
-		return builder.build(
-				id,
-				fromStateId,
-				toStateId,
-				baseDir);
-	}
+        builder.reset();
+        ((DomBuilder) builder).setElement(element);
+        return builder.build(
+                id,
+                fromStateId,
+                toStateId,
+                baseDir);
+    }
 }

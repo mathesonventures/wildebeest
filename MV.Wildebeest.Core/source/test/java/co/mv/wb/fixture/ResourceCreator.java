@@ -22,297 +22,266 @@ import java.util.UUID;
 
 /**
  * Creates &lt;resource&gt;'s as part of the fluent API for creating XML fixtures for unit tests.
- * 
- * @author                                      Brendon Matheson
- * @since                                       4.0
+ *
+ * @author Brendon Matheson
+ * @since 4.0
  */
-public class ResourceCreator
-{
-	public ResourceCreator(
-		FixtureCreator creator,
-		String type,
-		UUID resourceId,
-		String name)
-	{
-		this.setCreator(creator);
-		this.setType(type);
-		this.setResourceId(resourceId);
-		this.setName(name);
-		this.setStates(new ArrayList<>());
-		this.setMigrations(new ArrayList<>());
-	}
-	
-	// <editor-fold desc="Creator" defaultstate="collapsed">
+public class ResourceCreator {
 
-	private FixtureCreator _creator = null;
-	private boolean _creator_set = false;
+    private String type = null;
+    private boolean typeSet = false;
+    private UUID resourceId = null;
+    private boolean resourceIdSet = false;
+    private String name = null;
+    private boolean nameSet = false;
+    private List<StateCreator> states = null;
+    private boolean statesSet = false;
+    private List<MigrationCreator> migrations = null;
+    private boolean migrationsSet = false;
 
-	private FixtureCreator getCreator() {
-		if(!_creator_set) {
-			throw new IllegalStateException("creator not set.");
-		}
-		if(_creator == null) {
-			throw new IllegalStateException("creator should not be null");
-		}
-		return _creator;
-	}
+    public ResourceCreator(
+            FixtureCreator creator,
+            String type,
+            UUID resourceId,
+            String name) {
+        this.setCreator(creator);
+        this.setType(type);
+        this.setResourceId(resourceId);
+        this.setName(name);
+        this.setStates(new ArrayList<>());
+        this.setMigrations(new ArrayList<>());
+    }
 
-	private void setCreator(
-		FixtureCreator value) {
-		if(value == null) {
-			throw new IllegalArgumentException("creator cannot be null");
-		}
-		boolean changing = !_creator_set || _creator != value;
-		if(changing) {
-			_creator_set = true;
-			_creator = value;
-		}
-	}
+    // <editor-fold desc="Creator" defaultstate="collapsed">
 
-	private void clearCreator() {
-		if(_creator_set) {
-			_creator_set = true;
-			_creator = null;
-		}
-	}
+    private FixtureCreator _creator = null;
+    private boolean _creator_set = false;
 
-	private boolean hasCreator() {
-		return _creator_set;
-	}
+    private FixtureCreator getCreator() {
+        if (!_creator_set) {
+            throw new IllegalStateException("creator not set.");
+        }
+        if (_creator == null) {
+            throw new IllegalStateException("creator should not be null");
+        }
+        return _creator;
+    }
 
-	// </editor-fold>
-	
-	// <editor-fold desc="Type" defaultstate="collapsed">
+    private void setCreator(
+            FixtureCreator value) {
+        if (value == null) {
+            throw new IllegalArgumentException("creator cannot be null");
+        }
+        boolean changing = !_creator_set || _creator != value;
+        if (changing) {
+            _creator_set = true;
+            _creator = value;
+        }
+    }
 
-	private String _type = null;
-	private boolean _type_set = false;
+    private void clearCreator() {
+        if (_creator_set) {
+            _creator_set = true;
+            _creator = null;
+        }
+    }
 
-	public String getType() {
-		if(!_type_set) {
-			throw new IllegalStateException("type not set.");
-		}
-		if(_type == null) {
-			throw new IllegalStateException("type should not be null");
-		}
-		return _type;
-	}
+    private boolean hasCreator() {
+        return _creator_set;
+    }
 
-	private void setType(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("type cannot be null");
-		}
-		boolean changing = !_type_set || !_type.equals(value);
-		if(changing) {
-			_type_set = true;
-			_type = value;
-		}
-	}
+    public String getType() {
+        if (!typeSet) {
+            throw new IllegalStateException("type not set.");
+        }
+        if (type == null) {
+            throw new IllegalStateException("type should not be null");
+        }
+        return type;
+    }
 
-	private void clearType() {
-		if(_type_set) {
-			_type_set = true;
-			_type = null;
-		}
-	}
+    private void setType(
+            String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("type cannot be null");
+        }
+        boolean changing = !typeSet || !type.equals(value);
+        if (changing) {
+            typeSet = true;
+            type = value;
+        }
+    }
 
-	private boolean hasType() {
-		return _type_set;
-	}
+    private void clearType() {
+        if (typeSet) {
+            typeSet = true;
+            type = null;
+        }
+    }
 
-	// </editor-fold>
+    private boolean hasType() {
+        return typeSet;
+    }
 
-	// <editor-fold desc="ResourceId" defaultstate="collapsed">
+    public UUID getResourceId() {
+        if (!resourceIdSet) {
+            throw new IllegalStateException("resourceId not set.");
+        }
+        if (resourceId == null) {
+            throw new IllegalStateException("resourceId should not be null");
+        }
+        return resourceId;
+    }
 
-	private UUID _resourceId = null;
-	private boolean _resourceId_set = false;
+    private void setResourceId(
+            UUID value) {
+        if (value == null) {
+            throw new IllegalArgumentException("resourceId cannot be null");
+        }
+        boolean changing = !resourceIdSet || resourceId != value;
+        if (changing) {
+            resourceIdSet = true;
+            resourceId = value;
+        }
+    }
 
-	public UUID getResourceId() {
-		if(!_resourceId_set) {
-			throw new IllegalStateException("resourceId not set.");
-		}
-		if(_resourceId == null) {
-			throw new IllegalStateException("resourceId should not be null");
-		}
-		return _resourceId;
-	}
+    private void clearResourceId() {
+        if (resourceIdSet) {
+            resourceIdSet = true;
+            resourceId = null;
+        }
+    }
 
-	private void setResourceId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("resourceId cannot be null");
-		}
-		boolean changing = !_resourceId_set || _resourceId != value;
-		if(changing) {
-			_resourceId_set = true;
-			_resourceId = value;
-		}
-	}
+    private boolean hasResourceId() {
+        return resourceIdSet;
+    }
 
-	private void clearResourceId() {
-		if(_resourceId_set) {
-			_resourceId_set = true;
-			_resourceId = null;
-		}
-	}
+    public String getName() {
+        if (!nameSet) {
+            throw new IllegalStateException("name not set.");
+        }
+        if (name == null) {
+            throw new IllegalStateException("name should not be null");
+        }
+        return name;
+    }
 
-	private boolean hasResourceId() {
-		return _resourceId_set;
-	}
+    private void setName(
+            String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("name cannot be null");
+        }
+        boolean changing = !nameSet || !name.equals(value);
+        if (changing) {
+            nameSet = true;
+            name = value;
+        }
+    }
 
-	// </editor-fold>
+    private void clearName() {
+        if (nameSet) {
+            nameSet = true;
+            name = null;
+        }
+    }
 
-	// <editor-fold desc="Name" defaultstate="collapsed">
+    private boolean hasName() {
+        return nameSet;
+    }
 
-	private String _name = null;
-	private boolean _name_set = false;
+    public List<StateCreator> getStates() {
+        if (!statesSet) {
+            throw new IllegalStateException("states not set.");
+        }
+        if (states == null) {
+            throw new IllegalStateException("states should not be null");
+        }
+        return states;
+    }
 
-	public String getName() {
-		if(!_name_set) {
-			throw new IllegalStateException("name not set.");
-		}
-		if(_name == null) {
-			throw new IllegalStateException("name should not be null");
-		}
-		return _name;
-	}
+    private void setStates(List<StateCreator> value) {
+        if (value == null) {
+            throw new IllegalArgumentException("states cannot be null");
+        }
+        boolean changing = !statesSet || states != value;
+        if (changing) {
+            statesSet = true;
+            states = value;
+        }
+    }
 
-	private void setName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("name cannot be null");
-		}
-		boolean changing = !_name_set || !_name.equals(value);
-		if(changing) {
-			_name_set = true;
-			_name = value;
-		}
-	}
+    private void clearStates() {
+        if (statesSet) {
+            statesSet = true;
+            states = null;
+        }
+    }
 
-	private void clearName() {
-		if(_name_set) {
-			_name_set = true;
-			_name = null;
-		}
-	}
+    private boolean hasStates() {
+        return statesSet;
+    }
 
-	private boolean hasName() {
-		return _name_set;
-	}
+    public List<MigrationCreator> getMigrations() {
+        if (!migrationsSet) {
+            throw new IllegalStateException("migrations not set.");
+        }
+        if (migrations == null) {
+            throw new IllegalStateException("migrations should not be null");
+        }
+        return migrations;
+    }
 
-	// </editor-fold>
-	
-	// <editor-fold desc="States" defaultstate="collapsed">
+    private void setMigrations(List<MigrationCreator> value) {
+        if (value == null) {
+            throw new IllegalArgumentException("migrations cannot be null");
+        }
+        boolean changing = !migrationsSet || migrations != value;
+        if (changing) {
+            migrationsSet = true;
+            migrations = value;
+        }
+    }
 
-	private List<StateCreator> _states = null;
-	private boolean _states_set = false;
+    private void clearMigrations() {
+        if (migrationsSet) {
+            migrationsSet = true;
+            migrations = null;
+        }
+    }
 
-	public List<StateCreator> getStates() {
-		if(!_states_set) {
-			throw new IllegalStateException("states not set.");
-		}
-		if(_states == null) {
-			throw new IllegalStateException("states should not be null");
-		}
-		return _states;
-	}
+    private boolean hasMigrations() {
+        return migrationsSet;
+    }
 
-	private void setStates(List<StateCreator> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("states cannot be null");
-		}
-		boolean changing = !_states_set || _states != value;
-		if(changing) {
-			_states_set = true;
-			_states = value;
-		}
-	}
+    public StateCreator state(
+            UUID stateId,
+            String label) {
+        StateCreator stateCreator = new StateCreator(this.getCreator(), this, stateId, label);
+        this.getStates().add(stateCreator);
+        return stateCreator;
+    }
 
-	private void clearStates() {
-		if(_states_set) {
-			_states_set = true;
-			_states = null;
-		}
-	}
+    public MigrationCreator migration(
+            String type,
+            UUID migrationId,
+            UUID fromStateId,
+            UUID toStateId) {
+        MigrationCreator migration = new MigrationCreator(
+                this.getCreator(),
+                this,
+                type,
+                migrationId,
+                fromStateId,
+                toStateId);
+        this.getMigrations().add(migration);
+        return migration;
+    }
 
-	private boolean hasStates() {
-		return _states_set;
-	}
+    public FixtureCreator creator() {
+        return this.getCreator();
+    }
 
-	// </editor-fold>
-	
-	// <editor-fold desc="Migrations" defaultstate="collapsed">
-
-	private List<MigrationCreator> _migrations = null;
-	private boolean _migrations_set = false;
-
-	public List<MigrationCreator> getMigrations() {
-		if(!_migrations_set) {
-			throw new IllegalStateException("migrations not set.");
-		}
-		if(_migrations == null) {
-			throw new IllegalStateException("migrations should not be null");
-		}
-		return _migrations;
-	}
-
-	private void setMigrations(List<MigrationCreator> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("migrations cannot be null");
-		}
-		boolean changing = !_migrations_set || _migrations != value;
-		if(changing) {
-			_migrations_set = true;
-			_migrations = value;
-		}
-	}
-
-	private void clearMigrations() {
-		if(_migrations_set) {
-			_migrations_set = true;
-			_migrations = null;
-		}
-	}
-
-	private boolean hasMigrations() {
-		return _migrations_set;
-	}
-
-	// </editor-fold>
-	
-	public StateCreator state(
-		UUID stateId,
-		String label)
-	{
-		StateCreator stateCreator = new StateCreator(this.getCreator(), this, stateId, label);
-		this.getStates().add(stateCreator);
-		return stateCreator;
-	}
-	
-	public MigrationCreator migration(
-		String type,
-		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId)
-	{
-		MigrationCreator migration = new MigrationCreator(
-			this.getCreator(),
-			this,
-			type,
-			migrationId,
-			fromStateId,
-			toStateId);
-		this.getMigrations().add(migration);
-		return migration;
-	}
-	
-	public FixtureCreator creator()
-	{
-		return this.getCreator();
-	}
-	
-	public String render()
-	{
-		return this.getCreator().render();
-	}
+    public String render() {
+        return this.getCreator().render();
+    }
 }
