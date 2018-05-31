@@ -186,7 +186,7 @@ public class DomResourceLoaderTests {
 
         String resourceXml = FixtureCreator.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-                .state(stateId, null)
+                .state(stateId, null )
                 .render();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
@@ -228,6 +228,74 @@ public class DomResourceLoaderTests {
         Asserts.assertState(
                 stateId,
                 Optional.empty(),
+                resource.getStates().get(0),
+                "resource.state[0]");
+
+        // Migrations
+        assertEquals(
+                "resource.migrations.size",
+                0,
+                resource.getMigrations().size());
+
+    }
+
+    @Test
+    public void loadResourceForStateWithLabelAndDescription() throws
+            LoaderFault,
+            PluginBuildException {
+
+        //
+        // Setup
+        //
+
+        UUID resourceId = UUID.randomUUID();
+        UUID stateId = UUID.randomUUID();
+
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .state(stateId, "Some random label", "Some random test description")
+                .render();
+
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
+
+        DomResourceLoader resourceBuilder = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
+
+        //
+        // Execute
+        //
+
+        Resource resource = resourceBuilder.load(new File("."));
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+
+        Asserts.assertResource(
+                resourceId,
+                "Product Catalogue Database",
+                resource,
+                "resource");
+
+        // States
+        assertEquals(
+                "resource.states.size",
+                1,
+                resource.getStates().size());
+        Asserts.assertState(
+                stateId,
+                Optional.of("Some random label"),
+                Optional.of("Some random test description"),
                 resource.getStates().get(0),
                 "resource.state[0]");
 

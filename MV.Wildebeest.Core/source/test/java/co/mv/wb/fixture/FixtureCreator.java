@@ -117,17 +117,23 @@ public class FixtureCreator {
         XmlBuilder xml = new XmlBuilder().processingInstruction();
 
         // Resource
-        xml.openElement(
-                "resource",
-                "type", this.getResourceCreator().getType(),
-                "id", this.getResourceCreator().getResourceId().toString(),
-                "name", this.getResourceCreator().getName());
+            xml.openElement(
+                    "resource",
+                    "type", this.getResourceCreator().getType(),
+                    "id", this.getResourceCreator().getResourceId().toString(),
+                    "name", this.getResourceCreator().getName());
 
         xml.openElement("states");
 
         // States
         for (StateCreator state : this.getResourceCreator().getStates()) {
-            if (state.hasLabel()) {
+            if(state.hasDescription() && state.hasLabel()){
+                xml.openElement("state", "id", state.getStateId().toString(), "label", state.getLabel(),"description", state.getDescription());
+            }
+            else if(state.hasDescription() && !state.hasLabel()){
+                xml.openElement("state", "id", state.getStateId().toString(), "description", state.getDescription());
+            }
+            else if (state.hasLabel()) {
                 xml.openElement("state", "id", state.getStateId().toString(), "label", state.getLabel());
             } else {
                 xml.openElement("state", "id", state.getStateId().toString());

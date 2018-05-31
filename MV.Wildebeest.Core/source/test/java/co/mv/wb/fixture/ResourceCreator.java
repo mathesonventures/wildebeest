@@ -38,6 +38,8 @@ public class ResourceCreator {
     private boolean statesSet = false;
     private List<MigrationCreator> migrations = null;
     private boolean migrationsSet = false;
+    private FixtureCreator creator = null;
+    private boolean creatorSet = false;
 
     public ResourceCreator(
             FixtureCreator creator,
@@ -52,19 +54,14 @@ public class ResourceCreator {
         this.setMigrations(new ArrayList<>());
     }
 
-    // <editor-fold desc="Creator" defaultstate="collapsed">
-
-    private FixtureCreator _creator = null;
-    private boolean _creator_set = false;
-
     private FixtureCreator getCreator() {
-        if (!_creator_set) {
+        if (!creatorSet) {
             throw new IllegalStateException("creator not set.");
         }
-        if (_creator == null) {
+        if (creator == null) {
             throw new IllegalStateException("creator should not be null");
         }
-        return _creator;
+        return creator;
     }
 
     private void setCreator(
@@ -72,22 +69,22 @@ public class ResourceCreator {
         if (value == null) {
             throw new IllegalArgumentException("creator cannot be null");
         }
-        boolean changing = !_creator_set || _creator != value;
+        boolean changing = !creatorSet || creator != value;
         if (changing) {
-            _creator_set = true;
-            _creator = value;
+            creatorSet = true;
+            creator = value;
         }
     }
 
     private void clearCreator() {
-        if (_creator_set) {
-            _creator_set = true;
-            _creator = null;
+        if (creatorSet) {
+            creatorSet = true;
+            creator = null;
         }
     }
 
     private boolean hasCreator() {
-        return _creator_set;
+        return creatorSet;
     }
 
     public String getType() {
@@ -261,6 +258,15 @@ public class ResourceCreator {
         return stateCreator;
     }
 
+    public StateCreator state(
+            UUID stateId,
+            String label,
+            String description) {
+        StateCreator stateCreator = new StateCreator(this.getCreator(), this, stateId, label, description);
+        this.getStates().add(stateCreator);
+        return stateCreator;
+    }
+
     public MigrationCreator migration(
             String type,
             UUID migrationId,
@@ -284,4 +290,5 @@ public class ResourceCreator {
     public String render() {
         return this.getCreator().render();
     }
+
 }

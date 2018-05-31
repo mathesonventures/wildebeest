@@ -68,6 +68,21 @@ public class Asserts
 		assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
 		assertEquals(name + ".label", expectedLabel, actual.getLabel());
 	}
+
+	public static void assertState(
+			UUID expectedStateId,
+			Optional<String> expectedLabel,
+			Optional<String> expectedDescription,
+			State actual,
+			String name)
+	{
+		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
+		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+
+		assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
+		assertEquals(name + ".label", expectedLabel, actual.getLabel());
+		assertEquals(name + ".description", expectedDescription, actual.getStateDescription());
+	}
 	
 	public static void assertAssertion(
 		UUID expectedAssertionId,

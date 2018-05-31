@@ -36,6 +36,8 @@ public class StateCreator {
     private boolean stateIdSet = false;
     private String label = null;
     private boolean labelSet = false;
+    private String description = null;
+    private boolean descriptionSet = false;
     private List<AssertionCreator> assertions = null;
     private boolean assertionsSet = false;
 
@@ -51,6 +53,28 @@ public class StateCreator {
 
         if (label != null) {
             this.setLabel(label);
+        }
+
+        this.setAssertions(new ArrayList<>());
+    }
+
+
+    public StateCreator(
+            FixtureCreator creator,
+            ResourceCreator resource,
+            UUID stateId,
+            String label,
+            String description) {
+        this.setCreator(creator);
+        this.setResource(resource);
+        this.setStateId(stateId);
+
+        if (label != null) {
+            this.setLabel(label);
+        }
+
+        if (description != null){
+            this.setDescription(description);
         }
 
         this.setAssertions(new ArrayList<>());
@@ -187,6 +211,31 @@ public class StateCreator {
     public boolean hasLabel() {
         return labelSet;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    private void setDescription(String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("description cannot be null");
+        }
+        boolean changing = !labelSet || !label.equals(value);
+        if (changing) {
+            descriptionSet = true;
+            description = value;
+        }
+    }
+
+    private void clearDescription(){
+        if (descriptionSet) {
+            descriptionSet = true;
+            description = null;
+        }
+    }
+
+    public boolean hasDescription(){ return descriptionSet; }
+
 
     public List<AssertionCreator> getAssertions() {
         if (!assertionsSet) {

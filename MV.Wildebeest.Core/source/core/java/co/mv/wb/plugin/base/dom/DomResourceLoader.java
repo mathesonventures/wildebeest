@@ -65,6 +65,7 @@ public class DomResourceLoader implements ResourceLoader {
     private static final String XE_STATE = "state";
     private static final String XA_STATE_ID = "id";
     private static final String XA_STATE_LABEL = "label";
+    private static final String XA_STATE_DESCRIPTION = "description";
 
     private static final String XE_ASSERTIONS = "assertions";
     private static final String XA_ASSERTION_TYPE = "type";
@@ -361,16 +362,30 @@ public class DomResourceLoader implements ResourceLoader {
             throw new IllegalArgumentException("element");
         }
 
+        State result;
         UUID id = UUID.fromString(element.getAttribute(XA_STATE_ID));
         String label = null;
+        String description = null;
+        int condition = 0;
         if (element.hasAttribute(XA_STATE_LABEL)) {
             label = element.getAttribute(XA_STATE_LABEL);
+            condition++;
+        }
+        if(element.hasAttribute(XA_STATE_DESCRIPTION)){
+            description = element.getAttribute(XA_STATE_DESCRIPTION);
+            condition++;
         }
 
-        State result = label == null
-                ? new ImmutableState(id)
-                : new ImmutableState(id, Optional.of(label));
-
+        switch(condition){
+            case 1:
+                result = new ImmutableState(id, Optional.of(label));
+                break;
+            case 2:
+                result = new ImmutableState(id, Optional.of(label), Optional.of(description));
+                break;
+            default:
+                result = new ImmutableState(id);
+        }
         return result;
     }
 
