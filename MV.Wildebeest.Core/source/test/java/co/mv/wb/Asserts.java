@@ -81,7 +81,7 @@ public class Asserts
 
 		assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
 		assertEquals(name + ".label", expectedLabel, actual.getLabel());
-		assertEquals(name + ".description", expectedDescription, actual.getStateDescription());
+		assertEquals(name + ".description", expectedDescription, actual.getDescription());
 	}
 	
 	public static void assertAssertion(

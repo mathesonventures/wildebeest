@@ -38,8 +38,8 @@ public class ImmutableState implements State {
 	private boolean labelSet = false;
 	private List<Assertion> assertions = null;
 	private boolean assertionsSet = false;
-	private Optional<String> stateDescription = null;
-	private boolean stateDescriptionSet = false;
+	private Optional<String> description = null;
+	private boolean descriptionSet = false;
 
 	/**
 	 * Creates a new ImmutableState with the supplied ID.
@@ -121,7 +121,7 @@ public class ImmutableState implements State {
 		}
 		this.setStateId(stateId);
 		this.setLabel(label);
-		this.setStateDescription(description);
+		this.setDescription(description);
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class ImmutableState implements State {
 		this.setStateId(stateId);
 		this.setLabel(label);
 		this.setAssertions(assertions);
-		this.setStateDescription(description);
+		this.setDescription(description);
 	}
 
 	@Override
@@ -213,12 +213,12 @@ public class ImmutableState implements State {
 	}
 
 	@Override
-	public Optional<String> getStateDescription() {
-		return stateDescription;
+	public Optional<String> getDescription() {
+		return description;
 	}
 
-	public void setStateDescription(Optional<String> value) {
-		boolean changing = !stateDescriptionSet || this.stateDescription != value;
-		this.stateDescription = value;
+	public void setDescription(Optional<String> value) {
+		boolean changing = !descriptionSet || this.description != value;
+		this.description = value;
 	}
 }

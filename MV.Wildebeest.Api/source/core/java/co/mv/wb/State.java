@@ -66,5 +66,5 @@ public interface State
 	 * @return                                  the description if the State has one
 	 * @since                                   1.0
 	 */
-	Optional<String> getStateDescription();
+	Optional<String> getDescription();
 }
