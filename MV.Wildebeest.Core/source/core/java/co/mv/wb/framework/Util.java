@@ -33,7 +33,9 @@ public class Util
 		return uri.substring(index + 1);
 	}
 
-	public static String coalesceWhiteSpaces(String text){
+	public static String coalesceWhitespace(String text)
+	{
+		if (text == null) { throw new IllegalArgumentException("text cannot be null"); }
 		return text.replaceAll("\\s+", " ").trim();
 	}
 }
