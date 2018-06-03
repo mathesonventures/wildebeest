@@ -22,7 +22,7 @@ import java.util.UUID;
 
 /**
  * Represents an observable and verifiable state of a {@link Resource}/
- * 
+ *
  * @author                                      Brendon Matheson
  * @since                                       1.0
  */
@@ -30,33 +30,41 @@ public interface State
 {
 	/**
 	 * Gets the ID of this State.
-	 * 
+	 *
 	 * @return                                  the unique ID of this State
 	 * @since                                   1.0
 	 */
 	UUID getStateId();
-	
+
 	/**
 	 * Gets the optional label of this State.
-	 * 
+	 *
 	 * @return                                  the label of this State, if it has one
 	 * @since                                   1.0
 	 */
 	Optional<String> getLabel();
-	
+
 	/**
 	 * Gets the set of Assertions that should be used to verify this State.
-	 * 
+	 *
 	 * @return                                  the set of assertions that should be used to verify this State
 	 * @since                                   1.0
 	 */
 	List<Assertion> getAssertions();
-	
+
 	/**
 	 * Returns the label if the state has one, otherwise returns it's ID.
-	 * 
+	 *
 	 * @return                                  the label if the State has one, otherwise it's unique ID
 	 * @since                                   1.0
 	 */
 	String getDisplayName();
+
+	/**
+	 * Returns the description if the state has one.
+	 *
+	 * @return                                  the description if the State has one
+	 * @since                                   1.0
+	 */
+	Optional<String> getDescription();
 }
