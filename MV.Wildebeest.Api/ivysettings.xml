@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+
+	Wildebeest Migration Framework
+	Copyright © 2013 - 2018, Matheson Ventures Pte Ltd
+
+	This file is part of Wildebeest
+
+	Wildebeest is free software: you can redistribute it and/or modify it under
+	the terms of the GNU General Public License v2 as published by the Free
+	Software Foundation.
+
+	Wildebeest is distributed in the hope that it will be useful, but WITHOUT ANY
+	WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+	A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along with
+	Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
+
+-->
+<ivysettings>
+
+  <resolvers>
+    <ibiblio name="public" m2compatible="true"/>
+
+    <!--
+      Defines the project-level repository at the same level as the component directories - basedir is inherited from
+      the running Ant context
+    -->
+    <filesystem name="project">
+      <ivy pattern="${basedir}/../repo/[organisation].[module]/ivy-[revision].xml" />
+      <artifact pattern="${basedir}/../repo/[organisation].[module]/[artifact]-[revision].[ext]" />
+    </filesystem>
+  </resolvers>
+
+</ivysettings>

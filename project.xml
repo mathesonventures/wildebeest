@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+
+	Wildebeest Migration Framework
+	Copyright © 2013 - 2018, Matheson Ventures Pte Ltd
+
+	This file is part of Wildebeest
+
+	Wildebeest is free software: you can redistribute it and/or modify it under
+	the terms of the GNU General Public License v2 as published by the Free
+	Software Foundation.
+
+	Wildebeest is distributed in the hope that it will be useful, but WITHOUT ANY
+	WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+	A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along with
+	Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
+
+-->
+<project>
+
+	<type>opensource</type>
+
+	<identity>
+		<organization>
+			<id>MV</id>
+			<name>Matheson Ventures</name>
+		</organization>
+		<name>Wildebeest</name>
+		<title>Migration Framework</title>
+		<url>http://mathesonventures.com/wildebeest</url>
+	</identity>
+
+	<copyright>
+		<years>2013 - 2018</years>
+		<owner>Matheson Ventures Pte Ltd</owner>
+	</copyright>
+
+	<version>
+		<major>0</major>
+		<minor>0</minor>
+		<revision>0</revision>
+		<build>0</build>
+	</version>
+
+	<description>
+		<p>
+		</p>
+	</description>
+
+</project>
