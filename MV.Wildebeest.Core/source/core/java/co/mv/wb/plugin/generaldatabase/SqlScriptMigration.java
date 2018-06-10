@@ -62,6 +62,9 @@ import java.util.UUID;
 )
 public class SqlScriptMigration extends BaseMigration implements Migration
 {
+	private String sql = null;
+	private boolean sqlSet = false;
+
 	/**
 	 * Creates a new SqlScriptMigration.
 	 * 
@@ -82,17 +85,12 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 		super(migrationId, fromStateId, toStateId);
 		this.setSql(sql);
 	}
-	
-	// <editor-fold desc="Sql" defaultstate="collapsed">
-
-	private String _sql = null;
-	private boolean _sql_set = false;
 
 	public String getSql() {
-		if(!_sql_set) {
+		if(!sqlSet) {
 			throw new IllegalStateException("sql not set.  Use the HasSql() method to check its state before accessing it.");
 		}
-		return _sql;
+		return sql;
 	}
 
 	private void setSql(
@@ -100,26 +98,24 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 		if(value == null) {
 			throw new IllegalArgumentException("sql cannot be null");
 		}
-		boolean changing = !_sql_set || !_sql.equals(value);
+		boolean changing = !sqlSet || !sql.equals(value);
 		if(changing) {
-			_sql_set = true;
-			_sql = value;
+			sqlSet = true;
+			sql = value;
 		}
 	}
 
 	private void clearSql() {
-		if(_sql_set) {
-			_sql_set = true;
-			_sql = null;
+		if(sqlSet) {
+			sqlSet = true;
+			sql = null;
 		}
 	}
 
 	private boolean hasSql() {
-		return _sql_set;
+		return sqlSet;
 	}
 
-	// </editor-fold>
-	
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(

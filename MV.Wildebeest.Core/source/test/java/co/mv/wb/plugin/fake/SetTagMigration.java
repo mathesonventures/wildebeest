@@ -40,6 +40,9 @@ import java.util.UUID;
 )
 public class SetTagMigration extends BaseMigration
 {
+	private String tag = null;
+	private boolean tagSet = false;
+
 	public SetTagMigration(
 		UUID migrationId,
 		Optional<UUID> fromStateId,
@@ -50,17 +53,12 @@ public class SetTagMigration extends BaseMigration
 		
 		this.setTag(tag);
 	}
-	
-	// <editor-fold desc="Tag" defaultstate="collapsed">
-
-	private String _tag = null;
-	private boolean _tag_set = false;
 
 	public String getTag() {
-		if(!_tag_set) {
+		if(!tagSet) {
 			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
 		}
-		return _tag;
+		return tag;
 	}
 
 	private void setTag(
@@ -68,22 +66,22 @@ public class SetTagMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("tag cannot be null");
 		}
-		boolean changing = !_tag_set || !_tag.equals(value);
+		boolean changing = !tagSet || !tag.equals(value);
 		if(changing) {
-			_tag_set = true;
-			_tag = value;
+			tagSet = true;
+			tag = value;
 		}
 	}
 
 	private void clearTag() {
-		if(_tag_set) {
-			_tag_set = true;
-			_tag = null;
+		if(tagSet) {
+			tagSet = true;
+			tag = null;
 		}
 	}
 
 	private boolean hasTag() {
-		return _tag_set;
+		return tagSet;
 	}
 
 	// </editor-fold>

@@ -51,6 +51,14 @@ import java.util.UUID;
 )
 public class ExternalResourceMigration extends BaseMigration
 {
+	private File baseDir = null;
+	private boolean baseDirSet = false;
+	private String fileName = null;
+	private boolean filenameSet = false;
+	private Optional<String> target = null;
+	private boolean targetSet = false;
+
+
 	public ExternalResourceMigration(
 		UUID migrationId,
 		Optional<UUID> fromStateId,
@@ -66,19 +74,14 @@ public class ExternalResourceMigration extends BaseMigration
 		this.setTarget(target);
 	}
 
-	// <editor-fold desc="BaseDir" defaultstate="collapsed">
-
-	private File _baseDir = null;
-	private boolean _baseDir_set = false;
-
 	public File getBaseDir() {
-		if(!_baseDir_set) {
+		if(!baseDirSet) {
 			throw new IllegalStateException("baseDir not set.");
 		}
-		if(_baseDir == null) {
+		if(baseDir == null) {
 			throw new IllegalStateException("baseDir should not be null");
 		}
-		return _baseDir;
+		return baseDir;
 	}
 
 	private void setBaseDir(
@@ -86,39 +89,32 @@ public class ExternalResourceMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("baseDir cannot be null");
 		}
-		boolean changing = !_baseDir_set || _baseDir != value;
+		boolean changing = !baseDirSet || baseDir != value;
 		if(changing) {
-			_baseDir_set = true;
-			_baseDir = value;
+			baseDirSet = true;
+			baseDir = value;
 		}
 	}
 
 	private void clearBaseDir() {
-		if(_baseDir_set) {
-			_baseDir_set = true;
-			_baseDir = null;
+		if(baseDirSet) {
+			baseDirSet = true;
+			baseDir = null;
 		}
 	}
 
 	private boolean hasBaseDir() {
-		return _baseDir_set;
+		return baseDirSet;
 	}
 
-	// </editor-fold>
-
-	// <editor-fold desc="FileName" defaultstate="collapsed">
-
-	private String _fileName = null;
-	private boolean _fileName_set = false;
-
 	public String getFileName() {
-		if(!_fileName_set) {
+		if(!filenameSet) {
 			throw new IllegalStateException("fileName not set.");
 		}
-		if(_fileName == null) {
+		if(fileName == null) {
 			throw new IllegalStateException("fileName should not be null");
 		}
-		return _fileName;
+		return fileName;
 	}
 
 	private void setFileName(
@@ -126,39 +122,32 @@ public class ExternalResourceMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("fileName cannot be null");
 		}
-		boolean changing = !_fileName_set || !_fileName.equals(value);
+		boolean changing = !filenameSet || !fileName.equals(value);
 		if(changing) {
-			_fileName_set = true;
-			_fileName = value;
+			filenameSet = true;
+			fileName = value;
 		}
 	}
 
 	private void clearFileName() {
-		if(_fileName_set) {
-			_fileName_set = true;
-			_fileName = null;
+		if(filenameSet) {
+			filenameSet = true;
+			fileName = null;
 		}
 	}
 
 	private boolean hasFileName() {
-		return _fileName_set;
+		return filenameSet;
 	}
 
-	// </editor-fold>
-
-	// <editor-fold desc="Target" defaultstate="collapsed">
-
-	private Optional<String> _target = null;
-	private boolean _target_set = false;
-
 	public Optional<String> getTarget() {
-		if(!_target_set) {
+		if(!targetSet) {
 			throw new IllegalStateException("target not set.");
 		}
-		if(_target == null) {
+		if(target == null) {
 			throw new IllegalStateException("target should not be null");
 		}
-		return _target;
+		return target;
 	}
 
 	private void setTarget(
@@ -166,25 +155,24 @@ public class ExternalResourceMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("target cannot be null");
 		}
-		boolean changing = !_target_set || !_target.equals(value);
+		boolean changing = !targetSet || !target.equals(value);
 		if(changing) {
-			_target_set = true;
-			_target = value;
+			targetSet = true;
+			target = value;
 		}
 	}
 
 	private void clearTarget() {
-		if(_target_set) {
-			_target_set = true;
-			_target = null;
+		if(targetSet) {
+			targetSet = true;
+			target = null;
 		}
 	}
 
 	private boolean hasTarget() {
-		return _target_set;
+		return targetSet;
 	}
 
-	// </editor-fold>
 
 	@Override public List<ResourceType> getApplicableTypes()
 	{

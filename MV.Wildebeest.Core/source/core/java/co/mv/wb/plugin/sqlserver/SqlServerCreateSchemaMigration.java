@@ -46,6 +46,9 @@ import java.util.UUID;
 )
 public class SqlServerCreateSchemaMigration extends BaseMigration
 {
+	private String schemaName = null;
+	private boolean schemaNameSet = false;
+
 	/**
 	 * Creates a new SqlServerCreateSchemaMigration.
 	 * 
@@ -65,11 +68,6 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 
 		this.setSchemaName(schemaName);
 	}
-	
-	// <editor-fold desc="SchemaName" defaultstate="collapsed">
-
-	private String _schemaName = null;
-	private boolean _schemaName_set = false;
 
 	/**
 	 * Returns the name for the new schema.
@@ -78,10 +76,10 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 	 * @since                                   2.0
 	 */
 	public String getSchemaName() {
-		if(!_schemaName_set) {
+		if(!schemaNameSet) {
 			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
 		}
-		return _schemaName;
+		return schemaName;
 	}
 
 	private void setSchemaName(
@@ -89,22 +87,22 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 		if(value == null) {
 			throw new IllegalArgumentException("schemaName cannot be null");
 		}
-		boolean changing = !_schemaName_set || !_schemaName.equals(value);
+		boolean changing = !schemaNameSet || !schemaName.equals(value);
 		if(changing) {
-			_schemaName_set = true;
-			_schemaName = value;
+			schemaNameSet = true;
+			schemaName = value;
 		}
 	}
 
 	private void clearSchemaName() {
-		if(_schemaName_set) {
-			_schemaName_set = true;
-			_schemaName = null;
+		if(schemaNameSet) {
+			schemaNameSet = true;
+			schemaName = null;
 		}
 	}
 
 	private boolean hasSchemaName() {
-		return _schemaName_set;
+		return schemaNameSet;
 	}
 
 	// </editor-fold>
