@@ -76,6 +76,84 @@ From either component you can also purge the project-level artifact repository u
 $ ant cleanrepo
 ```
 
+## IntelliJ Quick Start
+
+### Introduction
+
+This project is setup to require the minimal - actually no - special configuration in your IDE.
+
+The main way this is achieved is by resolving all dependencies from the project itself - not from globally defined libraries.  This slaves IntelliJ to our main build which is driven through Ant.  Similarly the file system structure for unit tests etc is managed by the Ant-driven build, and simply referenced from IntelliJ.
+
+### Preparation
+
+After checking out the code, you will need to run a couple of Ant targets to make sure that all dependencies are in place for IntelliJ to compile the code, and that all test files are in place for IntelliJ to run unit tests.  Therefore before opening the project in IntelliJ, in a shell run the following Ant targets.
+
+First we use the "deps" target to pull down all dependencies for the MV.Wildebeest.Api component:
+
+```
+$ cd MV.Wildebeest.Api
+$ ant deps
+```
+
+Next we do the same for MV.Wildebeest.Core, and we also run the test.app target to assemble the file structure required for unit tests:
+
+```
+$ cd ../MV.Wildebeest.Core
+$ ant deps
+$ ant test.app
+```
+
+### Building in IntelliJ
+
+You can now open the project.  Launch IntelliJ and tell it to open from the root of the repository:
+
+![](intellij_open.png)
+
+This will open up the project containing both modules - Api and Core.
+
+The usual build actions will work now - for example you can right-click MV.Wildebeest.Api and choose Build or Rebuild, or you can use Ctrl+F9 to build.
+
+Note there is a project-to-project reference configured so that MV.Wildebest.Core is linked to MV.Wildebeest.Api.  This allows you to refactor and compile across the projects without the need to republish the Api artifact in Ant as we did in the Command-Line Quick Start.
+
+### Testing in IntelliJ
+
+You can run tests in IntelliJ as normal, however you may need to first set the default base path so that tests can find the files from the test directory structure.  To make this setting in IntelliJ:
+
+- Go to the Run menu and choose Edit Configurations.
+
+- Expand the Defaults side navigation option and select JUnit
+
+- In the settings pane, set Working Directory to \$MODULE_DIR\$\target\test\app
+
+
+  ![IntelliJ JUnit Defaults](intellij_junit_defaults.png)
+
+### Configuration Overview
+
+To see the internals of how this configuration is setup:
+
+- Go to File / Project Structure
+
+- On the left navigation strip choose Modules, then in the next panel choose MV / Wildebeest / Api
+
+- Choose the Dependencies tab.  Here you'll see that the JUnit JAR is referenced from the target/ directory structure that was created by our Ant build.  This is where Ant / Ivy placed the JAR when resolving dependencies:
+
+  
+
+  ![Api Module](intellij_module_api.png)
+
+  
+
+- Also take a look at the Dependencies tab for the module MV / Wildebeest / Core.  This is similar, but there are just more dependencies.  All these dependencies come from the target/ directory structure except for MV.Wildebeest.Api which is a project reference as mentioned above.
+
+  
+
+  ![Core Module](intellij_module_core.png)
+
+  
+
+While this configuration approach forces the extra step of running ant deps a couple of times, it also makes the project extremely portable as IntelliJ does not rely on you having any particular resources available on your development rig.
+
 ## Toolchain Setup
 
 ### JDK
