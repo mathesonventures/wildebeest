@@ -198,7 +198,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		if (resourceXml != null)
 		{
-			validateXML(resourceXml, RESOURCE_XSD);
+			WildebeestApiImpl.validateResourceXml(resourceXml);
 			DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
 				ResourceTypeServiceBuilder
 					.create()
@@ -212,33 +212,21 @@ public class WildebeestApiImpl implements WildebeestApi
 		return resource;
 	}
 
-	 public static void validateXML(
-		String xml,
-		String xsdResourceName) throws
+	/**
+	 * Validates the supplied XML string as a resource definition.
+	 *
+	 * @param       resourceXml                 the XML document to validate as a resource.
+	 * @throws      XmlValidationException      if the supplied XML document is not a valid resource according to the
+	 *                                          XML schema.
+	 * @since                                   4.0
+	 */
+	public static void validateResourceXml(
+		String resourceXml) throws
 			XmlValidationException
 	{
-		if (xml == null) throw new ArgumentNullException("xml");
-		if (xsdResourceName == null) throw new ArgumentNullException("xsdResourceName");
+		if (resourceXml == null) throw new ArgumentNullException("resourceXml");
 
-		try
-		{
-			SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
-			File xsdLocation = new File(WildebeestApiImpl.class.getResource(xsdResourceName).toURI());
-			Schema schema = factory.newSchema(xsdLocation);
-
-			Validator validator = schema.newValidator();
-			Source source = new StreamSource(new StringReader(xml));
-			validator.validate(source);
-		}
-		catch (URISyntaxException | IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-		catch (SAXException e)
-		{
-			// Validation failed
-			throw new XmlValidationException(e.getMessage());
-		}
+		WildebeestApiImpl.validateXml(resourceXml, WildebeestApiImpl.RESOURCE_XSD);
 	}
 
 	public Instance loadInstance(
@@ -265,7 +253,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		if (instanceXml != null)
 		{
-			validateXML(instanceXml, INSTANCE_XSD);
+			validateInstanceXml(instanceXml);
 			DomInstanceLoader instanceLoader = new DomInstanceLoader(
 				DomPlugins.instanceBuilders(),
 				instanceXml);
@@ -273,6 +261,23 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		return instance;
+	}
+
+	/**
+	 * Validates the supplied XML string as an instance definition.
+	 *
+	 * @param       instanceXml                 the XML document to validate as an instance.
+	 * @throws      XmlValidationException      if the supplied XML document is not a valid instance according to the
+	 *                                          XML schema.
+	 * @since                                   4.0
+	 */
+	public static void validateInstanceXml(
+		String instanceXml) throws
+			XmlValidationException
+	{
+		if (instanceXml == null) throw new ArgumentNullException("instanceXml");
+
+		WildebeestApiImpl.validateXml(instanceXml, WildebeestApiImpl.INSTANCE_XSD);
 	}
 
 	public List<AssertionResult> assertState(
@@ -762,6 +767,35 @@ public class WildebeestApiImpl implements WildebeestApi
 						thisPathCopy.add(migration);
 						findPaths(resource, paths, thisPathCopy, toState.getStateId(), targetStateId);
 					});
+		}
+	}
+
+	private static void validateXml(
+		String xml,
+		String xsdResourceName) throws
+			XmlValidationException
+	{
+		if (xml == null) throw new ArgumentNullException("xml");
+		if (xsdResourceName == null) throw new ArgumentNullException("xsdResourceName");
+
+		try
+		{
+			SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
+			File xsdLocation = new File(WildebeestApiImpl.class.getResource(xsdResourceName).toURI());
+			Schema schema = factory.newSchema(xsdLocation);
+
+			Validator validator = schema.newValidator();
+			Source source = new StreamSource(new StringReader(xml));
+			validator.validate(source);
+		}
+		catch (URISyntaxException | IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+		catch (SAXException e)
+		{
+			// Validation failed
+			throw new XmlValidationException(e.getMessage());
 		}
 	}
 }

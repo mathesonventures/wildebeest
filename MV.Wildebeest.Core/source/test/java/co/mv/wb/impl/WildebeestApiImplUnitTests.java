@@ -201,88 +201,121 @@ public class WildebeestApiImplUnitTests
 	}
 
 	@Test
-	public void validateXml_invalidMySqlResource_fails()
+	public void validateResourceXml_invalidMySqlResource_fails()
 	{
 		// Execute and Verify
-		this.validateXml_fails(
-			new File("MySqlDatabase/database.wbresource.xml"),
-			"resource.xsd");
+		this.validateResourceXml_fails("MySqlDatabase/database.wbresource.xml");
 	}
 
 	@Test
 	public void validateXml_invalidSqlServerResource_fails()
 	{
 		// Execute and Verify
-		this.validateXml_fails(
-			new File("SqlServerDatabase/database.wbresource.xml"),
-			"resource.xsd");
+		this.validateResourceXml_fails("SqlServerDatabase/database.wbresource.xml");
 	}
 
 	@Test
 	public void validateXml_validPostgreSqlResource_succeeds()
 	{
-		this.validateXml_succeeds(
-			new File("PostgreSqlDatabase/database.wbresource.xml"),
-			"resource.xsd");
+		// Execute and Verify
+		this.validateResourceXml_succeeds("PostgreSqlDatabase/database.wbresource.xml");
 	}
 
 	@Test
 	public void validateXml_invalidResource_fails()
 	{
-		this.validateXml_fails(
-			new File("InvalidXml/InvalidSampleResources.xml"),
-			"resource.xsd");
+		// Execute and Verify
+		this.validateResourceXml_fails("InvalidXml/InvalidSampleResources.xml");
 	}
 
 	@Test
 	public void validateXml_validMySqlInstance_succeeds()
 	{
-		this.validateXml_succeeds(
-			new File("MySqlDatabase/staging_db.wbinstance.xml"),
-			"instance.xsd");
+		// Execute and Verify
+		this.validateInstanceXml_succeeds("MySqlDatabase/staging_db.wbinstance.xml");
 	}
 
 	@Test
 	public void validateXml_invalidSqlServerInstance_fails()
 	{
-		this.validateXml_fails(
-			new File("SqlServerDatabase/staging_db.wbinstance.xml"),
-			"instance.xsd");
+		// Execute and Verify
+		this.validateInstanceXml_fails("SqlServerDatabase/staging_db.wbinstance.xml");
 	}
 
 	@Test
 	public void validateXml_validPostgreSqlInstance_succeeds()
 	{
-		this.validateXml_succeeds(
-			new File("PostgreSqlDatabase/staging.wbinstance.xml"),
-			"instance.xsd");
+		// Execute and Verify
+		this.validateInstanceXml_succeeds("PostgreSqlDatabase/staging.wbinstance.xml");
 	}
 
 	@Test
 	public void validateXml_invalidInstance_fails()
 	{
-		this.validateXml_fails(
-			new File("InvalidXml/InvalidInstanceSampleResources.xml"),
-			"instance.xsd");
+		// Execute and Verify
+		this.validateInstanceXml_fails("InvalidXml/InvalidInstanceSampleResources.xml");
 	}
 
 	/**
-	 * A generic test that expects the supplied XML file to be valid according to the specified XSD schema.
+	 * A generic test that expects the supplied XML file to be valid according to the resource XSD schema.
 	 *
-	 * @param       file                        the XML file to validate against the supplied schema.
-	 * @param       xsd                         the XSD schema to validate the XML against.
+	 * @param       filename                    the resource XML file to validate.
 	 * @since                                   4.0
 	 */
-	private void validateXml_succeeds(
-		File file,
-		String xsd)
+	private void validateResourceXml_succeeds(
+		String filename)
 	{
-		if (file == null) throw new ArgumentNullException("file");
-		if (xsd == null) throw new ArgumentNullException("xsd");
+		if (filename == null) throw new ArgumentNullException("filename");
 
 		try
 		{
-			WildebeestApiImpl.validateXML(this.readAllText(file), xsd);
+			WildebeestApiImpl.validateResourceXml(this.readAllText(filename));
+		}
+		catch (XmlValidationException e)
+		{
+			Assert.fail(
+				"the XML file was expected to be valid according to the resource schema, but was not: " +
+				e.getMessage());
+		}
+	}
+
+	/**
+	 * A generic test that expects the supplied XML file to be INVALID according to the resource XSD schema.
+	 *
+	 * @param       filename                    the resource XML file to validate.
+	 * @since                                   4.0
+	 */
+	private void validateResourceXml_fails(
+		String filename)
+	{
+		if (filename == null) throw new ArgumentNullException("filename");
+
+		try
+		{
+			WildebeestApiImpl.validateResourceXml(this.readAllText(filename));
+			Assert.fail("The XML file was expected to be invalid according to the resource schema, but it passed " +
+				"validation");
+		}
+		catch (XmlValidationException e)
+		{
+			// Expected.
+		}
+	}
+
+	/**
+	 * A generic test that expects the supplied XML file to be valid according to the instance XSD schema.
+	 *
+	 * @param       filename                    the instance XML file to validate.
+	 * @since                                   4.0
+	 */
+	private void validateInstanceXml_succeeds(
+		String filename)
+	{
+		if (filename == null) throw new ArgumentNullException("filename");
+
+		try
+		{
+			WildebeestApiImpl.validateInstanceXml(this.readAllText(filename));
 		}
 		catch (XmlValidationException e)
 		{
@@ -292,17 +325,22 @@ public class WildebeestApiImplUnitTests
 		}
 	}
 
-	private void validateXml_fails(
-		File file,
-		String xsd)
+	/**
+	 * A generic test that expects the supplied XML file to be INVALID according to the instance XSD schema.
+	 *
+	 * @param       filename                    the instance XML file to validate.
+	 * @since                                   4.0
+	 */
+	private void validateInstanceXml_fails(
+		String filename)
 	{
-		if (file == null) throw new ArgumentNullException("file");
-		if (xsd == null) throw new ArgumentNullException("xsd");
+		if (filename == null) throw new ArgumentNullException("filename");
 
 		try
 		{
-			WildebeestApiImpl.validateXML(this.readAllText(file), xsd);
-			Assert.fail("The XML file was expected to be invalid according to the schema, but it passed validation");
+			WildebeestApiImpl.validateInstanceXml(this.readAllText(filename));
+			Assert.fail("The XML file was expected to be invalid according to the instance schema, but it passed " +
+				"validation");
 		}
 		catch (XmlValidationException e)
 		{
@@ -310,14 +348,14 @@ public class WildebeestApiImplUnitTests
 		}
 	}
 
-	private String readAllText(File file)
+	private String readAllText(String filename)
 	{
-		if (file == null) throw new ArgumentNullException("file");
+		if (filename == null) throw new ArgumentNullException("filename");
 
 		final String result;
 		try
 		{
-			result = new String(Files.readAllBytes(file.toPath()));
+			result = new String(Files.readAllBytes(new File(filename).toPath()));
 		}
 		catch(IOException e)
 		{
