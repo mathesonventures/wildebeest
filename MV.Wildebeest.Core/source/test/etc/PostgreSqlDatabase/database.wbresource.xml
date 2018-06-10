@@ -68,8 +68,7 @@
 		<migration
 			type="AnsiSqlCreateDatabase"
 			id="637d1065-caa6-41a0-81b1-ac95af43380f"
-			toStateId="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79">
-		</migration>
+			toStateId="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79" />
 
 		<migration
 			type="SqlScript"

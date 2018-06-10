@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/source/core/importclasses" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/source/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/source/test/importclasses" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/source/core/resources" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -126,6 +127,24 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/target/core/librun/slf4j-simple-1.7.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/xercesImpl-xsd11-2.12-beta-r1667115.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/org.eclipse.wst.xml.xpath2.processor-1.1.5-738bb7b85d.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

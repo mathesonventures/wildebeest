@@ -34,6 +34,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.XmlValidationException;
 import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.File;
@@ -89,7 +90,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 				migrationT.getBaseDir(),
 				migrationT.getFileName()));
 		}
-		catch (FileLoadException | LoaderFault | PluginBuildException e)
+		catch (FileLoadException | LoaderFault | PluginBuildException | XmlValidationException e)
 		{
 			throw new MigrationFailedException(migration.getMigrationId(), "Unable to load");
 		}

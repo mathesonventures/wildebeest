@@ -1,0 +1,61 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1" >
+    <xs:element name="instance" type="Instance">
+        <xs:alternative test="@type='co.mv.wb.MySqlDatabase'" type="MySqlDatabase"/>
+        <xs:alternative test="@type='co.mv.wb.PostgreSqlDatabase'" type="PostgreSqlDatabase"/>
+        <xs:alternative test="@type='co.mv.wb.SqlServerDatabase'" type="SqlServerDatabase"/>
+    </xs:element>
+
+    <xs:complexType name="Instance">
+        <xs:sequence>
+            <xs:element name="hostName" type="xs:string"/>
+            <xs:element name="port" type="xs:int"/>
+            <xs:element name="adminUsername" type="xs:string"/>
+            <xs:element name="adminPassword" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="type" type="InstanceType" use="required"/>
+    </xs:complexType>
+
+    <xs:simpleType name="InstanceType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="co.mv.wb.MySqlDatabase"/>
+            <xs:enumeration value="co.mv.wb.PostgreSqlDatabase"/>
+            <xs:enumeration value="co.mv.wb.SqlServerDatabase"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="MySqlDatabase">
+        <xs:complexContent>
+            <xs:extension base="Instance">
+                <xs:sequence>
+                    <xs:element name="databaseName" type="xs:string" />
+                    <xs:element name="stateTableName" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="PostgreSqlDatabase">
+        <xs:complexContent>
+            <xs:extension base="Instance">
+                <xs:sequence>
+                    <xs:element name="databaseName" type="xs:string" />
+                    <xs:element name="metaSchemaName" type="xs:string" minOccurs="0"/>
+                    <xs:element name="stateTableName" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SqlServerDatabase">
+        <xs:complexContent>
+            <xs:extension base="Instance">
+                <xs:sequence>
+                    <xs:element name="databaseName" type="xs:string" />
+                    <xs:element name="stateTableName" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>
