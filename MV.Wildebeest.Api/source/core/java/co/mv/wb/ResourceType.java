@@ -20,96 +20,87 @@ package co.mv.wb;
  * Identifies a type of {@link Resource}.  The resource's type is identified in the XML file, and is used to verify
  * which {@link Assertion}'s and {@link Migration}'s can be applied to the Resource.
  *
- * @author                                      Brendon Matheson
- * @since                                       4.0
+ * @author Brendon Matheson
+ * @since 4.0
  */
-public class ResourceType
-{
-	public ResourceType(
-		String uri,
-		String name)
-	{
-		this.setUri(uri);
-		this.setName(name);
-	}
+public class ResourceType {
 
-	// <editor-fold desc="Uri" defaultstate="collapsed">
+    private String uri = null;
+    private boolean uriSet = false;
+    private String name = null;
+    private boolean nameSet = false;
 
-	private String _uri = null;
-	private boolean _uri_set = false;
+    public ResourceType(
+            String uri,
+            String name) {
+        this.setUri(uri);
+        this.setName(name);
+    }
 
-	public String getUri() {
-		if(!_uri_set) {
-			throw new IllegalStateException("uri not set.");
-		}
-		if(_uri == null) {
-			throw new IllegalStateException("uri should not be null");
-		}
-		return _uri;
-	}
+    public String getUri() {
+        if (!uriSet) {
+            throw new IllegalStateException("uri not set.");
+        }
+        if (uri == null) {
+            throw new IllegalStateException("uri should not be null");
+        }
+        return uri;
+    }
 
-	private void setUri(
-			String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("uri cannot be null");
-		}
-		boolean changing = !_uri_set || _uri != value;
-		if(changing) {
-			_uri_set = true;
-			_uri = value;
-		}
-	}
+    private void setUri(
+            String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("uri cannot be null");
+        }
+        boolean changing = !uriSet || uri != value;
+        if (changing) {
+            uriSet = true;
+            uri = value;
+        }
+    }
 
-	private void clearUri() {
-		if(_uri_set) {
-			_uri_set = true;
-			_uri = null;
-		}
-	}
+    private void clearUri() {
+        if (uriSet) {
+            uriSet = true;
+            uri = null;
+        }
+    }
 
-	private boolean hasUri() {
-		return _uri_set;
-	}
+    private boolean hasUri() {
+        return uriSet;
+    }
 
-	// </editor-fold>
+    public String getName() {
+        if (!nameSet) {
+            throw new IllegalStateException("name not set.");
+        }
+        if (name == null) {
+            throw new IllegalStateException("name should not be null");
+        }
+        return name;
+    }
 
-	// <editor-fold desc="Name" defaultstate="collapsed">
+    private void setName(
+            String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("name cannot be null");
+        }
+        boolean changing = !nameSet || name != value;
+        if (changing) {
+            nameSet = true;
+            name = value;
+        }
+    }
 
-	private String _name = null;
-	private boolean _name_set = false;
+    private void clearName() {
+        if (nameSet) {
+            nameSet = true;
+            name = null;
+        }
+    }
 
-	public String getName() {
-		if(!_name_set) {
-			throw new IllegalStateException("name not set.");
-		}
-		if(_name == null) {
-			throw new IllegalStateException("name should not be null");
-		}
-		return _name;
-	}
+    private boolean hasName() {
+        return nameSet;
+    }
 
-	private void setName(
-			String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("name cannot be null");
-		}
-		boolean changing = !_name_set || _name != value;
-		if(changing) {
-			_name_set = true;
-			_name = value;
-		}
-	}
-
-	private void clearName() {
-		if(_name_set) {
-			_name_set = true;
-			_name = null;
-		}
-	}
-
-	private boolean hasName() {
-		return _name_set;
-	}
-
-	// </editor-fold>
 }

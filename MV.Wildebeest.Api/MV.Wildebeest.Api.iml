@@ -10,5 +10,18 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8_171" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../jars" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../jars" />
+        </SOURCES>
+        <jarDirectory url="file://$MODULE_DIR$/../jars" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/../jars" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
   </component>
 </module>
