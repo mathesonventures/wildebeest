@@ -32,7 +32,6 @@ import java.util.UUID;
 /**
  * An {@link co.mv.wb.Assertion} that verifies that a given table does not exist in a MySQL database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 @MigrationType(

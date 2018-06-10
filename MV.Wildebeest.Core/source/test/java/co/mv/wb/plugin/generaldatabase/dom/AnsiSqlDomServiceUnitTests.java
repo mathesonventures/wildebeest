@@ -40,7 +40,6 @@ import java.util.UUID;
 /**
  * Unit tests for the DOM persistence services for ANSI SQL plugins.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class AnsiSqlDomServiceUnitTests

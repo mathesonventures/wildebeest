@@ -21,7 +21,6 @@ import java.util.UUID;
 /**
  * Indicates that an unexpected error occurred while attempting to apply an Assertion.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class AssertionFaultException extends RuntimeException

@@ -29,7 +29,6 @@ import java.util.Optional;
 /**
  * An {@link InstanceBuilder} that builds a {@link PostgreSqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder

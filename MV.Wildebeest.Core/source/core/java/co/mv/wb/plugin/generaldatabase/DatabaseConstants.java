@@ -19,7 +19,6 @@ package co.mv.wb.plugin.generaldatabase;
 /**
  * Defines common constant values for use with database plugins to Wildebeest.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class DatabaseConstants

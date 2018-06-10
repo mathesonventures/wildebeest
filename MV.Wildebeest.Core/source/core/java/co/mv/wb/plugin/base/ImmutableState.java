@@ -27,8 +27,7 @@ import java.util.UUID;
 /**
  * A {@link State} that cannot be modified after it's initial construction.
  *
- * @author Brendon Matheson
- * @since 1.0
+ * @since                                       1.0
  */
 public class ImmutableState implements State {
 

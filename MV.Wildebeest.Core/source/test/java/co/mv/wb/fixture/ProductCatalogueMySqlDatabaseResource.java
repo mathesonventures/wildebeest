@@ -24,7 +24,6 @@ import java.util.UUID;
 /**
  * A MySQL database fixture.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class ProductCatalogueMySqlDatabaseResource

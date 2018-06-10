@@ -19,7 +19,6 @@ package co.mv.wb;
 /**
  * Indicates that an unexpected system error occurred while loading a {@link Resource}.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class LoaderFault extends Exception

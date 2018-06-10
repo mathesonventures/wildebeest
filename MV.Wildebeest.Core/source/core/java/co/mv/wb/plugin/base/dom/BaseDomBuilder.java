@@ -29,7 +29,6 @@ import java.util.Optional;
 /**
  * Base class for DOM-based builders.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public abstract class BaseDomBuilder implements DomBuilder

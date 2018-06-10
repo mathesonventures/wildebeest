@@ -27,7 +27,6 @@ import javax.sql.DataSource;
 /**
  * Represents an instance of a PostgreSQL database, which is an ANSI-compliant database system.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class PostgreSqlDatabaseInstance extends BaseDatabaseInstance implements AnsiSqlDatabaseInstance,

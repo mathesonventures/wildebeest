@@ -38,7 +38,6 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Unit tests for {@link ExternalResourceDomMigrationBuilder}.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class ExternalResourceDomMigrationBuilderIntegrationTests

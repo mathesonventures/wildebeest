@@ -19,7 +19,6 @@ package co.mv.wb;
 /**
  * Indicates that the state specified for a migrate or a jumpstate command not defined for the current resource.
  * 
- * @author                                      Brendon Matheson
  * @since                                       3.0
  */
 public class UnknownStateSpecifiedException extends Exception

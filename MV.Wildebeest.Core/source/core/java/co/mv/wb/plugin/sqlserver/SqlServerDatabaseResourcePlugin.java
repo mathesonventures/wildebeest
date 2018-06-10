@@ -36,7 +36,6 @@ import java.util.UUID;
 /**
  * A {@link Resource} that is a SQL Server database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 public class SqlServerDatabaseResourcePlugin implements ResourcePlugin

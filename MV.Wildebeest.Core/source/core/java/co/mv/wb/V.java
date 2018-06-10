@@ -21,7 +21,6 @@ import java.util.UUID;
 /**
  * Provides validation helper methods for DOM-based builders of all types.
  * 
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 public class V

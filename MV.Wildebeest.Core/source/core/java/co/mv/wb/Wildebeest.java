@@ -46,7 +46,6 @@ import java.util.stream.Collectors;
 /**
  * Global definitions and functions for Wildebeest.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class Wildebeest

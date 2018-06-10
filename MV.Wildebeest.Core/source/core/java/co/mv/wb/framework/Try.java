@@ -22,7 +22,6 @@ import java.util.UUID;
 /**
  * Provides various try-get-style helpers that make parsing, validating and consuming raw values tidier
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class Try

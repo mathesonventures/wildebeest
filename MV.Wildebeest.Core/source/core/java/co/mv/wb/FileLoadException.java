@@ -23,7 +23,6 @@ import java.io.File;
 /**
  * Indicates that a resource or instance could not be loaded because of a problem accessing the file.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class FileLoadException extends Exception

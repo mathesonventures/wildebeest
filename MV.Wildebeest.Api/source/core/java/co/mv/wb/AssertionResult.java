@@ -21,7 +21,6 @@ import java.util.UUID;
 /**
  * Represents result of a Resource.assertState() operation.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface AssertionResult

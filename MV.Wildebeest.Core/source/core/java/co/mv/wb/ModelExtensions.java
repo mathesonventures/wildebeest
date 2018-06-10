@@ -19,7 +19,6 @@ package co.mv.wb;
 /**
  * Provides helpers for working with plugin instances.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class ModelExtensions

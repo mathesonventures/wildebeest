@@ -32,7 +32,6 @@ import java.sql.SQLException;
 /**
  * {@link MigrationPlugin} for {@link SqlServerCreateSchemaMigration}.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 @MigrationPluginType(uri = "co.mv.wb.sqlserver:SqlServerCreateSchema")

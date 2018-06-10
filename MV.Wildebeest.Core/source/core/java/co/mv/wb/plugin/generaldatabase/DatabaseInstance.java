@@ -24,7 +24,6 @@ import javax.sql.DataSource;
 /**
  * A {@link Resource} {@link Instance} that is a database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface DatabaseInstance extends Instance

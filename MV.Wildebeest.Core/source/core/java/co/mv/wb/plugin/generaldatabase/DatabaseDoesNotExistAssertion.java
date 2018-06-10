@@ -33,7 +33,6 @@ import java.util.UUID;
 /**
  * An {@link Assertion} that verifies that a database does not exist.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 @AssertionType(

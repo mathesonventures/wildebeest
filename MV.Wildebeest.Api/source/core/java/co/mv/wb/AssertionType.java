@@ -24,7 +24,6 @@ import java.lang.annotation.Target;
 /**
  * Annotates additional information onto {@link Assertion} implementations for use in documentation and user tools.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 @Target(ElementType.TYPE)

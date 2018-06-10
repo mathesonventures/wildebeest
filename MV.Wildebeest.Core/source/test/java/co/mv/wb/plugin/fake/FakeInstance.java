@@ -23,7 +23,6 @@ import java.util.UUID;
 /**
  * {@link Instance} for the Fake plugin implementation.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class FakeInstance implements Instance

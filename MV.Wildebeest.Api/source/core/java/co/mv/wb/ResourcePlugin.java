@@ -22,7 +22,6 @@ import java.util.UUID;
 /**
  * Provides resource-type-specific services.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public interface ResourcePlugin

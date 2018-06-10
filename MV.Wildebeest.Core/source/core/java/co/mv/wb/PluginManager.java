@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * An internal service for managing and accessing plugins.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public interface PluginManager

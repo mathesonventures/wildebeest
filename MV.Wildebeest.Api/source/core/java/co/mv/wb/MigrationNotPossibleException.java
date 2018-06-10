@@ -20,7 +20,6 @@ package co.mv.wb;
  * Indicates that a requested migration cannot be performed because there is no path from the current state to the
  * requested target state.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class MigrationNotPossibleException extends Exception

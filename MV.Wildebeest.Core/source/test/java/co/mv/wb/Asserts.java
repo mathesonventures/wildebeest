@@ -33,7 +33,6 @@ import static org.junit.Assert.assertEquals;
 /**
  * Helpers for asserting the state of Wildebeest entities.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class Asserts

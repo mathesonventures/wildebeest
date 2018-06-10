@@ -27,7 +27,6 @@ import java.sql.SQLException;
 /**
  * Functional helper methods for working with MySQL databases.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class MySqlDatabaseHelper

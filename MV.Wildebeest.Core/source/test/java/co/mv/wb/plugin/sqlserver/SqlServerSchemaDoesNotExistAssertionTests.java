@@ -36,7 +36,6 @@ import static org.junit.Assert.fail;
 /**
  * Unit tests for {@link SqlServerSchemaDoesNotExistAssertion}.
  *
- * @author                              Brendon Matheson
  * @since                               2.0
  */
 public class SqlServerSchemaDoesNotExistAssertionTests

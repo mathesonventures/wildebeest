@@ -24,7 +24,6 @@ import java.util.UUID;
 /**
  * Provides a base implementation of {@link Migration}
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public abstract class BaseMigration implements Migration

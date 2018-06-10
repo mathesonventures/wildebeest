@@ -41,7 +41,6 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Unit tests for the DOM persistence services for core database plugins.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class DatabaseDomServiceUnitTests

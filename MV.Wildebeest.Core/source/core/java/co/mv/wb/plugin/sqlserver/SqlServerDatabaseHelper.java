@@ -21,7 +21,6 @@ import co.mv.wb.framework.DatabaseHelper;
 /**
  * Functional helper methods for working with SQL Server databases.
  * 
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 public class SqlServerDatabaseHelper

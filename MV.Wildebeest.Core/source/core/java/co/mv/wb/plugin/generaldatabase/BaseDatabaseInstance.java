@@ -19,7 +19,6 @@ package co.mv.wb.plugin.generaldatabase;
 /**
  * Base class for building DatabaseInstance implementations.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public abstract class BaseDatabaseInstance implements DatabaseInstance

@@ -30,7 +30,6 @@ import java.util.UUID;
  * state and restore the MigrationBuilder to a clean state ready to be re-used to build another Migration instance.  The
  * framework will always call reset() before using an MigrationBuilder.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface MigrationBuilder

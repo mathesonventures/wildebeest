@@ -23,7 +23,6 @@ import java.util.UUID;
 /**
  * The definition of a stateful resource to be managed by Wildebeest.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface Resource

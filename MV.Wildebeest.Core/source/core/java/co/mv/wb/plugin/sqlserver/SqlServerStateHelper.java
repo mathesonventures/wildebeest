@@ -30,7 +30,6 @@ import java.util.UUID;
 /**
  * Centralizes state tracking operations for SqlServerDatabaseInstances.
  * 
- * @author                                      Brendon Matheson
  * @since                                       3.0
  */
 public class SqlServerStateHelper

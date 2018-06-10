@@ -22,7 +22,6 @@ import co.mv.wb.framework.ArgumentNullException;
  * Defines a meta classification for plugins to help with discoverability and documentation generation.  PluginGroup
  * plays no role in Wildebeest workflows.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class PluginGroup

@@ -58,7 +58,6 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Integration tests for the MySQL plugin suite.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class IntegrationTests

@@ -50,8 +50,7 @@ import java.util.UUID;
 /**
  * Loads {@link Resource}'s from XML definitions.
  *
- * @author Brendon Matheson
- * @since 1.0
+ * @since                                       1.0
  */
 public class DomResourceLoader implements ResourceLoader {
     private static final String XE_RESOURCE = "resource";

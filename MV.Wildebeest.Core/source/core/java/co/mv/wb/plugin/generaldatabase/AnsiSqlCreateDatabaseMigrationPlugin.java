@@ -31,7 +31,6 @@ import java.sql.SQLException;
 /**
  * {@link MigrationPlugin} for {@link AnsiSqlCreateDatabaseMigration}.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 @MigrationPluginType(uri = "co.mv.wb.generaldatabase:AnsiSqlCreateDatabase")

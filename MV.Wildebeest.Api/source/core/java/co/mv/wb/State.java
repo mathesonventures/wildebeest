@@ -23,7 +23,6 @@ import java.util.UUID;
 /**
  * Represents an observable and verifiable state of a {@link Resource}/
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface State

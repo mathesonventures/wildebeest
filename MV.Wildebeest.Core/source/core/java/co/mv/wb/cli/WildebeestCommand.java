@@ -43,7 +43,6 @@ import java.util.Optional;
  * The Wildebeest command-line interface.  WildebeestCommand parses command-line invocations, and delegates to
  * {@link WildebeestApi} to carry out the command.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class WildebeestCommand

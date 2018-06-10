@@ -22,7 +22,6 @@ import java.io.File;
  * An ResourceLoader is responsible for the overall deserialization of a descriptor from some persistent representation
  * to an {@link Resource} object.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface ResourceLoader

@@ -30,7 +30,6 @@ import java.util.UUID;
 /**
  * Unit tests for plugins as applied to SQL-Server databases.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests

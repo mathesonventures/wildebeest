@@ -37,7 +37,6 @@ import static co.mv.wb.Asserts.assertFakeInstance;
 /**
  * Unit tests for WildebeestApiImpl.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class WildebeestApiImplUnitTests

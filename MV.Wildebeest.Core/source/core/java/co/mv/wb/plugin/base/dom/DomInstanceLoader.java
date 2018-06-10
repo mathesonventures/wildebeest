@@ -37,7 +37,6 @@ import java.util.Map;
 /**
  * An {@link InstanceBuilder} deserializes {@link Instance} descriptors from XML.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class DomInstanceLoader implements InstanceLoader

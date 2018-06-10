@@ -20,8 +20,7 @@ package co.mv.wb;
  * Identifies a type of {@link Resource}.  The resource's type is identified in the XML file, and is used to verify
  * which {@link Assertion}'s and {@link Migration}'s can be applied to the Resource.
  *
- * @author Brendon Matheson
- * @since 4.0
+ * @since                                       4.0
  */
 public class ResourceType {
 

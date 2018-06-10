@@ -29,7 +29,6 @@ import java.util.UUID;
 /**
  * {@link ResourcePlugin} for the Fake plugin implementation.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class FakeResourcePlugin implements ResourcePlugin

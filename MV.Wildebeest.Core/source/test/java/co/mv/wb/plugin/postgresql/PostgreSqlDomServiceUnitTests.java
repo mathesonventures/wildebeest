@@ -36,7 +36,6 @@ import java.util.UUID;
 /**
  * Unit tests for the DOM persistence services for PostgreSQL plugins.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class PostgreSqlDomServiceUnitTests

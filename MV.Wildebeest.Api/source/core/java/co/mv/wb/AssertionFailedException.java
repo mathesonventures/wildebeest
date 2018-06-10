@@ -23,7 +23,6 @@ import java.util.UUID;
  * Indicates that the application of an Assertion to a resource Instance failed, and provides the state for the
  * Assertion failed and the AssertionResult.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class AssertionFailedException extends Exception

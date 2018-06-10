@@ -29,7 +29,6 @@ import java.util.UUID;
 /**
  * {@link Migration} for the Fake plugin implementation.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 @MigrationType(

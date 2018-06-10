@@ -53,7 +53,6 @@ import static org.junit.Assert.fail;
 /**
  * Unit tests for {@link MySqlTableExistsAssertion}.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class MySqlTableExistsAssertionTests

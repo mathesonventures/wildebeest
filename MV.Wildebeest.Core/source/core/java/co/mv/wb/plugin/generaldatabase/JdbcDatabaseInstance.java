@@ -22,7 +22,6 @@ import co.mv.wb.Resource;
 /**
  * A {@link Resource} {@link Instance} that is a database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface JdbcDatabaseInstance extends DatabaseInstance

@@ -41,7 +41,6 @@ import java.io.PrintStream;
 /**
  * The {@link MigrationPlugin} for {@link ExternalResourceMigration}'s.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 @MigrationPluginType(uri = "co.mv.wb.composite:ExternalResourceMigration")

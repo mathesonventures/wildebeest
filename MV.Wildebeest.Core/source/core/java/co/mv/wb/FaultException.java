@@ -19,7 +19,6 @@ package co.mv.wb;
 /**
  * Indicates that an unexpected error condition occurred.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class FaultException extends RuntimeException

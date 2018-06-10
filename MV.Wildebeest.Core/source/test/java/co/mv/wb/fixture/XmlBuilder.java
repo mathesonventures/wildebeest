@@ -21,7 +21,6 @@ import java.util.UUID;
 /**
  * Fluent API for creating XML documents.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class XmlBuilder

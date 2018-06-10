@@ -26,7 +26,6 @@ import java.util.UUID;
 /**
  * DOM-based {@link AssertionBuilder} for the Fake plugin implementation.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class DomTagAssertionBuilder extends BaseDomAssertionBuilder

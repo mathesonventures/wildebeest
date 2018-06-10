@@ -33,7 +33,6 @@ import java.util.UUID;
 /**
  * An {@link Assertion} that verifies that a given table does not exist in an ANSI-SQL compliant database system.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 @AssertionType(

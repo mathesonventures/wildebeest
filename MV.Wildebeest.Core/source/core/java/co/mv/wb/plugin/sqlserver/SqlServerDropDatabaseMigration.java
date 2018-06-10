@@ -30,7 +30,6 @@ import java.util.UUID;
 /**
  * A {@link Migration} that creates a new SQL-Server database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 @MigrationType(
