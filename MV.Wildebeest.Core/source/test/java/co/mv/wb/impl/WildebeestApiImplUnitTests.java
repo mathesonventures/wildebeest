@@ -195,43 +195,43 @@ public class WildebeestApiImplUnitTests
 
 	@Test public void validateResourceMySqlDatabaseXml()
 	{
-		assertFalse(isValid(new File("source/test/etc/MySqlDatabase/database.wbresource.xml"), wildebeestApiImpl.RESOURCES_XSD));
+		assertFalse(isValid(new File("MySqlDatabase/database.wbresource.xml"), wildebeestApiImpl.RESOURCES_XSD));
 	}
 
 	@Test public void validateResourceSqlServerDatabaseXml()
 	{
-		assertFalse(isValid(new File("source/test/etc/SqlServerDatabase/database.wbresource.xml"), wildebeestApiImpl.RESOURCES_XSD));
+		assertFalse(isValid(new File("SqlServerDatabase/database.wbresource.xml"), wildebeestApiImpl.RESOURCES_XSD));
 	}
 
 	@Test public void validateResourcePostgreDatabaseXml()
 	{
-		assertTrue(isValid(new File("source/test/etc/PostgreSqlDatabase/database.wbresource.xml"), wildebeestApiImpl.RESOURCES_XSD));
+		assertTrue(isValid(new File("PostgreSqlDatabase/database.wbresource.xml"), wildebeestApiImpl.RESOURCES_XSD));
 	}
 
 	@Test public void invalidResourceValidation()
 	{
-		assertFalse(isValid(new File("source/test/resources/co/mv/wb/impl/InvalidSampleResources.xml"), wildebeestApiImpl.RESOURCES_XSD));
+		assertFalse(isValid(new File("InvalidXml/InvalidSampleResources.xml"), wildebeestApiImpl.RESOURCES_XSD));
 	}
 
 	@Test public void validateInstanceMySqlDatabaseXml()
 	{
-		assertTrue(isValid(new File("source/test/etc/MySqlDatabase/staging_db.wbinstance.xml"),wildebeestApiImpl.INSTANCE_XSD));
+		assertTrue(isValid(new File("MySqlDatabase/staging_db.wbinstance.xml"),wildebeestApiImpl.INSTANCE_XSD));
 	}
 
 	@Test public void validateInstanceSqlServerDatabaseXml()
 	{
-		assertFalse(isValid(new File("source/test/etc/SqlServerDatabase/staging_db.wbinstance.xml"),wildebeestApiImpl.INSTANCE_XSD));
+		assertFalse(isValid(new File("SqlServerDatabase/staging_db.wbinstance.xml"),wildebeestApiImpl.INSTANCE_XSD));
 	}
 
 	@Test public void validateInstancePostgreDatabaseXml()
 	{
-		assertTrue(isValid(new File("source/test/etc/PostgreSqlDatabase/staging.wbinstance.xml"),wildebeestApiImpl.INSTANCE_XSD));
+		assertTrue(isValid(new File("PostgreSqlDatabase/staging.wbinstance.xml"),wildebeestApiImpl.INSTANCE_XSD));
 	}
 
 
 	@Test public void invalidInstanceValidation()
 	{
-		assertFalse(isValid(new File("source/test/resources/co/mv/wb/impl/InvalidInstanceSampleResources.xml"),wildebeestApiImpl.INSTANCE_XSD));
+		assertFalse(isValid(new File("InvalidXml/InvalidInstanceSampleResources.xml"),wildebeestApiImpl.INSTANCE_XSD));
 	}
 
 	private boolean isValid(File file, String xsd)
