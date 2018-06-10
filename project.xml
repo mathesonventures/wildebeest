@@ -18,38 +18,35 @@
 	Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
 -->
-<component>
+<project>
+
+	<type>opensource</type>
 
 	<identity>
-		<name>Core</name>
-		<title>Core</title>
+		<organization>
+			<id>MV</id>
+			<name>Matheson Ventures</name>
+		</organization>
+		<name>Wildebeest</name>
+		<title>Migration Framework</title>
+		<url>http://mathesonventures.com/wildebeest</url>
 	</identity>
 
-	<type>
-		<java>
-			<source>1.8</source>
-			<target>1.8</target>
-			<mainclass>co.mv.wb.cli.WildebeestCommand</mainclass>
-		</java>
-	</type>
+	<copyright>
+		<years>2013 - 2018</years>
+		<owner>Matheson Ventures Pte Ltd</owner>
+	</copyright>
+
+	<version>
+		<major>0</major>
+		<minor>0</minor>
+		<revision>0</revision>
+		<build>0</build>
+	</version>
 
 	<description>
 		<p>
-			description
 		</p>
 	</description>
 
-	<revisions>
-
-		<revision version="1.0.0">
-			<items>
-				<item>
-					<p>
-					</p>
-				</item>
-			</items>
-		</revision>
-
-	</revisions>
-
-</component>
+</project>
