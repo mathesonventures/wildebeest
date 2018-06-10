@@ -37,7 +37,23 @@
   </publications>
 
   <dependencies>
-      <dependency org="junit" name="junit" rev="4.11" conf="tlc->master" />
+    <!-- Intra-Project Dependencies -->
+    <dependency
+      org="${meta.project.identity.organization.id}"
+      name="${meta.project.identity.id}.Api"
+      rev="${meta.project.version.full.dotted}"
+      conf="clc,clr,tlc,tlr->master" />
+
+    <!-- External Dependencies -->
+    <dependency org="javax" name="javaee-api" rev="7.0" conf="tlc,tlr->master" />
+    <dependency org="junit" name="junit" rev="4.11" conf="tlc,tlr->master" />
+    <dependency org="mysql" name="mysql-connector-java" rev="5.1.22" conf="clc,clr,tlr->master" />
+    <dependency org="org.mockito" name="mockito-all" rev="1.10.19" conf="tlc,tlr->master" />
+    <dependency org="org.postgresql" name="postgresql" rev="9.3-1100-jdbc41" conf="clc,clr,tlr->master" />
+    <dependency org="org.reflections" name="reflections" rev="0.9.11" conf="clc,clr,tlc,tlr->master" />
+    <dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" conf="clc,clr,tlc,tlr->master" />
+    <dependency org="org.slf4j" name="slf4j-nop" rev="1.7.5" conf="clr->master" />
+    <dependency org="org.slf4j" name="slf4j-simple" rev="1.7.5" conf="tlr->master" />
   </dependencies>
 
 </ivy-module>
