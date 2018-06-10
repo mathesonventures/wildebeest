@@ -42,11 +42,11 @@ public class WildebeestCommandIntegrationTests
 	//
 	
 	@Test public void wildebeestCommand_mySqlMigrate_succeeds() throws
-			FileLoadException,
-			LoaderFault,
-			PluginBuildException,
-			SQLException,
-			XmlValidationException
+		FileLoadException,
+		LoaderFault,
+		PluginBuildException,
+		SQLException,
+		XmlValidationException
 	{
 		// Setup
 		PrintStream output = System.out;

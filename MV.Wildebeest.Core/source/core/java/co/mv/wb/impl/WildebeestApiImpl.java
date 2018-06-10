@@ -73,8 +73,9 @@ import java.util.UUID;
 public class WildebeestApiImpl implements WildebeestApi
 {
 	private final PrintStream _output;
-	final static String RESOURCES_XSD="Resources.xsd";
-	final static String INSTANCE_XSD="Instance.xsd";
+	private static final String RESOURCE_XSD = "resource.xsd";
+	private static final String INSTANCE_XSD = "instance.xsd";
+
 	/**
 	 * Creates a new WildebeestApiImpl using the supplied {@link PrintStream} for user output and the supplied
 	 * ResourceHelper.
@@ -197,32 +198,36 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		if (resourceXml != null)
 		{
-				validateXML(resourceXml, RESOURCES_XSD);
-				DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
-						ResourceTypeServiceBuilder
-								.create()
-								.withFactoryResourceTypes()
-								.build(),
-						resourceXml);
+			validateXML(resourceXml, RESOURCE_XSD);
+			DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
+				ResourceTypeServiceBuilder
+					.create()
+					.withFactoryResourceTypes()
+					.build(),
+				resourceXml);
 
-				resource = resourceLoader.load(resourceFile.getParentFile());
+			resource = resourceLoader.load(resourceFile.getParentFile());
 		}
 
 		return resource;
 	}
 
-	 void validateXML(String resourceXml, String xsdFileName)
-			throws
+	 public static void validateXML(
+		String xml,
+		String xsdResourceName) throws
 			XmlValidationException
 	{
+		if (xml == null) throw new ArgumentNullException("xml");
+		if (xsdResourceName == null) throw new ArgumentNullException("xsdResourceName");
+
 		try
 		{
 			SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
-			File xsdLocation = new File(getClass().getResource(xsdFileName).toURI());
+			File xsdLocation = new File(WildebeestApiImpl.class.getResource(xsdResourceName).toURI());
 			Schema schema = factory.newSchema(xsdLocation);
 
 			Validator validator = schema.newValidator();
-			Source source = new StreamSource(new StringReader(resourceXml));
+			Source source = new StreamSource(new StringReader(xml));
 			validator.validate(source);
 		}
 		catch (URISyntaxException | IOException e)
@@ -231,7 +236,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 		catch (SAXException e)
 		{
-			//Validation failed
+			// Validation failed
 			throw new XmlValidationException(e.getMessage());
 		}
 	}
