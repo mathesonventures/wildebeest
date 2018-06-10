@@ -191,16 +191,6 @@ public class WildebeestApiImplUnitTests
 			"instance");
 	}
 
-	@Test public void validateMySqlDatabaseXml()
-	{
-		assertTrue(isValidResource(new File("source/test/etc/MySqlDatabase/database.wbresource.xml")));
-	}
-
-	@Test public void validateSqlServerDatabaseXml()
-	{
-		assertTrue(isValidResource(new File("source/test/etc/SqlServerDatabase/database.wbresource.xml")));
-	}
-
 	@Test public void validatePostgreDatabaseXml()
 	{
 		assertTrue(isValidResource(new File("source/test/etc/PostgreSqlDatabase/database.wbresource.xml")));

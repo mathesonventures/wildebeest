@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<resource type="co.mv.wb.MySqlDatabase" id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" name="Product Catalogue Database" >
+<resource type="co.mb.wb.MySqlDatabase" id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" name="Product Catalogue Database" >
 
 	<states>
 

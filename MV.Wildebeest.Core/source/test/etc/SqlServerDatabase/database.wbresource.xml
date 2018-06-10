@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<resource type="co.mv.wb.SqlServerDatabase" id="58699f8a-22fa-4784-9768-3fcc3b2619b4" name="Product Catalogue Database">
+<resource type="SqlServerDatabase" id="58699f8a-22fa-4784-9768-3fcc3b2619b4" name="Product Catalogue Database">
 
 	<states>
 

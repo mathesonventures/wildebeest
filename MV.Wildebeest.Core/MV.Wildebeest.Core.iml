@@ -10,7 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/source/test/importclasses" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/source/core/resources" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8_171" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="MV.Wildebeest.Api" />
     <orderEntry type="module-library">
