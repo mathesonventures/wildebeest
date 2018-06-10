@@ -22,6 +22,7 @@ import co.mv.wb.InstanceLoader;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Messages;
 import co.mv.wb.PluginBuildException;
+import co.mv.wb.framework.ArgumentNullException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -49,7 +50,10 @@ public class DomInstanceLoader implements InstanceLoader
 	private static final String ELT_ADMIN_USERNAME = "adminUsername";
 	private static final String ELT_ADMIN_PASSWORD = "adminPassword";
 	private static final String ELT_SCHEMA_NAME = "schemaName";
-	
+
+	private final Map<String, InstanceBuilder> instanceBuilders;
+	private final String instanceXml;
+
 	/**
 	 * Creates a new DomInstanceLoader.
 	 * 
@@ -61,88 +65,19 @@ public class DomInstanceLoader implements InstanceLoader
 		Map<String, InstanceBuilder> instanceBuilders,
 		String instanceXml)
 	{
-		this.setInstanceBuilders(instanceBuilders);
-		this.setInstanceXml(instanceXml);
+		if (instanceBuilders == null) throw new ArgumentNullException("instanceBuilders");
+		if (instanceXml == null) throw new ArgumentNullException("instanceXml");
+
+		this.instanceBuilders = instanceBuilders;
+		this.instanceXml = instanceXml;
 	}
 
-	// <editor-fold desc="InstanceBuilders" defaultstate="collapsed">
-
-	private Map<String, InstanceBuilder> _instanceBuilders = null;
-	private boolean _instanceBuilders_set = false;
-
-	private Map<String, InstanceBuilder> getInstanceBuilders() {
-		if(!_instanceBuilders_set) {
-			throw new IllegalStateException("instanceBuilders not set.  Use the HasInstanceBuilders() method to check its state before accessing it.");
-		}
-		return _instanceBuilders;
-	}
-
-	private void setInstanceBuilders(Map<String, InstanceBuilder> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("instanceBuilders cannot be null");
-		}
-		boolean changing = !_instanceBuilders_set || _instanceBuilders != value;
-		if(changing) {
-			_instanceBuilders_set = true;
-			_instanceBuilders = value;
-		}
-	}
-
-	private void clearInstanceBuilders() {
-		if(_instanceBuilders_set) {
-			_instanceBuilders_set = true;
-			_instanceBuilders = null;
-		}
-	}
-
-	private boolean hasInstanceBuilders() {
-		return _instanceBuilders_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="InstanceXml" defaultstate="collapsed">
-
-	private String _instanceXml = null;
-	private boolean _instanceXml_set = false;
-
-	private String getInstanceXml() {
-		if(!_instanceXml_set) {
-			throw new IllegalStateException("instanceXml not set.  Use the HasInstanceXml() method to check its state before accessing it.");
-		}
-		return _instanceXml;
-	}
-
-	private void setInstanceXml(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("instanceXml cannot be null");
-		}
-		boolean changing = !_instanceXml_set || !_instanceXml.equals(value);
-		if(changing) {
-			_instanceXml_set = true;
-			_instanceXml = value;
-		}
-	}
-
-	private void clearInstanceXml() {
-		if(_instanceXml_set) {
-			_instanceXml_set = true;
-			_instanceXml = null;
-		}
-	}
-
-	private boolean hasInstanceXml() {
-		return _instanceXml_set;
-	}
-
-	// </editor-fold>
-
-	@Override public Instance load() throws
+	@Override
+	public Instance load() throws
 		LoaderFault,
 		PluginBuildException
 	{
-		InputSource inputSource = new InputSource(new StringReader(this.getInstanceXml()));
+		InputSource inputSource = new InputSource(new StringReader(this.instanceXml));
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
 		DocumentBuilder db;
@@ -171,7 +106,7 @@ public class DomInstanceLoader implements InstanceLoader
 		if (ELT_INSTANCE.equals(instanceXe.getTagName()))
 		{
 			instance = buildInstance(
-				this.getInstanceBuilders(),
+				this.instanceBuilders,
 				instanceXe);
 		}
 		

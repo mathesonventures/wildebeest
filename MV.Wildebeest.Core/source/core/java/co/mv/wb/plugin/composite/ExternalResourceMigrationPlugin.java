@@ -34,6 +34,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -48,51 +49,21 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 {
 	private static String ExceptionFormatString = "Migration of external resource failed: %s";
 
+	private final WildebeestApi wildebeestApi;
+
+	/**
+	 * Constructs a new ExternalResourceMigrationPlugin with the supplied {@link WildebeestApi}.
+	 *
+	 * @param       wildebeestApi               the WildebeestApi instance that this plugin should use when
+	 *                                          orchestrating migrations on external resources.
+	 */
 	public ExternalResourceMigrationPlugin(
 		WildebeestApi wildebeestApi)
 	{
-		this.setWildebeestApi(wildebeestApi);
+		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
+
+		this.wildebeestApi = wildebeestApi;
 	}
-
-	// <editor-fold desc="WildebeestApi" defaultstate="collapsed">
-
-	private WildebeestApi _wildebeestApi = null;
-	private boolean _wildebeestApi_set = false;
-
-	private WildebeestApi getWildebeestApi() {
-		if(!_wildebeestApi_set) {
-			throw new IllegalStateException("wildebeestApi not set.");
-		}
-		if(_wildebeestApi == null) {
-			throw new IllegalStateException("wildebeestApi should not be null");
-		}
-		return _wildebeestApi;
-	}
-
-	private void setWildebeestApi(
-		WildebeestApi value) {
-		if(value == null) {
-			throw new IllegalArgumentException("wildebeestApi cannot be null");
-		}
-		boolean changing = !_wildebeestApi_set || _wildebeestApi != value;
-		if(changing) {
-			_wildebeestApi_set = true;
-			_wildebeestApi = value;
-		}
-	}
-
-	private void clearWildebeestApi() {
-		if(_wildebeestApi_set) {
-			_wildebeestApi_set = true;
-			_wildebeestApi = null;
-		}
-	}
-
-	private boolean hasWildebeestApi() {
-		return _wildebeestApi_set;
-	}
-
-	// </editor-fold>
 
 	@Override public void perform(
 		PrintStream output,
@@ -114,7 +85,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 
 		try
 		{
-			resource = this.getWildebeestApi().loadResource(new File(
+			resource = this.wildebeestApi.loadResource(new File(
 				migrationT.getBaseDir(),
 				migrationT.getFileName()));
 		}
@@ -125,7 +96,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 
 		try
 		{
-			this.getWildebeestApi().migrate(
+			this.wildebeestApi.migrate(
 				resource,
 				instance,
 				migrationT.getTarget());

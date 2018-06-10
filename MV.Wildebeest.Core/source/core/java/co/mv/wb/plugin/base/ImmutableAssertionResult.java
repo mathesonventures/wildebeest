@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.base;
 
 import co.mv.wb.AssertionResult;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.util.UUID;
 
@@ -27,6 +28,10 @@ import java.util.UUID;
  */
 public class ImmutableAssertionResult implements AssertionResult
 {
+	private final UUID assertionId;
+	private final boolean result;
+	private final String message;
+
 	/**
 	 * Creates a new ImmutableAssertionResult for the specified assertion, with the supplied result value and message.
 	 * 
@@ -39,116 +44,29 @@ public class ImmutableAssertionResult implements AssertionResult
 		boolean result,
 		String message)
 	{
-		this.setAssertionId(assertionId);
-		this.setResult(result);
-		this.setMessage(message);
-	}
-	
-	// <editor-fold desc="AssertionId" defaultstate="collapsed">
+		if (assertionId == null) throw new ArgumentNullException("assertionId");
+		if (message == null) throw new ArgumentNullException("message");
 
-	private UUID _assertionId = null;
-	private boolean _assertionId_set = false;
-
-	@Override public UUID getAssertionId() {
-		if(!_assertionId_set) {
-			throw new IllegalStateException("assertionId not set.  Use the HasAssertionId() method to check its state before accessing it.");
-		}
-		return _assertionId;
+		this.assertionId = assertionId;
+		this.result = result;
+		this.message = message;
 	}
 
-	private void setAssertionId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("assertionId cannot be null");
-		}
-		boolean changing = !_assertionId_set || _assertionId != value;
-		if(changing) {
-			_assertionId_set = true;
-			_assertionId = value;
-		}
+	@Override
+	public UUID getAssertionId()
+	{
+		return this.assertionId;
 	}
 
-	private void clearAssertionId() {
-		if(_assertionId_set) {
-			_assertionId_set = true;
-			_assertionId = null;
-		}
+	@Override
+	public boolean getResult()
+	{
+		return this.result;
 	}
 
-	private boolean hasAssertionId() {
-		return _assertionId_set;
+	@Override
+	public String getMessage()
+	{
+		return this.message;
 	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="Result" defaultstate="collapsed">
-
-	private boolean _result = false;
-	private boolean _result_set = false;
-
-	@Override public boolean getResult() {
-		if(!_result_set) {
-			throw new IllegalStateException("result not set.  Use the HasResult() method to check its state before accessing it.");
-		}
-		return _result;
-	}
-
-	private void setResult(
-		boolean value) {
-		boolean changing = !_result_set || _result != value;
-		if(changing) {
-			_result_set = true;
-			_result = value;
-		}
-	}
-
-	private void clearResult() {
-		if(_result_set) {
-			_result_set = true;
-			_result = false;
-		}
-	}
-
-	private boolean hasResult() {
-		return _result_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="Message" defaultstate="collapsed">
-
-	private String _message = null;
-	private boolean _message_set = false;
-
-	@Override public String getMessage() {
-		if(!_message_set) {
-			throw new IllegalStateException("message not set.  Use the HasMessage() method to check its state before accessing it.");
-		}
-		return _message;
-	}
-
-	private void setMessage(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("message cannot be null");
-		}
-		boolean changing = !_message_set || !_message.equals(value);
-		if(changing) {
-			_message_set = true;
-			_message = value;
-		}
-	}
-
-	private void clearMessage() {
-		if(_message_set) {
-			_message_set = true;
-			_message = null;
-		}
-	}
-
-	private boolean hasMessage() {
-		return _message_set;
-	}
-
-	// </editor-fold>
 }

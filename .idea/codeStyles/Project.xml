@@ -4,6 +4,10 @@
     <HTMLCodeStyleSettings>
       <option name="HTML_ALIGN_ATTRIBUTES" value="false" />
     </HTMLCodeStyleSettings>
+    <JavaCodeStyleSettings>
+      <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="500" />
+      <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="500" />
+    </JavaCodeStyleSettings>
     <ScalaCodeStyleSettings>
       <option name="classCountToUseImportOnDemand" value="99" />
       <option name="NOT_CONTINUATION_INDENT_FOR_PARAMS" value="true" />

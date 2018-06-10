@@ -44,7 +44,7 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 {
 
 	//
-	// build
+	// create
 	//
 	
 	@Test public void build_forValidDocument_succeeds() throws

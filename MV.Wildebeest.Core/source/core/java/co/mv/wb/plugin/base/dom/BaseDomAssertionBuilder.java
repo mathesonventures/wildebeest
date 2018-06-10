@@ -18,6 +18,11 @@ package co.mv.wb.plugin.base.dom;
 
 import co.mv.wb.AssertionBuilder;
 
+/**
+ * Base class for DOM-based {@link AssertionBuilder} implementations.
+ *
+ * @since                                       1.0
+ */
 public abstract class BaseDomAssertionBuilder extends BaseDomBuilder implements AssertionBuilder
 {
 }

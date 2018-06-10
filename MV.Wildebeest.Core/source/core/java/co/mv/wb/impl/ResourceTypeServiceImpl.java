@@ -28,18 +28,25 @@ import java.util.List;
  */
 public class ResourceTypeServiceImpl implements ResourceTypeService
 {
-	private List<ResourceType> _resourceTypes;
+	private final List<ResourceType> resourceTypes;
 
+	/**
+	 * Constructs a new ResourceTypeServiceImpl with the supplied set of {@link ResourceType}'s registered.
+	 *
+	 * @param       resourceTypes               the set of ResourceType's to register in the new ResourceTypeService.
+	 * @since                                   4.0
+	 */
 	public ResourceTypeServiceImpl(
 		List<ResourceType> resourceTypes)
 	{
 		if (resourceTypes == null) { throw new IllegalArgumentException("resourceTypes cannot be null"); }
 
-		_resourceTypes = resourceTypes;
+		this.resourceTypes = resourceTypes;
 	}
 
-	@Override public List<ResourceType> getResourceTypes()
+	@Override
+	public List<ResourceType> getResourceTypes()
 	{
-		return _resourceTypes;
+		return resourceTypes;
 	}
 }

@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.base;
 
 import co.mv.wb.Assertion;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.util.UUID;
 
@@ -27,6 +28,9 @@ import java.util.UUID;
  */
 public abstract class BaseAssertion implements Assertion
 {
+	private final UUID assertionId;
+	private final int seqNum;
+
 	/**
 	 * Creates a new BaseAssertion.
 	 * 
@@ -37,78 +41,21 @@ public abstract class BaseAssertion implements Assertion
 		UUID assertionId,
 		int seqNum)
 	{
-		this.setAssertionId(assertionId);
-		this.setSeqNum(seqNum);
-	}
-	
-	// <editor-fold desc="AssertionId" defaultstate="collapsed">
+		if (assertionId == null) throw new ArgumentNullException("assertionId");
 
-	private UUID _assertionId = null;
-	private boolean _assertionId_set = false;
-
-	@Override public UUID getAssertionId() {
-		if(!_assertionId_set) {
-			throw new IllegalStateException("assertionId not set.  Use the HasAssertionId() method to check its state before accessing it.");
-		}
-		return _assertionId;
+		this.assertionId = assertionId;
+		this.seqNum = seqNum;
 	}
 
-	private void setAssertionId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("assertionId cannot be null");
-		}
-		boolean changing = !_assertionId_set || _assertionId != value;
-		if(changing) {
-			_assertionId_set = true;
-			_assertionId = value;
-		}
+	@Override
+	public UUID getAssertionId()
+	{
+		return this.assertionId;
 	}
 
-	private void clearAssertionId() {
-		if(_assertionId_set) {
-			_assertionId_set = true;
-			_assertionId = null;
-		}
+	@Override
+	public int getSeqNum()
+	{
+		return this.seqNum;
 	}
-
-	private boolean hasAssertionId() {
-		return _assertionId_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="SeqNum" defaultstate="collapsed">
-
-	private int _seqNum = 0;
-	private boolean _seqNum_set = false;
-
-	@Override public int getSeqNum() {
-		if(!_seqNum_set) {
-			throw new IllegalStateException("seqNum not set.  Use the HasSeqNum() method to check its state before accessing it.");
-		}
-		return _seqNum;
-	}
-
-	private void setSeqNum(
-		int value) {
-		boolean changing = !_seqNum_set || _seqNum != value;
-		if(changing) {
-			_seqNum_set = true;
-			_seqNum = value;
-		}
-	}
-
-	private void clearSeqNum() {
-		if(_seqNum_set) {
-			_seqNum_set = true;
-			_seqNum = 0;
-		}
-	}
-
-	private boolean hasSeqNum() {
-		return _seqNum_set;
-	}
-
-	// </editor-fold>
 }

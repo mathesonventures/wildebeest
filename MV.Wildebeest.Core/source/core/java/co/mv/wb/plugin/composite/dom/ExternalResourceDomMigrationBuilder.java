@@ -21,6 +21,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.V;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.dom.BaseDomMigrationBuilder;
 import co.mv.wb.plugin.composite.ExternalResourceMigration;
 
@@ -35,17 +36,28 @@ import java.util.UUID;
  */
 public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 {
+	/**
+	 * Constructs a new ExternalResourceDomMigrationBuilder instance.
+	 *
+	 * @since                                   4.0
+	 */
 	public ExternalResourceDomMigrationBuilder()
 	{
 	}
 
-	@Override public Migration build(
+	@Override
+	public Migration build(
 		UUID migrationId,
 		Optional<UUID> fromStateId,
 		Optional<UUID> toStateId,
 		File baseDir) throws
 			PluginBuildException
 	{
+		if (migrationId == null) throw new ArgumentNullException("migrationId");
+		if (fromStateId == null) throw new ArgumentNullException("fromStateId");
+		if (toStateId == null) throw new ArgumentNullException("toStateId");
+		if (baseDir == null) throw new ArgumentNullException("baseDir");
+
 		Migration result;
 
 		Optional<String> filename = this.tryGetString("filename");

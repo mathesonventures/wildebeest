@@ -68,7 +68,7 @@ import java.util.UUID;
  */
 public class WildebeestApiImpl implements WildebeestApi
 {
-	private final PrintStream _output;
+	private final PrintStream output;
 
 	/**
 	 * Creates a new WildebeestApiImpl using the supplied {@link PrintStream} for user output and the supplied
@@ -82,7 +82,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	{
 		if (output == null) throw new ArgumentNullException("output");
 
-		_output = output;
+		this.output = output;
 	}
 
 	// <editor-fold desc="ResourcePlugins" defaultstate="collapsed">
@@ -109,17 +109,6 @@ public class WildebeestApiImpl implements WildebeestApi
 			_resourcePlugins_set = true;
 			_resourcePlugins = value;
 		}
-	}
-
-	private void clearResourcePlugins() {
-		if(_resourcePlugins_set) {
-			_resourcePlugins_set = true;
-			_resourcePlugins = null;
-		}
-	}
-
-	private boolean hasResourcePlugins() {
-		return _resourcePlugins_set;
 	}
 
 	// </editor-fold>
@@ -151,17 +140,6 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 	}
 
-	private void clearPluginManager() {
-		if(_pluginManager_set) {
-			_pluginManager_set = true;
-			_pluginManager = null;
-		}
-	}
-
-	private boolean hasPluginManager() {
-		return _pluginManager_set;
-	}
-
 	// </editor-fold>
 
 	public Resource loadResource(
@@ -170,7 +148,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			LoaderFault,
 			PluginBuildException
 	{
-		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
+		if (resourceFile == null) throw new ArgumentNullException("resourceFile");
 
 		// Get the absolute file for this resource - this ensures that getParentFile works correctly
 		resourceFile = resourceFile.getAbsoluteFile();
@@ -209,7 +187,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			LoaderFault,
 			PluginBuildException
 	{
-		if (instanceFile == null) { throw new IllegalArgumentException("instanceFile"); }
+		if (instanceFile == null) throw new ArgumentNullException("instanceFile");
 
 		// Load Instance
 		String instanceXml;
@@ -256,11 +234,11 @@ public class WildebeestApiImpl implements WildebeestApi
 		state.getAssertions().forEach(
 			assertion ->
 			{
-				_output.println(OutputFormatter.assertionStart(assertion));
+				output.println(OutputFormatter.assertionStart(assertion));
 
 				AssertionResponse response = assertion.perform(instance);
 
-				_output.println(OutputFormatter.assertionComplete(
+				output.println(OutputFormatter.assertionComplete(
 					assertion,
 					response));
 
@@ -278,8 +256,8 @@ public class WildebeestApiImpl implements WildebeestApi
 		Instance instance) throws
 			IndeterminateStateException
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
 
 		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
 			this.getResourcePlugins(),
@@ -291,17 +269,17 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		if (state == null)
 		{
-			_output.println("Current state: non-existent");
+			output.println("Current state: non-existent");
 		}
 		else
 		{
 			if (state.getLabel().isPresent())
 			{
-				_output.println(String.format("Current state: %s", state.getLabel()));
+				output.println(String.format("Current state: %s", state.getLabel()));
 			}
 			else
 			{
-				_output.println(String.format("Current state: %s", state.getStateId().toString()));
+				output.println(String.format("Current state: %s", state.getStateId().toString()));
 			}
 
 			this.assertState(
@@ -375,24 +353,24 @@ public class WildebeestApiImpl implements WildebeestApi
 				stateId));
 
 			// Migrate to the next state
-			_output.println(OutputFormatter.migrationStart(
+			output.println(OutputFormatter.migrationStart(
 				resource,
 				migration,
 				fromState,
 				toState));
 
 			migrationPlugin.perform(
-				_output,
+				output,
 				migration,
 				instance);
 
-			_output.println(OutputFormatter.migrationComplete(
+			output.println(OutputFormatter.migrationComplete(
 				resource,
 				migration));
 
 			// Update the state
 			resourcePlugin.setStateId(
-				_output,
+				output,
 				resource,
 				instance,
 				migration.getToStateId().get());
@@ -449,13 +427,14 @@ public class WildebeestApiImpl implements WildebeestApi
 		WildebeestApiImpl.throwIfFailed(state.getStateId(), assertionResults);
 
 		resourcePlugin.setStateId(
-			_output,
+			output,
 			resource,
 			instance,
 			targetStateId);
 	}
 
-	@Override public String describePlugins()
+	@Override
+	public String describePlugins()
 	{
 		StringBuilder output = new StringBuilder();
 

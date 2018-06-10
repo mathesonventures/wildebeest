@@ -51,6 +51,21 @@ import java.util.UUID;
 )
 public class ExternalResourceMigration extends BaseMigration
 {
+	private final File baseDir;
+	private final String fileName;
+	private final Optional<String> target;
+
+	/**
+	 * Constructs a new ExternalResourceMigration.
+	 *
+	 * @param       migrationId                 the ID of the migration.
+	 * @param       fromStateId                 the from state for the migration, if any.
+	 * @param       toStateId                   the to state for the migration, if any.
+	 * @param       baseDir                     the base directory for resolving external resources for this migration.
+	 * @param       fileName                    the filename of the external resource.
+	 * @param       target                      the target in the external resource that we will migrate to.
+	 * @since                                   4.0
+	 */
 	public ExternalResourceMigration(
 		UUID migrationId,
 		Optional<UUID> fromStateId,
@@ -61,132 +76,46 @@ public class ExternalResourceMigration extends BaseMigration
 	{
 		super(migrationId, fromStateId, toStateId);
 
-		this.setBaseDir(baseDir);
-		this.setFileName(fileName);
-		this.setTarget(target);
+		this.baseDir = baseDir;
+		this.fileName = fileName;
+		this.target = target;
 	}
 
-	// <editor-fold desc="BaseDir" defaultstate="collapsed">
-
-	private File _baseDir = null;
-	private boolean _baseDir_set = false;
-
-	public File getBaseDir() {
-		if(!_baseDir_set) {
-			throw new IllegalStateException("baseDir not set.");
-		}
-		if(_baseDir == null) {
-			throw new IllegalStateException("baseDir should not be null");
-		}
-		return _baseDir;
+	/**
+	 * Gets the base directory for resolving external resources for this migration.
+	 *
+	 * @return                                  the base directory for resolving external resources for this migration.
+	 * @since                                   4.0
+	 */
+	public File getBaseDir()
+	{
+		return this.baseDir;
 	}
 
-	private void setBaseDir(
-		File value) {
-		if(value == null) {
-			throw new IllegalArgumentException("baseDir cannot be null");
-		}
-		boolean changing = !_baseDir_set || _baseDir != value;
-		if(changing) {
-			_baseDir_set = true;
-			_baseDir = value;
-		}
+	/**
+	 * Gets the filename of the external resource.
+	 *
+	 * @return                                  the filename of the external resource.
+	 * @since                                   4.0
+	 */
+	public String getFileName()
+	{
+		return this.fileName;
 	}
 
-	private void clearBaseDir() {
-		if(_baseDir_set) {
-			_baseDir_set = true;
-			_baseDir = null;
-		}
+	/**
+	 * Gets the target in the external resource that we will migrate to.
+	 *
+	 * @return                                  the target in the external resource that we will migrate to.
+	 * @since                                   4.0
+	 */
+	public Optional<String> getTarget()
+	{
+		return this.target;
 	}
 
-	private boolean hasBaseDir() {
-		return _baseDir_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="FileName" defaultstate="collapsed">
-
-	private String _fileName = null;
-	private boolean _fileName_set = false;
-
-	public String getFileName() {
-		if(!_fileName_set) {
-			throw new IllegalStateException("fileName not set.");
-		}
-		if(_fileName == null) {
-			throw new IllegalStateException("fileName should not be null");
-		}
-		return _fileName;
-	}
-
-	private void setFileName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("fileName cannot be null");
-		}
-		boolean changing = !_fileName_set || !_fileName.equals(value);
-		if(changing) {
-			_fileName_set = true;
-			_fileName = value;
-		}
-	}
-
-	private void clearFileName() {
-		if(_fileName_set) {
-			_fileName_set = true;
-			_fileName = null;
-		}
-	}
-
-	private boolean hasFileName() {
-		return _fileName_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="Target" defaultstate="collapsed">
-
-	private Optional<String> _target = null;
-	private boolean _target_set = false;
-
-	public Optional<String> getTarget() {
-		if(!_target_set) {
-			throw new IllegalStateException("target not set.");
-		}
-		if(_target == null) {
-			throw new IllegalStateException("target should not be null");
-		}
-		return _target;
-	}
-
-	private void setTarget(
-		Optional<String> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("target cannot be null");
-		}
-		boolean changing = !_target_set || !_target.equals(value);
-		if(changing) {
-			_target_set = true;
-			_target = value;
-		}
-	}
-
-	private void clearTarget() {
-		if(_target_set) {
-			_target_set = true;
-			_target = null;
-		}
-	}
-
-	private boolean hasTarget() {
-		return _target_set;
-	}
-
-	// </editor-fold>
-
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			Wildebeest.MySqlDatabase,

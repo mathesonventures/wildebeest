@@ -16,8 +16,20 @@
 
 package co.mv.wb.framework;
 
+/**
+ * Utility functions.
+ *
+ * @since                                       4.0
+ */
 public class Util
 {
+	/**
+	 * Extracts the name portion from an identifier URI.
+	 *
+	 * @param       uri                         the identifier URI to extract the name from.
+	 * @return                                  the name extracted from the identifier URI.
+	 * @since                                   4.0
+	 */
 	public static String nameFromUri(String uri)
 	{
 		if (uri == null) throw new ArgumentNullException("uri");
@@ -33,10 +45,18 @@ public class Util
 		return uri.substring(index + 1);
 	}
 
+	/**
+	 * Collapses each contiguous sequence of whitespace characters in a string down into a single printable space
+	 * character.
+	 *
+	 * @param       text                        the source text within which whitespace should be coalesced.
+	 * @return                                  the result of coalescing whitespace within the source text.
+	 * @since                                   4.0
+	 */
 	public static String coalesceWhitespace(String text)
 	{
-		if (text == null) { throw new IllegalArgumentException("text cannot be null"); }
+		if (text == null) throw new ArgumentNullException("text");
+
 		return text.replaceAll("\\s+", " ").trim();
 	}
 }
-
