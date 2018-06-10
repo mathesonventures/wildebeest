@@ -161,14 +161,20 @@
     <property name="source.core.librun" value="${source.core}/librun" />
     <property name="source.core.java" value="${source.core}/java" />
     <property name="source.core.importclasses" value="${source.core}/importclasses" />
-    <property name="source.core.resources" value="${source.core}/resources" />
+		<property name="source.core.resources" value="${source.core}/resources" />
+		<property name="source.core.etc" value="${source.core}/etc" />
+    <property name="source.core.classtree" value="${source.core}/classtree" />
 
     <!-- Test Sources -->
     <property name="source.test" value="${source}/test" />
     <property name="source.test.libcompile" value="${source.test}/libcompile" />
     <property name="source.test.libcompileandrun" value="${source.test}/libcompileandrun" />
     <property name="source.test.librun" value="${source.test}/librun" />
-    <property name="source.test.java" value="${source.test}/java" />
+		<property name="source.test.java" value="${source.test}/java" />
+		<property name="source.test.importclasses" value="${source.test}/importclasses" />
+		<property name="source.test.resources" value="${source.test}/resources" />
+		<property name="source.test.etc" value="${source.test}/etc" />
+    <property name="source.test.classtree" value="${source.test}/classtree" />
 
     <!--
 			Target Properties
@@ -179,15 +185,22 @@
     <property name="target.core" value="${target}/core" />
     <property name="target.core.libcompile" value="${target.core}/libcompile" />
     <property name="target.core.librun" value="${target.core}/librun" />
-    <property name="target.core.java" value="${target.core}/java" />
-    <property name="target.core.classtree" value="${target.core}/classtree" />
-    <property name="target.core.jar" value="${target.core}/jar" />
-    <property name="target.core.javadoc" value="${target.core}/javadoc" />
+		<property name="target.core.java" value="${target.core}/java" />
+		<property name="target.core.classtree" value="${target.core}/classtree" />
+    <property name="target.core.importclasses" value="${target.core}/java" />
+		<property name="target.core.jar" value="${target.core}/jar" />
+    <property name="target.core.app" value="${target.core}/app" />
+		<property name="target.core.javadoc" value="${target.core}/javadoc" />
 
     <!-- Test Targets -->
     <property name="target.test" value="${target}/test" />
     <property name="target.test.libcompile" value="${target.test}/libcompile" />
-    <property name="target.test.librun" value="${target.test}/librun" />
+		<property name="target.test.librun" value="${target.test}/librun" />
+		<property name="target.test.classtree" value="${target.test}/classtree" />
+		<property name="target.test.jar" value="${target.test}/jar" />
+		<property name="target.test.app" value="${target.test}/app" />
+		<property name="target.test.report" value="${target.test}/report" />
+    <property name="target.test.javadoc" value="${target.test}/javadoc" />
 
     <!-- Build Resource Targets -->
 		<property name="target.buildres" value="${target}/buildres" />
@@ -355,6 +368,104 @@
 	</target>
 
 	<target
+		name="core.app"
+		description="
+			Assemble the core application."
+		depends="structure.properties,meta.project.properties,core.jar,core.librun">
+
+		<mkdir dir="${target.core.app}" />
+		<mkdir dir="${target.core.app}/classes" />
+		<mkdir dir="${target.core.app}/lib" />
+
+		<!--
+			Import selected files from the core.etc source with filtering
+		-->
+		<filter
+			token="meta.project.version.full.dotted"
+			value="${meta.project.version.full.dotted}" />
+		<filter
+			token="meta.project.version.full.underscored"
+			value="${meta.project.version.full.underscored}" />
+		<copy
+			todir="${target.core.app}"
+			filtering="true"
+			preservelastmodified="true">
+			<fileset dir="${source.core.etc}">
+				<include name="**/*.htm" />
+				<include name="**/*.jsp" />
+				<include name="bin/wb" />
+				<include name="**/*.cmd" />
+			</fileset>
+		</copy>
+
+		<!--
+			Import the rest of the core.etc source without filtering
+		-->
+		<copy todir="${target.core.app}">
+			<fileset dir="${source.core.etc}">
+				<include name="**/*" />
+				<include name="**/*.*" />
+				<exclude name="**/*.swp" />
+				<exclude name="**/*.htm" />
+				<exclude name="**/*.jsp" />
+				<exclude name="bin/wb" />
+				<exclude name="**/*.cmd" />
+			</fileset>
+		</copy>
+
+		<!--
+			Import the core.classtree source into the application's classes directory
+		-->
+		<copy
+			todir="${target.core.app}/classes"
+			preservelastmodified="true">
+			<fileset dir="${source.core.classtree}">
+				<include name="**/*" />
+				<include name="**/*.*" />
+				<exclude name="**/*.swp" />
+			</fileset>
+		</copy>
+
+		<!--
+			Import the core.jar and core.librun artifacts into the application's lib directory
+		-->
+		<copy
+			todir="${target.core.app}/lib"
+			preservelastmodified="true">
+
+			<!-- core.jar -->
+			<fileset file="${target.core.jar}/${meta.core.jar.filename}" />
+
+			<!-- core.librun -->
+			<fileset dir="${target.core.librun}" includes="*.jar" />
+
+		</copy>
+
+	</target>
+
+	<target
+		name="core.app:run"
+		description="Execute the application."
+		depends="structure.properties,meta.component.properties,core.app">
+
+		<java
+			classname="${meta.component.type.java.mainclass}"
+			fork="true">
+
+			<classpath>
+				<pathelement path="${target.core.app}/classes"/>
+				<fileset dir="${target.core.app}/lib" includes="**/*.jar" />
+			</classpath>
+
+			<assertions>
+				<enable package="co.mv"/>
+			</assertions>
+
+		</java>
+
+	</target>
+
+	<target
 		name="core.javadoc"
 		description="Builds javadoc for the core system."
 		depends="structure.properties,meta.component.properties">
@@ -421,6 +532,229 @@
 
   </target>
 
+	<target
+		name="test.classtree"
+		description="
+			Create the target directory and compile the java code into classes."
+		depends="structure.properties,test.libcompile,core.app">
+
+		<mkdir dir="${target.test.classtree}" />
+
+		<!-- Compile the test java source code -->
+		<javac
+			srcdir="${source.test.java}"
+			destdir="${target.test.classtree}"
+			source="${meta.component.type.java.source}"
+			target="${meta.component.type.java.target}"
+			debug="true">
+
+			<classpath>
+				<pathelement path="${target.core.app}/classes"/>
+				<fileset dir="${target.core.app}/lib" includes="**/*.jar" />
+				<fileset dir="${target.test.libcompile}" includes="*.jar" />
+				<fileset dir="${target.test.libcompileandrun}" includes="*.jar" />
+			</classpath>
+
+		</javac>
+
+		<!-- Import the test.importclasses source -->
+		<copy
+			todir="${target.test.classtree}"
+			preservelastmodified="true">
+			<fileset dir="${source.test.importclasses}">
+				<include name="**/*" />
+				<include name="**/*.*" />
+				<exclude name="**/*.swp" />
+			</fileset>
+		</copy>
+
+		<!-- Import and native2ascii the test.resources source -->
+		<native2ascii
+			encoding="UTF-8"
+			src="${source.test.resources}"
+			dest="${target.test.classtree}"
+			includes="**/resources*.utf8"
+			ext=".properties">
+		</native2ascii>
+
+	</target>
+
+	<target
+		name="test.jar"
+		description="Builds the JAR containing the test classes."
+		depends="structure.properties,meta.properties,test.classtree">
+
+		<mkdir dir="${target.test.jar}" />
+
+		<jar destfile="${target.test.jar}/${meta.test.jar.filename}"
+			basedir="${target.test.classtree}" />
+
+	</target>
+
+	<target
+		name="test.app"
+		description="Assemble the test application."
+		depends="structure.properties,test.jar,test.librun">
+
+		<mkdir dir="${target.test.app}" />
+		<mkdir dir="${target.test.app}/classes" />
+		<mkdir dir="${target.test.app}/lib" />
+
+		<!-- Import the test.etc source -->
+		<copy
+			todir="${target.test.app}"
+			preservelastmodified="true">
+			<fileset dir="${source.test.etc}">
+				<include name="**/*" />
+				<include name="**/*.*" />
+				<exclude name="**/*.swp" />
+			</fileset>
+		</copy>
+
+		<!-- Import the test.classtree source -->
+		<copy
+			todir="${target.test.app}/classes"
+			preservelastmodified="true">
+			<fileset dir="${source.test.classtree}">
+				<include name="**/*" />
+				<include name="**/*.*" />
+				<exclude name="**/*.swp" />
+			</fileset>
+		</copy>
+
+		<!-- Import the test.jar artifact -->
+		<copy
+			todir="${target.test.app}/lib"
+			file="${target.test.jar}/${meta.test.jar.filename}"
+			preservelastmodified="true" />
+
+		<!-- Import the test.lib source -->
+		<copy
+			todir="${target.test.app}/lib"
+			preservelastmodified="true">
+			<fileset dir="${target.core.jar}" includes="*.jar" />
+			<fileset dir="${target.core.librun}" includes="*.jar" />
+			<fileset dir="${target.test.librun}" includes="*.jar" />
+		</copy>
+
+	</target>
+
+	<target name="test.app:run" depends="test.app:run_junit">
+	</target>
+
+	<target
+		name="test.app:run_junit"
+		description="
+			Executes the assembled test system."
+		depends="core.app,test.app">
+
+		<path id="test.app.run.path">
+			<pathelement path="${target.core.app}/classes"/>
+			<pathelement path="${target.test.app}/classes"/>
+			<fileset dir="${target.core.app}/lib" includes="**/*.jar" />
+			<fileset dir="${target.test.app}/lib" includes="**/*.jar" />
+		</path>
+
+		<mkdir dir="${target.test.report}/data" />
+
+<echo message="mySql.hostName: ${mySql.hostName}" />
+<echo message="mySql.port: ${mySql.port}" />
+<echo message="mySql.username: ${mySql.username}" />
+<echo message="mySql.password: ${mySql.password}" />
+
+		<junit fork="no"
+			showoutput="true"
+			printsummary="true">
+
+			<classpath>
+				<path refid="test.app.run.path" />
+			</classpath>
+
+			<formatter type="xml" />
+
+			<batchtest todir="${target.test.report}/data">
+				<fileset dir="${source.test.java}" casesensitive="yes" includes="**/*Tests.java" />
+			</batchtest>
+
+		</junit>
+
+    <junitreport
+        todir="${target.test.report}">
+
+        <fileset dir="${target.test.report}/data" includes="*.xml" />
+
+        <report
+					format="noframes"
+					todir="${target.test.report}"/>
+
+    </junitreport>
+
+	</target>
+
+	<target
+		name="test.app:run_testng"
+		description="
+			Executes the assembled test system."
+		depends="core.app,test.app">
+
+		<path id="test.app.run.path">
+			<pathelement path="${target.core.app}/classes"/>
+			<pathelement path="${target.test.app}/classes"/>
+			<fileset dir="${target.core.app}/lib" includes="**/*.jar" />
+			<fileset dir="${target.test.app}/lib" includes="**/*.jar" />
+		</path>
+
+		<taskdef
+			name="testng"
+			classname="com.beust.testng.TestNGAntTask"
+			classpathref="test.app.run.path">
+		</taskdef>
+
+		<mkdir dir="${target.test.report}/data" />
+
+		<testng
+			fork="yes"
+			sourceDir="${source.test.java}"
+			outputDir = "${target.test.report}/data"
+			classpathref="test.app.run.path">
+
+			<fileset dir="${target.test.app}" includes="testng.xml" />
+
+			<jvmarg value="-ea" />
+
+		</testng>
+
+		<junitreport todir="${target.test.report}">
+
+			<fileset dir="${target.test.report}/data" includes="*.xml" />
+
+			<report
+				styledir="${ant.home}/x17_sft_helium_basic/junit"
+				format="noframes"
+				todir="${target.test.report}"/>
+
+		</junitreport>
+
+	</target>
+
+	<target
+		name="test.javadoc"
+		description="Builds javadoc for the test system."
+		depends="structure.properties,meta.component.properties">
+
+		<mkdir dir="${target.test.javadoc}" />
+
+		<javadoc
+			sourcepath="${source.test.java}"
+			destdir="${target.test.javadoc}"
+			source="${meta.component.type.java.source}">
+
+			<fileset dir="${source.test.java}" includes="**/*.java" />
+
+		</javadoc>
+
+	</target>
+
 
 <!-- ===================================================================================================================
 
@@ -457,7 +791,7 @@
     - buildres.ivy.global - if a global Ivy deployment is identified by env.IVY_HOME
     - buildres.ivy.local - if we're doing a local Ivy deploy into the project
   -->
-  <target name="properties.buildres.ivy.home" depends="structure.properties">
+  <target name="structure.properties.buildres.ivy.home" depends="structure.properties">
 
     <condition property="buildres.ivy.home" value="${env.IVY_HOME}">
       <isset property="env.IVY_HOME" />
@@ -492,7 +826,7 @@
   <target name="buildres.ivy"
     depends="
       structure.properties,
-      properties.buildres.ivy.home,
+      structure.properties.buildres.ivy.home,
       buildres.ivy.exists"
     if="buildres.ivy.local"
     unless="buildres.ivy.exists">

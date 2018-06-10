@@ -20,8 +20,39 @@
 -->
 <ivysettings>
 
+  <settings defaultResolver="default" />
+
+  <property name="ivy.local.default.root"             value="${ivy.default.ivy.user.dir}/local" override="false"/>
+	<property name="ivy.local.default.ivy.pattern"      value="[organisation]/[module]/[revision]/[type]s/[artifact].[ext]" override="false"/>
+	<property name="ivy.local.default.artifact.pattern" value="[organisation]/[module]/[revision]/[type]s/[artifact].[ext]" override="false"/>
+
+  <property name="ivy.shared.default.root"             value="${ivy.default.ivy.user.dir}/shared" override="false"/>
+	<property name="ivy.shared.default.ivy.pattern"      value="[organisation]/[module]/[revision]/[type]s/[artifact].[ext]" override="false"/>
+	<property name="ivy.shared.default.artifact.pattern" value="[organisation]/[module]/[revision]/[type]s/[artifact].[ext]" override="false"/>
+
   <resolvers>
+
     <ibiblio name="public" m2compatible="true"/>
+
+    <filesystem name="shared">
+			<ivy pattern="${ivy.shared.default.root}/${ivy.shared.default.ivy.pattern}" />
+			<artifact pattern="${ivy.shared.default.root}/${ivy.shared.default.artifact.pattern}" />
+		</filesystem>
+
+    <filesystem name="local">
+			<ivy pattern="${ivy.local.default.root}/${ivy.local.default.ivy.pattern}" />
+			<artifact pattern="${ivy.local.default.root}/${ivy.local.default.artifact.pattern}" />
+		</filesystem>
+
+    <chain name="main" dual="true">
+			<resolver ref="shared"/>
+			<resolver ref="public"/>
+		</chain>
+
+    <chain name="default" returnFirst="true" checkmodified="true">
+			<resolver ref="local"/>
+			<resolver ref="main"/>
+		</chain>
 
     <!--
       Defines the project-level repository at the same level as the component directories - basedir is inherited from
@@ -31,6 +62,7 @@
       <ivy pattern="${basedir}/../repo/[organisation].[module]/ivy-[revision].xml" />
       <artifact pattern="${basedir}/../repo/[organisation].[module]/[artifact]-[revision].[ext]" />
     </filesystem>
+
   </resolvers>
 
 </ivysettings>
