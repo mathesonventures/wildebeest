@@ -54,6 +54,15 @@ public class OutputFormatter
 		return result.toString();
 	}
 
+	public static String resourceValidation(
+			XmlValidationException e,
+			String loadType)
+	{
+		return String.format(
+				"XML validation failed on %s with the following message:\n \"%s\"",
+				loadType,
+				e.getMessage());
+	}
 	//
 	// State
 	//

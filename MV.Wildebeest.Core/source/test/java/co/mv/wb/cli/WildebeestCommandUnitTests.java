@@ -16,19 +16,7 @@
 
 package co.mv.wb.cli;
 
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.Asserts;
-import co.mv.wb.FileLoadException;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.LoaderFault;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.PluginBuildException;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
+import co.mv.wb.*;
 import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.fixture.TestContext_WildebeestCommandUnit;
 import co.mv.wb.framework.PredicateMatcher;
@@ -93,7 +81,8 @@ public class WildebeestCommandUnitTests
 		MigrationNotPossibleException,
 		PluginBuildException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+		XmlValidationException
 	{
 		// Setup
 		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();

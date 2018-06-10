@@ -53,6 +53,8 @@
 		<dependency org="org.reflections" name="reflections" rev="0.9.11" conf="clc,clr,tlc,tlr->default" />
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" conf="clc,clr,tlc,tlr->default" />
 		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.5" conf="clr,tlr->default" />
+		<dependency org="org.opengis.cite.xerces" name="xercesImpl-xsd11" rev="2.12-beta-r1667115" conf="clc,clr,tlr->default" />
+		<dependency org="org.opengis.cite.eclipse.webtools.sse" name="org.eclipse.wst.xml.xpath2.processor" rev="1.1.5-738bb7b85d" conf="clr,tlr->default" />
 	</dependencies>
 
 </ivy-module>

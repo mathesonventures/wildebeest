@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           vc:minVersion="1.1" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning">
+    <xs:element name="resource">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="states" type="States"/>
+                <xs:element name="migrations" type="Migrations"/>
+            </xs:sequence>
+            <xs:attribute name="type" type="ResourcesType" use="required" />
+            <xs:attribute name="id" type="uuid" use="required" />
+            <xs:attribute name="name" type="xs:string" />
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="ResourcesType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="co.mv.wb.MySqlDatabase"/>
+            <xs:enumeration value="co.mv.wb.PostgreSqlDatabase"/>
+            <xs:enumeration value="co.mv.wb.SqlServerDatabase"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="States">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element name="state" type="State"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="State">
+        <xs:sequence minOccurs="0">
+            <xs:element name="assertions" type="Assertions"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="uuid" use="required" />
+        <xs:attribute name="label" type="xs:string" />
+    </xs:complexType>
+
+    <xs:complexType name="Assertions">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element name="assertion" type="Assertion" minOccurs="0">
+                <xs:alternative test="@type='RowExists'" type="RowExists"/>
+                <xs:alternative test="@type='RowDoesNotExist'" type="RowDoesNotExist"/>
+                <xs:alternative test="@type='AnsiSqlTableExists'" type="AnsiSqlTableExists"/>
+                <xs:alternative test="@type='AnsiSqlTableDoesNotExist'" type="AnsiSqlTableDoesNotExist"/>
+                <xs:alternative test="@type='MySqlTableDoesNotExist'" type="MySqlTableDoesNotExist"/>
+                <xs:alternative test="@type='MySqlTableExists'" type="MySqlTableExists"/>
+                <xs:alternative test="@type='SqlServerSchemaDoesNotExist'" type="SqlServerSchemaDoesNotExist"/>
+                <xs:alternative test="@type='SqlServerSchemaExists'" type="SqlServerSchemaExists"/>
+                <xs:alternative test="@type='SqlServerTableDoesNotExist'" type="SqlServerTableDoesNotExist"/>
+                <xs:alternative test="@type='SqlServerTableExists'" type="SqlServerTableExists"/>
+                <xs:alternative test="@type='DatabaseExists'" type="DatabaseExists"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Assertion">
+        <xs:attribute name="type" type="AssertionType" use="required"/>
+        <xs:attribute name="id" type="uuid" use="required"/>
+    </xs:complexType>
+
+    <xs:simpleType name="AssertionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DatabaseExists"/>
+            <xs:enumeration value="DatabaseDoesNotExist"/>
+            <xs:enumeration value="RowExists"/>
+            <xs:enumeration value="RowDoesNotExist"/>
+            <xs:enumeration value="AnsiSqlTableExists"/>
+            <xs:enumeration value="AnsiSqlTableDoesNotExist"/>
+            <xs:enumeration value="MySqlTableDoesNotExist"/>
+            <xs:enumeration value="MySqlTableExists"/>
+            <xs:enumeration value="SqlServerSchemaDoesNotExist"/>
+            <xs:enumeration value="SqlServerSchemaExists"/>
+            <xs:enumeration value="SqlServerTableDoesNotExist"/>
+            <xs:enumeration value="SqlServerTableExists"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="RowExists">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:sequence maxOccurs="unbounded">
+                    <xs:element name="description" type="xs:string"/>
+                    <xs:element name="sql" type="xs:string"/>
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="RowDoesNotExist">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:sequence maxOccurs="unbounded">
+                    <xs:element name="description" type="xs:string"/>
+                    <xs:element name="sql" type="xs:string" />
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="AnsiSqlTableExists">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:sequence >
+                    <xs:element name="schemaName" type="xs:string"/>
+                    <xs:element name="tableName" type="xs:string"/>
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string"  />
+            </xs:extension>
+        </xs:complexContent>
+
+    </xs:complexType>
+    <xs:complexType name="AnsiSqlTableDoesNotExist">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:sequence >
+                    <xs:element name="schemaName" type="xs:string"/>
+                    <xs:element name="tableName" type="xs:string"/>
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string"  />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="MySqlTableDoesNotExist">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:sequence >
+                    <xs:element name="tableName" type="xs:string"/>
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="MySqlTableExists">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:sequence >
+                    <xs:element name="tableName" type="xs:string"/>
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SqlServerSchemaDoesNotExist">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:sequence >
+                    <xs:element name="schemaName" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SqlServerSchemaExists">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:sequence >
+                    <xs:element name="schemaName" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SqlServerTableDoesNotExist">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:sequence >
+                    <xs:element name="schemaName" type="xs:string"/>
+                    <xs:element name="tableName" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SqlServerTableExists">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:sequence >
+                    <xs:element name="schemaName" type="xs:string"/>
+                    <xs:element name="tableName" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DatabaseExists">
+        <xs:complexContent>
+            <xs:extension base="Assertion">
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="Migrations">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element name="migration" type="Migration">
+                <xs:alternative test="@type='SqlScript'" type="SqlScript"/>
+                <xs:alternative test="@type='AnsiSqlCreateDatabase'" type="AnsiSqlCreateDatabase"/>
+                <xs:alternative test="@type='AnsiSqlDropDatabase'" type="AnsiSqlDropDatabase"/>
+                <xs:alternative test="@type='MySqlCreateDatabase'" type="MySqlCreateDatabase"/>
+                <xs:alternative test="@type='SqlServerCreateDatabase'" type="SqlServerCreateDatabase"/>
+                <xs:alternative test="@type='SqlServerCreateSchema'" type="SqlServerCreateSchema"/>
+                <xs:alternative test="@type='SqlServerDropSchema'" type="SqlServerDropSchema"/>
+                <xs:alternative test="@type='External'" type="External"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Migration">
+        <xs:attribute  name="type" type="MigrationType" use="required"/>
+        <xs:attribute name="id" type="uuid" use="required"/>
+        <xs:attribute name="toStateId" type="uuid" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="SqlScript">
+        <xs:complexContent>
+            <xs:extension base="Migration">
+                <xs:sequence >
+                    <xs:element name="sql" type="xs:string" />
+                </xs:sequence>
+                <xs:attribute name="fromStateId" type="uuid" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="AnsiSqlCreateDatabase">
+        <xs:complexContent>
+            <xs:extension base="Migration">
+            </xs:extension>
+        </xs:complexContent>
+
+    </xs:complexType>
+    <xs:complexType name="AnsiSqlDropDatabase">
+        <xs:complexContent>
+            <xs:extension base="Migration">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="MySqlCreateDatabase">
+        <xs:complexContent>
+            <xs:extension base="Migration">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SqlServerCreateDatabase">
+        <xs:complexContent>
+            <xs:extension base="Migration">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SqlServerCreateSchema">
+        <xs:complexContent>
+            <xs:extension base="Migration">
+                <xs:sequence>
+                    <xs:element name="schemaName" type="xs:string" />
+                </xs:sequence>
+                <xs:attribute name="fromStateId" type="uuid" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SqlServerDropSchema">
+        <xs:complexContent>
+            <xs:extension base="Migration">
+                <xs:sequence>
+                    <xs:element name="schemaName" type="xs:string" />
+                </xs:sequence>
+                <xs:attribute name="fromStateId" type="uuid" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="External">
+        <xs:complexContent>
+            <xs:extension base="Migration">
+                <xs:sequence>
+                    <xs:element name="filename" type="xs:string" />
+                    <xs:element name="target" type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="MigrationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SqlScript"/>
+            <xs:enumeration value="AnsiSqlCreateDatabase"/>
+            <xs:enumeration value="AnsiSqlDropDatabase"/>
+            <xs:enumeration value="MySqlCreateDatabase"/>
+            <xs:enumeration value="SqlServerCreateDatabase"/>
+            <xs:enumeration value="SqlServerCreateSchema"/>
+            <xs:enumeration value="SqlServerDropSchema"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="uuid">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

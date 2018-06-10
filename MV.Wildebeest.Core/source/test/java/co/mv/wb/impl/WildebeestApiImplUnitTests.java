@@ -16,23 +16,19 @@
 
 package co.mv.wb.impl;
 
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
+import co.mv.wb.*;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
 import java.util.Optional;
 
 import static co.mv.wb.Asserts.assertFakeInstance;
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for WildebeestApiImpl.
@@ -41,6 +37,8 @@ import static co.mv.wb.Asserts.assertFakeInstance;
  */
 public class WildebeestApiImplUnitTests
 {
+	private WildebeestApiImpl wildebeestApiImpl = new WildebeestApiImpl(System.out);
+
 	/**
 	 * A call to migrate specified a target and the resource does not have a default.  WildebeestApiImpl correctly
 	 * resolves the specified target and passes it to ResourceHelperImpl.
@@ -192,5 +190,66 @@ public class WildebeestApiImplUnitTests
 			"Bar",
 			context.instance,
 			"instance");
+	}
+
+	@Test public void validateResourceMySqlDatabaseXml()
+	{
+		assertFalse(isValid(new File("MySqlDatabase/database.wbresource.xml"), wildebeestApiImpl.RESOURCES_XSD));
+	}
+
+	@Test public void validateResourceSqlServerDatabaseXml()
+	{
+		assertFalse(isValid(new File("SqlServerDatabase/database.wbresource.xml"), wildebeestApiImpl.RESOURCES_XSD));
+	}
+
+	@Test public void validateResourcePostgreDatabaseXml()
+	{
+		assertTrue(isValid(new File("PostgreSqlDatabase/database.wbresource.xml"), wildebeestApiImpl.RESOURCES_XSD));
+	}
+
+	@Test public void invalidResourceValidation()
+	{
+		assertFalse(isValid(new File("InvalidXml/InvalidSampleResources.xml"), wildebeestApiImpl.RESOURCES_XSD));
+	}
+
+	@Test public void validateInstanceMySqlDatabaseXml()
+	{
+		assertTrue(isValid(new File("MySqlDatabase/staging_db.wbinstance.xml"),wildebeestApiImpl.INSTANCE_XSD));
+	}
+
+	@Test public void validateInstanceSqlServerDatabaseXml()
+	{
+		assertFalse(isValid(new File("SqlServerDatabase/staging_db.wbinstance.xml"),wildebeestApiImpl.INSTANCE_XSD));
+	}
+
+	@Test public void validateInstancePostgreDatabaseXml()
+	{
+		assertTrue(isValid(new File("PostgreSqlDatabase/staging.wbinstance.xml"),wildebeestApiImpl.INSTANCE_XSD));
+	}
+
+
+	@Test public void invalidInstanceValidation()
+	{
+		assertFalse(isValid(new File("InvalidXml/InvalidInstanceSampleResources.xml"),wildebeestApiImpl.INSTANCE_XSD));
+	}
+
+	private boolean isValid(File file, String xsd)
+	{
+		try
+		{
+			String content = new String(Files.readAllBytes(file.toPath()));
+			wildebeestApiImpl.validateXML(content, xsd);
+			return true;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		catch (XmlValidationException e)
+		{
+			System.out.println(e.getMessage());
+			return false;
+		}
 	}
 }

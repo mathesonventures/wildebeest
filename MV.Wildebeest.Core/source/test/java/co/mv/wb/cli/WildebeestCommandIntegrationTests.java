@@ -16,12 +16,7 @@
 
 package co.mv.wb.cli;
 
-import co.mv.wb.FileLoadException;
-import co.mv.wb.Instance;
-import co.mv.wb.LoaderFault;
-import co.mv.wb.PluginBuildException;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
+import co.mv.wb.*;
 import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlUtil;
@@ -47,10 +42,11 @@ public class WildebeestCommandIntegrationTests
 	//
 	
 	@Test public void wildebeestCommand_mySqlMigrate_succeeds() throws
-		FileLoadException,
-		LoaderFault,
-		PluginBuildException,
-		SQLException
+			FileLoadException,
+			LoaderFault,
+			PluginBuildException,
+			SQLException,
+			XmlValidationException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -97,7 +93,8 @@ public class WildebeestCommandIntegrationTests
 		FileLoadException,
 		LoaderFault,
 		PluginBuildException,
-		SQLException
+		SQLException,
+		XmlValidationException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -156,7 +153,8 @@ public class WildebeestCommandIntegrationTests
 		FileLoadException,
 		LoaderFault,
 		PluginBuildException,
-		SQLException
+		SQLException,
+		XmlValidationException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -282,7 +280,8 @@ public class WildebeestCommandIntegrationTests
 	@Test public void sqlServerDatabaseMigrate() throws
 		FileLoadException,
 		LoaderFault,
-		PluginBuildException
+		PluginBuildException,
+		XmlValidationException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -331,7 +330,8 @@ public class WildebeestCommandIntegrationTests
 	@Test public void postgreSqlDatabaseMigrate() throws
 		FileLoadException,
 		LoaderFault,
-		PluginBuildException
+		PluginBuildException,
+		XmlValidationException
 	{
 		// Setup
 		PrintStream output = System.out;

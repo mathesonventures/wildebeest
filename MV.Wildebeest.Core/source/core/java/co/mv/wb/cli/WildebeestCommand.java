@@ -34,6 +34,7 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.XmlValidationException;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -397,6 +398,10 @@ public class WildebeestCommand
 		{
 			out.println(OutputFormatter.pluginBuild(e));
 		}
+		catch (XmlValidationException e)
+		{
+			out.println(OutputFormatter.resourceValidation(e, "resource"));
+		}
 
 		return Optional.ofNullable(resource);
 	}
@@ -429,6 +434,10 @@ public class WildebeestCommand
 		catch (PluginBuildException e)
 		{
 			out.println(OutputFormatter.pluginBuild(e));
+		}
+		catch (XmlValidationException e)
+		{
+			out.println(OutputFormatter.resourceValidation(e, "instance"));
 		}
 
 		return Optional.ofNullable(instance);
