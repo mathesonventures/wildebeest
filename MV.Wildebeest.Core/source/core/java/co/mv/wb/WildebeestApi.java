@@ -43,7 +43,7 @@ public interface WildebeestApi
             FileLoadException,
             LoaderFault,
             PluginBuildException,
-			XmlValidationException;
+            XmlValidationException;
 
 	/**
 	 * Deserializes an {@link Instance} from the specified descriptor file.
@@ -59,7 +59,8 @@ public interface WildebeestApi
 		File instanceFile) throws
 			FileLoadException,
 			LoaderFault,
-			PluginBuildException;
+			PluginBuildException,
+            XmlValidationException;
 
 	/**
 	 * Performs the assertions for the instance's current state.

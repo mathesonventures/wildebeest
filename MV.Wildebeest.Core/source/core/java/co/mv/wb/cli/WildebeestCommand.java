@@ -436,6 +436,10 @@ public class WildebeestCommand
 		{
 			out.println(OutputFormatter.pluginBuild(e));
 		}
+		catch (XmlValidationException e)
+		{
+			out.println(OutputFormatter.resourceValidation(e, "instance"));
+		}
 
 		return Optional.ofNullable(instance);
 	}

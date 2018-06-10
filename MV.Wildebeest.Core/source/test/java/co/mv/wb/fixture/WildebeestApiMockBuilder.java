@@ -86,6 +86,10 @@ public class WildebeestApiMockBuilder
 		{
 			e.printStackTrace();
 		}
+		catch (XmlValidationException e)
+		{
+			e.printStackTrace();
+		}
 
 		return this;
 	}

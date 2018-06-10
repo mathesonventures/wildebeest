@@ -74,7 +74,8 @@ import java.util.UUID;
 public class WildebeestApiImpl implements WildebeestApi
 {
 	private final PrintStream _output;
-
+	final static String RESOURCES_XSD="Resources.xsd";
+	final static String INSTANCE_XSD="Instance.xsd";
 	/**
 	 * Creates a new WildebeestApiImpl using the supplied {@link PrintStream} for user output and the supplied
 	 * ResourceHelper.
@@ -197,7 +198,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		if (resourceXml != null)
 		{
-				validateXML(resourceXml);
+				validateXML(resourceXml, RESOURCES_XSD);
 				DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
 						ResourceTypeServiceBuilder
 								.create()
@@ -211,14 +212,14 @@ public class WildebeestApiImpl implements WildebeestApi
 		return resource;
 	}
 
-	 void validateXML(String resourceXml)
+	 void validateXML(String resourceXml, String xsdFileName)
 			throws
 			XmlValidationException
 	{
 		try
 		{
 			SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
-			File xsdLocation = new File(getClass().getResource("Resources.xsd").toURI());
+			File xsdLocation = new File(getClass().getResource(xsdFileName).toURI());
 			Schema schema = factory.newSchema(xsdLocation);
 
 			Validator validator = schema.newValidator();
@@ -240,7 +241,8 @@ public class WildebeestApiImpl implements WildebeestApi
 		File instanceFile) throws
 			FileLoadException,
 			LoaderFault,
-			PluginBuildException
+			PluginBuildException,
+			XmlValidationException
 	{
 		if (instanceFile == null) { throw new IllegalArgumentException("instanceFile"); }
 
@@ -259,6 +261,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		if (instanceXml != null)
 		{
+			validateXML(instanceXml, INSTANCE_XSD);
 			DomInstanceLoader instanceLoader = new DomInstanceLoader(
 				DomPlugins.instanceBuilders(),
 				instanceXml);

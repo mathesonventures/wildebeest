@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instance type="co.mv.wb.MySqlDatabase">
+    <hostName>10.12.48.27</hostName>
+    <port>322306</port>
+    <adminUsername>root</adminUsername>
+    <adminPassword>password</adminPassword>
+    <schemaName>ProductCatalogueStaging</schemaName>
+</instance>
