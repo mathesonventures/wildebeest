@@ -549,7 +549,6 @@
 				<pathelement path="${target.core.app}/classes"/>
 				<fileset dir="${target.core.app}/lib" includes="**/*.jar" />
 				<fileset dir="${target.test.libcompile}" includes="*.jar" />
-				<fileset dir="${target.test.libcompileandrun}" includes="*.jar" />
 			</classpath>
 
 		</javac>
