@@ -16,30 +16,23 @@ If you want to use an IDE, we recommend using the latest version of IntelliJ.  I
 
 Regardless of your choice of editor please ensure you configure it to follow our [code standard](Code Standard.md).
 
-We support development on Linux, Windows and macOS.
+We support development on Linux, Windows and macOS.  For guidance on setting up the required tools, see **Toolchain Setup** below.
+
+## Get the Code
+
+If you just want to play with the Wildebeest code, you can clone directly from the main repository
+
+```
+git clone https://github.com/mathesonventures/wildebeest.git
+```
+
+However if you want to start making code changes to submit back to the project, you will need to first fork the project into your own account on GitHub, then clone from your fork.  It is recommended that you create a feature branch in your fork to contain each feature that you work on, and that you submit pull requests to the main repo from a feature branch.
 
 ## Command-Line Quick Start
 
 ### Introduction
 
 The most lightweight way to get started is using your command-line tools to build and test Wildebeest.
-
-### Pre-Flight Check
-
-Make sure your tools are setup correctly:
-
-```
-$ javac -version
-javac 1.8.0_144
-
-$ java -version
-java version "1.8.0_144"
-Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
-Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
-
-$ ant -version
-Apache Ant(TM) version 1.8.2 compiled on December 20 2010
-```
 
 ### Build the API Component
 
@@ -83,3 +76,36 @@ From either component you can also purge the project-level artifact repository u
 $ ant cleanrepo
 ```
 
+## Toolchain Setup
+
+### JDK
+
+Get the latest Java SE SDK from Oracle at http://www.oracle.com/technetwork/java/javase/downloads/index.html.  Choose the package appropriate for your OS and architecture and install it.
+
+### Apache Ant
+
+- Get the latest Ant ZIP distro from https://ant.apache.org/bindownload.cgi.
+- Unpack it somewhere appropriate such as /opt/apache-ant on Linux or C:\opt\apache-ant on Windows.
+- Define an environment variable called ANT_HOME set to that path.
+- Add Ant to your path:
+  - On Linux append $ANT_HOME/bin
+  - On Windows append %ANT_HOME%/bin
+
+### Pre-Flight Check
+
+Before going back to hack on Wildebeest, make sure your tools are setup correctly:
+
+```
+$ javac -version
+javac 1.8.0_144
+
+$ java -version
+java version "1.8.0_144"
+Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
+Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
+
+$ ant -version
+Apache Ant(TM) version 1.8.2 compiled on December 20 2010
+```
+
+### 
