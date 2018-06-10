@@ -26,7 +26,6 @@ import java.io.PrintStream;
 /**
  * {@link MigrationPlugin} for the Fake plugin implementation.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class SetTagMigrationPlugin implements MigrationPlugin

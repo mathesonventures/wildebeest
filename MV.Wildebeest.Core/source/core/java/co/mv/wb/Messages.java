@@ -22,7 +22,6 @@ import java.util.List;
 /**
  * A container for messages raised during some operation.
  * 
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 public class Messages

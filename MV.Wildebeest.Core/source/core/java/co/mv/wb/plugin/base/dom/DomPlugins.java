@@ -51,7 +51,6 @@ import java.util.Map;
 /**
  * Provides the set of pre-configured core plugins that are supported by Wildebeest.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class DomPlugins

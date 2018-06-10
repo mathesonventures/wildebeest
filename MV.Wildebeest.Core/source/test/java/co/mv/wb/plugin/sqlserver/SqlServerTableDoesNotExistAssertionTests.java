@@ -53,7 +53,6 @@ import static org.junit.Assert.fail;
 /**
  * Unit tests for {@link SqlServerTableDoesNotExistAssertion}.
  *
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 public class SqlServerTableDoesNotExistAssertionTests

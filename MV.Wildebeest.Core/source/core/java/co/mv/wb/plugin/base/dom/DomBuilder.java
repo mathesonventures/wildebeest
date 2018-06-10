@@ -22,7 +22,6 @@ import org.w3c.dom.Element;
  * Provides the core definition for all builder implementations (AssertionBuilder, InstanceBuilder, etc) that are based
  * on DOM parsing of XML representations.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface DomBuilder

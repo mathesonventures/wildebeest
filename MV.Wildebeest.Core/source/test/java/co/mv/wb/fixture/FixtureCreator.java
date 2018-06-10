@@ -21,8 +21,7 @@ import java.util.UUID;
 /**
  * Entry point for the fluent API for creating XML fixtures for unit tests.
  *
- * @author Brendon Matheson
- * @since 4.0
+ * @since                                       4.0
  */
 public class FixtureCreator {
 

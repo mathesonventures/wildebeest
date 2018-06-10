@@ -29,7 +29,6 @@ import java.util.UUID;
 /**
  * Provides a base implementation of {@link Resource}
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public final class ResourceImpl implements Resource

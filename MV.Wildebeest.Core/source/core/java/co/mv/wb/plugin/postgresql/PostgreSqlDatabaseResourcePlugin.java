@@ -34,7 +34,6 @@ import java.util.UUID;
 /**
  * Defines a PostgreSQL database resource.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin

@@ -22,7 +22,6 @@ import java.util.UUID;
 /**
  * An Assertion represents a condition that can be checked to verify a specific part of a stateful resource.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface Assertion

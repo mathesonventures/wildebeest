@@ -30,7 +30,6 @@ import java.util.UUID;
 /**
  * A {@link Migration} that drops a schema from a SQL Server database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 @MigrationType(

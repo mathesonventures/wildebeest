@@ -19,7 +19,6 @@ package co.mv.wb;
 /**
  * Indicates an unexpected error occurred during migration.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class MigrationFaultException extends RuntimeException

@@ -19,7 +19,6 @@ package co.mv.wb.plugin.generaldatabase;
 /**
  * Marker interface for tagging DatabaseInstance implementations that represent ANSI-compliant database systems.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public interface AnsiSqlDatabaseInstance extends DatabaseInstance

@@ -30,7 +30,6 @@ import java.util.UUID;
 /**
  * A {@link Migration} that performs a SQL script to transition between states.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 @MigrationType(

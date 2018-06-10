@@ -33,7 +33,6 @@ import java.util.UUID;
 /**
  * An {@link Assertion} that verifies that a given table exists in a SQL Server database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 @MigrationType(

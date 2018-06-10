@@ -33,7 +33,6 @@ import java.util.UUID;
 /**
  * A {@link Resource} that is a MySQL database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class MySqlDatabaseResourcePlugin implements ResourcePlugin

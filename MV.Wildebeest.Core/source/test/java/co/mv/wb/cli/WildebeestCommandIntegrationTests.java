@@ -37,7 +37,6 @@ import java.sql.SQLException;
 /**
  * Full integration tests for Wildebeest that invoke the CLI with real plugins and back-ends.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class WildebeestCommandIntegrationTests

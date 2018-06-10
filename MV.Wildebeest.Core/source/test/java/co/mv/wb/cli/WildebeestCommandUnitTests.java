@@ -48,7 +48,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 /**
  * Unit tests for WildebeestCommand.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class WildebeestCommandUnitTests

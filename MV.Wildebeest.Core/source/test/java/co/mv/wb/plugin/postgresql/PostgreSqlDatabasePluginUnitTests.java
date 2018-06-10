@@ -33,7 +33,6 @@ import java.util.UUID;
 /**
  * Unit tests for Database plugins as applied to PostgreSQL databases.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTests

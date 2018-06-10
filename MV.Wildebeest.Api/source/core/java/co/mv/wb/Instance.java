@@ -19,7 +19,6 @@ package co.mv.wb;
 /**
  * Represents a specific instance of a Resource.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface Instance

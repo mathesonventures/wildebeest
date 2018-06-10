@@ -32,7 +32,6 @@ import java.util.UUID;
 /**
  * {@link Assertion} plugin for the Fake plugin implementation.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 @AssertionType(

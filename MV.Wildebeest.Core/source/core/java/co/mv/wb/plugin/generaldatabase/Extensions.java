@@ -19,7 +19,6 @@ package co.mv.wb.plugin.generaldatabase;
 /**
  * Provides convenience methods for working with database resources.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class Extensions

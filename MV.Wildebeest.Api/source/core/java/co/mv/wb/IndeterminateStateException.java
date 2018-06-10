@@ -19,7 +19,6 @@ package co.mv.wb;
 /**
  * Indicates that Wildebeest was unable to determine the current state of specified resource Instance.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class IndeterminateStateException extends Exception

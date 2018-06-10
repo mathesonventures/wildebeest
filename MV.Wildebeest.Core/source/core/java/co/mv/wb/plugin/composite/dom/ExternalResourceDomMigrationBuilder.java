@@ -31,7 +31,6 @@ import java.util.UUID;
 /**
  * A {@link MigrationBuilder} that builds a {@link ExternalResourceMigration} from a DOM {@link org.w3c.dom.Element}.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder

@@ -40,7 +40,6 @@ import java.util.UUID;
 /**
  * An {@link Assertion} that verifies that a given SQL query yields a single row.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 @MigrationType(

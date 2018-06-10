@@ -24,7 +24,6 @@ import java.util.List;
 /**
  * Default in-memory implementation of {@link ResourceTypeService}
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class ResourceTypeServiceImpl implements ResourceTypeService

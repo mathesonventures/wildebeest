@@ -26,7 +26,6 @@ import java.util.List;
 /**
  * A fluent-style helper for building a ResourceTypeService instance.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class ResourceTypeServiceBuilder

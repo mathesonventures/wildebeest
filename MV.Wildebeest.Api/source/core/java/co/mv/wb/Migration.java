@@ -23,7 +23,6 @@ import java.util.UUID;
 /**
  * A Migration implements a means of transitioning an Instance of a Resource from one State to another.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface Migration

@@ -19,7 +19,6 @@ package co.mv.wb;
 /**
  * Indicates that a JumpState operation failed for some normal reason that should be presented to the user.
  * 
- * @author                                      Brendon Matheson
  * @since                                       3.0
  */
 public class JumpStateFailedException extends Exception

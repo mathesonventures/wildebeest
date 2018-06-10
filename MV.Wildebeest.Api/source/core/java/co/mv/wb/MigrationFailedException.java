@@ -21,7 +21,6 @@ import java.util.UUID;
 /**
  * Indicates that a Migration failed for some normal reason that should be presented to the user.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class MigrationFailedException extends Exception

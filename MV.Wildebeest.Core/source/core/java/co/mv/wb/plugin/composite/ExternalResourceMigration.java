@@ -31,7 +31,6 @@ import java.util.UUID;
  * Applies a migration in an external resource definition, and tracks both the external resource state and the composite
  * state.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 @MigrationType(

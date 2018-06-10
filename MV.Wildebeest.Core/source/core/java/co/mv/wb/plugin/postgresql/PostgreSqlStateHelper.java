@@ -30,7 +30,6 @@ import java.util.UUID;
 /**
  * Centralizes state tracking operations for PostgreSqlDatabaseInstances.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class PostgreSqlStateHelper

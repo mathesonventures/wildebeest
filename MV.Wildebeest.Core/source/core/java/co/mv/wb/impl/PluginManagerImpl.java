@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 /**
  * Default implementation of {@link PluginManager}.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class PluginManagerImpl implements PluginManager

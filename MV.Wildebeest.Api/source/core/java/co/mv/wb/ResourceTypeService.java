@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * An injectable service that let's Wildebeest discover the types of resources that are available for it to work with.
  *
- * @author                                      Brendon Mathesn
  * @since                                       4.0
  */
 public interface ResourceTypeService

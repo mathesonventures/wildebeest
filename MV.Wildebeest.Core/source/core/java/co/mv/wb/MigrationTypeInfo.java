@@ -21,7 +21,6 @@ import co.mv.wb.framework.ArgumentNullException;
 /**
  * Tracks migration type info for resolving plugins.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class MigrationTypeInfo

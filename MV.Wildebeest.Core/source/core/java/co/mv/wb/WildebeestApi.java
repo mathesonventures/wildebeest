@@ -23,7 +23,6 @@ import java.util.Optional;
 /**
  * The main programmatic API for working with Wildebeest.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public interface WildebeestApi
@@ -149,7 +148,6 @@ public interface WildebeestApi
 	/**
 	 * Produces an XML description of the plugins known to this instance of Wildebeest.
 	 *
-	 * @author                                  Brendon Matheson
 	 * @since                                   4.0
 	 */
 	String describePlugins();

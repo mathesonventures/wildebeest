@@ -43,8 +43,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Unit tests for {@link DomResourceLoader}.
  *
- * @author Brendon Matheson
- * @since 1.0
+ * @since                                       1.0
  */
 public class DomResourceLoaderTests {
     @Test

@@ -22,7 +22,6 @@ package co.mv.wb;
  * Note: this is not to be confused with an AssertionResult, which is created from an AssertionResponse but is returned
  * by aggregate functions such as {@link Resource#assertState()}
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface AssertionResponse

@@ -31,7 +31,6 @@ import java.util.Map;
 /**
  * A fluent builder for WildebeestApi implementation.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class WildebeestApiBuilder

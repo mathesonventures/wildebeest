@@ -30,7 +30,6 @@ import java.util.UUID;
 /**
  * A {@link Migration} that drops a database using ANSI-standard SQL statements.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 @MigrationType(

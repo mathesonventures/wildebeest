@@ -29,7 +29,6 @@ import java.util.UUID;
 /**
  * A Migration that creates a new schema in a SQL-Server database resource.
  * 
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 @MigrationType(

@@ -29,7 +29,6 @@ import java.util.UUID;
 /**
  * A {@link MigrationBuilder} that builds a {@link MySqlCreateDatabaseMigration} from a DOM {@link org.w3c.dom.Element}.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class MySqlCreateDatabaseDomMigrationBuilder extends BaseDomMigrationBuilder

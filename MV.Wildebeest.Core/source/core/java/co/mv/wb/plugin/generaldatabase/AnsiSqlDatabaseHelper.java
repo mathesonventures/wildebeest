@@ -21,7 +21,6 @@ import co.mv.wb.framework.DatabaseHelper;
 /**
  * Helper functions for common operations on an ANSI-SQL compliant database system.
  * 
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class AnsiSqlDatabaseHelper

@@ -30,7 +30,6 @@ import java.util.UUID;
 /**
  * A {@link Migration} that creates a MySQL database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 @MigrationType(

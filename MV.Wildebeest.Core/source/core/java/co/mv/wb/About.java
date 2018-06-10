@@ -19,7 +19,6 @@ package co.mv.wb;
 /**
  * Provides information about this release of Wildebeest.
  * 
- * @author                                      Brendon Matheson
  * @since                                       3.0
  */
 public class About

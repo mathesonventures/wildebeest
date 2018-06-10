@@ -24,7 +24,6 @@ import java.lang.annotation.Target;
 /**
  * Links a MigrationPlugin to it's applicable type via a URI reference.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 @Target(ElementType.TYPE)

@@ -27,7 +27,6 @@ import java.sql.SQLException;
 /**
  * Provides a set of convenience methods for working with JDBC-accessed databases.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
 */
 public class DatabaseHelper

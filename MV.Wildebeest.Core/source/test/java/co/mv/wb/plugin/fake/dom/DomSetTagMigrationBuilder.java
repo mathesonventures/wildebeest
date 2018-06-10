@@ -27,7 +27,6 @@ import java.util.UUID;
 /**
  * DOM-based {@link co.mv.wb.MigrationBuilder} for the Fake plugin implementation.
  *
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class DomSetTagMigrationBuilder extends BaseDomMigrationBuilder

@@ -64,7 +64,6 @@ import java.util.UUID;
  * Provides a generic interface that can be adapted to different environments.  For example the WildebeestCommand
  * command-line interface delegates to WildebeestApiImpl to drive commands.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class WildebeestApiImpl implements WildebeestApi

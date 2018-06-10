@@ -33,7 +33,6 @@ import java.sql.SQLException;
 /**
  * An {@link Instance} of a SQL Server database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabaseInstance

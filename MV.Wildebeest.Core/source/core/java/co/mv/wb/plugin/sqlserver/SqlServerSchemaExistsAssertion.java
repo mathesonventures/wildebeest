@@ -33,7 +33,6 @@ import java.util.UUID;
 /**
  * A {@link Assertion} that verifies that a given schema exists in a SQL Server database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       2.0
  */
 @MigrationType(

@@ -20,7 +20,6 @@ package co.mv.wb;
  * An InstanceLoader is responsible for the overall deserialization of an instance descriptor from some persistent
  * representation to an {@link Instance} object.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface InstanceLoader

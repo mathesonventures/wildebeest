@@ -32,7 +32,6 @@ import java.sql.SQLException;
 /**
  * A resource {@link Instance} that describes a MySQL database.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcDatabaseInstance

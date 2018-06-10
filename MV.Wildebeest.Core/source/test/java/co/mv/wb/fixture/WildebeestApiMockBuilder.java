@@ -31,7 +31,6 @@ import static org.mockito.Mockito.when;
 /**
  * Fluent-style builder for creating Mockito-based mocks of {@link WildebeestApi}.
  *
- * @author                                      Brendon Matheson
  * @since                                       4.0
  */
 public class WildebeestApiMockBuilder

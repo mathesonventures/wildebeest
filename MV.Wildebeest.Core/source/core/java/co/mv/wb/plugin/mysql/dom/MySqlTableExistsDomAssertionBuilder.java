@@ -31,7 +31,6 @@ import java.util.UUID;
  * An {@link AssertionBuilder} that builds a {@link MySqlTableExistsAssertion} from a DOM
  * {@link org.w3c.dom.Element}.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class MySqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuilder

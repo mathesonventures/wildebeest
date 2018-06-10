@@ -27,7 +27,6 @@ import java.util.UUID;
  * state and restore the AssertionBuilder to a clean state ready to be re-used to build another Assertion instance.  The
  * framework will always call reset() before using an AssertionBuilder.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface AssertionBuilder

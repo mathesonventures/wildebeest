@@ -24,7 +24,6 @@ package co.mv.wb;
  * the InstanceBuilder to a clean state ready to be re-used to build a different Instance.  The framework will always
  * call reset() before using an InstanceBuilder.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public interface InstanceBuilder

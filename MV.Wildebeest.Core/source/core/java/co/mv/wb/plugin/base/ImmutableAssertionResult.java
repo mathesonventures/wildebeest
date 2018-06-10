@@ -23,7 +23,6 @@ import java.util.UUID;
 /**
  * An {@link AssertionResult} that cannot be modified after it's initial construction.
  * 
- * @author                                      Brendon Matheson
  * @since                                       1.0
  */
 public class ImmutableAssertionResult implements AssertionResult
