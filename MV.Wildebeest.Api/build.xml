@@ -352,10 +352,7 @@
 		name="core.jar:pub-project"
 		depends="structure.properties,meta.component.properties,core.jar">
 
-    <ivy:settings id="ivysettings" file="ivysettings.xml" />
-
     <ivy:publish
-      settingsRef="ivysettings"
       pubrevision="${meta.project.version.full.dotted}"
       status="release"
       resolver="project"
