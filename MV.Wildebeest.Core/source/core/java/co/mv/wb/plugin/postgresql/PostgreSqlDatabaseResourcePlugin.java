@@ -42,7 +42,8 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 	{
 	}
 
-    @Override public State currentState(
+    @Override
+	public State currentState(
 		Resource resource,
 		Instance instance) throws
 			IndeterminateStateException
@@ -85,7 +86,8 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 		return result;
     }
 
-    @Override public void setStateId(
+    @Override
+	public void setStateId(
 		PrintStream output,
 		Resource resource,
 		Instance instance,

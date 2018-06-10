@@ -27,6 +27,10 @@ import java.util.UUID;
  */
 public class AssertionFailedException extends Exception
 {
+	private UUID stateId = null;
+	private boolean stateIdSet = false;
+	private List<AssertionResult> assertionResults = null;
+	private boolean assertionResultsSet = false;
 	/**
 	 * Creates a new AssertionFailedException for the specified state and AssertionResult.
 	 * 
@@ -42,11 +46,7 @@ public class AssertionFailedException extends Exception
 		this.setStateId(stateId);
 		this.setAssertionResults(assertionResults);
 	}
-	
-	// <editor-fold desc="StateId" defaultstate="collapsed">
 
-	private UUID _stateId = null;
-	private boolean _stateId_set = false;
 
 	/**
 	 * Gets the ID of the State for which Assertion evaluation failed.
@@ -55,10 +55,10 @@ public class AssertionFailedException extends Exception
 	 * @since                                   1.0
 	 */
 	public UUID getStateId() {
-		if(!_stateId_set) {
+		if(!stateIdSet) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
-		return _stateId;
+		return stateId;
 	}
 
 	private void setStateId(
@@ -66,19 +66,12 @@ public class AssertionFailedException extends Exception
 		if(value == null) {
 			throw new IllegalArgumentException("stateId cannot be null");
 		}
-		boolean changing = !_stateId_set || _stateId != value;
+		boolean changing = !stateIdSet || stateId != value;
 		if(changing) {
-			_stateId_set = true;
-			_stateId = value;
+			stateIdSet = true;
+			stateId = value;
 		}
 	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="AssertionResults" defaultstate="collapsed">
-
-	private List<AssertionResult> _assertionResults = null;
-	private boolean _assertionResults_set = false;
 
 	/**
 	 * Gets the result of the evaluation of the Assertion.
@@ -87,22 +80,21 @@ public class AssertionFailedException extends Exception
 	 * @since                                   1.0
 	 */
 	public List<AssertionResult> getAssertionResults() {
-		if(!_assertionResults_set) {
+		if(!assertionResultsSet) {
 			throw new IllegalStateException("assertionResults not set.  Use the HasAssertionResults() method to check its state before accessing it.");
 		}
-		return _assertionResults;
+		return assertionResults;
 	}
 
 	private void setAssertionResults(List<AssertionResult> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("assertionResults cannot be null");
 		}
-		boolean changing = !_assertionResults_set || _assertionResults != value;
+		boolean changing = !assertionResultsSet || assertionResults != value;
 		if(changing) {
-			_assertionResults_set = true;
-			_assertionResults = value;
+			assertionResultsSet = true;
+			assertionResults = value;
 		}
 	}
 
-	// </editor-fold>
 }
