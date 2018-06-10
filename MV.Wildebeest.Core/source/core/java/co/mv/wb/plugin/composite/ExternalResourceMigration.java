@@ -174,7 +174,8 @@ public class ExternalResourceMigration extends BaseMigration
 	}
 
 
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			Wildebeest.MySqlDatabase,

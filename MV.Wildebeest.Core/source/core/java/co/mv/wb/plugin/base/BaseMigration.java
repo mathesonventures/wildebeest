@@ -84,7 +84,9 @@ public abstract class BaseMigration implements Migration
 	}
 
 
-	@Override public Optional<String> getFromStateId() {
+
+	@Override
+	public Optional<String> getFromStateId() {
 		if(!fromStateIdSet) {
 			throw new IllegalStateException("fromStateId not set.");
 		}
@@ -105,7 +107,9 @@ public abstract class BaseMigration implements Migration
 		}
 	}
 
-	@Override public Optional<String> getToStateId() {
+
+	@Override
+	public Optional<String> getToStateId() {
 		if(!toStateIdSet) {
 			throw new IllegalStateException("toStateId not set.");
 		}

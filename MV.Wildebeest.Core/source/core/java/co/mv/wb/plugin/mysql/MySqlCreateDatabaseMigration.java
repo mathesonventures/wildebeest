@@ -66,7 +66,8 @@ public class MySqlCreateDatabaseMigration extends BaseMigration
 		super(migrationId, fromStateId, toStateId);
 	}
 	
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			Wildebeest.MySqlDatabase);

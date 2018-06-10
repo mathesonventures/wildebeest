@@ -105,9 +105,9 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 		return schemaNameSet;
 	}
 
-	// </editor-fold>
 	
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			Wildebeest.SqlServerDatabase);

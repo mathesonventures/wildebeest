@@ -116,7 +116,8 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 		return sqlSet;
 	}
 
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			Wildebeest.MySqlDatabase,

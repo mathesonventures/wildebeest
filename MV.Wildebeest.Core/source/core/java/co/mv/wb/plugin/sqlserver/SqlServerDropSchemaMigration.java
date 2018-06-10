@@ -105,10 +105,9 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 	private boolean hasSchemaName() {
 		return schemaNameSet;
 	}
-
-	// </editor-fold>
 	
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			Wildebeest.SqlServerDatabase);

@@ -84,9 +84,9 @@ public class SetTagMigration extends BaseMigration
 		return tagSet;
 	}
 
-	// </editor-fold>
 	
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			FakeConstants.Fake);
