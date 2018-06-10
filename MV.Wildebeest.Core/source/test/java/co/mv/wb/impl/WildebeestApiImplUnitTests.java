@@ -41,8 +41,8 @@ public class WildebeestApiImplUnitTests
 	private WildebeestApiImpl wildebeestApiImpl = new WildebeestApiImpl(System.out);
 
 	/**
-	 * A call to migrate specified a target and the resource does not have a default.  WildebeestApiImpl correctly resolves the
-	 * specified target and passes it to ResourceHelperImpl.
+	 * A call to migrate specified a target and the resource does not have a default.  WildebeestApiImpl correctly
+	 * resolves the specified target and passes it to ResourceHelperImpl.
 	 *
 	 * @since                                   4.0
 	 */
@@ -81,8 +81,8 @@ public class WildebeestApiImplUnitTests
 	}
 
 	/**
-	 * A call to migrate specified a target and the resource has a default.  WildebeestApiImpl correctly resolves the specified
-	 * target and passes it to ResourceHelperImpl.
+	 * A call to migrate specified a target and the resource has a default.  WildebeestApiImpl correctly resolves the
+	 * specified target and passes it to ResourceHelperImpl.
 	 *
 	 * @since                                   4.0
 	 */
@@ -121,8 +121,8 @@ public class WildebeestApiImplUnitTests
 	}
 
 	/**
-	 * A call to migrate did not specify a target and the resource does not have a default.  WildebeestApiImpl raises the error
-	 * by throwing a TargetNotSpecifiedException.
+	 * A call to migrate did not specify a target and the resource does not have a default.  WildebeestApiImpl raises
+	 * the error by throwing a TargetNotSpecifiedException.
 	 *
 	 * @since                                   4.0
 	 */
@@ -154,8 +154,8 @@ public class WildebeestApiImplUnitTests
 	}
 
 	/**
-	 * A call to migrate did not specify a target but the resource has a default.  WildebeestApiImpl correctly resolves the
-	 * default target and passes it to ResourceHelperImpl
+	 * A call to migrate did not specify a target but the resource has a default.  WildebeestApiImpl correctly resolves
+	 * the default target and passes it to ResourceHelperImpl
 	 *
 	 * @since                                   4.0
 	 */

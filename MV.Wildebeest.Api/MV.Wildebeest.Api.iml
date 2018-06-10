@@ -10,17 +10,13 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8_171" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../jars" />
+          <root url="jar://$MODULE_DIR$/target/test/libcompile/junit-4.11.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../jars" />
-        </SOURCES>
-        <jarDirectory url="file://$MODULE_DIR$/../jars" recursive="false" />
-        <jarDirectory url="file://$MODULE_DIR$/../jars" recursive="false" type="SOURCES" />
+        <SOURCES />
       </library>
     </orderEntry>
   </component>
