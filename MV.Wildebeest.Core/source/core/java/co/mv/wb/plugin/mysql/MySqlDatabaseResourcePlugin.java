@@ -85,7 +85,7 @@ public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 		PrintStream output,
 		Resource resource,
 		Instance instance,
-		UUID stateId)
+		String stateId)
 	{
 		if (output == null) { throw new IllegalArgumentException("output"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }

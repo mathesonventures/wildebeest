@@ -61,5 +61,5 @@ public interface ResourcePlugin
 		PrintStream output,
 		Resource resource,
 		Instance instance,
-		UUID stateId);
+		String stateId);
 }

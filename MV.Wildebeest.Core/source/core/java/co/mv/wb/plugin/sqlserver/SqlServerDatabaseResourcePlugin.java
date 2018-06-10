@@ -90,7 +90,7 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 		PrintStream output,
 		Resource resource,
 		Instance instance,
-		UUID stateId)
+		String stateId)
 	{
 		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }

@@ -705,7 +705,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	}
 
 	private static void throwIfFailed(
-		UUID stateId,
+		String stateId,
 		List<AssertionResult> assertionResults) throws AssertionFailedException
 	{
 		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
