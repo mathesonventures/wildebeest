@@ -49,8 +49,8 @@ public class AnsiSqlDropDatabaseMigration extends BaseMigration
 {
     public AnsiSqlDropDatabaseMigration(
         UUID migrationId,
-        Optional<UUID> fromStateId,
-        Optional<UUID> toStateId)
+        Optional<String> fromStateId,
+        Optional<String> toStateId)
     {
         super(migrationId, fromStateId, toStateId);
     }

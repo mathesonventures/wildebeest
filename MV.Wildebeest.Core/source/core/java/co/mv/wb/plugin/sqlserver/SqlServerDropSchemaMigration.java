@@ -61,8 +61,8 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 	 */
 	public SqlServerDropSchemaMigration(
 		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId,
+		Optional<String> fromStateId,
+		Optional<String> toStateId,
 		String schemaName)
 	{
 		super(migrationId, fromStateId, toStateId);

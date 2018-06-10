@@ -61,8 +61,8 @@ public class ExternalResourceMigration extends BaseMigration
 
 	public ExternalResourceMigration(
 		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId,
+		Optional<String> fromStateId,
+		Optional<String> toStateId,
 		File baseDir,
 		String fileName,
 		Optional<String> target)

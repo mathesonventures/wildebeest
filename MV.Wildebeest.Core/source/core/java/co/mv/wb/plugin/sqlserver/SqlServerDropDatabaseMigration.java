@@ -58,8 +58,8 @@ public class SqlServerDropDatabaseMigration extends BaseMigration
 	 */
 	public SqlServerDropDatabaseMigration(
 		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId)
+		Optional<String> fromStateId,
+		Optional<String> toStateId)
 	{
 		super(migrationId, fromStateId, toStateId);
 	}

@@ -812,4 +812,54 @@ public class ResourceHelperUnitTests
 		assertEquals("instance.tag", "Foo", instance.getTag());
 		
 	}
+
+	@Test public void migrate_fromStateandToStateAreLabels() throws
+		  AssertionFailedException,
+		  IndeterminateStateException,
+		  InvalidStateSpecifiedException,
+		  MigrationNotPossibleException,
+		  MigrationFailedException,
+		  TargetNotSpecifiedException,
+		  UnknownStateSpecifiedException
+	{
+		// Setup
+		PrintStream output = System.out;
+		Resource resource = new ResourceImpl(
+			  UUID.randomUUID(),
+			  FakeConstants.Fake,
+			  "Resource",
+			  Optional.empty());
+
+		UUID state1Id = UUID.randomUUID();
+		State state = new ImmutableState(state1Id);
+		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
+		resource.getStates().add(state);
+
+		UUID migration1Id = UUID.randomUUID();
+		Migration tran1 = new SetTagMigration(migration1Id, Optional.empty(), Optional.of(state1Id), "foo");
+		resource.getMigrations().add(tran1);
+
+		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
+
+		FakeInstance instance = new FakeInstance();
+
+		WildebeestApi wildebeestApi = Wildebeest
+			  .wildebeestApi(output)
+			  .withFactoryResourcePlugins()
+			  .withFactoryPluginManager()
+			  .get();
+
+		// Execute
+		wildebeestApi.migrate(
+			  resource,
+			  instance,
+			  Optional.of(state1Id.toString()));
+
+		// Verify
+		assertEquals("instance.tag", "foo", instance.getTag());
+
+	}
 }
+
+

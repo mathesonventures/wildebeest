@@ -30,9 +30,9 @@ public abstract class BaseMigration implements Migration
 {
 	private UUID migrationId = null;
 	private boolean migrationIdSet = false;
-	private Optional<UUID> fromStateId = null;
+	private Optional<String> fromStateId = null;
 	private boolean fromStateIdSet = false;
-	private Optional<UUID> toStateId = null;
+	private Optional<String> toStateId = null;
 	private boolean toStateIdSet = false;
 
 	/**
@@ -44,15 +44,16 @@ public abstract class BaseMigration implements Migration
 	 */
 	protected BaseMigration(
 		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId)
+		Optional<String> fromStateId,
+		Optional<String> toStateId)
 	{
 		this.setMigrationId(migrationId);
 		this.setFromStateId(fromStateId);
 		this.setToStateId(toStateId);
 	}
 
-	@Override public UUID getMigrationId() {
+	@Override
+	public UUID getMigrationId() {
 		if(!migrationIdSet) {
 			throw new IllegalStateException("migrationId not set.  Use the HasMigrationId() method to check its state before accessing it.");
 		}
@@ -83,7 +84,7 @@ public abstract class BaseMigration implements Migration
 	}
 
 
-	@Override public Optional<UUID> getFromStateId() {
+	@Override public Optional<String> getFromStateId() {
 		if(!fromStateIdSet) {
 			throw new IllegalStateException("fromStateId not set.");
 		}
@@ -93,7 +94,7 @@ public abstract class BaseMigration implements Migration
 		return fromStateId;
 	}
 
-	private void setFromStateId(Optional<UUID> value) {
+	private void setFromStateId(Optional<String> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("fromStateId cannot be null");
 		}
@@ -104,7 +105,7 @@ public abstract class BaseMigration implements Migration
 		}
 	}
 
-	@Override public Optional<UUID> getToStateId() {
+	@Override public Optional<String> getToStateId() {
 		if(!toStateIdSet) {
 			throw new IllegalStateException("toStateId not set.");
 		}
@@ -114,7 +115,7 @@ public abstract class BaseMigration implements Migration
 		return toStateId;
 	}
 
-	private void setToStateId(Optional<UUID> value) {
+	private void setToStateId(Optional<String> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("toStateId cannot be null");
 		}
