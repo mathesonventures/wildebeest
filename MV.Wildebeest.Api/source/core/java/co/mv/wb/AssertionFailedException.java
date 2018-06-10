@@ -27,7 +27,7 @@ import java.util.UUID;
  */
 public class AssertionFailedException extends Exception
 {
-	private UUID stateId = null;
+	private String stateId = null;
 	private boolean stateIdSet = false;
 	private List<AssertionResult> assertionResults = null;
 	private boolean assertionResultsSet = false;
@@ -40,7 +40,7 @@ public class AssertionFailedException extends Exception
 	 * @since                                   1.0
 	 */
 	public AssertionFailedException(
-		UUID stateId,
+		String stateId,
 		List<AssertionResult> assertionResults)
 	{
 		this.setStateId(stateId);
@@ -49,12 +49,12 @@ public class AssertionFailedException extends Exception
 
 
 	/**
-	 * Gets the ID of the State for which Assertion evaluation failed.
+	 * Gets the ID or Label of the State for which Assertion evaluation failed.
 	 * 
 	 * @return                                   the ID of the State for which Assertion evaluation failed
 	 * @since                                   1.0
 	 */
-	public UUID getStateId() {
+	public String getStateId() {
 		if(!stateIdSet) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
@@ -62,7 +62,7 @@ public class AssertionFailedException extends Exception
 	}
 
 	private void setStateId(
-		UUID value) {
+		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateId cannot be null");
 		}

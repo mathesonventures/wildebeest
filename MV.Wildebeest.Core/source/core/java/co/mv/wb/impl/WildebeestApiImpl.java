@@ -468,7 +468,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		State state = Wildebeest.stateForId(
 			resource,
-			targetStateId);
+			targetStateId.toString());
 
 		if (targetState == null)
 		{
@@ -481,13 +481,13 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource,
 			instance);
 
-		WildebeestApiImpl.throwIfFailed(state.getStateId(), assertionResults);
+		WildebeestApiImpl.throwIfFailed(state.getStateId().toString(), assertionResults);
 
 		resourcePlugin.setStateId(
 			_output,
 			resource,
 			instance,
-			targetStateId);
+			targetStateId.toString());
 	}
 
 	@Override public String describePlugins()
