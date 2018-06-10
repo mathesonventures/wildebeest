@@ -1,0 +1,82 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <option name="HTML_ALIGN_ATTRIBUTES" value="false" />
+    <HTMLCodeStyleSettings>
+      <option name="HTML_ALIGN_ATTRIBUTES" value="false" />
+    </HTMLCodeStyleSettings>
+    <ScalaCodeStyleSettings>
+      <option name="classCountToUseImportOnDemand" value="99" />
+      <option name="NOT_CONTINUATION_INDENT_FOR_PARAMS" value="true" />
+      <option name="USE_SCALADOC2_FORMATTING" value="false" />
+    </ScalaCodeStyleSettings>
+    <XML>
+      <option name="XML_ALIGN_ATTRIBUTES" value="false" />
+      <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+    </XML>
+    <codeStyleSettings language="HTML">
+      <indentOptions>
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="JAVA">
+      <option name="BRACE_STYLE" value="2" />
+      <option name="CLASS_BRACE_STYLE" value="2" />
+      <option name="METHOD_BRACE_STYLE" value="2" />
+      <option name="LAMBDA_BRACE_STYLE" value="2" />
+      <option name="WRAP_COMMENTS" value="true" />
+      <indentOptions>
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="JSON">
+      <indentOptions>
+        <option name="INDENT_SIZE" value="4" />
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="JavaScript">
+      <option name="BRACE_STYLE" value="2" />
+      <option name="METHOD_BRACE_STYLE" value="2" />
+      <option name="CALL_PARAMETERS_WRAP" value="5" />
+      <option name="CALL_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
+      <option name="METHOD_PARAMETERS_WRAP" value="5" />
+      <option name="METHOD_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="Scala">
+      <option name="BRACE_STYLE" value="2" />
+      <option name="CLASS_BRACE_STYLE" value="2" />
+      <option name="METHOD_BRACE_STYLE" value="2" />
+      <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
+      <indentOptions>
+        <option name="INDENT_SIZE" value="4" />
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+        <option name="TAB_SIZE" value="4" />
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="TypeScript">
+      <option name="BRACE_STYLE" value="2" />
+      <option name="CLASS_BRACE_STYLE" value="2" />
+      <option name="METHOD_BRACE_STYLE" value="2" />
+      <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
+      <option name="CALL_PARAMETERS_WRAP" value="5" />
+      <option name="CALL_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
+      <option name="METHOD_PARAMETERS_WRAP" value="5" />
+      <option name="METHOD_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="XML">
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+  </code_scheme>
+</component>
