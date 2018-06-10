@@ -48,12 +48,16 @@ import co.mv.wb.plugin.base.ImmutableAssertionResult;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
+import co.mv.wb.XmlValidationException;
+import org.xml.sax.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintStream;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -166,11 +170,13 @@ public class WildebeestApiImpl implements WildebeestApi
 	// </editor-fold>
 
 	public Resource loadResource(
-		File resourceFile) throws
+		File resourceFile)
+			throws
 			FileLoadException,
 			LoaderFault,
-			PluginBuildException
-	{
+			PluginBuildException,
+			XmlValidationException
+    {
 		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
 
 		// Get the absolute file for this resource - this ensures that getParentFile works correctly
@@ -191,17 +197,43 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		if (resourceXml != null)
 		{
-			DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
-				ResourceTypeServiceBuilder
-					.create()
-					.withFactoryResourceTypes()
-					.build(),
-				resourceXml);
+				validateXML(resourceXml);
+				DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
+						ResourceTypeServiceBuilder
+								.create()
+								.withFactoryResourceTypes()
+								.build(),
+						resourceXml);
 
-			resource = resourceLoader.load(resourceFile.getParentFile());
+				resource = resourceLoader.load(resourceFile.getParentFile());
 		}
 
 		return resource;
+	}
+
+	 void validateXML(String resourceXml)
+			throws
+			XmlValidationException
+	{
+		try
+		{
+			SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
+			File xsdLocation = new File(getClass().getResource("Resources.xsd").toURI());
+			Schema schema = factory.newSchema(xsdLocation);
+
+			Validator validator = schema.newValidator();
+			Source source = new StreamSource(new StringReader(resourceXml));
+			validator.validate(source);
+		}
+		catch (URISyntaxException | IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+		catch (SAXException e)
+		{
+			//Validation failed
+			throw new XmlValidationException(e.getMessage());
+		}
 	}
 
 	public Instance loadInstance(

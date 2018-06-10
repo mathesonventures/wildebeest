@@ -40,9 +40,10 @@ public interface WildebeestApi
 	 */
 	Resource loadResource(
 		File resourceFile) throws
-			FileLoadException,
-			LoaderFault,
-			PluginBuildException;
+            FileLoadException,
+            LoaderFault,
+            PluginBuildException,
+			XmlValidationException;
 
 	/**
 	 * Deserializes an {@link Instance} from the specified descriptor file.

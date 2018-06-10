@@ -16,24 +16,7 @@
 
 package co.mv.wb.plugin.composite;
 
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.FileLoadException;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.Instance;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.LoaderFault;
-import co.mv.wb.Migration;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.MigrationPlugin;
-import co.mv.wb.MigrationPluginType;
-import co.mv.wb.ModelExtensions;
-import co.mv.wb.OutputFormatter;
-import co.mv.wb.PluginBuildException;
-import co.mv.wb.Resource;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.WildebeestApi;
+import co.mv.wb.*;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -119,7 +102,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 				migrationT.getBaseDir(),
 				migrationT.getFileName()));
 		}
-		catch (FileLoadException | LoaderFault | PluginBuildException e)
+		catch (FileLoadException | LoaderFault | PluginBuildException | XmlValidationException e)
 		{
 			throw new MigrationFailedException(migration.getMigrationId(), "Unable to load");
 		}

@@ -16,23 +16,19 @@
 
 package co.mv.wb.impl;
 
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
+import co.mv.wb.*;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
 import java.util.Optional;
 
 import static co.mv.wb.Asserts.assertFakeInstance;
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for WildebeestApiImpl.
@@ -193,5 +189,50 @@ public class WildebeestApiImplUnitTests
 			"Bar",
 			context.instance,
 			"instance");
+	}
+
+	@Test public void validateMySqlDatabaseXml()
+	{
+		//This is still not passing, the resource type is not valid
+		assertTrue(isValidResource(new File("source/test/etc/MySqlDatabase/database.wbresource.xml")));
+	}
+
+	@Test public void validateSqlServerDatabaseXml()
+	{
+		//This is still not passing, the resource type is not valid
+		assertTrue(isValidResource(new File("source/test/etc/SqlServerDatabase/database.wbresource.xml")));
+	}
+
+	@Test public void validatePostgreDatabaseXml()
+	{
+		assertTrue(isValidResource(new File("source/test/etc/PostgreSqlDatabase/database.wbresource.xml")));
+	}
+
+	@Test public void invalidResourcesValidation()
+	{
+		//Invalid XML
+		assertFalse(isValidResource(new File("source/test/resources/co/mv/wb/impl/InvalidSampleResources.xml")));
+	}
+
+	private boolean isValidResource(File file)
+	{
+		PrintStream output = System.out;
+		WildebeestApiImpl wildebeestApiImpl = new WildebeestApiImpl(output);
+		try
+		{
+			String content = new String(Files.readAllBytes(file.toPath()));
+			wildebeestApiImpl.validateXML(content);
+			return true;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		catch (XmlValidationException e)
+		{
+			System.out.println(e.getMessage());
+			return false;
+		}
 	}
 }
