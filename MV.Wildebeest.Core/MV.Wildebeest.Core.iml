@@ -115,7 +115,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="org.opengis.cite.xerces:xercesImpl-xsd11:2.12-beta-r1667115" level="project" />
-    <orderEntry type="module-library" exported="">
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
