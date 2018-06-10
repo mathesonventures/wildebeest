@@ -16,6 +16,8 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 /**
  * Identifies a type of {@link Resource}.  The resource's type is identified in the XML file, and is used to verify
  * which {@link Assertion}'s and {@link Migration}'s can be applied to the Resource.
@@ -24,82 +26,46 @@ package co.mv.wb;
  */
 public class ResourceType {
 
-    private String uri = null;
-    private boolean uriSet = false;
-    private String name = null;
-    private boolean nameSet = false;
+    private final String uri;
+    private final String name;
 
+    /**
+     * Constructs a new ResourceType with the specified details.
+     *
+     * @param       uri                         the URI identifying the resource type.
+     * @param       name                        the human-readable name of the resource type.
+     * @since                                   4.0
+     */
     public ResourceType(
-            String uri,
-            String name) {
-        this.setUri(uri);
-        this.setName(name);
+        String uri,
+        String name)
+    {
+        if (uri == null) throw new ArgumentNullException("uri");
+        if (name == null) throw new ArgumentNullException("name");
+
+        this.uri = uri;
+        this.name = name;
     }
 
-    public String getUri() {
-        if (!uriSet) {
-            throw new IllegalStateException("uri not set.");
-        }
-        if (uri == null) {
-            throw new IllegalStateException("uri should not be null");
-        }
-        return uri;
+    /**
+     * Gets the URI identifying the resource type.
+     *
+     * @return                                  the URI identifying the resource type.
+     * @since                                   4.0
+     */
+    public String getUri()
+    {
+        return this.uri;
     }
 
-    private void setUri(
-            String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("uri cannot be null");
-        }
-        boolean changing = !uriSet || uri != value;
-        if (changing) {
-            uriSet = true;
-            uri = value;
-        }
+    /**
+     * Gets the human-readable name of the resource type.
+     *
+     * @return                                  the human-readable name of the resource type.
+     * @since                                   4.0
+     */
+    public String getName()
+    {
+        return this.name;
     }
-
-    private void clearUri() {
-        if (uriSet) {
-            uriSet = true;
-            uri = null;
-        }
-    }
-
-    private boolean hasUri() {
-        return uriSet;
-    }
-
-    public String getName() {
-        if (!nameSet) {
-            throw new IllegalStateException("name not set.");
-        }
-        if (name == null) {
-            throw new IllegalStateException("name should not be null");
-        }
-        return name;
-    }
-
-    private void setName(
-            String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("name cannot be null");
-        }
-        boolean changing = !nameSet || name != value;
-        if (changing) {
-            nameSet = true;
-            name = value;
-        }
-    }
-
-    private void clearName() {
-        if (nameSet) {
-            nameSet = true;
-            name = null;
-        }
-    }
-
-    private boolean hasName() {
-        return nameSet;
-    }
-
 }

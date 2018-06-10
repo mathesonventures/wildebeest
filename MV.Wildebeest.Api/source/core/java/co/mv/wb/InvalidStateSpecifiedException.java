@@ -23,39 +23,28 @@ package co.mv.wb;
  */
 public class InvalidStateSpecifiedException extends Exception
 {
+	private final String specifiedState;
+
+    /**
+     * Constructs a new InvalidStateSpecifiedException carrying the specified state.
+     * @param       specifiedState              the invalid state that was specified by a request.
+     * @since                                   3.0
+     */
     public InvalidStateSpecifiedException(String specifiedState)
     {
         super(String.format("Specified state is not valid: \"%s\"", specifiedState));
-        
-        this.setSpecifiedState(specifiedState);
+
+        this.specifiedState = specifiedState;
     }
-    
-	// <editor-fold desc="SpecifiedState" defaultstate="collapsed">
 
-	private String _specifiedState = null;
-	private boolean _specifiedState_set = false;
-
-	public String getSpecifiedState() {
-		if(!_specifiedState_set) {
-			throw new IllegalStateException("specifiedState not set.");
-		}
-		if(_specifiedState == null) {
-			throw new IllegalStateException("specifiedState should not be null");
-		}
-		return _specifiedState;
+    /**
+     * Gets the invalid state that was specified by a request.
+     *
+     * @return                                  the invalid state that was specified by a request.
+     * @since                                   3.0
+     */
+	public String getSpecifiedState()
+	{
+		return this.specifiedState;
 	}
-
-	private void setSpecifiedState(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("specifiedState cannot be null");
-		}
-		boolean changing = !_specifiedState_set || _specifiedState != value;
-		if(changing) {
-			_specifiedState_set = true;
-			_specifiedState = value;
-		}
-	}
-
-	// </editor-fold>
 }
