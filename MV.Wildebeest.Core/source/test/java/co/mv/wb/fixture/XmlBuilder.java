@@ -144,7 +144,8 @@ public class XmlBuilder
 		
 		return this;
 	}
-	
+
+
 	public XmlBuilder openElement(
 		String name,
 		String attr1Name, String attr1Value,

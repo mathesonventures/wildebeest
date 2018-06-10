@@ -43,596 +43,663 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Unit tests for {@link DomResourceLoader}.
  *
- * @author                                      Brendon Matheson
- * @since                                       1.0
+ * @author Brendon Matheson
+ * @since 1.0
  */
-public class DomResourceLoaderTests
-{
-	@Test public void loadResource() throws
-		LoaderFault,
-		PluginBuildException
-	{
-		
-		//
-		// Setup
-		//
-		
-		UUID resourceId = UUID.randomUUID();
-		
-		String resourceXml = FixtureCreator.create()
-			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-			.render();
+public class DomResourceLoaderTests {
+    @Test
+    public void loadResource() throws
+            LoaderFault,
+            PluginBuildException {
 
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		
-		DomResourceLoader resourceLoader = new DomResourceLoader(
-			ResourceTypeServiceBuilder
-				.create()
-				.with(FakeConstants.Fake)
-				.build(),
-			assertionBuilders,
-			migrationBuilders,
-			resourceXml);
+        //
+        // Setup
+        //
 
-		//
-		// Execute
-		//
-		
-		Resource resource = resourceLoader.load(new File("."));
-		
-		//
-		// Verify
-		//
-		
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(
-			resourceId,
-			"Product Catalogue Database",
-			resource,
-			"resource");
-		
-		// States
-		assertEquals(
-			"resource.states.size",
-			0,
-			resource.getStates().size());
-		
-		// Migrations
-		assertEquals(
-			"resource.migration.size",
-			0,
-			resource.getMigrations().size());
-		
-	}
-	
-	@Test public void loadResourceForStateWithLabel() throws
-		LoaderFault,
-		PluginBuildException
-	{
-		
-		//
-		// Setup
-		//
-		
-		UUID resourceId = UUID.randomUUID();
-		UUID stateId = UUID.randomUUID();
-		
-		String resourceXml = FixtureCreator.create()
-			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-				.state(stateId, "Foo")
-			.render();
-		
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		
-		DomResourceLoader resourceLoader = new DomResourceLoader(
-			ResourceTypeServiceBuilder
-				.create()
-				.with(FakeConstants.Fake)
-				.build(),
-			assertionBuilders,
-			migrationBuilders,
-			resourceXml);
+        UUID resourceId = UUID.randomUUID();
 
-		//
-		// Execute
-		//
-		
-		Resource resource = resourceLoader.load(new File("."));
-		
-		//
-		// Verify
-		//
-		
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(
-			resourceId,
-			"Product Catalogue Database",
-			resource,
-			"resource");
-		
-		// States
-		assertEquals(
-			"resource.states.size",
-			1,
-			resource.getStates().size());
-		Asserts.assertState(
-			stateId,
-			Optional.of("Foo"),
-			resource.getStates().get(0),
-			"state[0]");
-		
-		// Migrations
-		assertEquals(
-			"resource.migrations.size",
-			0,
-			resource.getMigrations().size());
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .render();
 
-	}
-	
-	@Test public void loadResourceForStateWithNoLabel() throws
-		LoaderFault,
-		PluginBuildException
-	{
-		
-		//
-		// Setup
-		//
-		
-		UUID resourceId = UUID.randomUUID();
-		UUID stateId = UUID.randomUUID();
-		
-		String resourceXml = FixtureCreator.create()
-			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-				.state(stateId, null)
-			.render();
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			ResourceTypeServiceBuilder
-				.create()
-				.with(FakeConstants.Fake)
-				.build(),
-			assertionBuilders,
-			migrationBuilders,
-			resourceXml);
+        DomResourceLoader resourceLoader = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
 
-		//
-		// Execute
-		//
-		
-		Resource resource = resourceBuilder.load(new File("."));
-		
-		//
-		// Verify
-		//
-		
-		// Resource
-		assertNotNull("resource", resource);
+        //
+        // Execute
+        //
 
-		Asserts.assertResource(
-			resourceId,
-			"Product Catalogue Database",
-			resource,
-			"resource");
-		
-		// States
-		assertEquals(
-			"resource.states.size",
-			1,
-			resource.getStates().size());
-		Asserts.assertState(
-			stateId,
-			Optional.empty(),
-			resource.getStates().get(0),
-			"resource.state[0]");
+        Resource resource = resourceLoader.load(new File("."));
 
-		// Migrations
-		assertEquals(
-			"resource.migrations.size",
-			0,
-			resource.getMigrations().size());
-		
-	}
-	
-	@Test public void loadResourceForMultipleStates() throws
-		LoaderFault,
-		PluginBuildException
-	{
-		
-		//
-		// Setup
-		//
-		
-		UUID resourceId = UUID.randomUUID();
-		UUID state1Id = UUID.randomUUID();
-		UUID state2Id = UUID.randomUUID();
-		
-		String resourceXml = FixtureCreator.create()
-			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-				.state(state1Id, "Foo")
-				.state(state2Id, "Bar")
-			.render();
+        //
+        // Verify
+        //
 
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			ResourceTypeServiceBuilder
-				.create()
-				.with(FakeConstants.Fake)
-				.build(),
-			assertionBuilders,
-			migrationBuilders,
-			resourceXml);
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(
+                resourceId,
+                "Product Catalogue Database",
+                resource,
+                "resource");
 
-		//
-		// Execute
-		//
-		
-		Resource resource = resourceBuilder.load(new File("."));
-		
-		//
-		// Verify
-		//
-		
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(
-			resourceId,
-			"Product Catalogue Database",
-			resource,
-			"resource");
-		
-		// States
-		assertEquals(
-			"resource.states.size",
-			2,
-			resource.getStates().size());
-		Asserts.assertState(
-			state1Id,
-			Optional.of("Foo"),
-			resource.getStates().get(0),
-			"resource.state[0]");
-		Asserts.assertState(
-			state2Id,
-			Optional.of("Bar"),
-			resource.getStates().get(1),
-			"resource.state[1]");
-		
-		// Migrations
-		assertEquals(
-			"resource.migrations.size",
-			0,
-			resource.getMigrations().size());
+        // States
+        assertEquals(
+                "resource.states.size",
+                0,
+                resource.getStates().size());
 
-	}
-	
-	@Test public void loadResourceForStateWithOneAssertion() throws
-		LoaderFault,
-		PluginBuildException
-	{
-		
-		//
-		// Setup
-		//
-		
-		UUID resourceId = UUID.randomUUID();
-		UUID stateId = UUID.randomUUID();
-		UUID assertion1Id = UUID.randomUUID();
-		
-		String resourceXml = FixtureCreator.create()
-			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-				.state(stateId, "Foo")
-					.assertion(FakeConstants.Fake.getUri(), assertion1Id).innerXml("<tag>Foo</tag>")
-			.render();
+        // Migrations
+        assertEquals(
+                "resource.migration.size",
+                0,
+                resource.getMigrations().size());
 
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		assertionBuilders.put(FakeConstants.Fake.getUri(), new DomTagAssertionBuilder());
-		
-		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			ResourceTypeServiceBuilder
-				.create()
-				.with(FakeConstants.Fake)
-				.build(),
-			assertionBuilders,
-			migrationBuilders,
-			resourceXml);
+    }
 
-		//
-		// Execute
-		//
-		
-		Resource resource = resourceBuilder.load(new File("."));
-		
-		//
-		// Verify
-		//
-		
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(
-			resourceId,
-			"Product Catalogue Database",
-			resource,
-			"resource");
-		
-		// States
-		assertEquals("resource.states.size", 1, resource.getStates().size());
-		
-		Asserts.assertState(stateId, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
-		assertEquals(
-			"resource.states[0].assertions.size",
-			1,
-			resource.getStates().get(0).getAssertions().size());
-		Asserts.assertTagAssertion(
-			assertion1Id, "Tag is Foo", 0, "Foo",
-			(TagAssertion)resource.getStates().get(0).getAssertions().get(0),
-			"resource.states[0].assertions[0]");
-		
-		// Migrations
-		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
-		
-	}
-	
-	@Test public void loadResourceForStateWithMultipleAssertions() throws
-		LoaderFault,
-		PluginBuildException
-	{
-		
-		//
-		// Setup
-		//
-		
-		UUID resourceId = UUID.randomUUID();
-		UUID stateId = UUID.randomUUID();
-		UUID assertion1Id = UUID.randomUUID();
-		UUID assertion2Id = UUID.randomUUID();
-		
-		String resourceXml = FixtureCreator.create()
-			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-				.state(stateId, "Foo")
-					.assertion(FakeConstants.Fake.getUri(), assertion1Id).innerXml("<tag>Foo</tag>")
-					.assertion(FakeConstants.Fake.getUri(), assertion2Id).innerXml("<tag>Bar</tag>")
-			.render();
+    @Test
+    public void loadResourceForStateWithLabel() throws
+            LoaderFault,
+            PluginBuildException {
 
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		assertionBuilders.put(FakeConstants.Fake.getUri(), new DomTagAssertionBuilder());
-		
-		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			ResourceTypeServiceBuilder
-				.create()
-				.with(FakeConstants.Fake)
-				.build(),
-			assertionBuilders,
-			migrationBuilders,
-			resourceXml);
+        //
+        // Setup
+        //
 
-		//
-		// Execute
-		//
-		
-		Resource resource = resourceBuilder.load(new File("."));
-		
-		//
-		// Verify
-		//
-		
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
-		
-		// States
-		assertEquals("resource.states.size", 1, resource.getStates().size());
-		
-		Asserts.assertState(stateId, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
-		assertEquals(
-			"resource.states[0].assertions.size",
-			2,
-			resource.getStates().get(0).getAssertions().size());
-		Asserts.assertTagAssertion(
-			assertion1Id, "Tag is Foo", 0, "Foo",
-			(TagAssertion)resource.getStates().get(0).getAssertions().get(0),
-			"resource.states[0].assertions[0]");
-		Asserts.assertTagAssertion(
-			assertion2Id, "Tag is Bar", 1, "Bar",
-			(TagAssertion)resource.getStates().get(0).getAssertions().get(1),
-			"resource.states[0].assertions[1]");
-		
-		// Migrations
-		assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
-		
-	}
-	
-	@Test public void loadResourceForMigrationWithFromStateId() throws
-		LoaderFault,
-		PluginBuildException
-	{
-		
-		//
-		// Setup
-		//
-		
-		UUID resourceId = UUID.randomUUID();
-		UUID state1Id = UUID.randomUUID();
-		UUID migrationId = UUID.randomUUID();
-		
-		String resourceXml = FixtureCreator.create()
-			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-				.state(state1Id, "Foo")
-				.migration(FakeConstants.Fake.getUri(), migrationId, state1Id, null).innerXml("<tag>Blah</tag>")
-			.render();
-		
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		
-		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
-		
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			ResourceTypeServiceBuilder
-				.create()
-				.with(FakeConstants.Fake)
-				.build(),
-			assertionBuilders,
-			migrationBuilders,
-			resourceXml);
+        UUID resourceId = UUID.randomUUID();
+        UUID stateId = UUID.randomUUID();
 
-		//
-		// Execute
-		//
-		
-		Resource resource = resourceBuilder.load(new File("."));
-		
-		//
-		// Verify
-		//
-		
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
-		
-		// States
-		assertEquals("resource.states.size", 1, resource.getStates().size());
-		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
-		
-		// Migrations
-		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
-		Asserts.assertFakeMigration(
-			migrationId, Optional.of(state1Id), Optional.empty(), "Blah",
-			(SetTagMigration)resource.getMigrations().get(0),
-			"resource.migrations[0]");
-		
-	}
-	
-	@Test public void loadResourceForMigrationsWithToStateId() throws
-		LoaderFault,
-		PluginBuildException
-	{
-		
-		//
-		// Setup
-		//
-		
-		UUID resourceId = UUID.randomUUID();
-		UUID state1Id = UUID.randomUUID();
-		UUID migrationId = UUID.randomUUID();
-		
-		String resourceXml = FixtureCreator.create()
-			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-				.state(state1Id, "Foo")
-				.migration(FakeConstants.Fake.getUri(), migrationId, null, state1Id).innerXml("<tag>Blah</tag>")
-			.render();
-		
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		
-		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
-		
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			ResourceTypeServiceBuilder
-				.create()
-				.with(FakeConstants.Fake)
-				.build(),
-			assertionBuilders,
-			migrationBuilders,
-			resourceXml);
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .state(stateId, "Foo")
+                .render();
 
-		//
-		// Execute
-		//
-		
-		Resource resource = resourceBuilder.load(new File("."));
-		
-		//
-		// Verify
-		//
-		
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
-		
-		// States
-		assertEquals("resource.states.size", 1, resource.getStates().size());
-		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
-		
-		// Migrations
-		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
-		Asserts.assertFakeMigration(
-			migrationId, Optional.empty(), Optional.of(state1Id), "Blah",
-			(SetTagMigration)resource.getMigrations().get(0),
-			"resource.migrations[0]");
-		
-	}
-	
-	@Test public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws
-		LoaderFault,
-		PluginBuildException
-	{
-		
-		//
-		// Setup
-		//
-		
-		UUID resourceId = UUID.randomUUID();
-		UUID state1Id = UUID.randomUUID();
-		UUID state2Id = UUID.randomUUID();
-		UUID migrationId = UUID.randomUUID();
-		
-		String resourceXml = FixtureCreator.create()
-			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-				.state(state1Id, "Foo")
-				.state(state2Id, "Bar")
-				.migration(FakeConstants.Fake.getUri(), migrationId, state1Id, state2Id).innerXml("<tag>Blah</tag>")
-			.render();
-		
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-		
-		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
-		
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			ResourceTypeServiceBuilder
-				.create()
-				.with(FakeConstants.Fake)
-				.build(),
-			assertionBuilders,
-			migrationBuilders,
-			resourceXml);
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
 
-		//
-		// Execute
-		//
-		
-		Resource resource = resourceBuilder.load(new File("."));
-		
-		//
-		// Verify
-		//
-		
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
-		
-		// States
-		assertEquals("resource.states.size", 2, resource.getStates().size());
-		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
-		Asserts.assertState(state2Id, Optional.of("Bar"), resource.getStates().get(1), "resource.state[1]");
-		
-		// Migrations
-		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
-		Asserts.assertFakeMigration(
-			migrationId, Optional.of(state1Id), Optional.of(state2Id), "Blah",
-			(SetTagMigration)resource.getMigrations().get(0),
-			"resource.migrations[0]");
-		
-	}
+        DomResourceLoader resourceLoader = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
+
+        //
+        // Execute
+        //
+
+        Resource resource = resourceLoader.load(new File("."));
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(
+                resourceId,
+                "Product Catalogue Database",
+                resource,
+                "resource");
+
+        // States
+        assertEquals(
+                "resource.states.size",
+                1,
+                resource.getStates().size());
+        Asserts.assertState(
+                stateId,
+                Optional.of("Foo"),
+                resource.getStates().get(0),
+                "state[0]");
+
+        // Migrations
+        assertEquals(
+                "resource.migrations.size",
+                0,
+                resource.getMigrations().size());
+
+    }
+
+    @Test
+    public void loadResourceForStateWithNoLabel() throws
+            LoaderFault,
+            PluginBuildException {
+
+        //
+        // Setup
+        //
+
+        UUID resourceId = UUID.randomUUID();
+        UUID stateId = UUID.randomUUID();
+
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .state(stateId, null )
+                .render();
+
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
+
+        DomResourceLoader resourceBuilder = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
+
+        //
+        // Execute
+        //
+
+        Resource resource = resourceBuilder.load(new File("."));
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+
+        Asserts.assertResource(
+                resourceId,
+                "Product Catalogue Database",
+                resource,
+                "resource");
+
+        // States
+        assertEquals(
+                "resource.states.size",
+                1,
+                resource.getStates().size());
+        Asserts.assertState(
+                stateId,
+                Optional.empty(),
+                resource.getStates().get(0),
+                "resource.state[0]");
+
+        // Migrations
+        assertEquals(
+                "resource.migrations.size",
+                0,
+                resource.getMigrations().size());
+
+    }
+
+    @Test
+    public void loadResourceForStateWithLabelAndDescription() throws
+            LoaderFault,
+            PluginBuildException {
+
+        //
+        // Setup
+        //
+
+        UUID resourceId = UUID.randomUUID();
+        UUID stateId = UUID.randomUUID();
+
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .state(stateId, "Some random label", "Some random test description")
+                .render();
+
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
+
+        DomResourceLoader resourceBuilder = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
+
+        //
+        // Execute
+        //
+
+        Resource resource = resourceBuilder.load(new File("."));
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+
+        Asserts.assertResource(
+                resourceId,
+                "Product Catalogue Database",
+                resource,
+                "resource");
+
+        // States
+        assertEquals(
+                "resource.states.size",
+                1,
+                resource.getStates().size());
+        Asserts.assertState(
+                stateId,
+                Optional.of("Some random label"),
+                Optional.of("Some random test description"),
+                resource.getStates().get(0),
+                "resource.state[0]");
+
+        // Migrations
+        assertEquals(
+                "resource.migrations.size",
+                0,
+                resource.getMigrations().size());
+
+    }
+
+    @Test
+    public void loadResourceForMultipleStates() throws
+            LoaderFault,
+            PluginBuildException {
+
+        //
+        // Setup
+        //
+
+        UUID resourceId = UUID.randomUUID();
+        UUID state1Id = UUID.randomUUID();
+        UUID state2Id = UUID.randomUUID();
+
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .state(state1Id, "Foo")
+                .state(state2Id, "Bar")
+                .render();
+
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
+
+        DomResourceLoader resourceBuilder = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
+
+        //
+        // Execute
+        //
+
+        Resource resource = resourceBuilder.load(new File("."));
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(
+                resourceId,
+                "Product Catalogue Database",
+                resource,
+                "resource");
+
+        // States
+        assertEquals(
+                "resource.states.size",
+                2,
+                resource.getStates().size());
+        Asserts.assertState(
+                state1Id,
+                Optional.of("Foo"),
+                resource.getStates().get(0),
+                "resource.state[0]");
+        Asserts.assertState(
+                state2Id,
+                Optional.of("Bar"),
+                resource.getStates().get(1),
+                "resource.state[1]");
+
+        // Migrations
+        assertEquals(
+                "resource.migrations.size",
+                0,
+                resource.getMigrations().size());
+
+    }
+
+    @Test
+    public void loadResourceForStateWithOneAssertion() throws
+            LoaderFault,
+            PluginBuildException {
+
+        //
+        // Setup
+        //
+
+        UUID resourceId = UUID.randomUUID();
+        UUID stateId = UUID.randomUUID();
+        UUID assertion1Id = UUID.randomUUID();
+
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .state(stateId, "Foo")
+                .assertion(FakeConstants.Fake.getUri(), assertion1Id).innerXml("<tag>Foo</tag>")
+                .render();
+
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+        assertionBuilders.put(FakeConstants.Fake.getUri(), new DomTagAssertionBuilder());
+
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
+
+        DomResourceLoader resourceBuilder = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
+
+        //
+        // Execute
+        //
+
+        Resource resource = resourceBuilder.load(new File("."));
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(
+                resourceId,
+                "Product Catalogue Database",
+                resource,
+                "resource");
+
+        // States
+        assertEquals("resource.states.size", 1, resource.getStates().size());
+
+        Asserts.assertState(stateId, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
+        assertEquals(
+                "resource.states[0].assertions.size",
+                1,
+                resource.getStates().get(0).getAssertions().size());
+        Asserts.assertTagAssertion(
+                assertion1Id, "Tag is Foo", 0, "Foo",
+                (TagAssertion) resource.getStates().get(0).getAssertions().get(0),
+                "resource.states[0].assertions[0]");
+
+        // Migrations
+        assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
+
+    }
+
+    @Test
+    public void loadResourceForStateWithMultipleAssertions() throws
+            LoaderFault,
+            PluginBuildException {
+
+        //
+        // Setup
+        //
+
+        UUID resourceId = UUID.randomUUID();
+        UUID stateId = UUID.randomUUID();
+        UUID assertion1Id = UUID.randomUUID();
+        UUID assertion2Id = UUID.randomUUID();
+
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .state(stateId, "Foo")
+                .assertion(FakeConstants.Fake.getUri(), assertion1Id).innerXml("<tag>Foo</tag>")
+                .assertion(FakeConstants.Fake.getUri(), assertion2Id).innerXml("<tag>Bar</tag>")
+                .render();
+
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+        assertionBuilders.put(FakeConstants.Fake.getUri(), new DomTagAssertionBuilder());
+
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
+
+        DomResourceLoader resourceBuilder = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
+
+        //
+        // Execute
+        //
+
+        Resource resource = resourceBuilder.load(new File("."));
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
+
+        // States
+        assertEquals("resource.states.size", 1, resource.getStates().size());
+
+        Asserts.assertState(stateId, Optional.of("Foo"), resource.getStates().get(0), "state[0]");
+        assertEquals(
+                "resource.states[0].assertions.size",
+                2,
+                resource.getStates().get(0).getAssertions().size());
+        Asserts.assertTagAssertion(
+                assertion1Id, "Tag is Foo", 0, "Foo",
+                (TagAssertion) resource.getStates().get(0).getAssertions().get(0),
+                "resource.states[0].assertions[0]");
+        Asserts.assertTagAssertion(
+                assertion2Id, "Tag is Bar", 1, "Bar",
+                (TagAssertion) resource.getStates().get(0).getAssertions().get(1),
+                "resource.states[0].assertions[1]");
+
+        // Migrations
+        assertEquals("resource.migrations.size", 0, resource.getMigrations().size());
+
+    }
+
+    @Test
+    public void loadResourceForMigrationWithFromStateId() throws
+            LoaderFault,
+            PluginBuildException {
+
+        //
+        // Setup
+        //
+
+        UUID resourceId = UUID.randomUUID();
+        UUID state1Id = UUID.randomUUID();
+        UUID migrationId = UUID.randomUUID();
+
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .state(state1Id, "Foo")
+                .migration(FakeConstants.Fake.getUri(), migrationId, state1Id, null).innerXml("<tag>Blah</tag>")
+                .render();
+
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
+        migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
+
+        DomResourceLoader resourceBuilder = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
+
+        //
+        // Execute
+        //
+
+        Resource resource = resourceBuilder.load(new File("."));
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
+
+        // States
+        assertEquals("resource.states.size", 1, resource.getStates().size());
+        Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
+
+        // Migrations
+        assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
+        Asserts.assertFakeMigration(
+                migrationId, Optional.of(state1Id), Optional.empty(), "Blah",
+                (SetTagMigration) resource.getMigrations().get(0),
+                "resource.migrations[0]");
+
+    }
+
+    @Test
+    public void loadResourceForMigrationsWithToStateId() throws
+            LoaderFault,
+            PluginBuildException {
+
+        //
+        // Setup
+        //
+
+        UUID resourceId = UUID.randomUUID();
+        UUID state1Id = UUID.randomUUID();
+        UUID migrationId = UUID.randomUUID();
+
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .state(state1Id, "Foo")
+                .migration(FakeConstants.Fake.getUri(), migrationId, null, state1Id).innerXml("<tag>Blah</tag>")
+                .render();
+
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
+        migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
+
+        DomResourceLoader resourceBuilder = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
+
+        //
+        // Execute
+        //
+
+        Resource resource = resourceBuilder.load(new File("."));
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
+
+        // States
+        assertEquals("resource.states.size", 1, resource.getStates().size());
+        Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
+
+        // Migrations
+        assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
+        Asserts.assertFakeMigration(
+                migrationId, Optional.empty(), Optional.of(state1Id), "Blah",
+                (SetTagMigration) resource.getMigrations().get(0),
+                "resource.migrations[0]");
+
+    }
+
+    @Test
+    public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws
+            LoaderFault,
+            PluginBuildException {
+
+        //
+        // Setup
+        //
+
+        UUID resourceId = UUID.randomUUID();
+        UUID state1Id = UUID.randomUUID();
+        UUID state2Id = UUID.randomUUID();
+        UUID migrationId = UUID.randomUUID();
+
+        String resourceXml = FixtureCreator.create()
+                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+                .state(state1Id, "Foo")
+                .state(state2Id, "Bar")
+                .migration(FakeConstants.Fake.getUri(), migrationId, state1Id, state2Id).innerXml("<tag>Blah</tag>")
+                .render();
+
+        Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+
+        Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
+        migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
+
+        DomResourceLoader resourceBuilder = new DomResourceLoader(
+                ResourceTypeServiceBuilder
+                        .create()
+                        .with(FakeConstants.Fake)
+                        .build(),
+                assertionBuilders,
+                migrationBuilders,
+                resourceXml);
+
+        //
+        // Execute
+        //
+
+        Resource resource = resourceBuilder.load(new File("."));
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
+
+        // States
+        assertEquals("resource.states.size", 2, resource.getStates().size());
+        Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
+        Asserts.assertState(state2Id, Optional.of("Bar"), resource.getStates().get(1), "resource.state[1]");
+
+        // Migrations
+        assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
+        Asserts.assertFakeMigration(
+                migrationId, Optional.of(state1Id), Optional.of(state2Id), "Blah",
+                (SetTagMigration) resource.getMigrations().get(0),
+                "resource.migrations[0]");
+
+    }
 }
