@@ -20,7 +20,7 @@
 -->
 <ivy-module version="2.0">
 
-  <info organisation="MV" module="Wildebeest.Api"/>
+  <info organisation="${meta.project.identity.organization.id}" module="${meta.project.identity.name}.${meta.component.identity.name}"/>
 
   <configurations>
     <conf name="clc" description="Core Compile"/>
@@ -30,7 +30,7 @@
   </configurations>
 
   <publications>
-    <artifact name="MV.Wildebeest.Api" type="jar" ext="jar" />
+    <artifact name="${meta.component.identity.id}" type="jar" ext="jar" />
   </publications>
 
   <dependencies>
