@@ -193,13 +193,11 @@ public class WildebeestApiImplUnitTests
 
 	@Test public void validateMySqlDatabaseXml()
 	{
-		//This is still not passing, the resource type is not valid
 		assertTrue(isValidResource(new File("source/test/etc/MySqlDatabase/database.wbresource.xml")));
 	}
 
 	@Test public void validateSqlServerDatabaseXml()
 	{
-		//This is still not passing, the resource type is not valid
 		assertTrue(isValidResource(new File("source/test/etc/SqlServerDatabase/database.wbresource.xml")));
 	}
 
