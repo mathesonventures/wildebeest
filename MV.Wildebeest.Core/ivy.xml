@@ -20,40 +20,39 @@
 -->
 <ivy-module version="2.0">
 
-  <info
-    organisation="${meta.project.identity.organization.id}"
-    module="${meta.component.identity.id}" />
+	<info
+		organisation="MV"
+		module="MV.Wildebeest.Core" />
 
-  <configurations>
-    <conf name="clc" visibility="private" description="Core Compile"/>
-    <conf name="clr" visibility="private" description="Core Runtime"/>
-    <conf name="tlc" visibility="private" description="Test Compile"/>
-    <conf name="tlr" visibility="private" description="Test Runtime"/>
-    <conf name="master" visibility="public" description="Public Artifacts" />
-  </configurations>
+	<configurations>
+		<conf name="clc" visibility="private" description="Core Compile" />
+		<conf name="clr" visibility="private" description="Core Runtime" />
+		<conf name="tlc" visibility="private" description="Test Compile" />
+		<conf name="tlr" visibility="private" description="Test Runtime" />
+		<conf name="master" visibility="public" description="Public Artifacts" />
+	</configurations>
 
-  <publications>
-    <artifact name="${meta.component.identity.id}" type="jar" ext="jar" conf="master" />
-  </publications>
+	<publications>
+		<artifact name="MV.Wildebeest.Core" type="jar" ext="jar" conf="master" />
+	</publications>
 
-  <dependencies>
-    <!-- Intra-Project Dependencies -->
-    <dependency
-      org="${meta.project.identity.organization.id}"
-      name="${meta.project.identity.id}.Api"
-      rev="${meta.project.version.full.dotted}"
-      conf="clc,clr,tlc,tlr->master" />
+	<dependencies>
+		<!-- Intra-Project Dependencies -->
+		<dependency
+			org="MV"
+			name="MV.Wildebeest.Api"
+			rev="0.0.0.0"
+			conf="clc,clr,tlc,tlr->master" />
 
-    <!-- External Dependencies -->
-    <dependency org="javax" name="javaee-api" rev="7.0" conf="tlc,tlr->master" />
-    <dependency org="junit" name="junit" rev="4.11" conf="tlc,tlr->master" />
-    <dependency org="mysql" name="mysql-connector-java" rev="5.1.22" conf="clc,clr,tlr->master" />
-    <dependency org="org.mockito" name="mockito-all" rev="1.10.19" conf="tlc,tlr->master" />
-    <dependency org="org.postgresql" name="postgresql" rev="9.3-1100-jdbc41" conf="clc,clr,tlr->master" />
-    <dependency org="org.reflections" name="reflections" rev="0.9.11" conf="clc,clr,tlc,tlr->master" />
-    <dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" conf="clc,clr,tlc,tlr->master" />
-    <dependency org="org.slf4j" name="slf4j-nop" rev="1.7.5" conf="clr->master" />
-    <dependency org="org.slf4j" name="slf4j-simple" rev="1.7.5" conf="tlr->master" />
-  </dependencies>
+		<!-- External Dependencies -->
+		<dependency org="javax" name="javaee-api" rev="7.0" conf="tlc,tlr->default" />
+		<dependency org="junit" name="junit" rev="4.11" conf="tlc,tlr->default" />
+		<dependency org="mysql" name="mysql-connector-java" rev="5.1.22" conf="clc,clr,tlr->default" />
+		<dependency org="org.mockito" name="mockito-all" rev="1.10.19" conf="tlc,tlr->default" />
+		<dependency org="org.postgresql" name="postgresql" rev="9.3-1100-jdbc41" conf="clc,clr,tlr->default" />
+		<dependency org="org.reflections" name="reflections" rev="0.9.11" conf="clc,clr,tlc,tlr->default" />
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" conf="clc,clr,tlc,tlr->default" />
+		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.5" conf="clr,tlr->default" />
+	</dependencies>
 
 </ivy-module>

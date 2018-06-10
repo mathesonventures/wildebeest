@@ -18,7 +18,7 @@
 	Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
 -->
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="MV.Wildebeest.Api" default="run">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="MV.Wildebeest.Core" default="run">
 
 	<target
 		name="meta.project.properties"
@@ -55,7 +55,8 @@
 		<!--
 			Derive the projects version name
 		-->
-		<property name="meta.project.version.name" value="${meta.project.identity.id}-${meta.project.version.full.dotted}" />
+		<property name="meta.project.version.name"
+			value="${meta.project.identity.id}-${meta.project.version.full.dotted}" />
 
 	</target>
 
@@ -130,138 +131,138 @@
 
 	</target>
 
-  <target name="meta.properties" depends="meta.project.properties,meta.component.properties">
+	<target name="meta.properties" depends="meta.project.properties,meta.component.properties">
 
-    <!--
-  		Meta Information Properties
-  	-->
-    <property name="meta.core.jar.filename"
-  		value="${meta.component.identity.id}-${meta.project.version.full.dotted}.jar" />
-  	<property name="meta.test.jar.filename"
-  		value="${meta.component.identity.id}-test-${meta.project.version.full.dotted}.jar" />
+		<!--
+			  Meta Information Properties
+		  -->
+		<property name="meta.core.jar.filename"
+			value="${meta.component.identity.id}-${meta.project.version.full.dotted}.jar" />
+		<property name="meta.test.jar.filename"
+			value="${meta.component.identity.id}-test-${meta.project.version.full.dotted}.jar" />
 
-  </target>
+	</target>
 
-  <target name="structure.properties">
+	<target name="structure.properties">
 
-    <!--
-      Build Resource Properties
-    -->
-    <property name="buildres.ivy.version" value="2.4.0" />
+		<!--
+		  Build Resource Properties
+		-->
+		<property name="buildres.ivy.version" value="2.4.0" />
 
-    <!--
-      Source Properties
-    -->
-    <property name="source" value="source" />
+		<!--
+		  Source Properties
+		-->
+		<property name="source" value="source" />
 
-    <!-- Core Sources -->
-    <property name="source.core" value="${source}/core" />
-    <property name="source.core.libcompile" value="${source.core}/libcompile" />
-    <property name="source.core.libcompileandrun" value="${source.core}/libcompileandrun" />
-    <property name="source.core.librun" value="${source.core}/librun" />
-    <property name="source.core.java" value="${source.core}/java" />
-    <property name="source.core.importclasses" value="${source.core}/importclasses" />
+		<!-- Core Sources -->
+		<property name="source.core" value="${source}/core" />
+		<property name="source.core.libcompile" value="${source.core}/libcompile" />
+		<property name="source.core.libcompileandrun" value="${source.core}/libcompileandrun" />
+		<property name="source.core.librun" value="${source.core}/librun" />
+		<property name="source.core.java" value="${source.core}/java" />
+		<property name="source.core.importclasses" value="${source.core}/importclasses" />
 		<property name="source.core.resources" value="${source.core}/resources" />
 		<property name="source.core.etc" value="${source.core}/etc" />
-    <property name="source.core.classtree" value="${source.core}/classtree" />
+		<property name="source.core.classtree" value="${source.core}/classtree" />
 
-    <!-- Test Sources -->
-    <property name="source.test" value="${source}/test" />
-    <property name="source.test.libcompile" value="${source.test}/libcompile" />
-    <property name="source.test.libcompileandrun" value="${source.test}/libcompileandrun" />
-    <property name="source.test.librun" value="${source.test}/librun" />
+		<!-- Test Sources -->
+		<property name="source.test" value="${source}/test" />
+		<property name="source.test.libcompile" value="${source.test}/libcompile" />
+		<property name="source.test.libcompileandrun" value="${source.test}/libcompileandrun" />
+		<property name="source.test.librun" value="${source.test}/librun" />
 		<property name="source.test.java" value="${source.test}/java" />
 		<property name="source.test.importclasses" value="${source.test}/importclasses" />
 		<property name="source.test.resources" value="${source.test}/resources" />
 		<property name="source.test.etc" value="${source.test}/etc" />
-    <property name="source.test.classtree" value="${source.test}/classtree" />
+		<property name="source.test.classtree" value="${source.test}/classtree" />
 
-    <!--
-			Target Properties
-		-->
+		<!--
+				Target Properties
+			-->
 		<property name="target" value="target" />
 
-    <!-- Core  Targets -->
-    <property name="target.core" value="${target}/core" />
-    <property name="target.core.libcompile" value="${target.core}/libcompile" />
-    <property name="target.core.librun" value="${target.core}/librun" />
+		<!-- Core  Targets -->
+		<property name="target.core" value="${target}/core" />
+		<property name="target.core.libcompile" value="${target.core}/libcompile" />
+		<property name="target.core.librun" value="${target.core}/librun" />
 		<property name="target.core.java" value="${target.core}/java" />
 		<property name="target.core.classtree" value="${target.core}/classtree" />
-    <property name="target.core.importclasses" value="${target.core}/java" />
+		<property name="target.core.importclasses" value="${target.core}/java" />
 		<property name="target.core.jar" value="${target.core}/jar" />
-    <property name="target.core.app" value="${target.core}/app" />
+		<property name="target.core.app" value="${target.core}/app" />
 		<property name="target.core.javadoc" value="${target.core}/javadoc" />
 
-    <!-- Test Targets -->
-    <property name="target.test" value="${target}/test" />
-    <property name="target.test.libcompile" value="${target.test}/libcompile" />
+		<!-- Test Targets -->
+		<property name="target.test" value="${target}/test" />
+		<property name="target.test.libcompile" value="${target.test}/libcompile" />
 		<property name="target.test.librun" value="${target.test}/librun" />
 		<property name="target.test.classtree" value="${target.test}/classtree" />
 		<property name="target.test.jar" value="${target.test}/jar" />
 		<property name="target.test.app" value="${target.test}/app" />
 		<property name="target.test.report" value="${target.test}/report" />
-    <property name="target.test.javadoc" value="${target.test}/javadoc" />
+		<property name="target.test.javadoc" value="${target.test}/javadoc" />
 
-    <!-- Build Resource Targets -->
+		<!-- Build Resource Targets -->
 		<property name="target.buildres" value="${target}/buildres" />
-    <property name="target.buildres.ivy" value="${target.buildres}/ivy" />
+		<property name="target.buildres.ivy" value="${target.buildres}/ivy" />
 
-    <!--
-      Special Properties
-    -->
-    <property name="special.project.repo" value="../repo" />
+		<!--
+		  Special Properties
+		-->
+		<property name="special.project.repo" value="../repo" />
 
-  </target>
+	</target>
 
 
-<!-- ===================================================================================================================
+	<!-- ===================================================================================================================
 
-	Core Targets
+		Core Targets
 
-==================================================================================================================== -->
+	==================================================================================================================== -->
 
-  <target name="core.libcompile" depends="structure.properties,taskdef.ivy">
+	<target name="core.libcompile" depends="structure.properties,taskdef.ivy">
 
-    <mkdir dir="${target.core.libcompile}" />
+		<mkdir dir="${target.core.libcompile}" />
 
-    <!-- Retrieve Ivy-managed dependencies -->
-    <ivy:retrieve conf="clc" pattern="${target.core.libcompile}/[artifact]-[revision].[ext]"/>
+		<!-- Retrieve Ivy-managed dependencies -->
+		<ivy:retrieve conf="clc" pattern="${target.core.libcompile}/[artifact]-[revision].[ext]" />
 
-    <!-- Retrieve VCS-committed Dependencies -->
-    <copy todir="${target.core.libcompile}">
-      <fileset dir="${source.core.libcompile}">
-        <exclude name=".gitignore" />
-      </fileset>
-    </copy>
+		<!-- Retrieve VCS-committed Dependencies -->
+		<copy todir="${target.core.libcompile}">
+			<fileset dir="${source.core.libcompile}">
+				<exclude name=".gitignore" />
+			</fileset>
+		</copy>
 
-    <copy todir="${target.core.libcompile}">
-      <fileset dir="${source.core.libcompileandrun}">
-        <exclude name=".gitignore" />
-      </fileset>
-    </copy>
+		<copy todir="${target.core.libcompile}">
+			<fileset dir="${source.core.libcompileandrun}">
+				<exclude name=".gitignore" />
+			</fileset>
+		</copy>
 
-  </target>
+	</target>
 
-  <target name="core.librun" depends="structure.properties,taskdef.ivy">
+	<target name="core.librun" depends="structure.properties,taskdef.ivy">
 
-    <mkdir dir="${target.core.librun}" />
+		<mkdir dir="${target.core.librun}" />
 
-    <ivy:retrieve conf="clr" pattern="${target.core.librun}/[artifact]-[revision].[ext]"/>
+		<ivy:retrieve conf="clr" pattern="${target.core.librun}/[artifact]-[revision].[ext]" />
 
-    <!-- Retrieve VCS-committed Dependencies -->
-    <copy todir="${target.core.librun}">
-      <fileset dir="${source.core.librun}">
-        <exclude name=".gitignore" />
-      </fileset>
-    </copy>
+		<!-- Retrieve VCS-committed Dependencies -->
+		<copy todir="${target.core.librun}">
+			<fileset dir="${source.core.librun}">
+				<exclude name=".gitignore" />
+			</fileset>
+		</copy>
 
-    <copy todir="${target.core.librun}">
-      <fileset dir="${source.core.libcompileandrun}">
-        <exclude name=".gitignore" />
-      </fileset>
-    </copy>
+		<copy todir="${target.core.librun}">
+			<fileset dir="${source.core.libcompileandrun}">
+				<exclude name=".gitignore" />
+			</fileset>
+		</copy>
 
-  </target>
+	</target>
 
 	<target
 		name="core.java"
@@ -352,15 +353,15 @@
 		name="core.jar:pub-project"
 		depends="structure.properties,meta.component.properties,core.jar">
 
-    <ivy:publish
-      pubrevision="${meta.project.version.full.dotted}"
-      status="release"
-      resolver="project"
-      overwrite="true">
+		<ivy:publish
+			pubrevision="${meta.project.version.full.dotted}"
+			status="release"
+			resolver="project"
+			overwrite="true">
 
-      <artifacts pattern="${target.core.jar}/[artifact]-[revision].[ext]"/>
+			<artifacts pattern="${target.core.jar}/[artifact]-[revision].[ext]" />
 
-    </ivy:publish>
+		</ivy:publish>
 
 	</target>
 
@@ -450,12 +451,12 @@
 			fork="true">
 
 			<classpath>
-				<pathelement path="${target.core.app}/classes"/>
+				<pathelement path="${target.core.app}/classes" />
 				<fileset dir="${target.core.app}/lib" includes="**/*.jar" />
 			</classpath>
 
 			<assertions>
-				<enable package="co.mv"/>
+				<enable package="co.mv" />
 			</assertions>
 
 		</java>
@@ -481,53 +482,53 @@
 	</target>
 
 
-<!-- ===================================================================================================================
+	<!-- ===================================================================================================================
 
-	Test Targets
+		Test Targets
 
-==================================================================================================================== -->
+	==================================================================================================================== -->
 
-  <target name="test.libcompile" depends="structure.properties,taskdef.ivy">
+	<target name="test.libcompile" depends="structure.properties,taskdef.ivy">
 
-    <mkdir dir="${target.test.libcompile}" />
+		<mkdir dir="${target.test.libcompile}" />
 
-    <ivy:retrieve conf="tlc" pattern="${target.test.libcompile}/[artifact]-[revision].[ext]"/>
+		<ivy:retrieve conf="tlc" pattern="${target.test.libcompile}/[artifact]-[revision].[ext]" />
 
-    <!-- Retrieve VCS-committed Dependencies -->
-    <copy todir="${target.test.libcompile}">
-      <fileset dir="${source.test.libcompile}">
-        <exclude name=".gitignore" />
-      </fileset>
-    </copy>
+		<!-- Retrieve VCS-committed Dependencies -->
+		<copy todir="${target.test.libcompile}">
+			<fileset dir="${source.test.libcompile}">
+				<exclude name=".gitignore" />
+			</fileset>
+		</copy>
 
-    <copy todir="${target.test.libcompile}">
-      <fileset dir="${source.test.libcompileandrun}">
-        <exclude name=".gitignore" />
-      </fileset>
-    </copy>
+		<copy todir="${target.test.libcompile}">
+			<fileset dir="${source.test.libcompileandrun}">
+				<exclude name=".gitignore" />
+			</fileset>
+		</copy>
 
-  </target>
+	</target>
 
-  <target name="test.librun" depends="structure.properties,taskdef.ivy">
+	<target name="test.librun" depends="structure.properties,taskdef.ivy">
 
-    <mkdir dir="${target.test.librun}" />
+		<mkdir dir="${target.test.librun}" />
 
-    <ivy:retrieve conf="tlc" pattern="${target.test.librun}/[artifact]-[revision].[ext]"/>
+		<ivy:retrieve conf="tlc" pattern="${target.test.librun}/[artifact]-[revision].[ext]" />
 
-    <!-- Retrieve VCS-committed Dependencies -->
-    <copy todir="${target.test.librun}">
-      <fileset dir="${source.test.librun}">
-        <exclude name=".gitignore" />
-      </fileset>
-    </copy>
+		<!-- Retrieve VCS-committed Dependencies -->
+		<copy todir="${target.test.librun}">
+			<fileset dir="${source.test.librun}">
+				<exclude name=".gitignore" />
+			</fileset>
+		</copy>
 
-    <copy todir="${target.test.librun}">
-      <fileset dir="${source.test.libcompileandrun}">
-        <exclude name=".gitignore" />
-      </fileset>
-    </copy>
+		<copy todir="${target.test.librun}">
+			<fileset dir="${source.test.libcompileandrun}">
+				<exclude name=".gitignore" />
+			</fileset>
+		</copy>
 
-  </target>
+	</target>
 
 	<target
 		name="test.classtree"
@@ -546,7 +547,7 @@
 			debug="true">
 
 			<classpath>
-				<pathelement path="${target.core.app}/classes"/>
+				<pathelement path="${target.core.app}/classes" />
 				<fileset dir="${target.core.app}/lib" includes="**/*.jar" />
 				<fileset dir="${target.test.libcompile}" includes="*.jar" />
 			</classpath>
@@ -645,18 +646,18 @@
 		depends="core.app,test.app">
 
 		<path id="test.app.run.path">
-			<pathelement path="${target.core.app}/classes"/>
-			<pathelement path="${target.test.app}/classes"/>
+			<pathelement path="${target.core.app}/classes" />
+			<pathelement path="${target.test.app}/classes" />
 			<fileset dir="${target.core.app}/lib" includes="**/*.jar" />
 			<fileset dir="${target.test.app}/lib" includes="**/*.jar" />
 		</path>
 
 		<mkdir dir="${target.test.report}/data" />
 
-<echo message="mySql.hostName: ${mySql.hostName}" />
-<echo message="mySql.port: ${mySql.port}" />
-<echo message="mySql.username: ${mySql.username}" />
-<echo message="mySql.password: ${mySql.password}" />
+		<echo message="mySql.hostName: ${mySql.hostName}" />
+		<echo message="mySql.port: ${mySql.port}" />
+		<echo message="mySql.username: ${mySql.username}" />
+		<echo message="mySql.password: ${mySql.password}" />
 
 		<junit fork="no"
 			showoutput="true"
@@ -674,16 +675,16 @@
 
 		</junit>
 
-    <junitreport
-        todir="${target.test.report}">
+		<junitreport
+			todir="${target.test.report}">
 
-        <fileset dir="${target.test.report}/data" includes="*.xml" />
+			<fileset dir="${target.test.report}/data" includes="*.xml" />
 
-        <report
-					format="noframes"
-					todir="${target.test.report}"/>
+			<report
+				format="noframes"
+				todir="${target.test.report}" />
 
-    </junitreport>
+		</junitreport>
 
 	</target>
 
@@ -694,8 +695,8 @@
 		depends="core.app,test.app">
 
 		<path id="test.app.run.path">
-			<pathelement path="${target.core.app}/classes"/>
-			<pathelement path="${target.test.app}/classes"/>
+			<pathelement path="${target.core.app}/classes" />
+			<pathelement path="${target.test.app}/classes" />
 			<fileset dir="${target.core.app}/lib" includes="**/*.jar" />
 			<fileset dir="${target.test.app}/lib" includes="**/*.jar" />
 		</path>
@@ -711,7 +712,7 @@
 		<testng
 			fork="yes"
 			sourceDir="${source.test.java}"
-			outputDir = "${target.test.report}/data"
+			outputDir="${target.test.report}/data"
 			classpathref="test.app.run.path">
 
 			<fileset dir="${target.test.app}" includes="testng.xml" />
@@ -727,7 +728,7 @@
 			<report
 				styledir="${ant.home}/x17_sft_helium_basic/junit"
 				format="noframes"
-				todir="${target.test.report}"/>
+				todir="${target.test.report}" />
 
 		</junitreport>
 
@@ -752,20 +753,20 @@
 	</target>
 
 
-<!-- ===================================================================================================================
+	<!-- ===================================================================================================================
 
-	Utility Targets
+		Utility Targets
 
-==================================================================================================================== -->
+	==================================================================================================================== -->
 
-  <target
+	<target
 		name="deps"
 		description="Retrieve all dependencies."
 		depends="core.libcompile,core.librun,test.libcompile,test.librun">
 
 	</target>
 
-  <target
+	<target
 		name="clean"
 		description="Blow away all targets, leaving only sources."
 		depends="structure.properties">
@@ -780,81 +781,84 @@
 
 	</target>
 
-<!-- ===================================================================================================================
+	<!-- ===================================================================================================================
 
-	Build Resource Targets
+		Build Resource Targets
 
-==================================================================================================================== -->
+	==================================================================================================================== -->
 
-  <!--
-    Determine the home for ivy.  If an IVY_HOME has been explicity set, then use that.  Otherwise we'll use do a local
-    Ivy deployment into the project-level buildres directory.
+	<!--
+	  Determine the home for ivy.  If an IVY_HOME has been explicity set, then use that.  Otherwise we'll use do a local
+	  Ivy deployment into the project-level buildres directory.
 
-    Also set exactly one of these two flags:
-    - buildres.ivy.global - if a global Ivy deployment is identified by env.IVY_HOME
-    - buildres.ivy.local - if we're doing a local Ivy deploy into the project
-  -->
-  <target name="structure.properties.buildres.ivy.home" depends="structure.properties">
+	  Also set exactly one of these two flags:
+	  - buildres.ivy.global - if a global Ivy deployment is identified by env.IVY_HOME
+	  - buildres.ivy.local - if we're doing a local Ivy deploy into the project
+	-->
+	<target name="structure.properties.buildres.ivy.home" depends="structure.properties">
 
-    <condition property="buildres.ivy.home" value="${env.IVY_HOME}">
-      <isset property="env.IVY_HOME" />
-    </condition>
+		<condition property="buildres.ivy.home" value="${env.IVY_HOME}">
+			<isset property="env.IVY_HOME" />
+		</condition>
 
-    <condition property="buildres.ivy.global" value="true">
-      <isset property="env.IVY_HOME" />
-    </condition>
+		<condition property="buildres.ivy.global" value="true">
+			<isset property="env.IVY_HOME" />
+		</condition>
 
-    <property name="buildres.ivy.home" value="${target.buildres.ivy}" />
-    <condition property="buildres.ivy.local" value="true">
-      <not><isset property="env.IVY_HOME" /></not>
-    </condition>
+		<property name="buildres.ivy.home" value="${target.buildres.ivy}" />
+		<condition property="buildres.ivy.local" value="true">
+			<not>
+				<isset property="env.IVY_HOME" />
+			</not>
+		</condition>
 
-    <echo message="buildres.ivy.home: ${buildres.ivy.home}" />
-    <echo message="buildres.ivy.global: ${buildres.ivy.global}" />
-    <echo message="buildres.ivy.local: ${buildres.ivy.local}" />
+		<echo message="buildres.ivy.home: ${buildres.ivy.home}" />
+		<echo message="buildres.ivy.global: ${buildres.ivy.global}" />
+		<echo message="buildres.ivy.local: ${buildres.ivy.local}" />
 
-  </target>
+	</target>
 
-  <!--
-    Sets a flag to indicate if the JAR for the local project-level Ivy deploy already exists.  Enables buildres.ivy to
-    be skipped if there's no need to download.
-  -->
-  <target name="buildres.ivy.exists" depends="structure.properties">
-    <available property="buildres.ivy.exists" file="${target.buildres.ivy}/lib/ivy-${buildres.ivy.version}.jar" />
-  </target>
+	<!--
+	  Sets a flag to indicate if the JAR for the local project-level Ivy deploy already exists.  Enables buildres.ivy to
+	  be skipped if there's no need to download.
+	-->
+	<target name="buildres.ivy.exists" depends="structure.properties">
+		<available property="buildres.ivy.exists" file="${target.buildres.ivy}/lib/ivy-${buildres.ivy.version}.jar" />
+	</target>
 
-  <!--
-    Downloads the Ivy JAR to the local project-level deployment location.
-  -->
-  <target name="buildres.ivy"
-    depends="
+	<!--
+	  Downloads the Ivy JAR to the local project-level deployment location.
+	-->
+	<target name="buildres.ivy"
+		depends="
       structure.properties,
       structure.properties.buildres.ivy.home,
       buildres.ivy.exists"
-    if="buildres.ivy.local"
-    unless="buildres.ivy.exists">
+		if="buildres.ivy.local"
+		unless="buildres.ivy.exists">
 
-    <mkdir dir="${target.buildres.ivy}/lib"/>
+		<mkdir dir="${target.buildres.ivy}/lib" />
 
-    <get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${buildres.ivy.version}/ivy-${buildres.ivy.version}.jar"
-         dest="${target.buildres.ivy}/lib/ivy-${buildres.ivy.version}.jar" usetimestamp="true"/>
+		<get
+			src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${buildres.ivy.version}/ivy-${buildres.ivy.version}.jar"
+			dest="${target.buildres.ivy}/lib/ivy-${buildres.ivy.version}.jar" usetimestamp="true" />
 
-  </target>
+	</target>
 
-  <!--
-    Ensure the Ivy task is loaded, regardless of whether the JAR is from a global deployment or from our local
-    project-level deployment.
-  -->
-  <target name="taskdef.ivy" depends="buildres.ivy">
+	<!--
+	  Ensure the Ivy task is loaded, regardless of whether the JAR is from a global deployment or from our local
+	  project-level deployment.
+	-->
+	<target name="taskdef.ivy" depends="buildres.ivy">
 
-    <path id="taskdef.ivy.path">
-      <fileset dir="${buildres.ivy.home}/lib" includes="*.jar"/>
-    </path>
+		<path id="taskdef.ivy.path">
+			<fileset dir="${buildres.ivy.home}/lib" includes="*.jar" />
+		</path>
 
-    <taskdef
-      resource="org/apache/ivy/ant/antlib.xml"
-      uri="antlib:org.apache.ivy.ant" classpathref="taskdef.ivy.path"/>
+		<taskdef
+			resource="org/apache/ivy/ant/antlib.xml"
+			uri="antlib:org.apache.ivy.ant" classpathref="taskdef.ivy.path" />
 
-  </target>
+	</target>
 
 </project>

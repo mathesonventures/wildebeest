@@ -4,22 +4,7 @@
 /project.override.properties
 /assembly/target
 
-/MV.Wildebeest.Core/build/
-/MV.Wildebeest.Core/dist/
-/MV.Wildebeest.Core/nbproject/private/
 /MV.Wildebeest.Core/target/
 
-/MV.Wildebeest.Log4J/build/
-/MV.Wildebeest.Log4J/dist/
-/MV.Wildebeest.Log4J/nbproject/private/
-/MV.Wildebeest.Log4J/target
-
-/MV.Wildebeest.SLF4J/build/
-/MV.Wildebeest.SLF4J/dist/
-/MV.Wildebeest.SLF4J/nbproject/private/
-/MV.Wildebeest.SLF4J/target
-
 /website/source/rel
-/MV.Wildebeest.Api/dist/
-/MV.Wildebeest.Api/build/
-/MV.Wildebeest.Log4j/dist/
+
