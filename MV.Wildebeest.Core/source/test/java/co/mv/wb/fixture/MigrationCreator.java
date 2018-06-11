@@ -30,8 +30,8 @@ public class MigrationCreator
 		ResourceCreator resource,
 		String type,
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId)
+		String fromStateId,
+		String toStateId)
 	{
 		this.setCreator(creator);
 		this.setResource(resource);
@@ -210,10 +210,10 @@ public class MigrationCreator
 
 	// <editor-fold desc="FromStateId" defaultstate="collapsed">
 
-	private UUID _fromStateId = null;
+	private String _fromStateId = null;
 	private boolean _fromStateId_set = false;
 
-	public UUID getFromStateId() {
+	public String getFromStateId() {
 		if(!_fromStateId_set) {
 			throw new IllegalStateException("fromStateId not set.");
 		}
@@ -224,7 +224,7 @@ public class MigrationCreator
 	}
 
 	private void setFromStateId(
-		UUID value) {
+		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("fromStateId cannot be null");
 		}
@@ -250,10 +250,10 @@ public class MigrationCreator
 	
 	// <editor-fold desc="ToStateId" defaultstate="collapsed">
 
-	private UUID _toStateId = null;
+	private String _toStateId = null;
 	private boolean _toStateId_set = false;
 
-	public UUID getToStateId() {
+	public String getToStateId() {
 		if(!_toStateId_set) {
 			throw new IllegalStateException("toStateId not set.");
 		}
@@ -264,7 +264,7 @@ public class MigrationCreator
 	}
 
 	private void setToStateId(
-		UUID value) {
+		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("toStateId cannot be null");
 		}
@@ -342,8 +342,8 @@ public class MigrationCreator
 	public MigrationCreator migration(
 		String type,
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId)
+		String fromStateId,
+		String toStateId)
 	{
 		return this.getResource().migration(type, migrationId, fromStateId, toStateId);
 	}
