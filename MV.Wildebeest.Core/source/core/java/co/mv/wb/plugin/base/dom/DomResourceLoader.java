@@ -74,8 +74,8 @@ public class DomResourceLoader implements ResourceLoader {
     private static final String XE_MIGRATIONS = "migrations";
     private static final String XA_MIGRATION_TYPE = "type";
     private static final String XA_MIGRATION_ID = "id";
-    private static final String XA_MIGRATION_FROM_STATE_ID = "fromStateId";
-    private static final String XA_MIGRATION_TO_STATE_ID = "toStateId";
+    private static final String XA_MIGRATION_FROM_STATE_ID = "fromState";
+    private static final String XA_MIGRATION_TO_STATE_ID = "toState";
 
     private ResourceTypeService resourceTypeService = null;
     private boolean resourceTypeServiceSet = false;
@@ -438,12 +438,12 @@ public class DomResourceLoader implements ResourceLoader {
 
         String type = element.getAttribute(XA_MIGRATION_TYPE);
         UUID id = UUID.fromString(element.getAttribute(XA_MIGRATION_ID));
-        Optional<UUID> fromStateId = element.hasAttribute(XA_MIGRATION_FROM_STATE_ID)
-                ? Optional.of(UUID.fromString(element.getAttribute(XA_MIGRATION_FROM_STATE_ID)))
+        Optional<String> fromState = element.hasAttribute(XA_MIGRATION_FROM_STATE_ID)
+                ? Optional.of(element.getAttribute(XA_MIGRATION_FROM_STATE_ID))
                 : Optional.empty();
 
-        Optional<UUID> toStateId = element.hasAttribute(XA_MIGRATION_TO_STATE_ID)
-                ? Optional.of(UUID.fromString(element.getAttribute(XA_MIGRATION_TO_STATE_ID)))
+        Optional<String> toState = element.hasAttribute(XA_MIGRATION_TO_STATE_ID)
+                ? Optional.of(element.getAttribute(XA_MIGRATION_TO_STATE_ID))
                 : Optional.empty();
 
         MigrationBuilder builder = migrationBuilders.get(type);
@@ -459,9 +459,9 @@ public class DomResourceLoader implements ResourceLoader {
         builder.reset();
         ((DomBuilder) builder).setElement(element);
         return builder.build(
-                id,
-                fromStateId,
-                toStateId,
-                baseDir);
+              id,
+              fromState,
+              toState,
+              baseDir);
     }
 }
