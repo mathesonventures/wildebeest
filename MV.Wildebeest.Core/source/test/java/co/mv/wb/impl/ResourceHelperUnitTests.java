@@ -79,7 +79,7 @@ public class ResourceHelperUnitTests
 
 		resource.getStates().add(state);
 		
-		FakeInstance instance = new FakeInstance(state.getStateId());
+		FakeInstance instance = new FakeInstance(state.getStateId().toString());
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
@@ -117,7 +117,7 @@ public class ResourceHelperUnitTests
 			"Foo");
 		state.getAssertions().add(assertion1);
 		
-		FakeInstance instance = new FakeInstance(state.getStateId());
+		FakeInstance instance = new FakeInstance(state.getStateId().toString());
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -164,7 +164,7 @@ public class ResourceHelperUnitTests
 			1,
 			"Bar"));
 		
-		FakeInstance instance = new FakeInstance(state.getStateId());
+		FakeInstance instance = new FakeInstance(state.getStateId().toString());
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -230,7 +230,7 @@ public class ResourceHelperUnitTests
 		resource.getStates().add(state);
 		
 		UUID migration1Id = UUID.randomUUID();
-		Migration tran1 = new SetTagMigration(migration1Id, Optional.empty(), Optional.of(state1Id), "foo");
+		Migration tran1 = new SetTagMigration(migration1Id, Optional.empty(), Optional.of(state1Id.toString()), "foo");
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
@@ -297,15 +297,15 @@ public class ResourceHelperUnitTests
 		Migration tran1 = new SetTagMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(state1.getStateId()),
+			Optional.of(state1.getStateId().toString()),
 			"foo");
 		resource.getMigrations().add(tran1);
 		
 		// Migrate State1 -> State2
 		Migration tran2 = new SetTagMigration(
 			UUID.randomUUID(),
-			Optional.of(state1.getStateId()),
-			Optional.of(state2.getStateId()),
+			Optional.of(state1.getStateId().toString()),
+			Optional.of(state2.getStateId().toString()),
 			"bar");
 
 		resource.getMigrations().add(tran2);
@@ -313,8 +313,8 @@ public class ResourceHelperUnitTests
 		// Migrate State2 -> State3
 		Migration tran3 = new SetTagMigration(
 			UUID.randomUUID(),
-			Optional.of(state2.getStateId()),
-			Optional.of(state3.getStateId()),
+			Optional.of(state2.getStateId().toString()),
+			Optional.of(state3.getStateId().toString()),
 			"bup");
 		resource.getMigrations().add(tran3);
 
@@ -406,7 +406,7 @@ public class ResourceHelperUnitTests
 		Migration migration1 = new SetTagMigration(
 			migration1Id,
 			Optional.empty(),
-			Optional.of(state1Id),
+			Optional.of(state1Id.toString()),
 			"state1");
 		resource.getMigrations().add(migration1);
 		
@@ -414,8 +414,8 @@ public class ResourceHelperUnitTests
 		UUID migration2Id = UUID.randomUUID();
 		Migration migration2 = new SetTagMigration(
 			migration2Id,
-			Optional.of(state1Id),
-			Optional.of(stateB2Id),
+			Optional.of(state1Id.toString()),
+			Optional.of(stateB2Id.toString()),
 			"stateB2");
 		resource.getMigrations().add(migration2);
 		
@@ -423,8 +423,8 @@ public class ResourceHelperUnitTests
 		UUID migration3Id = UUID.randomUUID();
 		Migration migration3 = new SetTagMigration(
 			migration3Id,
-			Optional.of(stateB2Id),
-			Optional.of(stateB3Id),
+			Optional.of(stateB2Id.toString()),
+			Optional.of(stateB3Id.toString()),
 			"stateB3");
 		resource.getMigrations().add(migration3);
 		
@@ -432,8 +432,8 @@ public class ResourceHelperUnitTests
 		UUID migration4Id = UUID.randomUUID();
 		Migration migration4 = new SetTagMigration(
 			migration4Id,
-			Optional.of(state1Id),
-			Optional.of(stateC2Id),
+			Optional.of(state1Id.toString()),
+			Optional.of(stateC2Id.toString()),
 			"stateC2");
 		resource.getMigrations().add(migration4);
 		
@@ -441,8 +441,8 @@ public class ResourceHelperUnitTests
 		UUID migration5Id = UUID.randomUUID();
 		Migration migration5 = new SetTagMigration(
 			migration5Id,
-			Optional.of(stateC2Id),
-			Optional.of(stateC3Id),
+			Optional.of(stateC2Id.toString()),
+			Optional.of(stateC3Id.toString()),
 			"stateC3");
 		resource.getMigrations().add(migration5);
 
@@ -520,7 +520,7 @@ public class ResourceHelperUnitTests
 		Migration tran1 = new SetTagMigration(
 			migration1Id,
 			Optional.empty(),
-			Optional.of(state1Id),
+			Optional.of(state1Id.toString()),
 			"foo");
 		resource.getMigrations().add(tran1);
 
@@ -593,7 +593,7 @@ public class ResourceHelperUnitTests
 		Migration tran1 = new SetTagMigration(
 			migration1Id,
 			Optional.empty(),
-			Optional.of(state1Id),
+			Optional.of(state1Id.toString()),
 			"foo");
 		resource.getMigrations().add(tran1);
 
@@ -813,53 +813,6 @@ public class ResourceHelperUnitTests
 		
 	}
 
-	@Test public void migrate_fromStateandToStateAreLabels() throws
-		  AssertionFailedException,
-		  IndeterminateStateException,
-		  InvalidStateSpecifiedException,
-		  MigrationNotPossibleException,
-		  MigrationFailedException,
-		  TargetNotSpecifiedException,
-		  UnknownStateSpecifiedException
-	{
-		// Setup
-		PrintStream output = System.out;
-		Resource resource = new ResourceImpl(
-			  UUID.randomUUID(),
-			  FakeConstants.Fake,
-			  "Resource",
-			  Optional.empty());
-
-		UUID state1Id = UUID.randomUUID();
-		State state = new ImmutableState(state1Id);
-		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
-		resource.getStates().add(state);
-
-		UUID migration1Id = UUID.randomUUID();
-		Migration tran1 = new SetTagMigration(migration1Id, Optional.empty(), Optional.of(state1Id), "foo");
-		resource.getMigrations().add(tran1);
-
-		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
-
-		FakeInstance instance = new FakeInstance();
-
-		WildebeestApi wildebeestApi = Wildebeest
-			  .wildebeestApi(output)
-			  .withFactoryResourcePlugins()
-			  .withFactoryPluginManager()
-			  .get();
-
-		// Execute
-		wildebeestApi.migrate(
-			  resource,
-			  instance,
-			  Optional.of(state1Id.toString()));
-
-		// Verify
-		assertEquals("instance.tag", "foo", instance.getTag());
-
-	}
 }
 
 

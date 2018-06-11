@@ -44,13 +44,13 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 		Migration create = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin createRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
 		Migration drop = new SqlServerDropDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID().toString()),
 			Optional.empty());
 
 		MigrationPlugin dropRunner = new SqlServerDropDatabaseMigrationPlugin();
@@ -82,13 +82,13 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 		Migration create = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin createRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
 		Migration drop = new SqlServerDropDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID().toString()),
 			Optional.empty());
 
 		MigrationPlugin dropRunner = new SqlServerDropDatabaseMigrationPlugin();
