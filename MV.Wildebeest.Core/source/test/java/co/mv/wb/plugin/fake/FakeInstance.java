@@ -31,17 +31,17 @@ public class FakeInstance implements Instance
     {
     }
 
-	public FakeInstance(UUID stateId)
+	public FakeInstance(String stateId)
 	{
 		this.setStateId(stateId);
 	}
 	
 	// <editor-fold desc="StateId" defaultstate="collapsed">
 
-	private UUID _stateId = null;
+	private String _stateId = null;
 	private boolean _stateId_set = false;
 
-	public UUID getStateId() {
+	public String getStateId() {
 		if(!_stateId_set) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
@@ -49,7 +49,7 @@ public class FakeInstance implements Instance
 	}
 
 	public final void setStateId(
-		UUID value) {
+		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateId cannot be null");
 		}

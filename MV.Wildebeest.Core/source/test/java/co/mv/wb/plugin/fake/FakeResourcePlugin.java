@@ -35,10 +35,10 @@ public class FakeResourcePlugin implements ResourcePlugin
 {
 	// <editor-fold desc="StateId" defaultstate="collapsed">
 
-	private UUID _stateId = null;
+	private String _stateId = null;
 	private boolean _stateId_set = false;
 
-	public UUID getStateId() {
+	public String getStateId() {
 		if(!_stateId_set) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
@@ -46,7 +46,7 @@ public class FakeResourcePlugin implements ResourcePlugin
 	}
 
 	private void setStateId(
-		UUID value) {
+		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateId cannot be null");
 		}
@@ -80,7 +80,7 @@ public class FakeResourcePlugin implements ResourcePlugin
 		if (fake == null) { throw new IllegalArgumentException("instance must be of type FakeInstance"); }
 
 		return fake.hasStateId()
-			? Wildebeest.stateForId(resource, fake.getStateId())
+			? Wildebeest.stateForId(resource, fake.getStateId().toString())
 			: null;
 	}
 
