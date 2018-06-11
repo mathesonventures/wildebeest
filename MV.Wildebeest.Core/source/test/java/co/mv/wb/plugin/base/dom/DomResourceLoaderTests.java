@@ -45,7 +45,8 @@ import static org.junit.Assert.assertNotNull;
  *
  * @since                                       1.0
  */
-public class DomResourceLoaderTests {
+public class DomResourceLoaderTests
+{
     @Test
     public void loadResource() throws
             LoaderFault,
@@ -535,7 +536,7 @@ public class DomResourceLoaderTests {
         String resourceXml = FixtureCreator.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
                 .state(state1Id, "Foo")
-                .migration(FakeConstants.Fake.getUri(), migrationId, state1Id, null).innerXml("<tag>Blah</tag>")
+                .migration(FakeConstants.Fake.getUri(), migrationId, state1Id.toString(), null).innerXml("<tag>Blah</tag>")
                 .render();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
@@ -595,7 +596,7 @@ public class DomResourceLoaderTests {
         String resourceXml = FixtureCreator.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
                 .state(state1Id, "Foo")
-                .migration(FakeConstants.Fake.getUri(), migrationId, null, state1Id).innerXml("<tag>Blah</tag>")
+                .migration(FakeConstants.Fake.getUri(), migrationId, null, state1Id.toString()).innerXml("<tag>Blah</tag>")
                 .render();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
@@ -657,7 +658,7 @@ public class DomResourceLoaderTests {
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
                 .state(state1Id, "Foo")
                 .state(state2Id, "Bar")
-                .migration(FakeConstants.Fake.getUri(), migrationId, state1Id, state2Id).innerXml("<tag>Blah</tag>")
+                .migration(FakeConstants.Fake.getUri(), migrationId, state1Id.toString(), state2Id.toString()).innerXml("<tag>Blah</tag>")
                 .render();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
@@ -701,4 +702,5 @@ public class DomResourceLoaderTests {
                 "resource.migrations[0]");
 
     }
+
 }
