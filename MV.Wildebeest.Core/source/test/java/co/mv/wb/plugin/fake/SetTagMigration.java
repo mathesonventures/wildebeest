@@ -84,7 +84,6 @@ public class SetTagMigration extends BaseMigration
 		return tagSet;
 	}
 
-	
 	@Override
 	public List<ResourceType> getApplicableTypes()
 	{

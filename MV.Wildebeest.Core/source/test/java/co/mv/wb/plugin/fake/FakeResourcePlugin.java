@@ -24,7 +24,6 @@ import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
 
 import java.io.PrintStream;
-import java.util.UUID;
 
 /**
  * {@link ResourcePlugin} for the Fake plugin implementation.
@@ -33,16 +32,14 @@ import java.util.UUID;
  */
 public class FakeResourcePlugin implements ResourcePlugin
 {
-	// <editor-fold desc="StateId" defaultstate="collapsed">
-
-	private String _stateId = null;
-	private boolean _stateId_set = false;
+	private String stateId = null;
+	private boolean stateIdSet = false;
 
 	public String getStateId() {
-		if(!_stateId_set) {
+		if(!stateIdSet) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
-		return _stateId;
+		return stateId;
 	}
 
 	private void setStateId(
@@ -50,27 +47,26 @@ public class FakeResourcePlugin implements ResourcePlugin
 		if(value == null) {
 			throw new IllegalArgumentException("stateId cannot be null");
 		}
-		boolean changing = !_stateId_set || _stateId != value;
+		boolean changing = !stateIdSet || stateId != value;
 		if(changing) {
-			_stateId_set = true;
-			_stateId = value;
+			stateIdSet = true;
+			stateId = value;
 		}
 	}
 
 	private void clearStateId() {
-		if(_stateId_set) {
-			_stateId_set = true;
-			_stateId = null;
+		if(stateIdSet) {
+			stateIdSet = true;
+			stateId = null;
 		}
 	}
 
 	private boolean hasStateId() {
-		return _stateId_set;
+		return stateIdSet;
 	}
 
-	// </editor-fold>
-
-	@Override public State currentState(
+	@Override
+	public State currentState(
 		Resource resource,
 		Instance instance)
 	{
@@ -84,7 +80,8 @@ public class FakeResourcePlugin implements ResourcePlugin
 			: null;
 	}
 
-	@Override public void setStateId(
+	@Override
+	public void setStateId(
 		PrintStream output,
 		Resource resource,
 		Instance instance,
