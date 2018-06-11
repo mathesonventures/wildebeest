@@ -274,8 +274,8 @@ public class AssertionCreator
 	public MigrationCreator migration(
 		String type,
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId)
+		String fromStateId,
+		String toStateId)
 	{
 		return this.state().resource().migration(type, migrationId, fromStateId, toStateId);
 	}
