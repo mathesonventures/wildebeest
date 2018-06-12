@@ -62,7 +62,8 @@ public class ResourceHelperUnitTests
 	// assertState()
 	//
 	
-	@Test public void assertState_noAssertions_succeeds() throws IndeterminateStateException
+	@Test
+	public void assertState_noAssertions_succeeds() throws IndeterminateStateException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -97,7 +98,8 @@ public class ResourceHelperUnitTests
 		assertEquals("results.size", 0, results.size());
 	}
 	
-	@Test public void assertState_oneAssertion_succeeds() throws IndeterminateStateException
+	@Test
+	public void assertState_oneAssertion_succeeds() throws IndeterminateStateException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -138,7 +140,8 @@ public class ResourceHelperUnitTests
 			assertion1.getAssertionId(), true, "Tag is \"Foo\"", results.get(0), "results[0]");
 	}
 	
-	@Test public void assertState_multipleAssertions_succeeds() throws IndeterminateStateException
+	@Test
+	public void assertState_multipleAssertions_succeeds() throws IndeterminateStateException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -193,12 +196,16 @@ public class ResourceHelperUnitTests
 	 * Verifies that when the internal call to currentState() results in an IndeterminateStateException, assertState
 	 * handles that properly.
 	 */
-	@Ignore @Test public void assertState_resourceIndeterminateState_throws()
+	@Ignore
+	@Test
+	public void assertState_resourceIndeterminateState_throws()
 	{
 		throw new UnsupportedOperationException();
 	}
 
-	@Ignore @Test public void assertState_faultingAssertion_throws()
+	@Ignore
+	@Test
+	public void assertState_faultingAssertion_throws()
 	{
 		throw new UnsupportedOperationException();
 	}
@@ -207,7 +214,8 @@ public class ResourceHelperUnitTests
 	// migrate()
 	//
 
-	@Test public void migrate_nonExistentToFirstState_succeeds() throws
+	@Test
+	public void migrate_nonExistentToFirstState_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -255,7 +263,8 @@ public class ResourceHelperUnitTests
 		
 	}
 	
-	@Test public void migrate_nonExistentToDeepState_succeeds() throws
+	@Test
+	public void migrate_nonExistentToDeepState_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -347,7 +356,8 @@ public class ResourceHelperUnitTests
 		
 	}
 	
-	@Test public void migrate_nonExistentToDeepStateWithMultipleBranches_succeeds() throws
+	@Test
+	public void migrate_nonExistentToDeepStateWithMultipleBranches_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -475,17 +485,22 @@ public class ResourceHelperUnitTests
 		
 	}
 	
-	@Ignore @Test public void migrate_stateToState_succeeds()
+	@Ignore
+	@Test
+	public void migrate_stateToState_succeeds()
 	{
 		throw new UnsupportedOperationException();
 	}
 	
-	@Ignore @Test public void migrate_stateToDeepState_succeeds()
+	@Ignore
+	@Test
+	public void migrate_stateToDeepState_succeeds()
 	{
 		throw new UnsupportedOperationException();
 	}
 	
-	@Test public void migrate_toSameState_succeeds() throws
+	@Test
+	public void migrate_toSameState_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -558,7 +573,9 @@ public class ResourceHelperUnitTests
 		
 	}
 	
-	@Ignore @Test public void migrate_stateToNonExistent_succeeds() throws
+	@Ignore
+	@Test
+	public void migrate_stateToNonExistent_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -631,12 +648,16 @@ public class ResourceHelperUnitTests
 		
 	}
 	
-	@Ignore @Test public void migrate_deepStateToNonExistent_succeeds()
+	@Ignore
+	@Test
+	public void migrate_deepStateToNonExistent_succeeds()
 	{
 		throw new RuntimeException("not implemented");
 	}
 
-	@Ignore @Test public void migrate_circularDependency_throws()
+	@Ignore
+	@Test
+	public void migrate_circularDependency_throws()
 	{
 		throw  new UnsupportedOperationException();
 	}
@@ -645,7 +666,8 @@ public class ResourceHelperUnitTests
 	// jumpstate()
 	//
 	
-	@Test public void jumpstate_assertionFail_throws()
+	@Test
+	public void jumpstate_assertionFail_throws()
 	{
 		
 		//
@@ -703,7 +725,8 @@ public class ResourceHelperUnitTests
 
 	}
 	
-	@Test public void jumpstate_nonExistentState_throws()
+	@Test
+	public void jumpstate_nonExistentState_throws()
 	{
 		
 		//
@@ -759,7 +782,8 @@ public class ResourceHelperUnitTests
 		
 	}
 	
-	@Test public void jumpstate_existentState_succeeds() throws
+	@Test
+	public void jumpstate_existentState_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
