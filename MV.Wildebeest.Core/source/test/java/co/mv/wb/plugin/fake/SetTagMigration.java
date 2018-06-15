@@ -19,6 +19,7 @@ package co.mv.wb.plugin.fake;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
@@ -40,6 +41,8 @@ import java.util.UUID;
 )
 public class SetTagMigration extends BaseMigration
 {
+	private final String tag;
+
 	public SetTagMigration(
 		UUID migrationId,
 		Optional<UUID> fromStateId,
@@ -47,48 +50,19 @@ public class SetTagMigration extends BaseMigration
 		String tag)
 	{
 		super(migrationId, fromStateId, toStateId);
-		
-		this.setTag(tag);
+
+		if (tag == null) throw new ArgumentNullException("tag");
+
+		this.tag = tag;
 	}
 	
-	// <editor-fold desc="Tag" defaultstate="collapsed">
-
-	private String _tag = null;
-	private boolean _tag_set = false;
-
-	public String getTag() {
-		if(!_tag_set) {
-			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
-		}
-		return _tag;
+	public String getTag()
+	{
+		return this.tag;
 	}
 
-	private void setTag(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("tag cannot be null");
-		}
-		boolean changing = !_tag_set || !_tag.equals(value);
-		if(changing) {
-			_tag_set = true;
-			_tag = value;
-		}
-	}
-
-	private void clearTag() {
-		if(_tag_set) {
-			_tag_set = true;
-			_tag = null;
-		}
-	}
-
-	private boolean hasTag() {
-		return _tag_set;
-	}
-
-	// </editor-fold>
-	
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			FakeConstants.Fake);

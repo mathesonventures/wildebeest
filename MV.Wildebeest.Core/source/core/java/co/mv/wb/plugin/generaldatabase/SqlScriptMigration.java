@@ -20,6 +20,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
@@ -62,6 +63,8 @@ import java.util.UUID;
 )
 public class SqlScriptMigration extends BaseMigration implements Migration
 {
+	private final String sql;
+
 	/**
 	 * Creates a new SqlScriptMigration.
 	 * 
@@ -80,46 +83,17 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 		String sql)
 	{
 		super(migrationId, fromStateId, toStateId);
-		this.setSql(sql);
+
+		if (sql == null) throw new ArgumentNullException("sql");
+
+		this.sql = sql;
 	}
 	
-	// <editor-fold desc="Sql" defaultstate="collapsed">
-
-	private String _sql = null;
-	private boolean _sql_set = false;
-
-	public String getSql() {
-		if(!_sql_set) {
-			throw new IllegalStateException("sql not set.  Use the HasSql() method to check its state before accessing it.");
-		}
-		return _sql;
+	public String getSql()
+	{
+		return sql;
 	}
 
-	private void setSql(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("sql cannot be null");
-		}
-		boolean changing = !_sql_set || !_sql.equals(value);
-		if(changing) {
-			_sql_set = true;
-			_sql = value;
-		}
-	}
-
-	private void clearSql() {
-		if(_sql_set) {
-			_sql_set = true;
-			_sql = null;
-		}
-	}
-
-	private boolean hasSql() {
-		return _sql_set;
-	}
-
-	// </editor-fold>
-	
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(

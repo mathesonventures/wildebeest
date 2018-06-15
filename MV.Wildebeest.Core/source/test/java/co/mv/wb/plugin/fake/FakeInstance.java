@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.fake;
 
 import co.mv.wb.Instance;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.util.UUID;
 
@@ -25,9 +26,12 @@ import java.util.UUID;
  *
  * @since                                       1.0
  */
-public class FakeInstance implements Instance
+public final class FakeInstance implements Instance
 {
-    public FakeInstance()
+	private UUID stateId = null;
+	private String tag = null;
+
+	public FakeInstance()
     {
     }
 
@@ -36,77 +40,55 @@ public class FakeInstance implements Instance
 		this.setStateId(stateId);
 	}
 	
-	// <editor-fold desc="StateId" defaultstate="collapsed">
-
-	private UUID _stateId = null;
-	private boolean _stateId_set = false;
-
-	public UUID getStateId() {
-		if(!_stateId_set) {
+	public UUID getStateId()
+	{
+		if(this.stateId == null)
+		{
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
-		return _stateId;
+		return stateId;
 	}
 
-	public final void setStateId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("stateId cannot be null");
-		}
-		boolean changing = !_stateId_set || _stateId != value;
-		if(changing) {
-			_stateId_set = true;
-			_stateId = value;
-		}
+	public void setStateId(
+		UUID value)
+	{
+		if (value == null) throw new ArgumentNullException("value");
+
+		this.stateId = value;
 	}
 
-	public void clearStateId() {
-		if(_stateId_set) {
-			_stateId_set = true;
-			_stateId = null;
-		}
+	public void clearStateId()
+	{
+		this.stateId = null;
 	}
 
 	public boolean hasStateId() {
-		return _stateId_set;
+		return this.stateId != null;
 	}
 
-	// </editor-fold>
-	
-	// <editor-fold desc="Tag" defaultstate="collapsed">
-
-	private String _tag = null;
-	private boolean _tag_set = false;
-
-	public String getTag() {
-		if(!_tag_set) {
+	public String getTag()
+	{
+		if(this.tag == null)
+		{
 			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
 		}
-		return _tag;
+		return tag;
 	}
 
 	public void setTag(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("tag cannot be null");
-		}
-		boolean changing = !_tag_set || !_tag.equals(value);
-		if(changing) {
-			_tag_set = true;
-			_tag = value;
-		}
+		String value)
+	{
+		if (value == null) throw new ArgumentNullException("value");
+
+		this.tag = value;
 	}
 
-	public void clearTag() {
-		if(_tag_set) {
-			_tag_set = true;
-			_tag = null;
-		}
+	public void clearTag()
+	{
+		this.tag = null;
 	}
 
 	public boolean hasTag() {
-		return _tag_set;
+		return this.tag != null;
 	}
-
-	// </editor-fold>
 }

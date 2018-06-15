@@ -30,7 +30,8 @@ import static org.junit.Assert.fail;
 
 public class SqlServerCreateSchemaMigrationTests
 {
-	@Test public void performForNonExistantSchemaSucceeds() throws
+	@Test
+	public void performForNonExistantSchemaSucceeds() throws
 		MigrationFailedException
 	{
 		// Setup
@@ -76,7 +77,8 @@ public class SqlServerCreateSchemaMigrationTests
 		}
 	}
 
-	@Test public void performForExistantSchemaFails() throws SQLException, MigrationFailedException
+	@Test
+	public void performForExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
 		// Setup
 		PrintStream output = System.out;

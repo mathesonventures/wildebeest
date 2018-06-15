@@ -22,7 +22,7 @@ import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
-import co.mv.wb.fixture.FixtureCreator;
+import co.mv.wb.fixture.FixtureBuilder;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
@@ -44,7 +44,8 @@ import java.util.UUID;
  */
 public class AnsiSqlDomServiceUnitTests
 {
-	@Test public void ansiSqlCreateDatabaseMigrationLoadFromValidDocument() throws
+	@Test
+	public void ansiSqlCreateDatabaseMigrationLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException
 	{
@@ -53,7 +54,7 @@ public class AnsiSqlDomServiceUnitTests
 		UUID fromStateId = null;
 		UUID toStateId = UUID.randomUUID();
 		
-		String xml = FixtureCreator.create()
+		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.migration("AnsiSqlCreateDatabase", migrationId, fromStateId, toStateId)
 			.render();
@@ -89,7 +90,8 @@ public class AnsiSqlDomServiceUnitTests
 			mT.getToStateId());
 	}
 
-	@Test public void ansiSqlDropDatabaseMigrationLoadFromValidDocument() throws
+	@Test
+	public void ansiSqlDropDatabaseMigrationLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException
 	{
@@ -98,7 +100,7 @@ public class AnsiSqlDomServiceUnitTests
 		UUID fromStateId = null;
 		UUID toStateId = UUID.randomUUID();
 		
-		String xml = FixtureCreator.create()
+		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.migration("AnsiSqlDropDatabase", migrationId, fromStateId, toStateId)
 			.render();
@@ -134,20 +136,21 @@ public class AnsiSqlDomServiceUnitTests
 			mT.getToStateId());
 	}
 	
-	@Test public void ansiSqlTableExistsAssertionLoadFromValidDocument() throws
+	@Test
+	public void ansiSqlTableExistsAssertionLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
 		
-		String xml = FixtureCreator.create()
+		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.state(UUID.randomUUID(), null)
 					.assertion("AnsiSqlTableExists", assertionId)
 						.appendInnerXml("<schemaName>sch</schemaName>")
 						.appendInnerXml("<tableName>tbl</tableName>")
-			.render();
+			.build();
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(
 			ResourceTypeServiceBuilder
@@ -178,20 +181,21 @@ public class AnsiSqlDomServiceUnitTests
 			"resource.states[0].assertions[0]");
 	}
 	
-	@Test public void ansiSqlTableDoesNotExistAssertionLoadFromValidDocument() throws
+	@Test
+	public void ansiSqlTableDoesNotExistAssertionLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
 		
-		String xml = FixtureCreator.create()
+		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 				.state(UUID.randomUUID(), null)
 					.assertion("AnsiSqlTableDoesNotExist", assertionId)
 						.appendInnerXml("<schemaName>sch</schemaName>")
 						.appendInnerXml("<tableName>tbl</tableName>")
-			.render();
+			.build();
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(
 			ResourceTypeServiceBuilder

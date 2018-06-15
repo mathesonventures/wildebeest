@@ -37,7 +37,9 @@ import java.util.UUID;
  */
 public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTests
 {
-	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
+	@Override
+	@Test
+	public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
 		PrintStream output = System.out;
 
@@ -73,7 +75,9 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			dropRunner);
 	}
 	
-	@Override @Test public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
+	@Override
+	@Test
+	public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
@@ -87,7 +91,9 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 		this.databaseExistsAssertionForNonExistentDatabase(instance);
 	}
 	
-	@Override @Test public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
+	@Override
+	@Test
+	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
 		PrintStream output = System.out;
 
@@ -123,7 +129,9 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			dropRunner);
 	}
 	
-	@Override @Test public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException
+	@Override
+	@Test
+	public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",

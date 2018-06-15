@@ -34,7 +34,9 @@ import java.util.UUID;
  */
 public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 {
-	@Override @Test public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
+	@Override
+	@Test
+	public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
 		PrintStream output = System.out;
 
@@ -64,7 +66,9 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 			dropRunner);
 	}
 	
-	@Override @Test public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
+	@Override
+	@Test
+	public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance db = SqlServerProperties.get().toInstance(databaseName);
@@ -72,7 +76,9 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 		this.databaseExistsAssertionForNonExistentDatabase(db);
 	}
 	
-	@Override @Test public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
+	@Override
+	@Test
+	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
 		PrintStream output = System.out;
 
@@ -102,7 +108,9 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 			dropRunner);
 	}
 	
-	@Override @Test public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException
+	@Override
+	@Test
+	public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance db = SqlServerProperties.get().toInstance(databaseName);

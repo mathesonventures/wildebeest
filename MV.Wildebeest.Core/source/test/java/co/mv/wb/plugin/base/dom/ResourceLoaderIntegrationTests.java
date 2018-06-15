@@ -47,7 +47,8 @@ import static org.junit.Assert.assertNotNull;
 
 public class ResourceLoaderIntegrationTests
 {
-	@Test public void loadAndMigrateMySqlResourceFromXml() throws
+	@Test
+	public void loadAndMigrateMySqlResourceFromXml() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,

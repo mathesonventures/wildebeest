@@ -22,9 +22,22 @@ import org.slf4j.LoggerFactory;
 public class SqlServerProperties
 {
 	private static final Logger LOG = LoggerFactory.getLogger(SqlServerProperties.class);
-	
+
+	private String hostName;
+	private String instanceName;
+	private int port;
+	private String databaseName;
+	private String username;
+	private String password;
+
 	private SqlServerProperties()
 	{
+		this.hostName = null;
+		this.instanceName = null;
+		this.port = 0;
+		this.databaseName = null;
+		this.username = null;
+		this.password = null;
 	}
 	
 	public static SqlServerProperties get()
@@ -35,12 +48,12 @@ public class SqlServerProperties
 		String hostName = System.getProperty("sqlServer.hostName");
 		if (hostName == null)
 		{
-			result.setHostName("127.0.0.1");
+			result.hostName = "127.0.0.1";
 		}
 		else
 		{
 			LOG.debug("System sqlServer.hostName: " + hostName);
-			result.setHostName(hostName);
+			result.hostName = hostName;
 		}
 		
 		// InstanceName
@@ -52,43 +65,43 @@ public class SqlServerProperties
 		else
 		{
 			LOG.debug("System sqlServer.instanceName: " + instanceName);
-			result.setInstanceName(instanceName);
+			result.instanceName = instanceName;
 		}
 		
 		// Port
 		String portRaw = System.getProperty("sqlServer.port");
 		if (portRaw == null)
 		{
-			result.setPort(1433);
+			result.port = 1433;
 		}
 		else
 		{
 			LOG.debug("System sqlServer.port: " + portRaw);
-			result.setPort(Integer.parseInt(portRaw));
+			result.port = Integer.parseInt(portRaw);
 		}
 
 		// Username
 		String username = System.getProperty("sqlServer.username");
 		if (username == null)
 		{
-			result.setUsername("wb");
+			result.username = "wb";
 		}
 		else
 		{
 			LOG.debug("System sqlServer.username: " + username);
-			result.setUsername(username);
+			result.username = username;
 		}
 
 		// Password
 		String password = System.getProperty("sqlServer.password");
 		if (password == null)
 		{
-			result.setPassword("password");
+			result.password = "password";
 		}
 		else
 		{
 			LOG.debug("System sqlServer.password: " + password);
-			result.setPassword(password);
+			result.password = password;
 		}
 		
 		LOG.debug(String.format(
@@ -102,231 +115,47 @@ public class SqlServerProperties
 		return result;
 	}
 	
-	// <editor-fold desc="HostName" defaultstate="collapsed">
-
-	private String _hostName = null;
-	private boolean _hostName_set = false;
-
-	public String getHostName() {
-		if(!_hostName_set) {
-			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
-		}
-		return _hostName;
+	public String getHostName()
+	{
+		return this.hostName;
 	}
 
-	private void setHostName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("hostName cannot be null");
-		}
-		boolean changing = !_hostName_set || !_hostName.equals(value);
-		if(changing) {
-			_hostName_set = true;
-			_hostName = value;
-		}
+	public String getInstanceName()
+	{
+		return this.instanceName;
 	}
 
-	private void clearHostName() {
-		if(_hostName_set) {
-			_hostName_set = true;
-			_hostName = null;
-		}
+	public boolean hasInstanceName()
+	{
+		return this.instanceName != null;
 	}
 
-	private boolean hasHostName() {
-		return _hostName_set;
+	public int getPort()
+	{
+		return this.port;
 	}
 
-	// </editor-fold>
-
-	// <editor-fold desc="InstanceName" defaultstate="collapsed">
-
-	private String _instanceName = null;
-	private boolean _instanceName_set = false;
-
-	public String getInstanceName() {
-		if(!_instanceName_set) {
-			throw new IllegalStateException("instanceName not set.  Use the HasInstanceName() method to check its state before accessing it.");
-		}
-		return _instanceName;
+	public String getDatabaseName()
+	{
+		return this.databaseName;
 	}
 
-	private void setInstanceName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("instanceName cannot be null");
-		}
-		boolean changing = !_instanceName_set || !_instanceName.equals(value);
-		if(changing) {
-			_instanceName_set = true;
-			_instanceName = value;
-		}
+	public String getUsername()
+	{
+		return this.username;
 	}
 
-	private void clearInstanceName() {
-		if(_instanceName_set) {
-			_instanceName_set = true;
-			_instanceName = null;
-		}
+	public String getPassword()
+	{
+		return this.password;
 	}
 
-	public boolean hasInstanceName() {
-		return _instanceName_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="Port" defaultstate="collapsed">
-
-	private int _port = 0;
-	private boolean _port_set = false;
-
-	public int getPort() {
-		if(!_port_set) {
-			throw new IllegalStateException("port not set.  Use the HasPort() method to check its state before accessing it.");
-		}
-		return _port;
-	}
-
-	private void setPort(
-		int value) {
-		boolean changing = !_port_set || _port != value;
-		if(changing) {
-			_port_set = true;
-			_port = value;
-		}
-	}
-
-	private void clearPort() {
-		if(_port_set) {
-			_port_set = true;
-			_port = 0;
-		}
-	}
-
-	private boolean hasPort() {
-		return _port_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="DatabaseName" defaultstate="collapsed">
-
-	private String _databaseName = null;
-	private boolean _databaseName_set = false;
-
-	public String getDatabaseName() {
-		if(!_databaseName_set) {
-			throw new IllegalStateException("databaseName not set.  Use the HasDatabaseName() method to check its state before accessing it.");
-		}
-		return _databaseName;
-	}
-
-	private void setDatabaseName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("databaseName cannot be null");
-		}
-		boolean changing = !_databaseName_set || !_databaseName.equals(value);
-		if(changing) {
-			_databaseName_set = true;
-			_databaseName = value;
-		}
-	}
-
-	private void clearDatabaseName() {
-		if(_databaseName_set) {
-			_databaseName_set = true;
-			_databaseName = null;
-		}
-	}
-
-	private boolean hasDatabaseName() {
-		return _databaseName_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="Username" defaultstate="collapsed">
-
-	private String _username = null;
-	private boolean _username_set = false;
-
-	public String getUsername() {
-		if(!_username_set) {
-			throw new IllegalStateException("username not set.  Use the HasUsername() method to check its state before accessing it.");
-		}
-		return _username;
-	}
-
-	private void setUsername(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("username cannot be null");
-		}
-		boolean changing = !_username_set || !_username.equals(value);
-		if(changing) {
-			_username_set = true;
-			_username = value;
-		}
-	}
-
-	private void clearUsername() {
-		if(_username_set) {
-			_username_set = true;
-			_username = null;
-		}
-	}
-
-	private boolean hasUsername() {
-		return _username_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="Password" defaultstate="collapsed">
-
-	private String _password = null;
-	private boolean _password_set = false;
-
-	public String getPassword() {
-		if(!_password_set) {
-			throw new IllegalStateException("password not set.  Use the HasPassword() method to check its state before accessing it.");
-		}
-		return _password;
-	}
-
-	private void setPassword(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("password cannot be null");
-		}
-		boolean changing = !_password_set || !_password.equals(value);
-		if(changing) {
-			_password_set = true;
-			_password = value;
-		}
-	}
-
-	private void clearPassword() {
-		if(_password_set) {
-			_password_set = true;
-			_password = null;
-		}
-	}
-
-	private boolean hasPassword() {
-		return _password_set;
-	}
-
-	// </editor-fold>
-	
 	public SqlServerDatabaseInstance toInstance(
 		String databaseName)
 	{
 		return new SqlServerDatabaseInstance(
 			this.getHostName(),
-			this.hasInstanceName() ? this.getInstanceName() : null,
+			this.getInstanceName(),
 			this.getPort(),
 			this.getUsername(),
 			this.getPassword(),

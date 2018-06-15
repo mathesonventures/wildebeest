@@ -30,7 +30,8 @@ import java.io.PrintStream;
  */
 public class SetTagMigrationPlugin implements MigrationPlugin
 {
-	@Override public void perform(
+	@Override
+	public void perform(
 		PrintStream output,
 		Migration migration,
 		Instance instance)

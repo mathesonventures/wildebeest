@@ -20,6 +20,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
@@ -47,6 +48,8 @@ import java.util.UUID;
 )
 public class SqlServerDropSchemaMigration extends BaseMigration
 {
+	private final String schemaName;
+
 	/**
 	 * Creates a new SqlServerDropSchemaMigration.
 	 * 
@@ -64,52 +67,22 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 	{
 		super(migrationId, fromStateId, toStateId);
 
-		this.setSchemaName(schemaName);
+		if (schemaName == null) throw new ArgumentNullException("schemaName");
+
+		this.schemaName = schemaName;
 	}
 	
-	// <editor-fold desc="SchemaName" defaultstate="collapsed">
-
-	private String _schemaName = null;
-	private boolean _schemaName_set = false;
-
 	/**
 	 * Returns the name of the schema to be dropped.
 	 * 
 	 * @return                                  the name of the schema to be dropped
 	 * @since                                   2.0
 	 */
-	public final String getSchemaName() {
-		if(!_schemaName_set) {
-			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
-		}
-		return _schemaName;
+	public final String getSchemaName()
+	{
+		return schemaName;
 	}
 
-	private void setSchemaName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("schemaName cannot be null");
-		}
-		boolean changing = !_schemaName_set || !_schemaName.equals(value);
-		if(changing) {
-			_schemaName_set = true;
-			_schemaName = value;
-		}
-	}
-
-	private void clearSchemaName() {
-		if(_schemaName_set) {
-			_schemaName_set = true;
-			_schemaName = null;
-		}
-	}
-
-	private boolean hasSchemaName() {
-		return _schemaName_set;
-	}
-
-	// </editor-fold>
-	
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(

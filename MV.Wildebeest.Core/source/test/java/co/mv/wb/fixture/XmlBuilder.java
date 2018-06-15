@@ -25,48 +25,18 @@ import java.util.UUID;
  */
 public class XmlBuilder
 {
+	private final StringBuilder stringBuilder;
+
 	public XmlBuilder()
 	{
-		this.setStringBuilder(new StringBuilder());
+		this.stringBuilder = new StringBuilder();
 	}
 	
-	// <editor-fold desc="StringBuilder" defaultstate="collapsed">
-
-	private StringBuilder _stringBuilder = null;
-	private boolean _stringBuilder_set = false;
-
-	public StringBuilder getStringBuilder() {
-		if(!_stringBuilder_set) {
-			throw new IllegalStateException("stringBuilder not set.  Use the HasStringBuilder() method to check its state before accessing it.");
-		}
-		return _stringBuilder;
+	public StringBuilder getStringBuilder()
+	{
+		return this.stringBuilder;
 	}
 
-	private void setStringBuilder(
-		StringBuilder value) {
-		if(value == null) {
-			throw new IllegalArgumentException("stringBuilder cannot be null");
-		}
-		boolean changing = !_stringBuilder_set || _stringBuilder != value;
-		if(changing) {
-			_stringBuilder_set = true;
-			_stringBuilder = value;
-		}
-	}
-
-	private void clearStringBuilder() {
-		if(_stringBuilder_set) {
-			_stringBuilder_set = true;
-			_stringBuilder = null;
-		}
-	}
-
-	private boolean hasStringBuilder() {
-		return _stringBuilder_set;
-	}
-
-	// </editor-fold>
-	
 	public XmlBuilder processingInstruction()
 	{
 		this.getStringBuilder().append("<?xml version=\"1.0\"?>");
@@ -143,7 +113,6 @@ public class XmlBuilder
 		
 		return this;
 	}
-
 
 	public XmlBuilder openElement(
 		String name,

@@ -56,7 +56,8 @@ import static org.junit.Assert.fail;
  */
 public class SqlServerTableExistsAssertionTests
 {
-	@Test public void applyForExistingTableSucceeds() throws
+	@Test
+	public void applyForExistingTableSucceeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -158,7 +159,8 @@ public class SqlServerTableExistsAssertionTests
 		Asserts.assertAssertionResponse(true, "Table ProductType exists", response, "response");
 	}
 	 
-	@Test public void applyForNonExistentTableFails() throws
+	@Test
+	public void applyForNonExistentTableFails() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -249,7 +251,8 @@ public class SqlServerTableExistsAssertionTests
 		Asserts.assertAssertionResponse(false, "Table ProductType does not exist", response, "response");
 	}
 	 
-	 @Test public void applyForNonExistentDatabaseFails()
+	 @Test
+	 public void applyForNonExistentDatabaseFails()
 	 {
 		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -281,7 +284,8 @@ public class SqlServerTableExistsAssertionTests
 			response, "response");
 	 }
 	 
-	 @Test public void applyForNullInstanceFails()
+	 @Test
+	 public void applyForNullInstanceFails()
 	 {
 		// Setup
 		SqlServerTableExistsAssertion assertion = new SqlServerTableExistsAssertion(
@@ -303,7 +307,8 @@ public class SqlServerTableExistsAssertionTests
 		}
 	 }
 	 
-	 @Test public void applyForIncorrectInstanceTypeFails()
+	 @Test
+	 public void applyForIncorrectInstanceTypeFails()
 	 {
 		// Setup
 		SqlServerTableExistsAssertion assertion = new SqlServerTableExistsAssertion(

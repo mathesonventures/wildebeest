@@ -43,6 +43,8 @@ import java.util.UUID;
 )
 public class TagAssertion extends BaseAssertion
 {
+	private final String tag;
+
 	public TagAssertion(
 		UUID assertionId,
 		int seqNum,
@@ -50,58 +52,29 @@ public class TagAssertion extends BaseAssertion
 	{
 		super(assertionId, seqNum);
 		
-		this.setTag(tag);
+		this.tag = tag;
 	}
 	
-	@Override public String getDescription()
+	@Override
+	public String getDescription()
 	{
 		return "Tag";
 	}
 	
-	// <editor-fold desc="Tag" defaultstate="collapsed">
-
-	private String _tag = null;
-	private boolean _tag_set = false;
-
-	public String getTag() {
-		if(!_tag_set) {
-			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
-		}
-		return _tag;
+	public String getTag()
+	{
+		return this.tag;
 	}
 
-	public final void setTag(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("tag cannot be null");
-		}
-		boolean changing = !_tag_set || !_tag.equals(value);
-		if(changing) {
-			_tag_set = true;
-			_tag = value;
-		}
-	}
-
-	private void clearTag() {
-		if(_tag_set) {
-			_tag_set = true;
-			_tag = null;
-		}
-	}
-
-	private boolean hasTag() {
-		return _tag_set;
-	}
-
-	// </editor-fold>
-	
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			FakeConstants.Fake);
 	}
 
-	@Override public AssertionResponse perform(Instance instance)
+	@Override
+	public AssertionResponse perform(Instance instance)
 	{
 		if (instance == null) { throw new IllegalArgumentException("instance"); }
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);

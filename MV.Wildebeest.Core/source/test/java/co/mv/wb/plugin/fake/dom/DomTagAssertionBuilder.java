@@ -30,7 +30,8 @@ import java.util.UUID;
  */
 public class DomTagAssertionBuilder extends BaseDomAssertionBuilder
 {
-	@Override public Assertion build(UUID assertionId, int seqNum)
+	@Override
+	public Assertion build(UUID assertionId, int seqNum)
 	{
 		String tag = this.getElement().getChildNodes().item(0).getTextContent();
 		

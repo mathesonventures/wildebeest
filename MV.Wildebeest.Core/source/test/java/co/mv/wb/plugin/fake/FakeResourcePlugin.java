@@ -33,42 +33,14 @@ import java.util.UUID;
  */
 public class FakeResourcePlugin implements ResourcePlugin
 {
+	private UUID stateId;
+
 	// <editor-fold desc="StateId" defaultstate="collapsed">
 
-	private UUID _stateId = null;
-	private boolean _stateId_set = false;
-
-	public UUID getStateId() {
-		if(!_stateId_set) {
-			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
-		}
-		return _stateId;
+	public UUID getStateId()
+	{
+		return this.stateId;
 	}
-
-	private void setStateId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("stateId cannot be null");
-		}
-		boolean changing = !_stateId_set || _stateId != value;
-		if(changing) {
-			_stateId_set = true;
-			_stateId = value;
-		}
-	}
-
-	private void clearStateId() {
-		if(_stateId_set) {
-			_stateId_set = true;
-			_stateId = null;
-		}
-	}
-
-	private boolean hasStateId() {
-		return _stateId_set;
-	}
-
-	// </editor-fold>
 
 	@Override public State currentState(
 		Resource resource,
@@ -96,6 +68,6 @@ public class FakeResourcePlugin implements ResourcePlugin
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
 		if (stateId == null) { throw new IllegalArgumentException("stateId must be of type FakeInstance"); }
 		
-		this.setStateId(stateId);
+		this.stateId = stateId;
 	}
 }

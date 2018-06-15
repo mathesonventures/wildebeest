@@ -16,6 +16,8 @@
 
 package co.mv.wb.fixture;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,276 +27,100 @@ import java.util.UUID;
  *
  * @since                                       4.0
  */
-public class StateCreator {
-
-    private FixtureCreator creator = null;
-    private boolean creatorSet = false;
-    private ResourceCreator resource = null;
-    private boolean resourceSet = false;
-    private UUID stateId = null;
-    private boolean stateIdSet = false;
-    private String label = null;
-    private boolean labelSet = false;
-    private String description = null;
-    private boolean descriptionSet = false;
-    private List<AssertionCreator> assertions = null;
-    private boolean assertionsSet = false;
-
+public class StateCreator
+{
+    private final FixtureBuilder creator;
+    private final ResourceBuilder resource;
+    private final UUID stateId;
+    private final String label;
+    private final String description;
+    private final List<AssertionCreator> assertions;
 
     public StateCreator(
-            FixtureCreator creator,
-            ResourceCreator resource,
-            UUID stateId,
-            String label) {
-        this.setCreator(creator);
-        this.setResource(resource);
-        this.setStateId(stateId);
+        FixtureBuilder creator,
+        ResourceBuilder resource,
+        UUID stateId,
+        String label,
+        String description)
+    {
+        if (creator == null) throw new ArgumentNullException("creator");
+        if (resource == null) throw new ArgumentNullException("resource");
+        if (stateId == null) throw new ArgumentNullException("stateId");
 
-        if (label != null) {
-            this.setLabel(label);
-        }
-
-        this.setAssertions(new ArrayList<>());
+        this.creator = creator;
+        this.resource = resource;
+        this.stateId = stateId;
+        this.label = label;
+        this.description = description;
+        this.assertions = new ArrayList<>();
     }
 
-
-    public StateCreator(
-            FixtureCreator creator,
-            ResourceCreator resource,
-            UUID stateId,
-            String label,
-            String description) {
-        this.setCreator(creator);
-        this.setResource(resource);
-        this.setStateId(stateId);
-
-        if (label != null) {
-            this.setLabel(label);
-        }
-
-        if (description != null){
-            this.setDescription(description);
-        }
-
-        this.setAssertions(new ArrayList<>());
+    public UUID getStateId()
+    {
+        return this.stateId;
     }
 
-    private FixtureCreator getCreator() {
-        if (!creatorSet) {
-            throw new IllegalStateException("creator not set.");
-        }
-        if (creator == null) {
-            throw new IllegalStateException("creator should not be null");
-        }
-        return creator;
+    public String getLabel()
+    {
+        return this.label;
     }
 
-    private void setCreator(
-            FixtureCreator value) {
-        if (value == null) {
-            throw new IllegalArgumentException("creator cannot be null");
-        }
-        boolean changing = !creatorSet || creator != value;
-        if (changing) {
-            creatorSet = true;
-            creator = value;
-        }
+    public boolean hasLabel()
+    {
+        return this.label != null;
     }
 
-    private void clearCreator() {
-        if (creatorSet) {
-            creatorSet = true;
-            creator = null;
-        }
+    public String getDescription()
+    {
+        return this.description;
     }
 
-    private boolean hasCreator() {
-        return creatorSet;
+    public boolean hasDescription()
+    {
+        return this.description != null;
     }
 
-    private ResourceCreator getResource() {
-        if (!resourceSet) {
-            throw new IllegalStateException("resource not set.");
-        }
-        if (resource == null) {
-            throw new IllegalStateException("resource should not be null");
-        }
-        return resource;
-    }
-
-    private void setResource(
-            ResourceCreator value) {
-        if (value == null) {
-            throw new IllegalArgumentException("resource cannot be null");
-        }
-        boolean changing = !resourceSet || resource != value;
-        if (changing) {
-            resourceSet = true;
-            resource = value;
-        }
-    }
-
-    private void clearResource() {
-        if (resourceSet) {
-            resourceSet = true;
-            resource = null;
-        }
-    }
-
-    private boolean hasResource() {
-        return resourceSet;
-    }
-
-    public UUID getStateId() {
-        if (!stateIdSet) {
-            throw new IllegalStateException("stateId not set.");
-        }
-        if (stateId == null) {
-            throw new IllegalStateException("stateId should not be null");
-        }
-        return stateId;
-    }
-
-    private void setStateId(
-            UUID value) {
-        if (value == null) {
-            throw new IllegalArgumentException("stateId cannot be null");
-        }
-        boolean changing = !stateIdSet || stateId != value;
-        if (changing) {
-            stateIdSet = true;
-            stateId = value;
-        }
-    }
-
-    private void clearStateId() {
-        if (stateIdSet) {
-            stateIdSet = true;
-            stateId = null;
-        }
-    }
-
-    private boolean hasStateId() {
-        return stateIdSet;
-    }
-
-    public String getLabel() {
-        if (!labelSet) {
-            throw new IllegalStateException("label not set.");
-        }
-        if (label == null) {
-            throw new IllegalStateException("label should not be null");
-        }
-        return label;
-    }
-
-    private void setLabel(
-            String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("label cannot be null");
-        }
-        boolean changing = !labelSet || !label.equals(value);
-        if (changing) {
-            labelSet = true;
-            label = value;
-        }
-    }
-
-    private void clearLabel() {
-        if (labelSet) {
-            labelSet = true;
-            label = null;
-        }
-    }
-
-    public boolean hasLabel() {
-        return labelSet;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    private void setDescription(String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("description cannot be null");
-        }
-        boolean changing = !labelSet || !label.equals(value);
-        if (changing) {
-            descriptionSet = true;
-            description = value;
-        }
-    }
-
-    private void clearDescription(){
-        if (descriptionSet) {
-            descriptionSet = true;
-            description = null;
-        }
-    }
-
-    public boolean hasDescription(){ return descriptionSet; }
-
-
-    public List<AssertionCreator> getAssertions() {
-        if (!assertionsSet) {
-            throw new IllegalStateException("assertions not set.");
-        }
-        if (assertions == null) {
-            throw new IllegalStateException("assertions should not be null");
-        }
-        return assertions;
-    }
-
-    private void setAssertions(List<AssertionCreator> value) {
-        if (value == null) {
-            throw new IllegalArgumentException("assertions cannot be null");
-        }
-        boolean changing = !assertionsSet || assertions != value;
-        if (changing) {
-            assertionsSet = true;
-            assertions = value;
-        }
-    }
-
-    private void clearAssertions() {
-        if (assertionsSet) {
-            assertionsSet = true;
-            assertions = null;
-        }
-    }
-
-    private boolean hasAssertions() {
-        return assertionsSet;
+    public List<AssertionCreator> getAssertions()
+    {
+        return this.assertions;
     }
 
     public AssertionCreator assertion(
-            String type,
-            UUID assertionId) {
-        AssertionCreator assertion = new AssertionCreator(this.getCreator(), this, type, assertionId);
-        this.getAssertions().add(assertion);
+        String type,
+        UUID assertionId)
+    {
+        AssertionCreator assertion = new AssertionCreator(this.creator, this, type, assertionId);
+        this.assertions.add(assertion);
         return assertion;
     }
 
-    public ResourceCreator resource() {
-        return this.getResource();
+    public ResourceBuilder resource()
+    {
+        return this.resource;
     }
 
     public StateCreator state(
-            UUID stateId,
-            String label) {
-        return this.getResource().state(stateId, label);
+        UUID stateId,
+        String label)
+    {
+        return this.resource.state(stateId, label);
     }
 
-    public MigrationCreator migration(
-            String type,
-            UUID migrationId,
-            UUID fromStateId,
-            UUID toStateId) {
-        return this.getResource().migration(type, migrationId, fromStateId, toStateId);
+    public MigrationBuilder migration(
+        String type,
+        UUID migrationId,
+        UUID fromStateId,
+        UUID toStateId)
+    {
+        return this.resource().migration(
+            type,
+            migrationId,
+            fromStateId,
+            toStateId);
     }
 
-    public String render() {
-        return this.getCreator().render();
+    public String render()
+    {
+        return this.creator.build();
     }
 }

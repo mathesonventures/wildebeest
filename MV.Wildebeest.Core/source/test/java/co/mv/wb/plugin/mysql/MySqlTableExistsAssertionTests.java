@@ -57,7 +57,8 @@ import static org.junit.Assert.fail;
  */
 public class MySqlTableExistsAssertionTests
 {
-	@Test public void applyForExistingTableSucceeds() throws
+	@Test
+	public void applyForExistingTableSucceeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -154,7 +155,8 @@ public class MySqlTableExistsAssertionTests
 		
 	}
 	 
-	@Test public void applyForNonExistentTableFails() throws
+	@Test
+	public void applyForNonExistentTableFails() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -236,7 +238,8 @@ public class MySqlTableExistsAssertionTests
 		
 	}
 	 
-	@Test public void applyForNonExistentDatabaseFails()
+	@Test
+	public void applyForNonExistentDatabaseFails()
 	{
 		 
 		//
@@ -277,7 +280,8 @@ public class MySqlTableExistsAssertionTests
 
 	}
 	 
-	@Test public void applyForNullInstanceFails()
+	@Test
+	public void applyForNullInstanceFails()
 	{
 		// Setup
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
@@ -298,7 +302,8 @@ public class MySqlTableExistsAssertionTests
 		}
 	}
 	 
-	@Test public void applyForIncorrectInstanceTypeFails()
+	@Test
+	public void applyForIncorrectInstanceTypeFails()
 	{
 		// Setup
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(

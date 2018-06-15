@@ -23,7 +23,7 @@ import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
-import co.mv.wb.fixture.FixtureCreator;
+import co.mv.wb.fixture.FixtureBuilder;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
 import co.mv.wb.plugin.generaldatabase.dom.DatabaseDoesNotExistDomAssertionBuilder;
@@ -45,18 +45,19 @@ import static org.junit.Assert.assertNotNull;
  */
 public class DatabaseDomServiceUnitTests
 {
-	@Test public void databaseExistsAssertionLoadFromValidDocumentSucceeds() throws
+	@Test
+	public void databaseExistsAssertionLoadFromValidDocumentSucceeds() throws
 		LoaderFault,
 		PluginBuildException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
 		
-		String xml = FixtureCreator.create()
+		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Product Catalogue Database")
 				.state(UUID.randomUUID(), null)
 					.assertion("DatabaseExists", assertionId)
-			.render();
+			.build();
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put("DatabaseExists", new DatabaseExistsDomAssertionBuilder());
@@ -87,18 +88,19 @@ public class DatabaseDomServiceUnitTests
 		assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());
 	}
 	
-	@Test public void databaseDoesNotExistAssertionLoadFromValidDocumentSucceeds() throws
+	@Test
+	public void databaseDoesNotExistAssertionLoadFromValidDocumentSucceeds() throws
 		LoaderFault,
 		PluginBuildException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
 		
-		String xml = FixtureCreator.create()
+		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Product Catalogue Database")
 				.state(UUID.randomUUID(), null)
 					.assertion("DatabaseDoesNotExist", assertionId)
-			.render();
+			.build();
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put("DatabaseDoesNotExist", new DatabaseDoesNotExistDomAssertionBuilder());

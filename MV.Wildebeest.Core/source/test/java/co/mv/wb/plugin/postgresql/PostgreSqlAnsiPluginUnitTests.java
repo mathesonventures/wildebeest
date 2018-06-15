@@ -39,7 +39,9 @@ import java.util.UUID;
  */
 public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 {
-	@Override @Test public void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException
+	@Override
+	@Test
+	public void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException
 	{
 		PrintStream output = System.out;
 
@@ -75,7 +77,9 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 			dropRunner);
 	}
 
-	@Override @Test public void tableExistsForExistentTable() throws MigrationFailedException
+	@Override
+	@Test
+	public void tableExistsForExistentTable() throws MigrationFailedException
 	{
 		PrintStream output = System.out;
 
@@ -121,7 +125,9 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 			dropDatabaseRunner);
 	}
 
-	@Override @Test public void tableExistsForNonExistentTable() throws MigrationFailedException
+	@Override
+	@Test
+	public void tableExistsForNonExistentTable() throws MigrationFailedException
 	{
 		PrintStream output = System.out;
 

@@ -62,7 +62,8 @@ import static org.junit.Assert.assertNotNull;
  */
 public class IntegrationTests
 {
-	@Test public void createDatabaseAddTableInsertRows() throws
+	@Test
+	public void createDatabaseAddTableInsertRows() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -166,7 +167,8 @@ public class IntegrationTests
 		
 	}
 	
-	@Test public void loadMySqlDatabaseResource() throws
+	@Test
+	public void loadMySqlDatabaseResource() throws
 		LoaderFault,
 		PluginBuildException
 	{
@@ -187,7 +189,8 @@ public class IntegrationTests
 		assertResource(resource);
 	}
 	
-	@Test public void loadMySqlDatabaseInstance() throws
+	@Test
+	public void loadMySqlDatabaseInstance() throws
 		LoaderFault,
 		PluginBuildException
 	{
@@ -205,7 +208,8 @@ public class IntegrationTests
 		assertInstance(instance, databaseName);
 	}
 	
-	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
+	@Test
+	public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,

@@ -23,6 +23,7 @@ import co.mv.wb.MigrationType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
@@ -50,6 +51,8 @@ import java.util.UUID;
 )
 public class MySqlTableExistsAssertion extends BaseAssertion
 {
+	private final String tableName;
+
 	/**
 	 * Creates a new MySqlTableExistsAssertion.
 	 * 
@@ -64,8 +67,10 @@ public class MySqlTableExistsAssertion extends BaseAssertion
 		String tableName)
 	{
 		super(assertionId, seqNum);
-		
-		this.setTableName(tableName);
+
+		if (tableName == null) throw new ArgumentNullException("tableName");
+
+		this.tableName = tableName;
 	}
 
 	@Override public String getDescription()
@@ -73,49 +78,17 @@ public class MySqlTableExistsAssertion extends BaseAssertion
 		return String.format("Table '%s' exists", this.getTableName());
 	}
 	
-	// <editor-fold desc="TableName" defaultstate="collapsed">
-
-	private String _tableName = null;
-	private boolean _tableName_set = false;
-
 	/**
 	 * Gets the name of the table that this assertion will check for.
 	 * 
 	 * @return                                  the name of the table that this assertion will check for.
 	 * @since                                   1.0
 	 */
-	public String getTableName() {
-		if(!_tableName_set) {
-			throw new IllegalStateException("tableName not set.  Use the HasTableName() method to check its state before accessing it.");
-		}
-		return _tableName;
+	public String getTableName()
+	{
+		return this.tableName;
 	}
 
-	private void setTableName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("tableName cannot be null");
-		}
-		boolean changing = !_tableName_set || !_tableName.equals(value);
-		if(changing) {
-			_tableName_set = true;
-			_tableName = value;
-		}
-	}
-
-	private void clearTableName() {
-		if(_tableName_set) {
-			_tableName_set = true;
-			_tableName = null;
-		}
-	}
-
-	private boolean hasTableName() {
-		return _tableName_set;
-	}
-
-	// </editor-fold>
-	
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(

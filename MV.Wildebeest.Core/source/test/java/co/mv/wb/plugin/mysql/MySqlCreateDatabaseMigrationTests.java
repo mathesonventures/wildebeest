@@ -27,7 +27,8 @@ import java.util.UUID;
 
 public class MySqlCreateDatabaseMigrationTests
 {
-	@Test public void performForNonExistantDatabaseSucceeds() throws
+	@Test
+	public void performForNonExistantDatabaseSucceeds() throws
 		MigrationFailedException
 	{
 		// Setup
@@ -66,7 +67,8 @@ public class MySqlCreateDatabaseMigrationTests
 		MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 	}
 
-	@Test public void performForExistantDatabaseFails()
+	@Test
+	public void performForExistantDatabaseFails()
 	{
 		// Setup
 		PrintStream output = System.out;

@@ -40,7 +40,8 @@ public class MySqlDatabaseResourceTests
 	// currentState()
 	//
 	
-	@Test public void currentStateForNonExistentDatabaseSucceds() throws IndeterminateStateException
+	@Test
+	public void currentStateForNonExistentDatabaseSucceds() throws IndeterminateStateException
 	{
 		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -70,7 +71,8 @@ public class MySqlDatabaseResourceTests
 		Assert.assertEquals("state", null, state);
 	}
 	
-	@Test public void currentStateForExistentDatabaseSucceds() throws IndeterminateStateException, SQLException
+	@Test
+	public void currentStateForExistentDatabaseSucceds() throws IndeterminateStateException, SQLException
 	{
 		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -122,7 +124,8 @@ public class MySqlDatabaseResourceTests
 		}
 	}
 	
-	@Test public void currentStateForDatabaseWithUnknownStateIdDeclaredFails() throws SQLException
+	@Test
+	public void currentStateForDatabaseWithUnknownStateIdDeclaredFails() throws SQLException
 	{
 		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -172,7 +175,9 @@ public class MySqlDatabaseResourceTests
 		MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 	}
 	
-	@Ignore @Test public void currentStateForDatabaseWithInvalidStateTableSchemaFaults()
+	@Ignore
+	@Test
+	public void currentStateForDatabaseWithInvalidStateTableSchemaFaults()
 	{
 		throw new UnsupportedOperationException();
 	}

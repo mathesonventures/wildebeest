@@ -40,7 +40,8 @@ import static org.junit.Assert.fail;
  */
 public class SqlServerSchemaDoesNotExistAssertionTests
 {
-	@Test public void applyForExistingSchemaFails() throws
+	@Test
+	public void applyForExistingSchemaFails() throws
 		MigrationFailedException
 	{
 		// Setup
@@ -106,7 +107,8 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 		Asserts.assertAssertionResponse(false, "Schema prd exists", response, "response");
 	}
 	 
-	@Test public void applyForNonExistentSchemaSucceeds() throws
+	@Test
+	public void applyForNonExistentSchemaSucceeds() throws
 		MigrationFailedException
 	{
 		// Setup
@@ -160,7 +162,8 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 		Asserts.assertAssertionResponse(true, "Schema prd does not exist", response, "response");
 	}
 	 
-	@Test public void applyForNonExistentDatabaseFails()
+	@Test
+	public void applyForNonExistentDatabaseFails()
 	{
 		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -191,7 +194,8 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			response, "response");
 	}
 
-	@Test public void applyForNullInstanceFails()
+	@Test
+	public void applyForNullInstanceFails()
 	{
 		// Setup
 		SqlServerSchemaDoesNotExistAssertion assertion = new SqlServerSchemaDoesNotExistAssertion(
@@ -212,7 +216,8 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 		}
 	}
 
-	@Test public void applyForIncorrectInstanceTypeFails()
+	@Test
+	public void applyForIncorrectInstanceTypeFails()
 	{
 		// Setup
 		SqlServerSchemaDoesNotExistAssertion assertion = new SqlServerSchemaDoesNotExistAssertion(

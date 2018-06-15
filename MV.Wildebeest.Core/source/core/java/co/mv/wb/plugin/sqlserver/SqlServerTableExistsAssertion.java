@@ -23,6 +23,7 @@ import co.mv.wb.MigrationType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
@@ -50,6 +51,9 @@ import java.util.UUID;
 )
 public class SqlServerTableExistsAssertion extends BaseAssertion
 {
+	private final String schemaName;
+	private final String tableName;
+
 	/**
 	 * Creates a new SqlServerTableExistsAssertion.
 	 * 
@@ -66,9 +70,12 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 		String tableName)
 	{
 		super(assertionId, seqNum);
-		
-		this.setSchemaName(schemaName);
-		this.setTableName(tableName);
+
+		if (schemaName == null) throw new ArgumentNullException("schemaName");
+		if (tableName == null) throw new ArgumentNullException("tableName");
+
+		this.schemaName = schemaName;
+		this.tableName = tableName;
 	}
 
 	@Override public String getDescription()
@@ -76,53 +83,16 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 		return String.format("Table '%s' exists in schema '%s'", this.getTableName(), this.getSchemaName());
 	}
 	
-	// <editor-fold desc="SchemaName" defaultstate="collapsed">
-
-	private String _schemaName = null;
-	private boolean _schemaName_set = false;
-
 	/**
 	 * Gets the name of the schema to check.
 	 * 
 	 * @return                                  the name of the schema to check
 	 * @since                                   2.0
 	 */
-	public final String getSchemaName() {
-		if(!_schemaName_set) {
-			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
-		}
-		return _schemaName;
+	public final String getSchemaName()
+	{
+		return schemaName;
 	}
-
-	private void setSchemaName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("schemaName cannot be null");
-		}
-		boolean changing = !_schemaName_set || !_schemaName.equals(value);
-		if(changing) {
-			_schemaName_set = true;
-			_schemaName = value;
-		}
-	}
-
-	private void clearSchemaName() {
-		if(_schemaName_set) {
-			_schemaName_set = true;
-			_schemaName = null;
-		}
-	}
-
-	private boolean hasSchemaName() {
-		return _schemaName_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="TableName" defaultstate="collapsed">
-
-	private String _tableName = null;
-	private boolean _tableName_set = false;
 
 	/**
 	 * Gets the name of the table to check
@@ -130,38 +100,11 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 	 * @return                                  the name of the table to check
 	 * @since                                   2.0
 	 */
-	public final String getTableName() {
-		if(!_tableName_set) {
-			throw new IllegalStateException("tableName not set.  Use the HasTableName() method to check its state before accessing it.");
-		}
-		return _tableName;
+	public final String getTableName()
+	{
+		return tableName;
 	}
 
-	private void setTableName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("tableName cannot be null");
-		}
-		boolean changing = !_tableName_set || !_tableName.equals(value);
-		if(changing) {
-			_tableName_set = true;
-			_tableName = value;
-		}
-	}
-
-	private void clearTableName() {
-		if(_tableName_set) {
-			_tableName_set = true;
-			_tableName = null;
-		}
-	}
-
-	private boolean hasTableName() {
-		return _tableName_set;
-	}
-
-	// </editor-fold>
-	
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(

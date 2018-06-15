@@ -15,11 +15,11 @@ import java.io.PrintStream;
  */
 public class TestContext_WildebeestCommandUnit
 {
-	public PrintStream output;
-	public Resource fakeResource;
-	public Instance fakeInstance;
-	public WildebeestApi wildebeestApi;
-	public WildebeestCommand wildebeestCommand;
+	public final PrintStream output;
+	public final Resource fakeResource;
+	public final Instance fakeInstance;
+	public final WildebeestApi wildebeestApi;
+	public final WildebeestCommand wildebeestCommand;
 
 	public static TestContext_WildebeestCommandUnit get()
 	{

@@ -22,9 +22,18 @@ import org.slf4j.LoggerFactory;
 public class MySqlProperties
 {
 	private static final Logger LOG = LoggerFactory.getLogger(MySqlProperties.class);
-	
+
+	private String hostName;
+	private int port;
+	private String username;
+	private String password;
+
 	private MySqlProperties()
 	{
+		this.hostName = null;
+		this.port = 0;
+		this.username = null;
+		this.password = null;
 	}
 	
 	public static MySqlProperties get()
@@ -35,48 +44,48 @@ public class MySqlProperties
 		String hostName = System.getProperty("mySql.hostName");
 		if (hostName == null)
 		{
-			result.setHostName("127.0.0.1");
+			result.hostName = "127.0.0.1";
 		}
 		else
 		{
 			LOG.debug("System mySql.hostName: " + hostName);
-			result.setHostName(hostName);
+			result.hostName = hostName;
 		}
 		
 		// Port
 		String portRaw = System.getProperty("mySql.port");
 		if (portRaw == null)
 		{
-			result.setPort(3306);
+			result.port = 3306;
 		}
 		else
 		{
 			LOG.debug("System mySql.port: " + portRaw);
-			result.setPort(Integer.parseInt(portRaw));
+			result.port = Integer.parseInt(portRaw);
 		}
 
 		// Username
 		String username = System.getProperty("mySql.username");
 		if (username == null)
 		{
-			result.setUsername("root");
+			result.username = "root";
 		}
 		else
 		{
 			LOG.debug("System mySql.username: " + username);
-			result.setUsername(username);
+			result.username = username;
 		}
 
 		// Password
 		String password = System.getProperty("mySql.password");
 		if (password == null)
 		{
-			result.setPassword("password");
+			result.password = "password";
 		}
 		else
 		{
 			LOG.debug("System mySql.password: " + password);
-			result.setPassword(password);
+			result.password = password;
 		}
 		
 		LOG.debug(String.format(
@@ -89,151 +98,26 @@ public class MySqlProperties
 		return result;
 	}
 	
-	// <editor-fold desc="HostName" defaultstate="collapsed">
-
-	private String _hostName = null;
-	private boolean _hostName_set = false;
-
-	public String getHostName() {
-		if(!_hostName_set) {
-			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
-		}
-		return _hostName;
+	public String getHostName()
+	{
+		return hostName;
 	}
 
-	private void setHostName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("hostName cannot be null");
-		}
-		boolean changing = !_hostName_set || !_hostName.equals(value);
-		if(changing) {
-			_hostName_set = true;
-			_hostName = value;
-		}
+	public int getPort()
+	{
+		return this.port;
 	}
 
-	private void clearHostName() {
-		if(_hostName_set) {
-			_hostName_set = true;
-			_hostName = null;
-		}
+	public String getUsername()
+	{
+		return this.username;
 	}
 
-	private boolean hasHostName() {
-		return _hostName_set;
+	public String getPassword()
+	{
+		return this.password;
 	}
 
-	// </editor-fold>
-
-	// <editor-fold desc="Port" defaultstate="collapsed">
-
-	private int _port = 0;
-	private boolean _port_set = false;
-
-	public int getPort() {
-		if(!_port_set) {
-			throw new IllegalStateException("port not set.  Use the HasPort() method to check its state before accessing it.");
-		}
-		return _port;
-	}
-
-	private void setPort(
-		int value) {
-		boolean changing = !_port_set || _port != value;
-		if(changing) {
-			_port_set = true;
-			_port = value;
-		}
-	}
-
-	private void clearPort() {
-		if(_port_set) {
-			_port_set = true;
-			_port = 0;
-		}
-	}
-
-	private boolean hasPort() {
-		return _port_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="Username" defaultstate="collapsed">
-
-	private String _username = null;
-	private boolean _username_set = false;
-
-	public String getUsername() {
-		if(!_username_set) {
-			throw new IllegalStateException("username not set.  Use the HasUsername() method to check its state before accessing it.");
-		}
-		return _username;
-	}
-
-	private void setUsername(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("username cannot be null");
-		}
-		boolean changing = !_username_set || !_username.equals(value);
-		if(changing) {
-			_username_set = true;
-			_username = value;
-		}
-	}
-
-	private void clearUsername() {
-		if(_username_set) {
-			_username_set = true;
-			_username = null;
-		}
-	}
-
-	private boolean hasUsername() {
-		return _username_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="Password" defaultstate="collapsed">
-
-	private String _password = null;
-	private boolean _password_set = false;
-
-	public String getPassword() {
-		if(!_password_set) {
-			throw new IllegalStateException("password not set.  Use the HasPassword() method to check its state before accessing it.");
-		}
-		return _password;
-	}
-
-	private void setPassword(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("password cannot be null");
-		}
-		boolean changing = !_password_set || !_password.equals(value);
-		if(changing) {
-			_password_set = true;
-			_password = value;
-		}
-	}
-
-	private void clearPassword() {
-		if(_password_set) {
-			_password_set = true;
-			_password = null;
-		}
-	}
-
-	private boolean hasPassword() {
-		return _password_set;
-	}
-
-	// </editor-fold>
-	
 	public MySqlDatabaseInstance toInstance(
 		String databaseName)
 	{

@@ -23,6 +23,7 @@ import co.mv.wb.MigrationType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
@@ -49,6 +50,8 @@ import java.util.UUID;
 )
 public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 {
+	private final String schemaName;
+
 	/**
 	 * Creates a new SqlServerSchemaDoesNotExistAssertion.
 	 * 
@@ -63,8 +66,10 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 		String schemaName)
 	{
 		super(assertionId, seqNum);
-		
-		this.setSchemaName(schemaName);
+
+		if (schemaName == null) throw new ArgumentNullException("schemaName");
+
+		this.schemaName = schemaName;
 	}
 
 	@Override public String getDescription()
@@ -72,49 +77,17 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 		return String.format("Schema '%s' does not exist", this.getSchemaName());
 	}
 	
-	// <editor-fold desc="SchemaName" defaultstate="collapsed">
-
-	private String _schemaName = null;
-	private boolean _schemaName_set = false;
-
 	/**
 	 * Gets the name of the schema to check.
 	 * 
 	 * @return                                  the name of the schema to check
 	 * @since                                   2.0
 	 */
-	public final String getSchemaName() {
-		if(!_schemaName_set) {
-			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
-		}
-		return _schemaName;
+	public final String getSchemaName()
+	{
+		return this.schemaName;
 	}
 
-	private void setSchemaName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("schemaName cannot be null");
-		}
-		boolean changing = !_schemaName_set || !_schemaName.equals(value);
-		if(changing) {
-			_schemaName_set = true;
-			_schemaName = value;
-		}
-	}
-
-	private void clearSchemaName() {
-		if(_schemaName_set) {
-			_schemaName_set = true;
-			_schemaName = null;
-		}
-	}
-
-	private boolean hasSchemaName() {
-		return _schemaName_set;
-	}
-
-	// </editor-fold>
-	
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(

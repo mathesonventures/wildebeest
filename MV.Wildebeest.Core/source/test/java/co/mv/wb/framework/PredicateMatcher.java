@@ -23,23 +23,25 @@ import java.util.function.Function;
 
 public class PredicateMatcher<T> extends BaseMatcher<T>
 {
-	private Function<T, Boolean> _predicate;
+	private Function<T, Boolean> predicate;
 
 	public PredicateMatcher(Function<T, Boolean> predicate)
 	{
 		if (predicate == null) { throw new IllegalArgumentException("predicate cannot be null"); }
 
-		_predicate = predicate;
+		this.predicate = predicate;
 	}
 
-	@Override public boolean matches(Object o)
+	@Override
+	public boolean matches(Object o)
 	{
 		T t = (T)o;
 
-		return _predicate.apply(t);
+		return predicate.apply(t);
 	}
 
-	@Override public void describeTo(Description description)
+	@Override
+	public void describeTo(Description description)
 	{
 	}
 }
