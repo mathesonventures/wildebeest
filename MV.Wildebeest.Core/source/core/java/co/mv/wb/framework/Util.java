@@ -38,5 +38,22 @@ public class Util
 		if (text == null) { throw new IllegalArgumentException("text cannot be null"); }
 		return text.replaceAll("\\s+", " ").trim();
 	}
+
+	/**
+	 * Looks up the ResourcePlugin for the supplied ResourceType.
+	 *
+	 * @param       value             			String that we check is UUID
+	 * @return                                  true if UUID can be created from param value
+	 * @since                                   4.0
+	 */
+	public static boolean isUUID (String value)
+	{
+		final String UUIDmatcher = "[a-zA-Z0-9][a-zA-Z0-9\\-\\_ ]+[a-zA-Z0-9]";
+		if(value.matches(UUIDmatcher))
+		{
+			return true;
+		}
+		return false;
+	}
 }
 
