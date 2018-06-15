@@ -63,7 +63,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
 /**
  * Provides a generic interface that can be adapted to different environments.  For example the WildebeestCommand
  * command-line interface delegates to WildebeestApiImpl to drive commands.
@@ -406,6 +405,15 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		List<Migration> path = paths.get(0);
+
+		try
+		{
+			validateMigrationStates(resource);
+		}
+		catch (MigrationInvalidStateException e)
+		{
+			throw new RuntimeException(e);
+		}
 
 		for (Migration migration : path)
 		{
@@ -798,4 +806,61 @@ public class WildebeestApiImpl implements WildebeestApi
 			throw new XmlValidationException(e.getMessage());
 		}
 	}
+
+	/**
+	 * Retrives all migrations from plugin and throws an error if migrations refer to state that does not exist
+	 *
+	 * @param       resource             		Resource that is used to perform migration .
+	 * @since                                   4.0
+	 */
+	private static void validateMigrationStates(
+		  Resource resource) throws MigrationInvalidStateException
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource"); }
+
+		List<Migration> migrations = resource.getMigrations();
+		List<State> states = resource.getStates();
+
+		for (Migration m: migrations
+			  )
+		{
+			boolean migrationToStateValid = false;
+			boolean migrationFromStateValid = false;
+
+			//check do states exist in migration, if they don't set them to true so they don't throw errors
+			if(!m.getFromStateId().isPresent())
+			{
+				migrationFromStateValid = true;
+			}
+			if(!m.getToStateId().isPresent())
+			{
+				migrationToStateValid = true;
+			}
+
+			for (State s: states
+				  )
+			{
+				if(m.getToStateId().equals(s.getStateId()) || m.getToStateId().equals(s.getLabel()))
+				{
+					migrationToStateValid = true;
+				}
+				if(m.getFromStateId().equals(s.getStateId()) || m.getFromStateId().equals(s.getLabel()))
+				{
+					migrationFromStateValid = true;
+				}
+
+				if(migrationFromStateValid == true && migrationToStateValid == true)
+				{
+					break;
+				}
+			}
+
+			if(migrationFromStateValid == false || migrationToStateValid == false)
+			{
+				throw  new MigrationInvalidStateException(m.getMigrationId(),"Migration " +m.getMigrationId().toString()+ " has invalid state, " +
+					  "please fix this before restarting migration") ;
+			}
+		}
+	}
+
 }
