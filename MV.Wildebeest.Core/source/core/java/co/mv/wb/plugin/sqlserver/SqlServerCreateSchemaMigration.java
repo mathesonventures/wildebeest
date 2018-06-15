@@ -39,8 +39,8 @@ import java.util.UUID;
 		"<migration\n" +
 		"    type=\"SqlServerCreateSchema\"\n" +
 		"    id=\"675db93a-bd49-42a0-b36e-eef861c661f7\"\n" +
-		"    fromStateId=\"81806637-adbe-4123-9677-b8da2333c1a9\"\n" +
-		"    toStateId=\"85819eed-05d8-4cee-a34c-ff9b64f6d72b\">\n" +
+		"    fromState=\"81806637-adbe-4123-9677-b8da2333c1a9\"\n" +
+		"    toState=\"85819eed-05d8-4cee-a34c-ff9b64f6d72b\">\n" +
 		"    <schemaName>prd</schemaName>\n" +
 		"</migration>"
 )
@@ -53,18 +53,18 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 	 * Creates a new SqlServerCreateSchemaMigration.
 	 * 
 	 * @param       migrationId                 the ID of the new migration.
-	 * @param       fromStateId                 the source state for this migration.
-	 * @param       toStateId                   the target state for this migration.
+	 * @param       fromState                 the source state for this migration.
+	 * @param       toState                   the target state for this migration.
 	 * @param       schemaName                  the name for the new schema.
 	 * @since                                   2.0
 	 */
 	public SqlServerCreateSchemaMigration(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId,
+		Optional<String> fromState,
+		Optional<String> toState,
 		String schemaName)
 	{
-		super(migrationId, fromStateId, toStateId);
+		super(migrationId, fromState, toState);
 
 		this.setSchemaName(schemaName);
 	}

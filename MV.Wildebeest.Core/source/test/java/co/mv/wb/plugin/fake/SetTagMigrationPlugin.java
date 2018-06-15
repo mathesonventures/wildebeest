@@ -53,6 +53,6 @@ public class SetTagMigrationPlugin implements MigrationPlugin
 
 		instanceT.setTag(migrationT.getTag());
 
-		instanceT.setStateId(migration.getToStateId().get());
+		instanceT.setStateId(migration.getToState().get());
 	}
 }

@@ -37,11 +37,11 @@ public class SqlServerCreateDatabaseDomMigrationBuilder extends BaseDomMigration
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId,
+		Optional<String> fromState,
+		Optional<String> toState,
 		File baseDir) throws
 			PluginBuildException
 	{
-		return new SqlServerCreateDatabaseMigration(migrationId, fromStateId, toStateId);
+		return new SqlServerCreateDatabaseMigration(migrationId, fromState, toState);
 	}
 }

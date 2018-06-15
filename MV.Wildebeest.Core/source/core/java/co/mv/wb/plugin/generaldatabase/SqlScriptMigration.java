@@ -41,8 +41,8 @@ import java.util.UUID;
 		"<migration\n" +
 		"    type=\"SqlScript\"\n" +
 		"    id=\"8b57f16d-c690-4f10-b68f-6f1ee75fe32b\"\n" +
-		"    fromStateId=\"199b7cc1-3cc6-48ca-b012-a70d05d5b5e7\"\n" +
-		"    toStateId=\"363568f1-aaed-4a50-bea0-9ddee713cc11\">\n" +
+		"    fromState=\"199b7cc1-3cc6-48ca-b012-a70d05d5b5e7\"\n" +
+		"    toState=\"363568f1-aaed-4a50-bea0-9ddee713cc11\">\n" +
 		"    <sql><![CDATA[\n" +
 		"\n" +
 		"/* ProductType */\n" +
@@ -69,20 +69,20 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 	 * Creates a new SqlScriptMigration.
 	 * 
 	 * @param       migrationId                 the ID of the migration
-	 * @param       fromStateId                 the ID of the source state that this migration applies to, or null if
+	 * @param       fromState                 the ID of the source state that this migration applies to, or null if
 	 *                                          this migration transitions from the non-existent state.
-	 * @param       toStateId                   the ID of the target state that the migration applies to, or null if
+	 * @param       toState                   the ID of the target state that the migration applies to, or null if
 	 *                                          this migration transitions to the non-existent state.
 	 * @param       sql                         the SQL script that performs the migration from the fron-state to the
 	 *                                          to-state.
 	 */
 	public SqlScriptMigration(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId,
+		Optional<String> fromState,
+		Optional<String> toState,
 		String sql)
 	{
-		super(migrationId, fromStateId, toStateId);
+		super(migrationId, fromState, toState);
 		this.setSql(sql);
 	}
 

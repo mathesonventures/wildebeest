@@ -82,11 +82,11 @@ public class AnsiSqlDomServiceUnitTests
 		Assert.assertEquals(
 			"resourceWithPlugin.resource.migrations[0].fromStateId",
 			Optional.empty(),
-			mT.getFromStateId());
+			mT.getFromState());
 		Assert.assertEquals(
 			"resourceWithPlugin.resource.migrations[0].toStateId",
 			Optional.of(toStateId),
-			mT.getToStateId());
+			mT.getToState());
 	}
 
 	@Test public void ansiSqlDropDatabaseMigrationLoadFromValidDocument() throws
@@ -127,11 +127,11 @@ public class AnsiSqlDomServiceUnitTests
 		Assert.assertEquals(
 			"resource.migrations[0].fromStateId",
 			Optional.empty(),
-			mT.getFromStateId());
+			mT.getFromState());
 		Assert.assertEquals(
 			"resource.migrations[0].toStateId",
 			Optional.of(toStateId),
-			mT.getToStateId());
+			mT.getToState());
 	}
 	
 	@Test public void ansiSqlTableExistsAssertionLoadFromValidDocument() throws

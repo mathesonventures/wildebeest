@@ -30,26 +30,26 @@ public abstract class BaseMigration implements Migration
 {
 	private UUID migrationId = null;
 	private boolean migrationIdSet = false;
-	private Optional<String> fromStateId = null;
-	private boolean fromStateIdSet = false;
-	private Optional<String> toStateId = null;
-	private boolean toStateIdSet = false;
+	private Optional<String> fromState = null;
+	private boolean fromStateSet = false;
+	private Optional<String> toState = null;
+	private boolean toStateSet = false;
 
 	/**
 	 * Creates a new BaseMigration instance.
 	 * 
 	 * @param       migrationId                 the ID for the new migration
-	 * @param       fromStateId                 the optional from state for the new migration
-	 * @param       toStateId                   the optional to state for the new migration
+	 * @param       fromState                 the optional from state for the new migration
+	 * @param       toState                   the optional to state for the new migration
 	 */
 	protected BaseMigration(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId)
+		Optional<String> fromState,
+		Optional<String> toState)
 	{
 		this.setMigrationId(migrationId);
-		this.setFromStateId(fromStateId);
-		this.setToStateId(toStateId);
+		this.setFromState(fromState);
+		this.setToState(toState);
 	}
 
 	@Override
@@ -86,59 +86,59 @@ public abstract class BaseMigration implements Migration
 
 
 	@Override
-	public Optional<String> getFromStateId() {
-		if(!fromStateIdSet) {
-			throw new IllegalStateException("fromStateId not set.");
+	public Optional<String> getFromState() {
+		if(!fromStateSet) {
+			throw new IllegalStateException("fromState not set.");
 		}
-		if(fromStateId == null) {
-			throw new IllegalStateException("fromStateId should not be null");
+		if(fromState == null) {
+			throw new IllegalStateException("fromState should not be null");
 		}
-		return fromStateId;
+		return fromState;
 	}
 
-	private void setFromStateId(Optional<String> value) {
+	private void setFromState(Optional<String> value) {
 		if(value == null) {
-			throw new IllegalArgumentException("fromStateId cannot be null");
+			throw new IllegalArgumentException("fromState cannot be null");
 		}
-		boolean changing = !fromStateIdSet || fromStateId != value;
+		boolean changing = !fromStateSet || fromState != value;
 		if(changing) {
-			fromStateIdSet = true;
-			fromStateId = value;
+			fromStateSet = true;
+			fromState = value;
 		}
 	}
 
 
 	@Override
-	public Optional<String> getToStateId() {
-		if(!toStateIdSet) {
-			throw new IllegalStateException("toStateId not set.");
+	public Optional<String> getToState() {
+		if(!toStateSet) {
+			throw new IllegalStateException("toState not set.");
 		}
-		if(toStateId == null) {
-			throw new IllegalStateException("toStateId should not be null");
+		if(toState == null) {
+			throw new IllegalStateException("toState should not be null");
 		}
-		return toStateId;
+		return toState;
 	}
 
-	private void setToStateId(Optional<String> value) {
+	private void setToState(Optional<String> value) {
 		if(value == null) {
-			throw new IllegalArgumentException("toStateId cannot be null");
+			throw new IllegalArgumentException("toState cannot be null");
 		}
-		boolean changing = !toStateIdSet || toStateId != value;
+		boolean changing = !toStateSet || toState != value;
 		if(changing) {
-			toStateIdSet = true;
-			toStateId = value;
+			toStateSet = true;
+			toState = value;
 		}
 	}
 
 	private void clearToStateId() {
-		if(toStateIdSet) {
-			toStateIdSet = true;
-			toStateId = null;
+		if(toStateSet) {
+			toStateSet = true;
+			toState = null;
 		}
 	}
 
 	private boolean hasToStateId() {
-		return toStateIdSet;
+		return toStateSet;
 	}
 
 }
