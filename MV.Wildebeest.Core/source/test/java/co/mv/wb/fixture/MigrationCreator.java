@@ -25,42 +25,53 @@ import java.util.UUID;
  */
 public class MigrationCreator
 {
+	private FixtureCreator creator = null;
+	private boolean creatorSet = false;
+	private ResourceCreator resource = null;
+	private boolean resourceSet = false;
+	private String type = null;
+	private boolean typeSet = false;
+	private UUID migrationId = null;
+	private boolean migrationIdSet = false;
+	private String fromState = null;
+	private boolean fromStateSet = false;
+	private String toStateId = null;
+	private boolean toStateSet = false;
+	private String innerXml = null;
+	private boolean innerXmlSet = false;
+
+
 	public MigrationCreator(
 		FixtureCreator creator,
 		ResourceCreator resource,
 		String type,
 		UUID migrationId,
-		String fromStateId,
+		String fromState,
 		String toStateId)
 	{
 		this.setCreator(creator);
 		this.setResource(resource);
 		this.setType(type);
 		this.setMigrationId(migrationId);
-		if (fromStateId != null)
+		if (fromState != null)
 		{
-			this.setFromStateId(fromStateId);
+			this.setFromState(fromState);
 		}
 		if (toStateId != null)
 		{
-			this.setToStateId(toStateId);
+			this.setToState(toStateId);
 		}
 		this.setInnerXml("");
 	}
 
-	// <editor-fold desc="Creator" defaultstate="collapsed">
-
-	private FixtureCreator _creator = null;
-	private boolean _creator_set = false;
-
 	private FixtureCreator getCreator() {
-		if(!_creator_set) {
+		if(!creatorSet) {
 			throw new IllegalStateException("creator not set.");
 		}
-		if(_creator == null) {
+		if(creator == null) {
 			throw new IllegalStateException("creator should not be null");
 		}
-		return _creator;
+		return creator;
 	}
 
 	private void setCreator(
@@ -68,39 +79,32 @@ public class MigrationCreator
 		if(value == null) {
 			throw new IllegalArgumentException("creator cannot be null");
 		}
-		boolean changing = !_creator_set || _creator != value;
+		boolean changing = !creatorSet || creator != value;
 		if(changing) {
-			_creator_set = true;
-			_creator = value;
+			creatorSet = true;
+			creator = value;
 		}
 	}
 
 	private void clearCreator() {
-		if(_creator_set) {
-			_creator_set = true;
-			_creator = null;
+		if(creatorSet) {
+			creatorSet = true;
+			creator = null;
 		}
 	}
 
 	private boolean hasCreator() {
-		return _creator_set;
+		return creatorSet;
 	}
 
-	// </editor-fold>
-	
-	// <editor-fold desc="Resource" defaultstate="collapsed">
-
-	private ResourceCreator _resource = null;
-	private boolean _resource_set = false;
-
 	public ResourceCreator getResource() {
-		if(!_resource_set) {
+		if(!resourceSet) {
 			throw new IllegalStateException("resource not set.");
 		}
-		if(_resource == null) {
+		if(resource == null) {
 			throw new IllegalStateException("resource should not be null");
 		}
-		return _resource;
+		return resource;
 	}
 
 	private void setResource(
@@ -108,39 +112,32 @@ public class MigrationCreator
 		if(value == null) {
 			throw new IllegalArgumentException("resource cannot be null");
 		}
-		boolean changing = !_resource_set || _resource != value;
+		boolean changing = !resourceSet || resource != value;
 		if(changing) {
-			_resource_set = true;
-			_resource = value;
+			resourceSet = true;
+			resource = value;
 		}
 	}
 
 	private void clearResource() {
-		if(_resource_set) {
-			_resource_set = true;
-			_resource = null;
+		if(resourceSet) {
+			resourceSet = true;
+			resource = null;
 		}
 	}
 
 	private boolean hasResource() {
-		return _resource_set;
+		return resourceSet;
 	}
 
-	// </editor-fold>
-	
-	// <editor-fold desc="Type" defaultstate="collapsed">
-
-	private String _type = null;
-	private boolean _type_set = false;
-
 	public String getType() {
-		if(!_type_set) {
+		if(!typeSet) {
 			throw new IllegalStateException("type not set.");
 		}
-		if(_type == null) {
+		if(type == null) {
 			throw new IllegalStateException("type should not be null");
 		}
-		return _type;
+		return type;
 	}
 
 	private void setType(
@@ -148,39 +145,32 @@ public class MigrationCreator
 		if(value == null) {
 			throw new IllegalArgumentException("type cannot be null");
 		}
-		boolean changing = !_type_set || !_type.equals(value);
+		boolean changing = !typeSet || !type.equals(value);
 		if(changing) {
-			_type_set = true;
-			_type = value;
+			typeSet = true;
+			type = value;
 		}
 	}
 
 	private void clearType() {
-		if(_type_set) {
-			_type_set = true;
-			_type = null;
+		if(typeSet) {
+			typeSet = true;
+			type = null;
 		}
 	}
 
 	private boolean hasType() {
-		return _type_set;
+		return typeSet;
 	}
 
-	// </editor-fold>
-	
-	// <editor-fold desc="MigrationId" defaultstate="collapsed">
-
-	private UUID _migrationId = null;
-	private boolean _migrationId_set = false;
-
 	public UUID getMigrationId() {
-		if(!_migrationId_set) {
+		if(!migrationIdSet) {
 			throw new IllegalStateException("migrationId not set.");
 		}
-		if(_migrationId == null) {
+		if(migrationId == null) {
 			throw new IllegalStateException("migrationId should not be null");
 		}
-		return _migrationId;
+		return migrationId;
 	}
 
 	private void setMigrationId(
@@ -188,119 +178,99 @@ public class MigrationCreator
 		if(value == null) {
 			throw new IllegalArgumentException("migrationId cannot be null");
 		}
-		boolean changing = !_migrationId_set || _migrationId != value;
+		boolean changing = !migrationIdSet || migrationId != value;
 		if(changing) {
-			_migrationId_set = true;
-			_migrationId = value;
+			migrationIdSet = true;
+			migrationId = value;
 		}
 	}
 
 	private void clearMigrationId() {
-		if(_migrationId_set) {
-			_migrationId_set = true;
-			_migrationId = null;
+		if(migrationIdSet) {
+			migrationIdSet = true;
+			migrationId = null;
 		}
 	}
 
 	private boolean hasMigrationId() {
-		return _migrationId_set;
+		return migrationIdSet;
 	}
 
-	// </editor-fold>
-
-	// <editor-fold desc="FromStateId" defaultstate="collapsed">
-
-	private String _fromStateId = null;
-	private boolean _fromStateId_set = false;
-
-	public String getFromStateId() {
-		if(!_fromStateId_set) {
-			throw new IllegalStateException("fromStateId not set.");
+	public String getFromState() {
+		if(!fromStateSet) {
+			throw new IllegalStateException("fromState not set.");
 		}
-		if(_fromStateId == null) {
-			throw new IllegalStateException("fromStateId should not be null");
+		if(fromState == null) {
+			throw new IllegalStateException("fromState should not be null");
 		}
-		return _fromStateId;
+		return fromState;
 	}
 
-	private void setFromStateId(
+	private void setFromState(
 		String value) {
 		if(value == null) {
-			throw new IllegalArgumentException("fromStateId cannot be null");
+			throw new IllegalArgumentException("fromState cannot be null");
 		}
-		boolean changing = !_fromStateId_set || _fromStateId != value;
+		boolean changing = !fromStateSet || fromState != value;
 		if(changing) {
-			_fromStateId_set = true;
-			_fromStateId = value;
+			fromStateSet = true;
+			fromState = value;
 		}
 	}
 
-	private void clearFromStateId() {
-		if(_fromStateId_set) {
-			_fromStateId_set = true;
-			_fromStateId = null;
+	private void clearFromState() {
+		if(fromStateSet) {
+			fromStateSet = true;
+			fromState = null;
 		}
 	}
 
-	public boolean hasFromStateId() {
-		return _fromStateId_set;
+	public boolean hasFromState() {
+		return fromStateSet;
 	}
 
-	// </editor-fold>
-	
-	// <editor-fold desc="ToStateId" defaultstate="collapsed">
 
-	private String _toStateId = null;
-	private boolean _toStateId_set = false;
-
-	public String getToStateId() {
-		if(!_toStateId_set) {
+	public String getToState() {
+		if(!toStateSet) {
 			throw new IllegalStateException("toStateId not set.");
 		}
-		if(_toStateId == null) {
+		if(toStateId == null) {
 			throw new IllegalStateException("toStateId should not be null");
 		}
-		return _toStateId;
+		return toStateId;
 	}
 
-	private void setToStateId(
+	private void setToState(
 		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("toStateId cannot be null");
 		}
-		boolean changing = !_toStateId_set || _toStateId != value;
+		boolean changing = !toStateSet || toStateId != value;
 		if(changing) {
-			_toStateId_set = true;
-			_toStateId = value;
+			toStateSet = true;
+			toStateId = value;
 		}
 	}
 
-	private void clearToStateId() {
-		if(_toStateId_set) {
-			_toStateId_set = true;
-			_toStateId = null;
+	private void clearToState() {
+		if(toStateSet) {
+			toStateSet = true;
+			toStateId = null;
 		}
 	}
 
-	public boolean hasToStateId() {
-		return _toStateId_set;
+	public boolean hasToState() {
+		return toStateSet;
 	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="InnerXml" defaultstate="collapsed">
-
-	private String _innerXml = null;
-	private boolean _innerXml_set = false;
 
 	public String getInnerXml() {
-		if(!_innerXml_set) {
+		if(!innerXmlSet) {
 			throw new IllegalStateException("innerXml not set.");
 		}
-		if(_innerXml == null) {
+		if(innerXml == null) {
 			throw new IllegalStateException("innerXml should not be null");
 		}
-		return _innerXml;
+		return innerXml;
 	}
 
 	private void setInnerXml(
@@ -308,26 +278,24 @@ public class MigrationCreator
 		if(value == null) {
 			throw new IllegalArgumentException("innerXml cannot be null");
 		}
-		boolean changing = !_innerXml_set || !_innerXml.equals(value);
+		boolean changing = !innerXmlSet || !innerXml.equals(value);
 		if(changing) {
-			_innerXml_set = true;
-			_innerXml = value;
+			innerXmlSet = true;
+			innerXml = value;
 		}
 	}
 
 	private void clearInnerXml() {
-		if(_innerXml_set) {
-			_innerXml_set = true;
-			_innerXml = null;
+		if(innerXmlSet) {
+			innerXmlSet = true;
+			innerXml = null;
 		}
 	}
 
 	private boolean hasInnerXml() {
-		return _innerXml_set;
+		return innerXmlSet;
 	}
 
-	// </editor-fold>
-	
 	public MigrationCreator innerXml(String innerXml)
 	{
 		this.setInnerXml(innerXml);
@@ -342,10 +310,10 @@ public class MigrationCreator
 	public MigrationCreator migration(
 		String type,
 		UUID migrationId,
-		String fromStateId,
-		String toStateId)
+		String fromState,
+		String toState)
 	{
-		return this.getResource().migration(type, migrationId, fromStateId, toStateId);
+		return this.getResource().migration(type, migrationId, fromState, toState);
 	}
 	
 	public String render()

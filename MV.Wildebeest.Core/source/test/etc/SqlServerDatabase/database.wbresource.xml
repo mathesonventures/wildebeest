@@ -46,11 +46,7 @@
 		<migration
 			type="SqlServerCreateDatabase"
 			id="c6a1bd00-c632-4839-b6c7-d8578dd98ff0"
-<<<<<<< HEAD
-			toStateId="b68fc5c0-35c9-49b8-b555-9e7634fe0de3" />
-=======
-			toState="b68fc5c0-35c9-49b8-b555-9e7634fe0de3"></migration>
->>>>>>> 2a7e7ae... MVWB-127 fromStateId and toStateId are now fromState and toState, note that this does not apply on places where variables are still UUID instead of String
+			toState="b68fc5c0-35c9-49b8-b555-9e7634fe0de3" />
 
 		<migration
 			type="SqlScript"
