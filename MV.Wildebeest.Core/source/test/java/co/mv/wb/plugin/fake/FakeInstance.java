@@ -18,8 +18,6 @@ package co.mv.wb.plugin.fake;
 
 import co.mv.wb.Instance;
 
-import java.util.UUID;
-
 /**
  * {@link Instance} for the Fake plugin implementation.
  *
@@ -27,62 +25,57 @@ import java.util.UUID;
  */
 public class FakeInstance implements Instance
 {
-    public FakeInstance()
+	private String stateId = null;
+	private boolean stateIdSet = false;
+	private String tag = null;
+	private boolean tagSet = false;
+
+
+	public FakeInstance()
     {
     }
 
-	public FakeInstance(UUID stateId)
+	public FakeInstance(String stateId)
 	{
 		this.setStateId(stateId);
 	}
-	
-	// <editor-fold desc="StateId" defaultstate="collapsed">
 
-	private UUID _stateId = null;
-	private boolean _stateId_set = false;
 
-	public UUID getStateId() {
-		if(!_stateId_set) {
+	public String getStateId() {
+		if(!stateIdSet) {
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
-		return _stateId;
+		return stateId;
 	}
 
 	public final void setStateId(
-		UUID value) {
+		String value) {
 		if(value == null) {
 			throw new IllegalArgumentException("stateId cannot be null");
 		}
-		boolean changing = !_stateId_set || _stateId != value;
+		boolean changing = !stateIdSet || stateId != value;
 		if(changing) {
-			_stateId_set = true;
-			_stateId = value;
+			stateIdSet = true;
+			stateId = value;
 		}
 	}
 
 	public void clearStateId() {
-		if(_stateId_set) {
-			_stateId_set = true;
-			_stateId = null;
+		if(stateIdSet) {
+			stateIdSet = true;
+			stateId = null;
 		}
 	}
 
 	public boolean hasStateId() {
-		return _stateId_set;
+		return stateIdSet;
 	}
 
-	// </editor-fold>
-	
-	// <editor-fold desc="Tag" defaultstate="collapsed">
-
-	private String _tag = null;
-	private boolean _tag_set = false;
-
 	public String getTag() {
-		if(!_tag_set) {
+		if(!tagSet) {
 			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
 		}
-		return _tag;
+		return tag;
 	}
 
 	public void setTag(
@@ -90,23 +83,22 @@ public class FakeInstance implements Instance
 		if(value == null) {
 			throw new IllegalArgumentException("tag cannot be null");
 		}
-		boolean changing = !_tag_set || !_tag.equals(value);
+		boolean changing = !tagSet || !tag.equals(value);
 		if(changing) {
-			_tag_set = true;
-			_tag = value;
+			tagSet = true;
+			tag = value;
 		}
 	}
 
 	public void clearTag() {
-		if(_tag_set) {
-			_tag_set = true;
-			_tag = null;
+		if(tagSet) {
+			tagSet = true;
+			tag = null;
 		}
 	}
 
 	public boolean hasTag() {
-		return _tag_set;
+		return tagSet;
 	}
 
-	// </editor-fold>
 }

@@ -43,6 +43,9 @@ import java.util.UUID;
 )
 public class TagAssertion extends BaseAssertion
 {
+	private String tag = null;
+	private boolean tagSet = false;
+
 	public TagAssertion(
 		UUID assertionId,
 		int seqNum,
@@ -57,17 +60,12 @@ public class TagAssertion extends BaseAssertion
 	{
 		return "Tag";
 	}
-	
-	// <editor-fold desc="Tag" defaultstate="collapsed">
-
-	private String _tag = null;
-	private boolean _tag_set = false;
 
 	public String getTag() {
-		if(!_tag_set) {
+		if(!tagSet) {
 			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
 		}
-		return _tag;
+		return tag;
 	}
 
 	public final void setTag(
@@ -75,26 +73,24 @@ public class TagAssertion extends BaseAssertion
 		if(value == null) {
 			throw new IllegalArgumentException("tag cannot be null");
 		}
-		boolean changing = !_tag_set || !_tag.equals(value);
+		boolean changing = !tagSet || !tag.equals(value);
 		if(changing) {
-			_tag_set = true;
-			_tag = value;
+			tagSet = true;
+			tag = value;
 		}
 	}
 
 	private void clearTag() {
-		if(_tag_set) {
-			_tag_set = true;
-			_tag = null;
+		if(tagSet) {
+			tagSet = true;
+			tag = null;
 		}
 	}
 
 	private boolean hasTag() {
-		return _tag_set;
+		return tagSet;
 	}
 
-	// </editor-fold>
-	
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(

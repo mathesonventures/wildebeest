@@ -58,13 +58,14 @@ public class SqlServerDropDatabaseMigration extends BaseMigration
 	 */
 	public SqlServerDropDatabaseMigration(
 		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId)
+		Optional<String> fromStateId,
+		Optional<String> toStateId)
 	{
 		super(migrationId, fromStateId, toStateId);
 	}
 	
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			Wildebeest.SqlServerDatabase);

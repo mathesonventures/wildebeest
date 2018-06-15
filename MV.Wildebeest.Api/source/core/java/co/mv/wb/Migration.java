@@ -42,7 +42,7 @@ public interface Migration
 	 * @return                                  the ID of the source State for this Migration
 	 * @since                                   1.0
 	 */
-	Optional<UUID> getFromStateId();
+	Optional<String> getFromStateId();
 	
 	/**
 	 * Gets the optional target State for this Migration.  A Migration without a target state migrates to the
@@ -51,7 +51,7 @@ public interface Migration
 	 * @return                                  the ID of the to State for this Migration
 	 * @since                                   1.0
 	 */
-	Optional<UUID> getToStateId();
+	Optional<String> getToStateId();
 	
 	/**
 	 * Gets the list of {@link Resource} types that this this {@link Migration} can be applied to.

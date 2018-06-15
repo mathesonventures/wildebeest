@@ -289,8 +289,8 @@ public class StateCreator {
     public MigrationCreator migration(
             String type,
             UUID migrationId,
-            UUID fromStateId,
-            UUID toStateId) {
+            String fromStateId,
+            String toStateId) {
         return this.getResource().migration(type, migrationId, fromStateId, toStateId);
     }
 

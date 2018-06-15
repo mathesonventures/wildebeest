@@ -478,7 +478,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		State state = Wildebeest.stateForId(
 			resource,
-			targetStateId);
+			targetStateId.toString());
 
 		if (targetState == null)
 		{
@@ -491,13 +491,13 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource,
 			instance);
 
-		WildebeestApiImpl.throwIfFailed(state.getStateId(), assertionResults);
+		WildebeestApiImpl.throwIfFailed(state.getStateId().toString(), assertionResults);
 
 		resourcePlugin.setStateId(
 			_output,
 			resource,
 			instance,
-			targetStateId);
+			targetStateId.toString());
 	}
 
 	@Override public String describePlugins()
@@ -715,7 +715,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	}
 
 	private static void throwIfFailed(
-		UUID stateId,
+		String stateId,
 		List<AssertionResult> assertionResults) throws AssertionFailedException
 	{
 		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
