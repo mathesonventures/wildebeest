@@ -412,10 +412,10 @@ public class WildebeestApiImpl implements WildebeestApi
 			String migrationTypeUri = migration.getClass().getAnnotation(MigrationType.class).uri();
 			MigrationPlugin migrationPlugin = this.getPluginManager().getMigrationPlugin(migrationTypeUri);
 
-			Optional<State> fromState = migration.getFromStateId().map(stateId -> Wildebeest.stateForId(
+			Optional<State> fromState = migration.getFromState().map(stateId -> Wildebeest.stateForId(
 				resource,
 				stateId));
-			Optional<State> toState = migration.getToStateId().map(stateId -> Wildebeest.stateForId(
+			Optional<State> toState = migration.getToState().map(stateId -> Wildebeest.stateForId(
 				resource,
 				stateId));
 
@@ -440,14 +440,14 @@ public class WildebeestApiImpl implements WildebeestApi
 				_output,
 				resource,
 				instance,
-				migration.getToStateId().get());
+				migration.getToState().get());
 
 			// Assert the new state
 			List<AssertionResult> assertionResults = this.assertState(
 				resource,
 				instance);
 
-			WildebeestApiImpl.throwIfFailed(migration.getToStateId().get(), assertionResults);
+			WildebeestApiImpl.throwIfFailed(migration.getToState().get(), assertionResults);
 		}
 	}
 
@@ -735,16 +735,16 @@ public class WildebeestApiImpl implements WildebeestApi
 		Resource resource,
 		List<List<Migration>> paths,
 		List<Migration> thisPath,
-		UUID fromStateId,
-		UUID targetStateId)
+		UUID fromState,
+		UUID targetState)
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource"); }
 		if (paths == null) { throw new IllegalArgumentException("paths"); }
 		if (thisPath == null) { throw new IllegalArgumentException("thisPath"); }
 
 		// Have we reached the target state?
-		if ((fromStateId == null && targetStateId == null) ||
-			(fromStateId != null && fromStateId.equals(targetStateId)))
+		if ((fromState == null && targetState == null) ||
+			(fromState != null && fromState.equals(targetState)))
 		{
 			paths.add(thisPath);
 		}
@@ -755,17 +755,17 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource.getMigrations()
 				.stream()
 				.filter(m ->
-					(!m.getFromStateId().isPresent() && fromStateId == null) ||
-						(m.getFromStateId().isPresent() && m.getFromStateId().equals(fromStateId)))
+					(!m.getFromState().isPresent() && fromState == null) ||
+						(m.getFromState().isPresent() && m.getFromState().equals(fromState)))
 				.forEach(
 					migration ->
 					{
 						State toState = Wildebeest.stateForId(
 							resource,
-							migration.getToStateId().get());
+							migration.getToState().get());
 						List<Migration> thisPathCopy = new ArrayList<>(thisPath);
 						thisPathCopy.add(migration);
-						findPaths(resource, paths, thisPathCopy, toState.getStateId(), targetStateId);
+						findPaths(resource, paths, thisPathCopy, toState.getStateId(), targetState);
 					});
 		}
 	}

@@ -38,8 +38,8 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId,
+		Optional<String> fromState,
+		Optional<String> toState,
 		File baseDir) throws
 			PluginBuildException
 	{
@@ -59,7 +59,7 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 			throw new PluginBuildException(messages);
 		}
 
-		result = new SqlScriptMigration(migrationId, fromStateId, toStateId, sql.get());
+		result = new SqlScriptMigration(migrationId, fromState, toState, sql.get());
 		
 		return result;
 	}

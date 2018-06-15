@@ -45,11 +45,11 @@ public class SetTagMigration extends BaseMigration
 
 	public SetTagMigration(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId,
+		Optional<String> fromState,
+		Optional<String> toState,
 		String tag)
 	{
-		super(migrationId, fromStateId, toStateId);
+		super(migrationId, fromState, toState);
 		
 		this.setTag(tag);
 	}

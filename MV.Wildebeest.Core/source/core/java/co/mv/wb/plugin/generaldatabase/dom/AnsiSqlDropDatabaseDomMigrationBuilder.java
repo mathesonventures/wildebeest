@@ -37,11 +37,11 @@ public class AnsiSqlDropDatabaseDomMigrationBuilder extends BaseDomMigrationBuil
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId,
+		Optional<String> fromState,
+		Optional<String> toState,
 		File baseDir) throws
 			PluginBuildException
 	{
-		return new AnsiSqlDropDatabaseMigration(migrationId, fromStateId, toStateId);
+		return new AnsiSqlDropDatabaseMigration(migrationId, fromState, toState);
 	}
 }
