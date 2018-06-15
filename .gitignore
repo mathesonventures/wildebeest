@@ -1,4 +1,5 @@
 *.swp
+/.build
 /out
 /repo
 /project.override.properties
@@ -7,4 +8,3 @@
 /MV.Wildebeest.Core/target/
 
 /website/source/rel
-
