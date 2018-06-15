@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<resource type="co.mb.wb.MySqlDatabase" id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" name="Product Catalogue Database">
+<resource type="co.mb.wb.MySqlDatabase" id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" name="Product Catalogue Database" >
 
 	<states>
 
@@ -45,11 +45,7 @@
 		<migration
 			type="MySqlCreateDatabase"
 			id="6b21e1e3-ff3a-44b3-84ec-e21fb01c0110"
-<<<<<<< HEAD
-			toStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" />
-=======
 			toState="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"></migration>
->>>>>>> 2a7e7ae... MVWB-127 fromStateId and toStateId are now fromState and toState, note that this does not apply on places where variables are still UUID instead of String
 
 		<migration
 			type="SqlScript"

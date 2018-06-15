@@ -289,9 +289,9 @@ public class StateCreator {
     public MigrationCreator migration(
             String type,
             UUID migrationId,
-            String fromStateId,
-            String toStateId) {
-        return this.getResource().migration(type, migrationId, fromStateId, toStateId);
+            String fromState,
+            String toState) {
+        return this.getResource().migration(type, migrationId, fromState, toState);
     }
 
     public String render() {
