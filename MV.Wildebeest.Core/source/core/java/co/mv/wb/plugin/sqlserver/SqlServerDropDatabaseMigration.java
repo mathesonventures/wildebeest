@@ -42,7 +42,7 @@ import java.util.UUID;
 		"<migration\n" +
 		"    type=\"SqlServerDropDatabase\"\n" +
 		"    id=\"ffe636f4-563f-4725-bcf2-124e7bb38d76\"\n" +
-		"    fromStateId=\"0cae6740-cb35-4028-af8a-14d565414078\">\n" +
+		"    fromState=\"0cae6740-cb35-4028-af8a-14d565414078\">\n" +
 		"    <schemaName>prd</schemaName>\n" +
 		"</migration>"
 )
@@ -52,16 +52,16 @@ public class SqlServerDropDatabaseMigration extends BaseMigration
 	 * Creates a new SqlServerCreateDatabseMigration.
 	 * 
 	 * @param       migrationId                 the ID of the new migration.
-	 * @param       fromStateId                 the source state for this migration.
-	 * @param       toStateId                   the target state for this migration.
+	 * @param       fromState                 the source state for this migration.
+	 * @param       toState                   the target state for this migration.
 	 * @since                                   2.0
 	 */
 	public SqlServerDropDatabaseMigration(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId)
+		Optional<String> fromState,
+		Optional<String> toState)
 	{
-		super(migrationId, fromStateId, toStateId);
+		super(migrationId, fromState, toState);
 	}
 	
 	@Override

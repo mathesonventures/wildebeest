@@ -17,6 +17,7 @@
 package co.mv.wb;
 
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.framework.Util;
 import co.mv.wb.impl.WildebeestApiBuilder;
 import co.mv.wb.plugin.composite.ExternalResourceMigrationPlugin;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;
@@ -172,7 +173,6 @@ public class Wildebeest
 	// Global Functions
 	//
 
-	// implement from label to id here nad remove this comment when you are done
 	public static State stateForId(
 		Resource resource,
 		String stateId)
@@ -180,10 +180,9 @@ public class Wildebeest
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
 		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
 
-		final String isUUIDmatcher = "[a-zA-Z0-9][a-zA-Z0-9\\-\\_ ]+[a-zA-Z0-9]";
 		State result = null;
 
-		if(!stateId.matches(isUUIDmatcher))
+		if(!Util.isUUID(stateId))
 		{
 			for(State check : resource.getStates())
 			{

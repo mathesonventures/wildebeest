@@ -203,7 +203,7 @@
     <xs:complexType name="Migration">
         <xs:attribute  name="type" type="MigrationType" use="required"/>
         <xs:attribute name="id" type="uuid" use="required"/>
-        <xs:attribute name="toStateId" type="uuid" use="required" />
+        <xs:attribute name="toState" type="uuid" use="required" />
     </xs:complexType>
 
     <xs:complexType name="SqlScript">
@@ -212,7 +212,7 @@
                 <xs:sequence >
                     <xs:element name="sql" type="xs:string" />
                 </xs:sequence>
-                <xs:attribute name="fromStateId" type="uuid" use="required" />
+                <xs:attribute name="fromState" type="uuid" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -247,7 +247,7 @@
                 <xs:sequence>
                     <xs:element name="schemaName" type="xs:string" />
                 </xs:sequence>
-                <xs:attribute name="fromStateId" type="uuid" use="required" />
+                <xs:attribute name="fromState" type="uuid" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -257,7 +257,7 @@
                 <xs:sequence>
                     <xs:element name="schemaName" type="xs:string" />
                 </xs:sequence>
-                <xs:attribute name="fromStateId" type="uuid" use="required" />
+                <xs:attribute name="fromState" type="uuid" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

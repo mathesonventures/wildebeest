@@ -159,8 +159,8 @@ public class FixtureCreator {
             xml.openMigration(
                     migration.getType(),
                     migration.getMigrationId(),
-                    migration.hasFromStateId() ? migration.getFromStateId() : null,
-                    migration.hasToStateId() ? migration.getToStateId() : null);
+                    migration.hasFromState() ? migration.getFromState() : null,
+                    migration.hasToState() ? migration.getToState() : null);
             xml.append(migration.getInnerXml());
             xml.closeMigration();
         }
