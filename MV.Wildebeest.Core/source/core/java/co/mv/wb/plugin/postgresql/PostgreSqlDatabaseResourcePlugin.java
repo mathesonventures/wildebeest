@@ -91,7 +91,7 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 		PrintStream output,
 		Resource resource,
 		Instance instance,
-		String stateId)
+		UUID stateId)
     {
 		if (output == null) { throw new IllegalArgumentException("output"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }

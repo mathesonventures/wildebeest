@@ -19,6 +19,8 @@ package co.mv.wb.plugin.fake;
 import co.mv.wb.Instance;
 import co.mv.wb.framework.ArgumentNullException;
 
+import java.util.UUID;
+
 /**
  * {@link Instance} for the Fake plugin implementation.
  *
@@ -26,29 +28,30 @@ import co.mv.wb.framework.ArgumentNullException;
  */
 public final class FakeInstance implements Instance
 {
-	private String stateId = null;
+	private UUID stateId = null;
 	private String tag = null;
 
 	public FakeInstance()
     {
     }
 
-	public FakeInstance(String stateId)
+	public FakeInstance(UUID stateId)
 	{
 		this.setStateId(stateId);
 	}
 	
-	public String getStateId()
+	public UUID getStateId()
 	{
 		if(this.stateId == null)
 		{
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
+
 		return stateId;
 	}
 
 	public void setStateId(
-		String value)
+		UUID value)
 	{
 		if (value == null) throw new ArgumentNullException("value");
 

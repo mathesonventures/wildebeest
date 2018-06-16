@@ -118,8 +118,8 @@ public class FixtureBuilder
             xml.openMigration(
                 migration.getType(),
                 migration.getMigrationId(),
-                migration.getFromStateId().orElse(null),
-                migration.getToStateId().orElse(null));
+                migration.getFromState().orElse(null),
+                migration.getToState().orElse(null));
             xml.append(migration.getInnerXml());
             xml.closeMigration();
         }

@@ -128,10 +128,10 @@ public class AssertionCreator
 	public MigrationBuilder migration(
 		String type,
 		UUID migrationId,
-		String fromStateId,
-		String toStateId)
+		String fromState,
+		String toState)
 	{
-		return this.state().resource().migration(type, migrationId, fromStateId, toStateId);
+		return this.state().resource().migration(type, migrationId, fromState, toState);
 	}
 	
 	public String build()

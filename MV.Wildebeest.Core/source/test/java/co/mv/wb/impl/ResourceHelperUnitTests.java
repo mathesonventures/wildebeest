@@ -80,7 +80,7 @@ public class ResourceHelperUnitTests
 
 		resource.getStates().add(state);
 		
-		FakeInstance instance = new FakeInstance(state.getStateId().toString());
+		FakeInstance instance = new FakeInstance(state.getStateId());
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
@@ -119,7 +119,7 @@ public class ResourceHelperUnitTests
 			"Foo");
 		state.getAssertions().add(assertion1);
 		
-		FakeInstance instance = new FakeInstance(state.getStateId().toString());
+		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -167,7 +167,7 @@ public class ResourceHelperUnitTests
 			1,
 			"Bar"));
 		
-		FakeInstance instance = new FakeInstance(state.getStateId().toString());
+		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -242,7 +242,7 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
 		
 		FakeInstance instance = new FakeInstance();
 
@@ -328,7 +328,7 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(tran3);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
@@ -457,7 +457,7 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(migration5);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
@@ -540,7 +540,7 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
@@ -614,7 +614,7 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
@@ -689,7 +689,7 @@ public class ResourceHelperUnitTests
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin());
+		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
 
 		// Instance
 		FakeInstance instance = new FakeInstance();

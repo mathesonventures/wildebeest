@@ -102,8 +102,8 @@ public class ResourceBuilder
     public MigrationBuilder migration(
         String type,
         UUID migrationId,
-        String fromStateId,
-        String toStateId)
+        String fromState,
+        String toState)
     {
         if (type == null) throw new ArgumentNullException("type");
         if (migrationId == null) throw new ArgumentNullException("migrationId");
@@ -113,8 +113,8 @@ public class ResourceBuilder
             this,
             type,
             migrationId,
-            fromStateId,
-            toStateId);
+            fromState,
+            toState);
         this.getMigrations().add(migration);
         return migration;
     }

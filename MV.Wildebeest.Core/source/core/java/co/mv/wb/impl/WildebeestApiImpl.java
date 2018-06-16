@@ -422,14 +422,14 @@ public class WildebeestApiImpl implements WildebeestApi
 				output,
 				resource,
 				instance,
-				migration.getToState().get());
+				toState.get().getStateId());
 
 			// Assert the new state
 			List<AssertionResult> assertionResults = this.assertState(
 				resource,
 				instance);
 
-			WildebeestApiImpl.throwIfFailed(migration.getToState().get(), assertionResults);
+			WildebeestApiImpl.throwIfFailed(toState.get().getStateId(), assertionResults);
 		}
 	}
 
@@ -473,13 +473,13 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource,
 			instance);
 
-		WildebeestApiImpl.throwIfFailed(state.getStateId().toString(), assertionResults);
+		WildebeestApiImpl.throwIfFailed(state.getStateId(), assertionResults);
 
 		resourcePlugin.setStateId(
 			output,
 			resource,
 			instance,
-			targetStateId.toString());
+			targetStateId);
 	}
 
 	@Override
@@ -698,7 +698,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	}
 
 	private static void throwIfFailed(
-		String stateId,
+		UUID stateId,
 		List<AssertionResult> assertionResults) throws AssertionFailedException
 	{
 		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }

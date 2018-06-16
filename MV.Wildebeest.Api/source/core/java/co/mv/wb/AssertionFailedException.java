@@ -29,7 +29,7 @@ import java.util.UUID;
  */
 public class AssertionFailedException extends Exception
 {
-	private final String stateId;
+	private final UUID stateId;
 	private final List<AssertionResult> assertionResults;
 
 	/**
@@ -41,7 +41,7 @@ public class AssertionFailedException extends Exception
 	 * @since                                   1.0
 	 */
 	public AssertionFailedException(
-		String stateId,
+		UUID stateId,
 		List<AssertionResult> assertionResults)
 	{
 		if (stateId == null) throw new ArgumentNullException("stateId");
@@ -52,12 +52,12 @@ public class AssertionFailedException extends Exception
 	}
 	
 	/**
-	 * Gets the ID of the State for which Assertion evaluation failed.
+	 * Gets the identity of the State for which Assertion evaluation failed.
 	 * 
 	 * @return                                  the ID of the State for which Assertion evaluation failed
 	 * @since                                   1.0
 	 */
-	public String getStateId()
+	public UUID getStateId()
 	{
 		return this.stateId;
 	}

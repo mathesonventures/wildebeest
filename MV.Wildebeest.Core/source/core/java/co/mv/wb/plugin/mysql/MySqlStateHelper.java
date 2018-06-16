@@ -49,7 +49,7 @@ public class MySqlStateHelper
 		UUID resourceId,
 		DataSource appDataSource,
 		String stateTableName,
-		String stateId) throws SQLException
+		UUID stateId) throws SQLException
 	{
 		if (resourceId == null) { throw new IllegalArgumentException("resourceId cannot be null"); }
 		if (appDataSource == null) { throw new IllegalArgumentException("appDataSource"); }

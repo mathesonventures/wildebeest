@@ -52,6 +52,7 @@ public interface ResourcePlugin
 
 	/**
 	 * Registers resource-type-specific meta data to record that it is in the specified state.
+	 *
 	 * @param       output                      the PrintStream for user output.
 	 * @param       resource                    the resource for which the state should be set in the specified {@link Instance}
 	 * @param       instance                    the {@link Instance} to record the state against
@@ -61,5 +62,5 @@ public interface ResourcePlugin
 		PrintStream output,
 		Resource resource,
 		Instance instance,
-		String stateId);
+		UUID stateId);
 }

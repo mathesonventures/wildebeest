@@ -109,14 +109,14 @@ public class StateCreator
     public MigrationBuilder migration(
         String type,
         UUID migrationId,
-        String fromStateId,
-        String toStateId)
+        String fromState,
+        String toState)
     {
         return this.resource().migration(
             type,
             migrationId,
-            fromStateId,
-            toStateId);
+            fromState,
+            toState);
     }
 
     public String render()
