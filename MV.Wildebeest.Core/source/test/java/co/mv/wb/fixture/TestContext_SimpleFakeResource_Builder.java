@@ -87,14 +87,14 @@ public class TestContext_SimpleFakeResource_Builder
 		resource.getMigrations().add(new SetTagMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(fooStateId),
+			Optional.of(fooStateId.toString()),
 			"Foo"));
 
 		// Migrate non-existant to Foo
 		resource.getMigrations().add(new SetTagMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(barStateId),
+			Optional.of(barStateId.toString()),
 			"Bar"));
 
 		Instance instance = new FakeInstance();

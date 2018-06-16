@@ -102,8 +102,8 @@ public class ResourceBuilder
     public MigrationBuilder migration(
         String type,
         UUID migrationId,
-        UUID fromStateId,
-        UUID toStateId)
+        String fromStateId,
+        String toStateId)
     {
         if (type == null) throw new ArgumentNullException("type");
         if (migrationId == null) throw new ArgumentNullException("migrationId");

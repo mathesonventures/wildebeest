@@ -120,10 +120,10 @@ public class ProductCatalogueMySqlDatabaseResource
 					.assertion("RowExists", assertionIdProductTypeSwRowExists)
 						.appendInnerXml("<description>ProductType SW exists</description>")
 						.appendInnerXml("<sql>SELECT * FROM ProductType WHERE ProductTypeCode = 'SW';</sql>")
-				.migration("MySqlCreateDatabase", migrationIdCreateDatabase, null, stateIdDatabaseCreated)
-				.migration("SqlScript", migrationIdLoadSchema, stateIdDatabaseCreated, stateIdCoreSchemaLoadedId)
+				.migration("MySqlCreateDatabase", migrationIdCreateDatabase, null, stateIdDatabaseCreated.toString())
+				.migration("SqlScript", migrationIdLoadSchema, stateIdDatabaseCreated.toString(), stateIdCoreSchemaLoadedId.toString())
 					.withInnerXml("<sql><![CDATA[" + MySqlElementFixtures.productCatalogueDatabase() + "]]></sql>")
-				.migration("SqlScript", migrationIdLoadReferenceData, stateIdCoreSchemaLoadedId, stateIdInitialReferenceDataLoaded)
+				.migration("SqlScript", migrationIdLoadReferenceData, stateIdCoreSchemaLoadedId.toString(), stateIdInitialReferenceDataLoaded.toString())
 					.withInnerXml("<sql><![CDATA[" + MySqlElementFixtures.productTypeRows() + "]]></sql>")
 			.render();
 			

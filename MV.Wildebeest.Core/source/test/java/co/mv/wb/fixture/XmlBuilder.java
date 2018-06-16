@@ -260,8 +260,8 @@ public class XmlBuilder
 	public XmlBuilder openMigration(
 		String type,
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId)
+		String fromStateId,
+		String toStateId)
 	{
 		if (type == null) { throw new IllegalArgumentException("type cannot be null"); }
 		if ("".equals(type)) { throw new IllegalArgumentException("type cannot be empty"); }

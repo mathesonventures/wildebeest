@@ -99,14 +99,14 @@ public class SqlServerTableExistsAssertionTests
 		Migration migration1 = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(created.getStateId()));
+			Optional.of(created.getStateId().toString()));
 		resource.getMigrations().add(migration1);
 		 
 		// Migrate created -> schemaLoaded
 		Migration migration2 = new SqlScriptMigration(
 			UUID.randomUUID(),
-			Optional.of(created.getStateId()),
-			Optional.of(schemaLoaded.getStateId()),
+			Optional.of(created.getStateId().toString()),
+			Optional.of(schemaLoaded.getStateId().toString()),
 			SqlServerElementFixtures.productCatalogueDatabase());
 		resource.getMigrations().add(migration2);
 
@@ -200,7 +200,7 @@ public class SqlServerTableExistsAssertionTests
 		Migration migration1 = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(created.getStateId()));
+			Optional.of(created.getStateId().toString()));
 		resource.getMigrations().add(migration1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();

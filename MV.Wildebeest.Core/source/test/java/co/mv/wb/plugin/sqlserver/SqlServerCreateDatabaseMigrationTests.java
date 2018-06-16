@@ -42,7 +42,7 @@ public class SqlServerCreateDatabaseMigrationTests
 		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		SqlServerCreateDatabaseMigrationPlugin migrationPlugin = new SqlServerCreateDatabaseMigrationPlugin();
 
@@ -94,7 +94,7 @@ public class SqlServerCreateDatabaseMigrationTests
 		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		SqlServerCreateDatabaseMigrationPlugin migrationPlugin = new SqlServerCreateDatabaseMigrationPlugin();
 

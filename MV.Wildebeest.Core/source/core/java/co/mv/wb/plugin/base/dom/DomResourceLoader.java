@@ -342,12 +342,12 @@ public class DomResourceLoader implements ResourceLoader
 
         String type = element.getAttribute(XA_MIGRATION_TYPE);
         UUID id = UUID.fromString(element.getAttribute(XA_MIGRATION_ID));
-        Optional<UUID> fromStateId = element.hasAttribute(XA_MIGRATION_FROM_STATE_ID)
-			? Optional.of(UUID.fromString(element.getAttribute(XA_MIGRATION_FROM_STATE_ID)))
+        Optional<String> fromStateId = element.hasAttribute(XA_MIGRATION_FROM_STATE_ID)
+			? Optional.of(element.getAttribute(XA_MIGRATION_FROM_STATE_ID))
 			: Optional.empty();
 
-        Optional<UUID> toStateId = element.hasAttribute(XA_MIGRATION_TO_STATE_ID)
-			? Optional.of(UUID.fromString(element.getAttribute(XA_MIGRATION_TO_STATE_ID)))
+        Optional<String> toStateId = element.hasAttribute(XA_MIGRATION_TO_STATE_ID)
+			? Optional.of(element.getAttribute(XA_MIGRATION_TO_STATE_ID))
 			: Optional.empty();
 
         MigrationBuilder builder = migrationBuilders.get(type);

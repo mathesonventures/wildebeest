@@ -32,8 +32,8 @@ public class MigrationBuilder
 	private final ResourceBuilder resource;
 	private final String type;
 	private final UUID migrationId;
-	private final UUID fromStateId;
-	private final UUID toStateId;
+	private final String fromStateId;
+	private final String toStateId;
 	private final String innerXml;
 
 	public MigrationBuilder(
@@ -41,8 +41,8 @@ public class MigrationBuilder
 		ResourceBuilder resource,
 		String type,
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId)
+		String fromStateId,
+		String toStateId)
 	{
 		this(
 			creator,
@@ -59,8 +59,8 @@ public class MigrationBuilder
 		ResourceBuilder resource,
 		String type,
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId,
+		String fromStateId,
+		String toStateId,
 		String innerXml)
 	{
 		if (creator == null) throw new ArgumentNullException("builder");
@@ -92,12 +92,12 @@ public class MigrationBuilder
 		return this.migrationId;
 	}
 
-	public Optional<UUID> getFromStateId()
+	public Optional<String> getFromStateId()
 	{
 		return Optional.ofNullable(this.fromStateId);
 	}
 
-	public Optional<UUID> getToStateId()
+	public Optional<String> getToStateId()
 	{
 		return Optional.ofNullable(this.toStateId);
 	}
@@ -129,8 +129,8 @@ public class MigrationBuilder
 	public MigrationBuilder migration(
 		String type,
 		UUID migrationId,
-		UUID fromStateId,
-		UUID toStateId)
+		String fromStateId,
+		String toStateId)
 	{
 		return this.getResource().migration(type, migrationId, fromStateId, toStateId);
 	}

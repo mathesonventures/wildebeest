@@ -56,7 +56,7 @@ public class AnsiSqlDomServiceUnitTests
 		
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
-				.migration("AnsiSqlCreateDatabase", migrationId, fromStateId, toStateId)
+				.migration("AnsiSqlCreateDatabase", migrationId, fromStateId.toString(), toStateId.toString())
 			.render();
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(
@@ -102,7 +102,7 @@ public class AnsiSqlDomServiceUnitTests
 		
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
-				.migration("AnsiSqlDropDatabase", migrationId, fromStateId, toStateId)
+				.migration("AnsiSqlDropDatabase", migrationId, fromStateId.toString(), toStateId.toString())
 			.render();
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(

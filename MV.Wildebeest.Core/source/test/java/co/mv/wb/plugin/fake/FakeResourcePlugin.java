@@ -24,7 +24,6 @@ import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
 
 import java.io.PrintStream;
-import java.util.UUID;
 
 /**
  * {@link ResourcePlugin} for the Fake plugin implementation.
@@ -33,11 +32,11 @@ import java.util.UUID;
  */
 public class FakeResourcePlugin implements ResourcePlugin
 {
-	private UUID stateId;
+	private String stateId;
 
 	// <editor-fold desc="StateId" defaultstate="collapsed">
 
-	public UUID getStateId()
+	public String getStateId()
 	{
 		return this.stateId;
 	}
@@ -52,15 +51,16 @@ public class FakeResourcePlugin implements ResourcePlugin
 		if (fake == null) { throw new IllegalArgumentException("instance must be of type FakeInstance"); }
 
 		return fake.hasStateId()
-			? Wildebeest.stateForId(resource, fake.getStateId())
+			? Wildebeest.stateForId(resource, fake.getStateId().toString())
 			: null;
 	}
 
-	@Override public void setStateId(
+	@Override
+	public void setStateId(
 		PrintStream output,
 		Resource resource,
 		Instance instance,
-		UUID stateId)
+		String stateId)
 	{
 		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }

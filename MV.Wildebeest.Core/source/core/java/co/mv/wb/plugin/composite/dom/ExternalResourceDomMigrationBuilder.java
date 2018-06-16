@@ -48,8 +48,8 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId,
+		Optional<String> fromStateId,
+		Optional<String> toStateId,
 		File baseDir) throws
 			PluginBuildException
 	{

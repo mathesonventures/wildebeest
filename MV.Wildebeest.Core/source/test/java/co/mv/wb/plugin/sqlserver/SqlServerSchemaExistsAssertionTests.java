@@ -62,7 +62,7 @@ public class SqlServerSchemaExistsAssertionTests
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
@@ -134,7 +134,7 @@ public class SqlServerSchemaExistsAssertionTests
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 

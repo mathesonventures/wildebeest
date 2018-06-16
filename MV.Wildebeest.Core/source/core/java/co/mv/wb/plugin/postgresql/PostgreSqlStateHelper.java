@@ -43,7 +43,7 @@ public class PostgreSqlStateHelper
 	 * @param       appDataSource               the DataSource for interacting with the database.
 	 * @param       metaSchemaName              the name of the schema where state tracking meta data should be stored.
 	 * @param       stateTableName              the name of the state tracking table in use for this instance.
-	 * @param       stateId                     the ID of the state.
+	 * @param       stateId                     the ID or Label of the state.
 	 * @throws      SQLException                if an error occurs when interacting with the database.
 	 * @since                                   4.0
 	 */
@@ -52,7 +52,7 @@ public class PostgreSqlStateHelper
 		DataSource appDataSource,
 		String metaSchemaName,
 		String stateTableName,
-		UUID stateId) throws SQLException
+		String stateId) throws SQLException
 	{
 		if (resourceId == null) { throw new IllegalArgumentException("resourceId cannot be null"); }
 		if (appDataSource == null) { throw new IllegalArgumentException("appDataSource"); }

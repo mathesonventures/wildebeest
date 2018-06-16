@@ -30,8 +30,8 @@ import java.util.UUID;
 public abstract class BaseMigration implements Migration
 {
 	private final UUID migrationId;
-	private final Optional<UUID> fromStateId;
-	private final Optional<UUID> toStateId;
+	private final Optional<String> fromStateId;
+	private final Optional<String> toStateId;
 
 	/**
 	 * Creates a new BaseMigration instance.
@@ -42,8 +42,8 @@ public abstract class BaseMigration implements Migration
 	 */
 	protected BaseMigration(
 		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId)
+		Optional<String> fromStateId,
+		Optional<String> toStateId)
 	{
 		if (migrationId == null) throw new ArgumentNullException("migrationId");
 		if (fromStateId == null) throw new ArgumentNullException("fromStateId");
@@ -61,13 +61,13 @@ public abstract class BaseMigration implements Migration
 	}
 
 	@Override
-	public Optional<UUID> getFromStateId()
+	public Optional<String> getFromStateId()
 	{
 		return this.fromStateId;
 	}
 
 	@Override
-	public Optional<UUID> getToStateId()
+	public Optional<String> getToStateId()
 	{
 		return this.toStateId;
 	}

@@ -46,13 +46,13 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 		Migration create = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin createRunner = new MySqlCreateDatabaseMigrationPlugin();
 
 		Migration drop = new MySqlDropDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID().toString()),
 			Optional.empty());
 
 		MigrationPlugin dropRunner = new MySqlDropDatabaseMigrationPlugin();
@@ -88,13 +88,13 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 		Migration create = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin createRunner = new MySqlCreateDatabaseMigrationPlugin();
 
 		Migration drop = new MySqlDropDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID().toString()),
 			Optional.empty());
 
 		MigrationPlugin dropRunner = new MySqlDropDatabaseMigrationPlugin();

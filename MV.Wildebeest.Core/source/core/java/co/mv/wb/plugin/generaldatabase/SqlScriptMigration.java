@@ -78,8 +78,8 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 	 */
 	public SqlScriptMigration(
 		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId,
+		Optional<String> fromStateId,
+		Optional<String> toStateId,
 		String sql)
 	{
 		super(migrationId, fromStateId, toStateId);

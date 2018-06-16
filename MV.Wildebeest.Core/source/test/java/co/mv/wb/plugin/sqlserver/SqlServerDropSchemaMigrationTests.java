@@ -42,7 +42,7 @@ public class SqlServerDropSchemaMigrationTests
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
@@ -109,7 +109,7 @@ public class SqlServerDropSchemaMigrationTests
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
