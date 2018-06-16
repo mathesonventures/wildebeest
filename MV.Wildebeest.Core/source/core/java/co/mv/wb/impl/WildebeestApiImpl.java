@@ -379,7 +379,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 		catch (MigrationInvalidStateException e)
 		{
-			this.output.println(e.getMessage());
+			this.output.println((OutputFormatter.migrationInvalidState(e)));
 		}
 
 		for (Migration migration : path)
