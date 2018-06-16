@@ -374,7 +374,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		List<Migration> path = paths.get(0);
-
+		
 		validateMigrationStates(resource);
 
 		for (Migration migration : path)
@@ -790,7 +790,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			boolean migrationFromStateValid = false;
 
 			//check do states exist in migration, if they don't set them to true so they don't throw errors
-			if(!m.getFromState().isPresent())
+			if(!m.getToState().isPresent())
 			{
 				migrationFromStateValid = true;
 			}
@@ -806,7 +806,7 @@ public class WildebeestApiImpl implements WildebeestApi
 				{
 					migrationToStateValid = true;
 				}
-				if(m.getFromState().equals(s.getStateId()) || m.getFromState().equals(s.getLabel()))
+				if(m.getToState().equals(s.getStateId()) || m.getToState().equals(s.getLabel()))
 				{
 					migrationFromStateValid = true;
 				}
