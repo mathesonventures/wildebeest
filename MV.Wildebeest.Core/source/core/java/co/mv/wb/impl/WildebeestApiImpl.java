@@ -374,8 +374,9 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		List<Migration> path = paths.get(0);
-		
+
 		validateMigrationStates(resource);
+
 
 		for (Migration migration : path)
 		{
