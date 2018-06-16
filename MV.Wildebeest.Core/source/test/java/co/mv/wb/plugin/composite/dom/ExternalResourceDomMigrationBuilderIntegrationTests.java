@@ -61,7 +61,7 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), resourceId, "Test")
 			.state(state1Id, "state1")
 			.state(state2Id, "state2")
-			.migration("External", migration1Id, state1Id, state2Id)
+			.migration("External", migration1Id, state1Id.toString(), state2Id.toString())
 				.innerXml("<filename>foo.wbr</filename><target>bar</target>")
 			.render();
 		

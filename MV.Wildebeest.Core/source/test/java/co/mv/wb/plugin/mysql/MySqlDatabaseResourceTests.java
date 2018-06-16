@@ -89,7 +89,7 @@ public class MySqlDatabaseResourceTests
 				resourceId,
 				MySqlUtil.getDataSource(mySqlProperties, databaseName),
 				"wb_state",
-				knownStateId);
+				knownStateId.toString());
 
 			MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
 
@@ -136,7 +136,7 @@ public class MySqlDatabaseResourceTests
 			resourceId,
 			MySqlUtil.getDataSource(mySqlProperties, databaseName),
 			"wb_state",
-			knownStateId);
+			knownStateId.toString());
 		
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
 

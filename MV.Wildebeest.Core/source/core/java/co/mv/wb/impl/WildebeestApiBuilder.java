@@ -69,7 +69,7 @@ public class WildebeestApiBuilder
 	public WildebeestApiBuilder withFactoryResourcePlugins()
 	{
 		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>(_resourcePlugins);
-		_resourcePlugins.putAll(Wildebeest.getResourcePlugins());
+		resourcePlugins.putAll(Wildebeest.getResourcePlugins());
 
 		return new WildebeestApiBuilder(
 			_wildebeestApi,

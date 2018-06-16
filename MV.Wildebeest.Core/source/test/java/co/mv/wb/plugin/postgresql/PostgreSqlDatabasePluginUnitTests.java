@@ -52,15 +52,15 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 		
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID()),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()),
+			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin createRunner = new AnsiSqlCreateDatabaseMigrationPlugin();
 
 		Migration drop = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID()),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()),
+			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 
@@ -102,15 +102,15 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 		
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID()),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()),
+			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin createRunner = new AnsiSqlCreateDatabaseMigrationPlugin();
 
 		Migration drop = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID()),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()),
+			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 

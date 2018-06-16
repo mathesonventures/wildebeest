@@ -44,7 +44,8 @@ public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 	{
 	}
 
-	@Override public State currentState(
+	@Override
+	public State currentState(
 		Resource resource,
 		Instance instance) throws IndeterminateStateException
 	{
@@ -67,7 +68,7 @@ public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 		State result = null;
 		if (declaredStateId != null)
 		{
-			result = Wildebeest.stateForId(resource, declaredStateId);
+			result = Wildebeest.stateForId(resource, declaredStateId.toString());
 
 			// If the declared state ID is not known, throw
 			if (result == null)
@@ -81,11 +82,12 @@ public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 		return result;
 	}
 	
-	@Override public void setStateId(
+	@Override
+	public void setStateId(
 		PrintStream output,
 		Resource resource,
 		Instance instance,
-		UUID stateId)
+		String stateId)
 	{
 		if (output == null) { throw new IllegalArgumentException("output"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }

@@ -28,6 +28,13 @@ import java.util.UUID;
  */
 public abstract class BaseMigration implements Migration
 {
+	private UUID migrationId = null;
+	private boolean migrationIdSet = false;
+	private Optional<String> fromStateId = null;
+	private boolean fromStateIdSet = false;
+	private Optional<String> toStateId = null;
+	private boolean toStateIdSet = false;
+
 	/**
 	 * Creates a new BaseMigration instance.
 	 * 
@@ -37,24 +44,20 @@ public abstract class BaseMigration implements Migration
 	 */
 	protected BaseMigration(
 		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId)
+		Optional<String> fromStateId,
+		Optional<String> toStateId)
 	{
 		this.setMigrationId(migrationId);
 		this.setFromStateId(fromStateId);
 		this.setToStateId(toStateId);
 	}
 
-	// <editor-fold desc="MigrationId" defaultstate="collapsed">
-
-	private UUID _migrationId = null;
-	private boolean _migrationId_set = false;
-
-	@Override public UUID getMigrationId() {
-		if(!_migrationId_set) {
+	@Override
+	public UUID getMigrationId() {
+		if(!migrationIdSet) {
 			throw new IllegalStateException("migrationId not set.  Use the HasMigrationId() method to check its state before accessing it.");
 		}
-		return _migrationId;
+		return migrationId;
 	}
 
 	private void setMigrationId(
@@ -62,90 +65,80 @@ public abstract class BaseMigration implements Migration
 		if(value == null) {
 			throw new IllegalArgumentException("migrationId cannot be null");
 		}
-		boolean changing = !_migrationId_set || _migrationId != value;
+		boolean changing = !migrationIdSet || migrationId != value;
 		if(changing) {
-			_migrationId_set = true;
-			_migrationId = value;
+			migrationIdSet = true;
+			migrationId = value;
 		}
 	}
 
 	private void clearMigrationId() {
-		if(_migrationId_set) {
-			_migrationId_set = true;
-			_migrationId = null;
+		if(migrationIdSet) {
+			migrationIdSet = true;
+			migrationId = null;
 		}
 	}
 
 	private boolean hasMigrationId() {
-		return _migrationId_set;
+		return migrationIdSet;
 	}
 
-	// </editor-fold>
 
-	// <editor-fold desc="FromStateId" defaultstate="collapsed">
 
-	private Optional<UUID> _fromStateId = null;
-	private boolean _fromStateId_set = false;
-
-	@Override public Optional<UUID> getFromStateId() {
-		if(!_fromStateId_set) {
+	@Override
+	public Optional<String> getFromStateId() {
+		if(!fromStateIdSet) {
 			throw new IllegalStateException("fromStateId not set.");
 		}
-		if(_fromStateId == null) {
+		if(fromStateId == null) {
 			throw new IllegalStateException("fromStateId should not be null");
 		}
-		return _fromStateId;
+		return fromStateId;
 	}
 
-	private void setFromStateId(Optional<UUID> value) {
+	private void setFromStateId(Optional<String> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("fromStateId cannot be null");
 		}
-		boolean changing = !_fromStateId_set || _fromStateId != value;
+		boolean changing = !fromStateIdSet || fromStateId != value;
 		if(changing) {
-			_fromStateId_set = true;
-			_fromStateId = value;
+			fromStateIdSet = true;
+			fromStateId = value;
 		}
 	}
 
-	// </editor-fold>
 
-	// <editor-fold desc="ToStateId" defaultstate="collapsed">
-
-	private Optional<UUID> _toStateId = null;
-	private boolean _toStateId_set = false;
-
-	@Override public Optional<UUID> getToStateId() {
-		if(!_toStateId_set) {
+	@Override
+	public Optional<String> getToStateId() {
+		if(!toStateIdSet) {
 			throw new IllegalStateException("toStateId not set.");
 		}
-		if(_toStateId == null) {
+		if(toStateId == null) {
 			throw new IllegalStateException("toStateId should not be null");
 		}
-		return _toStateId;
+		return toStateId;
 	}
 
-	private void setToStateId(Optional<UUID> value) {
+	private void setToStateId(Optional<String> value) {
 		if(value == null) {
 			throw new IllegalArgumentException("toStateId cannot be null");
 		}
-		boolean changing = !_toStateId_set || _toStateId != value;
+		boolean changing = !toStateIdSet || toStateId != value;
 		if(changing) {
-			_toStateId_set = true;
-			_toStateId = value;
+			toStateIdSet = true;
+			toStateId = value;
 		}
 	}
 
 	private void clearToStateId() {
-		if(_toStateId_set) {
-			_toStateId_set = true;
-			_toStateId = null;
+		if(toStateIdSet) {
+			toStateIdSet = true;
+			toStateId = null;
 		}
 	}
 
 	private boolean hasToStateId() {
-		return _toStateId_set;
+		return toStateIdSet;
 	}
 
-	// </editor-fold>
 }

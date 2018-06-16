@@ -47,7 +47,7 @@ public class SqlScriptMigrationTests
 		Migration migration = new SqlScriptMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()),
+			Optional.of(UUID.randomUUID().toString()),
 			MySqlElementFixtures.productCatalogueDatabase());
 
 		MigrationPlugin migrationPlugin = new SqlScriptMigrationPlugin();

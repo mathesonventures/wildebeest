@@ -50,7 +50,7 @@ public class SqlServerStateHelper
 		UUID resourceId,
 		DataSource appDataSource,
 		String stateTableName,
-		UUID stateId) throws SQLException
+		String stateId) throws SQLException
 	{
 		if (resourceId == null) { throw new IllegalArgumentException("resourceId cannot be null"); }
 		if (appDataSource == null) { throw new IllegalArgumentException("appDataSource"); }

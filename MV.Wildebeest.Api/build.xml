@@ -204,7 +204,7 @@
 		<property name="target.test.javadoc" value="${target.test}/javadoc" />
 
 		<!-- Build Resource Targets -->
-		<property name="target.buildres" value="${target}/buildres" />
+		<property name="target.buildres" value="../.build" />
 		<property name="target.buildres.ivy" value="${target.buildres}/ivy" />
 
 		<!--

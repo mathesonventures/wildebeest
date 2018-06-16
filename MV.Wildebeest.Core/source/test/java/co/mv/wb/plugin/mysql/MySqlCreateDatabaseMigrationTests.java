@@ -38,7 +38,7 @@ public class MySqlCreateDatabaseMigrationTests
 		MySqlCreateDatabaseMigration migration = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		MySqlCreateDatabaseMigrationPlugin migrationPlugin = new MySqlCreateDatabaseMigrationPlugin();
 
@@ -81,7 +81,7 @@ public class MySqlCreateDatabaseMigrationTests
 		MySqlCreateDatabaseMigration migration = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
-			Optional.of(UUID.randomUUID()));
+			Optional.of(UUID.randomUUID().toString()));
 
 		MySqlCreateDatabaseMigrationPlugin migrationPlugin = new MySqlCreateDatabaseMigrationPlugin();
 

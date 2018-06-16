@@ -59,13 +59,14 @@ public class MySqlDropDatabaseMigration extends BaseMigration
 	 */
 	public MySqlDropDatabaseMigration(
 		UUID migrationId,
-		Optional<UUID> fromStateId,
-		Optional<UUID> toStateId)
+		Optional<String> fromStateId,
+		Optional<String> toStateId)
 	{
 		super(migrationId, fromStateId, toStateId);
 	}
 	
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			Wildebeest.MySqlDatabase);
