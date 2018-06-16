@@ -43,8 +43,8 @@ import java.util.UUID;
 		"<migration\n" +
 		"    type=\"ExternalResourceMigration\"\n" +
 		"    id=\"dd7a708f-bf6d-4e18-aaec-c1fdf3de965d\"\n" +
-		"    fromStateId=\"d364f2ba-3972-4a76-944d-d9767cbfc2d7\"\n" +
-		"    toStateId=\"f488f17b-71d3-4672-9216-afd1e73884cf\">\n" +
+		"    fromState=\"d364f2ba-3972-4a76-944d-d9767cbfc2d7\"\n" +
+		"    toState=\"f488f17b-71d3-4672-9216-afd1e73884cf\">\n" +
 		"    <filename>AnotherResource.wbr</filename>\n" +
 		"    <target>SomeExternalTarget</target>\n" +
 		"</migration>"
@@ -68,13 +68,13 @@ public class ExternalResourceMigration extends BaseMigration
 	 */
 	public ExternalResourceMigration(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId,
+		Optional<String> fromState,
+		Optional<String> toState,
 		File baseDir,
 		String fileName,
 		Optional<String> target)
 	{
-		super(migrationId, fromStateId, toStateId);
+		super(migrationId, fromState, toState);
 
 		this.baseDir = baseDir;
 		this.fileName = fileName;

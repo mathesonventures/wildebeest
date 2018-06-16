@@ -260,38 +260,38 @@ public class XmlBuilder
 	public XmlBuilder openMigration(
 		String type,
 		UUID migrationId,
-		String fromStateId,
-		String toStateId)
+		String fromState,
+		String toState)
 	{
 		if (type == null) { throw new IllegalArgumentException("type cannot be null"); }
 		if ("".equals(type)) { throw new IllegalArgumentException("type cannot be empty"); }
 		if (migrationId == null) { throw new IllegalArgumentException("migrationId cannot be null"); }
-		if (fromStateId == null && toStateId == null)
+		if (fromState == null && toState == null)
 		{
-			throw new IllegalArgumentException("at least one of fromStateId and toStateId must be provided");
+			throw new IllegalArgumentException("at least one of fromState and toState must be provided");
 		}
 
-		if (fromStateId != null && toStateId != null)
+		if (fromState != null && toState != null)
 		{
 			this.openElement("migration",
 				"type", type,
 				"id", migrationId.toString(),
-				"fromStateId", fromStateId.toString(),
-				"toStateId", toStateId.toString());
+				"fromState", fromState.toString(),
+				"toState", toState.toString());
 		}
-		else if (fromStateId != null)
+		else if (fromState != null)
 		{
 			this.openElement("migration",
 				"type", type,
 				"id", migrationId.toString(),
-				"fromStateId", fromStateId.toString());
+				"fromState", fromState.toString());
 		}
-		else if (toStateId != null)
+		else if (toState != null)
 		{
 			this.openElement("migration",
 				"type", type,
 				"id", migrationId.toString(),
-				"toStateId", toStateId.toString());
+				"toState", toState.toString());
 		}
 		
 		return this;

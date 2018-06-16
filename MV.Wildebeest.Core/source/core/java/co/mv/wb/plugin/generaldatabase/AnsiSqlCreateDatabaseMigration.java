@@ -50,10 +50,10 @@ public class AnsiSqlCreateDatabaseMigration extends BaseMigration
 {
     public AnsiSqlCreateDatabaseMigration(
         UUID migrationId,
-        Optional<String> fromStateId,
-        Optional<String> toStateId)
+        Optional<String> fromState,
+        Optional<String> toState)
     {
-        super(migrationId, fromStateId, toStateId);
+        super(migrationId, fromState, toState);
     }
 
     @Override

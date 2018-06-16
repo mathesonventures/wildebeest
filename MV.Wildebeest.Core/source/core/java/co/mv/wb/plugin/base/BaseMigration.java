@@ -30,28 +30,28 @@ import java.util.UUID;
 public abstract class BaseMigration implements Migration
 {
 	private final UUID migrationId;
-	private final Optional<String> fromStateId;
-	private final Optional<String> toStateId;
+	private final Optional<String> fromState;
+	private final Optional<String> toState;
 
 	/**
 	 * Creates a new BaseMigration instance.
 	 * 
 	 * @param       migrationId                 the ID for the new migration
-	 * @param       fromStateId                 the optional from state for the new migration
-	 * @param       toStateId                   the optional to state for the new migration
+	 * @param       fromState                   the optional from state for the new migration
+	 * @param       toState                     the optional to state for the new migration
 	 */
 	protected BaseMigration(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId)
+		Optional<String> fromState,
+		Optional<String> toState)
 	{
 		if (migrationId == null) throw new ArgumentNullException("migrationId");
-		if (fromStateId == null) throw new ArgumentNullException("fromStateId");
-		if (toStateId == null) throw new ArgumentNullException("toStateId");
+		if (fromState == null) throw new ArgumentNullException("fromState");
+		if (toState == null) throw new ArgumentNullException("toState");
 
 		this.migrationId = migrationId;
-		this.fromStateId = fromStateId;
-		this.toStateId = toStateId;
+		this.fromState = fromState;
+		this.toState = toState;
 	}
 
 	@Override
@@ -61,14 +61,14 @@ public abstract class BaseMigration implements Migration
 	}
 
 	@Override
-	public Optional<String> getFromStateId()
+	public Optional<String> getFromState()
 	{
-		return this.fromStateId;
+		return this.fromState;
 	}
 
 	@Override
-	public Optional<String> getToStateId()
+	public Optional<String> getToState()
 	{
-		return this.toStateId;
+		return this.toState;
 	}
 }

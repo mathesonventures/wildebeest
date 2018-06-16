@@ -45,13 +45,13 @@
         <migration
                 type="MySqlCreateDatabase"
                 id="6b21e1e3-ff3a-44b3-84ec-e21fb01c0110"
-                toStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"></migration>
+                toState="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"></migration>
 
         <migration
                 type="SqlScript"
                 id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
-                fromStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"
-                toStateId="363568f1-aaed-4a50-bea0-9ddee713cc11">
+                fromState="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"
+                toState="363568f1-aaed-4a50-bea0-9ddee713cc11">
             <sql><![CDATA[
 
 /* ProductType */
@@ -84,8 +84,8 @@ CREATE TABLE  `Product` (
         <migration
                 type="SqlScript"
                 id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
-                fromStateId="363568f1-aaed-4a50-bea0-9ddee713cc11"
-                toStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7">
+                fromState="363568f1-aaed-4a50-bea0-9ddee713cc11"
+                toState="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7">
             <sql><![CDATA[
 
 DROP TABLE Product;

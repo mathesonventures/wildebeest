@@ -34,12 +34,12 @@ public class DomSetTagMigrationBuilder extends BaseDomMigrationBuilder
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<String> fromStateId,
-		Optional<String> toStateId,
+		Optional<String> fromState,
+		Optional<String> toState,
 		File baseDir)
 	{
 		String tag = this.getElement().getChildNodes().item(0).getTextContent();
 		
-		return new SetTagMigration(migrationId, fromStateId, toStateId, tag);
+		return new SetTagMigration(migrationId, fromState, toState, tag);
 	}
 }

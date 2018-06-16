@@ -42,17 +42,17 @@ import java.util.UUID;
         "<migration\n" +
         "    type=\"AnsiSqlDropDatabase\"\n" +
         "    id=\"c3376639-40c1-4795-adc4-258de2b07176\"\n" +
-        "    fromStateId=\"a7d7f4c8-ea65-447f-bd59-aa73c00cd8c2\">\n" +
+        "    fromState=\"a7d7f4c8-ea65-447f-bd59-aa73c00cd8c2\">\n" +
         "</migration>"
 )
 public class AnsiSqlDropDatabaseMigration extends BaseMigration
 {
     public AnsiSqlDropDatabaseMigration(
         UUID migrationId,
-        Optional<String> fromStateId,
-        Optional<String> toStateId)
+        Optional<String> fromState,
+        Optional<String> toState)
     {
-        super(migrationId, fromStateId, toStateId);
+        super(migrationId, fromState, toState);
     }
 
     @Override

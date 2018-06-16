@@ -124,20 +124,20 @@ public class Asserts
 
 		if (expectedFromStateId == null)
 		{
-			Assert.assertFalse(name + ".fromStateId expected to be unset", actual.getFromStateId().isPresent());
+			Assert.assertFalse(name + ".fromStateId expected to be unset", actual.getFromState().isPresent());
 		}
 		else
 		{
-			assertEquals(name + ".fromStateId", expectedFromStateId, actual.getFromStateId());
+			assertEquals(name + ".fromStateId", expectedFromStateId, actual.getFromState());
 		}
 
 		if (expectedToStateId == null)
 		{
-			Assert.assertFalse(name + ".toStateId expected to be unset", actual.getToStateId().isPresent());
+			Assert.assertFalse(name + ".toStateId expected to be unset", actual.getToState().isPresent());
 		}
 		else
 		{
-			assertEquals(name + ".toStateId", expectedToStateId, actual.getToStateId());
+			assertEquals(name + ".toStateId", expectedToStateId, actual.getToState());
 		}
 	}
 	

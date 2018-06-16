@@ -68,13 +68,13 @@
 		<migration
 			type="AnsiSqlCreateDatabase"
 			id="637d1065-caa6-41a0-81b1-ac95af43380f"
-			toStateId="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79" />
+			toState="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79" />
 
 		<migration
 			type="SqlScript"
 			id="086c890e-dca9-4b40-88ec-cebafeb6820d"
-			fromStateId="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79"
-			toStateId="18bb4e09-0e18-4eb8-995f-75f7a4fcf1fa">
+			fromState="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79"
+			toState="18bb4e09-0e18-4eb8-995f-75f7a4fcf1fa">
 			<sql><![CDATA[
 
 CREATE SCHEMA ProdCat;
@@ -85,8 +85,8 @@ CREATE SCHEMA ProdCat;
 		<migration
 			type="SqlScript"
 			id="86a9ba74-5a91-4704-a909-f3004d3e4304"
-			fromStateId="18bb4e09-0e18-4eb8-995f-75f7a4fcf1fa"
-			toStateId="434fb1fd-e903-4b0f-a2b3-b1014360f799">
+			fromState="18bb4e09-0e18-4eb8-995f-75f7a4fcf1fa"
+			toState="434fb1fd-e903-4b0f-a2b3-b1014360f799">
 			<sql><![CDATA[
 
 CREATE TABLE ProdCat.ProductType
@@ -106,8 +106,8 @@ WITH (
 		<migration
 			type="SqlScript"
 			id="3ba71bf8-6e6e-4c9e-ae98-dc0f2b1607fa"
-			fromStateId="b68fc5c0-35c9-49b8-b555-9e7634fe0de3"
-			toStateId="6096d6fc-2b04-45cf-88cf-9ab49629f50e">
+			fromState="b68fc5c0-35c9-49b8-b555-9e7634fe0de3"
+			toState="6096d6fc-2b04-45cf-88cf-9ab49629f50e">
 			<sql><![CDATA[
 
 SET ANSI_NULLS ON;
