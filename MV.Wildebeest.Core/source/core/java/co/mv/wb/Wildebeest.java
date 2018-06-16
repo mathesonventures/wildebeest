@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -152,13 +153,11 @@ public class Wildebeest
 	{
 		Reflections reflections = new Reflections("co.mv.wb");
 
-		List<AssertionType> assertionTypes = reflections
+		return reflections
 			.getTypesAnnotatedWith(AssertionType.class)
 			.stream()
 			.map(x -> x.getAnnotation(AssertionType.class))
 			.collect(Collectors.toList());
-
-		return assertionTypes;
 	}
 
 	//
@@ -177,38 +176,32 @@ public class Wildebeest
 	// Global Functions
 	//
 
-	public static State stateForId(
+	public static State findState(
 		Resource resource,
-		String stateId)
+		String state)
 	{
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
+		if (state == null) { throw new IllegalArgumentException("state cannot be null"); }
 
-		State result = null;
+		State result;
 
-		if(!Util.isUUID(stateId))
+		if (Util.isUUID(state))
 		{
-			// TODO compact this with the streams API
-			for(State check : resource.getStates())
-			{
-				if (stateId.equals(check.getLabel()))
-				{
-					result = check;
-					break;
-				}
-			}
+			UUID stateId = UUID.fromString(state);
+
+			result = resource
+				.getStates().stream()
+				.filter(s -> s.getStateId().equals(stateId))
+				.findFirst()
+				.orElse(null);
 		}
 		else
 		{
-			for (State check : resource.getStates())
-			{
-				// TODO compact this with the streams API
-				if (stateId.equals(check.getStateId()))
-				{
-					result = check;
-					break;
-				}
-			}
+			result = resource
+				.getStates().stream()
+				.filter(s -> state.equals(s.getLabel()))
+				.findFirst()
+				.orElse(null);
 		}
 
 		return result;

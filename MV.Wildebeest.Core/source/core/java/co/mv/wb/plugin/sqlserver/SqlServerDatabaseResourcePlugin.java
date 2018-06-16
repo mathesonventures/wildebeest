@@ -73,7 +73,7 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 		State result = null;
 		if (declaredStateId != null)
 		{
-			result = Wildebeest.stateForId(resource, declaredStateId.toString());
+			result = Wildebeest.findState(resource, declaredStateId.toString());
 
 			// If the declared state ID is not known, throw
 			if (result == null)

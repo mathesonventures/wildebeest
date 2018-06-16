@@ -394,10 +394,10 @@ public class WildebeestApiImpl implements WildebeestApi
 			String migrationTypeUri = migration.getClass().getAnnotation(MigrationType.class).uri();
 			MigrationPlugin migrationPlugin = this.getPluginManager().getMigrationPlugin(migrationTypeUri);
 
-			Optional<State> fromState = migration.getFromState().map(stateId -> Wildebeest.stateForId(
+			Optional<State> fromState = migration.getFromState().map(stateId -> Wildebeest.findState(
 				resource,
 				stateId));
-			Optional<State> toState = migration.getToState().map(stateId -> Wildebeest.stateForId(
+			Optional<State> toState = migration.getToState().map(stateId -> Wildebeest.findState(
 				resource,
 				stateId));
 
@@ -458,7 +458,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource,
 			targetState);
 
-		State state = Wildebeest.stateForId(
+		State state = Wildebeest.findState(
 			resource,
 			targetStateId.toString());
 
@@ -743,7 +743,7 @@ public class WildebeestApiImpl implements WildebeestApi
 				.forEach(
 					migration ->
 					{
-						State toState = Wildebeest.stateForId(
+						State toState = Wildebeest.findState(
 							resource,
 							migration.getToState().get());
 						List<Migration> thisPathCopy = new ArrayList<>(thisPath);

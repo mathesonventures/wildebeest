@@ -51,7 +51,7 @@ public class FakeResourcePlugin implements ResourcePlugin
 		if (fake == null) { throw new IllegalArgumentException("instance must be of type FakeInstance"); }
 
 		return fake.hasStateId()
-			? Wildebeest.stateForId(resource, fake.getStateId().toString())
+			? Wildebeest.findState(resource, fake.getStateId().toString())
 			: null;
 	}
 
