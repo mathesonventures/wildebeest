@@ -48,7 +48,8 @@ import static org.junit.Assert.assertNotNull;
  */
 public class IntegrationTests
 {
-	@Test public void createDatabaseAddTableInsertRows() throws
+	@Test
+	public void createDatabaseAddTableInsertRows() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -194,6 +195,7 @@ public class IntegrationTests
 	}
 	
 	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
+<<<<<<< HEAD
 			AssertionFailedException,
 			IndeterminateStateException,
 			InvalidStateSpecifiedException,
@@ -206,6 +208,19 @@ public class IntegrationTests
 			UnknownStateSpecifiedException,
             MissingReferenceException,
 		    MigrationInvalidStateException
+=======
+		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
+		LoaderFault,
+		MigrationFailedException,
+		MigrationNotPossibleException,
+		PluginBuildException,
+		SQLException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
+>>>>>>> MVWB-11 Fixing unittests after adding new exception into migrate function
 	{
 
 		PrintStream output = System.out;

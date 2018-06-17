@@ -72,19 +72,19 @@ public class WildebeestCommandUnitTests
 	}
 	
 	@Test public void migrate_validRequest_migrateOperationCalled() throws
-			AssertionFailedException,
-			FileLoadException,
-			IndeterminateStateException,
-			InvalidStateSpecifiedException,
-			LoaderFault,
-			MigrationFailedException,
-			MigrationNotPossibleException,
-			PluginBuildException,
-			TargetNotSpecifiedException,
-			UnknownStateSpecifiedException,
-			XmlValidationException,
-			MissingReferenceException,
-		  	MigrationInvalidStateException
+		AssertionFailedException,
+		FileLoadException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
+		LoaderFault,
+		MigrationFailedException,
+		MigrationNotPossibleException,
+		PluginBuildException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException,
+		XmlValidationException,
+		MigrationInvalidStateException,
+		MissingReferenceException
 	{
 		// Setup
 		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
