@@ -16,14 +16,11 @@
 
 package co.mv.wb.plugin.base.dom;
 
-import co.mv.wb.AssertionBuilder;
-import co.mv.wb.Asserts;
-import co.mv.wb.LoaderFault;
-import co.mv.wb.MigrationBuilder;
-import co.mv.wb.PluginBuildException;
-import co.mv.wb.Resource;
+import co.mv.wb.*;
 import co.mv.wb.fixture.FixtureCreator;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
+import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.SetTagMigration;
 import co.mv.wb.plugin.fake.TagAssertion;
@@ -39,6 +36,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests for {@link DomResourceLoader}.
@@ -50,7 +48,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResource() throws
             LoaderFault,
-            PluginBuildException {
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -109,7 +108,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForStateWithLabel() throws
             LoaderFault,
-            PluginBuildException {
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -175,7 +175,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForStateWithNoLabel() throws
             LoaderFault,
-            PluginBuildException {
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -242,7 +243,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForStateWithLabelAndDescription() throws
             LoaderFault,
-            PluginBuildException {
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -310,7 +312,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForMultipleStates() throws
             LoaderFault,
-            PluginBuildException {
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -383,7 +386,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForStateWithOneAssertion() throws
             LoaderFault,
-            PluginBuildException {
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -452,7 +456,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForStateWithMultipleAssertions() throws
             LoaderFault,
-            PluginBuildException {
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -523,7 +528,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForMigrationWithFromStateId() throws
             LoaderFault,
-            PluginBuildException {
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -583,8 +589,9 @@ public class DomResourceLoaderTests
 
     @Test
     public void loadResourceForMigrationWithFromStateAsLabel() throws
-          LoaderFault,
-          PluginBuildException {
+            LoaderFault,
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -644,7 +651,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForMigrationsWithToStateId() throws
             LoaderFault,
-            PluginBuildException {
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -705,8 +713,9 @@ public class DomResourceLoaderTests
 
     @Test
     public void loadResourceForMigrationsWithToStateIdAsLabel() throws
-          LoaderFault,
-          PluginBuildException {
+            LoaderFault,
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -766,7 +775,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws
             LoaderFault,
-            PluginBuildException {
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
@@ -826,11 +836,149 @@ public class DomResourceLoaderTests
 
     }
 
+    @Test
+    public void loadResource_validMysqlAssertionGroup_succeeds()
+    {
+        Resource resource = this.loadResource("MySqlDatabase/database.wbresources.uses.assertionGroup.xml");
+
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(
+                UUID.fromString("0d39b8fb-5b5c-48cd-845c-9c4d55f94303"),
+                "Product Catalogue Database",
+                resource,
+                "resource");
+
+        // States
+        assertEquals(
+                "resource.states.size",
+                2,
+                resource.getStates().size());
+
+        // Assertions
+        assertEquals(
+                "resource.state[0].assertions.size",
+                1,
+                resource.getStates().get(0).getAssertions().size());
+        assertEquals(
+                "resource.state[1].assertions.size",
+                6,
+                resource.getStates().get(1).getAssertions().size());
+
+    }
+
+    @Test
+    public void loadResource_validPostgreAssertionGroup_succeeds()
+    {
+        Resource resource = this.loadResource("PostgreSqlDatabase/database.wbresources.uses.assertionGroup.xml");
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(
+                UUID.fromString("38d0eabd-ab40-4c37-96a7-fcacb43bd059"),
+                "Product Catalogue Database",
+                resource,
+                "resource");
+
+        // States
+        assertEquals(
+                "resource.states.size",
+                3,
+                resource.getStates().size());
+
+        // Assertions
+        assertEquals(
+                "resource.state[0].assertions.size",
+                1,
+                resource.getStates().get(0).getAssertions().size());
+        assertEquals(
+                "resource.state[1].assertions.size",
+                0,
+                resource.getStates().get(1).getAssertions().size());
+        assertEquals(
+                "resource.state[2].assertions.size",
+                1,
+                resource.getStates().get(2).getAssertions().size());
+
+    }
+
+    @Test
+    public void loadResource_validSqlServerAssertionGroup_succeeds()
+    {
+        Resource resource = this.loadResource("SqlServerDatabase/database.wbresources.uses.assertionGroup.xml");
+        //
+        // Verify
+        //
+
+        // Resource
+        assertNotNull("resource", resource);
+        Asserts.assertResource(
+                UUID.fromString("58699f8a-22fa-4784-9768-3fcc3b2619b4"),
+                "Product Catalogue Database",
+                resource,
+                "resource");
+
+        // States
+        assertEquals(
+                "resource.states.size",
+                2,
+                resource.getStates().size());
+
+        // Assertions
+        assertEquals(
+                "resource.state[0].assertions.size",
+                1,
+                resource.getStates().get(0).getAssertions().size());
+        assertEquals(
+                "resource.state[1].assertions.size",
+                5,
+                resource.getStates().get(1).getAssertions().size());
+
+    }
+
+    @Test
+    public void loadResourceXml_withMissingAssertionGroup_fails()
+    {
+        Resource resource = this.loadResource("InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml");
+        assertNull(resource);
+    }
+
+
+    private Resource loadResource(
+            String filename)
+    {
+        if (filename == null) throw new ArgumentNullException("filename");
+
+        try
+        {
+            //
+            // Execute
+            //
+            WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
+            Resource resource = wildebeestApi.loadResource(new File(filename));
+            return resource;
+
+        }
+        catch (LoaderFault | PluginBuildException | MissingReferenceException | FileLoadException
+                | XmlValidationException loaderFault)
+        {
+            loaderFault.printStackTrace();
+        }
+        return null;
+    }
 
     @Test
     public void loadResourceForMigrationsWithFromStateIdAndToStateIdAsLabels() throws
-          LoaderFault,
-          PluginBuildException {
+            LoaderFault,
+            PluginBuildException,
+            MissingReferenceException {
 
         //
         // Setup
