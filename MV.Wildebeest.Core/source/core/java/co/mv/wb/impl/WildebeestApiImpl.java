@@ -17,6 +17,7 @@
 package co.mv.wb.impl;
 
 import co.mv.wb.*;
+
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.Util;
 import co.mv.wb.plugin.base.ImmutableAssertionResult;
@@ -142,8 +143,8 @@ public class WildebeestApiImpl implements WildebeestApi
 			FileLoadException,
 			LoaderFault,
 			PluginBuildException,
-			XmlValidationException
-    {
+			XmlValidationException,
+			MissingReferenceException {
 		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
 
 		// Get the absolute file for this resource - this ensures that getParentFile works correctly
@@ -789,11 +790,11 @@ public class WildebeestApiImpl implements WildebeestApi
 			boolean migrationFromStateValid = false;
 
 			//check do states exist in migration, if they don't set them to true so they don't throw errors
-			if(!m.getFromStateId().isPresent())
+			if(!m.getFromState().isPresent())
 			{
 				migrationFromStateValid = true;
 			}
-			if(!m.getToStateId().isPresent())
+			if(!m.getToState().isPresent())
 			{
 				migrationToStateValid = true;
 			}
@@ -801,11 +802,11 @@ public class WildebeestApiImpl implements WildebeestApi
 			for (State s: states
 				  )
 			{
-				if(m.getToStateId().equals(s.getStateId()) || m.getToStateId().equals(s.getLabel()))
+				if(m.getToState().equals(s.getStateId()) || m.getToState().equals(s.getLabel()))
 				{
 					migrationToStateValid = true;
 				}
-				if(m.getFromStateId().equals(s.getStateId()) || m.getFromStateId().equals(s.getLabel()))
+				if(m.getFromState().equals(s.getStateId()) || m.getFromState().equals(s.getLabel()))
 				{
 					migrationFromStateValid = true;
 				}

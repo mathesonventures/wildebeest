@@ -4,6 +4,7 @@
     <xs:element name="resource">
         <xs:complexType>
             <xs:sequence>
+                <xs:element name="assertionGroups" type="AssertionGroups" minOccurs="0"/>
                 <xs:element name="states" type="States"/>
                 <xs:element name="migrations" type="Migrations"/>
             </xs:sequence>
@@ -19,6 +20,32 @@
             <xs:enumeration value="co.mv.wb.SqlServerDatabase"/>
         </xs:restriction>
     </xs:simpleType>
+    <xs:complexType name="AssertionGroups">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element name="assertionGroup" type="AssertionGroup"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AssertionGroup">
+        <xs:choice>
+            <xs:group ref="AssertionElement"/>
+            <xs:element name="assertionRef" type="AssertionRef" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="AssertionRef">
+        <xs:attribute name="type" type="AssertionRefType" use="required" />
+
+    </xs:complexType>
+
+    <xs:simpleType name="AssertionRefType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="single"/>
+            <xs:enumeration value="group"/>
+            <xs:enumeration value="selector"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:complexType name="States">
         <xs:sequence maxOccurs="unbounded">
@@ -28,15 +55,15 @@
 
     <xs:complexType name="State">
         <xs:sequence minOccurs="0">
-            <xs:element name="assertions" type="Assertions"/>
+            <xs:element name="assertions" type="Assertions" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="id" type="uuid" use="required" />
         <xs:attribute name="label" type="xs:string" />
     </xs:complexType>
 
-    <xs:complexType name="Assertions">
-        <xs:sequence maxOccurs="unbounded">
-            <xs:element name="assertion" type="Assertion" minOccurs="0">
+    <xs:group name="AssertionElement">
+        <xs:sequence>
+            <xs:element name="assertion" type="Assertion" minOccurs="0" maxOccurs="unbounded">
                 <xs:alternative test="@type='RowExists'" type="RowExists"/>
                 <xs:alternative test="@type='RowDoesNotExist'" type="RowDoesNotExist"/>
                 <xs:alternative test="@type='AnsiSqlTableExists'" type="AnsiSqlTableExists"/>
@@ -50,6 +77,17 @@
                 <xs:alternative test="@type='DatabaseExists'" type="DatabaseExists"/>
             </xs:element>
         </xs:sequence>
+    </xs:group>
+
+    <xs:complexType name="Assertions">
+        <xs:choice maxOccurs="unbounded">
+            <xs:group ref="AssertionElement"/>
+            <xs:element name="assertionRef" type="AssertionRef" maxOccurs="unbounded">
+                <xs:alternative test="@type='single'" type="Single"/>
+                <xs:alternative test="@type='selector'" type="Selector"/>
+                <xs:alternative test="@type='group'" type="Group"/>
+            </xs:element>
+        </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="Assertion">
@@ -73,6 +111,34 @@
             <xs:enumeration value="SqlServerTableExists"/>
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:complexType name="Single">
+        <xs:complexContent>
+            <xs:extension base="AssertionRef">
+                <xs:attribute name="ref" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Selector">
+        <xs:complexContent>
+            <xs:extension base="AssertionRef">
+                <xs:sequence>
+                    <xs:element name="include" type="xs:string" maxOccurs="unbounded"/>
+                    <xs:element name="exclude" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Group">
+        <xs:complexContent>
+            <xs:extension base="AssertionRef">
+                <xs:attribute name="groupName" type="xs:string" />
+                <xs:attribute name="ref" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
 
     <xs:complexType name="RowExists">
         <xs:complexContent>
@@ -124,7 +190,7 @@
         <xs:complexContent>
             <xs:extension base="Assertion">
                 <xs:sequence >
-                    <xs:element name="tableName" type="xs:string"/>
+                    <xs:element name="tableName"/>
                 </xs:sequence>
                 <xs:attribute name="name" type="xs:string" />
             </xs:extension>

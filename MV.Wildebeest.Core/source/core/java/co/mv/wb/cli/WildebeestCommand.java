@@ -17,6 +17,7 @@
 package co.mv.wb.cli;
 
 import co.mv.wb.*;
+
 import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.File;
@@ -388,6 +389,10 @@ public class WildebeestCommand
 		catch (XmlValidationException e)
 		{
 			out.println(OutputFormatter.resourceValidation(e, "resource"));
+		}
+		catch (MissingReferenceException e)
+		{
+			out.println(OutputFormatter.missingReference(e));
 		}
 
 		return Optional.ofNullable(resource);

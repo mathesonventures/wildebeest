@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.base.dom;
 
 import co.mv.wb.*;
+
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
@@ -36,17 +37,18 @@ import static org.junit.Assert.assertNotNull;
 public class ResourceLoaderIntegrationTests
 {
 	@Test public void loadAndMigrateMySqlResourceFromXml() throws
-		AssertionFailedException,
-		IndeterminateStateException,
-		InvalidStateSpecifiedException,
-		LoaderFault,
-		MigrationFailedException,
-		MigrationNotPossibleException,
-		PluginBuildException,
-		SQLException,
-		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+			AssertionFailedException,
+			IndeterminateStateException,
+			InvalidStateSpecifiedException,
+			LoaderFault,
+			MigrationFailedException,
+			MigrationNotPossibleException,
+			PluginBuildException,
+			SQLException,
+			TargetNotSpecifiedException,
+			UnknownStateSpecifiedException,
+            MissingReferenceException,
+		    MigrationInvalidStateException
 	{
 		
 		//

@@ -101,7 +101,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 				migrationT.getBaseDir(),
 				migrationT.getFileName()));
 		}
-		catch (FileLoadException | LoaderFault | PluginBuildException | XmlValidationException e)
+		catch (FileLoadException | LoaderFault | PluginBuildException | XmlValidationException | MissingReferenceException e)
 		{
 			throw new MigrationFailedException(migration.getMigrationId(), "Unable to load");
 		}

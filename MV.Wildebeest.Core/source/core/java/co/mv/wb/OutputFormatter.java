@@ -64,6 +64,14 @@ public class OutputFormatter
 			e.getMessage());
 	}
 
+	public static String missingReference(
+			MissingReferenceException e)
+	{
+		return String.format(
+				"Missing referred resource: \"%s\"",
+				e.getMessage());
+	}
+
 	//
 	// State
 	//

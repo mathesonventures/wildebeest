@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.*;
+
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.fixture.XmlBuilder;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
@@ -153,8 +154,9 @@ public class IntegrationTests
 	}
 	
 	@Test public void loadMySqlDatabaseResource() throws
-		LoaderFault,
-		PluginBuildException
+			LoaderFault,
+			PluginBuildException,
+            MissingReferenceException
 	{
 		// Setup
 		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
@@ -192,17 +194,18 @@ public class IntegrationTests
 	}
 	
 	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
-		AssertionFailedException,
-		IndeterminateStateException,
-		InvalidStateSpecifiedException,
-		LoaderFault,
-		MigrationFailedException,
-		MigrationNotPossibleException,
-		PluginBuildException,
-		SQLException,
-		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+			AssertionFailedException,
+			IndeterminateStateException,
+			InvalidStateSpecifiedException,
+			LoaderFault,
+			MigrationFailedException,
+			MigrationNotPossibleException,
+			PluginBuildException,
+			SQLException,
+			TargetNotSpecifiedException,
+			UnknownStateSpecifiedException,
+            MissingReferenceException,
+		    MigrationInvalidStateException
 	{
 
 		PrintStream output = System.out;

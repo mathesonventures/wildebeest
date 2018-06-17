@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<resource type="co.mv.wb.PostgreSqlDatabase" id="38d0eabd-ab40-4c37-96a7-fcacb43bd059" name="Product Catalogue Database">
+    <assertionGroups>
+        <assertionGroup name="group1">
+            <assertion type="DatabaseExists" id="6be515a3-be32-490a-944a-ebcf17fec8a6" />
+        </assertionGroup>
+        <assertionGroup name="group2">
+            <assertion type="AnsiSqlTableExists" id="84a3d24b-396c-4784-abb2-c2e485ff77a4">
+                <schemaName>ProdCat</schemaName>
+                <tableName>ProductType</tableName>
+            </assertion>
+        </assertionGroup>
+    </assertionGroups>
+    <states>
+
+        <state id="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79" label="Database Created">
+            <assertions>
+                <assertionRef type="group" ref="group1" />
+            </assertions>
+        </state>
+
+        <state id="18bb4e09-0e18-4eb8-995f-75f7a4fcf1fa">
+            <assertions>
+                <!--
+                                <assertion type="AnsiSqlSchemaExists" id="ca714295-491f-4634-9b26-d1dae50f3a75">
+                                    <schemaName>ProdCat</schemaName>
+                                </assertion>
+                -->
+            </assertions>
+        </state>
+
+        <state id="434fb1fd-e903-4b0f-a2b3-b1014360f799">
+            <assertions>
+                <assertionRef type="group" ref="group2" />
+            </assertions>
+        </state>
+
+        <!--
+                <state id="6096d6fc-2b04-45cf-88cf-9ab49629f50e" label="Core Schema Loaded">
+                    <assertions>
+                        <assertion type="SqlServerTableExists" id="397a6a63-15ab-412f-922b-2c020b372a9f">
+                            <schemaName>dbo</schemaName>
+                            <tableName>ProductType</tableName>
+                        </assertion>
+                        <assertion type="RowExists" id="b8b91f10-bb36-4cf0-8d06-a3c5a0c0391d">
+                            <description>ProductType HW exists</description>
+                            <sql><![CDATA[
+                                SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';
+                            ]]></sql>
+                        </assertion>
+                        <assertion type="RowExists" id="72e36ad4-49b4-430d-a6bc-c0d12de4e398">
+                            <description>ProductType SW exists</description>
+                            <sql><![CDATA[
+                                SELECT * FROM ProductType WHERE ProductTypeCode = 'SW';
+                            ]]></sql>
+                        </assertion>
+                        <assertion type="RowDoesNotExist" id="acdfdd19-7b8f-4bd7-bad7-58636e748079">
+                            <description>ProductType XY does not exist</description>
+                            <sql><![CDATA[
+                                SELECT * FROM ProductType WHERE ProductTypeCode = 'XY';
+                            ]]></sql>
+                        </assertion>
+                        <assertion type="SqlServerTableExists" id="a7dcf592-4ee4-4452-81c3-e605c0ba1a7d">
+                            <schemaName>dbo</schemaName>
+                            <tableName>Product</tableName>
+                        </assertion>
+                    </assertions>
+                </state>
+        -->
+
+    </states>
+
+    <migrations>
+
+        <migration
+                type="AnsiSqlCreateDatabase"
+                id="637d1065-caa6-41a0-81b1-ac95af43380f"
+                toState="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79" />
+
+        <migration
+                type="SqlScript"
+                id="086c890e-dca9-4b40-88ec-cebafeb6820d"
+                fromState="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79"
+                toState="18bb4e09-0e18-4eb8-995f-75f7a4fcf1fa">
+            <sql><![CDATA[
+
+CREATE SCHEMA ProdCat;
+
+			]]></sql>
+        </migration>
+
+        <migration
+                type="SqlScript"
+                id="86a9ba74-5a91-4704-a909-f3004d3e4304"
+                fromState="18bb4e09-0e18-4eb8-995f-75f7a4fcf1fa"
+                toState="434fb1fd-e903-4b0f-a2b3-b1014360f799">
+            <sql><![CDATA[
+
+CREATE TABLE ProdCat.ProductType
+(
+	ProductTypeCode character(2),
+	Name character varying(10),
+	CONSTRAINT PK_ProductType PRIMARY KEY (ProductTypeCode)
+)
+WITH (
+	OIDS = FALSE
+);
+
+			]]></sql>
+        </migration>
+
+        <!--
+                <migration
+                    type="SqlScript"
+                    id="3ba71bf8-6e6e-4c9e-ae98-dc0f2b1607fa"
+                    fromState="b68fc5c0-35c9-49b8-b555-9e7634fe0de3"
+                    toState="6096d6fc-2b04-45cf-88cf-9ab49629f50e">
+                    <sql><![CDATA[
+
+        SET ANSI_NULLS ON;
+
+        SET QUOTED_IDENTIFIER ON;
+
+        SET ANSI_PADDING ON;
+
+        CREATE TABLE [dbo].[ProductType](
+            [ProductTypeCode] [char](2) NOT NULL,
+            [Name] [varchar](10) NOT NULL,
+         CONSTRAINT [PK_ProductType] PRIMARY KEY CLUSTERED
+        (
+            [ProductTypeCode] ASC
+        )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+        ) ON [PRIMARY];
+
+        INSERT INTO
+            ProductType(ProductTypeCode, Name)
+        VALUES
+            ('HW', 'Hardware'),
+            ('SW', 'Software');
+
+        CREATE TABLE [dbo].[Product](
+            [ProductId] [uniqueidentifier] NOT NULL,
+            [ProductTypeCode] [char](2) NOT NULL,
+            [Name] [varchar](50) NOT NULL,
+            [Description] [varchar](4000) NOT NULL,
+         CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED
+        (
+            [ProductId] ASC
+        )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+        ) ON [PRIMARY];
+
+        ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FK_Product_ProductTypeCode] FOREIGN KEY([ProductTypeCode])
+        REFERENCES [dbo].[ProductType] ([ProductTypeCode]);
+
+        ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FK_Product_ProductTypeCode];
+
+                    ]]></sql>
+                </migration>
+        -->
+
+    </migrations>
+
+</resource>
