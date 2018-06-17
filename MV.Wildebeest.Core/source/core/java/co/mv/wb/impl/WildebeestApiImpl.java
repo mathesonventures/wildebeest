@@ -330,7 +330,8 @@ public class WildebeestApiImpl implements WildebeestApi
 			IndeterminateStateException,
 			InvalidStateSpecifiedException,
 			MigrationFailedException,
-			UnknownStateSpecifiedException
+			UnknownStateSpecifiedException,
+		  	MigrationInvalidStateException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
@@ -373,14 +374,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		List<Migration> path = paths.get(0);
 
-		try
-		{
-			validateMigrationStates(resource);
-		}
-		catch (MigrationInvalidStateException e)
-		{
-			this.output.println((OutputFormatter.migrationInvalidState(e)));
-		}
+		validateMigrationStates(resource);
 
 		for (Migration migration : path)
 		{

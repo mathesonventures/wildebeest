@@ -121,7 +121,8 @@ public interface WildebeestApi
 			IndeterminateStateException,
 			InvalidStateSpecifiedException,
 			TargetNotSpecifiedException,
-			UnknownStateSpecifiedException;
+			UnknownStateSpecifiedException,
+		    MigrationInvalidStateException;
 
 	/**
 	 * Jumps the recorded state of the specified instance to the supplied target state.  This can be useful when you are
