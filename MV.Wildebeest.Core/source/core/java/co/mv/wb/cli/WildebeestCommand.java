@@ -31,10 +31,11 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.XmlValidationException;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.framework.ArgumentNullException;
-import co.mv.wb.XmlValidationException;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -401,6 +402,10 @@ public class WildebeestCommand
 		catch (XmlValidationException e)
 		{
 			out.println(OutputFormatter.resourceValidation(e, "resource"));
+		}
+		catch (MissingReferenceException e)
+		{
+			out.println(OutputFormatter.missingReference(e));
 		}
 
 		return Optional.ofNullable(resource);

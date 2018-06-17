@@ -40,6 +40,8 @@ import co.mv.wb.ResourceType;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.XmlValidationException;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.framework.ArgumentNullException;
@@ -48,7 +50,6 @@ import co.mv.wb.plugin.base.ImmutableAssertionResult;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
-import co.mv.wb.XmlValidationException;
 import org.xml.sax.*;
 
 import javax.xml.transform.Source;
@@ -176,8 +177,8 @@ public class WildebeestApiImpl implements WildebeestApi
 			FileLoadException,
 			LoaderFault,
 			PluginBuildException,
-			XmlValidationException
-    {
+			XmlValidationException,
+			MissingReferenceException {
 		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
 
 		// Get the absolute file for this resource - this ensures that getParentFile works correctly

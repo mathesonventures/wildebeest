@@ -27,6 +27,7 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
@@ -48,16 +49,17 @@ import static org.junit.Assert.assertNotNull;
 public class ResourceLoaderIntegrationTests
 {
 	@Test public void loadAndMigrateMySqlResourceFromXml() throws
-		AssertionFailedException,
-		IndeterminateStateException,
-		InvalidStateSpecifiedException,
-		LoaderFault,
-		MigrationFailedException,
-		MigrationNotPossibleException,
-		PluginBuildException,
-		SQLException,
-		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+			AssertionFailedException,
+			IndeterminateStateException,
+			InvalidStateSpecifiedException,
+			LoaderFault,
+			MigrationFailedException,
+			MigrationNotPossibleException,
+			PluginBuildException,
+			SQLException,
+			TargetNotSpecifiedException,
+			UnknownStateSpecifiedException,
+            MissingReferenceException
 	{
 		
 		//

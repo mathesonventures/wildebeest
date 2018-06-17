@@ -61,6 +61,10 @@ public class WildebeestApiMockBuilder
 		{
 			e.printStackTrace();
 		}
+		catch (MissingReferenceException e)
+		{
+			e.printStackTrace();
+		}
 
 		return this;
 	}
@@ -73,19 +77,7 @@ public class WildebeestApiMockBuilder
 		{
 			when(_wildebeestApi.loadInstance(any())).thenReturn(instance);
 		}
-		catch (FileLoadException e)
-		{
-			e.printStackTrace();
-		}
-		catch (LoaderFault loaderFault)
-		{
-			loaderFault.printStackTrace();
-		}
-		catch (PluginBuildException e)
-		{
-			e.printStackTrace();
-		}
-		catch (XmlValidationException e)
+		catch (FileLoadException | PluginBuildException | LoaderFault | XmlValidationException e)
 		{
 			e.printStackTrace();
 		}
