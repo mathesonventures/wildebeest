@@ -85,7 +85,6 @@ public class WildebeestCommandUnitTests
 		XmlValidationException,
 		MigrationInvalidStateException,
 		MissingReferenceException
-
 	{
 		// Setup
 		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();

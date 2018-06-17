@@ -207,7 +207,6 @@ public class IntegrationTests
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException,
 		MissingReferenceException
-
 	{
 
 		PrintStream output = System.out;
