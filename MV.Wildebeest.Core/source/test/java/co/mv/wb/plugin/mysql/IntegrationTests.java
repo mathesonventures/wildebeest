@@ -195,20 +195,6 @@ public class IntegrationTests
 	}
 	
 	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
-<<<<<<< HEAD
-			AssertionFailedException,
-			IndeterminateStateException,
-			InvalidStateSpecifiedException,
-			LoaderFault,
-			MigrationFailedException,
-			MigrationNotPossibleException,
-			PluginBuildException,
-			SQLException,
-			TargetNotSpecifiedException,
-			UnknownStateSpecifiedException,
-            MissingReferenceException,
-		    MigrationInvalidStateException
-=======
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -219,8 +205,9 @@ public class IntegrationTests
 		SQLException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
->>>>>>> MVWB-11 Fixing unittests after adding new exception into migrate function
+		MigrationInvalidStateException,
+		MissingReferenceException
+
 	{
 
 		PrintStream output = System.out;

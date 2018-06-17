@@ -377,7 +377,6 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		validateMigrationStates(resource);
 
-
 		for (Migration migration : path)
 		{
 			String migrationTypeUri = migration.getClass().getAnnotation(MigrationType.class).uri();
