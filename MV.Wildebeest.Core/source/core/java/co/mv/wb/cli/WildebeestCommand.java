@@ -16,25 +16,8 @@
 
 package co.mv.wb.cli;
 
-import co.mv.wb.About;
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.FileLoadException;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.Instance;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.JumpStateFailedException;
-import co.mv.wb.LoaderFault;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.OutputFormatter;
-import co.mv.wb.PluginBuildException;
-import co.mv.wb.Resource;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.XmlValidationException;
-import co.mv.wb.MissingReferenceException;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
+import co.mv.wb.*;
+
 import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.File;
@@ -292,6 +275,10 @@ public class WildebeestCommand
 						catch (AssertionFailedException e)
 						{
 							this.getOutput().println(OutputFormatter.assertionFailed(e));
+						}
+						catch (MigrationInvalidStateException e)
+						{
+							this.getOutput().print(OutputFormatter.migrationInvalidState(e));
 						}
 					}
 				}

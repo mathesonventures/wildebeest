@@ -51,7 +51,8 @@ public class WildebeestApiImplUnitTests
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -91,7 +92,8 @@ public class WildebeestApiImplUnitTests
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+	    MigrationInvalidStateException
 	{
 		// Setup
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
@@ -131,7 +133,8 @@ public class WildebeestApiImplUnitTests
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -164,7 +167,8 @@ public class WildebeestApiImplUnitTests
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 		// Setup
 		PrintStream output = System.out;
