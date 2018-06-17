@@ -161,5 +161,13 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 					ExternalResourceMigrationPlugin.ExceptionFormatString,
 					OutputFormatter.assertionFailed(e)));
 		}
+		catch (MigrationInvalidStateException e)
+		{
+			throw new MigrationFailedException(
+				  migration.getMigrationId(),
+				  String.format(
+						ExternalResourceMigrationPlugin.ExceptionFormatString,
+						OutputFormatter.migrationInvalidState(e)));
+		}
 	}
 }

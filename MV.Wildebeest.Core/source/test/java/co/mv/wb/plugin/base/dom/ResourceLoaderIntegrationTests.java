@@ -16,19 +16,7 @@
 
 package co.mv.wb.plugin.base.dom;
 
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.Asserts;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.LoaderFault;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.PluginBuildException;
-import co.mv.wb.Resource;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
+import co.mv.wb.*;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
@@ -57,7 +45,8 @@ public class ResourceLoaderIntegrationTests
 		PluginBuildException,
 		SQLException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 		
 		//

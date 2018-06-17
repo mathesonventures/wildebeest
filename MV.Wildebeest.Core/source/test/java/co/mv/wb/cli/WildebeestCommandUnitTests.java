@@ -82,7 +82,8 @@ public class WildebeestCommandUnitTests
 		PluginBuildException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		XmlValidationException
+		XmlValidationException,
+		MigrationInvalidStateException
 	{
 		// Setup
 		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();

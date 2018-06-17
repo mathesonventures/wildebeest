@@ -16,22 +16,7 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.Asserts;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.Instance;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.LoaderFault;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PluginBuildException;
-import co.mv.wb.Resource;
-import co.mv.wb.State;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
+import co.mv.wb.*;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.fixture.XmlBuilder;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
@@ -70,7 +55,8 @@ public class IntegrationTests
 		MigrationNotPossibleException,
 		SQLException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 	
 		//
@@ -215,7 +201,8 @@ public class IntegrationTests
 		PluginBuildException,
 		SQLException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 
 		PrintStream output = System.out;

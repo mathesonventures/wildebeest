@@ -331,7 +331,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			InvalidStateSpecifiedException,
 			MigrationFailedException,
 			UnknownStateSpecifiedException,
-		  	MigrationInvalidStateException
+		    MigrationInvalidStateException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
