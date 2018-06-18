@@ -23,6 +23,7 @@ import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
@@ -32,8 +33,8 @@ import java.util.UUID;
 
 /**
  * An {@link Assertion} that verifies that a given table exists in an ANSI-SQL compliant database.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 @AssertionType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
@@ -42,12 +43,12 @@ import java.util.UUID;
 		"Asserts that a table exists using an ANSI-SQL compliant query.",
 	example =
 		"<assertion\n" +
-		"    type=\"AnsiSqlTableExists\"\n" +
-		"    id=\"bf9fe573-2586-4586-bf7d-a020a33a5f09\"\n" +
-		"    name=\"ProductType table does not exist\">\n" +
-		"    <schemaName>prdcat</schemaName>\n" +
-		"    <tableName>ProductType</tableName>\n" +
-		"</assertion>"
+			"    type=\"AnsiSqlTableExists\"\n" +
+			"    id=\"bf9fe573-2586-4586-bf7d-a020a33a5f09\"\n" +
+			"    name=\"ProductType table does not exist\">\n" +
+			"    <schemaName>prdcat</schemaName>\n" +
+			"    <tableName>ProductType</tableName>\n" +
+			"</assertion>"
 )
 public class AnsiSqlTableExistsAssertion extends BaseAssertion
 {
@@ -56,12 +57,12 @@ public class AnsiSqlTableExistsAssertion extends BaseAssertion
 
 	/**
 	 * Creates a new AnsiSqlTableExistsAssertion.
-	 * 
-	 * @param       assertionId                 the ID for the new assertion.
-	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
-	 * @param       schemaName                  the name of the schema to check.
-	 * @param       tableName                   the name of the table to check.
-	 * @since                                   4.0
+	 *
+	 * @param assertionId the ID for the new assertion.
+	 * @param seqNum      the ordinal index of the new assertion within it's parent container.
+	 * @param schemaName  the name of the schema to check.
+	 * @param tableName   the name of the table to check.
+	 * @since 4.0
 	 */
 	public AnsiSqlTableExistsAssertion(
 		UUID assertionId,
@@ -79,12 +80,12 @@ public class AnsiSqlTableExistsAssertion extends BaseAssertion
 	{
 		return String.format("Table '%s' exists in schema '%s'", this.getTableName(), this.getSchemaName());
 	}
-	
+
 	/**
 	 * Gets the name of the schema to check.
-	 * 
-	 * @return                                  the name of the schema to check
-	 * @since                                   2.0
+	 *
+	 * @return the name of the schema to check
+	 * @since 2.0
 	 */
 	public String getSchemaName()
 	{
@@ -93,9 +94,9 @@ public class AnsiSqlTableExistsAssertion extends BaseAssertion
 
 	/**
 	 * Gets the name of the table to check
-	 * 
-	 * @return                                  the name of the table to check
-	 * @since                                   2.0
+	 *
+	 * @return the name of the table to check
+	 * @since 2.0
 	 */
 	public String getTableName()
 	{
@@ -110,10 +111,14 @@ public class AnsiSqlTableExistsAssertion extends BaseAssertion
 
 	@Override public AssertionResponse perform(Instance instance)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		AnsiSqlDatabaseInstance db = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
-		
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
+		}
+
 		AssertionResponse result;
 
 		if (!db.databaseExists())
@@ -122,7 +127,7 @@ public class AnsiSqlTableExistsAssertion extends BaseAssertion
 				false,
 				String.format("Database %s does not exist", db.getDatabaseName()));
 		}
-		
+
 		else if (AnsiSqlDatabaseHelper.tableExists(
 			db,
 			this.getSchemaName(),
@@ -131,13 +136,13 @@ public class AnsiSqlTableExistsAssertion extends BaseAssertion
 			result = new ImmutableAssertionResponse(true, "Table " + this.getTableName() +
 				" exists in schema " + this.getSchemaName());
 		}
-		
+
 		else
 		{
 			result = new ImmutableAssertionResponse(false, "Table " + this.getTableName() +
 				" does not exist in schema " + this.getSchemaName());
 		}
-		
+
 		return result;
 	}
 }

@@ -19,14 +19,12 @@ package co.mv.wb;
 /**
  * Indicates the resource is not valid based on resource schema definition.
  *
- * @author                                      Aris Isais
- * @since                                       1.0
- *
+ * @since 1.0
  */
 public class XmlValidationException extends Exception
 {
-    public XmlValidationException(String message)
-    {
-        super(message);
-    }
+	public XmlValidationException(String message)
+	{
+		super(message);
+	}
 }

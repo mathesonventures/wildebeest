@@ -18,26 +18,26 @@ package co.mv.wb.plugin.generaldatabase;
 
 /**
  * Marker interface for tagging DatabaseInstance implementations that represent ANSI-compliant database systems.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public interface AnsiSqlDatabaseInstance extends DatabaseInstance
 {
 	/**
 	 * Gets the name of the schema where meta data is tracked by Wildebeest.  If no schema name is specified on this
 	 * instance, then Wildebeest will choose the name to use.
-	 * 
-	 * @return                                  the name of the schema where meta data is tracked.
-	 * @since                                   4.0
+	 *
+	 * @return the name of the schema where meta data is tracked.
+	 * @since 4.0
 	 */
 	String getMetaSchemaName();
 
 	/**
 	 * Returns whether or not this instance has a meta data schema name specified.
-	 * 
-	 * @return                                  a boolean flag indicating whether or not this instance ha a meta data
-	 *                                          schema name specified.
-	 * @since                                   4.0
+	 *
+	 * @return a boolean flag indicating whether or not this instance ha a meta data
+	 * schema name specified.
+	 * @since 4.0
 	 */
 	boolean hasMetaSchemaName();
 }

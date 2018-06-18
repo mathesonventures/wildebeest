@@ -24,7 +24,7 @@ import java.util.UUID;
 /**
  * {@link Instance} for the Fake plugin implementation.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public final class FakeInstance implements Instance
 {
@@ -32,19 +32,20 @@ public final class FakeInstance implements Instance
 	private String tag = null;
 
 	public FakeInstance()
-    {
-    }
+	{
+	}
 
 	public FakeInstance(UUID stateId)
 	{
 		this.setStateId(stateId);
 	}
-	
+
 	public UUID getStateId()
 	{
-		if(this.stateId == null)
+		if (this.stateId == null)
 		{
-			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
+			throw new IllegalStateException(
+				"stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
 
 		return stateId;
@@ -58,15 +59,17 @@ public final class FakeInstance implements Instance
 		this.stateId = value;
 	}
 
-	public boolean hasStateId() {
+	public boolean hasStateId()
+	{
 		return this.stateId != null;
 	}
 
 	public String getTag()
 	{
-		if(this.tag == null)
+		if (this.tag == null)
 		{
-			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
+			throw new IllegalStateException(
+				"tag not set.  Use the HasTag() method to check its state before accessing it.");
 		}
 		return tag;
 	}

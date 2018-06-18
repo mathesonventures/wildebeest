@@ -21,11 +21,11 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
-{
-	PostgreSqlAnsiPluginUnitTests.class,
-	PostgreSqlDatabasePluginUnitTests.class,
-	PostgreSqlDomServiceUnitTests.class
-})
+	{
+		PostgreSqlAnsiPluginUnitTests.class,
+		PostgreSqlDatabasePluginUnitTests.class,
+		PostgreSqlDomServiceUnitTests.class
+	})
 public class AllTests
 {
 }

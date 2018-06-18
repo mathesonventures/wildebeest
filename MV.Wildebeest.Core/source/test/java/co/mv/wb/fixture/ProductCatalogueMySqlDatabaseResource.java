@@ -17,6 +17,7 @@
 package co.mv.wb.fixture;
 
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.mysql.MySqlElementFixtures;
 
 import java.util.UUID;
@@ -24,7 +25,7 @@ import java.util.UUID;
 /**
  * A MySQL database fixture.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public class ProductCatalogueMySqlDatabaseResource
 {
@@ -32,22 +33,26 @@ public class ProductCatalogueMySqlDatabaseResource
 	private final String resourceXml;
 
 	public static final UUID ResourceId = UUID.fromString("199b7cc1-3cc6-48ca-b012-a70d05d5b5e7");
-	
+
 	public static final UUID StateIdDatabaseCreated = UUID.fromString("c70ce835-f519-40ab-b151-c3caa08f27f5");
-		public static final UUID AssertionIdDatabaseExists = UUID.fromString("3b46fa14-0859-4d3e-8b98-e546ad2593da");
+	public static final UUID AssertionIdDatabaseExists = UUID.fromString("3b46fa14-0859-4d3e-8b98-e546ad2593da");
 
 	public static final UUID StateIdCoreSchemaLoaded = UUID.fromString("662e9092-f070-4146-b6f2-f62f63882443");
-		public static final UUID AssertionIdProductTypeTableExists = UUID.fromString("1ae38c8c-572d-47b7-abf5-3330449beb55");
-	
-	public static final UUID StateIdInitialReferenceDataLoaded = UUID.fromString("25503318-22a1-462e-84e5-6413bdaa2828");
-		public static final UUID AssertionIdProductTypeHwRowExists = UUID.fromString("03122757-6ce5-47ef-863a-4afe6e32164c");
-		public static final UUID AssertionIdProductTypeSwRowExists = UUID.fromString("e6f87f30-4d03-4e2c-9f00-0d13cab168d6");
-		public static final UUID AssertionIdProductTableExists = UUID.fromString("3be5a4d3-6fc3-42e5-8b93-637475a568d1");
-	
+	public static final UUID AssertionIdProductTypeTableExists =
+		UUID.fromString("1ae38c8c-572d-47b7-abf5-3330449beb55");
+
+	public static final UUID StateIdInitialReferenceDataLoaded =
+		UUID.fromString("25503318-22a1-462e-84e5-6413bdaa2828");
+	public static final UUID AssertionIdProductTypeHwRowExists =
+		UUID.fromString("03122757-6ce5-47ef-863a-4afe6e32164c");
+	public static final UUID AssertionIdProductTypeSwRowExists =
+		UUID.fromString("e6f87f30-4d03-4e2c-9f00-0d13cab168d6");
+	public static final UUID AssertionIdProductTableExists = UUID.fromString("3be5a4d3-6fc3-42e5-8b93-637475a568d1");
+
 	public static final UUID MigrationIdCreateDatabase = UUID.fromString("8908ffbd-5fb2-4eeb-98db-853c8de756c5");
 	public static final UUID MigrationIdLoadCoreSchema = UUID.fromString("cbdc0cab-b2ca-432b-b1e1-64708b41d749");
 	public static final UUID MigrationIdLoadReferenceData = UUID.fromString("9e67ee1f-b123-46dc-99dc-768dffc90611");
-	
+
 	public ProductCatalogueMySqlDatabaseResource()
 	{
 		this.resourceId = ResourceId;
@@ -66,7 +71,7 @@ public class ProductCatalogueMySqlDatabaseResource
 			MigrationIdLoadCoreSchema,
 			MigrationIdLoadReferenceData);
 	}
-	
+
 	public final UUID getResourceId()
 	{
 		return this.resourceId;
@@ -80,53 +85,61 @@ public class ProductCatalogueMySqlDatabaseResource
 	private static String buildXml(
 		UUID resourceId,
 		UUID stateIdDatabaseCreated,
-			UUID assertionIdDatabaseExists,
+		UUID assertionIdDatabaseExists,
 		UUID stateIdCoreSchemaLoadedId,
-			UUID assertionIdProductTypeTableExists,
-			UUID assertionIdProductTableExists,
+		UUID assertionIdProductTypeTableExists,
+		UUID assertionIdProductTableExists,
 		UUID stateIdInitialReferenceDataLoaded,
-			UUID assertionIdProductTypeHwRowExists,
-			UUID assertionIdProductTypeSwRowExists,
+		UUID assertionIdProductTypeHwRowExists,
+		UUID assertionIdProductTypeSwRowExists,
 		UUID migrationIdCreateDatabase,
 		UUID migrationIdLoadSchema,
 		UUID migrationIdLoadReferenceData)
 	{
-		if (resourceId == null) { throw new IllegalArgumentException("resourceId cannot be null"); }
-		if (stateIdDatabaseCreated == null) { throw new IllegalArgumentException("stateIdDatabaseCreated cannot be null"); }
-		if (assertionIdDatabaseExists == null) { throw new IllegalArgumentException("assertionIdDatabaseExists cannot be null"); }
-		if (stateIdCoreSchemaLoadedId == null) { throw new IllegalArgumentException("stateIdCoreSchemaLoadedId cannot be null"); }
-		if (assertionIdProductTypeTableExists == null) { throw new IllegalArgumentException("assertionIdProductTypeTableExists cannot be null"); }
-		if (stateIdInitialReferenceDataLoaded == null) { throw new IllegalArgumentException("stateIdInitialReferenceDataLoaded cannot be null"); }
-		if (assertionIdProductTypeHwRowExists == null) { throw new IllegalArgumentException("assertionIdProductTypeHwRowExists cannot be null"); }
-		if (assertionIdProductTypeSwRowExists == null) { throw new IllegalArgumentException("assertionIdProductTypeSwRowExists cannot be null"); }
-		if (assertionIdProductTableExists == null) { throw new IllegalArgumentException("assertionIdProductTableExists cannot be null"); }
-		if (migrationIdCreateDatabase == null) { throw new IllegalArgumentException("migrationIdCreateDatabase cannot be null"); }
-		if (migrationIdLoadSchema == null) { throw new IllegalArgumentException("migrationIdLoadSchema cannot be null"); }
-		if (migrationIdLoadReferenceData == null) { throw new IllegalArgumentException("migrationIdLoadReferenceData cannot be null"); }
-		
+		if (resourceId == null) throw new ArgumentNullException("resourceId");
+		if (stateIdDatabaseCreated == null) throw new ArgumentNullException("stateIdDatabaseCreated");
+		if (assertionIdDatabaseExists == null) throw new ArgumentNullException("assertionIdDatabaseExists");
+		if (stateIdCoreSchemaLoadedId == null) throw new ArgumentNullException("stateIdCoreSchemaLoadedId");
+		if (assertionIdProductTypeTableExists == null) throw new ArgumentNullException("assertionIdProductTypeTableExists");
+		if (stateIdInitialReferenceDataLoaded == null) throw new ArgumentNullException("stateIdInitialReferenceDataLoaded");
+		if (assertionIdProductTypeHwRowExists == null) throw new ArgumentNullException("assertionIdProductTypeHwRowExists");
+		if (assertionIdProductTypeSwRowExists == null) throw new ArgumentNullException("assertionIdProductTypeSwRowExists");
+		if (assertionIdProductTableExists == null) throw new ArgumentNullException("assertionIdProductTableExists");
+		if (migrationIdCreateDatabase == null) throw new ArgumentNullException("migrationIdCreateDatabase");
+		if (migrationIdLoadSchema == null) throw new ArgumentNullException("migrationIdLoadSchema");
+		if (migrationIdLoadReferenceData == null) throw new ArgumentNullException("migrationIdLoadReferenceData");
+
 		String resourceXml = FixtureBuilder.create()
 			.resource(Wildebeest.MySqlDatabase.getUri(), resourceId, "Product Catalogue Database")
-				.state(stateIdDatabaseCreated, "Database created")
-					.assertion("DatabaseExists", assertionIdDatabaseExists)
-				.state(stateIdCoreSchemaLoadedId, "Core Schema Loaded")
-					.assertion("MySqlTableExists", assertionIdProductTypeTableExists)
-						.withInnerXml("<tableName>ProductType</tableName>")
-					.assertion("MySqlTableExists", assertionIdProductTableExists)
-						.withInnerXml("<tableName>Product</tableName>")
-				.state(stateIdInitialReferenceDataLoaded, "Reference Data Loaded")
-					.assertion("RowExists", assertionIdProductTypeHwRowExists)
-						.appendInnerXml("<description>ProductType HW exists</description>")
-						.appendInnerXml("<sql>SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';</sql>")
-					.assertion("RowExists", assertionIdProductTypeSwRowExists)
-						.appendInnerXml("<description>ProductType SW exists</description>")
-						.appendInnerXml("<sql>SELECT * FROM ProductType WHERE ProductTypeCode = 'SW';</sql>")
-				.migration("MySqlCreateDatabase", migrationIdCreateDatabase, null, stateIdDatabaseCreated.toString())
-				.migration("SqlScript", migrationIdLoadSchema, stateIdDatabaseCreated.toString(), stateIdCoreSchemaLoadedId.toString())
-					.withInnerXml("<sql><![CDATA[" + MySqlElementFixtures.productCatalogueDatabase() + "]]></sql>")
-				.migration("SqlScript", migrationIdLoadReferenceData, stateIdCoreSchemaLoadedId.toString(), stateIdInitialReferenceDataLoaded.toString())
-					.withInnerXml("<sql><![CDATA[" + MySqlElementFixtures.productTypeRows() + "]]></sql>")
+			.state(stateIdDatabaseCreated, "Database created")
+			.assertion("DatabaseExists", assertionIdDatabaseExists)
+			.state(stateIdCoreSchemaLoadedId, "Core Schema Loaded")
+			.assertion("MySqlTableExists", assertionIdProductTypeTableExists)
+			.withInnerXml("<tableName>ProductType</tableName>")
+			.assertion("MySqlTableExists", assertionIdProductTableExists)
+			.withInnerXml("<tableName>Product</tableName>")
+			.state(stateIdInitialReferenceDataLoaded, "Reference Data Loaded")
+			.assertion("RowExists", assertionIdProductTypeHwRowExists)
+			.appendInnerXml("<description>ProductType HW exists</description>")
+			.appendInnerXml("<sql>SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';</sql>")
+			.assertion("RowExists", assertionIdProductTypeSwRowExists)
+			.appendInnerXml("<description>ProductType SW exists</description>")
+			.appendInnerXml("<sql>SELECT * FROM ProductType WHERE ProductTypeCode = 'SW';</sql>")
+			.migration("MySqlCreateDatabase", migrationIdCreateDatabase, null, stateIdDatabaseCreated.toString())
+			.migration(
+				"SqlScript",
+				migrationIdLoadSchema,
+				stateIdDatabaseCreated.toString(),
+				stateIdCoreSchemaLoadedId.toString())
+			.withInnerXml("<sql><![CDATA[" + MySqlElementFixtures.productCatalogueDatabase() + "]]></sql>")
+			.migration(
+				"SqlScript",
+				migrationIdLoadReferenceData,
+				stateIdCoreSchemaLoadedId.toString(),
+				stateIdInitialReferenceDataLoaded.toString())
+			.withInnerXml("<sql><![CDATA[" + MySqlElementFixtures.productTypeRows() + "]]></sql>")
 			.render();
-			
+
 		return resourceXml;
 	}
 }

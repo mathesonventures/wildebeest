@@ -16,10 +16,27 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.*;
-
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.Asserts;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Instance;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.LoaderFault;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationInvalidStateException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MigrationPlugin;
+import co.mv.wb.MissingReferenceException;
+import co.mv.wb.PluginBuildException;
+import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.fixture.XmlBuilder;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
@@ -44,7 +61,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Integration tests for the MySQL plugin suite.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public class IntegrationTests
 {
@@ -60,7 +77,7 @@ public class IntegrationTests
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException
 	{
-	
+
 		//
 		// Setup
 		//
@@ -74,7 +91,7 @@ public class IntegrationTests
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
-		
+
 		// Resource
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
 
@@ -87,28 +104,28 @@ public class IntegrationTests
 		// State: Created
 		State created = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(created);
-		
+
 		// State: Initial Schema
 		State initialSchema = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(initialSchema);
-		
+
 		// State: Populated
 		State populated = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(populated);
-		
+
 		// Migration: to Created
 		resource.getMigrations().add(new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(created.getStateId().toString())));
-		
+
 		// Migration: Created to Initial Schema
 		resource.getMigrations().add(new SqlScriptMigration(
 			UUID.randomUUID(),
 			Optional.of(created.getStateId().toString()),
 			Optional.of(initialSchema.getStateId().toString()),
 			MySqlElementFixtures.productCatalogueDatabase()));
-		
+
 		// Migration: Initial Schema to Populated
 		resource.getMigrations().add(new SqlScriptMigration(
 			UUID.randomUUID(),
@@ -133,7 +150,7 @@ public class IntegrationTests
 		//
 		// Execute
 		//
-		
+
 		try
 		{
 			wildebeestApi.migrate(
@@ -145,24 +162,24 @@ public class IntegrationTests
 		{
 			MySqlUtil.dropDatabase(instance, databaseName);
 		}
-		
+
 		//
 		// Verify
 		//
-		
+
 		// (none)
-		
+
 	}
-	
+
 	@Test
 	public void loadMySqlDatabaseResource() throws
-			LoaderFault,
-			PluginBuildException,
-            MissingReferenceException
+		LoaderFault,
+		PluginBuildException,
+		MissingReferenceException
 	{
 		// Setup
 		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
-		
+
 		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
 			ResourceTypeServiceBuilder
 				.create()
@@ -176,7 +193,7 @@ public class IntegrationTests
 		// Verify
 		assertResource(resource);
 	}
-	
+
 	@Test
 	public void loadMySqlDatabaseInstance() throws
 		LoaderFault,
@@ -191,11 +208,11 @@ public class IntegrationTests
 
 		// Execute
 		Instance instance = instanceLoader.load();
-		
+
 		// Verify
 		assertInstance(instance, databaseName);
 	}
-	
+
 	@Test
 	public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
 		AssertionFailedException,
@@ -225,7 +242,7 @@ public class IntegrationTests
 		//
 
 		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
-		
+
 		// Fixture
 		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
 			ResourceTypeServiceBuilder
@@ -233,30 +250,30 @@ public class IntegrationTests
 				.withFactoryResourceTypes()
 				.build(),
 			prodCatResource.getResourceXml());
-		
+
 		// Execute
 		Resource resource = resourceLoader.load(new File("."));
 
 		// Assert
 		assertResource(resource);
-		
+
 		//
 		// Instance
 		//
-		
+
 		// Fixture
 		String databaseName = DatabaseFixtureHelper.databaseName();
-		
+
 		DomInstanceLoader instanceLoader = new DomInstanceLoader(
 			DomPlugins.instanceBuilders(),
 			instance(databaseName).toString());
-		
+
 		// Execute
 		Instance instance = instanceLoader.load();
-		
+
 		// Assert
 		assertInstance(instance, databaseName);
-		
+
 		//
 		// Migrate
 		//
@@ -272,47 +289,47 @@ public class IntegrationTests
 		{
 			MySqlUtil.dropDatabase((MySqlDatabaseInstance)instance, databaseName);
 		}
-		
+
 	}
-	
+
 	private static void assertResource(Resource resource)
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource"); }
-		
+		if (resource == null) throw new ArgumentNullException("resource");
+
 		Asserts.assertResource(
 			ProductCatalogueMySqlDatabaseResource.ResourceId,
 			"Product Catalogue Database",
 			resource,
 			"resource");
 	}
-	
+
 	private static XmlBuilder instance(
 		String databaseName)
 	{
-		if (databaseName == null) { throw new IllegalArgumentException("databaseName cannot be null"); }
-		if ("".equals(databaseName)) { throw new IllegalArgumentException("databaseName cannot be blank"); }
-		
+		if (databaseName == null) throw new ArgumentNullException("databaseName");
+		if ("".equals(databaseName)) throw new IllegalArgumentException("databaseName cannot be blank");
+
 		XmlBuilder instanceXml = new XmlBuilder();
 		instanceXml
 			.processingInstruction()
 			.openElement("instance type=\"MySqlDatabase\" id=\"" + UUID.randomUUID() + "\"")
-				.openElement("hostName").append("127.0.0.1").closeElement("hostName")
-				.openElement("port").append("3306").closeElement("port")
-				.openElement("adminUsername").append("root").closeElement("adminUsername")
-				.openElement("adminPassword").append("password").closeElement("adminPassword")
-				.openElement("databaseName").append(databaseName).closeElement("databaseName")
+			.openElement("hostName").append("127.0.0.1").closeElement("hostName")
+			.openElement("port").append("3306").closeElement("port")
+			.openElement("adminUsername").append("root").closeElement("adminUsername")
+			.openElement("adminPassword").append("password").closeElement("adminPassword")
+			.openElement("databaseName").append(databaseName).closeElement("databaseName")
 			.closeElement("instance");
-		
+
 		return instanceXml;
 	}
-	
+
 	private static void assertInstance(
 		Instance instance,
 		String databaseName)
 	{
-		if (databaseName == null) { throw new IllegalArgumentException("databaseName"); }
-		if ("".equals(databaseName)) { throw new IllegalArgumentException("databaseName"); }
-		
+		if (databaseName == null) throw new ArgumentNullException("databaseName");
+		if ("".equals(databaseName)) throw new IllegalArgumentException("databaseName");
+
 		assertNotNull("instance", instance);
 		Asserts.assertInstance(MySqlDatabaseInstance.class, instance, "instance");
 		Asserts.assertMySqlDatabaseInstance(

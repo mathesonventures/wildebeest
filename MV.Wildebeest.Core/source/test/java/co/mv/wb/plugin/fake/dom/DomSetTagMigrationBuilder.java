@@ -27,7 +27,7 @@ import java.util.UUID;
 /**
  * DOM-based {@link co.mv.wb.MigrationBuilder} for the Fake plugin implementation.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public class DomSetTagMigrationBuilder extends BaseDomMigrationBuilder
 {
@@ -39,7 +39,7 @@ public class DomSetTagMigrationBuilder extends BaseDomMigrationBuilder
 		File baseDir)
 	{
 		String tag = this.getElement().getChildNodes().item(0).getTextContent();
-		
+
 		return new SetTagMigration(migrationId, fromState, toState, tag);
 	}
 }

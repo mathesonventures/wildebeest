@@ -29,8 +29,8 @@ import java.util.UUID;
 
 /**
  * Unit tests for plugins as applied to MySql databases.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 {
@@ -42,7 +42,7 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance instance = MySqlProperties.get().toInstance(databaseName);
-		
+
 		Migration create = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -65,17 +65,17 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 			drop,
 			dropRunner);
 	}
-	
+
 	@Override
 	@Test
 	public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance db = MySqlProperties.get().toInstance(databaseName);
-		
+
 		this.databaseExistsAssertionForNonExistentDatabase(db);
 	}
-	
+
 	@Override
 	@Test
 	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
@@ -84,7 +84,7 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance instance = MySqlProperties.get().toInstance(databaseName);
-		
+
 		Migration create = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -107,14 +107,14 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 			drop,
 			dropRunner);
 	}
-	
+
 	@Override
 	@Test
 	public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance db = MySqlProperties.get().toInstance(databaseName);
-		
+
 		this.databaseDoesNotExistAssertionForNonExistentDatabase(db);
 	}
 }

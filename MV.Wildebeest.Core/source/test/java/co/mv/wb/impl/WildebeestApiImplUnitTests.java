@@ -16,7 +16,17 @@
 
 package co.mv.wb.impl;
 
-import co.mv.wb.*;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationInvalidStateException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.WildebeestApi;
+import co.mv.wb.XmlValidationException;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import co.mv.wb.framework.ArgumentNullException;
@@ -34,7 +44,7 @@ import static co.mv.wb.Asserts.assertFakeInstance;
 /**
  * Unit tests for WildebeestApiImpl.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class WildebeestApiImplUnitTests
 {
@@ -42,7 +52,7 @@ public class WildebeestApiImplUnitTests
 	 * A call to migrate specified a target and the resource does not have a default.  WildebeestApiImpl correctly
 	 * resolves the specified target and passes it to ResourceHelperImpl.
 	 *
-	 * @since                                   4.0
+	 * @since 4.0
 	 */
 	@Test
 	public void migrate_targetSpecifiedNoDefault_succeeds() throws
@@ -84,7 +94,7 @@ public class WildebeestApiImplUnitTests
 	 * A call to migrate specified a target and the resource has a default.  WildebeestApiImpl correctly resolves the
 	 * specified target and passes it to ResourceHelperImpl.
 	 *
-	 * @since                                   4.0
+	 * @since 4.0
 	 */
 	@Test
 	public void migrate_targetSpecifiedWithDefault_succeeds() throws
@@ -95,7 +105,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-	    MigrationInvalidStateException
+		MigrationInvalidStateException
 	{
 		// Setup
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
@@ -126,7 +136,7 @@ public class WildebeestApiImplUnitTests
 	 * A call to migrate did not specify a target and the resource does not have a default.  WildebeestApiImpl raises
 	 * the error by throwing a TargetNotSpecifiedException.
 	 *
-	 * @since                                   4.0
+	 * @since 4.0
 	 */
 	@Test
 	public void migrate_targetNotSpecifiedNoDefault_throws() throws
@@ -161,7 +171,7 @@ public class WildebeestApiImplUnitTests
 	 * A call to migrate did not specify a target but the resource has a default.  WildebeestApiImpl correctly resolves
 	 * the default target and passes it to ResourceHelperImpl
 	 *
-	 * @since                                   4.0
+	 * @since 4.0
 	 */
 	@Test
 	public void migrate_targetNotSpecifiedWithDefault_succeeds() throws
@@ -258,8 +268,8 @@ public class WildebeestApiImplUnitTests
 	/**
 	 * A generic test that expects the supplied XML file to be valid according to the resource XSD schema.
 	 *
-	 * @param       filename                    the resource XML file to validate.
-	 * @since                                   4.0
+	 * @param filename the resource XML file to validate.
+	 * @since 4.0
 	 */
 	private void validateResourceXml_succeeds(
 		String filename)
@@ -274,15 +284,15 @@ public class WildebeestApiImplUnitTests
 		{
 			Assert.fail(
 				"the XML file was expected to be valid according to the resource schema, but was not: " +
-				e.getMessage());
+					e.getMessage());
 		}
 	}
 
 	/**
 	 * A generic test that expects the supplied XML file to be INVALID according to the resource XSD schema.
 	 *
-	 * @param       filename                    the resource XML file to validate.
-	 * @since                                   4.0
+	 * @param filename the resource XML file to validate.
+	 * @since 4.0
 	 */
 	private void validateResourceXml_fails(
 		String filename)
@@ -304,8 +314,8 @@ public class WildebeestApiImplUnitTests
 	/**
 	 * A generic test that expects the supplied XML file to be valid according to the instance XSD schema.
 	 *
-	 * @param       filename                    the instance XML file to validate.
-	 * @since                                   4.0
+	 * @param filename the instance XML file to validate.
+	 * @since 4.0
 	 */
 	private void validateInstanceXml_succeeds(
 		String filename)
@@ -320,15 +330,15 @@ public class WildebeestApiImplUnitTests
 		{
 			Assert.fail(
 				"the XML file was expected to be valid according to the schema, but was not: " +
-				e.getMessage());
+					e.getMessage());
 		}
 	}
 
 	/**
 	 * A generic test that expects the supplied XML file to be INVALID according to the instance XSD schema.
 	 *
-	 * @param       filename                    the instance XML file to validate.
-	 * @since                                   4.0
+	 * @param filename the instance XML file to validate.
+	 * @since 4.0
 	 */
 	private void validateInstanceXml_fails(
 		String filename)
@@ -356,7 +366,7 @@ public class WildebeestApiImplUnitTests
 		{
 			result = new String(Files.readAllBytes(new File(filename).toPath()));
 		}
-		catch(IOException e)
+		catch (IOException e)
 		{
 			throw new RuntimeException(e);
 		}

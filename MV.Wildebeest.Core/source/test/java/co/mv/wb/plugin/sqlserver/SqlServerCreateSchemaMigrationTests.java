@@ -47,12 +47,12 @@ public class SqlServerCreateSchemaMigrationTests
 			Optional.of(UUID.randomUUID().toString()));
 
 		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
-		
+
 		createDatabaseRunner.perform(
 			output,
 			createDatabase,
 			instance);
-		
+
 		// Setup the migration
 		SqlServerCreateSchemaMigration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
@@ -61,7 +61,7 @@ public class SqlServerCreateSchemaMigrationTests
 			"prd");
 
 		SqlServerCreateSchemaMigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
-		
+
 		try
 		{
 			// Execute
@@ -98,7 +98,7 @@ public class SqlServerCreateSchemaMigrationTests
 			output,
 			createDatabase,
 			instance);
-		
+
 		// Setup the migration
 		SqlServerCreateSchemaMigration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
@@ -107,22 +107,22 @@ public class SqlServerCreateSchemaMigrationTests
 			"prd");
 
 		SqlServerCreateSchemaMigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
-		
+
 		createSchemaRunner.perform(
 			output,
 			createSchema,
 			instance);
-		
+
 		// Execute
 		MigrationFailedException caught = null;
-		
+
 		try
 		{
 			createSchemaRunner.perform(
 				output,
 				createSchema,
 				instance);
-			
+
 			fail("MigrationFailedException expected");
 		}
 		catch (MigrationFailedException e)
@@ -133,7 +133,7 @@ public class SqlServerCreateSchemaMigrationTests
 		{
 			SqlServerUtil.tryDropDatabase(instance);
 		}
-		
+
 		// Verify
 		assertEquals(
 			"caught.message",

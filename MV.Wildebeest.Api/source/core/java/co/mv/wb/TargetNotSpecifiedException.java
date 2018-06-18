@@ -19,14 +19,14 @@ package co.mv.wb;
 /**
  * Indicates that a target state was not specified, but should have been.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class TargetNotSpecifiedException extends Exception
 {
 	/**
 	 * Constructs a new TargetNotSpecifiedException.
 	 *
-	 * @since                                   4.0
+	 * @since 4.0
 	 */
 	public TargetNotSpecifiedException()
 	{

@@ -11,7 +11,7 @@ import java.io.PrintStream;
  * A test context providing an instance of WildebeestCommand with a mocked WildebeestApi configured to return a fake
  * Resource from loadResource and a FakeInstance from loadInstance.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class TestContext_WildebeestCommandUnit
 {

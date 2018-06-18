@@ -33,83 +33,83 @@ import static org.junit.Assert.assertEquals;
 /**
  * Helpers for asserting the state of Wildebeest entities.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public class Asserts
 {
-	
+
 	//
 	// Core
 	//
-	
+
 	public static void assertResource(
 		UUID expectedResourceId,
 		String expectedName,
 		Resource actual,
 		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
-		
+		if (name == null) throw new ArgumentNullException("name");
+
 		assertEquals(name + ".resourceId", expectedResourceId, actual.getResourceId());
 		assertEquals(name + ".name", expectedName, actual.getName());
 	}
-	
+
 	public static void assertState(
 		UUID expectedStateId,
 		Optional<String> expectedLabel,
 		State actual,
 		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
-		
+		if (name == null) throw new ArgumentNullException("name");
+
 		assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
 		assertEquals(name + ".label", expectedLabel, actual.getLabel());
 	}
 
 	public static void assertState(
-			UUID expectedStateId,
-			Optional<String> expectedLabel,
-			Optional<String> expectedDescription,
-			State actual,
-			String name)
+		UUID expectedStateId,
+		Optional<String> expectedLabel,
+		Optional<String> expectedDescription,
+		State actual,
+		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+		if (name == null) throw new ArgumentNullException("name");
 
 		assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
 		assertEquals(name + ".label", expectedLabel, actual.getLabel());
 		assertEquals(name + ".description", expectedDescription, actual.getDescription());
 	}
-	
+
 	public static void assertAssertion(
 		UUID expectedAssertionId,
 		int expectedSeqNum,
 		Assertion actual,
 		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+		if (name == null) throw new ArgumentNullException("name");
 
 		assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
 		assertEquals(name + ".seqNum", expectedSeqNum, actual.getSeqNum());
 	}
-	
+
 	public static void assertTagAssertion(
 		UUID expectedAssertionId,
-		String expectedName,
 		int expectedSeqNum,
 		String expectedTag,
 		TagAssertion actual,
 		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+		if (name == null) throw new ArgumentNullException("name");
+
+		Asserts.assertAssertion(
+			expectedAssertionId,
+			expectedSeqNum,
+			actual,
+			name);
 
 		assertEquals(name + ".tag", expectedTag, actual.getTag());
 	}
-	
+
 	public static void assertMigration(
 		UUID expectedMigrationId,
 		Optional<UUID> expectedFromStateId,
@@ -117,8 +117,7 @@ public class Asserts
 		Migration actual,
 		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+		if (name == null) throw new ArgumentNullException("name");
 
 		assertEquals(name + ".migrationId", expectedMigrationId, actual.getMigrationId());
 
@@ -140,20 +139,19 @@ public class Asserts
 			assertEquals(name + ".toStateId", expectedToStateId, actual.getToState());
 		}
 	}
-	
+
 	public static void assertAssertionResponse(
 		boolean expectedResult,
 		String expectedMessage,
 		AssertionResponse actual,
 		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
-		
+		if (name == null) throw new ArgumentNullException("name");
+
 		assertEquals(name + ".result", expectedResult, actual.getResult());
 		assertEquals(name + ".message", expectedMessage, actual.getMessage());
 	}
-	
+
 	public static void assertAssertionResult(
 		UUID expectedAssertionId,
 		boolean expectedResult,
@@ -161,25 +159,23 @@ public class Asserts
 		AssertionResult actual,
 		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be blank"); }
+		if (name == null) throw new ArgumentNullException("name");
 
 		assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
 		assertEquals(name + ".result", expectedResult, actual.getResult());
 		assertEquals(name + ".message", expectedMessage, actual.getMessage());
 	}
-	
+
 	public static void assertInstance(
 		Class expectedClass,
 		Instance actual,
 		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) {throw new IllegalArgumentException("name cannot be blank"); }
-		
+		if (name == null) throw new ArgumentNullException("name");
+
 		assertEquals("actual.class", expectedClass, actual.getClass());
 	}
-	
+
 	//
 	// Fake
 	//
@@ -204,8 +200,7 @@ public class Asserts
 		Instance actual,
 		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+		if (name == null) throw new ArgumentNullException("name");
 
 		assertEquals(name + ".class", FakeInstance.class, actual.getClass());
 
@@ -232,18 +227,17 @@ public class Asserts
 		SetTagMigration actual,
 		String name)
 	{
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
+		if (name == null) throw new ArgumentNullException("name");
 
 		Asserts.assertMigration(expectedMigrationId, expectedFromStateId, expectedToStateId, actual, name);
-		
+
 		assertEquals(name + ".tag", expectedTag, actual.getTag());
 	}
 
 	//
 	// AnsiSql
 	//
-	
+
 	public static void assertAnsiSqlTableExistsAssertion(
 		UUID expectedAssertionId,
 		String expectedSchemaName,
@@ -251,18 +245,13 @@ public class Asserts
 		AnsiSqlTableExistsAssertion actual,
 		String name)
 	{
-		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId cannot be null"); }
-		if (expectedSchemaName == null) { throw new IllegalArgumentException("expectedSchemaName cannot be null"); }
-		if (expectedTableName == null) { throw new IllegalArgumentException("expectedTableName cannot be null"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
-		
+		if (name == null) throw new ArgumentNullException("name");
+
 		assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
 		assertEquals(name + ".schemaName", expectedSchemaName, actual.getSchemaName());
 		assertEquals(name + ".tableName", expectedTableName, actual.getTableName());
 	}
-	
+
 	public static void assertAnsiSqlTableDoesNotExistAssertion(
 		UUID expectedAssertionId,
 		String expectedSchemaName,
@@ -270,22 +259,17 @@ public class Asserts
 		AnsiSqlTableDoesNotExistAssertion actual,
 		String name)
 	{
-		if (expectedAssertionId == null) { throw new IllegalArgumentException("expectedAssertionId cannot be null"); }
-		if (expectedSchemaName == null) { throw new IllegalArgumentException("expectedSchemaName cannot be null"); }
-		if (expectedTableName == null) { throw new IllegalArgumentException("expectedTableName cannot be null"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
-		
+		if (name == null) throw new ArgumentNullException("name");
+
 		assertEquals(name + ".assertionId", expectedAssertionId, actual.getAssertionId());
 		assertEquals(name + ".schemaName", expectedSchemaName, actual.getSchemaName());
 		assertEquals(name + ".tableName", expectedTableName, actual.getTableName());
 	}
-	
+
 	//
 	// MySql
 	//
-	
+
 	public static void assertMySqlDatabaseInstance(
 		String expectedHostName,
 		int expectedPort,
@@ -297,11 +281,11 @@ public class Asserts
 	{
 		if (name == null) throw new ArgumentNullException("name");
 		if ("".equals(name)) throw new ArgumentNullException("name cannot be blank");
-		
+
 		Asserts.assertInstance(MySqlDatabaseInstance.class, actual, name);
-		
+
 		MySqlDatabaseInstance db = (MySqlDatabaseInstance)actual;
-		
+
 		assertEquals("hostName", expectedHostName, db.getHostName());
 		assertEquals("port", expectedPort, db.getPort());
 		assertEquals("adminUsername", expectedAdminUsername, db.getAdminUsername());
@@ -327,7 +311,7 @@ public class Asserts
 
 		if (result)
 		{
-			MySqlDatabaseInstance db = (MySqlDatabaseInstance) actual;
+			MySqlDatabaseInstance db = (MySqlDatabaseInstance)actual;
 
 			result &= expectedHostName.equals(db.getHostName());
 			result &= expectedPort == db.getPort();

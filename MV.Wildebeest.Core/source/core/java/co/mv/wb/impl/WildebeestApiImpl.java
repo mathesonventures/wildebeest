@@ -16,8 +16,34 @@
 
 package co.mv.wb.impl;
 
-import co.mv.wb.*;
-
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.AssertionResult;
+import co.mv.wb.AssertionType;
+import co.mv.wb.FileLoadException;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Instance;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.JumpStateFailedException;
+import co.mv.wb.LoaderFault;
+import co.mv.wb.Migration;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationInvalidStateException;
+import co.mv.wb.MigrationPlugin;
+import co.mv.wb.MigrationType;
+import co.mv.wb.MigrationTypeInfo;
+import co.mv.wb.MissingReferenceException;
+import co.mv.wb.OutputFormatter;
+import co.mv.wb.PluginBuildException;
+import co.mv.wb.PluginManager;
+import co.mv.wb.Resource;
+import co.mv.wb.ResourcePlugin;
+import co.mv.wb.ResourceType;
+import co.mv.wb.State;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.Util;
@@ -44,11 +70,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
 /**
  * Provides a generic interface that can be adapted to different environments.  For example the WildebeestCommand
  * command-line interface delegates to WildebeestApiImpl to drive commands.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class WildebeestApiImpl implements WildebeestApi
 {
@@ -60,13 +87,12 @@ public class WildebeestApiImpl implements WildebeestApi
 	private PluginManager pluginManager = null;
 
 
-
 	/**
 	 * Creates a new WildebeestApiImpl using the supplied {@link PrintStream} for user output and the supplied
 	 * ResourceHelper.
-	 * 
-	 * @param       output                      the PrintStream that should be used for output to the user.
-	 * @since                                   1.0
+	 *
+	 * @param output the PrintStream that should be used for output to the user.
+	 * @since 1.0
 	 */
 	public WildebeestApiImpl(
 		PrintStream output)
@@ -99,11 +125,12 @@ public class WildebeestApiImpl implements WildebeestApi
 
 	public Resource loadResource(
 		File resourceFile) throws
-			FileLoadException,
-			LoaderFault,
-			PluginBuildException,
-			XmlValidationException,
-			MissingReferenceException {
+		FileLoadException,
+		LoaderFault,
+		PluginBuildException,
+		XmlValidationException,
+		MissingReferenceException
+	{
 		if (resourceFile == null) throw new ArgumentNullException("resourceFile");
 
 		// Get the absolute file for this resource - this ensures that getParentFile works correctly
@@ -141,14 +168,14 @@ public class WildebeestApiImpl implements WildebeestApi
 	/**
 	 * Validates the supplied XML string as a resource definition.
 	 *
-	 * @param       resourceXml                 the XML document to validate as a resource.
-	 * @throws      XmlValidationException      if the supplied XML document is not a valid resource according to the
-	 *                                          XML schema.
-	 * @since                                   4.0
+	 * @param resourceXml the XML document to validate as a resource.
+	 * @throws XmlValidationException if the supplied XML document is not a valid resource according to the
+	 *                                XML schema.
+	 * @since 4.0
 	 */
 	public static void validateResourceXml(
 		String resourceXml) throws
-			XmlValidationException
+		XmlValidationException
 	{
 		if (resourceXml == null) throw new ArgumentNullException("resourceXml");
 
@@ -157,10 +184,10 @@ public class WildebeestApiImpl implements WildebeestApi
 
 	public Instance loadInstance(
 		File instanceFile) throws
-			FileLoadException,
-			LoaderFault,
-			PluginBuildException,
-			XmlValidationException
+		FileLoadException,
+		LoaderFault,
+		PluginBuildException,
+		XmlValidationException
 	{
 		if (instanceFile == null) throw new ArgumentNullException("instanceFile");
 
@@ -192,14 +219,14 @@ public class WildebeestApiImpl implements WildebeestApi
 	/**
 	 * Validates the supplied XML string as an instance definition.
 	 *
-	 * @param       instanceXml                 the XML document to validate as an instance.
-	 * @throws      XmlValidationException      if the supplied XML document is not a valid instance according to the
-	 *                                          XML schema.
-	 * @since                                   4.0
+	 * @param instanceXml the XML document to validate as an instance.
+	 * @throws XmlValidationException if the supplied XML document is not a valid instance according to the
+	 *                                XML schema.
+	 * @since 4.0
 	 */
 	public static void validateInstanceXml(
 		String instanceXml) throws
-			XmlValidationException
+		XmlValidationException
 	{
 		if (instanceXml == null) throw new ArgumentNullException("instanceXml");
 
@@ -209,7 +236,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	public List<AssertionResult> assertState(
 		Resource resource,
 		Instance instance) throws
-			IndeterminateStateException
+		IndeterminateStateException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
@@ -247,7 +274,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	public void state(
 		Resource resource,
 		Instance instance) throws
-			IndeterminateStateException
+		IndeterminateStateException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
@@ -285,13 +312,13 @@ public class WildebeestApiImpl implements WildebeestApi
 		Resource resource,
 		Instance instance,
 		Optional<String> targetState) throws
-			AssertionFailedException,
-			TargetNotSpecifiedException,
-			IndeterminateStateException,
-			InvalidStateSpecifiedException,
-			MigrationFailedException,
-			UnknownStateSpecifiedException,
-		    MigrationInvalidStateException
+		AssertionFailedException,
+		TargetNotSpecifiedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
+		MigrationFailedException,
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
@@ -384,18 +411,15 @@ public class WildebeestApiImpl implements WildebeestApi
 		Resource resource,
 		Instance instance,
 		String targetState) throws
-			AssertionFailedException,
-			IndeterminateStateException,
-			InvalidStateSpecifiedException,
-			JumpStateFailedException,
-			UnknownStateSpecifiedException
+		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
+		JumpStateFailedException,
+		UnknownStateSpecifiedException
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (targetState != null && "".equals(targetState.trim()))
-		{
-			throw new IllegalArgumentException("targetState cannot be empty");
-		}
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
+		if (targetState != null && "".equals(targetState.trim())) throw new IllegalArgumentException("targetState cannot be empty");
 
 		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
 			this.getResourcePlugins(),
@@ -443,10 +467,10 @@ public class WildebeestApiImpl implements WildebeestApi
 			.stream()
 			.forEach(x -> output
 				.append("<group ")
-					.append("uri=\"").append(x.getUri()).append("\" ")
-					.append("name=\"").append(x.getName()).append("\" ")
-					.append("title=\"").append(x.getTitle()).append("\" ")
-					.append(" />"));
+				.append("uri=\"").append(x.getUri()).append("\" ")
+				.append("name=\"").append(x.getName()).append("\" ")
+				.append("title=\"").append(x.getTitle()).append("\" ")
+				.append(" />"));
 
 		output.append("</groups>");
 
@@ -524,9 +548,9 @@ public class WildebeestApiImpl implements WildebeestApi
 		Resource resource,
 		String label)
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (label == null) { throw new IllegalArgumentException("label cannot be null"); }
-		if ("".equals(label)) { throw new IllegalArgumentException("label cannot be empty"); }
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (label == null) throw new ArgumentNullException("label");
+		if ("".equals(label)) throw new IllegalArgumentException("label cannot be empty");
 
 		State result = null;
 
@@ -544,15 +568,15 @@ public class WildebeestApiImpl implements WildebeestApi
 	private static UUID getTargetStateId(
 		Resource resource,
 		String targetState) throws
-            InvalidStateSpecifiedException,
-            UnknownStateSpecifiedException
+		InvalidStateSpecifiedException,
+		UnknownStateSpecifiedException
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
+		if (resource == null) throw new ArgumentNullException("resource");
 
 		final String stateSpecificationRegex = "[a-zA-Z0-9][a-zA-Z0-9\\-\\_ ]+[a-zA-Z0-9]";
 		if (targetState != null && !targetState.matches(stateSpecificationRegex))
 		{
-            throw new InvalidStateSpecifiedException(targetState);
+			throw new InvalidStateSpecifiedException(targetState);
 		}
 
 		UUID targetStateId = null;
@@ -562,34 +586,35 @@ public class WildebeestApiImpl implements WildebeestApi
 			{
 				targetStateId = UUID.fromString(targetState);
 			}
-			catch(IllegalArgumentException e)
+			catch (IllegalArgumentException e)
 			{
 				targetStateId = WildebeestApiImpl.stateIdForLabel(
 					resource,
 					targetState);
 			}
-            
-            // If we still could not find the specified state, then throw
-            if (targetStateId == null)
-            {
-                throw new UnknownStateSpecifiedException(targetState);
-            }
+
+			// If we still could not find the specified state, then throw
+			if (targetStateId == null)
+			{
+				throw new UnknownStateSpecifiedException(targetState);
+			}
 		}
-		
+
 		return targetStateId;
 	}
-	
+
 	private static String readAllText(File file) throws
 		IOException
 	{
-		if (file == null) { throw new IllegalArgumentException("file cannt be null"); }
+		if (file == null) throw new ArgumentNullException("file");
+
 		if (!file.isFile())
 		{
 			throw new IllegalArgumentException(String.format(
 				"%s is not a plain file",
 				file.getAbsolutePath()));
 		}
-	
+
 		String result;
 
 		BufferedReader br = null;
@@ -613,24 +638,24 @@ public class WildebeestApiImpl implements WildebeestApi
 				br.close();
 			}
 		}
-		
+
 		return result;
 	}
 
 	/**
 	 * Looks up the ResourcePlugin for the supplied ResourceType.
 	 *
-	 * @param       resourcePlugins             the set of available ResourcePlugins.
-	 * @param       resourceType                the ResourceType for which a plugin should be retrieved.
-	 * @return                                  the ResourcePlugin that corresponds to the supplied ResourceType.
-	 * @since                                   4.0
+	 * @param resourcePlugins the set of available ResourcePlugins.
+	 * @param resourceType    the ResourceType for which a plugin should be retrieved.
+	 * @return the ResourcePlugin that corresponds to the supplied ResourceType.
+	 * @since 4.0
 	 */
 	private static ResourcePlugin getResourcePlugin(
 		Map<ResourceType, ResourcePlugin> resourcePlugins,
 		ResourceType resourceType)
 	{
-		if (resourcePlugins == null) { throw new IllegalArgumentException("resourcePlugins cannot be null"); }
-		if (resourceType == null) { throw new IllegalArgumentException("resourceType cannot be null"); }
+		if (resourcePlugins == null) throw new ArgumentNullException("resourcePlugins");
+		if (resourceType == null) throw new ArgumentNullException("resourceType");
 
 		ResourcePlugin resourcePlugin = resourcePlugins.get(resourceType);
 
@@ -648,11 +673,11 @@ public class WildebeestApiImpl implements WildebeestApi
 		UUID stateId,
 		List<AssertionResult> assertionResults) throws AssertionFailedException
 	{
-		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
-		if (assertionResults == null) { throw new IllegalArgumentException("assertionResults cannot be null"); }
+		if (stateId == null) throw new ArgumentNullException("stateId");
+		if (assertionResults == null) throw new ArgumentNullException("assertionResults");
 
 		// If any assertions failed, throw
-		for(AssertionResult assertionResult : assertionResults)
+		for (AssertionResult assertionResult : assertionResults)
 		{
 			if (!assertionResult.getResult())
 			{
@@ -668,9 +693,9 @@ public class WildebeestApiImpl implements WildebeestApi
 		UUID fromState,
 		UUID targetState)
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource"); }
-		if (paths == null) { throw new IllegalArgumentException("paths"); }
-		if (thisPath == null) { throw new IllegalArgumentException("thisPath"); }
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (paths == null) throw new ArgumentNullException("paths");
+		if (thisPath == null) throw new ArgumentNullException("thisPath");
 
 		// Have we reached the target state?
 		if ((fromState == null && targetState == null) ||
@@ -703,7 +728,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	private static void validateXml(
 		String xml,
 		String xsdResourceName) throws
-			XmlValidationException
+		XmlValidationException
 	{
 		if (xml == null) throw new ArgumentNullException("xml");
 		if (xsdResourceName == null) throw new ArgumentNullException("xsdResourceName");
@@ -732,55 +757,56 @@ public class WildebeestApiImpl implements WildebeestApi
 	/**
 	 * Retrives all migrations from plugin and throws an error if migrations refer to state that does not exist
 	 *
-	 * @param       resource             		Resource that is used to perform migration .
-	 * @since                                   4.0
+	 * @param resource Resource that is used to perform migration .
+	 * @since 4.0
 	 */
 	private static void validateMigrationStates(
-		  Resource resource) throws MigrationInvalidStateException
+		Resource resource) throws MigrationInvalidStateException
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource"); }
+		if (resource == null) throw new ArgumentNullException("resource");
 
 		List<Migration> migrations = resource.getMigrations();
 		List<State> states = resource.getStates();
 
-		for (Migration m: migrations
-			  )
+		for (Migration m : migrations
+			)
 		{
 			boolean migrationToStateValid = false;
 			boolean migrationFromStateValid = false;
 
 			//check do states exist in migration, if they don't set them to true so they don't throw errors
-			if(!m.getToState().isPresent())
+			if (!m.getToState().isPresent())
 			{
 				migrationFromStateValid = true;
 			}
-			if(!m.getToState().isPresent())
+			if (!m.getToState().isPresent())
 			{
 				migrationToStateValid = true;
 			}
 
-			for (State s: states
-				  )
+			for (State s : states
+				)
 			{
-				if(m.getToState().equals(s.getStateId()) || m.getToState().equals(s.getLabel()))
+				if (m.getToState().equals(s.getStateId()) || m.getToState().equals(s.getLabel()))
 				{
 					migrationToStateValid = true;
 				}
-				if(m.getToState().equals(s.getStateId()) || m.getToState().equals(s.getLabel()))
+				if (m.getToState().equals(s.getStateId()) || m.getToState().equals(s.getLabel()))
 				{
 					migrationFromStateValid = true;
 				}
 
-				if(migrationFromStateValid == true && migrationToStateValid == true)
+				if (migrationFromStateValid == true && migrationToStateValid == true)
 				{
 					break;
 				}
 			}
 
-			if(migrationFromStateValid == false || migrationToStateValid == false)
+			if (migrationFromStateValid == false || migrationToStateValid == false)
 			{
-				throw  new MigrationInvalidStateException(m.getMigrationId(),"Migration " +m.getMigrationId().toString()+ " has invalid state, " +
-					  "please fix this before restarting migration") ;
+				throw new MigrationInvalidStateException(m.getMigrationId(),
+					"Migration " + m.getMigrationId().toString() + " has invalid state, " +
+						"please fix this before restarting migration");
 			}
 		}
 	}

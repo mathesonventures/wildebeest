@@ -24,8 +24,8 @@ import java.util.UUID;
 
 /**
  * Provides a base implementation of {@link Migration}
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public abstract class BaseMigration implements Migration
 {
@@ -35,10 +35,10 @@ public abstract class BaseMigration implements Migration
 
 	/**
 	 * Creates a new BaseMigration instance.
-	 * 
-	 * @param       migrationId                 the ID for the new migration
-	 * @param       fromState                   the optional from state for the new migration
-	 * @param       toState                     the optional to state for the new migration
+	 *
+	 * @param migrationId the ID for the new migration
+	 * @param fromState   the optional from state for the new migration
+	 * @param toState     the optional to state for the new migration
 	 */
 	protected BaseMigration(
 		UUID migrationId,

@@ -30,25 +30,25 @@ import java.util.UUID;
 /**
  * An {@link AssertionBuilder} that builds a {@link SqlServerSchemaDoesNotExistAssertion} from a DOM
  * {@link org.w3c.dom.Element}.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 public class SqlServerSchemaDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 {
 	@Override public Assertion build(
 		UUID assertionId,
 		int seqNum) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		Optional<String> schemaName = this.tryGetString("schemaName");
-		
+
 		// Validation
 		Messages messages = new Messages();
 		if (!schemaName.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "schemaName", SqlServerSchemaDoesNotExistAssertion.class);
 		}
-		
+
 		if (messages.size() > 0)
 		{
 			throw new PluginBuildException(messages);
@@ -58,7 +58,7 @@ public class SqlServerSchemaDoesNotExistDomAssertionBuilder extends BaseDomAsser
 			assertionId,
 			seqNum,
 			schemaName.get());
-		
+
 		return result;
 	}
 }

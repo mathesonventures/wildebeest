@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * A fluent builder for WildebeestApi implementation.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class WildebeestApiBuilder
 {
@@ -42,9 +42,9 @@ public class WildebeestApiBuilder
 	/**
 	 * Creates a new WildebeestApiBuilder with the specified PrintStream for Wildebeest to output to.
 	 *
-	 * @param       output                      the PrintStream that Wildebeest should output to.
-	 * @return                                  a new WildebeestApiBuilder.
-	 * @since                                   4.0
+	 * @param output the PrintStream that Wildebeest should output to.
+	 * @return a new WildebeestApiBuilder.
+	 * @since 4.0
 	 */
 	public static WildebeestApiBuilder create(
 		PrintStream output)
@@ -77,8 +77,8 @@ public class WildebeestApiBuilder
 	 * Fluently adds the factory-preset {@link ResourcePlugin}'s to the builder.  A new builder is returned and the
 	 * original builder is left unmutated.
 	 *
-	 * @return                                  a new WildebeestApiBuilder with all the state of the source builder plus
-	 *                                          the factory-preset ResourcePlugin's registered.
+	 * @return a new WildebeestApiBuilder with all the state of the source builder plus
+	 * the factory-preset ResourcePlugin's registered.
 	 */
 	public WildebeestApiBuilder withFactoryResourcePlugins()
 	{
@@ -94,8 +94,8 @@ public class WildebeestApiBuilder
 	/**
 	 * Fluently adds a {@link PluginManager} with the factory-preset plugin groups and migration plugins registered.
 	 *
-	 * @return                                  a new WildebeestApiBuilder with a PluginManager configured with the
-	 *                                          factory-preset plugin groups and migration plugins registered.
+	 * @return a new WildebeestApiBuilder with a PluginManager configured with the
+	 * factory-preset plugin groups and migration plugins registered.
 	 */
 	public WildebeestApiBuilder withFactoryPluginManager()
 	{
@@ -108,9 +108,9 @@ public class WildebeestApiBuilder
 	 * Fluently adds a {@link PluginManager} to the builder.  A new builder instance is returned with the supplied
 	 * PluginManager added, and the original builder is left unmutated.
 	 *
-	 * @param       pluginManager               the PluginManager to add to the builder.
-	 * @return                                  a new WildebeestApiBuilder with the state of the source builder plus the
-	 *                                          supplied PluginManager.
+	 * @param pluginManager the PluginManager to add to the builder.
+	 * @return a new WildebeestApiBuilder with the state of the source builder plus the
+	 * supplied PluginManager.
 	 */
 	public WildebeestApiBuilder withPluginManager(PluginManager pluginManager)
 	{
@@ -125,8 +125,8 @@ public class WildebeestApiBuilder
 	/**
 	 * Builds a new {@link WildebeestApi} with the plugins that were registered to this builder.
 	 *
-	 * @return                                  a new WildebeestApi instance with the plugins that were registered to
-	 *                                          this builder.
+	 * @return a new WildebeestApi instance with the plugins that were registered to
+	 * this builder.
 	 */
 	public WildebeestApi get()
 	{

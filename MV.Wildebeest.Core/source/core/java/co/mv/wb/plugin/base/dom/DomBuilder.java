@@ -21,23 +21,23 @@ import org.w3c.dom.Element;
 /**
  * Provides the core definition for all builder implementations (AssertionBuilder, InstanceBuilder, etc) that are based
  * on DOM parsing of XML representations.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public interface DomBuilder
 {
 	/**
 	 * Sets the root DOM {@link org.w3c.dom.Element} that represents the item to be built by this builder.
-	 * 
-	 * @param       element                     the root Element for the item to be built
-	 * @since                                   1.0
+	 *
+	 * @param element the root Element for the item to be built
+	 * @since 1.0
 	 */
 	void setElement(Element element);
-	
+
 	/**
 	 * Resets the builder back to an initialized state.
-	 * 
-	 * @since                                   1.0
+	 *
+	 * @since 1.0
 	 */
 	void reset();
 }

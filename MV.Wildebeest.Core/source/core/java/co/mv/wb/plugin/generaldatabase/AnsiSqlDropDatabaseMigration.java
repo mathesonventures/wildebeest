@@ -29,8 +29,8 @@ import java.util.UUID;
 
 /**
  * A {@link Migration} that drops a database using ANSI-standard SQL statements.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
@@ -38,27 +38,27 @@ import java.util.UUID;
 	description =
 		"Drops the database defined by the instance definition.  This migration can be used to transition a database " +
 			"from a state to non-existant",
-    example =
-        "<migration\n" +
-        "    type=\"AnsiSqlDropDatabase\"\n" +
-        "    id=\"c3376639-40c1-4795-adc4-258de2b07176\"\n" +
-        "    fromState=\"a7d7f4c8-ea65-447f-bd59-aa73c00cd8c2\">\n" +
-        "</migration>"
+	example =
+		"<migration\n" +
+			"    type=\"AnsiSqlDropDatabase\"\n" +
+			"    id=\"c3376639-40c1-4795-adc4-258de2b07176\"\n" +
+			"    fromState=\"a7d7f4c8-ea65-447f-bd59-aa73c00cd8c2\">\n" +
+			"</migration>"
 )
 public class AnsiSqlDropDatabaseMigration extends BaseMigration
 {
-    public AnsiSqlDropDatabaseMigration(
-        UUID migrationId,
-        Optional<String> fromState,
-        Optional<String> toState)
-    {
-        super(migrationId, fromState, toState);
-    }
+	public AnsiSqlDropDatabaseMigration(
+		UUID migrationId,
+		Optional<String> fromState,
+		Optional<String> toState)
+	{
+		super(migrationId, fromState, toState);
+	}
 
-    @Override
+	@Override
 	public List<ResourceType> getApplicableTypes()
-    {
+	{
 		return Arrays.asList(
 			Wildebeest.PostgreSqlDatabase);
-    }
+	}
 }

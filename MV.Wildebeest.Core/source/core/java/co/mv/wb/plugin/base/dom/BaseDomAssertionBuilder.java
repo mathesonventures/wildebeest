@@ -21,7 +21,7 @@ import co.mv.wb.AssertionBuilder;
 /**
  * Base class for DOM-based {@link AssertionBuilder} implementations.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public abstract class BaseDomAssertionBuilder extends BaseDomBuilder implements AssertionBuilder
 {

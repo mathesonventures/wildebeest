@@ -26,31 +26,31 @@ import java.sql.SQLException;
 
 /**
  * Provides a set of convenience methods for working with JDBC-accessed databases.
- * 
- * @since                                       1.0
-*/
+ *
+ * @since 1.0
+ */
 public class DatabaseHelper
 {
 	/**
 	 * Executes a SQL statement against the database represented by the supplied DataSource.
-	 * 
-	 * @param       dataSource                  the DataSource that represents the database to work with
-	 * @param       sql                         the SQL statement to execute against the target database.
-	 * @throws      SQLException                may be thrown due to a mal-formed SQL statement, connectivity problem,
-	 *                                          or some other issue.
-     * @since                                   1.0
+	 *
+	 * @param dataSource the DataSource that represents the database to work with
+	 * @param sql        the SQL statement to execute against the target database.
+	 * @throws SQLException may be thrown due to a mal-formed SQL statement, connectivity problem,
+	 *                      or some other issue.
+	 * @since 1.0
 	 */
 	public static void execute(
 		DataSource dataSource,
 		String sql) throws SQLException
 	{
-		if (dataSource == null) { throw new IllegalArgumentException("dataSource"); }
-		if (sql == null) { throw new IllegalArgumentException("sql"); }
-		if ("".equals(sql)) { throw new IllegalArgumentException("sql cannot be empty"); }
-		
+		if (dataSource == null) throw new ArgumentNullException("dataSource");
+		if (sql == null) throw new ArgumentNullException("sql");
+		if ("".equals(sql)) throw new IllegalArgumentException("sql cannot be empty");
+
 		Connection conn = null;
 		PreparedStatement ps = null;
-		
+
 		try
 		{
 			conn = dataSource.getConnection();
@@ -63,43 +63,43 @@ public class DatabaseHelper
 			DatabaseHelper.release(conn);
 		}
 	}
-	
+
 	/**
 	 * Executes a SQL query against the database represented by the supplied DataSource and returns the value from the
 	 * first column of the single resultant row as an Object.
-	 * 
-	 * @param       dataSource                  the DataSource that represents the database to work with
-	 * @param       sql                         the SQL query to execute against the target database
-	 * @return                                  the value from the first column of the single resultant row
-	 * @throws      SQLException                may be thrown due to a mal-formed SQL statement, connectivity problem,
-	 *                                          or some other issue.
-     * @since                                   1.0
+	 *
+	 * @param dataSource the DataSource that represents the database to work with
+	 * @param sql        the SQL query to execute against the target database
+	 * @return the value from the first column of the single resultant row
+	 * @throws SQLException may be thrown due to a mal-formed SQL statement, connectivity problem,
+	 *                      or some other issue.
+	 * @since 1.0
 	 */
 	public static Object single(
 		DataSource dataSource,
 		String sql) throws SQLException
 	{
-		if (dataSource == null) { throw new IllegalArgumentException("dataSource"); }
-		if (sql == null) { throw new IllegalArgumentException("sql"); }
-		if ("".equals(sql)) { throw new IllegalArgumentException("sql cannot be empty"); }
-		
+		if (dataSource == null) throw new ArgumentNullException("dataSource");
+		if (sql == null) throw new ArgumentNullException("sql");
+		if ("".equals(sql)) throw new IllegalArgumentException("sql cannot be empty");
+
 		Object result = null;
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try
 		{
 			conn = dataSource.getConnection();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
-			
+
 			if (rs.next())
 			{
 				result = rs.getObject(1);
 			}
-			
+
 			// TODO: Fail if there is more than one row in the resultset.
 		}
 		finally
@@ -108,7 +108,7 @@ public class DatabaseHelper
 			DatabaseHelper.release(ps);
 			DatabaseHelper.release(conn);
 		}
-		
+
 		return result;
 	}
 
@@ -116,23 +116,23 @@ public class DatabaseHelper
 		DataSource dataSource,
 		String sql)
 	{
-		if (dataSource == null) { throw new IllegalArgumentException("dataSource cannot be null"); }
-		if (sql == null) { throw new IllegalArgumentException("sql cannot be null"); }
-		if ("".equals(sql)) { throw new IllegalArgumentException("sql cannot be empty"); }
-		
+		if (dataSource == null) throw new ArgumentNullException("dataSource");
+		if (sql == null) throw new ArgumentNullException("sql");
+		if ("".equals(sql)) throw new IllegalArgumentException("sql cannot be empty");
+
 		boolean result = false;
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try
 		{
 			conn = dataSource.getConnection();
 			ps = conn.prepareStatement(sql);
 
 			rs = ps.executeQuery();
-		
+
 			result = rs.next();
 		}
 		catch (SQLException e)
@@ -147,22 +147,22 @@ public class DatabaseHelper
 				DatabaseHelper.release(ps);
 				DatabaseHelper.release(conn);
 			}
-			catch(SQLException e)
+			catch (SQLException e)
 			{
 				throw new FaultException(e);
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * If the supplied Connection reference is non-null, attempts to close that Connection.
-	 * 
-	 * @param       conn                        the Connection to be closed.  Ignored if null is supplied.
-	 * @throws      SQLException                may be thrown due to a state exception, connectivity problem, or some
-	 *                                          other issue.
-     * @since                                   1.0
+	 *
+	 * @param conn the Connection to be closed.  Ignored if null is supplied.
+	 * @throws SQLException may be thrown due to a state exception, connectivity problem, or some
+	 *                      other issue.
+	 * @since 1.0
 	 */
 	public static void release(Connection conn) throws SQLException
 	{
@@ -174,11 +174,11 @@ public class DatabaseHelper
 
 	/**
 	 * If the supplied PreparedStatement reference is non-null, attempts to close that PreparedStatement.
-	 * 
-	 * @param       ps                          the PreparedStatement to be closed.  Ignored if null is supplied.
-	 * @throws      SQLException                may be thrown due to a state exception, connectivity problem or some
-	 *                                          other issue.
-     * @since                                   1.0
+	 *
+	 * @param ps the PreparedStatement to be closed.  Ignored if null is supplied.
+	 * @throws SQLException may be thrown due to a state exception, connectivity problem or some
+	 *                      other issue.
+	 * @since 1.0
 	 */
 	public static void release(PreparedStatement ps) throws SQLException
 	{
@@ -187,14 +187,14 @@ public class DatabaseHelper
 			ps.close();
 		}
 	}
-	
+
 	/**
 	 * If the supplied ResultSet is non-null, attempts to close that ResultSet.
-	 * 
-	 * @param       rs                          the ResultSet to be closed.  Ignored if null is supplied.
-	 * @throws      SQLException                may be thrown due to a state exception, connectiivty problem or some
-	 *                                          other issue.
-     * @since                                   1.0
+	 *
+	 * @param rs the ResultSet to be closed.  Ignored if null is supplied.
+	 * @throws SQLException may be thrown due to a state exception, connectiivty problem or some
+	 *                      other issue.
+	 * @since 1.0
 	 */
 	public static void release(ResultSet rs) throws SQLException
 	{

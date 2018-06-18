@@ -24,6 +24,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.generaldatabase.Extensions;
 
 import java.io.PrintStream;
@@ -35,8 +36,8 @@ import java.util.UUID;
 
 /**
  * A {@link Resource} that is a SQL Server database.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 {
@@ -48,15 +49,19 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 	public State currentState(
 		Resource resource,
 		Instance instance) throws
-			IndeterminateStateException
+		IndeterminateStateException
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
+		}
 
 		UUID declaredStateId = null;
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -68,7 +73,7 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 				db.getAppDataSource(),
 				Extensions.getStateTableName(db));
 		}
-		
+
 		// If we found a declared state, check that the state is actually defined
 		State result = null;
 		if (declaredStateId != null)
@@ -83,7 +88,7 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 					declaredStateId.toString()));
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -94,12 +99,17 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 		Instance instance,
 		UUID stateId)
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (output == null) throw new ArgumentNullException("output");
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
-		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
+		}
+
+		if (stateId == null) throw new ArgumentNullException("stateId");
 
 		// Set the state tracking row
 		try

@@ -30,8 +30,8 @@ import java.util.UUID;
 
 /**
  * A {@link MigrationBuilder} that builds a {@link SqlServerDropSchemaMigration} from a DOM {@link org.w3c.dom.Element}.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 public class SqlServerDropSchemaDomMigrationBuilder extends BaseDomMigrationBuilder
 {
@@ -41,10 +41,10 @@ public class SqlServerDropSchemaDomMigrationBuilder extends BaseDomMigrationBuil
 		Optional<String> fromState,
 		Optional<String> toState,
 		File baseDir) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		Optional<String> schemaName = this.tryGetString("schemaName");
-		
+
 		// Validation
 		Messages messages = new Messages();
 		if (!schemaName.isPresent())
@@ -59,7 +59,7 @@ public class SqlServerDropSchemaDomMigrationBuilder extends BaseDomMigrationBuil
 		{
 			throw new PluginBuildException(messages);
 		}
-		
+
 		return new SqlServerDropSchemaMigration(
 			migrationId,
 			fromState,

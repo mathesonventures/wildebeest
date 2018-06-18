@@ -21,16 +21,16 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
-{
-	SqlServerCreateDatabaseMigrationTests.class,
-	SqlServerCreateSchemaMigrationTests.class,
-	SqlServerDropSchemaMigrationTests.class,
-	SqlServerPluginUnitTests.class,
-	SqlServerSchemaDoesNotExistAssertionTests.class,
-	SqlServerSchemaExistsAssertionTests.class,
-	SqlServerTableDoesNotExistAssertionTests.class,
-	SqlServerTableExistsAssertionTests.class
-})
+	{
+		SqlServerCreateDatabaseMigrationTests.class,
+		SqlServerCreateSchemaMigrationTests.class,
+		SqlServerDropSchemaMigrationTests.class,
+		SqlServerPluginUnitTests.class,
+		SqlServerSchemaDoesNotExistAssertionTests.class,
+		SqlServerSchemaExistsAssertionTests.class,
+		SqlServerTableDoesNotExistAssertionTests.class,
+		SqlServerTableExistsAssertionTests.class
+	})
 public class AllTests
 {
 }

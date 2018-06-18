@@ -30,7 +30,7 @@ import java.util.UUID;
 /**
  * {@link Migration} for the Fake plugin implementation.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:Fake",
@@ -55,7 +55,7 @@ public class SetTagMigration extends BaseMigration
 
 		this.tag = tag;
 	}
-	
+
 	public String getTag()
 	{
 		return this.tag;

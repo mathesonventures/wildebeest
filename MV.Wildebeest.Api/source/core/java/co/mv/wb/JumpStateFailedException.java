@@ -18,16 +18,16 @@ package co.mv.wb;
 
 /**
  * Indicates that a JumpState operation failed for some normal reason that should be presented to the user.
- * 
- * @since                                       3.0
+ *
+ * @since 3.0
  */
 public class JumpStateFailedException extends Exception
 {
 	/**
 	 * Creates a new JumpStateFailedException with the specified failure messages.
-	 * 
-	 * @param       message                     the failure message
-	 * @since                                   3.0
+	 *
+	 * @param message the failure message
+	 * @since 3.0
 	 */
 	public JumpStateFailedException(
 		String message)

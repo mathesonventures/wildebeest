@@ -35,11 +35,11 @@ public class MySqlDatabaseResourceTests
 	public MySqlDatabaseResourceTests()
 	{
 	}
-	
+
 	//
 	// currentState()
 	//
-	
+
 	@Test
 	public void currentStateForNonExistentDatabaseSucceds() throws IndeterminateStateException
 	{
@@ -66,11 +66,11 @@ public class MySqlDatabaseResourceTests
 		State state = resourcePlugin.currentState(
 			resource,
 			instance);
-		
+
 		// Verify
 		Assert.assertEquals("state", null, state);
 	}
-	
+
 	@Test
 	public void currentStateForExistentDatabaseSucceds() throws IndeterminateStateException, SQLException
 	{
@@ -109,7 +109,7 @@ public class MySqlDatabaseResourceTests
 				mySqlProperties.getUsername(),
 				mySqlProperties.getPassword(),
 				databaseName,
-			null);
+				null);
 
 			// Execute
 			State state = resourcePlugin.currentState(resource, instance);
@@ -123,16 +123,16 @@ public class MySqlDatabaseResourceTests
 			MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 		}
 	}
-	
+
 	@Test
 	public void currentStateForDatabaseWithUnknownStateIdDeclaredFails() throws SQLException
 	{
 		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
-		
+
 		UUID resourceId = UUID.randomUUID();
 		UUID knownStateId = UUID.randomUUID();
-		
+
 		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm", "");
 
 		MySqlStateHelper.setStateId(
@@ -140,7 +140,7 @@ public class MySqlDatabaseResourceTests
 			MySqlUtil.getDataSource(mySqlProperties, databaseName),
 			"wb_state",
 			knownStateId);
-		
+
 		MySqlDatabaseResourcePlugin resourcePlugin = new MySqlDatabaseResourcePlugin();
 
 		Resource resource = new ResourceImpl(
@@ -161,20 +161,20 @@ public class MySqlDatabaseResourceTests
 		try
 		{
 			resourcePlugin.currentState(resource, instance);
-			
+
 			Assert.fail("IndeterminateStateException expected");
 		}
-		catch(IndeterminateStateException e)
+		catch (IndeterminateStateException e)
 		{
 			Assert.assertTrue(
 				"exception message",
 				e.getMessage().startsWith("The resource is declared to be in state"));
 		}
-		
+
 		// Tear-Down
 		MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 	}
-	
+
 	@Ignore
 	@Test
 	public void currentStateForDatabaseWithInvalidStateTableSchemaFaults()

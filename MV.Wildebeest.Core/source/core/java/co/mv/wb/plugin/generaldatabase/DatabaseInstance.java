@@ -23,62 +23,62 @@ import javax.sql.DataSource;
 
 /**
  * A {@link Resource} {@link Instance} that is a database.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public interface DatabaseInstance extends Instance
 {
 	/**
 	 * Gets the name of the database represented by this DatabaseInstance.
-	 * 
-	 * @return                                  the name of the database represented by this DatabaseInstance.
-	 * @since                                   4.0
+	 *
+	 * @return the name of the database represented by this DatabaseInstance.
+	 * @since 4.0
 	 */
 	String getDatabaseName();
-	
+
 	/**
 	 * Gets the name to use for the state tracking table in this database instance, if specified.  If not specified this
 	 * method throws an InvalidStateException.  Before calling getStateTableName(), call hasStateTableName() to check if
 	 * a state table name has been set.
-	 * 
-	 * @return                                  the name of the state tracking table for this instance
-	 * @since                                   1.0
+	 *
+	 * @return the name of the state tracking table for this instance
+	 * @since 1.0
 	 */
 	String getStateTableName();
 
 	/**
 	 * Returns whether or not this instance has a state table name set.  If none is set then the default will be used.
-	 * 
-	 * @return                                  a boolean flag indicating whether or not this instance has a state table
-	 *                                          name set
-	 * @since                                   1.0
+	 *
+	 * @return a boolean flag indicating whether or not this instance has a state table
+	 * name set
+	 * @since 1.0
 	 */
 	boolean hasStateTableName();
 
 	/**
 	 * Returns a DataSource for performing administrative operations related to this DatabaseInstance.
-	 * 
-	 * @return                                  a DataSource for performing administrative operations related to this
-	 *                                          DatabaseInstance.
-	 * @since                                   4.0
+	 *
+	 * @return a DataSource for performing administrative operations related to this
+	 * DatabaseInstance.
+	 * @since 4.0
 	 */
 	DataSource getAdminDataSource();
 
 	/**
 	 * Returns a DataSource for the database represented by this DatabaseInstance.
-	 * 
-	 * @return                                  a DataSource for the database represented by this DatabaseInstance
-	 * @since                                   1.0
+	 *
+	 * @return a DataSource for the database represented by this DatabaseInstance
+	 * @since 1.0
 	 */
 	DataSource getAppDataSource();
-	
+
 	/**
 	 * Returns a boolean flag indicating whether or not the catalog (database) represented by this DatabaseInstance
 	 * exists.
-	 * 
-	 * @return                                  a boolean flag indicating whether or not the catalog (database)
-	 *                                          represented by this DatabaseIntance exists.
-	 * @since                                   4.0
+	 *
+	 * @return a boolean flag indicating whether or not the catalog (database)
+	 * represented by this DatabaseIntance exists.
+	 * @since 4.0
 	 */
 	boolean databaseExists();
 }

@@ -23,12 +23,12 @@ import java.util.UUID;
 
 /**
  * Creates &lt;migration&gt;'s as part of the fluent API for creating XML fixtures for unit tests.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class MigrationBuilder
 {
-	private final FixtureBuilder creator;
+	private final FixtureBuilder builder;
 	private final ResourceBuilder resource;
 	private final String type;
 	private final UUID migrationId;
@@ -37,7 +37,7 @@ public class MigrationBuilder
 	private String innerXml;
 
 	public MigrationBuilder(
-		FixtureBuilder creator,
+		FixtureBuilder builder,
 		ResourceBuilder resource,
 		String type,
 		UUID migrationId,
@@ -45,7 +45,7 @@ public class MigrationBuilder
 		String toState)
 	{
 		this(
-			creator,
+			builder,
 			resource,
 			type,
 			migrationId,
@@ -55,7 +55,7 @@ public class MigrationBuilder
 	}
 
 	private MigrationBuilder(
-		FixtureBuilder creator,
+		FixtureBuilder builder,
 		ResourceBuilder resource,
 		String type,
 		UUID migrationId,
@@ -63,12 +63,12 @@ public class MigrationBuilder
 		String toState,
 		String innerXml)
 	{
-		if (creator == null) throw new ArgumentNullException("builder");
+		if (builder == null) throw new ArgumentNullException("builder");
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (type == null) throw new ArgumentNullException("type");
 		if (migrationId == null) throw new ArgumentNullException("migrationId");
 
-		this.creator = creator;
+		this.builder = builder;
 		this.resource = resource;
 		this.type = type;
 		this.migrationId = migrationId;
@@ -115,12 +115,12 @@ public class MigrationBuilder
 
 		return this;
 	}
-	
+
 	public ResourceBuilder resource()
 	{
 		return this.getResource();
 	}
-	
+
 	public MigrationBuilder migration(
 		String type,
 		UUID migrationId,
@@ -129,9 +129,9 @@ public class MigrationBuilder
 	{
 		return this.getResource().migration(type, migrationId, fromState, toState);
 	}
-	
+
 	public String render()
 	{
-		return this.creator.build();
+		return this.builder.build();
 	}
 }

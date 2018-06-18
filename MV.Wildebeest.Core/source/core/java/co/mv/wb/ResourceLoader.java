@@ -21,23 +21,23 @@ import java.io.File;
 /**
  * An ResourceLoader is responsible for the overall deserialization of a descriptor from some persistent representation
  * to an {@link Resource} object.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public interface ResourceLoader
 {
 	/**
 	 * Loads an Resource according to the configuration of this ResourceLoader.
-	 * 
-	 * @param       baseDir                     the base directory for relative paths.
-	 * @return                                  the deserialized Resource.
-	 * @throws LoaderFault                 		if the resource fails to load.
-	 * @throws PluginBuildException        		if the plugin fails to build.
-	 * @throws MissingReferenceException  if an element refers to an ID or Name that is not defined.
-	 * @since                                   1.0
+	 *
+	 * @param baseDir the base directory for relative paths.
+	 * @return the deserialized Resource.
+	 * @throws LoaderFault               if the resource fails to load.
+	 * @throws PluginBuildException      if the plugin fails to build.
+	 * @throws MissingReferenceException if an element refers to an ID or Name that is not defined.
+	 * @since 1.0
 	 */
 	Resource load(File baseDir) throws
-            LoaderFault,
-            PluginBuildException,
-			MissingReferenceException;
+		LoaderFault,
+		PluginBuildException,
+		MissingReferenceException;
 }

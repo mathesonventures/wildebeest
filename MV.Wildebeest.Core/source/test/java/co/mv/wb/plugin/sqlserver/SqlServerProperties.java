@@ -39,11 +39,11 @@ public class SqlServerProperties
 		this.username = null;
 		this.password = null;
 	}
-	
+
 	public static SqlServerProperties get()
 	{
 		SqlServerProperties result = new SqlServerProperties();
-		
+
 		// HostName
 		String hostName = System.getProperty("sqlServer.hostName");
 		if (hostName == null)
@@ -55,7 +55,7 @@ public class SqlServerProperties
 			LOG.debug("System sqlServer.hostName: " + hostName);
 			result.hostName = hostName;
 		}
-		
+
 		// InstanceName
 		String instanceName = System.getProperty("sqlServer.instanceName");
 		if (instanceName == null)
@@ -67,7 +67,7 @@ public class SqlServerProperties
 			LOG.debug("System sqlServer.instanceName: " + instanceName);
 			result.instanceName = instanceName;
 		}
-		
+
 		// Port
 		String portRaw = System.getProperty("sqlServer.port");
 		if (portRaw == null)
@@ -103,7 +103,7 @@ public class SqlServerProperties
 			LOG.debug("System sqlServer.password: " + password);
 			result.password = password;
 		}
-		
+
 		LOG.debug(String.format(
 			"SqlServerProperties { hostName: %s; instanceName: %s; port: %d; username: %s; password: %s; }",
 			result.getHostName(),
@@ -114,7 +114,7 @@ public class SqlServerProperties
 
 		return result;
 	}
-	
+
 	public String getHostName()
 	{
 		return this.hostName;

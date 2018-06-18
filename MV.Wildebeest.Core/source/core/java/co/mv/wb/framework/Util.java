@@ -19,16 +19,16 @@ package co.mv.wb.framework;
 /**
  * Utility functions.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class Util
 {
 	/**
 	 * Extracts the name portion from an identifier URI.
 	 *
-	 * @param       uri                         the identifier URI to extract the name from.
-	 * @return                                  the name extracted from the identifier URI.
-	 * @since                                   4.0
+	 * @param uri the identifier URI to extract the name from.
+	 * @return the name extracted from the identifier URI.
+	 * @since 4.0
 	 */
 	public static String nameFromUri(String uri)
 	{
@@ -49,9 +49,9 @@ public class Util
 	 * Collapses each contiguous sequence of whitespace characters in a string down into a single printable space
 	 * character.
 	 *
-	 * @param       text                        the source text within which whitespace should be coalesced.
-	 * @return                                  the result of coalescing whitespace within the source text.
-	 * @since                                   4.0
+	 * @param text the source text within which whitespace should be coalesced.
+	 * @return the result of coalescing whitespace within the source text.
+	 * @since 4.0
 	 */
 	public static String coalesceWhitespace(String text)
 	{
@@ -63,14 +63,14 @@ public class Util
 	/**
 	 * Looks up the ResourcePlugin for the supplied ResourceType.
 	 *
-	 * @param       value             			String that we check is UUID
-	 * @return                                  true if UUID can be created from param value
-	 * @since                                   4.0
+	 * @param value String that we check is UUID
+	 * @return true if UUID can be created from param value
+	 * @since 4.0
 	 */
-	public static boolean isUUID (String value)
+	public static boolean isUUID(String value)
 	{
 		final String UUIDmatcher = "[a-zA-Z0-9][a-zA-Z0-9\\-\\_ ]+[a-zA-Z0-9]";
-		if(value.matches(UUIDmatcher))
+		if (value.matches(UUIDmatcher))
 		{
 			return true;
 		}

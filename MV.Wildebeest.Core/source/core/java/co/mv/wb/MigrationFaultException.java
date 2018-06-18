@@ -18,27 +18,27 @@ package co.mv.wb;
 
 /**
  * Indicates an unexpected error occurred during migration.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class MigrationFaultException extends RuntimeException
 {
 	/**
 	 * Creates a new MigrationFaultException with the supplied root cause.
-	 * 
-	 * @param       cause                       the root cause of the migration error
-	 * @since                                   1.0
+	 *
+	 * @param cause the root cause of the migration error
+	 * @since 1.0
 	 */
 	public MigrationFaultException(Exception cause)
 	{
 		super(cause);
 	}
-	
+
 	/**
 	 * Creates a new MigrationFaultException with the supplied message.
-	 * 
-	 * @param       message                     the migration error message
-	 * @since                                   1.0
+	 *
+	 * @param message the migration error message
+	 * @since 1.0
 	 */
 	public MigrationFaultException(
 		String message)

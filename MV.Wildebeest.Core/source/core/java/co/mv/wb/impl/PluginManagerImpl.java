@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 /**
  * Default implementation of {@link PluginManager}.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class PluginManagerImpl implements PluginManager
 {
@@ -46,8 +46,8 @@ public class PluginManagerImpl implements PluginManager
 	/**
 	 * Constructs a new PluginManagerImpl with the specified plugin groups and migration plugins registered.
 	 *
-	 * @param       pluginGroups                the plugin groups to be registered in this PluginManager.
-	 * @param       migrationPlugins            the migration plugins to be registered in this PluginManager.
+	 * @param pluginGroups     the plugin groups to be registered in this PluginManager.
+	 * @param migrationPlugins the migration plugins to be registered in this PluginManager.
 	 */
 	public PluginManagerImpl(
 		List<PluginGroup> pluginGroups,

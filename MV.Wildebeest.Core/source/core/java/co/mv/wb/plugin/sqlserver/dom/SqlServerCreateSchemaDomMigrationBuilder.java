@@ -31,8 +31,8 @@ import java.util.UUID;
 /**
  * A {@link MigrationBuilder} that builds a {@link SqlServerCreateSchemaMigration} from a DOM
  * {@link org.w3c.dom.Element}.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 public class SqlServerCreateSchemaDomMigrationBuilder extends BaseDomMigrationBuilder
 {
@@ -42,21 +42,21 @@ public class SqlServerCreateSchemaDomMigrationBuilder extends BaseDomMigrationBu
 		Optional<String> fromState,
 		Optional<String> toState,
 		File baseDir) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		Optional<String> schemaName = this.tryGetString("schemaName");
-		
+
 		Messages messages = new Messages();
 		if (!schemaName.isPresent())
 		{
 			V.elementMissing(messages, migrationId, "schemaName", SqlServerCreateSchemaMigration.class);
 		}
-		
+
 		if (messages.size() > 0)
 		{
 			throw new PluginBuildException(messages);
 		}
-		
+
 		return new SqlServerCreateSchemaMigration(
 			migrationId,
 			fromState,

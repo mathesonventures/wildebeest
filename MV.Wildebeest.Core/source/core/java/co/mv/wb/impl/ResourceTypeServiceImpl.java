@@ -18,13 +18,14 @@ package co.mv.wb.impl;
 
 import co.mv.wb.ResourceType;
 import co.mv.wb.ResourceTypeService;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.util.List;
 
 /**
  * Default in-memory implementation of {@link ResourceTypeService}
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class ResourceTypeServiceImpl implements ResourceTypeService
 {
@@ -33,13 +34,13 @@ public class ResourceTypeServiceImpl implements ResourceTypeService
 	/**
 	 * Constructs a new ResourceTypeServiceImpl with the supplied set of {@link ResourceType}'s registered.
 	 *
-	 * @param       resourceTypes               the set of ResourceType's to register in the new ResourceTypeService.
-	 * @since                                   4.0
+	 * @param resourceTypes the set of ResourceType's to register in the new ResourceTypeService.
+	 * @since 4.0
 	 */
 	public ResourceTypeServiceImpl(
 		List<ResourceType> resourceTypes)
 	{
-		if (resourceTypes == null) { throw new IllegalArgumentException("resourceTypes cannot be null"); }
+		if (resourceTypes == null) throw new ArgumentNullException("resourceTypes");
 
 		this.resourceTypes = resourceTypes;
 	}

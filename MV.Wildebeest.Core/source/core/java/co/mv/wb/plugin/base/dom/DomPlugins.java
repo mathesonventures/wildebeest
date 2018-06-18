@@ -50,31 +50,31 @@ import java.util.Map;
 
 /**
  * Provides the set of pre-configured core plugins that are supported by Wildebeest.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class DomPlugins
 {
 	/**
 	 * Builds and returns the collection of factory-shipped {@link AssertionBuilder}s.
-	 * 
-	 * @return                                  a Map that maps the XML element name to the builder instance.
-	 * @since                                   1.0
+	 *
+	 * @return a Map that maps the XML element name to the builder instance.
+	 * @since 1.0
 	 */
 	public static Map<String, AssertionBuilder> assertionBuilders()
 	{
 		Map<String, AssertionBuilder> result = new HashMap<>();
-		
+
 		// Database
 		result.put("DatabaseExists", new DatabaseExistsDomAssertionBuilder());
 		result.put("DatabaseDoesNotExist", new DatabaseDoesNotExistDomAssertionBuilder());
 		result.put("RowExists", new RowExistsDomAssertionBuilder());
 		result.put("RowDoesNotExist", new RowDoesNotExistDomAssertionBuilder());
-		
+
 		// AnsiSql
 		result.put("AnsiSqlTableExists", new AnsiSqlTableExistsDomAssertionBuilder());
 		result.put("AnsiSqlTableDoesNotExist", new AnsiSqlTableDoesNotExistDomAssertionBuilder());
-		
+
 		// MySql
 		result.put("MySqlTableDoesNotExist", new MySqlTableDoesNotExistDomAssertionBuilder());
 		result.put("MySqlTableExists", new MySqlTableExistsDomAssertionBuilder());
@@ -84,15 +84,15 @@ public class DomPlugins
 		result.put("SqlServerSchemaExists", new SqlServerSchemaExistsDomAssertionBuilder());
 		result.put("SqlServerTableDoesNotExist", new SqlServerTableDoesNotExistDomAssertionBuilder());
 		result.put("SqlServerTableExists", new SqlServerTableExistsDomAssertionBuilder());
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Builds and returns the collection of factory-shipped {@link MigrationBuilder}s.
-	 * 
-	 * @return                                  a Map that maps the XML element name to the builder instance.
-	 * @since                                   1.0
+	 *
+	 * @return a Map that maps the XML element name to the builder instance.
+	 * @since 1.0
 	 */
 	public static Map<String, MigrationBuilder> migrationBuilders()
 	{
@@ -104,10 +104,10 @@ public class DomPlugins
 		// AnsiSql
 		result.put("AnsiSqlCreateDatabase", new AnsiSqlCreateDatabaseDomMigrationBuilder());
 		result.put("AnsiSqlDropDatabase", new AnsiSqlDropDatabaseDomMigrationBuilder());
-		
+
 		// MySql
 		result.put("MySqlCreateDatabase", new MySqlCreateDatabaseDomMigrationBuilder());
-		
+
 		// SqlServer
 		result.put("SqlServerCreateDatabase", new SqlServerCreateDatabaseDomMigrationBuilder());
 		result.put("SqlServerCreateSchema", new SqlServerCreateSchemaDomMigrationBuilder());
@@ -118,31 +118,31 @@ public class DomPlugins
 
 		return result;
 	}
-	
+
 	/**
 	 * Builds and returns the collection of factory-shipped {@link InstanceBuilder}s.
-	 * 
-	 * @return                                  a Map that maps the XML element name to the builder instance.
-	 * @since                                   1.0
+	 *
+	 * @return a Map that maps the XML element name to the builder instance.
+	 * @since 1.0
 	 */
 	public static Map<String, InstanceBuilder> instanceBuilders()
 	{
 		Map<String, InstanceBuilder> result = new HashMap<>();
-		
+
 		result.put(Wildebeest.MySqlDatabase.getUri(), new MySqlDatabaseDomInstanceBuilder());
 		result.put(Wildebeest.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomInstanceBuilder());
 		result.put(Wildebeest.SqlServerDatabase.getUri(), new SqlServerDatabaseDomInstanceBuilder());
 
 		return result;
 	}
-	
+
 	/**
 	 * Returns a {@link DomResourceLoader} for the supplied resource XML, configured with the standard builders.
 	 *
-	 * @param       resourceTypeService         the {@link ResourceTypeService} to use to lookup resource types.
-	 * @param       resourceXml                 the &lt;resource&gt; XML to be loaded by the DomResourceLoader.
-	 * @return                                  a DomResourceLoader configured with the standard builders.
-	 * @since                                   4.0
+	 * @param resourceTypeService the {@link ResourceTypeService} to use to lookup resource types.
+	 * @param resourceXml         the &lt;resource&gt; XML to be loaded by the DomResourceLoader.
+	 * @return a DomResourceLoader configured with the standard builders.
+	 * @since 4.0
 	 */
 	public static DomResourceLoader resourceLoader(
 		ResourceTypeService resourceTypeService,
@@ -154,13 +154,13 @@ public class DomPlugins
 			DomPlugins.migrationBuilders(),
 			resourceXml);
 	}
-	
+
 	/**
 	 * Returns a {@link DomInstanceLoader} for the supplied instance XML, configured with the standard builders.
-	 * 
-	 * @param       instanceXml                 the &lt;instance&gt; XML to be loaded by the DomInstanceLoader.
-	 * @return                                  a DomInstanceLoader configured with the standard builders.
-	 * @since                                   4.0
+	 *
+	 * @param instanceXml the &lt;instance&gt; XML to be loaded by the DomInstanceLoader.
+	 * @return a DomInstanceLoader configured with the standard builders.
+	 * @since 4.0
 	 */
 	public static DomInstanceLoader instanceLoader(
 		String instanceXml)

@@ -30,34 +30,34 @@ import java.util.UUID;
 /**
  * An {@link AssertionBuilder} that builds a {@link MySqlTableExistsAssertion} from a DOM
  * {@link org.w3c.dom.Element}.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class MySqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {
 	@Override public Assertion build(
 		UUID assertionId,
 		int seqNum) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		Optional<String> tableName = this.tryGetString("tableName");
-		
+
 		Messages messages = new Messages();
 		if (!tableName.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "tableName", MySqlTableExistsAssertion.class);
 		}
-		
+
 		if (messages.size() > 0)
 		{
 			throw new PluginBuildException(messages);
 		}
-		
+
 		Assertion result = new MySqlTableExistsAssertion(
 			assertionId,
 			seqNum,
 			tableName.get());
-		
+
 		return result;
 	}
 }

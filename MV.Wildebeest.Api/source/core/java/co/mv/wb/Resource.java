@@ -22,47 +22,47 @@ import java.util.UUID;
 
 /**
  * The definition of a stateful resource to be managed by Wildebeest.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public interface Resource
 {
 	/**
 	 * Gets the ID of this Resource.
-	 * 
-	 * @return                                  the unique ID of this Resource
-	 * @since                                   1.0
+	 *
+	 * @return the unique ID of this Resource
+	 * @since 1.0
 	 */
 	UUID getResourceId();
 
 	/**
 	 * Gets the type of this Resource.
 	 *
-	 * @return                                  the type of this Resource
+	 * @return the type of this Resource
 	 */
 	ResourceType getType();
 
 	/**
 	 * Gets the name of this Resource.
-	 * 
-	 * @return                                  the name of this Resource
-	 * @since                                   1.0
+	 *
+	 * @return the name of this Resource
+	 * @since 1.0
 	 */
 	String getName();
-	
+
 	/**
 	 * Gets the states that have been defined for this Resource.
-	 * 
-	 * @return                                  the set of states defined for this Resource
-	 * @since                                   1.0
+	 *
+	 * @return the set of states defined for this Resource
+	 * @since 1.0
 	 */
 	List<State> getStates();
-	
+
 	/**
 	 * Gets the migrations that have been defined for this Resource.
-	 * 
-	 * @return                                  the migrations defined for this Resource
-	 * @since                                   1.0
+	 *
+	 * @return the migrations defined for this Resource
+	 * @since 1.0
 	 */
 	List<Migration> getMigrations();
 
@@ -70,11 +70,11 @@ public interface Resource
 	 * Gets the optional default target state for migrations where no migration is specified to Wildebeest.  This allows
 	 * users to migrate a resource to it's main / default state without having to first read the definition to figure
 	 * out what that state is.
-	 *
+	 * <p>
 	 * The default target is used for migrate commands only.  Jumpstate commands do not use the default target.
 	 *
-	 * @return                                  the optional default target for this Resource.
-	 * @since                                   4.0
+	 * @return the optional default target for this Resource.
+	 * @since 4.0
 	 */
 	Optional<String> getDefaultTarget();
 }

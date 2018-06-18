@@ -22,7 +22,7 @@ import co.mv.wb.framework.ArgumentNullException;
  * Defines a meta classification for plugins to help with discoverability and documentation generation.  PluginGroup
  * plays no role in Wildebeest workflows.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class PluginGroup
 {
@@ -33,10 +33,10 @@ public class PluginGroup
 	/**
 	 * Constructs a new PluginGroup with the supplied details.
 	 *
-	 * @param       uri                         the URI identifying the plugin group.
-	 * @param       title                       the human-readable title of the plugin group, for use in tooling.
-	 * @param       description                 a description of the plugin group, for use in tooling.
-	 * @since                                   4.0
+	 * @param uri         the URI identifying the plugin group.
+	 * @param title       the human-readable title of the plugin group, for use in tooling.
+	 * @param description a description of the plugin group, for use in tooling.
+	 * @since 4.0
 	 */
 	public PluginGroup(
 		String uri,
@@ -55,8 +55,8 @@ public class PluginGroup
 	/**
 	 * Gets the URI identifying the plugin group.
 	 *
-	 * @return                                  the URI identifying the plugin group.
-	 * @since                                   4.0
+	 * @return the URI identifying the plugin group.
+	 * @since 4.0
 	 */
 	public String getUri()
 	{
@@ -66,8 +66,8 @@ public class PluginGroup
 	/**
 	 * Gets the name of the plugin group, extracted from the URI.
 	 *
-	 * @return                                  the name of the plugin group, extracted from the URI.
-	 * @since                                   4.0
+	 * @return the name of the plugin group, extracted from the URI.
+	 * @since 4.0
 	 */
 	public String getName()
 	{
@@ -78,8 +78,8 @@ public class PluginGroup
 	/**
 	 * Gets the human-readable title of the plugin group.
 	 *
-	 * @return                                  the human-readable title of the plugin group.
-	 * @since                                   4.0
+	 * @return the human-readable title of the plugin group.
+	 * @since 4.0
 	 */
 	public String getTitle()
 	{
@@ -89,8 +89,8 @@ public class PluginGroup
 	/**
 	 * Gets the description of the plugin group.
 	 *
-	 * @return                                  the description of the plugin group.
-	 * @since                                   4.0
+	 * @return the description of the plugin group.
+	 * @since 4.0
 	 */
 	public String getDescription()
 	{

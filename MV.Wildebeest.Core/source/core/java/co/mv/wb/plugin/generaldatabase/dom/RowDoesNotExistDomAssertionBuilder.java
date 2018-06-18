@@ -32,15 +32,15 @@ import static co.mv.wb.framework.Util.coalesceWhitespace;
 
 /**
  * An {@link AssertionBuilder} that builds a {@link RowDoesNotExistAssertion} from a DOM {@link org.w3c.dom.Element}.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class RowDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 {
 	@Override public Assertion build(
 		UUID assertionId,
 		int seqNum) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		Optional<String> sql = this.tryGetString("sql");
 		Optional<String> description = this.tryGetString("description");
@@ -51,7 +51,7 @@ public class RowDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 		{
 			V.elementMissing(messages, assertionId, "sql", RowExistsAssertion.class);
 		}
-		
+
 		if (!description.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "description", RowExistsAssertion.class);

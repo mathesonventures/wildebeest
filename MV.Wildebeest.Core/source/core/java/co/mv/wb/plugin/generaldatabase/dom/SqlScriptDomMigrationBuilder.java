@@ -30,8 +30,8 @@ import java.util.UUID;
 
 /**
  * A {@link MigrationBuilder} that builds a {@link SqlScriptMigration} from a DOM {@link org.w3c.dom.Element}.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 {
@@ -41,26 +41,26 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 		Optional<String> fromState,
 		Optional<String> toState,
 		File baseDir) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		Migration result;
-		
+
 		Optional<String> sql = this.tryGetString("sql");
-		
+
 		// Validation
 		Messages messages = new Messages();
 		if (!sql.isPresent())
 		{
 			V.elementMissing(messages, migrationId, "sql", SqlScriptMigration.class);
 		}
-		
+
 		if (messages.size() > 0)
 		{
 			throw new PluginBuildException(messages);
 		}
 
 		result = new SqlScriptMigration(migrationId, fromState, toState, sql.get());
-		
+
 		return result;
 	}
 }

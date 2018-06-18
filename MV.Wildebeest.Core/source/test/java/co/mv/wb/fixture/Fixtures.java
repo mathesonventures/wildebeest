@@ -28,7 +28,7 @@ import java.util.UUID;
 /**
  * Factory for mocks and fixtures
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class Fixtures
 {

@@ -15,8 +15,22 @@
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
 package co.mv.wb.plugin.base.dom;
-import co.mv.wb.*;
 
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.Asserts;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.LoaderFault;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationInvalidStateException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MissingReferenceException;
+import co.mv.wb.PluginBuildException;
+import co.mv.wb.Resource;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
@@ -37,21 +51,21 @@ public class ResourceLoaderIntegrationTests
 {
 	@Test
 	public void loadAndMigrateMySqlResourceFromXml() throws
-			AssertionFailedException,
-			IndeterminateStateException,
-			InvalidStateSpecifiedException,
-			LoaderFault,
-			MigrationFailedException,
-			MigrationNotPossibleException,
-			PluginBuildException,
-			SQLException,
-			TargetNotSpecifiedException,
-			UnknownStateSpecifiedException,
-            MissingReferenceException,
-		    MigrationInvalidStateException
+		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
+		LoaderFault,
+		MigrationFailedException,
+		MigrationNotPossibleException,
+		PluginBuildException,
+		SQLException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException,
+		MissingReferenceException,
+		MigrationInvalidStateException
 
 	{
-		
+
 		//
 		// Setup
 		//
@@ -86,20 +100,20 @@ public class ResourceLoaderIntegrationTests
 		//
 		// Execute - Load
 		//
-		
+
 		Resource resource = resourceBuilder.load(new File("."));
 
 		//
 		// Verify - Model
 		//
-		
+
 		// Resource
 		assertNotNull("resource", resource);
 		Asserts.assertResource(
 			productCatalogueResource.getResourceId(),
 			"Product Catalogue Database",
 			resource, "resource");
-		
+
 		// States
 		assertEquals("resource.states.size", 3, resource.getStates().size());
 		Asserts.assertState(
@@ -109,9 +123,11 @@ public class ResourceLoaderIntegrationTests
 			ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded, Optional.of("Core Schema Loaded"),
 			resource.getStates().get(1), "resource.state[1]");
 		Asserts.assertState(
-			ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded, Optional.of("Reference Data Loaded"),
-			resource.getStates().get(2), "resource.state[2]");
-		
+			ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded,
+			Optional.of("Reference Data Loaded"),
+			resource.getStates().get(2),
+			"resource.state[2]");
+
 		// Migrations
 		assertEquals("resource.migrations.size", 3, resource.getMigrations().size());
 		Asserts.assertMigration(
@@ -129,7 +145,7 @@ public class ResourceLoaderIntegrationTests
 			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded),
 			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded),
 			resource.getMigrations().get(2), "resource.migrations[2]");
-		
+
 		//
 		// Execute - Migrate
 		//

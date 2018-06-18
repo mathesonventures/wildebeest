@@ -20,8 +20,8 @@ import co.mv.wb.InstanceBuilder;
 
 /**
  * Base class for DOM-based {@link InstanceBuilder} implementations.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public abstract class BaseDomInstanceBuilder extends BaseDomBuilder implements InstanceBuilder
 {

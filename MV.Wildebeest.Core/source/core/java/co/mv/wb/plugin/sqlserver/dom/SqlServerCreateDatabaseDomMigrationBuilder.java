@@ -29,8 +29,8 @@ import java.util.UUID;
 /**
  * A {@link MigrationBuilder} that builds a {@link SqlServerCreateDatabaseMigration} from a DOM
  * {@link org.w3c.dom.Element}.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 public class SqlServerCreateDatabaseDomMigrationBuilder extends BaseDomMigrationBuilder
 {
@@ -40,7 +40,7 @@ public class SqlServerCreateDatabaseDomMigrationBuilder extends BaseDomMigration
 		Optional<String> fromState,
 		Optional<String> toState,
 		File baseDir) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		return new SqlServerCreateDatabaseMigration(migrationId, fromState, toState);
 	}

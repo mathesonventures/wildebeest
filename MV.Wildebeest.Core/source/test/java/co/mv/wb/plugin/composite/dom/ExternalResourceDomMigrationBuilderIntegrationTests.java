@@ -18,8 +18,8 @@ package co.mv.wb.plugin.composite.dom;
 
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
-import co.mv.wb.PluginBuildException;
 import co.mv.wb.MissingReferenceException;
+import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.FixtureBuilder;
@@ -38,8 +38,8 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * Unit tests for {@link ExternalResourceDomMigrationBuilder}.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class ExternalResourceDomMigrationBuilderIntegrationTests
 {
@@ -47,27 +47,27 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 	//
 	// create
 	//
-	
+
 	@Test
 	public void build_forValidDocument_succeeds() throws
-			LoaderFault,
-			PluginBuildException,
-            MissingReferenceException
-    {
+		LoaderFault,
+		PluginBuildException,
+		MissingReferenceException
+	{
 		// Setup
 		UUID resourceId = UUID.randomUUID();
 		UUID state1Id = UUID.randomUUID();
 		UUID state2Id = UUID.randomUUID();
 		UUID migration1Id = UUID.randomUUID();
-		
+
 		String resourceXml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), resourceId, "Test")
 			.state(state1Id, "state1")
 			.state(state2Id, "state2")
 			.migration("External", migration1Id, state1Id.toString(), state2Id.toString())
-				.withInnerXml("<filename>foo.wbr</filename><target>bar</target>")
+			.withInnerXml("<filename>foo.wbr</filename><target>bar</target>")
 			.render();
-		
+
 		System.out.println("resourceXml: " + resourceXml);
 
 		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
@@ -79,11 +79,11 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 
 		// Execute
 		Resource resource = resourceLoader.load(new File("."));
-		
+
 		// Verify
 		Migration migration = resource.getMigrations().get(0);
 		assertNotNull("migration", migration);
-		
+
 		ExternalResourceMigration migrationT = (ExternalResourceMigration)migration;
 		assertEquals("migration.filename", "foo.wbr", migrationT.getFileName());
 		assertEquals("migration.target", Optional.of("bar"), migrationT.getTarget());

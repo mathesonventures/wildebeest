@@ -18,8 +18,8 @@ package co.mv.wb;
 
 /**
  * Represents a specific instance of a Resource.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public interface Instance
 {

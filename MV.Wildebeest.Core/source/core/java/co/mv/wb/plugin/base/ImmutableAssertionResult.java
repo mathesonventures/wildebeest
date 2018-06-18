@@ -23,8 +23,8 @@ import java.util.UUID;
 
 /**
  * An {@link AssertionResult} that cannot be modified after it's initial construction.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class ImmutableAssertionResult implements AssertionResult
 {
@@ -34,10 +34,10 @@ public class ImmutableAssertionResult implements AssertionResult
 
 	/**
 	 * Creates a new ImmutableAssertionResult for the specified assertion, with the supplied result value and message.
-	 * 
-	 * @param       assertionId                 the ID of the assertion that was applied to get this result
-	 * @param       result                      indicator whether the assertion succeeded or failed
-	 * @param       message                     the textual message describing the assertion result
+	 *
+	 * @param assertionId the ID of the assertion that was applied to get this result
+	 * @param result      indicator whether the assertion succeeded or failed
+	 * @param message     the textual message describing the assertion result
 	 */
 	public ImmutableAssertionResult(
 		UUID assertionId,

@@ -34,8 +34,8 @@ import java.util.UUID;
 
 /**
  * Unit tests for AnsiSql plugins as applied to PostgreSQL databases.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 {
@@ -53,21 +53,21 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 			"WildebeestTest",
 			null,
 			null);
-		
+
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID().toString()),
 			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin createRunner = new AnsiSqlCreateDatabaseMigrationPlugin();
-		
+
 		Migration drop = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID().toString()),
 			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
-		
+
 		this.ansiSqlCreateDatabaseMigrationSucceeds(
 			output,
 			instance,
@@ -91,7 +91,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 			"WildebeestTest",
 			null,
 			null);
-		
+
 		Migration createDatabase = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID().toString()),
@@ -113,7 +113,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 			Optional.of(UUID.randomUUID().toString()));
 
 		MigrationPlugin dropDatabaseRunner = new AnsiSqlDropDatabaseMigrationPlugin();
-		
+
 		this.tableExistsForExistentTable(
 			output,
 			instance,
@@ -139,7 +139,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 			"WildebeestTest",
 			null,
 			null);
-		
+
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID().toString()),

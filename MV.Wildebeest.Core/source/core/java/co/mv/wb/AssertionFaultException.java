@@ -22,8 +22,8 @@ import java.util.UUID;
 
 /**
  * Indicates that an unexpected error occurred while attempting to apply an Assertion.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class AssertionFaultException extends RuntimeException
 {
@@ -31,10 +31,10 @@ public class AssertionFaultException extends RuntimeException
 
 	/**
 	 * Creates a new AssertionFaultException with the supplied ID and root cause.
-	 * 
-	 * @param       assertionId                 the ID of the Assertion that faulted
-	 * @param       cause                       the root cause of the fault
-	 * @since                                   1.0
+	 *
+	 * @param assertionId the ID of the Assertion that faulted
+	 * @param cause       the root cause of the fault
+	 * @since 1.0
 	 */
 	public AssertionFaultException(
 		UUID assertionId,
@@ -43,14 +43,14 @@ public class AssertionFaultException extends RuntimeException
 		super(cause);
 
 		if (assertionId == null) throw new ArgumentNullException("assertionId");
-		
+
 		this.assertionId = assertionId;
 	}
-	
+
 	/**
 	 * Gets the ID of the Assertion that was faulted.
-	 * 
-	 * @since                                   1.0
+	 *
+	 * @since 1.0
 	 */
 	public UUID getAssertionId()
 	{

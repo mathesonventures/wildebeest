@@ -24,11 +24,11 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
-{
-	DomInstanceLoaderTests.class,
-	DomResourceLoaderTests.class,
-	ResourceLoaderIntegrationTests.class
-})
+	{
+		DomInstanceLoaderTests.class,
+		DomResourceLoaderTests.class,
+		ResourceLoaderIntegrationTests.class
+	})
 public class AllTests
 {
 }

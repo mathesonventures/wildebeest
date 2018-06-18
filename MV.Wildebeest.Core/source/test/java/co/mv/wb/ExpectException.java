@@ -16,31 +16,32 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
 import org.junit.Assert;
 
 public abstract class ExpectException
 {
-	private Class _expectedType;
-	
+	private final Class expectedType;
+
 	protected ExpectException(
 		Class expectedType)
 	{
-		if (expectedType == null) { throw new IllegalArgumentException("expectedType cannot be null"); }
-		
-		_expectedType = expectedType;
+		if (expectedType == null) throw new ArgumentNullException("expectedType");
+
+		this.expectedType = expectedType;
 	}
-	
+
 	public void perform()
 	{
 		try
 		{
 			this.invoke();
-			
+
 			Assert.fail("Exception expected");
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
-			if (e.getClass() == _expectedType)
+			if (e.getClass() == expectedType)
 			{
 				this.verify(e);
 			}
@@ -50,8 +51,8 @@ public abstract class ExpectException
 			}
 		}
 	}
-	
+
 	public abstract void invoke() throws Exception;
-	
+
 	public abstract void verify(Exception e);
 }

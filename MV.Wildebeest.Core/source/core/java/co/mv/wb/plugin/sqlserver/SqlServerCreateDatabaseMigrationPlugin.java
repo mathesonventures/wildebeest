@@ -23,6 +23,7 @@ import co.mv.wb.MigrationFaultException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationPluginType;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
@@ -32,7 +33,7 @@ import java.sql.SQLException;
 /**
  * {@link MigrationPlugin} for {@link SqlServerCreateDatabaseMigration}.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 @MigrationPluginType(uri = "co.mv.wb.sqlserver:SqlServerCreateDatabase")
 public class SqlServerCreateDatabaseMigrationPlugin implements MigrationPlugin
@@ -41,13 +42,14 @@ public class SqlServerCreateDatabaseMigrationPlugin implements MigrationPlugin
 		PrintStream output,
 		Migration migration,
 		Instance instance) throws
-			MigrationFailedException
+		MigrationFailedException
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (output == null) throw new ArgumentNullException("output");
+		if (migration == null) throw new ArgumentNullException("migration");
+		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlServerCreateDatabaseMigration migrationT = ModelExtensions.As(migration, SqlServerCreateDatabaseMigration.class);
+		SqlServerCreateDatabaseMigration migrationT =
+			ModelExtensions.As(migration, SqlServerCreateDatabaseMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
@@ -64,7 +66,7 @@ public class SqlServerCreateDatabaseMigrationPlugin implements MigrationPlugin
 			DatabaseHelper.execute(instanceT.getAdminDataSource(), new StringBuilder()
 				.append("CREATE DATABASE [").append(instanceT.getDatabaseName()).append("];").toString());
 		}
-		catch(SQLServerException e)
+		catch (SQLServerException e)
 		{
 			throw new MigrationFailedException(migration.getMigrationId(), e.getMessage());
 		}

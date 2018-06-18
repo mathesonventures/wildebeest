@@ -23,6 +23,7 @@ import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
@@ -32,8 +33,8 @@ import java.util.UUID;
 
 /**
  * An {@link Assertion} that verifies that a database does not exist.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 @AssertionType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
@@ -42,18 +43,18 @@ import java.util.UUID;
 		"Asserts that the database specified by the instance does not exist.",
 	example =
 		"<assertion\n" +
-		"    type=\"DatabaseDoesNotExist\"\n" +
-		"    id=\"42a51154-cafe-4ec1-8a99-45918e9e1837\">\n" +
-		"</assertion>"
+			"    type=\"DatabaseDoesNotExist\"\n" +
+			"    id=\"42a51154-cafe-4ec1-8a99-45918e9e1837\">\n" +
+			"</assertion>"
 )
 public class DatabaseDoesNotExistAssertion extends BaseAssertion
 {
 	/**
 	 * Creates a new DatabaseDoesNotExistAssertion
-	 * 
-	 * @param       assertionId                 the ID of the new assertion.
-	 * @param       seqNum                      the ordinal index of the new assertion within it's containing set.
-	 * @since                                   1.0
+	 *
+	 * @param assertionId the ID of the new assertion.
+	 * @param seqNum      the ordinal index of the new assertion within it's containing set.
+	 * @since 1.0
 	 */
 	public DatabaseDoesNotExistAssertion(
 		UUID assertionId,
@@ -66,7 +67,7 @@ public class DatabaseDoesNotExistAssertion extends BaseAssertion
 	{
 		return "Database does not exist";
 	}
-	
+
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
@@ -74,15 +75,19 @@ public class DatabaseDoesNotExistAssertion extends BaseAssertion
 			Wildebeest.PostgreSqlDatabase,
 			Wildebeest.SqlServerDatabase);
 	}
-	
+
 	@Override public AssertionResponse perform(Instance instance)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		DatabaseInstance db = ModelExtensions.As(instance, DatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseInstance"); }
-		
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a DatabaseInstance");
+		}
+
 		AssertionResponse result;
-		
+
 		if (db.databaseExists())
 		{
 			result = new ImmutableAssertionResponse(false, "Database " + db.getDatabaseName() + " exists");
@@ -91,7 +96,7 @@ public class DatabaseDoesNotExistAssertion extends BaseAssertion
 		{
 			result = new ImmutableAssertionResponse(true, "Database " + db.getDatabaseName() + " does not exist");
 		}
-		
+
 		return result;
 	}
 }

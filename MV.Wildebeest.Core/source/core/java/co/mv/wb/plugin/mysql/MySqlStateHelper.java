@@ -18,6 +18,7 @@ package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.FaultException;
 import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 
 import javax.sql.DataSource;
@@ -29,21 +30,21 @@ import java.util.UUID;
 
 /**
  * Centralizes state tracking operations for MySqlDatabaseInstances.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class MySqlStateHelper
 {
 	/**
 	 * Sets the tracked state for an instance.  Note that a MySqlDatabaseInstance may be migrated by multiple separate
 	 * resource definitions (to support composite resources).  The state set is for a specific resource definition.
-	 * 
-	 * @param       resourceId                  the ID of the resource for which we are tracking state.
-	 * @param       appDataSource               the DataSource for interacting with the database.
-	 * @param       stateTableName              the name of the state tracking table in use for this instance.
-	 * @param       stateId                     the ID of the state.
-	 * @throws      SQLException                if an error occurs when interacting with the database.
-	 * @since                                   1.0
+	 *
+	 * @param resourceId     the ID of the resource for which we are tracking state.
+	 * @param appDataSource  the DataSource for interacting with the database.
+	 * @param stateTableName the name of the state tracking table in use for this instance.
+	 * @param stateId        the ID of the state.
+	 * @throws SQLException if an error occurs when interacting with the database.
+	 * @since 1.0
 	 */
 	public static void setStateId(
 		UUID resourceId,
@@ -51,16 +52,16 @@ public class MySqlStateHelper
 		String stateTableName,
 		UUID stateId) throws SQLException
 	{
-		if (resourceId == null) { throw new IllegalArgumentException("resourceId cannot be null"); }
-		if (appDataSource == null) { throw new IllegalArgumentException("appDataSource"); }
-		if (stateTableName == null) { throw new IllegalArgumentException("stateTableName cannot be null"); }
-		if ("".equals(stateTableName)) { throw new IllegalArgumentException("stateTableName cannot be empty"); }
-		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
-		
+		if (resourceId == null) throw new ArgumentNullException("resourceId");
+		if (appDataSource == null) throw new ArgumentNullException("appDataSource");
+		if (stateTableName == null) throw new ArgumentNullException("stateTableName");
+		if ("".equals(stateTableName)) throw new IllegalArgumentException("stateTableName cannot be empty");
+		if (stateId == null) throw new ArgumentNullException("stateId");
+
 		MySqlStateHelper.createStateTableIfNotExists(
 			appDataSource,
 			stateTableName);
-		
+
 		DatabaseHelper.execute(
 			appDataSource,
 			String.format(
@@ -76,36 +77,36 @@ public class MySqlStateHelper
 				resourceId,
 				stateId));
 	}
-	
+
 	/**
 	 * Gets the tracked state for an instance.  Note that a MySqlDatabaseInstance may be migrated by multiple separate
 	 * resource definitions (to support composite resources).  The state retrieved is for a specific resource
 	 * definition.
-	 * 
-	 * @param       resourceId                  the ID of the resource for which the state should be queried.          
-	 * @param       appDataSource               the DataSource for interacting with the database.
-	 * @param       stateTableName              the name of the state tracking table in use for this instance.
-	 * @return                                  the ID or Label of the state that the instance is in for the specified resource.
-	 * @throws      IndeterminateStateException if the current state of the instance cannot be determined for the
-	 *                                          specified resource.
-	 * @since                                   1.0
+	 *
+	 * @param resourceId     the ID of the resource for which the state should be queried.
+	 * @param appDataSource  the DataSource for interacting with the database.
+	 * @param stateTableName the name of the state tracking table in use for this instance.
+	 * @return the ID or Label of the state that the instance is in for the specified resource.
+	 * @throws IndeterminateStateException if the current state of the instance cannot be determined for the
+	 *                                     specified resource.
+	 * @since 1.0
 	 */
 	public static UUID getStateId(
 		UUID resourceId,
 		DataSource appDataSource,
 		String stateTableName) throws IndeterminateStateException
 	{
-		if (resourceId == null) { throw new IllegalArgumentException("resourceId cannot be null"); }
-		if (appDataSource == null) { throw new IllegalArgumentException("appDataSource"); }
-		if (stateTableName == null) { throw new IllegalArgumentException("stateTableName cannot be null"); }
-		if ("".equals(stateTableName)) { throw new IllegalArgumentException("stateTableName cannot be empty"); }
-		
+		if (resourceId == null) throw new ArgumentNullException("resourceId");
+		if (appDataSource == null) throw new ArgumentNullException("appDataSource");
+		if (stateTableName == null) throw new ArgumentNullException("stateTableName");
+		if ("".equals(stateTableName)) throw new IllegalArgumentException("stateTableName cannot be empty");
+
 		UUID stateId = null;
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try
 		{
 			conn = appDataSource.getConnection();
@@ -132,7 +133,7 @@ public class MySqlStateHelper
 					stateTableName));
 			}
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
 			throw new FaultException(e);
 		}
@@ -144,7 +145,7 @@ public class MySqlStateHelper
 				DatabaseHelper.release(ps);
 				DatabaseHelper.release(conn);
 			}
-			catch(SQLException e)
+			catch (SQLException e)
 			{
 				throw new FaultException(e);
 			}
@@ -155,25 +156,25 @@ public class MySqlStateHelper
 
 	/**
 	 * Creates the state tracking table in a MySqlDatabaseInstance.
-	 * 
-	 * @param       appDataSource               the DataSource for interacting with the database.
-	 * @param       stateTableName              the name of the state tracking table in use for this instance.
-	 * @throws      SQLException                if an error occurs when interacting with the database.
-	 * @since                                   1.0
+	 *
+	 * @param appDataSource  the DataSource for interacting with the database.
+	 * @param stateTableName the name of the state tracking table in use for this instance.
+	 * @throws SQLException if an error occurs when interacting with the database.
+	 * @since 1.0
 	 */
 	private static void createStateTableIfNotExists(
 		DataSource appDataSource,
 		String stateTableName) throws SQLException
 	{
-		if (appDataSource == null) { throw new IllegalArgumentException("appDataSource"); }
-		if (stateTableName == null) { throw new IllegalArgumentException("stateTableName cannot be null"); }
-		if ("".equals(stateTableName)) { throw new IllegalArgumentException("stateTableName cannot be empty"); }
-		
+		if (appDataSource == null) throw new ArgumentNullException("appDataSource");
+		if (stateTableName == null) throw new ArgumentNullException("stateTableName");
+		if ("".equals(stateTableName)) throw new IllegalArgumentException("stateTableName cannot be empty");
+
 		DatabaseHelper.execute(appDataSource, new StringBuilder()
 			.append("CREATE TABLE IF NOT EXISTS `").append(stateTableName).append("`(")
-				.append("`ResourceId` char(36) NOT NULL, ")
-				.append("`StateId` char(36) NOT NULL, ")
-				.append("PRIMARY KEY (`ResourceId`)")
-				.append(");").toString());
+			.append("`ResourceId` char(36) NOT NULL, ")
+			.append("`StateId` char(36) NOT NULL, ")
+			.append("PRIMARY KEY (`ResourceId`)")
+			.append(");").toString());
 	}
 }

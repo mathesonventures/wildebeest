@@ -28,8 +28,8 @@ import java.util.Optional;
 
 /**
  * An {@link InstanceBuilder} that builds a {@link PostgreSqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
@@ -45,11 +45,26 @@ public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		Optional<String> stateTableName = this.tryGetString("stateTableName");
 
 		Messages messages = new Messages();
-		if (!hostName.isPresent()) { V.elementMissing(messages, null, "hostName", PostgreSqlDatabaseInstance.class); }
-		if (!port.isPresent()) { V.elementMissing(messages, null, "port", PostgreSqlDatabaseInstance.class); }
-		if (!adminUsername.isPresent()) { V.elementMissing(messages, null, "adminUsername", PostgreSqlDatabaseInstance.class); }
-		if (!adminPassword.isPresent()) { V.elementMissing(messages, null, "adminPassword", PostgreSqlDatabaseInstance.class); }
-		if (!databaseName.isPresent()) { V.elementMissing(messages, null, "databaseName", PostgreSqlDatabaseInstance.class); }
+		if (!hostName.isPresent())
+		{
+			V.elementMissing(messages, null, "hostName", PostgreSqlDatabaseInstance.class);
+		}
+		if (!port.isPresent())
+		{
+			V.elementMissing(messages, null, "port", PostgreSqlDatabaseInstance.class);
+		}
+		if (!adminUsername.isPresent())
+		{
+			V.elementMissing(messages, null, "adminUsername", PostgreSqlDatabaseInstance.class);
+		}
+		if (!adminPassword.isPresent())
+		{
+			V.elementMissing(messages, null, "adminPassword", PostgreSqlDatabaseInstance.class);
+		}
+		if (!databaseName.isPresent())
+		{
+			V.elementMissing(messages, null, "databaseName", PostgreSqlDatabaseInstance.class);
+		}
 
 		if (messages.size() > 0)
 		{

@@ -40,8 +40,8 @@ import java.util.UUID;
 
 /**
  * An {@link Assertion} that verifies that a given SQL query does not yield any rows.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
@@ -49,13 +49,13 @@ import java.util.UUID;
 	description = "Asserts that a query results in zero rows.",
 	example =
 		"<assertion\n" +
-		"    type=\"RowDoesNotExist\"\n" +
-		"    id=\"c8b0941e-83bc-4151-83e3-8ca633735fbf\"\n" +
-		"    name=\"ProductType XY does not exist\">\n" +
-		"    <sql><![CDATA[\n" +
-		"        SELECT * FROM ProductType WHERE ProductTypeCode = 'XY';\n" +
-		"    ]]></sql>\n" +
-		"</assertion>"
+			"    type=\"RowDoesNotExist\"\n" +
+			"    id=\"c8b0941e-83bc-4151-83e3-8ca633735fbf\"\n" +
+			"    name=\"ProductType XY does not exist\">\n" +
+			"    <sql><![CDATA[\n" +
+			"        SELECT * FROM ProductType WHERE ProductTypeCode = 'XY';\n" +
+			"    ]]></sql>\n" +
+			"</assertion>"
 )
 public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 {
@@ -64,11 +64,11 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 
 	/**
 	 * Creates a new RowDoesNotExistAssertion.
-	 * 
-	 * @param       assertionId                 the ID of the assertion
-	 * @param       description                 the description of the query that is being asserted
-	 * @param       seqNum                      the ordinal index of the assertion within it's containing set
-	 * @param       sql                         the query to be evaluated
+	 *
+	 * @param assertionId the ID of the assertion
+	 * @param description the description of the query that is being asserted
+	 * @param seqNum      the ordinal index of the assertion within it's containing set
+	 * @param sql         the query to be evaluated
 	 */
 	public RowDoesNotExistAssertion(
 		UUID assertionId,
@@ -84,7 +84,7 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 		this.description = description;
 		this.sql = sql;
 	}
-	
+
 	@Override public String getDescription()
 	{
 		return this.description;
@@ -97,21 +97,25 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 			Wildebeest.PostgreSqlDatabase,
 			Wildebeest.SqlServerDatabase);
 	}
-	
+
 	@Override public AssertionResponse perform(Instance instance)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		DatabaseInstance db = ModelExtensions.As(instance, DatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a DatabaseInstance"); }
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a DatabaseInstance");
+		}
 
 		AssertionResponse result;
-		
+
 		DataSource ds = db.getAppDataSource();
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try
 		{
 			try
@@ -121,9 +125,9 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 				rs = ps.executeQuery();
 
 				int rowCount = 0;
-				while(rs.next())
+				while (rs.next())
 				{
-					rowCount ++;
+					rowCount++;
 				}
 
 				if (rowCount == 0)
@@ -144,11 +148,11 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 				DatabaseHelper.release(conn);
 			}
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
 			throw new AssertionFaultException(this.getAssertionId(), e);
 		}
-				
+
 		return result;
 	}
 }

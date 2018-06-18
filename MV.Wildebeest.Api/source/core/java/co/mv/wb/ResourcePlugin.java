@@ -21,8 +21,8 @@ import java.util.UUID;
 
 /**
  * Provides resource-type-specific services.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public interface ResourcePlugin
 {
@@ -30,33 +30,33 @@ public interface ResourcePlugin
 	 * Identifies and returns the defined state that the supplied resource instance currently appears to be in, or is
 	 * declared to be in.  Note that this does not guarantee that the resource is valid as compared to the state that it
 	 * is identified to be in.  To verify that the resource is valid for the current state, use assertState().
-	 * 
+	 * <p>
 	 * If the resource does not exist at all, then this method returns null.
-	 * 
+	 * <p>
 	 * If the state of the resource cannot be determined then an IndeterminateStateException is thrown.  For example if
 	 * the resource declares itself to be in state "A", but no such state has been defined for the resource, then this
 	 * is considered to be an indeterminate state.
-	 * 
+	 * <p>
 	 * Note: Formerly currentState() was defined by Resource directly before ResourcePlugin was factored out.
-	 * 
-	 * @param       resource                    the resource to check in the specified {@link Instance}
-	 * @param       instance                    the {@link Instance} to get the current state of
-	 * @return                                  the defined state that the resource currently appears to be in, or is
-	 *                                          declared to be in.
-	 * @exception   IndeterminateStateException when the current state of the resource cannot be determined clearly.
-	 * @since                                   1.0
+	 *
+	 * @param resource the resource to check in the specified {@link Instance}
+	 * @param instance the {@link Instance} to get the current state of
+	 * @return the defined state that the resource currently appears to be in, or is declared to be in.
+	 * @throws IndeterminateStateException when the current state of the resource cannot be determined clearly.
+	 * @since 1.0
 	 */
 	State currentState(
 		Resource resource,
-		Instance instance) throws IndeterminateStateException;
+		Instance instance) throws
+		IndeterminateStateException;
 
 	/**
 	 * Registers resource-type-specific meta data to record that it is in the specified state.
 	 *
-	 * @param       output                      the PrintStream for user output.
-	 * @param       resource                    the resource for which the state should be set in the specified {@link Instance}
-	 * @param       instance                    the {@link Instance} to record the state against
-	 * @param       stateId                     the state to record against the instance
+	 * @param output   the PrintStream for user output.
+	 * @param resource the resource for which the state should be set in the specified {@link Instance}
+	 * @param instance the {@link Instance} to record the state against
+	 * @param stateId  the state to record against the instance
 	 */
 	void setStateId(
 		PrintStream output,

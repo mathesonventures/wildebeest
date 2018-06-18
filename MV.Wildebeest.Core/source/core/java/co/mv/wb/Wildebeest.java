@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 /**
  * Global definitions and functions for Wildebeest.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class Wildebeest
 {
@@ -180,8 +180,8 @@ public class Wildebeest
 		Resource resource,
 		String state)
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (state == null) { throw new IllegalArgumentException("state cannot be null"); }
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (state == null) throw new ArgumentNullException("state");
 
 		State result;
 

@@ -24,6 +24,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlDatabaseInstance;
 import co.mv.wb.plugin.generaldatabase.Extensions;
 
@@ -33,8 +34,8 @@ import java.util.UUID;
 
 /**
  * Defines a PostgreSQL database resource.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 {
@@ -42,22 +43,26 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 	{
 	}
 
-    @Override
+	@Override
 	public State currentState(
 		Resource resource,
 		Instance instance) throws
-			IndeterminateStateException
-    {
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		IndeterminateStateException
+	{
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		PostgreSqlDatabaseInstance db = ModelExtensions.As(instance, PostgreSqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a PostgreSqlDatabaseInstance"); }
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a PostgreSqlDatabaseInstance");
+		}
 
 		String metaSchemaName = Extensions.getMetaSchemaName(db);
 		String stateTableName = Extensions.getStateTableName(db);
-		
+
 		UUID declaredStateId = null;
-		
+
 		if (db.databaseExists() && PostgreSqlStateHelper.hasStateId(
 			resource.getResourceId(), db.getAppDataSource(), metaSchemaName, stateTableName))
 		{
@@ -67,7 +72,7 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 				metaSchemaName,
 				stateTableName);
 		}
-		
+
 		// If we found a declared state, check that the state is actually defined
 		State result = null;
 		if (declaredStateId != null)
@@ -82,24 +87,29 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 					declaredStateId.toString()));
 			}
 		}
-		
-		return result;
-    }
 
-    @Override
+		return result;
+	}
+
+	@Override
 	public void setStateId(
 		PrintStream output,
 		Resource resource,
 		Instance instance,
 		UUID stateId)
-    {
-		if (output == null) { throw new IllegalArgumentException("output"); }
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+	{
+		if (output == null) throw new ArgumentNullException("output");
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		AnsiSqlDatabaseInstance db = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
-		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
-		
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance");
+		}
+
+		if (stateId == null) throw new ArgumentNullException("stateId");
+
 		// Set the state tracking row
 		try
 		{
@@ -114,5 +124,5 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 		{
 			throw new FaultException(e);
 		}
-    }
+	}
 }

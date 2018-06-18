@@ -35,11 +35,11 @@ public class MySqlProperties
 		this.username = null;
 		this.password = null;
 	}
-	
+
 	public static MySqlProperties get()
 	{
 		MySqlProperties result = new MySqlProperties();
-		
+
 		// HostName
 		String hostName = System.getProperty("mySql.hostName");
 		if (hostName == null)
@@ -51,7 +51,7 @@ public class MySqlProperties
 			LOG.debug("System mySql.hostName: " + hostName);
 			result.hostName = hostName;
 		}
-		
+
 		// Port
 		String portRaw = System.getProperty("mySql.port");
 		if (portRaw == null)
@@ -87,7 +87,7 @@ public class MySqlProperties
 			LOG.debug("System mySql.password: " + password);
 			result.password = password;
 		}
-		
+
 		LOG.debug(String.format(
 			"MySqlProperties { hostName: %s; port: %d; username: %s; password: %s; }",
 			result.getHostName(),
@@ -97,7 +97,7 @@ public class MySqlProperties
 
 		return result;
 	}
-	
+
 	public String getHostName()
 	{
 		return hostName;

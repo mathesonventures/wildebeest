@@ -19,17 +19,17 @@ package co.mv.wb;
 /**
  * An InstanceLoader is responsible for the overall deserialization of an instance descriptor from some persistent
  * representation to an {@link Instance} object.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public interface InstanceLoader
 {
 	/**
 	 * Loads an Instance according to the configuration of this InstanceLoader.
-	 * 
-	 * @return                                  the deserialized Instance.
-	 * @throws LoaderFault                 if any user-resolvable errors occurred during deserialization.
-	 * @since                                   1.0
+	 *
+	 * @return the deserialized Instance.
+	 * @throws LoaderFault if any user-resolvable errors occurred during deserialization.
+	 * @since 1.0
 	 */
 	Instance load() throws
 		LoaderFault,

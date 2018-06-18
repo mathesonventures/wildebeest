@@ -23,8 +23,8 @@ import java.util.UUID;
 
 /**
  * Provides a base implementation of {@link Assertion}
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public abstract class BaseAssertion implements Assertion
 {
@@ -33,9 +33,9 @@ public abstract class BaseAssertion implements Assertion
 
 	/**
 	 * Creates a new BaseAssertion.
-	 * 
-	 * @param       assertionId                 the ID of the new Assertion
-	 * @param       seqNum                      the ordinal index of the new Assertion within its owning container
+	 *
+	 * @param assertionId the ID of the new Assertion
+	 * @param seqNum      the ordinal index of the new Assertion within its owning container
 	 */
 	protected BaseAssertion(
 		UUID assertionId,

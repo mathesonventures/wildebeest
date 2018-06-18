@@ -18,16 +18,16 @@ package co.mv.wb;
 
 /**
  * Indicates that Wildebeest was unable to determine the current state of specified resource Instance.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class IndeterminateStateException extends Exception
 {
 	/**
 	 * Creates a new IndeterminateStateException with the supplied message.
-	 * 
-	 * @param       message                     the message for the new exception.
-	 * @since                                   1.0
+	 *
+	 * @param message the message for the new exception.
+	 * @since 1.0
 	 */
 	public IndeterminateStateException(String message)
 	{

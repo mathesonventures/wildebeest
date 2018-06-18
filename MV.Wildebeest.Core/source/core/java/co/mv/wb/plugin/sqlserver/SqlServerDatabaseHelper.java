@@ -16,31 +16,32 @@
 
 package co.mv.wb.plugin.sqlserver;
 
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 
 /**
  * Functional helper methods for working with SQL Server databases.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 public class SqlServerDatabaseHelper
 {
 	/**
 	 * Returns an indication of whether or not the SQL Server database represented by the supplied instance contains
 	 * a given schema.
-	 * 
-	 * @param       instance                    the SqlServerDatabaseIntance to check.
-	 * @param       schemaName                  the name of the schema to check for.
-	 * @return                                  an indication of whether or not the schema exists.
-	 * @since                                   2.0
+	 *
+	 * @param instance   the SqlServerDatabaseIntance to check.
+	 * @param schemaName the name of the schema to check for.
+	 * @return an indication of whether or not the schema exists.
+	 * @since 2.0
 	 */
 	public static boolean schemaExists(
 		SqlServerDatabaseInstance instance,
 		String schemaName)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
-		if ("".equals(schemaName.trim())) { throw new IllegalArgumentException("schemaName cannot be empty"); }
+		if (instance == null) throw new ArgumentNullException("instance");
+		if (schemaName == null) throw new ArgumentNullException("schemaName");
+		if ("".equals(schemaName.trim())) throw new IllegalArgumentException("schemaName cannot be empty");
 
 		return DatabaseHelper.rowExists(
 			instance.getAppDataSource(),
@@ -48,14 +49,14 @@ public class SqlServerDatabaseHelper
 				"SELECT * FROM sys.schemas WHERE name = '%s'",
 				schemaName));
 	}
-	
+
 	/**
 	 * Returns an indication of whether or not a SQL Server database schema contains a given table.
-	 * 
-	 * @param       instance                    the SqlServerDatabseInstance to check.
-	 * @param       schemaName                  the name of the schema that should contain the table.
-	 * @param       tableName                   the name of the table to check for.
-	 * @return                                  an indication of whether or not the table exists.
+	 *
+	 * @param instance   the SqlServerDatabseInstance to check.
+	 * @param schemaName the name of the schema that should contain the table.
+	 * @param tableName  the name of the table to check for.
+	 * @return an indication of whether or not the table exists.
 	 * since                                    2.0
 	 */
 	public static boolean tableExists(
@@ -63,12 +64,12 @@ public class SqlServerDatabaseHelper
 		String schemaName,
 		String tableName)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
-		if ("".equals(schemaName.trim())) { throw new IllegalArgumentException("schemaName cannot be empty"); }
-		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
-		if ("".equals(tableName.trim())) { throw new IllegalArgumentException("tableName cannot be empty"); }
-		
+		if (instance == null) throw new ArgumentNullException("instance");
+		if (schemaName == null) throw new ArgumentNullException("schemaName");
+		if ("".equals(schemaName.trim())) throw new IllegalArgumentException("schemaName cannot be empty");
+		if (tableName == null) throw new ArgumentNullException("tableName");
+		if ("".equals(tableName.trim())) throw new IllegalArgumentException("tableName cannot be empty");
+
 		return DatabaseHelper.rowExists(
 			instance.getAppDataSource(),
 			String.format(

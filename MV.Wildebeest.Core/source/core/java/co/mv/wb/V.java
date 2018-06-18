@@ -16,23 +16,25 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 import java.util.UUID;
 
 /**
  * Provides validation helper methods for DOM-based builders of all types.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 public class V
 {
 	/**
 	 * Adds a "required element" message to the messages collection.
-	 * 
-	 * @param       messages                    the Messages collection.
-	 * @param       itemId                      the ID of the item that is missing a required element.
-	 * @param       elementName                 the name of the required element that is missing.
-	 * @param       itemType                    the type of the item that is missing a required element.
-	 * @since                                   2.0
+	 *
+	 * @param messages    the Messages collection.
+	 * @param itemId      the ID of the item that is missing a required element.
+	 * @param elementName the name of the required element that is missing.
+	 * @param itemType    the type of the item that is missing a required element.
+	 * @since 2.0
 	 */
 	public static void elementMissing(
 		Messages messages,
@@ -40,10 +42,10 @@ public class V
 		String elementName,
 		Class itemType)
 	{
-		if (messages == null) { throw new IllegalArgumentException("messages cannot be null"); }
-		if (elementName == null) { throw new IllegalArgumentException("elementName cannot be null"); }
-		if ("".equals(elementName.trim())) { throw new IllegalArgumentException("elementName cannot be empty"); }
-		if (itemType == null) { throw new IllegalArgumentException("itemType cannot be null"); }
+		if (messages == null) throw new ArgumentNullException("messages");
+		if (elementName == null) throw new ArgumentNullException("elementName");
+		if ("".equals(elementName.trim())) throw new IllegalArgumentException("elementName cannot be empty");
+		if (itemType == null) throw new ArgumentNullException("itemType");
 
 		messages.addMessage(V.elementMissing(itemId, elementName, itemType));
 	}
@@ -53,32 +55,26 @@ public class V
 		String elementName,
 		Class itemType)
 	{
-		if (elementName == null) { throw new IllegalArgumentException("elementName cannot be null"); }
-		if ("".equals(elementName.trim())) { throw new IllegalArgumentException("elementName cannot be empty"); }
-		if (itemType == null) { throw new IllegalArgumentException("itemType cannot be null"); }
+		if (itemId == null) throw new ArgumentNullException("itemId");
+		if (elementName == null) throw new ArgumentNullException("elementName");
+		if ("".equals(elementName.trim())) throw new IllegalArgumentException("elementName cannot be empty");
+		if (itemType == null) throw new ArgumentNullException("itemType");
 
 		return itemId == null
-			? String.format(
-				"Element %s is missing from %s",
-				elementName,
-				itemType.getName())
-			: String.format(
-				"Element %s is missing from %s with ID %s",
-				elementName,
-				itemType.getName(),
-				itemId);
+			? String.format("Element %s is missing from %s", elementName, itemType.getName())
+			: String.format("Element %s is missing from %s with ID %s", elementName, itemType.getName(), itemId);
 	}
-	
+
 	public static void elementInvalidValue(
 		Messages messages,
 		UUID itemId,
 		String elementName,
 		Class itemType)
 	{
-		if (messages == null) { throw new IllegalArgumentException("messages cannot be null"); }
-		if (elementName == null) { throw new IllegalArgumentException("elementName cannot be null"); }
-		if ("".equals(elementName.trim())) { throw new IllegalArgumentException("elementName.trim() cannot be empty"); }
-		if (itemType == null) { throw new IllegalArgumentException("itemType cannot be null"); }
+		if (messages == null) throw new ArgumentNullException("messages");
+		if (elementName == null) throw new ArgumentNullException("elementName");
+		if ("".equals(elementName.trim())) throw new IllegalArgumentException("elementName cannot be empty");
+		if (itemType == null) throw new ArgumentNullException("itemType");
 
 		if (itemId == null)
 		{
@@ -86,7 +82,10 @@ public class V
 		}
 		else
 		{
-			messages.addMessage("The value of element %s is invalid for %s with ID %s", elementName, itemType.getName());
+			messages.addMessage(
+				"The value of element %s is invalid for %s with ID %s",
+				elementName,
+				itemType.getName());
 		}
 	}
 }

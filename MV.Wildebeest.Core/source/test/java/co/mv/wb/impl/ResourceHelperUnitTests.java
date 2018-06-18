@@ -16,7 +16,25 @@
 
 package co.mv.wb.impl;
 
-import co.mv.wb.*;
+import co.mv.wb.Assertion;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionResult;
+import co.mv.wb.Asserts;
+import co.mv.wb.ExpectException;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.JumpStateFailedException;
+import co.mv.wb.Migration;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationInvalidStateException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MigrationPlugin;
+import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -40,11 +58,11 @@ import static org.junit.Assert.assertNotNull;
 
 public class ResourceHelperUnitTests
 {
-	
+
 	//
 	// assertState()
 	//
-	
+
 	@Test
 	public void assertState_noAssertions_succeeds() throws IndeterminateStateException
 	{
@@ -62,7 +80,7 @@ public class ResourceHelperUnitTests
 		State state = new ImmutableState(UUID.randomUUID());
 
 		resource.getStates().add(state);
-		
+
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -80,7 +98,7 @@ public class ResourceHelperUnitTests
 		assertNotNull("results", results);
 		assertEquals("results.size", 0, results.size());
 	}
-	
+
 	@Test
 	public void assertState_oneAssertion_succeeds() throws IndeterminateStateException
 	{
@@ -95,13 +113,13 @@ public class ResourceHelperUnitTests
 
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
-		
+
 		Assertion assertion1 = new TagAssertion(
 			UUID.randomUUID(),
 			0,
 			"Foo");
 		state.getAssertions().add(assertion1);
-		
+
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
@@ -122,7 +140,7 @@ public class ResourceHelperUnitTests
 		Asserts.assertAssertionResult(
 			assertion1.getAssertionId(), true, "Tag is \"Foo\"", results.get(0), "results[0]");
 	}
-	
+
 	@Test
 	public void assertState_multipleAssertions_succeeds() throws IndeterminateStateException
 	{
@@ -143,13 +161,13 @@ public class ResourceHelperUnitTests
 			assertion1Id,
 			0,
 			"Foo"));
-		
+
 		UUID assertion2Id = UUID.randomUUID();
 		state.getAssertions().add(new TagAssertion(
 			assertion2Id,
 			1,
 			"Bar"));
-		
+
 		FakeInstance instance = new FakeInstance(state.getStateId());
 		instance.setTag("Foo");
 
@@ -192,7 +210,7 @@ public class ResourceHelperUnitTests
 	{
 		throw new UnsupportedOperationException();
 	}
-	
+
 	//
 	// migrate()
 	//
@@ -220,14 +238,14 @@ public class ResourceHelperUnitTests
 		State state = new ImmutableState(state1Id);
 		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state);
-		
+
 		UUID migration1Id = UUID.randomUUID();
 		Migration tran1 = new SetTagMigration(migration1Id, Optional.empty(), Optional.of(state1Id.toString()), "foo");
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
 		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
-		
+
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -241,12 +259,12 @@ public class ResourceHelperUnitTests
 			resource,
 			instance,
 			Optional.of(state1Id.toString()));
-		
+
 		// Verify
 		assertEquals("instance.tag", "foo", instance.getTag());
-		
+
 	}
-	
+
 	@Test
 	public void migrate_nonExistentToDeepState_succeeds() throws
 		AssertionFailedException,
@@ -258,7 +276,7 @@ public class ResourceHelperUnitTests
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException
 	{
-		
+
 		//
 		// Setup
 		//
@@ -286,7 +304,7 @@ public class ResourceHelperUnitTests
 		State state3 = new ImmutableState(UUID.randomUUID(), Optional.of("State 3"));
 		state3.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "bup"));
 		resource.getStates().add(state3);
-		
+
 		// Migrate null -> State1
 		Migration tran1 = new SetTagMigration(
 			UUID.randomUUID(),
@@ -294,7 +312,7 @@ public class ResourceHelperUnitTests
 			Optional.of(state1.getStateId().toString()),
 			"foo");
 		resource.getMigrations().add(tran1);
-		
+
 		// Migrate State1 -> State2
 		Migration tran2 = new SetTagMigration(
 			UUID.randomUUID(),
@@ -303,7 +321,7 @@ public class ResourceHelperUnitTests
 			"bar");
 
 		resource.getMigrations().add(tran2);
-		
+
 		// Migrate State2 -> State3
 		Migration tran3 = new SetTagMigration(
 			UUID.randomUUID(),
@@ -332,15 +350,15 @@ public class ResourceHelperUnitTests
 			resource,
 			instance,
 			Optional.of(state3.getStateId().toString()));
-		
+
 		//
 		// Verify
 		//
-		
+
 		assertEquals("instance.tag", "bup", instance.getTag());
-		
+
 	}
-	
+
 	@Test
 	public void migrate_nonExistentToDeepStateWithMultipleBranches_succeeds() throws
 		AssertionFailedException,
@@ -350,9 +368,9 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-     	MigrationInvalidStateException
+		MigrationInvalidStateException
 	{
-		
+
 		//
 		// Setup
 		//
@@ -396,7 +414,7 @@ public class ResourceHelperUnitTests
 		State stateC3 = new ImmutableState(stateC3Id);
 		stateC3.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "stateC3"));
 		resource.getStates().add(stateC3);
-		
+
 		// Migrate null -> State1
 		UUID migration1Id = UUID.randomUUID();
 		Migration migration1 = new SetTagMigration(
@@ -405,7 +423,7 @@ public class ResourceHelperUnitTests
 			Optional.of(state1Id.toString()),
 			"state1");
 		resource.getMigrations().add(migration1);
-		
+
 		// Migrate State1 -> StateB2
 		UUID migration2Id = UUID.randomUUID();
 		Migration migration2 = new SetTagMigration(
@@ -414,7 +432,7 @@ public class ResourceHelperUnitTests
 			Optional.of(stateB2Id.toString()),
 			"stateB2");
 		resource.getMigrations().add(migration2);
-		
+
 		// Migrate StateB2 -> StateB3
 		UUID migration3Id = UUID.randomUUID();
 		Migration migration3 = new SetTagMigration(
@@ -423,7 +441,7 @@ public class ResourceHelperUnitTests
 			Optional.of(stateB3Id.toString()),
 			"stateB3");
 		resource.getMigrations().add(migration3);
-		
+
 		// Migrate State1 -> StateC2
 		UUID migration4Id = UUID.randomUUID();
 		Migration migration4 = new SetTagMigration(
@@ -432,7 +450,7 @@ public class ResourceHelperUnitTests
 			Optional.of(stateC2Id.toString()),
 			"stateC2");
 		resource.getMigrations().add(migration4);
-		
+
 		// Migrate StateC2 -> StateC3
 		UUID migration5Id = UUID.randomUUID();
 		Migration migration5 = new SetTagMigration(
@@ -462,29 +480,29 @@ public class ResourceHelperUnitTests
 			resource,
 			instance,
 			Optional.of(stateB3Id.toString()));
-		
+
 		//
 		// Verify
 		//
-		
+
 		assertEquals("instance.tag", "stateB3", instance.getTag());
-		
+
 	}
-	
+
 	@Ignore
 	@Test
 	public void migrate_stateToState_succeeds()
 	{
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Ignore
 	@Test
 	public void migrate_stateToDeepState_succeeds()
 	{
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Test
 	public void migrate_toSameState_succeeds() throws
 		AssertionFailedException,
@@ -496,7 +514,7 @@ public class ResourceHelperUnitTests
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException
 	{
-		
+
 		//
 		// Setup
 		//
@@ -516,7 +534,7 @@ public class ResourceHelperUnitTests
 		State state = new ImmutableState(state1Id);
 		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state);
-		
+
 		// Migration 1
 		UUID migration1Id = UUID.randomUUID();
 		Migration tran1 = new SetTagMigration(
@@ -542,7 +560,7 @@ public class ResourceHelperUnitTests
 			resource,
 			instance,
 			Optional.of(state1Id.toString()));
-		
+
 		//
 		// Execute
 		//
@@ -551,25 +569,25 @@ public class ResourceHelperUnitTests
 			resource,
 			instance,
 			Optional.of(state1Id.toString()));
-		
+
 		//
 		// Verify
 		//
-		
+
 		assertEquals("instance.tag", "foo", instance.getTag());
-		
+
 	}
 
 	@Test
 	public void migrate_toSameStateUsingLabel_succeeds() throws
-		  AssertionFailedException,
-		  IndeterminateStateException,
-		  InvalidStateSpecifiedException,
-		  MigrationNotPossibleException,
-		  MigrationFailedException,
-		  TargetNotSpecifiedException,
-		  UnknownStateSpecifiedException,
-		  MigrationInvalidStateException
+		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
+		MigrationNotPossibleException,
+		MigrationFailedException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 
 		//
@@ -581,10 +599,10 @@ public class ResourceHelperUnitTests
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
-			  UUID.randomUUID(),
-			  FakeConstants.Fake,
-			  "Resource",
-			  Optional.empty());
+			UUID.randomUUID(),
+			FakeConstants.Fake,
+			"Resource",
+			Optional.empty());
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -595,10 +613,10 @@ public class ResourceHelperUnitTests
 		// Migration 1
 		UUID migration1Id = UUID.randomUUID();
 		Migration tran1 = new SetTagMigration(
-			  migration1Id,
-			  Optional.empty(),
-			  Optional.of("testLabel1"),
-			  "foo");
+			migration1Id,
+			Optional.empty(),
+			Optional.of("testLabel1"),
+			"foo");
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
@@ -608,24 +626,24 @@ public class ResourceHelperUnitTests
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			  .wildebeestApi(output)
-			  .withFactoryResourcePlugins()
-			  .withFactoryPluginManager()
-			  .get();
+			.wildebeestApi(output)
+			.withFactoryResourcePlugins()
+			.withFactoryPluginManager()
+			.get();
 
 		wildebeestApi.migrate(
-			  resource,
-			  instance,
-			  Optional.of(state1Id.toString()));
+			resource,
+			instance,
+			Optional.of(state1Id.toString()));
 
 		//
 		// Execute
 		//
 
 		wildebeestApi.migrate(
-			  resource,
-			  instance,
-			  Optional.of(state1Id.toString()));
+			resource,
+			instance,
+			Optional.of(state1Id.toString()));
 
 		//
 		// Verify
@@ -634,7 +652,7 @@ public class ResourceHelperUnitTests
 		assertEquals("instance.tag", "foo", instance.getTag());
 
 	}
-	
+
 	@Ignore
 	@Test
 	public void migrate_stateToNonExistent_succeeds() throws
@@ -647,7 +665,7 @@ public class ResourceHelperUnitTests
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException
 	{
-		
+
 		//
 		// Setup
 		//
@@ -667,7 +685,7 @@ public class ResourceHelperUnitTests
 		State state = new ImmutableState(state1Id);
 		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state);
-		
+
 		// Migration 1
 		UUID migration1Id = UUID.randomUUID();
 		Migration tran1 = new SetTagMigration(
@@ -706,11 +724,11 @@ public class ResourceHelperUnitTests
 		//
 		// Verify
 		//
-		
+
 		assertEquals("instance.tag", "foo", instance.getTag());
-		
+
 	}
-	
+
 	@Ignore
 	@Test
 	public void migrate_deepStateToNonExistent_succeeds()
@@ -722,17 +740,17 @@ public class ResourceHelperUnitTests
 	@Test
 	public void migrate_circularDependency_throws()
 	{
-		throw  new UnsupportedOperationException();
+		throw new UnsupportedOperationException();
 	}
-	
+
 	//
 	// jumpstate()
 	//
-	
+
 	@Test
 	public void jumpstate_assertionFail_throws()
 	{
-		
+
 		//
 		// Setup
 		//
@@ -746,7 +764,7 @@ public class ResourceHelperUnitTests
 			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
-		
+
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
 		State state = new ImmutableState(state1Id);
@@ -780,18 +798,21 @@ public class ResourceHelperUnitTests
 			@Override public void verify(Exception e)
 			{
 				AssertionFailedException te = (AssertionFailedException)e;
-				
+
 				assertEquals("te.assertionResults.size", 1, te.getAssertionResults().size());
-				assertEquals("te.assertionResults[0].message", "Tag not as expected", te.getAssertionResults().get(0).getMessage());
+				assertEquals(
+					"te.assertionResults[0].message",
+					"Tag not as expected",
+					te.getAssertionResults().get(0).getMessage());
 			}
 		}.perform();
 
 	}
-	
+
 	@Test
 	public void jumpstate_nonExistentState_throws()
 	{
-		
+
 		//
 		// Setup
 		//
@@ -808,7 +829,7 @@ public class ResourceHelperUnitTests
 
 		// Instance
 		final FakeInstance instance = new FakeInstance();
-		
+
 		// Target State ID
 		final UUID targetStateId = UUID.randomUUID();
 
@@ -842,9 +863,9 @@ public class ResourceHelperUnitTests
 					te.getMessage());
 			}
 		}.perform();
-		
+
 	}
-	
+
 	@Test
 	public void jumpstate_existentState_succeeds() throws
 		AssertionFailedException,
@@ -854,7 +875,7 @@ public class ResourceHelperUnitTests
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException
 	{
-		
+
 		//
 		// Setup
 		//
@@ -867,7 +888,7 @@ public class ResourceHelperUnitTests
 			FakeConstants.Fake,
 			"Resource",
 			Optional.empty());
-		
+
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
 		State state = new ImmutableState(state1Id);
@@ -896,9 +917,9 @@ public class ResourceHelperUnitTests
 		//
 		// Verify
 		//
-		
+
 		assertEquals("instance.tag", "Foo", instance.getTag());
-		
+
 	}
 
 }

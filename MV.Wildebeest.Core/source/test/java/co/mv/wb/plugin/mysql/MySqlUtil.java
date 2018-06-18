@@ -16,12 +16,14 @@
 
 package co.mv.wb.plugin.mysql;
 
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import java.sql.SQLException;
-import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.sql.DataSource;
+import java.sql.SQLException;
 
 public class MySqlUtil
 {
@@ -32,10 +34,10 @@ public class MySqlUtil
 		String databaseName,
 		String setupScript)
 	{
-		if (properties == null) { throw new IllegalArgumentException("properties cannot be null"); }
-		if (databaseName == null) { throw new IllegalArgumentException("databaseName cannot be null"); }
-		if (setupScript == null) { throw new IllegalArgumentException("setupScript cannot be null"); }
-		
+		if (properties == null) throw new ArgumentNullException("properties");
+		if (databaseName == null) throw new ArgumentNullException("databaseName");
+		if (setupScript == null) throw new ArgumentNullException("setupScript");
+
 		return MySqlUtil.createDatabase(
 			properties.getHostName(),
 			properties.getPort(),
@@ -44,14 +46,14 @@ public class MySqlUtil
 			databaseName,
 			setupScript);
 	}
-	
+
 	public static DataSource getDataSource(
 		MySqlProperties properties,
 		String databaseName)
 	{
-		if (properties == null) { throw new IllegalArgumentException("properties cannot be null"); }
-		if (databaseName == null) { throw new IllegalArgumentException("databaseName cannot be null"); }
-		
+		if (properties == null) throw new ArgumentNullException("properties");
+		if (databaseName == null) throw new ArgumentNullException("databaseName");
+
 		return MySqlUtil.getDataSource(
 			properties.getHostName(),
 			properties.getPort(),
@@ -59,7 +61,7 @@ public class MySqlUtil
 			properties.getPassword(),
 			databaseName);
 	}
-	
+
 	public static DataSource getDataSource(
 		String hostName,
 		int port,
@@ -67,21 +69,21 @@ public class MySqlUtil
 		String passwordClear,
 		String databaseName)
 	{
-		if (hostName == null) { throw new IllegalArgumentException("hostName cannot be null"); }
-		if (username == null) { throw new IllegalArgumentException("username cannot be null"); }
-		if (passwordClear == null) { throw new IllegalArgumentException("passwordClear cannot be null"); }
-		if (databaseName == null) { throw new IllegalArgumentException("databaseName cannot be null"); }
-		
+		if (hostName == null) throw new ArgumentNullException("hostName");
+		if (username == null) throw new ArgumentNullException("username");
+		if (passwordClear == null) throw new ArgumentNullException("passwordClear");
+		if (databaseName == null) throw new ArgumentNullException("databaseName");
+
 		MysqlDataSource ds = new MysqlDataSource();
 		ds.setServerName(hostName);
 		ds.setPort(port);
 		ds.setUser(username);
 		ds.setPassword(passwordClear);
 		ds.setDatabaseName(databaseName);
-		
+
 		return ds;
 	}
-	
+
 	public static String createDatabase(
 		String hostName,
 		int port,
@@ -90,12 +92,12 @@ public class MySqlUtil
 		String databaseName,
 		String setupScript)
 	{
-		if (hostName == null) { throw new IllegalArgumentException("hostName cannot be null"); }
-		if (username == null) { throw new IllegalArgumentException("username cannot be null"); }
-		if (passwordClear == null) { throw new IllegalArgumentException("passwordClear cannot be null"); }
-		if (databaseName == null) { throw new IllegalArgumentException("databaseName cannot be null"); }
-		if (setupScript == null) { throw new IllegalArgumentException("setupScript cannot be null"); }
-		
+		if (hostName == null) throw new ArgumentNullException("hostName");
+		if (username == null) throw new ArgumentNullException("username");
+		if (passwordClear == null) throw new ArgumentNullException("passwordClear");
+		if (databaseName == null) throw new ArgumentNullException("databaseName");
+		if (setupScript == null) throw new ArgumentNullException("setupScript");
+
 		LOG.info(String.format(
 			"Setting up test database { name: %s: hostName: %s; username: %s; password: %s; }",
 			databaseName,
@@ -106,7 +108,7 @@ public class MySqlUtil
 		//
 		// Create Database
 		//
-		
+
 		DataSource rootDs = MySqlUtil.getDataSource(
 			hostName,
 			port,
@@ -118,15 +120,15 @@ public class MySqlUtil
 		{
 			DatabaseHelper.execute(rootDs, String.format("CREATE DATABASE `%s`;", databaseName));
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
 			throw new RuntimeException(e);
 		}
-		
+
 		//
 		// Execute Setup Script
 		//
-		
+
 		DataSource testDs = MySqlUtil.getDataSource(
 			hostName,
 			port,
@@ -138,21 +140,21 @@ public class MySqlUtil
 		{
 			DatabaseHelper.execute(testDs, setupScript);
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
 			throw new RuntimeException(e);
 		}
 
 		return databaseName;
 	}
-	
+
 	public static void dropDatabase(
 		MySqlProperties properties,
 		String databaseName)
 	{
-		if (properties == null) { throw new IllegalArgumentException("properties cannot be null"); }
-		if (databaseName == null) { throw new IllegalArgumentException("databaseName cannot be null"); }
-		
+		if (properties == null) throw new ArgumentNullException("properties");
+		if (databaseName == null) throw new ArgumentNullException("databaseName");
+
 		MySqlUtil.dropDatabase(
 			properties.getHostName(),
 			properties.getPort(),
@@ -160,7 +162,7 @@ public class MySqlUtil
 			properties.getPassword(),
 			databaseName);
 	}
-	
+
 	public static void dropDatabase(
 		String hostName,
 		int port,
@@ -168,11 +170,11 @@ public class MySqlUtil
 		String passwordClear,
 		String databaseName)
 	{
-		if (hostName == null) { throw new IllegalArgumentException("hostName cannot be null"); }
-		if (username == null) { throw new IllegalArgumentException("username cannot be null"); }
-		if (passwordClear == null) { throw new IllegalArgumentException("passwordClear cannot be null"); }
-		if (databaseName == null) { throw new IllegalArgumentException("databaseName cannot be null"); }
-		
+		if (hostName == null) throw new ArgumentNullException("hostName");
+		if (username == null) throw new ArgumentNullException("username");
+		if (passwordClear == null) throw new ArgumentNullException("passwordClear");
+		if (databaseName == null) throw new ArgumentNullException("databaseName");
+
 		MysqlDataSource rootDs = new MysqlDataSource();
 		rootDs.setServerName(hostName);
 		rootDs.setPort(port);
@@ -184,19 +186,19 @@ public class MySqlUtil
 		{
 			DatabaseHelper.execute(rootDs, String.format("DROP DATABASE `%s`;", databaseName));
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public static void dropDatabase(
 		MySqlDatabaseInstance instance,
 		String databaseName) throws SQLException
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if ("".equals(databaseName)) { throw new IllegalArgumentException("databaseName cannot be empty"); }
-		
+		if (instance == null) throw new ArgumentNullException("instance");
+		if ("".equals(databaseName)) throw new IllegalArgumentException("databaseName cannot be empty");
+
 		DatabaseHelper.execute(instance.getAdminDataSource(), "DROP DATABASE `" + databaseName + "`;");
 	}
 }

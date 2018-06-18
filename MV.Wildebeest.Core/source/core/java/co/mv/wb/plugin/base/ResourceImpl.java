@@ -29,8 +29,8 @@ import java.util.UUID;
 
 /**
  * Provides a base implementation of {@link Resource}
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public final class ResourceImpl implements Resource
 {
@@ -43,12 +43,12 @@ public final class ResourceImpl implements Resource
 
 	/**
 	 * Creates a new concrete Resource instance.
-	 * 
-	 * @param       resourceId                  the ID of the new Resource
-	 * @param       type                        the type of the new Resource
-	 * @param       name                        the name of the new Resource
-	 * @param       defaultTarget               the optional default target for this resource
-	 * @since                                   1.0
+	 *
+	 * @param resourceId    the ID of the new Resource
+	 * @param type          the type of the new Resource
+	 * @param name          the name of the new Resource
+	 * @param defaultTarget the optional default target for this resource
+	 * @since 1.0
 	 */
 	public ResourceImpl(
 		UUID resourceId,
