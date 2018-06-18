@@ -64,6 +64,14 @@ public class OutputFormatter
 			e.getMessage());
 	}
 
+	public static String missingReference(
+			MissingReferenceException e)
+	{
+		return String.format(
+				"Missing referred resource: \"%s\"",
+				e.getMessage());
+	}
+
 	//
 	// State
 	//
@@ -158,6 +166,11 @@ public class OutputFormatter
 	public static String migrationFailed(MigrationFailedException e)
 	{
 		return String.format("Migration failed: %s", e.getMessage());
+	}
+
+	public static String migrationInvalidState(MigrationInvalidStateException e)
+	{
+		return String.format("Migration not possible: %s", e.getMessage());
 	}
 
 	//

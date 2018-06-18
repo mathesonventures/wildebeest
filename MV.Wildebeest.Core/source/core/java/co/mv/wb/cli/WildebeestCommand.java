@@ -16,25 +16,9 @@
 
 package co.mv.wb.cli;
 
-import co.mv.wb.About;
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.FileLoadException;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.Instance;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.JumpStateFailedException;
-import co.mv.wb.LoaderFault;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.OutputFormatter;
-import co.mv.wb.PluginBuildException;
-import co.mv.wb.Resource;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
+import co.mv.wb.*;
+
 import co.mv.wb.framework.ArgumentNullException;
-import co.mv.wb.XmlValidationException;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -218,6 +202,10 @@ public class WildebeestCommand
 						{
 							this.output.println(OutputFormatter.assertionFailed(e));
 						}
+						catch (MigrationInvalidStateException e)
+						{
+							this.output.print(OutputFormatter.migrationInvalidState(e));
+						}
 					}
 				}
 			}
@@ -327,6 +315,10 @@ public class WildebeestCommand
 		catch (XmlValidationException e)
 		{
 			out.println(OutputFormatter.resourceValidation(e, "resource"));
+		}
+		catch (MissingReferenceException e)
+		{
+			out.println(OutputFormatter.missingReference(e));
 		}
 
 		return Optional.ofNullable(resource);

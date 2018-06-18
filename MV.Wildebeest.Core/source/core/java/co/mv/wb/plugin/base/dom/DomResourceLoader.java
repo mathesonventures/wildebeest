@@ -22,6 +22,7 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.Messages;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
@@ -45,6 +46,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -61,6 +64,10 @@ public class DomResourceLoader implements ResourceLoader
     private static final String XA_RESOURCE_NAME = "name";
     private static final String XA_RESOURCE_DEFAULT_TARGET = "defaultTarget";
 
+    private static final String XE_ASSERTION_GROUPS = "assertionGroups";
+    private static final String XA_ASSERTION_GROUP_NAME = "name";
+    private static final String XA_ASSERTION_GROUP_ID = "id";
+
     private static final String XE_STATES = "states";
 
     private static final String XE_STATE = "state";
@@ -72,6 +79,12 @@ public class DomResourceLoader implements ResourceLoader
     private static final String XA_ASSERTION_TYPE = "type";
     private static final String XA_ASSERTION_ID = "id";
     private static final String XA_ASSERTION_NAME = "name";
+
+    private static final String XE_ASSERTION_REF = "assertionRef";
+    private static final String XA_ASSERTION_REF_TYPE = "type";
+    private static final String XA_ASSERTION_REF_TYPE_SINGLE = "single";
+    private static final String XA_ASSERTION_REF_TYPE_SELECTOR = "selector";
+    private static final String XA_ASSERTION_REF_TYPE_GROUP = "group";
 
     private static final String XE_MIGRATIONS = "migrations";
     private static final String XA_MIGRATION_TYPE = "type";
@@ -113,7 +126,8 @@ public class DomResourceLoader implements ResourceLoader
     @Override
     public Resource load(File baseDir) throws
 		LoaderFault,
-		PluginBuildException
+		PluginBuildException,
+		MissingReferenceException
 	{
 		if (baseDir == null) throw new ArgumentNullException("baseDir");
 
@@ -151,19 +165,39 @@ public class DomResourceLoader implements ResourceLoader
             Optional<String> defaultTarget = Optional.ofNullable(resourceXe.getAttribute(XA_RESOURCE_DEFAULT_TARGET));
 
             resource = new ResourceImpl(
-				id,
-				type,
-				name,
-				defaultTarget);
+                    id,
+                    type,
+                    name,
+                    defaultTarget);
 
-            for (int i = 0; i < resourceXe.getChildNodes().getLength(); i++)
-            {
+            HashMap<String, List<Assertion>> assertionGroupsMap = new HashMap<>();
+            for (int i = 0; i < resourceXe.getChildNodes().getLength(); i++) {
                 Element childXe = ModelExtensions.As(resourceXe.getChildNodes().item(i), Element.class);
 
-                if (childXe != null && XE_STATES.equals(childXe.getTagName()))
-                {
-                    for (int stateIndex = 0; stateIndex < childXe.getChildNodes().getLength(); stateIndex++)
-                    {
+                if(childXe != null && XE_ASSERTION_GROUPS.equals(childXe.getTagName())) {
+                    for (int asrGrpIndex = 0; asrGrpIndex < childXe.getChildNodes().getLength(); asrGrpIndex++) {
+                        Element asrGrpXe = ModelExtensions.As(childXe.getChildNodes().item(asrGrpIndex), Element.class);
+
+                        if(asrGrpXe != null) {
+                            List<Assertion> assertions = new ArrayList<>();
+                            for (int asrIndex  = 0; asrIndex < asrGrpXe.getChildNodes().getLength(); asrIndex++) {
+                                Element asrXe = ModelExtensions.As(asrGrpXe.getChildNodes().item(asrIndex),
+                                        Element.class);
+
+                                if(asrXe != null) {
+                                    assertions.add(buildAssertion(this.assertionBuilders, asrXe, asrIndex));
+                                }
+
+                            }
+
+                            assertionGroupsMap.put(asrGrpXe.getAttribute(XA_ASSERTION_GROUP_NAME), assertions);
+                            assertionGroupsMap.put(asrGrpXe.getAttribute(XA_ASSERTION_GROUP_ID), assertions);
+                        }
+                    }
+                }
+
+                if (childXe != null && XE_STATES.equals(childXe.getTagName())) {
+                    for (int stateIndex = 0; stateIndex < childXe.getChildNodes().getLength(); stateIndex++) {
                         Element stateXe = ModelExtensions.As(childXe.getChildNodes().item(stateIndex), Element.class);
 
                         if (stateXe != null)
@@ -171,40 +205,47 @@ public class DomResourceLoader implements ResourceLoader
                             State state = buildState(stateXe);
                             resource.getStates().add(state);
 
-                            for (int stChildIndex = 0; stChildIndex < stateXe.getChildNodes().getLength(); stChildIndex++)
-                            {
-                                Element stChildXe = ModelExtensions.As(
-                                	stateXe.getChildNodes().item(stChildIndex),
-									Element.class);
+                            for (int stChildIndex = 0; stChildIndex < stateXe.getChildNodes().getLength(); stChildIndex++) {
+                                Element stChildXe = ModelExtensions.As(stateXe.getChildNodes().item(stChildIndex),
+                                        Element.class);
 
-                                if (stChildXe != null && XE_ASSERTIONS.equals(stChildXe.getTagName()))
-                                {
-                                    for (int asrIndex = 0; asrIndex < stChildXe.getChildNodes().getLength(); asrIndex++)
-                                    {
-                                        Element asrXe = ModelExtensions.As(
-                                        	stChildXe.getChildNodes().item(asrIndex),
-											Element.class);
+                                if (stChildXe != null && XE_ASSERTIONS.equals(stChildXe.getTagName())) {
+                                    for (int asrIndex = 0; asrIndex < stChildXe.getChildNodes().getLength(); asrIndex++){
+                                        Element asrXe = ModelExtensions.As(stChildXe.getChildNodes().item(asrIndex),
+                                                Element.class);
 
-                                        if (asrXe != null)
-                                        {
-                                            Assertion asr = buildAssertion(
-												this.assertionBuilders,
-												asrXe,
-												asrIndex);
-
-                                            // Verify that this assertion can be used with the Resource.
-                                            if (!DomResourceLoader.isApplicable(
-												asr.getApplicableTypes(),
-												resource.getType()))
-                                            {
-                                                Messages messages = new Messages();
-                                                messages.addMessage(
-													"%s assertions cannot be applied to %s resources",
-													asr.getClass().getName(),
-													resource.getClass().getName());
+                                        if(asrXe != null) {
+                                            Assertion asr;
+                                            switch (asrXe.getTagName()) {
+                                                case XE_ASSERTION_REF:
+                                                    switch (asrXe.getAttribute(XA_ASSERTION_REF_TYPE)) {
+                                                        case XA_ASSERTION_REF_TYPE_SINGLE:
+                                                            break;
+                                                        case XA_ASSERTION_REF_TYPE_SELECTOR:
+                                                            break;
+                                                        case XA_ASSERTION_REF_TYPE_GROUP:
+                                                            String refGroup = asrXe.getAttribute("ref");
+                                                            List<Assertion> assertions = assertionGroupsMap
+                                                                    .get(refGroup);
+                                                            if (assertions == null) {
+                                                             throw new MissingReferenceException(refGroup);
+                                                            }
+                                                            for (Assertion assertion : assertions) {
+                                                                verifyAssertionIsApplicable(resource, assertion);
+                                                                state.getAssertions().add(assertion);
+                                                            }
+                                                            break;
+                                                    }
+                                                    break;
+                                                default:
+                                                    asr = buildAssertion(
+                                                            this.assertionBuilders,
+                                                            asrXe,
+                                                            asrIndex);
+                                                    verifyAssertionIsApplicable(resource, asr);
+                                                    state.getAssertions().add(asr);
+                                                    break;
                                             }
-
-                                            state.getAssertions().add(asr);
                                         }
                                     }
                                 }
@@ -247,6 +288,19 @@ public class DomResourceLoader implements ResourceLoader
         }
 
         return resource;
+    }
+
+    private void verifyAssertionIsApplicable(Resource resource, Assertion assertion) {
+        // Verify that this assertion can be used with the Resource.
+        if (!DomResourceLoader.isApplicable(
+                assertion.getApplicableTypes(),
+                resource.getType())) {
+            Messages messages = new Messages();
+            messages.addMessage(
+                    "%s assertions cannot be applied to %s resources",
+                    assertion.getClass().getName(),
+                    resource.getClass().getName());
+        }
     }
 
     private static boolean isApplicable(

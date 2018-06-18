@@ -31,11 +31,13 @@ public interface ResourceLoader
 	 * 
 	 * @param       baseDir                     the base directory for relative paths.
 	 * @return                                  the deserialized Resource.
-	 * @throws LoaderFault                 if the resource fails to load.
-	 * @throws      PluginBuildException        if the plugin fails to build.
+	 * @throws LoaderFault                 		if the resource fails to load.
+	 * @throws PluginBuildException        		if the plugin fails to build.
+	 * @throws MissingReferenceException  if an element refers to an ID or Name that is not defined.
 	 * @since                                   1.0
 	 */
 	Resource load(File baseDir) throws
-		LoaderFault,
-		PluginBuildException;
+            LoaderFault,
+            PluginBuildException,
+			MissingReferenceException;
 }

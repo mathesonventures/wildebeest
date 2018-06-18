@@ -19,6 +19,7 @@ package co.mv.wb.plugin.composite.dom;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
 import co.mv.wb.PluginBuildException;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.FixtureBuilder;
@@ -49,9 +50,10 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 	
 	@Test
 	public void build_forValidDocument_succeeds() throws
-		LoaderFault,
-		PluginBuildException
-	{
+			LoaderFault,
+			PluginBuildException,
+            MissingReferenceException
+    {
 		// Setup
 		UUID resourceId = UUID.randomUUID();
 		UUID state1Id = UUID.randomUUID();

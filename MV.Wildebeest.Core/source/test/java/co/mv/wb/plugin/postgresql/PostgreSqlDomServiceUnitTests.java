@@ -20,6 +20,7 @@ import co.mv.wb.Instance;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.FixtureBuilder;
@@ -42,9 +43,9 @@ public class PostgreSqlDomServiceUnitTests
 {
 	@Test
 	public void postgreSqlDatabaseResourceLoadFromValidDocumentSucceeds() throws
-		LoaderFault,
-		PluginBuildException
-	{
+			LoaderFault,
+			PluginBuildException,
+			MissingReferenceException {
 		// Setup
 		UUID resourceId = UUID.randomUUID();
 		String resourceName = "Foo";

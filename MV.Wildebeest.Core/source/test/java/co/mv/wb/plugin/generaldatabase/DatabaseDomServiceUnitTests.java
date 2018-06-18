@@ -21,6 +21,7 @@ import co.mv.wb.AssertionBuilder;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.FixtureBuilder;
@@ -47,8 +48,9 @@ public class DatabaseDomServiceUnitTests
 {
 	@Test
 	public void databaseExistsAssertionLoadFromValidDocumentSucceeds() throws
-		LoaderFault,
-		PluginBuildException
+			LoaderFault,
+			PluginBuildException,
+            MissingReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
@@ -90,8 +92,9 @@ public class DatabaseDomServiceUnitTests
 	
 	@Test
 	public void databaseDoesNotExistAssertionLoadFromValidDocumentSucceeds() throws
-		LoaderFault,
-		PluginBuildException
+			LoaderFault,
+			PluginBuildException,
+            MissingReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();

@@ -16,16 +16,7 @@
 
 package co.mv.wb.impl;
 
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
-import co.mv.wb.XmlValidationException;
+import co.mv.wb.*;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import co.mv.wb.framework.ArgumentNullException;
@@ -61,7 +52,8 @@ public class WildebeestApiImplUnitTests
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -102,7 +94,8 @@ public class WildebeestApiImplUnitTests
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+	    MigrationInvalidStateException
 	{
 		// Setup
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
@@ -143,7 +136,8 @@ public class WildebeestApiImplUnitTests
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -177,7 +171,8 @@ public class WildebeestApiImplUnitTests
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException
+		UnknownStateSpecifiedException,
+		MigrationInvalidStateException
 	{
 		// Setup
 		PrintStream output = System.out;

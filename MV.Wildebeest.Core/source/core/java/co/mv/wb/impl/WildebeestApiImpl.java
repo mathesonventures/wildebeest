@@ -16,32 +16,8 @@
 
 package co.mv.wb.impl;
 
-import co.mv.wb.AssertionFailedException;
-import co.mv.wb.AssertionResponse;
-import co.mv.wb.AssertionResult;
-import co.mv.wb.AssertionType;
-import co.mv.wb.FileLoadException;
-import co.mv.wb.IndeterminateStateException;
-import co.mv.wb.Instance;
-import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.JumpStateFailedException;
-import co.mv.wb.LoaderFault;
-import co.mv.wb.Migration;
-import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationPlugin;
-import co.mv.wb.MigrationType;
-import co.mv.wb.MigrationTypeInfo;
-import co.mv.wb.OutputFormatter;
-import co.mv.wb.PluginBuildException;
-import co.mv.wb.PluginManager;
-import co.mv.wb.Resource;
-import co.mv.wb.ResourcePlugin;
-import co.mv.wb.ResourceType;
-import co.mv.wb.State;
-import co.mv.wb.TargetNotSpecifiedException;
-import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
+import co.mv.wb.*;
+
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.Util;
@@ -68,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
 /**
  * Provides a generic interface that can be adapted to different environments.  For example the WildebeestCommand
  * command-line interface delegates to WildebeestApiImpl to drive commands.
@@ -77,9 +52,14 @@ import java.util.UUID;
  */
 public class WildebeestApiImpl implements WildebeestApi
 {
-	private final PrintStream output;
 	private static final String RESOURCE_XSD = "resource.xsd";
 	private static final String INSTANCE_XSD = "instance.xsd";
+
+	private final PrintStream output;
+	private Map<ResourceType, ResourcePlugin> resourcePlugins = null;
+	private PluginManager pluginManager = null;
+
+
 
 	/**
 	 * Creates a new WildebeestApiImpl using the supplied {@link PrintStream} for user output and the supplied
@@ -96,70 +76,34 @@ public class WildebeestApiImpl implements WildebeestApi
 		this.output = output;
 	}
 
-	// <editor-fold desc="ResourcePlugins" defaultstate="collapsed">
-
-	private Map<ResourceType, ResourcePlugin> _resourcePlugins = null;
-	private boolean _resourcePlugins_set = false;
-
-	private Map<ResourceType, ResourcePlugin> getResourcePlugins() {
-		if(!_resourcePlugins_set) {
-			throw new IllegalStateException("resourcePlugins not set.");
-		}
-		if(_resourcePlugins == null) {
-			throw new IllegalStateException("resourcePlugins should not be null");
-		}
-		return _resourcePlugins;
+	private Map<ResourceType, ResourcePlugin> getResourcePlugins()
+	{
+		return this.resourcePlugins;
 	}
 
-	public void setResourcePlugins(Map<ResourceType, ResourcePlugin> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("resourcePlugins cannot be null");
-		}
-		boolean changing = !_resourcePlugins_set || _resourcePlugins != value;
-		if(changing) {
-			_resourcePlugins_set = true;
-			_resourcePlugins = value;
-		}
+	public void setResourcePlugins(Map<ResourceType, ResourcePlugin> value)
+	{
+		this.resourcePlugins = value;
 	}
 
-	// </editor-fold>
-
-	// <editor-fold desc="PluginManager" defaultstate="collapsed">
-
-	private PluginManager _pluginManager = null;
-	private boolean _pluginManager_set = false;
-
-	public PluginManager getPluginManager() {
-		if(!_pluginManager_set) {
-			throw new IllegalStateException("pluginManager not set.");
-		}
-		if(_pluginManager == null) {
-			throw new IllegalStateException("pluginManager should not be null");
-		}
-		return _pluginManager;
+	public PluginManager getPluginManager()
+	{
+		return this.pluginManager;
 	}
 
-	public void setPluginManager(
-		PluginManager value) {
-		if(value == null) {
-			throw new IllegalArgumentException("pluginManager cannot be null");
-		}
-		boolean changing = !_pluginManager_set || _pluginManager != value;
-		if(changing) {
-			_pluginManager_set = true;
-			_pluginManager = value;
-		}
+	public void setPluginManager(PluginManager value)
+	{
+		this.pluginManager = value;
 	}
 
-	// </editor-fold>
 
 	public Resource loadResource(
 		File resourceFile) throws
 			FileLoadException,
 			LoaderFault,
 			PluginBuildException,
-			XmlValidationException
-    {
+			XmlValidationException,
+			MissingReferenceException {
 		if (resourceFile == null) throw new ArgumentNullException("resourceFile");
 
 		// Get the absolute file for this resource - this ensures that getParentFile works correctly
@@ -346,7 +290,8 @@ public class WildebeestApiImpl implements WildebeestApi
 			IndeterminateStateException,
 			InvalidStateSpecifiedException,
 			MigrationFailedException,
-			UnknownStateSpecifiedException
+			UnknownStateSpecifiedException,
+		    MigrationInvalidStateException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
@@ -388,6 +333,8 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		List<Migration> path = paths.get(0);
+
+		validateMigrationStates(resource);
 
 		for (Migration migration : path)
 		{
@@ -781,4 +728,61 @@ public class WildebeestApiImpl implements WildebeestApi
 			throw new XmlValidationException(e.getMessage());
 		}
 	}
+
+	/**
+	 * Retrives all migrations from plugin and throws an error if migrations refer to state that does not exist
+	 *
+	 * @param       resource             		Resource that is used to perform migration .
+	 * @since                                   4.0
+	 */
+	private static void validateMigrationStates(
+		  Resource resource) throws MigrationInvalidStateException
+	{
+		if (resource == null) { throw new IllegalArgumentException("resource"); }
+
+		List<Migration> migrations = resource.getMigrations();
+		List<State> states = resource.getStates();
+
+		for (Migration m: migrations
+			  )
+		{
+			boolean migrationToStateValid = false;
+			boolean migrationFromStateValid = false;
+
+			//check do states exist in migration, if they don't set them to true so they don't throw errors
+			if(!m.getToState().isPresent())
+			{
+				migrationFromStateValid = true;
+			}
+			if(!m.getToState().isPresent())
+			{
+				migrationToStateValid = true;
+			}
+
+			for (State s: states
+				  )
+			{
+				if(m.getToState().equals(s.getStateId()) || m.getToState().equals(s.getLabel()))
+				{
+					migrationToStateValid = true;
+				}
+				if(m.getToState().equals(s.getStateId()) || m.getToState().equals(s.getLabel()))
+				{
+					migrationFromStateValid = true;
+				}
+
+				if(migrationFromStateValid == true && migrationToStateValid == true)
+				{
+					break;
+				}
+			}
+
+			if(migrationFromStateValid == false || migrationToStateValid == false)
+			{
+				throw  new MigrationInvalidStateException(m.getMigrationId(),"Migration " +m.getMigrationId().toString()+ " has invalid state, " +
+					  "please fix this before restarting migration") ;
+			}
+		}
+	}
+
 }
