@@ -37,14 +37,14 @@ import java.util.Map;
 
 /**
  * An {@link InstanceBuilder} deserializes {@link Instance} descriptors from XML.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class DomInstanceLoader implements InstanceLoader
 {
 	private static final String ELT_INSTANCE = "instance";
 	private static final String ATT_INSTANCE_TYPE = "type";
-	
+
 	private static final String ELT_HOST_NAME = "hostName";
 	private static final String ELT_PORT = "port";
 	private static final String ELT_ADMIN_USERNAME = "adminUsername";
@@ -56,10 +56,10 @@ public class DomInstanceLoader implements InstanceLoader
 
 	/**
 	 * Creates a new DomInstanceLoader.
-	 * 
-	 * @param       instanceBuilders            the set of available {@link InstanceBuilder}s.
-	 * @param       instanceXml                 the XML representation of the {@link Instance} to be loaded.
-	 * @since                                   1.0
+	 *
+	 * @param instanceBuilders the set of available {@link InstanceBuilder}s.
+	 * @param instanceXml      the XML representation of the {@link Instance} to be loaded.
+	 * @since 1.0
 	 */
 	public DomInstanceLoader(
 		Map<String, InstanceBuilder> instanceBuilders,
@@ -89,7 +89,7 @@ public class DomInstanceLoader implements InstanceLoader
 		{
 			throw new LoaderFault(e);
 		}
-		
+
 		Document resourceXd;
 		try
 		{
@@ -99,7 +99,7 @@ public class DomInstanceLoader implements InstanceLoader
 		{
 			throw new LoaderFault(e);
 		}
-		
+
 		Element instanceXe = resourceXd.getDocumentElement();
 		Instance instance = null;
 
@@ -109,23 +109,23 @@ public class DomInstanceLoader implements InstanceLoader
 				this.instanceBuilders,
 				instanceXe);
 		}
-		
+
 		return instance;
 	}
-	
+
 	private static Instance buildInstance(
 		Map<String, InstanceBuilder> instanceBuilders,
 		Element instanceXe) throws
-			LoaderFault,
-			PluginBuildException
+		LoaderFault,
+		PluginBuildException
 	{
-		if (instanceBuilders == null) { throw new IllegalArgumentException("instanceBuilders"); }
-		if (instanceXe == null) { throw new IllegalArgumentException("instanceXe"); }
-		
+		if (instanceBuilders == null) throw new ArgumentNullException("instanceBuilders");
+		if (instanceXe == null) throw new ArgumentNullException("instanceXe");
+
 		String type = instanceXe.getAttribute(ATT_INSTANCE_TYPE);
-		
+
 		InstanceBuilder builder = instanceBuilders.get(type);
-			
+
 		if (builder == null)
 		{
 			Messages messages = new Messages();
@@ -134,7 +134,7 @@ public class DomInstanceLoader implements InstanceLoader
 				type));
 			throw new PluginBuildException(messages);
 		}
-		
+
 		builder.reset();
 		((DomBuilder)builder).setElement(instanceXe);
 		return builder.build();

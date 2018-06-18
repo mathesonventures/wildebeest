@@ -45,7 +45,7 @@ import java.io.PrintStream;
 /**
  * The {@link MigrationPlugin} for {@link ExternalResourceMigration}'s.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 @MigrationPluginType(uri = "co.mv.wb.composite:ExternalResourceMigration")
 public class ExternalResourceMigrationPlugin implements MigrationPlugin
@@ -57,8 +57,8 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 	/**
 	 * Constructs a new ExternalResourceMigrationPlugin with the supplied {@link WildebeestApi}.
 	 *
-	 * @param       wildebeestApi               the WildebeestApi instance that this plugin should use when
-	 *                                          orchestrating migrations on external resources.
+	 * @param wildebeestApi the WildebeestApi instance that this plugin should use when
+	 *                      orchestrating migrations on external resources.
 	 */
 	public ExternalResourceMigrationPlugin(
 		WildebeestApi wildebeestApi)
@@ -72,11 +72,11 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 		PrintStream output,
 		Migration migration,
 		Instance instance) throws
-			MigrationFailedException
+		MigrationFailedException
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (output == null) throw new ArgumentNullException("output");
+		if (migration == null) throw new ArgumentNullException("migration");
+		if (instance == null) throw new ArgumentNullException("instance");
 
 		ExternalResourceMigration migrationT = ModelExtensions.As(migration, ExternalResourceMigration.class);
 		if (migrationT == null)
@@ -155,10 +155,10 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 		catch (MigrationInvalidStateException e)
 		{
 			throw new MigrationFailedException(
-				  migration.getMigrationId(),
-				  String.format(
-						ExternalResourceMigrationPlugin.ExceptionFormatString,
-						OutputFormatter.migrationInvalidState(e)));
+				migration.getMigrationId(),
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.migrationInvalidState(e)));
 		}
 	}
 }

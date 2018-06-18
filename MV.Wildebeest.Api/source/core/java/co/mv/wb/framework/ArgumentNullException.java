@@ -19,15 +19,15 @@ package co.mv.wb.framework;
 /**
  * Indicates that a null value was passed in for a parameter where a non-null value is required.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class ArgumentNullException extends RuntimeException
 {
 	/**
 	 * Constructs a new ArgumentNullException for the specified parameter.
 	 *
-	 * @param       paramName                   the parameter for which a null value was supplied.
-	 * @since                                   4.0
+	 * @param paramName the parameter for which a null value was supplied.
+	 * @since 4.0
 	 */
 	public ArgumentNullException(
 		String paramName)

@@ -16,7 +16,13 @@
 
 package co.mv.wb.cli;
 
-import co.mv.wb.*;
+import co.mv.wb.FileLoadException;
+import co.mv.wb.Instance;
+import co.mv.wb.LoaderFault;
+import co.mv.wb.PluginBuildException;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.WildebeestApi;
+import co.mv.wb.XmlValidationException;
 import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlUtil;
@@ -32,7 +38,7 @@ import java.sql.SQLException;
 /**
  * Full integration tests for Wildebeest that invoke the CLI with real plugins and back-ends.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public class WildebeestCommandIntegrationTests
 {
@@ -40,7 +46,7 @@ public class WildebeestCommandIntegrationTests
 	//
 	// MySql
 	//
-	
+
 	@Test public void wildebeestCommand_mySqlMigrate_succeeds() throws
 		FileLoadException,
 		LoaderFault,
@@ -62,32 +68,32 @@ public class WildebeestCommandIntegrationTests
 			wildebeestApi);
 
 		String[] args = new String[]
-		{
-			"migrate",
-			"--resource:MySqlDatabase/database.wbresource.xml",
-			"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-			"--targetState:Core Schema Loaded"
-		};
+			{
+				"migrate",
+				"--resource:MySqlDatabase/database.wbresource.xml",
+				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
+				"--targetState:Core Schema Loaded"
+			};
 
-        Instance instance = null;
+		Instance instance = null;
 
-        // Execute and Verify
+		// Execute and Verify
 		try
 		{
-            instance = wildebeestApi.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
+			instance = wildebeestApi.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
 
 			wb.run(args);
 		}
 		finally
 		{
-            if (instance != null)
-            {
-                MySqlDatabaseInstance instanceT = (MySqlDatabaseInstance)instance;
-                MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
-            }
+			if (instance != null)
+			{
+				MySqlDatabaseInstance instanceT = (MySqlDatabaseInstance)instance;
+				MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
+			}
 		}
 	}
-	
+
 
 	@Test public void mySqlDatabaseJumpState() throws
 		FileLoadException,
@@ -109,46 +115,46 @@ public class WildebeestCommandIntegrationTests
 			output,
 			wildebeestApi);
 
-        MySqlDatabaseInstance instanceT = null;
-        
+		MySqlDatabaseInstance instanceT = null;
+
 		try
 		{
-            Instance instance = wildebeestApi.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
-            instanceT = (MySqlDatabaseInstance)instance;
+			Instance instance = wildebeestApi.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
+			instanceT = (MySqlDatabaseInstance)instance;
 
-            // Create a database that is already in a state that matches a defined state in a Wildebeest resource.
-            //
-            // For the sake of simplicity, we will use Wildebeest to migrate to a state, then drop it's wb_state tracking
-            // table, and then do the jumpstate.
-            wb.run(new String[]
-            {
-                "migrate",
-                "--resource:MySqlDatabase/database.wbresource.xml",
-                "--instance:MySqlDatabase/staging_db.wbinstance.xml",
-                "--targetState:Core Schema Loaded"
-            });
+			// Create a database that is already in a state that matches a defined state in a Wildebeest resource.
+			//
+			// For the sake of simplicity, we will use Wildebeest to migrate to a state, then drop it's wb_state tracking
+			// table, and then do the jumpstate.
+			wb.run(new String[]
+				{
+					"migrate",
+					"--resource:MySqlDatabase/database.wbresource.xml",
+					"--instance:MySqlDatabase/staging_db.wbinstance.xml",
+					"--targetState:Core Schema Loaded"
+				});
 
-            // Drop the wb_state table, so the database resource is now no longer tracked by Wildebeest
+			// Drop the wb_state table, so the database resource is now no longer tracked by Wildebeest
 			DatabaseHelper.execute(instanceT.getAppDataSource(), "DROP TABLE wb_state;");
 
-            // Execute
+			// Execute
 			wb.run(new String[]
-			{
-				"jumpstate",
-				"--resource:MySqlDatabase/database.wbresource.xml",
-				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-				"--targetState:Core Schema Loaded"
-			});
+				{
+					"jumpstate",
+					"--resource:MySqlDatabase/database.wbresource.xml",
+					"--instance:MySqlDatabase/staging_db.wbinstance.xml",
+					"--targetState:Core Schema Loaded"
+				});
 		}
 		finally
 		{
-            if (instanceT != null)
-            {
-    			MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
-            }
+			if (instanceT != null)
+			{
+				MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
+			}
 		}
 	}
-	
+
 	@Test public void mySqlDatabaseState() throws
 		FileLoadException,
 		LoaderFault,
@@ -169,38 +175,38 @@ public class WildebeestCommandIntegrationTests
 			output,
 			wildebeestApi);
 
-        Instance instance = null;
-        
+		Instance instance = null;
+
 		try
 		{
-            instance = wildebeestApi.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
+			instance = wildebeestApi.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
 
 			wb.run(new String[]
-			{
-				"migrate",
-				"--resource:MySqlDatabase/database.wbresource.xml",
-				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-				"--targetState:Database Created"
-			});
-			
-            // Execute
+				{
+					"migrate",
+					"--resource:MySqlDatabase/database.wbresource.xml",
+					"--instance:MySqlDatabase/staging_db.wbinstance.xml",
+					"--targetState:Database Created"
+				});
+
+			// Execute
 			wb.run(new String[]
-			{
-				"state",
-				"--resource:MySqlDatabase/database.wbresource.xml",
-				"--instance:MySqlDatabase/staging_db.wbinstance.xml"
-			});
+				{
+					"state",
+					"--resource:MySqlDatabase/database.wbresource.xml",
+					"--instance:MySqlDatabase/staging_db.wbinstance.xml"
+				});
 		}
 		finally
 		{
-            if (instance != null)
-            {
-                MySqlDatabaseInstance instanceT = (MySqlDatabaseInstance)instance;
-                MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
-            }
+			if (instance != null)
+			{
+				MySqlDatabaseInstance instanceT = (MySqlDatabaseInstance)instance;
+				MySqlUtil.dropDatabase(instanceT, instanceT.getDatabaseName());
+			}
 		}
 	}
-	
+
 	@Test public void mySqlDatabaseMigrateToInvalidStateLabel()
 	{
 		// Setup
@@ -216,16 +222,16 @@ public class WildebeestCommandIntegrationTests
 			output,
 			wildebeestApi);
 
-        // Execute
-        wb.run(new String[]
-        {
-            "migrate",
-            "--resource:MySqlDatabase/database.wbresource.xml",
-            "--instance:MySqlDatabase/staging_db.wbinstance.xml",
-            "--targetState:   "
-        });
+		// Execute
+		wb.run(new String[]
+			{
+				"migrate",
+				"--resource:MySqlDatabase/database.wbresource.xml",
+				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
+				"--targetState:   "
+			});
 
-        // Verify
+		// Verify
 
 		// TODO: Test WildebeestCommand by mocking and verifing WildebeestApi
 
@@ -250,33 +256,33 @@ public class WildebeestCommandIntegrationTests
 			output,
 			wildebeestApi);
 
-        //
-        // Execute
+		//
+		// Execute
 		//
 
-        // Create a database that is already in a state that matches a defined state in a Wildebeest resource.
-        //
-        // For the sake of simplicity, we will use Wildebeest to migrate to a state, then drop it's wb_state tracking
-        // table, and then do the jumpstate.
-        wb.run(new String[]
-        {
-            "migrate",
-            "--resource:MySqlDatabase/database.wbresource.xml",
-            "--instance:MySqlDatabase/staging_db.wbinstance.xml",
-            "--targetState:Foo"
-        });
+		// Create a database that is already in a state that matches a defined state in a Wildebeest resource.
+		//
+		// For the sake of simplicity, we will use Wildebeest to migrate to a state, then drop it's wb_state tracking
+		// table, and then do the jumpstate.
+		wb.run(new String[]
+			{
+				"migrate",
+				"--resource:MySqlDatabase/database.wbresource.xml",
+				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
+				"--targetState:Foo"
+			});
 
-        //
+		//
 		// Verify
 		//
 
 		// TODO: Test WildebeestCommand by mocking and verifing WildebeestApi
 	}
-	
+
 	//
 	// SqlServer
 	//
-	
+
 	@Test public void sqlServerDatabaseMigrate() throws
 		FileLoadException,
 		LoaderFault,
@@ -297,36 +303,36 @@ public class WildebeestCommandIntegrationTests
 			wildebeestApi);
 
 		String[] args = new String[]
-		{
-			"migrate",
-			"--resource:SqlServerDatabase/database.wbresource.xml",
-			"--instance:SqlServerDatabase/staging_db.wbinstance.xml",
-			"--targetState:Core Schema Loaded"
-		};
-		
-        // Execute and Verify
+			{
+				"migrate",
+				"--resource:SqlServerDatabase/database.wbresource.xml",
+				"--instance:SqlServerDatabase/staging_db.wbinstance.xml",
+				"--targetState:Core Schema Loaded"
+			};
+
+		// Execute and Verify
 		Instance instance = null;
 
 		try
 		{
-            instance = wildebeestApi.loadInstance(new File("SqlServerDatabase/staging_db.wbinstance.xml"));
+			instance = wildebeestApi.loadInstance(new File("SqlServerDatabase/staging_db.wbinstance.xml"));
 
-            wb.run(args);
+			wb.run(args);
 		}
 		finally
 		{
-            if (instance != null)
-            {
-                SqlServerDatabaseInstance instanceT = (SqlServerDatabaseInstance)instance;
-                SqlServerUtil.tryDropDatabase(instanceT);
-            }
+			if (instance != null)
+			{
+				SqlServerDatabaseInstance instanceT = (SqlServerDatabaseInstance)instance;
+				SqlServerUtil.tryDropDatabase(instanceT);
+			}
 		}
 	}
-	
+
 	//
 	// PostgreSql
 	//
-	
+
 	@Test public void postgreSqlDatabaseMigrate() throws
 		FileLoadException,
 		LoaderFault,
@@ -347,29 +353,29 @@ public class WildebeestCommandIntegrationTests
 			wildebeestApi);
 
 		String[] args = new String[]
-		{
-			"migrate",
-			"--resource:PostgreSqlDatabase/database.wbresource.xml",
-			"--instance:PostgreSqlDatabase/staging.wbinstance.xml",
-			"--targetState:434fb1fd-e903-4b0f-a2b3-b1014360f799"
-		};
+			{
+				"migrate",
+				"--resource:PostgreSqlDatabase/database.wbresource.xml",
+				"--instance:PostgreSqlDatabase/staging.wbinstance.xml",
+				"--targetState:434fb1fd-e903-4b0f-a2b3-b1014360f799"
+			};
 
 		// Execute and Verify
-        Instance instance = null;
-        
+		Instance instance = null;
+
 		try
 		{
-            instance = wildebeestApi.loadInstance(new File("PostgreSqlDatabase/staging.wbinstance.xml"));
+			instance = wildebeestApi.loadInstance(new File("PostgreSqlDatabase/staging.wbinstance.xml"));
 
-            // Execute
+			// Execute
 			wb.run(args);
 		}
 		finally
 		{
-            if (instance != null)
-            {
+			if (instance != null)
+			{
 				PostgreSqlDatabaseInstance instanceT = (PostgreSqlDatabaseInstance)instance;
-				
+
 				try
 				{
 					DatabaseHelper.execute(
@@ -380,7 +386,7 @@ public class WildebeestCommandIntegrationTests
 				{
 					throw new RuntimeException(e);
 				}
-            }
+			}
 		}
 	}
 }

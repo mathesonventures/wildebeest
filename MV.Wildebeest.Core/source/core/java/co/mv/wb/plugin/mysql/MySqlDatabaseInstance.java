@@ -31,8 +31,8 @@ import java.sql.SQLException;
 
 /**
  * A resource {@link Instance} that describes a MySQL database.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcDatabaseInstance
 {
@@ -43,15 +43,15 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 
 	/**
 	 * Creates a new MySqlDatabaseInstance.
-	 * 
-	 * @param       hostName                    the host name or IP address of the server.
-	 * @param       port                        the port number of the server.
-	 * @param       adminUsername               the username for a user that has permission to administer the database.
-	 * @param       adminPassword               the password for the admin user, in clear text.
-	 * @param       databaseName                the name of the database for this instance of the resource.
-	 * @param       stateTableName              the name to give the state tracking table.  This is optional and null
-	 *                                          may be supplied.
-	 * @since                                   1.0
+	 *
+	 * @param hostName       the host name or IP address of the server.
+	 * @param port           the port number of the server.
+	 * @param adminUsername  the username for a user that has permission to administer the database.
+	 * @param adminPassword  the password for the admin user, in clear text.
+	 * @param databaseName   the name of the database for this instance of the resource.
+	 * @param stateTableName the name to give the state tracking table.  This is optional and null
+	 *                       may be supplied.
+	 * @since 1.0
 	 */
 	public MySqlDatabaseInstance(
 		String hostName,
@@ -68,12 +68,12 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 		this.adminUsername = adminUsername;
 		this.adminPassword = adminPassword;
 	}
-	
+
 	/**
 	 * Returns the host name of the server
-	 * 
-	 * @return                                  the host name of the server
-	 * @since                                   1.0
+	 *
+	 * @return the host name of the server
+	 * @since 1.0
 	 */
 	@Override public final String getHostName()
 	{
@@ -83,9 +83,9 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 
 	/**
 	 * Returns the port number of the server
-	 * 
-	 * @return                                  the port number of the server
-	 * @since                                   1.0
+	 *
+	 * @return the port number of the server
+	 * @since 1.0
 	 */
 	@Override public final int getPort()
 	{
@@ -94,9 +94,9 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 
 	/**
 	 * Gets the username of the administrative user on the server.
-	 * 
-	 * @return                                  the username of the administrative user on the server
-	 * @since                                   1.0
+	 *
+	 * @return the username of the administrative user on the server
+	 * @since 1.0
 	 */
 	@Override public final String getAdminUsername()
 	{
@@ -105,9 +105,9 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 
 	/**
 	 * Gets the password of the administrative user on the server.
-	 * 
-	 * @return                                  the password for the administrative user on the server
-	 * @since                                   1.0
+	 *
+	 * @return the password for the administrative user on the server
+	 * @since 1.0
 	 */
 	@Override public final String getAdminPassword()
 	{
@@ -116,9 +116,9 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 
 	/**
 	 * Returns a DataSource for the information schema in the target MySQL database.
-	 * 
-	 * @return                                  a DataSource for the information schema in the target MySQL server.
-	 * @since                                   1.0
+	 *
+	 * @return a DataSource for the information schema in the target MySQL server.
+	 * @since 1.0
 	 */
 	@Override public DataSource getAdminDataSource()
 	{
@@ -128,15 +128,15 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 		ds.setUser(this.getAdminUsername());
 		ds.setPassword(this.getAdminPassword());
 		ds.setDatabaseName("information_schema");
-		
+
 		return ds;
 	}
-	
+
 	/**
 	 * Returns a DataSource for the application schema that this instance represents, in the target MySQL server.
-	 * 
-	 * @return                                  a DataSource for the application schema in the target MySQL server.
-	 * @since                                   1.0
+	 *
+	 * @return a DataSource for the application schema in the target MySQL server.
+	 * @since 1.0
 	 */
 	@Override public DataSource getAppDataSource()
 	{
@@ -146,29 +146,29 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 		ds.setUser(this.getAdminUsername());
 		ds.setPassword(this.getAdminPassword());
 		ds.setDatabaseName(this.getDatabaseName());
-		
+
 		return ds;
 	}
 
 	@Override public boolean databaseExists()
 	{
 		boolean result = false;
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try
 		{
 			conn = this.getAdminDataSource().getConnection();
 			ps = conn.prepareStatement("SELECT * FROM SCHEMATA WHERE SCHEMA_NAME = ?;");
 			ps.setString(1, this.getDatabaseName());
-			
+
 			rs = ps.executeQuery();
-		
+
 			result = rs.next();
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
 			throw new FaultException(e);
 		}
@@ -180,12 +180,12 @@ public class MySqlDatabaseInstance extends BaseDatabaseInstance implements JdbcD
 				DatabaseHelper.release(ps);
 				DatabaseHelper.release(conn);
 			}
-			catch(SQLException e)
+			catch (SQLException e)
 			{
 				throw new FaultException(e);
 			}
 		}
-		
+
 		return result;
 	}
 }

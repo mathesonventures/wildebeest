@@ -30,35 +30,41 @@ import java.util.UUID;
 /**
  * An {@link AssertionBuilder} that builds a {@link SqlServerTableExistsAssertion} from a DOM
  * {@link org.w3c.dom.Element}.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 public class SqlServerTableExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 {
 	@Override public Assertion build(
 		UUID assertionId,
 		int seqNum) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		Optional<String> schemaName = this.tryGetString("schemaName");
 		Optional<String> tableName = this.tryGetString("tableName");
 
 		// Validation
 		Messages messages = new Messages();
-		if (!schemaName.isPresent()) { V.elementMissing(messages, assertionId, "schemaName", SqlServerTableExistsAssertion.class); }
-		if (!tableName.isPresent()) { V.elementMissing(messages, assertionId, "tableName", SqlServerTableExistsAssertion.class); }
-		
+		if (!schemaName.isPresent())
+		{
+			V.elementMissing(messages, assertionId, "schemaName", SqlServerTableExistsAssertion.class);
+		}
+		if (!tableName.isPresent())
+		{
+			V.elementMissing(messages, assertionId, "tableName", SqlServerTableExistsAssertion.class);
+		}
+
 		if (messages.size() > 0)
 		{
 			throw new PluginBuildException(messages);
 		}
-		
+
 		Assertion result = new SqlServerTableExistsAssertion(
 			assertionId,
 			seqNum,
 			schemaName.get(),
 			tableName.get());
-		
+
 		return result;
 	}
 }

@@ -29,8 +29,8 @@ import java.util.UUID;
 
 /**
  * A {@link Migration} that creates a new SQL-Server database.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
@@ -38,23 +38,23 @@ import java.util.UUID;
 	description =
 		"This will usually be the first migration in the definition of any SQL Server database resource managed by " +
 			"Wildebeest. It creates a new database.\n" +
-		"This migration takes the name of the database to create from the SqlServerDatabaseInstance it is applied to.",
+			"This migration takes the name of the database to create from the SqlServerDatabaseInstance it is applied to.",
 	example =
 		"<migration\n" +
-		"    type=\"SqlServerCreateDatabase\"\n" +
-		"    id=\"48e9b89a-e3be-4418-ace7-c008fcacc32f\"\n" +
-		"    toStateId=\"9aeeba93-6890-4690-b7b2-afa158ae6556\">\n" +
-		"</migration>"
+			"    type=\"SqlServerCreateDatabase\"\n" +
+			"    id=\"48e9b89a-e3be-4418-ace7-c008fcacc32f\"\n" +
+			"    toStateId=\"9aeeba93-6890-4690-b7b2-afa158ae6556\">\n" +
+			"</migration>"
 )
 public class SqlServerCreateDatabaseMigration extends BaseMigration
 {
 	/**
 	 * Creates a new SqlServerCreateDatabseMigration.
-	 * 
-	 * @param       migrationId                 the ID of the new migration.
-	 * @param       fromState                   the source state for this migration.
-	 * @param       toState                     the target state for this migration.
-	 * @since                                   2.0
+	 *
+	 * @param migrationId the ID of the new migration.
+	 * @param fromState   the source state for this migration.
+	 * @param toState     the target state for this migration.
+	 * @since 2.0
 	 */
 	public SqlServerCreateDatabaseMigration(
 		UUID migrationId,
@@ -63,7 +63,7 @@ public class SqlServerCreateDatabaseMigration extends BaseMigration
 	{
 		super(migrationId, fromState, toState);
 	}
-	
+
 	@Override
 	public List<ResourceType> getApplicableTypes()
 	{

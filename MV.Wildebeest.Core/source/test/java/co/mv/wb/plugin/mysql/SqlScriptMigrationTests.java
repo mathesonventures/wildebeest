@@ -33,7 +33,7 @@ public class SqlScriptMigrationTests
 	public SqlScriptMigrationTests()
 	{
 	}
-	
+
 	@Test
 	public void performSuccessfully() throws MigrationFailedException
 	{
@@ -41,9 +41,9 @@ public class SqlScriptMigrationTests
 		PrintStream output = System.out;
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
-		
+
 		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm_test", "");
-		
+
 		Migration migration = new SqlScriptMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -51,7 +51,7 @@ public class SqlScriptMigrationTests
 			MySqlElementFixtures.productCatalogueDatabase());
 
 		MigrationPlugin migrationPlugin = new SqlScriptMigrationPlugin();
-		
+
 		Instance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
@@ -59,7 +59,7 @@ public class SqlScriptMigrationTests
 			mySqlProperties.getPassword(),
 			databaseName,
 			null);
-		
+
 		// Execute and Verify
 		try
 		{

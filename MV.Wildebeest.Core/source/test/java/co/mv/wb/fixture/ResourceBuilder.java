@@ -25,107 +25,107 @@ import java.util.UUID;
 /**
  * Creates &lt;resource&gt;'s as part of the fluent API for creating XML fixtures for unit tests.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class ResourceBuilder
 {
-    private final String type;
-    private final UUID resourceId;
-    private final String name;
-    private final List<StateBuilder> states;
-    private final List<MigrationBuilder> migrations;
-    private final FixtureBuilder builder;
+	private final String type;
+	private final UUID resourceId;
+	private final String name;
+	private final List<StateBuilder> states;
+	private final List<MigrationBuilder> migrations;
+	private final FixtureBuilder builder;
 
-    public ResourceBuilder(
-        FixtureBuilder builder,
-        String type,
-        UUID resourceId,
-        String name)
-    {
-        if (builder == null) throw new ArgumentNullException("builder");
-        if (type == null) throw new ArgumentNullException("type");
-        if (resourceId == null) throw new ArgumentNullException("resourceId");
-        if (name == null) throw new ArgumentNullException("name");
+	public ResourceBuilder(
+		FixtureBuilder builder,
+		String type,
+		UUID resourceId,
+		String name)
+	{
+		if (builder == null) throw new ArgumentNullException("builder");
+		if (type == null) throw new ArgumentNullException("type");
+		if (resourceId == null) throw new ArgumentNullException("resourceId");
+		if (name == null) throw new ArgumentNullException("name");
 
-        this.builder = builder;
-        this.type = type;
-        this.resourceId = resourceId;
-        this.name = name;
-        this.states = new ArrayList<>();
-        this.migrations = new ArrayList<>();
-    }
+		this.builder = builder;
+		this.type = type;
+		this.resourceId = resourceId;
+		this.name = name;
+		this.states = new ArrayList<>();
+		this.migrations = new ArrayList<>();
+	}
 
-    public String getType()
-    {
-        return this.type;
-    }
+	public String getType()
+	{
+		return this.type;
+	}
 
-    public UUID getResourceId()
-    {
-        return this.resourceId;
-    }
+	public UUID getResourceId()
+	{
+		return this.resourceId;
+	}
 
-    public String getName()
-    {
-        return this.name;
-    }
+	public String getName()
+	{
+		return this.name;
+	}
 
-    public List<StateBuilder> getStates()
-    {
-        return this.states;
-    }
+	public List<StateBuilder> getStates()
+	{
+		return this.states;
+	}
 
-    public List<MigrationBuilder> getMigrations()
-    {
-        return this.migrations;
-    }
+	public List<MigrationBuilder> getMigrations()
+	{
+		return this.migrations;
+	}
 
-    public StateBuilder state(
-        UUID stateId,
-        String label)
-    {
-        StateBuilder stateBuilder = new StateBuilder(this.builder, this, stateId, label, null);
-        this.getStates().add(stateBuilder);
-        return stateBuilder;
-    }
+	public StateBuilder state(
+		UUID stateId,
+		String label)
+	{
+		StateBuilder stateBuilder = new StateBuilder(this.builder, this, stateId, label, null);
+		this.getStates().add(stateBuilder);
+		return stateBuilder;
+	}
 
-    public StateBuilder state(
-        UUID stateId,
-        String label,
-        String description)
-    {
-        StateBuilder stateBuilder = new StateBuilder(this.builder, this, stateId, label, description);
-        this.getStates().add(stateBuilder);
-        return stateBuilder;
-    }
+	public StateBuilder state(
+		UUID stateId,
+		String label,
+		String description)
+	{
+		StateBuilder stateBuilder = new StateBuilder(this.builder, this, stateId, label, description);
+		this.getStates().add(stateBuilder);
+		return stateBuilder;
+	}
 
-    public MigrationBuilder migration(
-        String type,
-        UUID migrationId,
-        String fromState,
-        String toState)
-    {
-        if (type == null) throw new ArgumentNullException("type");
-        if (migrationId == null) throw new ArgumentNullException("migrationId");
+	public MigrationBuilder migration(
+		String type,
+		UUID migrationId,
+		String fromState,
+		String toState)
+	{
+		if (type == null) throw new ArgumentNullException("type");
+		if (migrationId == null) throw new ArgumentNullException("migrationId");
 
-        MigrationBuilder migration = new MigrationBuilder(
-            this.builder,
-            this,
-            type,
-            migrationId,
-            fromState,
-            toState);
-        this.getMigrations().add(migration);
-        return migration;
-    }
+		MigrationBuilder migration = new MigrationBuilder(
+			this.builder,
+			this,
+			type,
+			migrationId,
+			fromState,
+			toState);
+		this.getMigrations().add(migration);
+		return migration;
+	}
 
-    public FixtureBuilder builder()
-    {
-        return this.builder;
-    }
+	public FixtureBuilder builder()
+	{
+		return this.builder;
+	}
 
-    public String build()
-    {
-        return this.builder().build();
-    }
+	public String build()
+	{
+		return this.builder().build();
+	}
 }

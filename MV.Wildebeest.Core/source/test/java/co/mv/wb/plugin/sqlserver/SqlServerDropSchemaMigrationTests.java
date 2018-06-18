@@ -56,12 +56,12 @@ public class SqlServerDropSchemaMigrationTests
 			p.getPassword(),
 			databaseName,
 			null);
-		
+
 		createDatabaseRunner.perform(
 			output,
 			createDatabase,
 			instance);
-		
+
 		SqlServerCreateSchemaMigration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -74,7 +74,7 @@ public class SqlServerDropSchemaMigrationTests
 			output,
 			createSchema,
 			instance);
-		
+
 		SqlServerDropSchemaMigration dropSchema = new SqlServerDropSchemaMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -128,7 +128,7 @@ public class SqlServerDropSchemaMigrationTests
 			output,
 			createDatabase,
 			instance);
-		
+
 		SqlServerDropSchemaMigration dropSchema = new SqlServerDropSchemaMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -136,7 +136,7 @@ public class SqlServerDropSchemaMigrationTests
 			"prd");
 
 		SqlServerDropSchemaMigrationPlugin dropSchemaRunner = new SqlServerDropSchemaMigrationPlugin();
-		
+
 		try
 		{
 			// Execute
@@ -144,7 +144,7 @@ public class SqlServerDropSchemaMigrationTests
 				output,
 				dropSchema,
 				instance);
-			
+
 			fail("MigrationFailedException expected");
 		}
 		catch (MigrationFailedException e)

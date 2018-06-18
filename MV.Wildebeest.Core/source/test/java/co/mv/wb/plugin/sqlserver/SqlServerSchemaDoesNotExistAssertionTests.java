@@ -21,8 +21,8 @@ import co.mv.wb.Asserts;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import co.mv.wb.plugin.fake.FakeInstance;
+import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
 
 import java.io.PrintStream;
@@ -36,7 +36,7 @@ import static org.junit.Assert.fail;
 /**
  * Unit tests for {@link SqlServerSchemaDoesNotExistAssertion}.
  *
- * @since                               2.0
+ * @since 2.0
  */
 public class SqlServerSchemaDoesNotExistAssertionTests
 {
@@ -106,7 +106,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(false, "Schema prd exists", response, "response");
 	}
-	 
+
 	@Test
 	public void applyForNonExistentSchemaSucceeds() throws
 		MigrationFailedException
@@ -126,7 +126,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			properties.getPassword(),
 			databaseName,
 			null);
-		 
+
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -138,14 +138,14 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			output,
 			createDatabase,
 			instance);
-		
+
 		SqlServerSchemaDoesNotExistAssertion schemaDoesNotExist = new SqlServerSchemaDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0,
 			"prd");
- 
+
 		AssertionResponse response = null;
-		
+
 		try
 		{
 			// Execute
@@ -161,7 +161,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(true, "Schema prd does not exist", response, "response");
 	}
-	 
+
 	@Test
 	public void applyForNonExistentDatabaseFails()
 	{
@@ -210,7 +210,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 
 			fail("IllegalArgumentException expected");
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e)
 		{
 			assertEquals("e.message", "instance cannot be null", e.getMessage());
 		}
@@ -234,7 +234,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 
 			fail("IllegalArgumentException expected");
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e)
 		{
 			assertEquals("e.message", "instance must be a SqlServerDatabaseInstance", e.getMessage());
 		}

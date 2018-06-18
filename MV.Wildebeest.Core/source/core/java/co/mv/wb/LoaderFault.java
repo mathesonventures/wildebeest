@@ -18,15 +18,15 @@ package co.mv.wb;
 
 /**
  * Indicates that an unexpected system error occurred while loading a {@link Resource}.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class LoaderFault extends Exception
 {
 	/**
 	 * Creates a new LoaderFault.
-	 * 
-	 * @since                                   1.0
+	 *
+	 * @since 1.0
 	 */
 	public LoaderFault()
 	{
@@ -35,8 +35,8 @@ public class LoaderFault extends Exception
 	/**
 	 * Creates a new LoaderFault triggered by the supplied cause.
 	 *
-	 * @param       cause                       the Exception which is the root cause of the LoaderFault.
-	 * @since                                   1.0
+	 * @param cause the Exception which is the root cause of the LoaderFault.
+	 * @since 1.0
 	 */
 	public LoaderFault(Exception cause)
 	{

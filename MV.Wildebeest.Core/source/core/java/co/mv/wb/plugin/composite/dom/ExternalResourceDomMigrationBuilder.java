@@ -31,15 +31,15 @@ import java.util.UUID;
 
 /**
  * A {@link MigrationBuilder} that builds a {@link ExternalResourceMigration} from a DOM {@link org.w3c.dom.Element}.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 {
 	/**
 	 * Constructs a new ExternalResourceDomMigrationBuilder instance.
 	 *
-	 * @since                                   4.0
+	 * @since 4.0
 	 */
 	public ExternalResourceDomMigrationBuilder()
 	{
@@ -51,7 +51,7 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 		Optional<String> fromState,
 		Optional<String> toState,
 		File baseDir) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		if (migrationId == null) throw new ArgumentNullException("migrationId");
 		if (fromState == null) throw new ArgumentNullException("fromState");
@@ -62,7 +62,7 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 
 		Optional<String> filename = this.tryGetString("filename");
 		Optional<String> target = this.tryGetString("target");
-		
+
 		// Validation
 		Messages messages = new Messages();
 		if (!filename.isPresent())
@@ -73,7 +73,7 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 		{
 			messages.addMessage(V.elementMissing(migrationId, "target", ExternalResourceMigration.class));
 		}
-		
+
 		if (messages.size() > 0)
 		{
 			throw new PluginBuildException(messages);

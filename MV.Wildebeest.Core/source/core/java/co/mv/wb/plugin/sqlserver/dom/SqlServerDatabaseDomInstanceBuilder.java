@@ -28,8 +28,8 @@ import java.util.Optional;
 
 /**
  * An {@link InstanceBuilder} that builds a {@link SqlServerDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
@@ -46,8 +46,14 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 
 		// Validation
 		Messages messages = new Messages();
-		if (!hostName.isPresent()) { V.elementMissing(messages, null, "hostName", SqlServerDatabaseInstance.class); }
-		if (!port.isPresent()) { V.elementMissing(messages, null, "port", SqlServerDatabaseInstance.class); }
+		if (!hostName.isPresent())
+		{
+			V.elementMissing(messages, null, "hostName", SqlServerDatabaseInstance.class);
+		}
+		if (!port.isPresent())
+		{
+			V.elementMissing(messages, null, "port", SqlServerDatabaseInstance.class);
+		}
 		if (!adminUsername.isPresent())
 		{
 			V.elementMissing(messages, null, "adminUsername", SqlServerDatabaseInstance.class);
@@ -65,7 +71,7 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		{
 			throw new PluginBuildException(messages);
 		}
-		
+
 		Instance result = new SqlServerDatabaseInstance(
 			hostName.get(),
 			instanceName.orElse(null),
@@ -74,7 +80,7 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			adminPassword.get(),
 			databaseName.get(),
 			stateTableName.orElse(null));
-		
+
 		return result;
 	}
 }

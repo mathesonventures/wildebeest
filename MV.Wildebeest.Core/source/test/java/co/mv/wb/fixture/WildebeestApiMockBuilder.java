@@ -16,7 +16,14 @@
 
 package co.mv.wb.fixture;
 
-import co.mv.wb.*;
+import co.mv.wb.FileLoadException;
+import co.mv.wb.Instance;
+import co.mv.wb.LoaderFault;
+import co.mv.wb.MissingReferenceException;
+import co.mv.wb.PluginBuildException;
+import co.mv.wb.Resource;
+import co.mv.wb.WildebeestApi;
+import co.mv.wb.XmlValidationException;
 import co.mv.wb.framework.ArgumentNullException;
 
 import static org.mockito.Matchers.any;
@@ -26,7 +33,7 @@ import static org.mockito.Mockito.when;
 /**
  * Fluent-style builder for creating Mockito-based mocks of {@link WildebeestApi}.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class WildebeestApiMockBuilder
 {

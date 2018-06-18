@@ -21,21 +21,21 @@ import org.junit.Test;
 
 public class UtilTest
 {
-    @Test
-    public void coalesceWhiteSpacesSingleLine()
-    {
-        String text = " Text with    extra spaces.  In the start, middle and end ";
-        String expected = "Text with extra spaces. In the start, middle and end";
-        String result = Util.coalesceWhitespace(text);
-        Assert.assertEquals("White spaces should be coalesce to single white space", expected, result);
-    }
+	@Test
+	public void coalesceWhiteSpacesSingleLine()
+	{
+		String text = " Text with    extra spaces.  In the start, middle and end ";
+		String expected = "Text with extra spaces. In the start, middle and end";
+		String result = Util.coalesceWhitespace(text);
+		Assert.assertEquals("White spaces should be coalesce to single white space", expected, result);
+	}
 
-    @Test
-    public void coalesceWhiteSpacesMultiLine()
-    {
-        String text = " Text with    extra spaces.  \nIn the start, middle and end \n";
-        String expected = "Text with extra spaces. In the start, middle and end";
-        String result = Util.coalesceWhitespace(text);
-        Assert.assertEquals("White spaces should be coalesce to single white space", expected, result);
-    }
+	@Test
+	public void coalesceWhiteSpacesMultiLine()
+	{
+		String text = " Text with    extra spaces.  \nIn the start, middle and end \n";
+		String expected = "Text with extra spaces. In the start, middle and end";
+		String result = Util.coalesceWhitespace(text);
+		Assert.assertEquals("White spaces should be coalesce to single white space", expected, result);
+	}
 }

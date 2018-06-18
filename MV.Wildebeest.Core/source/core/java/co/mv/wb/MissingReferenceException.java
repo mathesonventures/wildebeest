@@ -19,12 +19,12 @@ package co.mv.wb;
 /**
  * Indicates that a referred resource is missing in the XML
  *
- * @since                                       4.0
+ * @since 4.0
  */
-public class MissingReferenceException extends Exception {
-
-    public MissingReferenceException(String ref) {
-        super(ref);
-    }
-
+public class MissingReferenceException extends Exception
+{
+	public MissingReferenceException(String ref)
+	{
+		super(ref);
+	}
 }

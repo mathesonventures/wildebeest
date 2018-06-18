@@ -18,9 +18,9 @@ package co.mv.wb.plugin.generaldatabase.dom;
 
 import co.mv.wb.Asserts;
 import co.mv.wb.LoaderFault;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
-import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.FixtureBuilder;
@@ -40,24 +40,24 @@ import java.util.UUID;
 
 /**
  * Unit tests for the DOM persistence services for ANSI SQL plugins.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class AnsiSqlDomServiceUnitTests
 {
 	@Test
 	public void ansiSqlCreateDatabaseMigrationLoadFromValidDocument() throws
-			LoaderFault,
-			PluginBuildException,
-            MissingReferenceException
+		LoaderFault,
+		PluginBuildException,
+		MissingReferenceException
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
 		UUID toStateId = UUID.randomUUID();
-		
+
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
-				.migration("AnsiSqlCreateDatabase", migrationId, null, toStateId.toString())
+			.migration("AnsiSqlCreateDatabase", migrationId, null, toStateId.toString())
 			.render();
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(
@@ -69,14 +69,16 @@ public class AnsiSqlDomServiceUnitTests
 
 		// Execute
 		Resource resource = loader.load(new File("."));
-		
+
 		// Verify
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		AnsiSqlCreateDatabaseMigration mT = ModelExtensions.As(
 			resource.getMigrations().get(0),
 			AnsiSqlCreateDatabaseMigration.class);
-		Assert.assertNotNull("resourceWithPlugin.resource.migrations[0] expected to be of type AnsiSqlCreateDatabaseMigration", mT);
+		Assert.assertNotNull(
+			"resourceWithPlugin.resource.migrations[0] expected to be of type AnsiSqlCreateDatabaseMigration",
+			mT);
 		Assert.assertEquals(
 			"resourceWithPlugin.resource.migrations[0].id",
 			migrationId,
@@ -93,17 +95,17 @@ public class AnsiSqlDomServiceUnitTests
 
 	@Test
 	public void ansiSqlDropDatabaseMigrationLoadFromValidDocument() throws
-			LoaderFault,
-			PluginBuildException,
-            MissingReferenceException
+		LoaderFault,
+		PluginBuildException,
+		MissingReferenceException
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
 		UUID toState = UUID.randomUUID();
-		
+
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
-				.migration("AnsiSqlDropDatabase", migrationId, null, toState.toString())
+			.migration("AnsiSqlDropDatabase", migrationId, null, toState.toString())
 			.render();
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(
@@ -115,7 +117,7 @@ public class AnsiSqlDomServiceUnitTests
 
 		// Execute
 		Resource resource = loader.load(new File("."));
-		
+
 		// Verify
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
@@ -136,21 +138,22 @@ public class AnsiSqlDomServiceUnitTests
 			Optional.of(toState),
 			mT.getToState());
 	}
-	
+
 	@Test
 	public void ansiSqlTableExistsAssertionLoadFromValidDocument() throws
-			LoaderFault,
-			PluginBuildException,
-            MissingReferenceException {
+		LoaderFault,
+		PluginBuildException,
+		MissingReferenceException
+	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
-		
+
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
-				.state(UUID.randomUUID(), null)
-					.assertion("AnsiSqlTableExists", assertionId)
-						.appendInnerXml("<schemaName>sch</schemaName>")
-						.appendInnerXml("<tableName>tbl</tableName>")
+			.state(UUID.randomUUID(), null)
+			.assertion("AnsiSqlTableExists", assertionId)
+			.appendInnerXml("<schemaName>sch</schemaName>")
+			.appendInnerXml("<tableName>tbl</tableName>")
 			.build();
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(
@@ -162,7 +165,7 @@ public class AnsiSqlDomServiceUnitTests
 
 		// Execute
 		Resource resource = loader.load(new File("."));
-		
+
 		// Verify
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -181,22 +184,22 @@ public class AnsiSqlDomServiceUnitTests
 			assertionT,
 			"resource.states[0].assertions[0]");
 	}
-	
+
 	@Test
 	public void ansiSqlTableDoesNotExistAssertionLoadFromValidDocument() throws
-			LoaderFault,
-			PluginBuildException,
-            MissingReferenceException
+		LoaderFault,
+		PluginBuildException,
+		MissingReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
-		
+
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
-				.state(UUID.randomUUID(), null)
-					.assertion("AnsiSqlTableDoesNotExist", assertionId)
-						.appendInnerXml("<schemaName>sch</schemaName>")
-						.appendInnerXml("<tableName>tbl</tableName>")
+			.state(UUID.randomUUID(), null)
+			.assertion("AnsiSqlTableDoesNotExist", assertionId)
+			.appendInnerXml("<schemaName>sch</schemaName>")
+			.appendInnerXml("<tableName>tbl</tableName>")
 			.build();
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(
@@ -208,7 +211,7 @@ public class AnsiSqlDomServiceUnitTests
 
 		// Execute
 		Resource resource = loader.load(new File("."));
-		
+
 		// Verify
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.states.size", 1, resource.getStates().size());

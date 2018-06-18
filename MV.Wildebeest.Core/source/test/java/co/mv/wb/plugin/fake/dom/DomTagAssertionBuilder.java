@@ -26,15 +26,17 @@ import java.util.UUID;
 /**
  * DOM-based {@link AssertionBuilder} for the Fake plugin implementation.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public class DomTagAssertionBuilder extends BaseDomAssertionBuilder
 {
 	@Override
-	public Assertion build(UUID assertionId, int seqNum)
+	public Assertion build(
+		UUID assertionId,
+		int seqNum)
 	{
 		String tag = this.getElement().getChildNodes().item(0).getTextContent();
-		
+
 		return new TagAssertion(assertionId, seqNum, tag);
 	}
 }

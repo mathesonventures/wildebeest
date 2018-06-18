@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.base.dom;
 
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.framework.ArgumentNullException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -28,95 +29,75 @@ import java.util.Optional;
 
 /**
  * Base class for DOM-based builders.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public abstract class BaseDomBuilder implements DomBuilder
 {
 	private final XPath xpath;
+	private Element element = null;
 
 	/**
 	 * Creates a new BaseDomBuilder.
-	 * 
-	 * @since                                   1.0
+	 *
+	 * @since 1.0
 	 */
 	protected BaseDomBuilder()
 	{
 		this.xpath = XPathFactory.newInstance().newXPath();
 	}
-	
-	// <editor-fold desc="Element" defaultstate="collapsed">
-
-	private Element _element = null;
-	private boolean _element_set = false;
 
 	/**
 	 * Gets the root {@link org.w3c.dom.Element} that represents the item to be deserialized.
-	 * 
-	 * @return                                  the Element that represents the item to be deserialized
-	 * @since                                   1.0
+	 *
+	 * @return the Element that represents the item to be deserialized
+	 * @since 1.0
 	 */
-	protected final Element getElement() {
-		if(!_element_set) {
-			throw new IllegalStateException("element not set.  Use the HasElement() method to check its state before accessing it.");
-		}
-		return _element;
+	protected final Element getElement()
+	{
+		return this.element;
 	}
 
 	@Override
-	public void setElement(
-		Element value) {
-		if(value == null) {
-			throw new IllegalArgumentException("element cannot be null");
-		}
-		boolean changing = !_element_set || _element != value;
-		if(changing) {
-			_element_set = true;
-			_element = value;
-		}
+	public void setElement(Element value)
+	{
+		if (value == null) throw new ArgumentNullException("value");
+
+		this.element = value;
 	}
 
-	protected void clearElement() {
-		if(_element_set) {
-			_element_set = true;
-			_element = null;
-		}
-	}
-
-	// </editor-fold>
-	
 	@Override
 	public void reset()
 	{
-		this.clearElement();
+		this.element = null;
 	}
-	
+
 	/**
 	 * Attempts to retrieve the string value identified by the supplied xpath expression, relative to the Element held
 	 * by this builder.
-	 * 
-	 * @param       xpath                       the xpath expression to the Element that contains the value to be
-	 *                                          returned.
-	 * @return                                  a TryGetResult containing the value identified by the supplied xpath if
-	 *                                          it was able to be obtained, or an empty TryGetResult otherwise
-	 * @since                                   2.0
+	 *
+	 * @param xpath the xpath expression to the Element that contains the value to be
+	 *              returned.
+	 * @return a TryGetResult containing the value identified by the supplied xpath if
+	 * it was able to be obtained, or an empty TryGetResult otherwise
+	 * @since 2.0
 	 */
 	protected Optional<String> tryGetString(String xpath)
 	{
-		if (xpath == null) { throw new IllegalArgumentException("xpath"); }
-		if ("".equals(xpath)) { throw new IllegalArgumentException("xpath"); }
-		
+		if (xpath == null) throw new ArgumentNullException("xpath");
+		if ("".equals(xpath)) throw new IllegalArgumentException("xpath");
+
 		Optional<String> result = null;
-		
+
 		Node node;
 
 		try
 		{
-			node  = (Node)this.xpath.compile(xpath).evaluate(this.getElement(), XPathConstants.NODE);
+			node = (Node)this.xpath.compile(xpath).evaluate(this.getElement(), XPathConstants.NODE);
 			if (node != null)
 			{
 				Element element = ModelExtensions.As(node, Element.class);
-				
+
 				if (element != null)
 				{
 					String value = element.getTextContent();
@@ -136,22 +117,22 @@ public abstract class BaseDomBuilder implements DomBuilder
 
 		return result;
 	}
-	
+
 	/**
 	 * Attempts to retrieve the integer value identified by the supplied xpath expression, relative to the Element held
 	 * by this builder.
-	 * 
-	 * @param       xpath                       the xpath expression to the Element that contains the value to be
-	 *                                          returned.
-	 * @return                                  a TryGetResult containing the value identified by the supplied xpath if
-	 *                                          it was able to be obtained, or an empty TryGetResult otherwise
-	 * @since                                   2.0
+	 *
+	 * @param xpath the xpath expression to the Element that contains the value to be
+	 *              returned.
+	 * @return a TryGetResult containing the value identified by the supplied xpath if
+	 * it was able to be obtained, or an empty TryGetResult otherwise
+	 * @since 2.0
 	 */
 	protected Optional<Integer> tryGetInteger(String xpath)
 	{
 		Optional<Integer> result = null;
 		Optional<String> raw = this.tryGetString(xpath);
-		
+
 		if (raw.isPresent())
 		{
 			try
@@ -159,12 +140,12 @@ public abstract class BaseDomBuilder implements DomBuilder
 				int value = Integer.parseInt(raw.get());
 				result = Optional.of(value);
 			}
-			catch(NumberFormatException e)
+			catch (NumberFormatException e)
 			{
 				result = Optional.empty();
 			}
 		}
-		
+
 		return result;
 	}
 }

@@ -16,7 +16,22 @@
 
 package co.mv.wb.cli;
 
-import co.mv.wb.*;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.Asserts;
+import co.mv.wb.FileLoadException;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.LoaderFault;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationInvalidStateException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MissingReferenceException;
+import co.mv.wb.PluginBuildException;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.WildebeestApi;
+import co.mv.wb.XmlValidationException;
 import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.fixture.TestContext_WildebeestCommandUnit;
 import co.mv.wb.framework.PredicateMatcher;
@@ -36,7 +51,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 /**
  * Unit tests for WildebeestCommand.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public class WildebeestCommandUnitTests
 {
@@ -45,7 +60,7 @@ public class WildebeestCommandUnitTests
 		// Setup
 		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
 
-		String[] args = new String[] { };
+		String[] args = new String[]{};
 
 		// Execute
 		context.wildebeestCommand.run(args);
@@ -60,9 +75,9 @@ public class WildebeestCommandUnitTests
 		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
 
 		String[] args = new String[]
-		{
-			"about"
-		};
+			{
+				"about"
+			};
 
 		// Execute
 		context.wildebeestCommand.run(args);
@@ -70,7 +85,7 @@ public class WildebeestCommandUnitTests
 		// Verify
 		verifyZeroInteractions(context.wildebeestApi);
 	}
-	
+
 	@Test public void migrate_validRequest_migrateOperationCalled() throws
 		AssertionFailedException,
 		FileLoadException,
@@ -90,14 +105,14 @@ public class WildebeestCommandUnitTests
 		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
 
 		String[] args = new String[]
-		{
-			"migrate",
-			"--resource:MySqlDatabase/database.wbresource.xml",
-			"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-			"--targetState:Core Schema Loaded"
-		};
+			{
+				"migrate",
+				"--resource:MySqlDatabase/database.wbresource.xml",
+				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
+				"--targetState:Core Schema Loaded"
+			};
 
-        // Execute
+		// Execute
 		context.wildebeestCommand.run(args);
 
 		// Verify

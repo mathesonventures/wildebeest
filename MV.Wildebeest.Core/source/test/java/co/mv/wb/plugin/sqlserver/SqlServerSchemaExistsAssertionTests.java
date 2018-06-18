@@ -21,8 +21,8 @@ import co.mv.wb.Asserts;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import co.mv.wb.plugin.fake.FakeInstance;
+import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
 
 import java.io.PrintStream;
@@ -36,7 +36,7 @@ import static org.junit.Assert.fail;
 /**
  * Unit tests for {@link SqlServerSchemaExistsAssertion}.
  *
- * @since                                       2.0
+ * @since 2.0
  */
 public class SqlServerSchemaExistsAssertionTests
 {
@@ -221,7 +221,7 @@ public class SqlServerSchemaExistsAssertionTests
 
 			fail("IllegalArgumentException expected");
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e)
 		{
 			assertEquals("e.message", "instance cannot be null", e.getMessage());
 		}
@@ -245,7 +245,7 @@ public class SqlServerSchemaExistsAssertionTests
 
 			fail("IllegalArgumentException expected");
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e)
 		{
 			assertEquals("e.message", "instance must be a SqlServerDatabaseInstance", e.getMessage());
 		}

@@ -23,6 +23,7 @@ import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
@@ -32,8 +33,8 @@ import java.util.UUID;
 
 /**
  * An {@link Assertion} that verifies that a given table does not exist in an ANSI-SQL compliant database system.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 @AssertionType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
@@ -42,12 +43,12 @@ import java.util.UUID;
 		"Asserts that a specific table does not exist within the database using an ANSI-SQL compliant query.",
 	example =
 		"<assertion\n" +
-		"    type=\"AnsiSqlTableDoesNotExist\"\n" +
-		"    id=\"f54689cb-3f92-4178-aa2f-8ecd1daaeb18\"\n" +
-		"    name=\"ProductType table exists\">\n" +
-		"    <schemaName>prdcat</schemaName>\n" +
-		"    <tableName>ProductType</tableName>\n" +
-		"</assertion>"
+			"    type=\"AnsiSqlTableDoesNotExist\"\n" +
+			"    id=\"f54689cb-3f92-4178-aa2f-8ecd1daaeb18\"\n" +
+			"    name=\"ProductType table exists\">\n" +
+			"    <schemaName>prdcat</schemaName>\n" +
+			"    <tableName>ProductType</tableName>\n" +
+			"</assertion>"
 )
 public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 {
@@ -56,12 +57,12 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 
 	/**
 	 * Creates a new AnsiSqlTableDoesNotExistAssertion.
-	 * 
-	 * @param       assertionId                 the ID for the new assertion.
-	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
-	 * @param       schemaName                  the name of the schema to check.
-	 * @param       tableName                   the name of the table to check.
-	 * @since                                   4.0
+	 *
+	 * @param assertionId the ID for the new assertion.
+	 * @param seqNum      the ordinal index of the new assertion within it's parent container.
+	 * @param schemaName  the name of the schema to check.
+	 * @param tableName   the name of the table to check.
+	 * @since 4.0
 	 */
 	public AnsiSqlTableDoesNotExistAssertion(
 		UUID assertionId,
@@ -74,7 +75,7 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 		this.schemaName = schemaName;
 		this.tableName = tableName;
 	}
-	
+
 	@Override public String getDescription()
 	{
 		return String.format("Table '%s' does not exist in schema '%s'", this.getTableName(), this.getSchemaName());
@@ -82,9 +83,9 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 
 	/**
 	 * Gets the name of the schema to check.
-	 * 
-	 * @return                                  the schema name to check
-	 * @since                                   2.0
+	 *
+	 * @return the schema name to check
+	 * @since 2.0
 	 */
 	public String getSchemaName()
 	{
@@ -93,9 +94,9 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 
 	/**
 	 * Gets the name of the table to check.
-	 * 
-	 * @return                                  the name of the table to check
-	 * @since                                   2.0
+	 *
+	 * @return the name of the table to check
+	 * @since 2.0
 	 */
 	public String getTableName()
 	{
@@ -110,10 +111,14 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 
 	@Override public AssertionResponse perform(Instance instance)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		AnsiSqlDatabaseInstance db = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
-		
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
+		}
+
 		AssertionResponse result;
 
 		if (!db.databaseExists())
@@ -122,7 +127,7 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 				false,
 				String.format("Database %s does not exist", db.getDatabaseName()));
 		}
-		
+
 		else if (AnsiSqlDatabaseHelper.tableExists(
 			db,
 			this.getSchemaName(),
@@ -131,13 +136,13 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 			result = new ImmutableAssertionResponse(false, "Table " + this.getTableName() +
 				" exists in schema" + this.getSchemaName());
 		}
-		
+
 		else
 		{
 			result = new ImmutableAssertionResponse(true, "Table " + this.getTableName() +
 				" does not exist in schema " + this.getSchemaName());
 		}
-		
+
 		return result;
 	}
 }

@@ -16,7 +16,9 @@
 
 package co.mv.wb.plugin.sqlserver;
 
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
+
 import java.sql.SQLException;
 
 public class SqlServerUtil
@@ -24,13 +26,13 @@ public class SqlServerUtil
 	public static void createDatabase(
 		SqlServerDatabaseInstance instance) throws SQLException
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (instance == null) throw new ArgumentNullException("instance");
 
 		DatabaseHelper.execute(
 			instance.getAdminDataSource(),
 			"CREATE DATABASE [" + instance.getDatabaseName() + "]");
 	}
-	
+
 	public static void tryDropDatabase(
 		SqlServerDatabaseInstance instance)
 	{

@@ -20,35 +20,34 @@ import co.mv.wb.framework.ArgumentNullException;
 
 /**
  * Indicates that the state specified for a migrate or a jumpstate command not defined for the current resource.
- * 
- * @since                                       3.0
+ *
+ * @since 3.0
  */
 public class UnknownStateSpecifiedException extends Exception
 {
 	private final String specifiedState;
 
-    /**
-     * Constructs a new UnknownStateException with the supplied specifiedState.
-     *
-     * @param       specifiedState              the state that was requested but is unknown.
-     * @since                                   3.0
-     */
-    public UnknownStateSpecifiedException(String specifiedState)
-    {
-        super(String.format("State specified is unknown in this resource: \"%s\"", specifiedState));
+	/**
+	 * Constructs a new UnknownStateException with the supplied specifiedState.
+	 *
+	 * @param specifiedState the state that was requested but is unknown.
+	 * @since 3.0
+	 */
+	public UnknownStateSpecifiedException(String specifiedState)
+	{
+		super(String.format("State specified is unknown in this resource: \"%s\"", specifiedState));
 
-        if (specifiedState == null) throw new ArgumentNullException("specifiedState");
+		if (specifiedState == null) throw new ArgumentNullException("specifiedState");
 
-        this.specifiedState = specifiedState;
-    }
+		this.specifiedState = specifiedState;
+	}
 
-    /**
-     * Gets the state that was requested but is unknown, resulting in this exception being thrown.
-     *
-     * @return                                  the state that was requested but is unknown, resulting in this exception
-     *                                          being thrown.
-     * @since                                   3.0
-     */
+	/**
+	 * Gets the state that was requested but is unknown, resulting in this exception being thrown.
+	 *
+	 * @return the state that was requested but is unknown, resulting in this exception being thrown.
+	 * @since 3.0
+	 */
 	public String getSpecifiedState()
 	{
 		return this.specifiedState;

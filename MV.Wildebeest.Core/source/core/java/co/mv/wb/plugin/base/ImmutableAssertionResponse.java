@@ -21,8 +21,8 @@ import co.mv.wb.framework.ArgumentNullException;
 
 /**
  * An {@link AssertionResponse} that cannot be modified after it's initial construction.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class ImmutableAssertionResponse implements AssertionResponse
 {
@@ -31,9 +31,9 @@ public class ImmutableAssertionResponse implements AssertionResponse
 
 	/**
 	 * Creates a new ImmutableAssertionResponse instance.
-	 * 
-	 * @param       result                      the result for the new AssertionResponse
-	 * @param       message                     the message for the new AssertionResponse
+	 *
+	 * @param result  the result for the new AssertionResponse
+	 * @param message the message for the new AssertionResponse
 	 */
 	public ImmutableAssertionResponse(
 		boolean result,
@@ -44,7 +44,7 @@ public class ImmutableAssertionResponse implements AssertionResponse
 		this.result = result;
 		this.message = message;
 	}
-	
+
 	@Override
 	public boolean getResult()
 	{

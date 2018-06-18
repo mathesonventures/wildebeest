@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 /**
  * Annotates additional information onto {@link Migration} implementations for use in documentation and user tools.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

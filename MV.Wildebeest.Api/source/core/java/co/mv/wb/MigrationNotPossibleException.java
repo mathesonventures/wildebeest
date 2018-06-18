@@ -19,15 +19,15 @@ package co.mv.wb;
 /**
  * Indicates that a requested migration cannot be performed because there is no path from the current state to the
  * requested target state.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class MigrationNotPossibleException extends Exception
 {
 	/**
 	 * Creates a new MigrationNotPossibleException.
-	 * 
-	 * @since                                   1.0
+	 *
+	 * @since 1.0
 	 */
 	public MigrationNotPossibleException()
 	{

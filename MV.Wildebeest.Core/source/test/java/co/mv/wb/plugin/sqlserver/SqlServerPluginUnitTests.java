@@ -29,8 +29,8 @@ import java.util.UUID;
 
 /**
  * Unit tests for plugins as applied to SQL-Server databases.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 {
@@ -42,7 +42,7 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
-		
+
 		Migration create = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -65,17 +65,17 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 			drop,
 			dropRunner);
 	}
-	
+
 	@Override
 	@Test
 	public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance db = SqlServerProperties.get().toInstance(databaseName);
-		
+
 		this.databaseExistsAssertionForNonExistentDatabase(db);
 	}
-	
+
 	@Override
 	@Test
 	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
@@ -84,7 +84,7 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
-		
+
 		Migration create = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -107,14 +107,14 @@ public class SqlServerPluginUnitTests extends BaseDatabasePluginUnitTests
 			drop,
 			dropRunner);
 	}
-	
+
 	@Override
 	@Test
 	public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance db = SqlServerProperties.get().toInstance(databaseName);
-		
+
 		this.databaseDoesNotExistAssertionForNonExistentDatabase(db);
 	}
 }

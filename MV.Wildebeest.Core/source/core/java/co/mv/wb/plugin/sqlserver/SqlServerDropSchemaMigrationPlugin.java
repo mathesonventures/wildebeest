@@ -23,6 +23,7 @@ import co.mv.wb.MigrationFaultException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationPluginType;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
@@ -32,7 +33,7 @@ import java.sql.SQLException;
 /**
  * {@link MigrationPlugin} for {@link SqlServerDropSchemaMigration}.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 @MigrationPluginType(uri = "co.mv.wb.sqlserver:SqlServerDropSchema")
 public class SqlServerDropSchemaMigrationPlugin implements MigrationPlugin
@@ -41,11 +42,11 @@ public class SqlServerDropSchemaMigrationPlugin implements MigrationPlugin
 		PrintStream output,
 		Migration migration,
 		Instance instance) throws
-			MigrationFailedException
+		MigrationFailedException
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (output == null) throw new ArgumentNullException("output");
+		if (migration == null) throw new ArgumentNullException("migration");
+		if (instance == null) throw new ArgumentNullException("instance");
 
 		SqlServerDropSchemaMigration migrationT = ModelExtensions.As(migration, SqlServerDropSchemaMigration.class);
 		if (migrationT == null)
@@ -64,7 +65,7 @@ public class SqlServerDropSchemaMigrationPlugin implements MigrationPlugin
 			DatabaseHelper.execute(instanceT.getAppDataSource(), new StringBuilder()
 				.append("DROP SCHEMA [").append(migrationT.getSchemaName()).append("];").toString());
 		}
-		catch(SQLServerException e)
+		catch (SQLServerException e)
 		{
 			throw new MigrationFailedException(migration.getMigrationId(), e.getMessage());
 		}

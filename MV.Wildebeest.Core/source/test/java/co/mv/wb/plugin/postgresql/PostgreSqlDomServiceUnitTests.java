@@ -18,12 +18,13 @@ package co.mv.wb.plugin.postgresql;
 
 import co.mv.wb.Instance;
 import co.mv.wb.LoaderFault;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
-import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.FixtureBuilder;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
@@ -36,40 +37,41 @@ import java.util.UUID;
 
 /**
  * Unit tests for the DOM persistence services for PostgreSQL plugins.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class PostgreSqlDomServiceUnitTests
 {
 	@Test
 	public void postgreSqlDatabaseResourceLoadFromValidDocumentSucceeds() throws
-			LoaderFault,
-			PluginBuildException,
-			MissingReferenceException {
+		LoaderFault,
+		PluginBuildException,
+		MissingReferenceException
+	{
 		// Setup
 		UUID resourceId = UUID.randomUUID();
 		String resourceName = "Foo";
-		
+
 		String resourceXml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), resourceId, resourceName)
 			.build();
-		
+
 		DomResourceLoader loader = DomPlugins.resourceLoader(
 			ResourceTypeServiceBuilder
 				.create()
 				.withFactoryResourceTypes()
 				.build(),
 			resourceXml);
-		
+
 		// Execute
 		Resource resource = loader.load(new File("."));
-		
+
 		// Verify
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.resourceId", resourceId, resource.getResourceId());
 		Assert.assertEquals("resource.name", resourceName, resource.getName());
 	}
-	
+
 	@Test
 	public void postgreSqlDatabaseInstanceLoadFromValidDocumentSucceeds() throws
 		LoaderFault,
@@ -86,10 +88,10 @@ public class PostgreSqlDomServiceUnitTests
 			.append("</instance>");
 
 		DomInstanceLoader loader = DomPlugins.instanceLoader(xml.toString());
-		
+
 		// Execute
 		Instance instance = loader.load();
-		
+
 		// Verify
 		Assert.assertNotNull("instance", instance);
 		PostgreSqlDatabaseInstance instanceT = ModelExtensions.As(instance, PostgreSqlDatabaseInstance.class);
@@ -103,7 +105,7 @@ public class PostgreSqlDomServiceUnitTests
 			instanceT,
 			"instance");
 	}
-	
+
 	private static void assertPostgreSqlDatabaseInstance(
 		String expectedHostName,
 		int expectedPort,
@@ -113,14 +115,9 @@ public class PostgreSqlDomServiceUnitTests
 		PostgreSqlDatabaseInstance actual,
 		String name)
 	{
-		if (expectedHostName == null) { throw new IllegalArgumentException("expectedHostName cannot be null"); }
-		if (expectedAdminUsername == null) { throw new IllegalArgumentException("expectedAdminUsername cannot be null"); }
-		if (expectedAdminPassword == null) { throw new IllegalArgumentException("expectedAdminPassword cannot be null"); }
-		if (expectedDatabaseName == null) { throw new IllegalArgumentException("expectedDatabaseName cannot be null"); }
-		if (actual == null) { throw new IllegalArgumentException("actual cannot be null"); }
-		if (name == null) { throw new IllegalArgumentException("name cannot be null"); }
-		if ("".equals(name)) { throw new IllegalArgumentException("name cannot be empty"); }
-		
+		if (name == null) throw new ArgumentNullException("name");
+		if ("".equals(name)) throw new IllegalArgumentException("name cannot be empty");
+
 		Assert.assertEquals(name + ".hostName", expectedHostName, actual.getHostName());
 		Assert.assertEquals(name + ".port", expectedPort, actual.getPort());
 		Assert.assertEquals(name + ".adminUsername", expectedAdminUsername, actual.getAdminUsername());

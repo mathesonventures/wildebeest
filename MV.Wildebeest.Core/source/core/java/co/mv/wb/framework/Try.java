@@ -21,30 +21,30 @@ import java.util.UUID;
 
 /**
  * Provides various try-get-style helpers that make parsing, validating and consuming raw values tidier
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class Try
 {
 	/**
 	 * Tries to parse the supplied raw string value as a UUID, and returns a TryResult<UUID> representing the result of
 	 * the attempted parse.
-	 * 
-	 * @param       value                       the raw value to attempt to parse as a UUID
-	 * @return                                  a {@link Optional<UUID> representing the result of the attempted parse
-	 *                                          operation.
+	 *
+	 * @param value the raw value to attempt to parse as a UUID
+	 * @return a {@link Optional<UUID> representing the result of the attempted parse
+	 * operation.
 	 */
 	public static Optional<UUID> tryParseUuid(String value)
 	{
-		if (value == null) { throw new IllegalArgumentException("value cannot be null"); }
-		
+		if (value == null) throw new ArgumentNullException("value");
+
 		Optional<UUID> result;
-		
+
 		try
 		{
 			result = Optional.of(UUID.fromString(value));
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e)
 		{
 			result = Optional.empty();
 		}

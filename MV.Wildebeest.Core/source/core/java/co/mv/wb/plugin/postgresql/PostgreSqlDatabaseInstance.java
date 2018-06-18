@@ -27,12 +27,13 @@ import javax.sql.DataSource;
 
 /**
  * Represents an instance of a PostgreSQL database, which is an ANSI-compliant database system.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class PostgreSqlDatabaseInstance
 	extends BaseDatabaseInstance
-	implements AnsiSqlDatabaseInstance, JdbcDatabaseInstance
+	implements AnsiSqlDatabaseInstance,
+	JdbcDatabaseInstance
 {
 	private final String hostName;
 	private final int port;
@@ -61,7 +62,7 @@ public class PostgreSqlDatabaseInstance
 		this.adminPassword = adminPassword;
 		this.metaSchemaName = metaSchemaName;
 	}
-	
+
 	@Override public final String getHostName()
 	{
 		return hostName;
@@ -105,7 +106,7 @@ public class PostgreSqlDatabaseInstance
 		ds.setUser(this.getAdminUsername());
 		ds.setPassword(this.getAdminPassword());
 		ds.setDatabaseName("postgres");
-		
+
 		return ds;
 	}
 
@@ -117,7 +118,7 @@ public class PostgreSqlDatabaseInstance
 		ds.setUser(this.getAdminUsername());
 		ds.setPassword(this.getAdminPassword());
 		ds.setDatabaseName(this.getDatabaseName().toLowerCase());
-		
+
 		return ds;
 	}
 

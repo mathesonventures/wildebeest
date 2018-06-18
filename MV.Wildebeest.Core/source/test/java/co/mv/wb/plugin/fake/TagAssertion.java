@@ -22,6 +22,7 @@ import co.mv.wb.AssertionType;
 import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
@@ -32,7 +33,7 @@ import java.util.UUID;
 /**
  * {@link Assertion} plugin for the Fake plugin implementation.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 @AssertionType(
 	pluginGroupUri = "co.mv.wb:Fake",
@@ -51,16 +52,16 @@ public class TagAssertion extends BaseAssertion
 		String tag)
 	{
 		super(assertionId, seqNum);
-		
+
 		this.tag = tag;
 	}
-	
+
 	@Override
 	public String getDescription()
 	{
 		return "Tag";
 	}
-	
+
 	public String getTag()
 	{
 		return this.tag;
@@ -76,12 +77,16 @@ public class TagAssertion extends BaseAssertion
 	@Override
 	public AssertionResponse perform(Instance instance)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
-		if (fake == null) { throw new IllegalArgumentException("instance must be a FakeInstance"); }
-		
+		if (fake == null)
+		{
+			throw new IllegalArgumentException("instance must be a FakeInstance");
+		}
+
 		AssertionResponse response;
-		
+
 		if (this.getTag().equals(fake.getTag()))
 		{
 			response = new ImmutableAssertionResponse(true, "Tag is as expected");
@@ -90,7 +95,7 @@ public class TagAssertion extends BaseAssertion
 		{
 			response = new ImmutableAssertionResponse(false, "Tag not as expected");
 		}
-		
+
 		return response;
 	}
 }

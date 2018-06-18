@@ -30,7 +30,7 @@ import java.io.PrintStream;
 /**
  * {@link MigrationPlugin} for the Fake plugin implementation.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public class SetTagMigrationPlugin implements MigrationPlugin
 {
@@ -49,9 +49,9 @@ public class SetTagMigrationPlugin implements MigrationPlugin
 		Migration migration,
 		Instance instance)
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (output == null) throw new ArgumentNullException("output");
+		if (migration == null) throw new ArgumentNullException("migration");
+		if (instance == null) throw new ArgumentNullException("instance");
 
 		SetTagMigration migrationT = ModelExtensions.As(migration, SetTagMigration.class);
 		if (migrationT == null)

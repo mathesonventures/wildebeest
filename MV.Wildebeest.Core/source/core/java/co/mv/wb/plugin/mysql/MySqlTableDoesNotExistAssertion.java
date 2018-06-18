@@ -32,8 +32,8 @@ import java.util.UUID;
 
 /**
  * An {@link co.mv.wb.Assertion} that verifies that a given table does not exist in a MySQL database.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:MySqlDatabase",
@@ -42,11 +42,11 @@ import java.util.UUID;
 		"Used to assert that a specific table does not exist within the MySQL database.",
 	example =
 		"<assertion\n" +
-		"    type=\"MySqlTableDoesNotExist\"\n" +
-		"    id=\"f112b36f-8312-4f8a-b7a5-e30d17be3c9b\"\n" +
-		"    name=\"ProductType table does not exist\">\n" +
-		"    <tableName>ProductType</tableName>\n" +
-		"</assertion>"
+			"    type=\"MySqlTableDoesNotExist\"\n" +
+			"    id=\"f112b36f-8312-4f8a-b7a5-e30d17be3c9b\"\n" +
+			"    name=\"ProductType table does not exist\">\n" +
+			"    <tableName>ProductType</tableName>\n" +
+			"</assertion>"
 )
 public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 {
@@ -54,11 +54,11 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 
 	/**
 	 * Creates a new MySqlTableDoesNotExistAssertion.
-	 * 
-	 * @param       assertionId                 the ID of the new assertion.
-	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
-	 * @param       tableName                   the name of the table that this assertion will check for.
-	 * @since                                   1.0
+	 *
+	 * @param assertionId the ID of the new assertion.
+	 * @param seqNum      the ordinal index of the new assertion within it's parent container.
+	 * @param tableName   the name of the table that this assertion will check for.
+	 * @since 1.0
 	 */
 	public MySqlTableDoesNotExistAssertion(
 		UUID assertionId,
@@ -71,17 +71,17 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 
 		this.tableName = tableName;
 	}
-	
+
 	@Override public String getDescription()
 	{
 		return String.format("Table '%s' does not exist", this.getTableName());
 	}
-	
+
 	/**
 	 * Gets the name of the table that this assertion will check for.
-	 * 
-	 * @return                                  the name of the table that this assertion will check for.
-	 * @since                                   1.0
+	 *
+	 * @return the name of the table that this assertion will check for.
+	 * @since 1.0
 	 */
 	public String getTableName()
 	{
@@ -93,13 +93,17 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 		return Arrays.asList(
 			Wildebeest.MySqlDatabase);
 	}
-	
+
 	@Override public AssertionResponse perform(Instance instance)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
-		
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance");
+		}
+
 		AssertionResponse result;
 
 		if (!db.databaseExists())
@@ -108,17 +112,17 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 				false,
 				String.format("Database %s does not exist", db.getDatabaseName()));
 		}
-		
+
 		else if (MySqlDatabaseHelper.tableExists(db, this.getTableName()))
 		{
 			result = new ImmutableAssertionResponse(false, "Table " + this.getTableName() + " exists");
 		}
-		
+
 		else
 		{
 			result = new ImmutableAssertionResponse(true, "Table " + this.getTableName() + " does not exist");
 		}
-		
+
 		return result;
 	}
 }

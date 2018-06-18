@@ -18,49 +18,49 @@ package co.mv.wb;
 
 /**
  * Provides information about this release of Wildebeest.
- * 
- * @since                                       3.0
+ *
+ * @since 3.0
  */
 public class About
 {
 	/**
 	 * Gets the project name.
-	 * 
-	 * @return                                  the name of this project - i.e. Wildebeest
-	 * @since                                   3.0
+	 *
+	 * @return the name of this project - i.e. Wildebeest
+	 * @since 3.0
 	 */
 	public String getProjectName()
 	{
 		return "@meta.project.identity.name@";
 	}
-	
+
 	/**
 	 * Gets the project title.
-	 * 
-	 * @return                                  the title of this project
-	 * @since                                   3.0
+	 *
+	 * @return the title of this project
+	 * @since 3.0
 	 */
 	public String getProjectTitle()
 	{
 		return "@meta.project.identity.title@";
 	}
-	
+
 	/**
 	 * Gets the full project version in dotted format.
-	 * 
-	 * @return                                  the full project version in dotted format
-	 * @since                                   3.0
+	 *
+	 * @return the full project version in dotted format
+	 * @since 3.0
 	 */
 	public String getVersionFullDotted()
 	{
 		return "@meta.project.version.full.dotted@";
 	}
-	
+
 	/**
 	 * Gets the copyright assertion for this project.
-	 * 
-	 * @return                                  the copyright assertion for this project
-	 * @since                                   3.0
+	 *
+	 * @return the copyright assertion for this project
+	 * @since 3.0
 	 */
 	public String getCopyrightAssertion()
 	{

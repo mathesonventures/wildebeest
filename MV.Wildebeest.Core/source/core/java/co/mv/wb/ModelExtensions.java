@@ -16,38 +16,40 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 /**
  * Provides helpers for working with plugin instances.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class ModelExtensions
 {
 	/**
 	 * Attempts to cast the supplied value to the specified type, and returns the result.  If the cast cannot be
 	 * performed because of a type mismatch, then null is returned.
-	 * 
-	 * @param       <T>                         the type to which the supplied value should be cast
-	 * @param       value                       the value to be cast
-	 * @param       type                        the type to which the supplied value should be cast
-	 * @return                                  the original value, cast as the specified type, or null if no cast can
-	 *                                          be performed
-	 * @since                                   1.0
+	 *
+	 * @param <T>   the type to which the supplied value should be cast
+	 * @param value the value to be cast
+	 * @param type  the type to which the supplied value should be cast
+	 * @return the original value, cast as the specified type, or null if no cast can
+	 * be performed
+	 * @since 1.0
 	 */
 	public static <T> T As(
 		Object value,
 		Class<T> type)
 	{
-		if (value == null) { throw new IllegalArgumentException("value"); }
-		if (type == null) { throw new IllegalArgumentException("type"); }
-		
+		if (value == null) throw new ArgumentNullException("value");
+		if (type == null) throw new ArgumentNullException("type");
+
 		T result = null;
-		
+
 		if (type.isAssignableFrom(value.getClass()))
 		{
 			result = (T)value;
 		}
-		
+
 		return result;
 	}
 }

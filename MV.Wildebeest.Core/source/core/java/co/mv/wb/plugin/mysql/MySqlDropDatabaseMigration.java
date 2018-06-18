@@ -29,8 +29,8 @@ import java.util.UUID;
 
 /**
  * A {@link Migration} that drops a MySQL database.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:MySqlDatabase",
@@ -40,22 +40,22 @@ import java.util.UUID;
 			"MySQL database from a state to non-existant",
 	example =
 		"<migration\n" +
-		"    type=\"MySqlDropDatabase\"\n" +
-		"    id=\"dfdafb03-4653-4641-9eb6-07f63aadb2af\"\n" +
-		"    fromState=\"3bab9e8c-4ede-4a61-b682-62cec77f8a10\">\n" +
-		"</migration>"
+			"    type=\"MySqlDropDatabase\"\n" +
+			"    id=\"dfdafb03-4653-4641-9eb6-07f63aadb2af\"\n" +
+			"    fromState=\"3bab9e8c-4ede-4a61-b682-62cec77f8a10\">\n" +
+			"</migration>"
 )
 public class MySqlDropDatabaseMigration extends BaseMigration
 {
 	/**
 	 * Creates a new MySqlDropDatabaseMigration.
-	 * 
-	 * @param       migrationId                 the ID of the new migration.
-	 * @param       fromState                   the source-state for the migration, or null if this migration
-	 *                                          transitions from the non-existent state.
-	 * @param       toState                     the target-state for the migration, or null if this migration
-	 *                                          transitions to the non-existent state.
-	 * @since                                   1.0
+	 *
+	 * @param migrationId the ID of the new migration.
+	 * @param fromState   the source-state for the migration, or null if this migration
+	 *                    transitions from the non-existent state.
+	 * @param toState     the target-state for the migration, or null if this migration
+	 *                    transitions to the non-existent state.
+	 * @since 1.0
 	 */
 	public MySqlDropDatabaseMigration(
 		UUID migrationId,
@@ -64,7 +64,7 @@ public class MySqlDropDatabaseMigration extends BaseMigration
 	{
 		super(migrationId, fromState, toState);
 	}
-	
+
 	@Override
 	public List<ResourceType> getApplicableTypes()
 	{

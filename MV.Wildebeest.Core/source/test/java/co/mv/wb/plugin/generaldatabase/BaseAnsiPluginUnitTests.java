@@ -20,6 +20,7 @@ import co.mv.wb.AssertionResponse;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.PrintStream;
 import java.util.UUID;
@@ -41,12 +42,12 @@ public abstract class BaseAnsiPluginUnitTests
 		Migration drop,
 		MigrationPlugin dropRunner) throws MigrationFailedException
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (create == null) { throw new IllegalArgumentException("create cannot be null"); }
-		if (createRunner == null) { throw new IllegalArgumentException("createRunner cannot be null"); }
-		if (drop == null) { throw new IllegalArgumentException("drop cannot be null"); }
-		if (dropRunner == null) { throw new IllegalArgumentException("dropRunner cannot be null"); }
+		if (output == null) throw new ArgumentNullException("output");
+		if (instance == null) throw new ArgumentNullException("instance");
+		if (create == null) throw new ArgumentNullException("create");
+		if (createRunner == null) throw new ArgumentNullException("createRunner");
+		if (drop == null) throw new ArgumentNullException("drop");
+		if (dropRunner == null) throw new ArgumentNullException("dropRunner");
 
 		try
 		{
@@ -67,9 +68,9 @@ public abstract class BaseAnsiPluginUnitTests
 				instance);
 		}
 	}
-	
+
 	public abstract void tableExistsForExistentTable() throws MigrationFailedException;
-	
+
 	protected void tableExistsForExistentTable(
 		PrintStream output,
 		DatabaseInstance instance,
@@ -79,16 +80,16 @@ public abstract class BaseAnsiPluginUnitTests
 		MigrationPlugin createTableRunner,
 		Migration dropDatabase,
 		MigrationPlugin dropDatabaseRunner) throws
-			MigrationFailedException
+		MigrationFailedException
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (createDatabase == null) { throw new IllegalArgumentException("createDatabase cannot be null"); }
-		if (createDatabaseRunner == null) { throw new IllegalArgumentException("createDatabaseRunner cannot be null"); }
-		if (createTable == null) { throw new IllegalArgumentException("createTable cannot be null"); }
-		if (createTableRunner == null) { throw new IllegalArgumentException("createTableRunner cannot be null"); }
-		if (dropDatabase == null) { throw new IllegalArgumentException("dropDatabase cannot be null"); }
-		if (dropDatabaseRunner == null) { throw new IllegalArgumentException("dropDatabaseRunner cannot be null"); }
+		if (output == null) throw new ArgumentNullException("output");
+		if (instance == null) throw new ArgumentNullException("instance");
+		if (createDatabase == null) throw new ArgumentNullException("createDatabase");
+		if (createDatabaseRunner == null) throw new ArgumentNullException("createDatabaseRunner");
+		if (createTable == null) throw new ArgumentNullException("createTable");
+		if (createTableRunner == null) throw new ArgumentNullException("createTableRunner");
+		if (dropDatabase == null) throw new ArgumentNullException("dropDatabase");
+		if (dropDatabaseRunner == null) throw new ArgumentNullException("dropDatabaseRunner");
 
 		// Setup
 		AnsiSqlTableExistsAssertion tableExists = new AnsiSqlTableExistsAssertion(
@@ -96,7 +97,7 @@ public abstract class BaseAnsiPluginUnitTests
 			0,
 			"sch",
 			"tbl");
-		
+
 		try
 		{
 			createDatabaseRunner.perform(
@@ -108,7 +109,7 @@ public abstract class BaseAnsiPluginUnitTests
 				output,
 				createTable,
 				instance);
-		
+
 			// Execute
 			AssertionResponse response = tableExists.perform(instance);
 
@@ -125,9 +126,9 @@ public abstract class BaseAnsiPluginUnitTests
 				instance);
 		}
 	}
-	
+
 	public abstract void tableExistsForNonExistentTable() throws MigrationFailedException;
-	
+
 	protected void tableExistsForNonExistentTable(
 		PrintStream output,
 		DatabaseInstance instance,
@@ -135,14 +136,14 @@ public abstract class BaseAnsiPluginUnitTests
 		MigrationPlugin createDatabaseRunner,
 		Migration dropDatabase,
 		MigrationPlugin dropDatabaseRunner) throws
-			MigrationFailedException
+		MigrationFailedException
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
-		if (createDatabase == null) { throw new IllegalArgumentException("createDatabase cannot be null"); }
-		if (createDatabaseRunner == null) { throw new IllegalArgumentException("createDatabaseRunner cannot be null"); }
-		if (dropDatabase == null) { throw new IllegalArgumentException("dropDatabase cannot be null"); }
-		if (dropDatabaseRunner == null) { throw new IllegalArgumentException("dropDatabaseRunner cannot be null"); }
+		if (output == null) throw new ArgumentNullException("output");
+		if (instance == null) throw new ArgumentNullException("instance");
+		if (createDatabase == null) throw new ArgumentNullException("createDatabase");
+		if (createDatabaseRunner == null) throw new ArgumentNullException("createDatabaseRunner");
+		if (dropDatabase == null) throw new ArgumentNullException("dropDatabase");
+		if (dropDatabaseRunner == null) throw new ArgumentNullException("dropDatabaseRunner");
 
 		// Setup
 		AnsiSqlTableExistsAssertion tableExists = new AnsiSqlTableExistsAssertion(
@@ -150,14 +151,14 @@ public abstract class BaseAnsiPluginUnitTests
 			0,
 			"sch",
 			"tbl");
-		
+
 		try
 		{
 			createDatabaseRunner.perform(
 				output,
 				createDatabase,
 				instance);
-		
+
 			// Execute
 			AssertionResponse response = tableExists.perform(instance);
 

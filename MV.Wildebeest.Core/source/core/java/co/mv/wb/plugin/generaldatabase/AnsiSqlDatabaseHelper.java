@@ -16,12 +16,13 @@
 
 package co.mv.wb.plugin.generaldatabase;
 
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 
 /**
  * Helper functions for common operations on an ANSI-SQL compliant database system.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class AnsiSqlDatabaseHelper
 {
@@ -30,11 +31,11 @@ public class AnsiSqlDatabaseHelper
 		String schemaName,
 		String tableName)
 	{
-		if (db == null) { throw new IllegalArgumentException("db cannot be null"); }
-		if (schemaName == null) { throw new IllegalArgumentException("schemaName cannot be null"); }
-		if ("".equals(schemaName)) { throw new IllegalArgumentException("schemaName cannot be empty"); }
-		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
-		if ("".equals(tableName)) { throw new IllegalArgumentException("tableName cannot be empty"); }
+		if (db == null) throw new ArgumentNullException("db");
+		if (schemaName == null) throw new ArgumentNullException("schemaName");
+		if ("".equals(schemaName)) throw new IllegalArgumentException("schemaName cannot be empty");
+		if (tableName == null) throw new ArgumentNullException("tableName");
+		if ("".equals(tableName)) throw new IllegalArgumentException("tableName cannot be empty");
 
 		return DatabaseHelper.rowExists(
 			db.getAppDataSource(),

@@ -21,7 +21,7 @@ import co.mv.wb.framework.ArgumentNullException;
 /**
  * Indicates that an attempt to build a plugin failed.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class PluginBuildException extends Exception
 {

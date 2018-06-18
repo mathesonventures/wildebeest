@@ -22,9 +22,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
-{
-	ExternalResourceDomMigrationBuilderIntegrationTests.class
-})
+	{
+		ExternalResourceDomMigrationBuilderIntegrationTests.class
+	})
 public class AllTests
 {
 

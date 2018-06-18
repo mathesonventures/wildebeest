@@ -33,8 +33,8 @@ import java.util.UUID;
 
 /**
  * A {@link Assertion} that verifies that a given schema does not exist in a SQL Server database.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
@@ -43,10 +43,10 @@ import java.util.UUID;
 		"Verifies that a schema does not exist in a SQL Server database resource.",
 	example =
 		"<assertion\n" +
-		"    type=\"SqlServerSchemaDoesNotExist\"\n" +
-		"    id=\"b7b780b0-ed01-4f5d-b1b1-f2f503ebfeaf\"\n" +
-		"    <schemaName>prd</schemaName>\n" +
-		"</assertion>"
+			"    type=\"SqlServerSchemaDoesNotExist\"\n" +
+			"    id=\"b7b780b0-ed01-4f5d-b1b1-f2f503ebfeaf\"\n" +
+			"    <schemaName>prd</schemaName>\n" +
+			"</assertion>"
 )
 public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 {
@@ -54,11 +54,11 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 
 	/**
 	 * Creates a new SqlServerSchemaDoesNotExistAssertion.
-	 * 
-	 * @param       assertionId                 the ID of the new assertion.
-	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
-	 * @param       schemaName                  the name of the schema to check,
-	 * @since                                   2.0
+	 *
+	 * @param assertionId the ID of the new assertion.
+	 * @param seqNum      the ordinal index of the new assertion within it's parent container.
+	 * @param schemaName  the name of the schema to check,
+	 * @since 2.0
 	 */
 	public SqlServerSchemaDoesNotExistAssertion(
 		UUID assertionId,
@@ -76,12 +76,12 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 	{
 		return String.format("Schema '%s' does not exist", this.getSchemaName());
 	}
-	
+
 	/**
 	 * Gets the name of the schema to check.
-	 * 
-	 * @return                                  the name of the schema to check
-	 * @since                                   2.0
+	 *
+	 * @return the name of the schema to check
+	 * @since 2.0
 	 */
 	public final String getSchemaName()
 	{
@@ -96,10 +96,14 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 
 	@Override public AssertionResponse perform(Instance instance)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
-		
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
+		}
+
 		AssertionResponse result;
 
 		if (!db.databaseExists())
@@ -108,19 +112,19 @@ public class SqlServerSchemaDoesNotExistAssertion extends BaseAssertion
 				false,
 				String.format("Database %s does not exist", db.getDatabaseName()));
 		}
-		
+
 		else if (SqlServerDatabaseHelper.schemaExists(
 			db,
 			this.getSchemaName()))
 		{
 			result = new ImmutableAssertionResponse(false, "Schema " + this.getSchemaName() + " exists");
 		}
-		
+
 		else
 		{
 			result = new ImmutableAssertionResponse(true, "Schema " + this.getSchemaName() + " does not exist");
 		}
-		
+
 		return result;
 	}
 }

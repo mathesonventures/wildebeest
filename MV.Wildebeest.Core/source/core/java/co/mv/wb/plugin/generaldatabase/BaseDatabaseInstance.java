@@ -18,8 +18,8 @@ package co.mv.wb.plugin.generaldatabase;
 
 /**
  * Base class for building DatabaseInstance implementations.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public abstract class BaseDatabaseInstance implements DatabaseInstance
 {
@@ -34,11 +34,11 @@ public abstract class BaseDatabaseInstance implements DatabaseInstance
 		{
 			throw new IllegalArgumentException("stateTableName cannot be empty");
 		}
-		
+
 		this.databaseName = databaseName;
 		this.stateTableName = stateTableName;
 	}
-	
+
 	@Override public final String getDatabaseName()
 	{
 		return this.databaseName;
@@ -48,7 +48,8 @@ public abstract class BaseDatabaseInstance implements DatabaseInstance
 	{
 		if (this.stateTableName == null)
 		{
-			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
+			throw new IllegalStateException(
+				"stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
 		}
 
 		return this.stateTableName;

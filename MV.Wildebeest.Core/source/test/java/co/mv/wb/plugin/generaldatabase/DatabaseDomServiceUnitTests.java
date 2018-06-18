@@ -19,9 +19,9 @@ package co.mv.wb.plugin.generaldatabase;
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionBuilder;
 import co.mv.wb.LoaderFault;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
-import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.FixtureBuilder;
@@ -41,29 +41,29 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * Unit tests for the DOM persistence services for core database plugins.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class DatabaseDomServiceUnitTests
 {
 	@Test
 	public void databaseExistsAssertionLoadFromValidDocumentSucceeds() throws
-			LoaderFault,
-			PluginBuildException,
-            MissingReferenceException
+		LoaderFault,
+		PluginBuildException,
+		MissingReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
-		
+
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Product Catalogue Database")
-				.state(UUID.randomUUID(), null)
-					.assertion("DatabaseExists", assertionId)
+			.state(UUID.randomUUID(), null)
+			.assertion("DatabaseExists", assertionId)
 			.build();
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put("DatabaseExists", new DatabaseExistsDomAssertionBuilder());
-		
+
 		DomResourceLoader loader = new DomResourceLoader(
 			ResourceTypeServiceBuilder
 				.create()
@@ -72,7 +72,7 @@ public class DatabaseDomServiceUnitTests
 			assertionBuilders,
 			new HashMap<>(),
 			xml);
-		
+
 		// Execute
 		Resource resource = loader.load(new File("."));
 
@@ -86,28 +86,28 @@ public class DatabaseDomServiceUnitTests
 		Assertion assertion = resource.getStates().get(0).getAssertions().get(0);
 		DatabaseExistsAssertion assertionT = ModelExtensions.As(assertion, DatabaseExistsAssertion.class);
 		assertNotNull("expected to be DatabaseExistsAssertion", assertionT);
-		
+
 		assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());
 	}
-	
+
 	@Test
 	public void databaseDoesNotExistAssertionLoadFromValidDocumentSucceeds() throws
-			LoaderFault,
-			PluginBuildException,
-            MissingReferenceException
+		LoaderFault,
+		PluginBuildException,
+		MissingReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
-		
+
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Product Catalogue Database")
-				.state(UUID.randomUUID(), null)
-					.assertion("DatabaseDoesNotExist", assertionId)
+			.state(UUID.randomUUID(), null)
+			.assertion("DatabaseDoesNotExist", assertionId)
 			.build();
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 		assertionBuilders.put("DatabaseDoesNotExist", new DatabaseDoesNotExistDomAssertionBuilder());
-		
+
 		DomResourceLoader loader = new DomResourceLoader(
 			ResourceTypeServiceBuilder
 				.create()
@@ -116,10 +116,10 @@ public class DatabaseDomServiceUnitTests
 			assertionBuilders,
 			new HashMap<>(),
 			xml);
-		
+
 		// Execute
 		Resource resource = loader.load(new File("."));
-		
+
 		// Verify
 		assertNotNull("resource", resource);
 		assertEquals("resource.states.size", 1, resource.getStates().size());
@@ -130,7 +130,7 @@ public class DatabaseDomServiceUnitTests
 		Assertion assertion = resource.getStates().get(0).getAssertions().get(0);
 		DatabaseDoesNotExistAssertion assertionT = ModelExtensions.As(assertion, DatabaseDoesNotExistAssertion.class);
 		assertNotNull("expected to be DatabaseDoesNotExistAssertion", assertionT);
-		
+
 		assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());
 	}
 }

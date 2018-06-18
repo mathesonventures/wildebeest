@@ -35,7 +35,7 @@ public class MySqlCreateDatabaseMigrationTests
 		PrintStream output = System.out;
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
-		
+
 		MySqlCreateDatabaseMigration migration = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -74,12 +74,12 @@ public class MySqlCreateDatabaseMigrationTests
 		PrintStream output = System.out;
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
-		
+
 		String databaseName = MySqlUtil.createDatabase(
 			mySqlProperties,
 			"stm_test",
 			"");
-		
+
 		MySqlCreateDatabaseMigration migration = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -97,14 +97,14 @@ public class MySqlCreateDatabaseMigrationTests
 
 		// Execute
 		MigrationFailedException caught = null;
-		
+
 		try
 		{
 			migrationPlugin.perform(
 				output,
 				migration,
 				instance);
-			
+
 			Assert.fail("MigrationFailedException expected");
 		}
 		catch (MigrationFailedException e)
@@ -115,11 +115,11 @@ public class MySqlCreateDatabaseMigrationTests
 		{
 			MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 		}
-		
+
 		// Verify
 		Assert.assertEquals(
 			"caught.message",
-			String.format("database \"%s\" already exists",	databaseName),
+			String.format("database \"%s\" already exists", databaseName),
 			caught.getMessage());
 	}
 }

@@ -23,6 +23,7 @@ import co.mv.wb.MigrationFaultException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationPluginType;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 
 import java.io.PrintStream;
@@ -31,7 +32,7 @@ import java.sql.SQLException;
 /**
  * {@link MigrationPlugin} for {@link MySqlDropDatabaseMigration}.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 @MigrationPluginType(uri = "co.mv.wb.mysql:MySqlDropDatabase")
 public class MySqlDropDatabaseMigrationPlugin implements MigrationPlugin
@@ -40,11 +41,11 @@ public class MySqlDropDatabaseMigrationPlugin implements MigrationPlugin
 		PrintStream output,
 		Migration migration,
 		Instance instance) throws
-			MigrationFailedException
+		MigrationFailedException
 	{
-		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
-		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (output == null) throw new ArgumentNullException("output");
+		if (migration == null) throw new ArgumentNullException("migration");
+		if (instance == null) throw new ArgumentNullException("instance");
 
 		MySqlDropDatabaseMigration migrationT = ModelExtensions.As(migration, MySqlDropDatabaseMigration.class);
 		if (migrationT == null)

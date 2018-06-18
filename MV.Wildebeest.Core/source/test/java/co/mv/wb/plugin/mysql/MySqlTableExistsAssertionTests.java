@@ -16,7 +16,22 @@
 
 package co.mv.wb.plugin.mysql;
 
-import co.mv.wb.*;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.Asserts;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.Migration;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationInvalidStateException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MigrationPlugin;
+import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeInstance;
@@ -39,7 +54,7 @@ import static org.junit.Assert.fail;
 /**
  * Unit tests for {@link MySqlTableExistsAssertion}.
  *
- * @since                                       1.0
+ * @since 1.0
  */
 public class MySqlTableExistsAssertionTests
 {
@@ -55,7 +70,7 @@ public class MySqlTableExistsAssertionTests
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException
 	{
-		 
+
 		//
 		// Setup
 		//
@@ -77,7 +92,7 @@ public class MySqlTableExistsAssertionTests
 			Wildebeest.MySqlDatabase,
 			"Database",
 			Optional.empty());
-		 
+
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(created);
@@ -85,14 +100,14 @@ public class MySqlTableExistsAssertionTests
 		// Schema Loaded
 		State schemaLoaded = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(schemaLoaded);
-		 
+
 		// Migrate -> created
 		Migration migration1 = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(created.getStateId().toString()));
 		resource.getMigrations().add(migration1);
-		 
+
 		// Migrate created -> schemaLoaded
 		Migration migration2 = new SqlScriptMigration(
 			UUID.randomUUID(),
@@ -106,7 +121,7 @@ public class MySqlTableExistsAssertionTests
 		migrationPlugins.put(SqlScriptMigration.class, new SqlScriptMigrationPlugin());
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
-		
+
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
@@ -119,18 +134,18 @@ public class MySqlTableExistsAssertionTests
 			resource,
 			instance,
 			Optional.of(schemaLoaded.getStateId().toString()));
-		
+
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),
 			0,
 			"ProductType");
- 
+
 		//
 		// Execute
 		//
-		
+
 		AssertionResponse response = assertion.perform(instance);
-		
+
 		MySqlUtil.dropDatabase(instance, databaseName);
 
 		//
@@ -139,9 +154,9 @@ public class MySqlTableExistsAssertionTests
 
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(true, "Table ProductType exists", response, "response");
-		
+
 	}
-	 
+
 	@Test
 	public void applyForNonExistentTableFails() throws
 		AssertionFailedException,
@@ -154,7 +169,7 @@ public class MySqlTableExistsAssertionTests
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException
 	{
-		 
+
 		//
 		// Setup
 		//
@@ -168,17 +183,17 @@ public class MySqlTableExistsAssertionTests
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
-		 
+
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			Wildebeest.MySqlDatabase,
 			"Database",
 			Optional.empty());
-		 
+
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(created);
-		 
+
 		// Migrate -> created
 		Migration migration1 = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
@@ -208,11 +223,11 @@ public class MySqlTableExistsAssertionTests
 			UUID.randomUUID(),
 			0,
 			"ProductType");
- 
+
 		//
 		// Execute
 		//
-		
+
 		AssertionResponse response = assertion.perform(instance);
 
 		MySqlUtil.dropDatabase(instance, databaseName);
@@ -223,13 +238,13 @@ public class MySqlTableExistsAssertionTests
 
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(false, "Table ProductType does not exist", response, "response");
-		
+
 	}
-	 
+
 	@Test
 	public void applyForNonExistentDatabaseFails()
 	{
-		 
+
 		//
 		// Setup
 		//
@@ -237,7 +252,7 @@ public class MySqlTableExistsAssertionTests
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
-		
+
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
 			mySqlProperties.getPort(),
@@ -245,16 +260,16 @@ public class MySqlTableExistsAssertionTests
 			mySqlProperties.getPassword(),
 			databaseName,
 			null);
-		 
+
 		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
 			UUID.randomUUID(),
 			0,
 			"ProductType");
- 
+
 		//
 		// Execute
 		//
-		
+
 		AssertionResponse response = assertion.perform(instance);
 
 		//
@@ -267,7 +282,7 @@ public class MySqlTableExistsAssertionTests
 			response, "response");
 
 	}
-	 
+
 	@Test
 	public void applyForNullInstanceFails()
 	{
@@ -276,20 +291,20 @@ public class MySqlTableExistsAssertionTests
 			UUID.randomUUID(),
 			0,
 			"TableName");
-		
+
 		// Execute
 		try
 		{
 			AssertionResponse response = assertion.perform(null);
-			
+
 			fail("IllegalArgumentException expected");
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e)
 		{
 			assertEquals("e.message", "instance cannot be null", e.getMessage());
 		}
 	}
-	 
+
 	@Test
 	public void applyForIncorrectInstanceTypeFails()
 	{
@@ -298,17 +313,17 @@ public class MySqlTableExistsAssertionTests
 			UUID.randomUUID(),
 			0,
 			"TableName");
-		
+
 		FakeInstance instance = new FakeInstance();
-		
+
 		// Execute
 		try
 		{
 			AssertionResponse response = assertion.perform(instance);
-			
+
 			fail("IllegalArgumentException expected");
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e)
 		{
 			assertEquals("e.message", "instance must be a MySqlDatabaseInstance", e.getMessage());
 		}

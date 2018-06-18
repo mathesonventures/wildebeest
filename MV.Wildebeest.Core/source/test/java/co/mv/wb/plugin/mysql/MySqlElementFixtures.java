@@ -27,19 +27,30 @@ public class MySqlElementFixtures
 			.append("  PRIMARY KEY (`ProductTypeCode`)").append("\n")
 			.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;").append("\n");
 
-		sql.append("CREATE TABLE `Product` (").append("\n")
-			.append("  `ProductId` char(36) NOT NULL,").append("\n")
-			.append("  `ProductTypeCode` char(2) NOT NULL,").append("\n")
-			.append("  `Name` varchar(50) NOT NULL,").append("\n")
-			.append("  `Description` varchar(4000) NOT NULL,").append("\n")
-			.append("  PRIMARY KEY (`ProductId`),").append("\n")
-			.append("  KEY `FK_Product_ProductTypeCode` (`ProductTypeCode`),").append("\n")
-			.append("  CONSTRAINT `FK_Product_ProductTypeCode` FOREIGN KEY (`ProductTypeCode`) REFERENCES `ProductType` (`ProductTypeCode`)").append("\n")
-			.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;").append("\n");
-		
+		sql
+			.append("CREATE TABLE `Product` (")
+			.append("\n")
+			.append("  `ProductId` char(36) NOT NULL,")
+			.append("\n")
+			.append("  `ProductTypeCode` char(2) NOT NULL,")
+			.append("\n")
+			.append("  `Name` varchar(50) NOT NULL,")
+			.append("\n")
+			.append("  `Description` varchar(4000) NOT NULL,")
+			.append("\n")
+			.append("  PRIMARY KEY (`ProductId`),")
+			.append("\n")
+			.append("  KEY `FK_Product_ProductTypeCode` (`ProductTypeCode`),")
+			.append("\n")
+			.append(
+				"  CONSTRAINT `FK_Product_ProductTypeCode` FOREIGN KEY (`ProductTypeCode`) REFERENCES `ProductType` (`ProductTypeCode`)")
+			.append("\n")
+			.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8;")
+			.append("\n");
+
 		return sql.toString();
 	}
-	
+
 	public static String productTypeRows()
 	{
 		StringBuilder sql = new StringBuilder();

@@ -29,8 +29,8 @@ import java.util.UUID;
 
 /**
  * A {@link Migration} that creates a new SQL-Server database.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
@@ -40,21 +40,21 @@ import java.util.UUID;
 			"a SQL Server database from a state to non-existant",
 	example =
 		"<migration\n" +
-		"    type=\"SqlServerDropDatabase\"\n" +
-		"    id=\"ffe636f4-563f-4725-bcf2-124e7bb38d76\"\n" +
-		"    fromState=\"0cae6740-cb35-4028-af8a-14d565414078\">\n" +
-		"    <schemaName>prd</schemaName>\n" +
-		"</migration>"
+			"    type=\"SqlServerDropDatabase\"\n" +
+			"    id=\"ffe636f4-563f-4725-bcf2-124e7bb38d76\"\n" +
+			"    fromState=\"0cae6740-cb35-4028-af8a-14d565414078\">\n" +
+			"    <schemaName>prd</schemaName>\n" +
+			"</migration>"
 )
 public class SqlServerDropDatabaseMigration extends BaseMigration
 {
 	/**
 	 * Creates a new SqlServerCreateDatabseMigration.
-	 * 
-	 * @param       migrationId                 the ID of the new migration.
-	 * @param       fromState                   the source state for this migration.
-	 * @param       toState                     the target state for this migration.
-	 * @since                                   2.0
+	 *
+	 * @param migrationId the ID of the new migration.
+	 * @param fromState   the source state for this migration.
+	 * @param toState     the target state for this migration.
+	 * @since 2.0
 	 */
 	public SqlServerDropDatabaseMigration(
 		UUID migrationId,
@@ -63,7 +63,7 @@ public class SqlServerDropDatabaseMigration extends BaseMigration
 	{
 		super(migrationId, fromState, toState);
 	}
-	
+
 	@Override
 	public List<ResourceType> getApplicableTypes()
 	{

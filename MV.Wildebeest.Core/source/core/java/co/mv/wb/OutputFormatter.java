@@ -16,6 +16,8 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 import java.util.Optional;
 
 public class OutputFormatter
@@ -65,11 +67,11 @@ public class OutputFormatter
 	}
 
 	public static String missingReference(
-			MissingReferenceException e)
+		MissingReferenceException e)
 	{
 		return String.format(
-				"Missing referred resource: \"%s\"",
-				e.getMessage());
+			"Missing referred resource: \"%s\"",
+			e.getMessage());
 	}
 
 	//
@@ -111,10 +113,10 @@ public class OutputFormatter
 		Optional<State> fromState,
 		Optional<State> toState)
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
-		if (fromState == null) { throw new IllegalArgumentException("fromState cannot be null"); }
-		if (toState == null) { throw new IllegalArgumentException("toState cannot be null"); }
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (migration == null) throw new ArgumentNullException("migration");
+		if (fromState == null) throw new ArgumentNullException("fromState");
+		if (toState == null) throw new ArgumentNullException("toState");
 
 		StringBuilder result = new StringBuilder();
 
@@ -134,16 +136,17 @@ public class OutputFormatter
 					fromState.get().getDisplayName()));
 			}
 		}
-		else if (toState.isPresent())
-		{
-			result.append(String.format(
-				"Migrating from non-existent to \"%s\"",
-				toState.get().getDisplayName()));
-		}
 		else
-		{
-			// Exception?
-		}
+			if (toState.isPresent())
+			{
+				result.append(String.format(
+					"Migrating from non-existent to \"%s\"",
+					toState.get().getDisplayName()));
+			}
+			else
+			{
+				// Exception?
+			}
 
 		return result.toString();
 	}
@@ -152,8 +155,8 @@ public class OutputFormatter
 		Resource resource,
 		Migration migration)
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (migration == null) { throw new IllegalArgumentException("migration cannot be null"); }
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (migration == null) throw new ArgumentNullException("migration");
 
 		return "Migration complete";
 	}
@@ -179,7 +182,7 @@ public class OutputFormatter
 
 	public static String assertionStart(Assertion assertion)
 	{
-		if (assertion == null) { throw new IllegalArgumentException("assertion cannot be null"); }
+		if (assertion == null) throw new ArgumentNullException("assertion");
 
 		return String.format("Starting assertion: %s", assertion.getDescription());
 	}
@@ -188,8 +191,8 @@ public class OutputFormatter
 		Assertion assertion,
 		AssertionResponse response)
 	{
-		if (assertion == null) { throw new IllegalArgumentException("assertion cannot be null"); }
-		if (response == null) { throw new IllegalArgumentException("response cannot be null"); }
+		if (assertion == null) throw new ArgumentNullException("assertion");
+		if (response == null) throw new ArgumentNullException("response");
 
 		String format = response.getResult()
 			? "Assertion \"%s\" passed: %s"

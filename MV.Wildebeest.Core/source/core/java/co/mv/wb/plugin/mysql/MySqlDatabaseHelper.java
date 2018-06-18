@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.FaultException;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 
 import java.sql.Connection;
@@ -26,37 +27,37 @@ import java.sql.SQLException;
 
 /**
  * Functional helper methods for working with MySQL databases.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class MySqlDatabaseHelper
 {
 	/**
 	 * Returns a boolean flag indicating whether or not a table exists for the database described by the supplied
 	 * instance.
-	 * 
-	 * @param       instance                    the MySqlDatabaseInstance to check.
-	 * @param       tableName                   the name of the table to check for.
-	 * @return                                  a boolean flag indicating whether or not the specified table exists.
-	 * @since                                   1.0
+	 *
+	 * @param instance  the MySqlDatabaseInstance to check.
+	 * @param tableName the name of the table to check for.
+	 * @return a boolean flag indicating whether or not the specified table exists.
+	 * @since 1.0
 	 */
 	public static boolean tableExists(
 		MySqlDatabaseInstance instance,
 		String tableName)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance"); }
-		if (tableName == null) { throw new IllegalArgumentException("tableName cannot be null"); }
-		if ("".equals(tableName)) { throw new IllegalArgumentException("tableName cannot be empty"); }
-		
+		if (instance == null) throw new ArgumentNullException("instance");
+		if (tableName == null) throw new ArgumentNullException("tableName");
+		if ("".equals(tableName)) throw new IllegalArgumentException("tableName cannot be empty");
+
 		StringBuilder query = new StringBuilder();
 		query
 			.append("SELECT TABLE_NAME FROM TABLES ")
 			.append("WHERE ")
-				.append("TABLE_SCHEMA = ? AND ")
-				.append("TABLE_NAME = ?;");
+			.append("TABLE_SCHEMA = ? AND ")
+			.append("TABLE_NAME = ?;");
 
 		boolean result = false;
-		
+
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -71,7 +72,7 @@ public class MySqlDatabaseHelper
 
 			result = rs.next();
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
 			throw new FaultException(e);
 		}
@@ -88,7 +89,7 @@ public class MySqlDatabaseHelper
 				throw new FaultException(e);
 			}
 		}
-		
+
 		return result;
 	}
 }

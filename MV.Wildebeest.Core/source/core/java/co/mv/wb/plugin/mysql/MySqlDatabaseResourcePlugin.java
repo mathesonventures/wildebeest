@@ -24,6 +24,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.generaldatabase.Extensions;
 
 import java.io.PrintStream;
@@ -32,8 +33,8 @@ import java.util.UUID;
 
 /**
  * A {@link Resource} that is a MySQL database.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 {
@@ -49,13 +50,17 @@ public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 		Resource resource,
 		Instance instance) throws IndeterminateStateException
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance");
+		}
 
 		UUID declaredStateId = null;
-		
+
 		if (db.databaseExists())
 		{
 			declaredStateId = MySqlStateHelper.getStateId(
@@ -63,7 +68,7 @@ public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 				db.getAppDataSource(),
 				Extensions.getStateTableName(db));
 		}
-		
+
 		// If we found a declared state, check that the state is actually defined
 		State result = null;
 		if (declaredStateId != null)
@@ -78,10 +83,10 @@ public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 					declaredStateId.toString()));
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public void setStateId(
 		PrintStream output,
@@ -89,13 +94,18 @@ public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 		Instance instance,
 		UUID stateId)
 	{
-		if (output == null) { throw new IllegalArgumentException("output"); }
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (output == null) throw new ArgumentNullException("output");
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance"); }
-		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
-		
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance");
+		}
+
+		if (stateId == null) throw new ArgumentNullException("stateId");
+
 		// Set the state tracking row
 		try
 		{

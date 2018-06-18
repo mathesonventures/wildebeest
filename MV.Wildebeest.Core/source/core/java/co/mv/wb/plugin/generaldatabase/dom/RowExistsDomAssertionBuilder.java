@@ -31,36 +31,36 @@ import static co.mv.wb.framework.Util.coalesceWhitespace;
 
 /**
  * An {@link AssertionBuilder} that builds a {@link RowExistsAssertion} from a DOM {@link org.w3c.dom.Element}.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class RowExistsDomAssertionBuilder extends BaseDomAssertionBuilder implements AssertionBuilder
 {
 	@Override public Assertion build(
 		UUID assertionId,
 		int seqNum) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		Optional<String> sql = this.tryGetString("sql");
 		Optional<String> description = this.tryGetString("description");
-		
+
 		// Validation
 		Messages messages = new Messages();
 		if (!sql.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "sql", RowExistsAssertion.class);
 		}
-		
+
 		if (!description.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "description", RowExistsAssertion.class);
 		}
-		
+
 		if (messages.size() > 0)
 		{
 			throw new PluginBuildException(messages);
 		}
-		
+
 		return new RowExistsAssertion(assertionId, coalesceWhitespace(description.get()), seqNum, sql.get());
 	}
 }

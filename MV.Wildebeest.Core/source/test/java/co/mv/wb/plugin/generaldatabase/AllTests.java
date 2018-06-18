@@ -22,10 +22,10 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
-{
-	AnsiSqlDomServiceUnitTests.class,
-	DatabaseDomServiceUnitTests.class,
-})
+	{
+		AnsiSqlDomServiceUnitTests.class,
+		DatabaseDomServiceUnitTests.class,
+	})
 public class AllTests
 {
 }

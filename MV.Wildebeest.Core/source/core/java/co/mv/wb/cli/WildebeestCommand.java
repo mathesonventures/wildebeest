@@ -16,8 +16,26 @@
 
 package co.mv.wb.cli;
 
-import co.mv.wb.*;
-
+import co.mv.wb.About;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.FileLoadException;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Instance;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.JumpStateFailedException;
+import co.mv.wb.LoaderFault;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationInvalidStateException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MissingReferenceException;
+import co.mv.wb.OutputFormatter;
+import co.mv.wb.PluginBuildException;
+import co.mv.wb.Resource;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.WildebeestApi;
+import co.mv.wb.XmlValidationException;
 import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.File;
@@ -27,8 +45,8 @@ import java.util.Optional;
 /**
  * The Wildebeest command-line interface.  WildebeestCommand parses command-line invocations, and delegates to
  * {@link WildebeestApi} to carry out the command.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class WildebeestCommand
 {
@@ -37,9 +55,9 @@ public class WildebeestCommand
 
 	/**
 	 * The main entry point for the command-line interface.
-	 * 
-	 * @param       args                        the arguments supplied on the command-line invocation
-	 * @since                                   1.0
+	 *
+	 * @param args the arguments supplied on the command-line invocation
+	 * @since 1.0
 	 */
 	public static void main(String[] args)
 	{
@@ -60,8 +78,8 @@ public class WildebeestCommand
 
 	/**
 	 * Creates a new WildebeestCommand instance.
-	 * 
-	 * @since                                   1.0
+	 *
+	 * @since 1.0
 	 */
 	public WildebeestCommand(
 		PrintStream output,
@@ -76,13 +94,13 @@ public class WildebeestCommand
 
 	/**
 	 * Runs the command using the supplied command-line arguments.
-	 * 
-	 * @param       args                        the arguments supplied on the command-line invocation
-	 * @since                                   1.0
+	 *
+	 * @param args the arguments supplied on the command-line invocation
+	 * @since 1.0
 	 */
 	public void run(String[] args)
 	{
-		if(args == null) { throw new IllegalArgumentException("args cannot be null"); }
+		if (args == null) throw new ArgumentNullException("args");
 
 		if (args.length == 0)
 		{
@@ -90,7 +108,7 @@ public class WildebeestCommand
 
 			WildebeestCommand.printUsage(this.output);
 		}
-		
+
 		else
 		{
 			String command = args[0];
@@ -216,7 +234,8 @@ public class WildebeestCommand
 				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
 				String targetState = WildebeestCommand.getArg(args, "t", "targetState");
 
-				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename) || isNull(targetState))
+				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename) ||
+					isNull(targetState))
 				{
 					WildebeestCommand.printBanner(this.output);
 
@@ -366,18 +385,18 @@ public class WildebeestCommand
 		String shortName,
 		String longName)
 	{
-		if (args == null) { throw new IllegalArgumentException("args"); }
-		if (shortName == null) { throw new IllegalArgumentException("shortName cannot be null"); }
-		if ("".equals(shortName)) { throw new IllegalArgumentException("shortName cannot be empty"); }
-		if (longName == null) { throw new IllegalArgumentException("longName cannot be null"); }
-		if ("".equals(longName)) { throw new IllegalArgumentException("longName cannot be empty"); }
-		
+		if (args == null) throw new ArgumentNullException("args");
+		if (shortName == null) throw new ArgumentNullException("shortName");
+		if ("".equals(shortName)) throw new IllegalArgumentException("shortName cannot be empty");
+		if (longName == null) throw new ArgumentNullException("longName");
+		if ("".equals(longName)) throw new IllegalArgumentException("longName cannot be empty");
+
 		shortName = "-" + shortName + ":";
 		longName = "--" + longName + ":";
-		
+
 		String result = null;
-		
-		for(String arg : args)
+
+		for (String arg : args)
 		{
 			if (arg.startsWith(shortName))
 			{
@@ -390,7 +409,7 @@ public class WildebeestCommand
 				break;
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -399,18 +418,18 @@ public class WildebeestCommand
 		String shortName,
 		String longName)
 	{
-		if (args == null) { throw new IllegalArgumentException("args"); }
-		if (shortName == null) { throw new IllegalArgumentException("shortName cannot be null"); }
-		if ("".equals(shortName)) { throw new IllegalArgumentException("shortName cannot be empty"); }
-		if (longName == null) { throw new IllegalArgumentException("longName cannot be null"); }
-		if ("".equals(longName)) { throw new IllegalArgumentException("longName cannot be empty"); }
+		if (args == null) throw new ArgumentNullException("args");
+		if (shortName == null) throw new ArgumentNullException("shortName");
+		if ("".equals(shortName)) throw new IllegalArgumentException("shortName cannot be empty");
+		if (longName == null) throw new ArgumentNullException("longName");
+		if ("".equals(longName)) throw new IllegalArgumentException("longName cannot be empty");
 
 		shortName = "-" + shortName + ":";
 		longName = "--" + longName + ":";
 
 		Optional<String> result = Optional.empty();
 
-		for(String arg : args)
+		for (String arg : args)
 		{
 			if (arg.startsWith(shortName))
 			{
@@ -428,19 +447,19 @@ public class WildebeestCommand
 	}
 
 	private static boolean isNull(String value)
-    {
-        return value == null;
-    }
-    
+	{
+		return value == null;
+	}
+
 	private static boolean isNullOrWhiteSpace(String value)
 	{
-		return value == null ||	"".equals(value.trim());
+		return value == null || "".equals(value.trim());
 	}
 
 	private static void printBanner(PrintStream out)
 	{
-		if (out == null) { throw new IllegalArgumentException("out cannot be null"); }
-		
+		if (out == null) throw new ArgumentNullException("out");
+
 		out.println("            _  _     _       _");
 		out.println("           |_|| |   | |     | |                      _");
 		out.println(" __      __ _ | | __| | ___ | |__   ___   ___  ___ _| |_");
@@ -448,16 +467,16 @@ public class WildebeestCommand
 		out.println("  \\ v  v / | || | (_| |  __/| |_) |  __/|  __/\\__ \\ | |");
 		out.println("   \\_/\\_/  |_||_|\\__,_|\\___||_.__/ \\___| \\___||___/ |_|");
 		out.println("");
-		
+
 		About about = new About();
 		out.println("Version " + about.getVersionFullDotted() + ", " + about.getCopyrightAssertion());
 		out.println("");
 	}
-	
+
 	private static void printUsage(PrintStream out)
 	{
-		if (out == null) { throw new IllegalArgumentException("out"); }
-		
+		if (out == null) throw new ArgumentNullException("out");
+
 		out.println("Usage: wb command [options]");
 		out.println("");
 		out.println("Valid commands: state; migrate; jumpstate;");

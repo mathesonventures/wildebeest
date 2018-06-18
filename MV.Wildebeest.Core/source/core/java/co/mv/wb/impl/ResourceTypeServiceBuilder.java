@@ -19,6 +19,7 @@ package co.mv.wb.impl;
 import co.mv.wb.ResourceType;
 import co.mv.wb.ResourceTypeService;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * A fluent-style helper for building a ResourceTypeService instance.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class ResourceTypeServiceBuilder
 {
@@ -34,7 +35,7 @@ public class ResourceTypeServiceBuilder
 
 	private ResourceTypeServiceBuilder(List<ResourceType> resourceTypes)
 	{
-		if (resourceTypes == null) { throw new IllegalArgumentException("resourceTypes cannot be null"); }
+		if (resourceTypes == null) throw new ArgumentNullException("resourceTypes");
 
 		this.resourceTypes = resourceTypes;
 	}
@@ -42,8 +43,8 @@ public class ResourceTypeServiceBuilder
 	/**
 	 * Fluently creates a new empty ResourceTypeServiceBuilder instance.
 	 *
-	 * @return                                  a new builder instance.
-	 * @since                                   4.0
+	 * @return a new builder instance.
+	 * @since 4.0
 	 */
 	public static ResourceTypeServiceBuilder create()
 	{
@@ -54,9 +55,9 @@ public class ResourceTypeServiceBuilder
 	 * Fluently adds the factory-preset set of {@link ResourceType}'s into the builder.  A new builder is returned and
 	 * the original is left unmutated.
 	 *
-	 * @return                                  a new builder instance with the state of the source builder, plus the
-	 *                                          factory-preset set of ResourceTypes added.
-	 * @since                                   4.0
+	 * @return a new builder instance with the state of the source builder, plus the
+	 * factory-preset set of ResourceTypes added.
+	 * @since 4.0
 	 */
 	public ResourceTypeServiceBuilder withFactoryResourceTypes()
 	{
@@ -73,14 +74,14 @@ public class ResourceTypeServiceBuilder
 	 * Fluently adds the specified {@link ResourceType} into the builder.  A new builder instance is returned and the
 	 * original is left unmutated.
 	 *
-	 * @param       resourceType                the ResourceType to accumulated to the builder.
-	 * @return                                  a new builder instance with the state of the source builder, plus the
-	 *                                          supplied new ResourceType added.
-	 * @since                                   4.0
+	 * @param resourceType the ResourceType to accumulated to the builder.
+	 * @return a new builder instance with the state of the source builder, plus the
+	 * supplied new ResourceType added.
+	 * @since 4.0
 	 */
 	public ResourceTypeServiceBuilder with(ResourceType resourceType)
 	{
-		if (resourceType == null) { throw new IllegalArgumentException("resourceType cannot be null"); }
+		if (resourceType == null) throw new ArgumentNullException("resourceType");
 
 		List<ResourceType> updatedResourceTypes = new ArrayList<>(this.resourceTypes);
 
@@ -93,9 +94,9 @@ public class ResourceTypeServiceBuilder
 	 * Returns a {@link ResourceTypeService} configured with the set of {@link ResourceType}'s that were collected into
 	 * this builder.
 	 *
-	 * @return                                  a new ResourceTypeService configured with the set of ResourceType's that
-	 *                                          were collected into this builder.
-	 * @since                                   4.0
+	 * @return a new ResourceTypeService configured with the set of ResourceType's that
+	 * were collected into this builder.
+	 * @since 4.0
 	 */
 	public ResourceTypeService build()
 	{

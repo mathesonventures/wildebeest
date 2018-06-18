@@ -23,8 +23,8 @@ import java.util.UUID;
 
 /**
  * Creates &lt;migration&gt;'s as part of the fluent API for creating XML fixtures for unit tests.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class MigrationBuilder
 {
@@ -115,12 +115,12 @@ public class MigrationBuilder
 
 		return this;
 	}
-	
+
 	public ResourceBuilder resource()
 	{
 		return this.getResource();
 	}
-	
+
 	public MigrationBuilder migration(
 		String type,
 		UUID migrationId,
@@ -129,7 +129,7 @@ public class MigrationBuilder
 	{
 		return this.getResource().migration(type, migrationId, fromState, toState);
 	}
-	
+
 	public String render()
 	{
 		return this.builder.build();

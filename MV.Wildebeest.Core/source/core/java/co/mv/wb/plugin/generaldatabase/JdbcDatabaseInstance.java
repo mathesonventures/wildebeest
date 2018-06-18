@@ -21,16 +21,16 @@ import co.mv.wb.Resource;
 
 /**
  * A {@link Resource} {@link Instance} that is a database.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public interface JdbcDatabaseInstance extends DatabaseInstance
 {
 	String getHostName();
-	
+
 	int getPort();
-	
+
 	String getAdminUsername();
-	
+
 	String getAdminPassword();
 }

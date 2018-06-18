@@ -21,7 +21,7 @@ import co.mv.wb.ResourceType;
 /**
  * Static definitions for the Fake plugin implementation.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class FakeConstants
 {

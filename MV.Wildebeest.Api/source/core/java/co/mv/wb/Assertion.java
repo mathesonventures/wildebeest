@@ -21,50 +21,49 @@ import java.util.UUID;
 
 /**
  * An Assertion represents a condition that can be checked to verify a specific part of a stateful resource.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public interface Assertion
 {
 	/**
 	 * Gets the unique ID of this Assertion.
-	 * 
-	 * @return                                  the unique ID of this Assertion
-     * @since                                   1.0
+	 *
+	 * @return the unique ID of this Assertion
+	 * @since 1.0
 	 */
 	UUID getAssertionId();
-	
+
 	/**
 	 * Gets a description of this Assertion.
 	 *
-	 * @return                                  the description of this Assertion
-	 * @since                                   1.0
+	 * @return the description of this Assertion
+	 * @since 1.0
 	 */
 	String getDescription();
-	
+
 	/**
 	 * Gets the ordinal index of this Assertion within the container that owns it.
 	 *
-	 * @return                                  the ordinal index of this Assertion within the container that owns it
-	 * @since                                   1.0
+	 * @return the ordinal index of this Assertion within the container that owns it
+	 * @since 1.0
 	 */
 	int getSeqNum();
 
 	/**
 	 * Gets the list of {@link Resource} types this this {@link Assertion} can be applied to.
 	 *
-	 * @return                                  the list of resource types that this Assertion can be applied to
-	 * @since                                   2.0
+	 * @return the list of resource types that this Assertion can be applied to
+	 * @since 2.0
 	 */
 	List<ResourceType> getApplicableTypes();
 
 	/**
 	 * Evaluates this Assertion against the supplied resource instance.
-	 * 
-	 * @param       instance                    the instance to apply this Assertion to.
-	 * @return                                  an AssertionResponse indicating the outcome of applying this Assertion
-	 *                                          to the supplied Instance.
-	 * @since                                   1.0
+	 *
+	 * @param instance the instance to apply this Assertion to.
+	 * @return an AssertionResponse indicating the outcome of applying this Assertion to the supplied Instance.
+	 * @since 1.0
 	 */
 	AssertionResponse perform(Instance instance);
 }

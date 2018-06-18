@@ -24,8 +24,8 @@ import java.util.UUID;
 /**
  * Indicates that the application of an Assertion to a resource Instance failed, and provides the state for the
  * Assertion failed and the AssertionResult.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class AssertionFailedException extends Exception
 {
@@ -34,11 +34,11 @@ public class AssertionFailedException extends Exception
 
 	/**
 	 * Creates a new AssertionFailedException for the specified state and AssertionResult.
-	 * 
-	 * @param       stateId                     the state that was being asserted
-	 * @param       assertionResults            the full set of assertion results for the state including both those
-	 *                                          that succeeded as well as those that failed to trigger this exception
-	 * @since                                   1.0
+	 *
+	 * @param stateId          the state that was being asserted
+	 * @param assertionResults the full set of assertion results for the state including both those that succeeded as
+	 *                         well as those that failed to trigger this exception
+	 * @since 1.0
 	 */
 	public AssertionFailedException(
 		UUID stateId,
@@ -50,12 +50,12 @@ public class AssertionFailedException extends Exception
 		this.stateId = stateId;
 		this.assertionResults = assertionResults;
 	}
-	
+
 	/**
 	 * Gets the identity of the State for which Assertion evaluation failed.
-	 * 
-	 * @return                                  the ID of the State for which Assertion evaluation failed
-	 * @since                                   1.0
+	 *
+	 * @return the ID of the State for which Assertion evaluation failed
+	 * @since 1.0
 	 */
 	public UUID getStateId()
 	{
@@ -64,9 +64,9 @@ public class AssertionFailedException extends Exception
 
 	/**
 	 * Gets the result of the evaluation of the Assertion.
-	 * 
-	 * @return                                  the set of result items from the assertions that were evalulated
-	 * @since                                   1.0
+	 *
+	 * @return the set of result items from the assertions that were evalulated
+	 * @since 1.0
 	 */
 	public List<AssertionResult> getAssertionResults()
 	{

@@ -16,7 +16,22 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.*;
+import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.Asserts;
+import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidStateSpecifiedException;
+import co.mv.wb.Migration;
+import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationInvalidStateException;
+import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.MigrationPlugin;
+import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.TargetNotSpecifiedException;
+import co.mv.wb.UnknownStateSpecifiedException;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeInstance;
@@ -39,7 +54,7 @@ import static org.junit.Assert.fail;
 /**
  * Unit tests for {@link SqlServerTableDoesNotExistAssertion}.
  *
- * @since                                       2.0
+ * @since 2.0
  */
 public class SqlServerTableDoesNotExistAssertionTests
 {
@@ -54,7 +69,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException
 	{
-		 
+
 		//
 		// Setup
 		//
@@ -78,18 +93,18 @@ public class SqlServerTableDoesNotExistAssertionTests
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(created);
-		 
+
 		// Schema Loaded
 		State schemaLoaded = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(schemaLoaded);
-		 
+
 		// Migrate -> created
 		Migration tran1 = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
 			Optional.of(created.getStateId().toString()));
 		resource.getMigrations().add(tran1);
-		 
+
 		// Migrate created -> schemaLoaded
 		Migration tran2 = new SqlScriptMigration(
 			UUID.randomUUID(),
@@ -117,19 +132,19 @@ public class SqlServerTableDoesNotExistAssertionTests
 			resource,
 			instance,
 			Optional.of(schemaLoaded.getStateId().toString()));
-		
+
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0,
 			"dbo",
 			"ProductType");
- 
+
 		//
 		// Execute
 		//
-		
+
 		AssertionResponse response = null;
-		
+
 		try
 		{
 			response = assertion.perform(instance);
@@ -145,9 +160,9 @@ public class SqlServerTableDoesNotExistAssertionTests
 
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(false, "Table ProductType exists", response, "response");
-		
+
 	}
-	 
+
 	@Test
 	public void applyForNonExistentTableSucceeds() throws
 		AssertionFailedException,
@@ -159,7 +174,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException
 	{
-		 
+
 		//
 		// Setup
 		//
@@ -209,19 +224,19 @@ public class SqlServerTableDoesNotExistAssertionTests
 			resource,
 			instance,
 			Optional.of(created.getStateId().toString()));
-		
+
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0,
 			"dbo",
 			"ProductType");
- 
+
 		//
 		// Execute
 		//
-		
+
 		AssertionResponse response;
-		
+
 		try
 		{
 			response = assertion.perform(instance);
@@ -237,15 +252,15 @@ public class SqlServerTableDoesNotExistAssertionTests
 
 		assertNotNull("response", response);
 		Asserts.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
-		
+
 	}
-	 
+
 	@Test
 	public void applyForNonExistentDatabaseFails() throws SQLException
 	{
 		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
-	
+
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
@@ -256,13 +271,13 @@ public class SqlServerTableDoesNotExistAssertionTests
 			properties.getPassword(),
 			databaseName,
 			null);
-		 
+
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0,
 			"dbo",
 			"ProductType");
- 
+
 		// Execute
 		AssertionResponse response = assertion.perform(instance);
 
@@ -272,7 +287,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
 	}
-	 
+
 	@Test
 	public void applyForNullInstanceFails()
 	{
@@ -282,20 +297,20 @@ public class SqlServerTableDoesNotExistAssertionTests
 			0,
 			"dbo",
 			"TableName");
-		
+
 		// Execute and Verify
 		try
 		{
 			AssertionResponse response = assertion.perform(null);
-			
+
 			fail("IllegalArgumentException expected");
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e)
 		{
 			assertEquals("e.message", "instance cannot be null", e.getMessage());
 		}
 	}
-	 
+
 	@Test
 	public void applyForIncorrectInstanceTypeFails()
 	{
@@ -305,17 +320,17 @@ public class SqlServerTableDoesNotExistAssertionTests
 			0,
 			"dbo",
 			"TableName");
-		
+
 		FakeInstance instance = new FakeInstance();
-		
+
 		// Execute and Verify
 		try
 		{
 			AssertionResponse response = assertion.perform(instance);
-			
+
 			fail("IllegalArgumentException expected");
 		}
-		catch(IllegalArgumentException e)
+		catch (IllegalArgumentException e)
 		{
 			assertEquals("e.message", "instance must be a SqlServerDatabaseInstance", e.getMessage());
 		}

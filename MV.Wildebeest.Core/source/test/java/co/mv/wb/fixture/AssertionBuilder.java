@@ -22,8 +22,8 @@ import java.util.UUID;
 
 /**
  * Creates &lt;assertion&gt;'s as part of the fluent API for creating XML fixtures for unit tests.
- * 
- * @since                                       4.0
+ *
+ * @since 4.0
  */
 public class AssertionBuilder
 {

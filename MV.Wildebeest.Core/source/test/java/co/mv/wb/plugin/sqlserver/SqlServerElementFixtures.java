@@ -16,7 +16,9 @@
 
 package co.mv.wb.plugin.sqlserver;
 
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.generaldatabase.DatabaseConstants;
+
 import java.util.UUID;
 
 public class SqlServerElementFixtures
@@ -26,20 +28,20 @@ public class SqlServerElementFixtures
 		StringBuilder sql = new StringBuilder();
 		sql
 			.append("CREATE TABLE [dbo].[").append(DatabaseConstants.DefaultStateTableName)
-				.append("]([StateId] [uniqueidentifier] NOT NULL,")
-				.append("CONSTRAINT [PK_").append(DatabaseConstants.DefaultStateTableName)
-					.append("] PRIMARY KEY CLUSTERED([StateId] ASC) ")
-					.append("WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, ")
-					.append("IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ")
-					.append("ON [PRIMARY]) ON [PRIMARY];");
-	
+			.append("]([StateId] [uniqueidentifier] NOT NULL,")
+			.append("CONSTRAINT [PK_").append(DatabaseConstants.DefaultStateTableName)
+			.append("] PRIMARY KEY CLUSTERED([StateId] ASC) ")
+			.append("WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, ")
+			.append("IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ")
+			.append("ON [PRIMARY]) ON [PRIMARY];");
+
 		return sql.toString();
 	}
-	
+
 	public static String stateInsertRow(
 		UUID stateId)
 	{
-		if (stateId == null) { throw new IllegalArgumentException("stateId"); }
+		if (stateId == null) throw new ArgumentNullException("stateId");
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("INSERT INTO [").append(DatabaseConstants.DefaultStateTableName).append("]")
@@ -47,7 +49,7 @@ public class SqlServerElementFixtures
 
 		return sql.toString();
 	}
-	
+
 	public static String productCatalogueDatabase()
 	{
 		StringBuilder sql = new StringBuilder();
@@ -60,7 +62,7 @@ public class SqlServerElementFixtures
 			.append(")")
 			.append("WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ")
 			.append("ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]) ON [PRIMARY];");
-		
+
 		sql.append("CREATE TABLE [dbo].[Product](")
 			.append("[ProductId] [uniqueidentifier] NOT NULL,")
 			.append("[ProductTypeCode] [char](2) NOT NULL,")
@@ -70,19 +72,21 @@ public class SqlServerElementFixtures
 			.append("(")
 			.append("[ProductId] ASC ")
 			.append(")")
-			.append("WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]")
+			.append(
+				"WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]")
 			.append(") ON [PRIMARY];")
-			
+
 			.append("SET ANSI_PADDING OFF;")
 
-			.append("ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FK_Product_ProductTypeCode] FOREIGN KEY([ProductTypeCode])")
+			.append(
+				"ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FK_Product_ProductTypeCode] FOREIGN KEY([ProductTypeCode])")
 			.append("REFERENCES [dbo].[ProductType] ([ProductTypeCode]);")
 
 			.append("ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FK_Product_ProductTypeCode];");
-		
+
 		return sql.toString();
 	}
-	
+
 	public static String productTypeRows()
 	{
 		StringBuilder sql = new StringBuilder();

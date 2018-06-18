@@ -16,12 +16,14 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 import java.util.List;
 
 /**
  * An injectable service that let's Wildebeest discover the types of resources that are available for it to work with.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public interface ResourceTypeService
 {
@@ -29,7 +31,7 @@ public interface ResourceTypeService
 
 	default ResourceType forUri(String uri)
 	{
-		if (uri == null) throw new IllegalArgumentException("uri cannot be null");
+		if (uri == null) throw new ArgumentNullException("uri");
 
 		ResourceType result = null;
 

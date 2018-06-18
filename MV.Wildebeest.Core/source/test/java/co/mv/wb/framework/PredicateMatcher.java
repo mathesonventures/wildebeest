@@ -27,7 +27,7 @@ public class PredicateMatcher<T> extends BaseMatcher<T>
 
 	public PredicateMatcher(Function<T, Boolean> predicate)
 	{
-		if (predicate == null) { throw new IllegalArgumentException("predicate cannot be null"); }
+		if (predicate == null) throw new ArgumentNullException("predicate");
 
 		this.predicate = predicate;
 	}

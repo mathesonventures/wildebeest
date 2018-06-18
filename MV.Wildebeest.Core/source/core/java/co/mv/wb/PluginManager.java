@@ -21,40 +21,40 @@ import java.util.List;
 /**
  * An internal service for managing and accessing plugins.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public interface PluginManager
 {
 	/**
 	 * Returns a list of the plugin groups known to Wildebeest.
 	 *
-	 * @return                                  a list of the plugin groups known to Wildebeest.
-	 * @since                                   4.0
+	 * @return a list of the plugin groups known to Wildebeest.
+	 * @since 4.0
 	 */
 	List<PluginGroup> getPluginGroups();
 
 	/**
 	 * Returns a list of MigrationTypeInfo's representing all available migrations.
 	 *
-	 * @return                                  a list of MigrationTypeInfo's representing all available migrations.
-	 * @since                                   4.0
+	 * @return a list of MigrationTypeInfo's representing all available migrations.
+	 * @since 4.0
 	 */
 	List<MigrationTypeInfo> getMigrationTypeInfos();
 
 	/**
 	 * Looks up the MigrationPlugin for the supplied MigrationType URI.
 	 *
-	 * @param       uri                         the URI identifying the MigrationType of interest.
-	 * @return                                  the MigrationPlugin for the supplied MigrationType URI.
-	 * @since                                   4.0
+	 * @param uri the URI identifying the MigrationType of interest.
+	 * @return the MigrationPlugin for the supplied MigrationType URI.
+	 * @since 4.0
 	 */
 	MigrationPlugin getMigrationPlugin(String uri);
 
 	/**
 	 * Returns a list of AssertionType's representing all assertions known to Wildebeest.
 	 *
-	 * @return                                  a list of AssertionType's representing all available assertions.
-	 * @since                                   4.0
+	 * @return a list of AssertionType's representing all available assertions.
+	 * @since 4.0
 	 */
 	List<AssertionType> getAssertionTypes();
 }

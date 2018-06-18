@@ -33,8 +33,8 @@ import java.util.UUID;
 
 /**
  * An {@link Assertion} that verifies that a given table exists in a SQL Server database.
- * 
- * @since                                       2.0
+ *
+ * @since 2.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
@@ -43,11 +43,11 @@ import java.util.UUID;
 		"Verifies that a table exists in a SQL Server database resource.",
 	example =
 		"<assertion\n" +
-		"    type=\"SqlServerTableExists\"\n" +
-		"    id=\"5ad24640-3c2d-42a5-9bc2-1f49dbfced61\"\n" +
-		"    <schemaName>prdcat</schemaName>\n" +
-		"    <tableName>Product</tableName>\n" +
-		"</assertion>"
+			"    type=\"SqlServerTableExists\"\n" +
+			"    id=\"5ad24640-3c2d-42a5-9bc2-1f49dbfced61\"\n" +
+			"    <schemaName>prdcat</schemaName>\n" +
+			"    <tableName>Product</tableName>\n" +
+			"</assertion>"
 )
 public class SqlServerTableExistsAssertion extends BaseAssertion
 {
@@ -56,12 +56,12 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 
 	/**
 	 * Creates a new SqlServerTableExistsAssertion.
-	 * 
-	 * @param       assertionId                 the ID for the new assertion.
-	 * @param       seqNum                      the ordinal index of the new assertion within it's parent container.
-	 * @param       schemaName                  the name of the schema to check.
-	 * @param       tableName                   the name of the table to check.
-	 * @since                                   2.0
+	 *
+	 * @param assertionId the ID for the new assertion.
+	 * @param seqNum      the ordinal index of the new assertion within it's parent container.
+	 * @param schemaName  the name of the schema to check.
+	 * @param tableName   the name of the table to check.
+	 * @since 2.0
 	 */
 	public SqlServerTableExistsAssertion(
 		UUID assertionId,
@@ -82,12 +82,12 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 	{
 		return String.format("Table '%s' exists in schema '%s'", this.getTableName(), this.getSchemaName());
 	}
-	
+
 	/**
 	 * Gets the name of the schema to check.
-	 * 
-	 * @return                                  the name of the schema to check
-	 * @since                                   2.0
+	 *
+	 * @return the name of the schema to check
+	 * @since 2.0
 	 */
 	public final String getSchemaName()
 	{
@@ -96,9 +96,9 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 
 	/**
 	 * Gets the name of the table to check
-	 * 
-	 * @return                                  the name of the table to check
-	 * @since                                   2.0
+	 *
+	 * @return the name of the table to check
+	 * @since 2.0
 	 */
 	public final String getTableName()
 	{
@@ -113,10 +113,14 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 
 	@Override public AssertionResponse perform(Instance instance)
 	{
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (instance == null) throw new ArgumentNullException("instance");
+
 		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
-		if (db == null) { throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance"); }
-		
+		if (db == null)
+		{
+			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
+		}
+
 		AssertionResponse result;
 
 		if (!db.databaseExists())
@@ -125,7 +129,7 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 				false,
 				String.format("Database %s does not exist", db.getDatabaseName()));
 		}
-		
+
 		else if (SqlServerDatabaseHelper.tableExists(
 			db,
 			this.getSchemaName(),
@@ -133,12 +137,12 @@ public class SqlServerTableExistsAssertion extends BaseAssertion
 		{
 			result = new ImmutableAssertionResponse(true, "Table " + this.getTableName() + " exists");
 		}
-		
+
 		else
 		{
 			result = new ImmutableAssertionResponse(false, "Table " + this.getTableName() + " does not exist");
 		}
-		
+
 		return result;
 	}
 }

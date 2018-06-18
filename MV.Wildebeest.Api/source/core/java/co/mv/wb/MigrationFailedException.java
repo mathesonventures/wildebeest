@@ -22,8 +22,8 @@ import java.util.UUID;
 
 /**
  * Indicates that a Migration failed for some normal reason that should be presented to the user.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class MigrationFailedException extends Exception
 {
@@ -31,10 +31,10 @@ public class MigrationFailedException extends Exception
 
 	/**
 	 * Creates a new MigrationFailedException for the specified ID with the specified failure messages.
-	 * 
-	 * @param       migrationId                 the ID of the Migration that failed
-	 * @param       message                     the failure message
-	 * @since                                   1.0
+	 *
+	 * @param migrationId the ID of the Migration that failed
+	 * @param message     the failure message
+	 * @since 1.0
 	 */
 	public MigrationFailedException(
 		UUID migrationId,
@@ -50,9 +50,9 @@ public class MigrationFailedException extends Exception
 
 	/**
 	 * Gets the ID of the Migration that failed
-	 * 
-	 * @return                                  the ID of the Migration that failed
-	 * @since                                   1.0
+	 *
+	 * @return the ID of the Migration that failed
+	 * @since 1.0
 	 */
 	public UUID getMigrationId()
 	{

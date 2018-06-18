@@ -29,8 +29,8 @@ import java.util.UUID;
 /**
  * A {@link MigrationBuilder} that builds a {@link AnsiSqlCreateDatabaseMigration} from a DOM
  * {@link org.w3c.dom.Element}.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class AnsiSqlCreateDatabaseDomMigrationBuilder extends BaseDomMigrationBuilder
 {
@@ -40,7 +40,7 @@ public class AnsiSqlCreateDatabaseDomMigrationBuilder extends BaseDomMigrationBu
 		Optional<String> fromState,
 		Optional<String> toState,
 		File baseDir) throws
-			PluginBuildException
+		PluginBuildException
 	{
 		return new AnsiSqlCreateDatabaseMigration(migrationId, fromState, toState);
 	}

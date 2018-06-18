@@ -18,24 +18,24 @@ package co.mv.wb.plugin.generaldatabase;
 
 /**
  * Defines common constant values for use with database plugins to Wildebeest.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class DatabaseConstants
 {
 	/**
 	 * The default name for the schema where Wildebeest should track meta-data.
-	 * 
-	 * @since                                   4.0
+	 *
+	 * @since 4.0
 	 */
-	
+
 	public static final String DefaultMetaSchemaName = "wb";
-	
+
 	/**
 	 * The default name for the state-tracking table in Wildebeest-managed databases.  This table name can be overridden
 	 * per-instance by supplying a StateTableName in the instance definition.
-	 * 
-	 * @since                                   1.0
+	 *
+	 * @since 1.0
 	 */
 	public static final String DefaultStateTableName = "wb_state";
 }

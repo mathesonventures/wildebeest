@@ -32,8 +32,8 @@ import java.util.UUID;
 
 /**
  * Unit tests for Database plugins as applied to PostgreSQL databases.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTests
 {
@@ -51,7 +51,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			"WildebeestTest",
 			null,
 			null);
-		
+
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID().toString()),
@@ -74,7 +74,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			drop,
 			dropRunner);
 	}
-	
+
 	@Override
 	@Test
 	public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
@@ -90,7 +90,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 
 		this.databaseExistsAssertionForNonExistentDatabase(instance);
 	}
-	
+
 	@Override
 	@Test
 	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
@@ -105,7 +105,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			"WildebeestTest",
 			null,
 			null);
-		
+
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.of(UUID.randomUUID().toString()),
@@ -128,7 +128,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			drop,
 			dropRunner);
 	}
-	
+
 	@Override
 	@Test
 	public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException
@@ -141,7 +141,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 			"WildebeestTest",
 			null,
 			null);
-		
+
 		this.databaseDoesNotExistAssertionForNonExistentDatabase(instance);
 	}
 }

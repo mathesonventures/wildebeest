@@ -28,8 +28,8 @@ import java.util.Optional;
 
 /**
  * An {@link InstanceBuilder} that builds a {@link MySqlDatabaseInstance} from a DOM {@link org.w3c.dom.Element}.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 {
@@ -42,19 +42,34 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		Optional<String> adminPassword = this.tryGetString("adminPassword");
 		Optional<String> databaseName = this.tryGetString("databaseName");
 		Optional<String> stateTableName = this.tryGetString("stateTableName");
-		
+
 		Messages messages = new Messages();
-		if (!hostName.isPresent()) { V.elementMissing(messages, null, "hostName", MySqlDatabaseInstance.class); }
-		if (!port.isPresent()) { V.elementMissing(messages, null, "port", MySqlDatabaseInstance.class); }
-		if (!adminUsername.isPresent()) { V.elementMissing(messages, null, "adminUsername", MySqlDatabaseInstance.class); }
-		if (!adminPassword.isPresent()) { V.elementMissing(messages, null, "adminPassword", MySqlDatabaseInstance.class); }
-		if (!databaseName.isPresent()) { V.elementMissing(messages, null, "databaseName", MySqlDatabaseInstance.class); }
+		if (!hostName.isPresent())
+		{
+			V.elementMissing(messages, null, "hostName", MySqlDatabaseInstance.class);
+		}
+		if (!port.isPresent())
+		{
+			V.elementMissing(messages, null, "port", MySqlDatabaseInstance.class);
+		}
+		if (!adminUsername.isPresent())
+		{
+			V.elementMissing(messages, null, "adminUsername", MySqlDatabaseInstance.class);
+		}
+		if (!adminPassword.isPresent())
+		{
+			V.elementMissing(messages, null, "adminPassword", MySqlDatabaseInstance.class);
+		}
+		if (!databaseName.isPresent())
+		{
+			V.elementMissing(messages, null, "databaseName", MySqlDatabaseInstance.class);
+		}
 
 		if (messages.size() > 0)
 		{
 			throw new PluginBuildException(messages);
 		}
-		
+
 		Instance result = new MySqlDatabaseInstance(
 			hostName.get(),
 			port.get(),

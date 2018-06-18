@@ -38,7 +38,7 @@ public class SqlServerCreateDatabaseMigrationTests
 		PrintStream output = System.out;
 
 		SqlServerProperties p = SqlServerProperties.get();
-		
+
 		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -56,7 +56,7 @@ public class SqlServerCreateDatabaseMigrationTests
 			p.getPassword(),
 			databaseName,
 			null);
-		
+
 		// Execute
 		try
 		{
@@ -88,9 +88,9 @@ public class SqlServerCreateDatabaseMigrationTests
 			properties.getPassword(),
 			DatabaseFixtureHelper.databaseName(),
 			null);
-		
+
 		SqlServerUtil.createDatabase(instance);
-		
+
 		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
 			Optional.empty(),
@@ -105,14 +105,16 @@ public class SqlServerCreateDatabaseMigrationTests
 				output,
 				migration,
 				instance);
-			
+
 			fail("MigrationFailedException expected");
 		}
 		catch (MigrationFailedException e)
 		{
 			assertEquals(
 				"e.message",
-				String.format("Database '%s' already exists. Choose a different database name.", instance.getDatabaseName()),
+				String.format(
+					"Database '%s' already exists. Choose a different database name.",
+					instance.getDatabaseName()),
 				e.getMessage());
 		}
 		finally

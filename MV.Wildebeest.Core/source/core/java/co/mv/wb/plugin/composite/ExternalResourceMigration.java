@@ -31,7 +31,7 @@ import java.util.UUID;
  * Applies a migration in an external resource definition, and tracks both the external resource state and the composite
  * state.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:Composite",
@@ -41,13 +41,13 @@ import java.util.UUID;
 			"composite resource state",
 	example =
 		"<migration\n" +
-		"    type=\"ExternalResourceMigration\"\n" +
-		"    id=\"dd7a708f-bf6d-4e18-aaec-c1fdf3de965d\"\n" +
-		"    fromState=\"d364f2ba-3972-4a76-944d-d9767cbfc2d7\"\n" +
-		"    toState=\"f488f17b-71d3-4672-9216-afd1e73884cf\">\n" +
-		"    <filename>AnotherResource.wbr</filename>\n" +
-		"    <target>SomeExternalTarget</target>\n" +
-		"</migration>"
+			"    type=\"ExternalResourceMigration\"\n" +
+			"    id=\"dd7a708f-bf6d-4e18-aaec-c1fdf3de965d\"\n" +
+			"    fromState=\"d364f2ba-3972-4a76-944d-d9767cbfc2d7\"\n" +
+			"    toState=\"f488f17b-71d3-4672-9216-afd1e73884cf\">\n" +
+			"    <filename>AnotherResource.wbr</filename>\n" +
+			"    <target>SomeExternalTarget</target>\n" +
+			"</migration>"
 )
 public class ExternalResourceMigration extends BaseMigration
 {
@@ -58,13 +58,13 @@ public class ExternalResourceMigration extends BaseMigration
 	/**
 	 * Constructs a new ExternalResourceMigration.
 	 *
-	 * @param       migrationId                 the ID of the migration.
-	 * @param       fromStateId                 the from state for the migration, if any.
-	 * @param       toStateId                   the to state for the migration, if any.
-	 * @param       baseDir                     the base directory for resolving external resources for this migration.
-	 * @param       fileName                    the filename of the external resource.
-	 * @param       target                      the target in the external resource that we will migrate to.
-	 * @since                                   4.0
+	 * @param migrationId the ID of the migration.
+	 * @param fromStateId the from state for the migration, if any.
+	 * @param toStateId   the to state for the migration, if any.
+	 * @param baseDir     the base directory for resolving external resources for this migration.
+	 * @param fileName    the filename of the external resource.
+	 * @param target      the target in the external resource that we will migrate to.
+	 * @since 4.0
 	 */
 	public ExternalResourceMigration(
 		UUID migrationId,
@@ -84,8 +84,8 @@ public class ExternalResourceMigration extends BaseMigration
 	/**
 	 * Gets the base directory for resolving external resources for this migration.
 	 *
-	 * @return                                  the base directory for resolving external resources for this migration.
-	 * @since                                   4.0
+	 * @return the base directory for resolving external resources for this migration.
+	 * @since 4.0
 	 */
 	public File getBaseDir()
 	{
@@ -95,8 +95,8 @@ public class ExternalResourceMigration extends BaseMigration
 	/**
 	 * Gets the filename of the external resource.
 	 *
-	 * @return                                  the filename of the external resource.
-	 * @since                                   4.0
+	 * @return the filename of the external resource.
+	 * @since 4.0
 	 */
 	public String getFileName()
 	{
@@ -106,8 +106,8 @@ public class ExternalResourceMigration extends BaseMigration
 	/**
 	 * Gets the target in the external resource that we will migrate to.
 	 *
-	 * @return                                  the target in the external resource that we will migrate to.
-	 * @since                                   4.0
+	 * @return the target in the external resource that we will migrate to.
+	 * @since 4.0
 	 */
 	public Optional<String> getTarget()
 	{

@@ -21,14 +21,14 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
-{
-	co.mv.wb.plugin.base.AllTests.class,
-	co.mv.wb.plugin.composite.AllTests.class,
-	co.mv.wb.plugin.generaldatabase.AllTests.class,
-	co.mv.wb.plugin.mysql.AllTests.class,
-	co.mv.wb.plugin.postgresql.AllTests.class,
-	co.mv.wb.plugin.sqlserver.AllTests.class
-})
+	{
+		co.mv.wb.plugin.base.AllTests.class,
+		co.mv.wb.plugin.composite.AllTests.class,
+		co.mv.wb.plugin.generaldatabase.AllTests.class,
+		co.mv.wb.plugin.mysql.AllTests.class,
+		co.mv.wb.plugin.postgresql.AllTests.class,
+		co.mv.wb.plugin.sqlserver.AllTests.class
+	})
 public class AllTests
 {
 }

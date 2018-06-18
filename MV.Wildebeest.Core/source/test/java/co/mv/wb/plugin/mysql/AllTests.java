@@ -21,17 +21,17 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
-{
-	IntegrationTests.class,
-	MySqlCreateDatabaseMigrationTests.class,
-	MySqlDatabaseResourceTests.class,
-	MySqlPluginUnitTests.class,
-	MySqlRowDoesNotExistAssertionTests.class,
-	MySqlRowExistsAssertionTests.class,
-	MySqlTableDoesNotExistAssertionTests.class,
-	MySqlTableExistsAssertionTests.class,
-	SqlScriptMigrationTests.class
-})
+	{
+		IntegrationTests.class,
+		MySqlCreateDatabaseMigrationTests.class,
+		MySqlDatabaseResourceTests.class,
+		MySqlPluginUnitTests.class,
+		MySqlRowDoesNotExistAssertionTests.class,
+		MySqlRowExistsAssertionTests.class,
+		MySqlTableDoesNotExistAssertionTests.class,
+		MySqlTableExistsAssertionTests.class,
+		SqlScriptMigrationTests.class
+	})
 public class AllTests
 {
 }

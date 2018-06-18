@@ -30,36 +30,36 @@ import java.util.UUID;
 
 /**
  * A {@link Migration} that performs a SQL script to transition between states.
- * 
- * @since                                       1.0
+ *
+ * @since 1.0
  */
 @MigrationType(
 	pluginGroupUri = "co.mv.wb:GeneralDatabase",
 	uri = "co.mv.wb.generaldatabase:SqlScript",
 	description = "Migrates a database resource by applying a SQL script.  This migration can be used for any " +
-			"dialect of SQL, as long as the DBMS supports it.",
+		"dialect of SQL, as long as the DBMS supports it.",
 	example =
 		"<migration\n" +
-		"    type=\"SqlScript\"\n" +
-		"    id=\"8b57f16d-c690-4f10-b68f-6f1ee75fe32b\"\n" +
-		"    fromState=\"199b7cc1-3cc6-48ca-b012-a70d05d5b5e7\"\n" +
-		"    toState=\"363568f1-aaed-4a50-bea0-9ddee713cc11\">\n" +
-		"    <sql><![CDATA[\n" +
-		"\n" +
-		"/* ProductType */\n" +
-		"CREATE TABLE  `ProductType` (\n" +
-		"  `ProductTypeCode` char(2) NOT NULL,\n" +
-		"  `Name` varchar(10) NOT NULL,\n" +
-		"  PRIMARY KEY (`ProductTypeCode`)\n" +
-		") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n" +
-		"\n" +
-		"INSERT INTO\n" +
-		"    ProductType(ProductTypeCode, Name)\n" +
-		"VALUES\n" +
-		"    ('HW', 'Hardware'),\n" +
-		"    ('SW', 'Software');\n" +
-		"\n" +
-		"</migration>"
+			"    type=\"SqlScript\"\n" +
+			"    id=\"8b57f16d-c690-4f10-b68f-6f1ee75fe32b\"\n" +
+			"    fromState=\"199b7cc1-3cc6-48ca-b012-a70d05d5b5e7\"\n" +
+			"    toState=\"363568f1-aaed-4a50-bea0-9ddee713cc11\">\n" +
+			"    <sql><![CDATA[\n" +
+			"\n" +
+			"/* ProductType */\n" +
+			"CREATE TABLE  `ProductType` (\n" +
+			"  `ProductTypeCode` char(2) NOT NULL,\n" +
+			"  `Name` varchar(10) NOT NULL,\n" +
+			"  PRIMARY KEY (`ProductTypeCode`)\n" +
+			") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n" +
+			"\n" +
+			"INSERT INTO\n" +
+			"    ProductType(ProductTypeCode, Name)\n" +
+			"VALUES\n" +
+			"    ('HW', 'Hardware'),\n" +
+			"    ('SW', 'Software');\n" +
+			"\n" +
+			"</migration>"
 )
 public class SqlScriptMigration extends BaseMigration implements Migration
 {
@@ -67,14 +67,14 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 
 	/**
 	 * Creates a new SqlScriptMigration.
-	 * 
-	 * @param       migrationId                 the ID of the migration
-	 * @param       fromState                   the ID of the source state that this migration applies to, or null if
-	 *                                          this migration transitions from the non-existent state.
-	 * @param       toState                     the ID of the target state that the migration applies to, or null if
-	 *                                          this migration transitions to the non-existent state.
-	 * @param       sql                         the SQL script that performs the migration from the fron-state to the
-	 *                                          to-state.
+	 *
+	 * @param migrationId the ID of the migration
+	 * @param fromState   the ID of the source state that this migration applies to, or null if
+	 *                    this migration transitions from the non-existent state.
+	 * @param toState     the ID of the target state that the migration applies to, or null if
+	 *                    this migration transitions to the non-existent state.
+	 * @param sql         the SQL script that performs the migration from the fron-state to the
+	 *                    to-state.
 	 */
 	public SqlScriptMigration(
 		UUID migrationId,
@@ -88,7 +88,7 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 
 		this.sql = sql;
 	}
-	
+
 	public String getSql()
 	{
 		return sql;

@@ -18,31 +18,32 @@ package co.mv.wb;
 
 /**
  * Indicates that the state specified for a migrate or a jumpstate command is invalid.
- * 
- * @since                                       3.0
+ *
+ * @since 3.0
  */
 public class InvalidStateSpecifiedException extends Exception
 {
 	private final String specifiedState;
 
-    /**
-     * Constructs a new InvalidStateSpecifiedException carrying the specified state.
-     * @param       specifiedState              the invalid state that was specified by a request.
-     * @since                                   3.0
-     */
-    public InvalidStateSpecifiedException(String specifiedState)
-    {
-        super(String.format("Specified state is not valid: \"%s\"", specifiedState));
+	/**
+	 * Constructs a new InvalidStateSpecifiedException carrying the specified state.
+	 *
+	 * @param specifiedState the invalid state that was specified by a request.
+	 * @since 3.0
+	 */
+	public InvalidStateSpecifiedException(String specifiedState)
+	{
+		super(String.format("Specified state is not valid: \"%s\"", specifiedState));
 
-        this.specifiedState = specifiedState;
-    }
+		this.specifiedState = specifiedState;
+	}
 
-    /**
-     * Gets the invalid state that was specified by a request.
-     *
-     * @return                                  the invalid state that was specified by a request.
-     * @since                                   3.0
-     */
+	/**
+	 * Gets the invalid state that was specified by a request.
+	 *
+	 * @return the invalid state that was specified by a request.
+	 * @since 3.0
+	 */
 	public String getSpecifiedState()
 	{
 		return this.specifiedState;

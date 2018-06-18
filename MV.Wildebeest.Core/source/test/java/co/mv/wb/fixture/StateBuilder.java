@@ -25,102 +25,102 @@ import java.util.UUID;
 /**
  * Creates &lt;state&gt;'s as part of the fluent API for creating XML fixtures for unit tests.
  *
- * @since                                       4.0
+ * @since 4.0
  */
 public class StateBuilder
 {
-    private final FixtureBuilder builder;
-    private final ResourceBuilder resourceBuilder;
-    private final UUID stateId;
-    private final String label;
-    private final String description;
-    private final List<AssertionBuilder> assertions;
+	private final FixtureBuilder builder;
+	private final ResourceBuilder resourceBuilder;
+	private final UUID stateId;
+	private final String label;
+	private final String description;
+	private final List<AssertionBuilder> assertions;
 
-    public StateBuilder(
-        FixtureBuilder builder,
-        ResourceBuilder resourceBuilder,
-        UUID stateId,
-        String label,
-        String description)
-    {
-        if (builder == null) throw new ArgumentNullException("builder");
-        if (resourceBuilder == null) throw new ArgumentNullException("resourceBuilder");
-        if (stateId == null) throw new ArgumentNullException("stateId");
+	public StateBuilder(
+		FixtureBuilder builder,
+		ResourceBuilder resourceBuilder,
+		UUID stateId,
+		String label,
+		String description)
+	{
+		if (builder == null) throw new ArgumentNullException("builder");
+		if (resourceBuilder == null) throw new ArgumentNullException("resourceBuilder");
+		if (stateId == null) throw new ArgumentNullException("stateId");
 
-        this.builder = builder;
-        this.resourceBuilder = resourceBuilder;
-        this.stateId = stateId;
-        this.label = label;
-        this.description = description;
-        this.assertions = new ArrayList<>();
-    }
+		this.builder = builder;
+		this.resourceBuilder = resourceBuilder;
+		this.stateId = stateId;
+		this.label = label;
+		this.description = description;
+		this.assertions = new ArrayList<>();
+	}
 
-    public UUID getStateId()
-    {
-        return this.stateId;
-    }
+	public UUID getStateId()
+	{
+		return this.stateId;
+	}
 
-    public String getLabel()
-    {
-        return this.label;
-    }
+	public String getLabel()
+	{
+		return this.label;
+	}
 
-    public boolean hasLabel()
-    {
-        return this.label != null;
-    }
+	public boolean hasLabel()
+	{
+		return this.label != null;
+	}
 
-    public String getDescription()
-    {
-        return this.description;
-    }
+	public String getDescription()
+	{
+		return this.description;
+	}
 
-    public boolean hasDescription()
-    {
-        return this.description != null;
-    }
+	public boolean hasDescription()
+	{
+		return this.description != null;
+	}
 
-    public List<AssertionBuilder> getAssertions()
-    {
-        return this.assertions;
-    }
+	public List<AssertionBuilder> getAssertions()
+	{
+		return this.assertions;
+	}
 
-    public AssertionBuilder assertion(
-        String type,
-        UUID assertionId)
-    {
-        AssertionBuilder assertionBuilder = new AssertionBuilder(this.builder, this, type, assertionId);
-        this.assertions.add(assertionBuilder);
-        return assertionBuilder;
-    }
+	public AssertionBuilder assertion(
+		String type,
+		UUID assertionId)
+	{
+		AssertionBuilder assertionBuilder = new AssertionBuilder(this.builder, this, type, assertionId);
+		this.assertions.add(assertionBuilder);
+		return assertionBuilder;
+	}
 
-    public ResourceBuilder resource()
-    {
-        return this.resourceBuilder;
-    }
+	public ResourceBuilder resource()
+	{
+		return this.resourceBuilder;
+	}
 
-    public StateBuilder state(
-        UUID stateId,
-        String label)
-    {
-        return this.resourceBuilder.state(stateId, label);
-    }
+	public StateBuilder state(
+		UUID stateId,
+		String label)
+	{
+		return this.resourceBuilder.state(stateId, label);
+	}
 
-    public MigrationBuilder migration(
-        String type,
-        UUID migrationId,
-        String fromState,
-        String toState)
-    {
-        return this.resource().migration(
-            type,
-            migrationId,
-            fromState,
-            toState);
-    }
+	public MigrationBuilder migration(
+		String type,
+		UUID migrationId,
+		String fromState,
+		String toState)
+	{
+		return this.resource().migration(
+			type,
+			migrationId,
+			fromState,
+			toState);
+	}
 
-    public String render()
-    {
-        return this.builder.build();
-    }
+	public String render()
+	{
+		return this.builder.build();
+	}
 }
