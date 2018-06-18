@@ -53,12 +53,11 @@ public class AnsiSqlDomServiceUnitTests
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
-		UUID fromStateId = null;
 		UUID toStateId = UUID.randomUUID();
 		
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
-				.migration("AnsiSqlCreateDatabase", migrationId, fromStateId.toString(), toStateId.toString())
+				.migration("AnsiSqlCreateDatabase", migrationId, null, toStateId.toString())
 			.render();
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(
@@ -88,7 +87,7 @@ public class AnsiSqlDomServiceUnitTests
 			mT.getFromState());
 		Assert.assertEquals(
 			"resourceWithPlugin.resource.migrations[0].toStateId",
-			Optional.of(toStateId),
+			Optional.of(toStateId.toString()),
 			mT.getToState());
 	}
 
@@ -100,12 +99,11 @@ public class AnsiSqlDomServiceUnitTests
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
-		UUID fromStateId = null;
-		UUID toStateId = UUID.randomUUID();
+		UUID toState = UUID.randomUUID();
 		
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
-				.migration("AnsiSqlDropDatabase", migrationId, fromStateId.toString(), toStateId.toString())
+				.migration("AnsiSqlDropDatabase", migrationId, null, toState.toString())
 			.render();
 
 		DomResourceLoader loader = DomPlugins.resourceLoader(
@@ -130,12 +128,12 @@ public class AnsiSqlDomServiceUnitTests
 			migrationId,
 			mT.getMigrationId());
 		Assert.assertEquals(
-			"resource.migrations[0].fromStateId",
+			"resource.migrations[0].fromState",
 			Optional.empty(),
 			mT.getFromState());
 		Assert.assertEquals(
-			"resource.migrations[0].toStateId",
-			Optional.of(toStateId),
+			"resource.migrations[0].toState",
+			Optional.of(toState),
 			mT.getToState());
 	}
 	

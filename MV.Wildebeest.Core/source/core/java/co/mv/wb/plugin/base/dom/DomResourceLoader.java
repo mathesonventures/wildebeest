@@ -89,8 +89,8 @@ public class DomResourceLoader implements ResourceLoader
     private static final String XE_MIGRATIONS = "migrations";
     private static final String XA_MIGRATION_TYPE = "type";
     private static final String XA_MIGRATION_ID = "id";
-    private static final String XA_MIGRATION_FROM_STATE_ID = "fromStateId";
-    private static final String XA_MIGRATION_TO_STATE_ID = "toStateId";
+    private static final String XA_MIGRATION_FROM_STATE = "fromState";
+    private static final String XA_MIGRATION_TO_STATE = "toState";
 
     private final ResourceTypeService resourceTypeService;
     private final Map<String, AssertionBuilder> assertionBuilders;
@@ -396,12 +396,12 @@ public class DomResourceLoader implements ResourceLoader
 
         String type = element.getAttribute(XA_MIGRATION_TYPE);
         UUID id = UUID.fromString(element.getAttribute(XA_MIGRATION_ID));
-        Optional<String> fromStateId = element.hasAttribute(XA_MIGRATION_FROM_STATE_ID)
-			? Optional.of(element.getAttribute(XA_MIGRATION_FROM_STATE_ID))
+        Optional<String> fromState = element.hasAttribute(XA_MIGRATION_FROM_STATE)
+			? Optional.of(element.getAttribute(XA_MIGRATION_FROM_STATE))
 			: Optional.empty();
 
-        Optional<String> toStateId = element.hasAttribute(XA_MIGRATION_TO_STATE_ID)
-			? Optional.of(element.getAttribute(XA_MIGRATION_TO_STATE_ID))
+        Optional<String> toState = element.hasAttribute(XA_MIGRATION_TO_STATE)
+			? Optional.of(element.getAttribute(XA_MIGRATION_TO_STATE))
 			: Optional.empty();
 
         MigrationBuilder builder = migrationBuilders.get(type);
@@ -420,8 +420,8 @@ public class DomResourceLoader implements ResourceLoader
 
         return builder.build(
 			id,
-			fromStateId,
-			toStateId,
+			fromState,
+			toState,
 			baseDir);
     }
 }
