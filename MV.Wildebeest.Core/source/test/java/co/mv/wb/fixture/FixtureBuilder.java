@@ -28,7 +28,7 @@ import java.util.UUID;
 public class FixtureBuilder
 {
     private boolean built;
-    private ResourceBuilder resourceCreator;
+    private ResourceBuilder resourceBuilder;
 
     public static FixtureBuilder create()
     {
@@ -38,7 +38,7 @@ public class FixtureBuilder
     private FixtureBuilder()
     {
         this.built = false;
-        this.resourceCreator = null;
+        this.resourceBuilder = null;
     }
 
     public ResourceBuilder resource(
@@ -46,13 +46,13 @@ public class FixtureBuilder
         UUID resourceId,
         String name)
     {
-        if (this.resourceCreator != null)
+        if (this.resourceBuilder != null)
         {
             throw new RuntimeException("resource already created");
         }
 
-        this.resourceCreator = new ResourceBuilder(this, type, resourceId, name);
-        return this.resourceCreator;
+        this.resourceBuilder = new ResourceBuilder(this, type, resourceId, name);
+        return this.resourceBuilder;
     }
 
     public String build()
@@ -68,14 +68,14 @@ public class FixtureBuilder
         // Resource
         xml.openElement(
             "resource",
-            "type", this.resourceCreator.getType(),
-            "id", this.resourceCreator.getResourceId().toString(),
-            "name", this.resourceCreator.getName());
+            "type", this.resourceBuilder.getType(),
+            "id", this.resourceBuilder.getResourceId().toString(),
+            "name", this.resourceBuilder.getName());
 
         xml.openElement("states");
 
         // States
-        for (StateCreator state : this.resourceCreator.getStates())
+        for (StateBuilder state : this.resourceBuilder.getStates())
         {
             if (state.hasDescription() && state.hasLabel())
             {
@@ -96,7 +96,7 @@ public class FixtureBuilder
 
             // Assertions
             xml.openElement("assertions");
-            for (AssertionCreator assertion : state.getAssertions())
+            for (AssertionBuilder assertion : state.getAssertions())
             {
                 xml.openAssertion(assertion.getType(), assertion.getAssertionId());
                 xml.append(assertion.getInnerXml());
@@ -113,7 +113,7 @@ public class FixtureBuilder
         // Migrations
         xml.openElement("migrations");
 
-        for (MigrationBuilder migration : this.resourceCreator.getMigrations())
+        for (MigrationBuilder migration : this.resourceBuilder.getMigrations())
         {
             xml.openMigration(
                 migration.getType(),

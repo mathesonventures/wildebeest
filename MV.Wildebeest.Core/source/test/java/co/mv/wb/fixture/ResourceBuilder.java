@@ -32,22 +32,22 @@ public class ResourceBuilder
     private final String type;
     private final UUID resourceId;
     private final String name;
-    private final List<StateCreator> states;
+    private final List<StateBuilder> states;
     private final List<MigrationBuilder> migrations;
     private final FixtureBuilder builder;
 
     public ResourceBuilder(
-        FixtureBuilder creator,
+        FixtureBuilder builder,
         String type,
         UUID resourceId,
         String name)
     {
-        if (creator == null) throw new ArgumentNullException("builder");
+        if (builder == null) throw new ArgumentNullException("builder");
         if (type == null) throw new ArgumentNullException("type");
         if (resourceId == null) throw new ArgumentNullException("resourceId");
         if (name == null) throw new ArgumentNullException("name");
 
-        this.builder = creator;
+        this.builder = builder;
         this.type = type;
         this.resourceId = resourceId;
         this.name = name;
@@ -70,7 +70,7 @@ public class ResourceBuilder
         return this.name;
     }
 
-    public List<StateCreator> getStates()
+    public List<StateBuilder> getStates()
     {
         return this.states;
     }
@@ -80,23 +80,23 @@ public class ResourceBuilder
         return this.migrations;
     }
 
-    public StateCreator state(
+    public StateBuilder state(
         UUID stateId,
         String label)
     {
-        StateCreator stateCreator = new StateCreator(this.builder, this, stateId, label, null);
-        this.getStates().add(stateCreator);
-        return stateCreator;
+        StateBuilder stateBuilder = new StateBuilder(this.builder, this, stateId, label, null);
+        this.getStates().add(stateBuilder);
+        return stateBuilder;
     }
 
-    public StateCreator state(
+    public StateBuilder state(
         UUID stateId,
         String label,
         String description)
     {
-        StateCreator stateCreator = new StateCreator(this.builder, this, stateId, label, description);
-        this.getStates().add(stateCreator);
-        return stateCreator;
+        StateBuilder stateBuilder = new StateBuilder(this.builder, this, stateId, label, description);
+        this.getStates().add(stateBuilder);
+        return stateBuilder;
     }
 
     public MigrationBuilder migration(

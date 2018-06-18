@@ -27,28 +27,28 @@ import java.util.UUID;
  *
  * @since                                       4.0
  */
-public class StateCreator
+public class StateBuilder
 {
-    private final FixtureBuilder creator;
-    private final ResourceBuilder resource;
+    private final FixtureBuilder builder;
+    private final ResourceBuilder resourceBuilder;
     private final UUID stateId;
     private final String label;
     private final String description;
-    private final List<AssertionCreator> assertions;
+    private final List<AssertionBuilder> assertions;
 
-    public StateCreator(
-        FixtureBuilder creator,
-        ResourceBuilder resource,
+    public StateBuilder(
+        FixtureBuilder builder,
+        ResourceBuilder resourceBuilder,
         UUID stateId,
         String label,
         String description)
     {
-        if (creator == null) throw new ArgumentNullException("creator");
-        if (resource == null) throw new ArgumentNullException("resource");
+        if (builder == null) throw new ArgumentNullException("builder");
+        if (resourceBuilder == null) throw new ArgumentNullException("resourceBuilder");
         if (stateId == null) throw new ArgumentNullException("stateId");
 
-        this.creator = creator;
-        this.resource = resource;
+        this.builder = builder;
+        this.resourceBuilder = resourceBuilder;
         this.stateId = stateId;
         this.label = label;
         this.description = description;
@@ -80,30 +80,30 @@ public class StateCreator
         return this.description != null;
     }
 
-    public List<AssertionCreator> getAssertions()
+    public List<AssertionBuilder> getAssertions()
     {
         return this.assertions;
     }
 
-    public AssertionCreator assertion(
+    public AssertionBuilder assertion(
         String type,
         UUID assertionId)
     {
-        AssertionCreator assertion = new AssertionCreator(this.creator, this, type, assertionId);
-        this.assertions.add(assertion);
-        return assertion;
+        AssertionBuilder assertionBuilder = new AssertionBuilder(this.builder, this, type, assertionId);
+        this.assertions.add(assertionBuilder);
+        return assertionBuilder;
     }
 
     public ResourceBuilder resource()
     {
-        return this.resource;
+        return this.resourceBuilder;
     }
 
-    public StateCreator state(
+    public StateBuilder state(
         UUID stateId,
         String label)
     {
-        return this.resource.state(stateId, label);
+        return this.resourceBuilder.state(stateId, label);
     }
 
     public MigrationBuilder migration(
@@ -121,6 +121,6 @@ public class StateCreator
 
     public String render()
     {
-        return this.creator.build();
+        return this.builder.build();
     }
 }
