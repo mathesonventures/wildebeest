@@ -40,7 +40,8 @@ import static org.junit.Assert.fail;
  */
 public class SqlServerSchemaExistsAssertionTests
 {
-	@Test public void applyForExistingSchemaSucceeds() throws
+	@Test
+	public void applyForExistingSchemaSucceeds() throws
 		MigrationFailedException
 	{
 		// Setup
@@ -110,7 +111,8 @@ public class SqlServerSchemaExistsAssertionTests
 			"response");
 	}
 
-	@Test public void applyForNonExistentSchemaFails() throws
+	@Test
+	public void applyForNonExistentSchemaFails() throws
 		MigrationFailedException
 	{
 		// Setup
@@ -168,7 +170,8 @@ public class SqlServerSchemaExistsAssertionTests
 			"response");
 	}
 
-	@Test public void applyForNonExistentDatabaseFails()
+	@Test
+	public void applyForNonExistentDatabaseFails()
 	{
 		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -202,7 +205,8 @@ public class SqlServerSchemaExistsAssertionTests
 			"response");
 	}
 
-	@Test public void applyForNullInstanceFails()
+	@Test
+	public void applyForNullInstanceFails()
 	{
 		// Setup
 		SqlServerSchemaExistsAssertion assertion = new SqlServerSchemaExistsAssertion(
@@ -223,7 +227,8 @@ public class SqlServerSchemaExistsAssertionTests
 		}
 	}
 
-	@Test public void applyForIncorrectInstanceTypeFails()
+	@Test
+	public void applyForIncorrectInstanceTypeFails()
 	{
 		// Setup
 		SqlServerSchemaExistsAssertion assertion = new SqlServerSchemaExistsAssertion(

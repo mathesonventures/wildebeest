@@ -21,7 +21,9 @@ import org.junit.Test;
 
 public class DomInstanceLoaderTests
 {
-	@Ignore @Test public void loadInstance()
+	@Ignore
+	@Test
+	public void loadInstance()
 	{
 		throw new RuntimeException("not implemented");
 	}

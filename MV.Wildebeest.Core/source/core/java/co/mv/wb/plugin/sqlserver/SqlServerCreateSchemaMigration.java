@@ -46,15 +46,14 @@ import java.util.UUID;
 )
 public class SqlServerCreateSchemaMigration extends BaseMigration
 {
-	private String schemaName = null;
-	private boolean schemaNameSet = false;
+	private final String schemaName;
 
 	/**
 	 * Creates a new SqlServerCreateSchemaMigration.
 	 * 
 	 * @param       migrationId                 the ID of the new migration.
-	 * @param       fromState                 the source state for this migration.
-	 * @param       toState                   the target state for this migration.
+	 * @param       fromState                   the source state for this migration.
+	 * @param       toState                     the target state for this migration.
 	 * @param       schemaName                  the name for the new schema.
 	 * @since                                   2.0
 	 */
@@ -66,48 +65,21 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 	{
 		super(migrationId, fromState, toState);
 
-		this.setSchemaName(schemaName);
+		this.schemaName = schemaName;
 	}
-
+	
 	/**
 	 * Returns the name for the new schema.
 	 * 
 	 * @return                                  the name for the new schema
 	 * @since                                   2.0
 	 */
-	public String getSchemaName() {
-		if(!schemaNameSet) {
-			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
-		}
-		return schemaName;
+	public String getSchemaName()
+	{
+		return this.schemaName;
 	}
 
-	private void setSchemaName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("schemaName cannot be null");
-		}
-		boolean changing = !schemaNameSet || !schemaName.equals(value);
-		if(changing) {
-			schemaNameSet = true;
-			schemaName = value;
-		}
-	}
-
-	private void clearSchemaName() {
-		if(schemaNameSet) {
-			schemaNameSet = true;
-			schemaName = null;
-		}
-	}
-
-	private boolean hasSchemaName() {
-		return schemaNameSet;
-	}
-
-	
-	@Override
-	public List<ResourceType> getApplicableTypes()
+	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			Wildebeest.SqlServerDatabase);

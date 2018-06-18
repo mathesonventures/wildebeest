@@ -38,11 +38,17 @@ import java.util.stream.Collectors;
  */
 public class PluginManagerImpl implements PluginManager
 {
-	private static final String ScanPackage = "co.mv.wb";
+	private static final String SCAN_PACKAGE = "co.mv.wb";
 
-	private final List<PluginGroup> _pluginGroups;
-	private final Map<String, MigrationPlugin> _migrationPlugins;
+	private final List<PluginGroup> pluginGroups;
+	private final Map<String, MigrationPlugin> migrationPlugins;
 
+	/**
+	 * Constructs a new PluginManagerImpl with the specified plugin groups and migration plugins registered.
+	 *
+	 * @param       pluginGroups                the plugin groups to be registered in this PluginManager.
+	 * @param       migrationPlugins            the migration plugins to be registered in this PluginManager.
+	 */
 	public PluginManagerImpl(
 		List<PluginGroup> pluginGroups,
 		List<MigrationPlugin> migrationPlugins)
@@ -50,9 +56,9 @@ public class PluginManagerImpl implements PluginManager
 		if (pluginGroups == null) throw new ArgumentNullException("pluginGroups");
 		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
 
-		_pluginGroups = pluginGroups;
+		this.pluginGroups = pluginGroups;
 
-		_migrationPlugins = migrationPlugins
+		this.migrationPlugins = migrationPlugins
 			.stream()
 			.collect(Collectors.toMap(
 				x ->
@@ -71,16 +77,18 @@ public class PluginManagerImpl implements PluginManager
 				x -> x));
 	}
 
-	@Override public List<PluginGroup> getPluginGroups()
+	@Override
+	public List<PluginGroup> getPluginGroups()
 	{
-		return _pluginGroups;
+		return pluginGroups;
 	}
 
-	@Override public List<MigrationTypeInfo> getMigrationTypeInfos()
+	@Override
+	public List<MigrationTypeInfo> getMigrationTypeInfos()
 	{
-		Reflections reflections = new Reflections(ScanPackage);
+		Reflections reflections = new Reflections(SCAN_PACKAGE);
 
-		List<MigrationTypeInfo> result = reflections
+		return reflections
 			.getTypesAnnotatedWith(MigrationType.class)
 			.stream()
 			.map(
@@ -97,33 +105,31 @@ public class PluginManagerImpl implements PluginManager
 						migrationClass);
 				})
 			.collect(Collectors.toList());
-
-		return result;
 	}
 
-	@Override public MigrationPlugin getMigrationPlugin(
+	@Override
+	public MigrationPlugin getMigrationPlugin(
 		String uri)
 	{
 		if (uri == null) throw new ArgumentNullException("uri");
 
-		if (_migrationPlugins.containsKey(uri))
+		if (migrationPlugins.containsKey(uri))
 		{
 			throw new RuntimeException(String.format("no MigrationPlugin found for uri: %s", uri));
 		}
 
-		return _migrationPlugins.get(uri);
+		return migrationPlugins.get(uri);
 	}
 
-	@Override public List<AssertionType> getAssertionTypes()
+	@Override
+	public List<AssertionType> getAssertionTypes()
 	{
-		Reflections reflections = new Reflections(ScanPackage);
+		Reflections reflections = new Reflections(SCAN_PACKAGE);
 
-		List<AssertionType> result = reflections
+		return reflections
 			.getTypesAnnotatedWith(AssertionType.class)
 			.stream()
 			.map(assertionClass -> assertionClass.getAnnotation(AssertionType.class))
 			.collect(Collectors.toList());
-
-		return result;
 	}
 }

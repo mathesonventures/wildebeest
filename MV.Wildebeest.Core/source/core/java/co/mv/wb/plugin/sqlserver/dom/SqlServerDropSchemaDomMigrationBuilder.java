@@ -62,8 +62,8 @@ public class SqlServerDropSchemaDomMigrationBuilder extends BaseDomMigrationBuil
 		
 		return new SqlServerDropSchemaMigration(
 			migrationId,
-			  fromState,
-			  toState,
+			fromState,
+			toState,
 			schemaName.get());
 	}
 }

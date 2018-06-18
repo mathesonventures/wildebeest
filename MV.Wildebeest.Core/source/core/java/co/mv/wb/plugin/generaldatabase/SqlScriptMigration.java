@@ -20,6 +20,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
@@ -62,16 +63,15 @@ import java.util.UUID;
 )
 public class SqlScriptMigration extends BaseMigration implements Migration
 {
-	private String sql = null;
-	private boolean sqlSet = false;
+	private final String sql;
 
 	/**
 	 * Creates a new SqlScriptMigration.
 	 * 
 	 * @param       migrationId                 the ID of the migration
-	 * @param       fromState                 the ID of the source state that this migration applies to, or null if
+	 * @param       fromState                   the ID of the source state that this migration applies to, or null if
 	 *                                          this migration transitions from the non-existent state.
-	 * @param       toState                   the ID of the target state that the migration applies to, or null if
+	 * @param       toState                     the ID of the target state that the migration applies to, or null if
 	 *                                          this migration transitions to the non-existent state.
 	 * @param       sql                         the SQL script that performs the migration from the fron-state to the
 	 *                                          to-state.
@@ -83,41 +83,18 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 		String sql)
 	{
 		super(migrationId, fromState, toState);
-		this.setSql(sql);
-	}
 
-	public String getSql() {
-		if(!sqlSet) {
-			throw new IllegalStateException("sql not set.  Use the HasSql() method to check its state before accessing it.");
-		}
+		if (sql == null) throw new ArgumentNullException("sql");
+
+		this.sql = sql;
+	}
+	
+	public String getSql()
+	{
 		return sql;
 	}
 
-	private void setSql(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("sql cannot be null");
-		}
-		boolean changing = !sqlSet || !sql.equals(value);
-		if(changing) {
-			sqlSet = true;
-			sql = value;
-		}
-	}
-
-	private void clearSql() {
-		if(sqlSet) {
-			sqlSet = true;
-			sql = null;
-		}
-	}
-
-	private boolean hasSql() {
-		return sqlSet;
-	}
-
-	@Override
-	public List<ResourceType> getApplicableTypes()
+	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			Wildebeest.MySqlDatabase,

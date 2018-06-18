@@ -30,11 +30,11 @@ import static org.mockito.Mockito.when;
  */
 public class WildebeestApiMockBuilder
 {
-	private WildebeestApi _wildebeestApi;
+	private WildebeestApi wildebeestApi;
 
 	public WildebeestApiMockBuilder()
 	{
-		_wildebeestApi = mock(WildebeestApi.class);
+		wildebeestApi = mock(WildebeestApi.class);
 	}
 
 	public WildebeestApiMockBuilder loadResourceReturns(Resource resource)
@@ -43,7 +43,7 @@ public class WildebeestApiMockBuilder
 
 		try
 		{
-			when(_wildebeestApi.loadResource(any())).thenReturn(resource);
+			when(wildebeestApi.loadResource(any())).thenReturn(resource);
 		}
 		catch (FileLoadException e)
 		{
@@ -75,7 +75,7 @@ public class WildebeestApiMockBuilder
 
 		try
 		{
-			when(_wildebeestApi.loadInstance(any())).thenReturn(instance);
+			when(wildebeestApi.loadInstance(any())).thenReturn(instance);
 		}
 		catch (FileLoadException | PluginBuildException | LoaderFault | XmlValidationException e)
 		{
@@ -87,6 +87,6 @@ public class WildebeestApiMockBuilder
 
 	public WildebeestApi get()
 	{
-		return _wildebeestApi;
+		return wildebeestApi;
 	}
 }

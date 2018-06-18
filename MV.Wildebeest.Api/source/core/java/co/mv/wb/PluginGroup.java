@@ -26,10 +26,18 @@ import co.mv.wb.framework.ArgumentNullException;
  */
 public class PluginGroup
 {
-	private final String _uri;
-	private final String _title;
-	private final String _description;
+	private final String uri;
+	private final String title;
+	private final String description;
 
+	/**
+	 * Constructs a new PluginGroup with the supplied details.
+	 *
+	 * @param       uri                         the URI identifying the plugin group.
+	 * @param       title                       the human-readable title of the plugin group, for use in tooling.
+	 * @param       description                 a description of the plugin group, for use in tooling.
+	 * @since                                   4.0
+	 */
 	public PluginGroup(
 		String uri,
 		String title,
@@ -39,29 +47,53 @@ public class PluginGroup
 		if (title == null) throw new ArgumentNullException("title");
 		if (description == null) throw new ArgumentNullException("description");
 
-		_uri = uri;
-		_title = title;
-		_description = description;
+		this.uri = uri;
+		this.title = title;
+		this.description = description;
 	}
 
+	/**
+	 * Gets the URI identifying the plugin group.
+	 *
+	 * @return                                  the URI identifying the plugin group.
+	 * @since                                   4.0
+	 */
 	public String getUri()
 	{
-		return _uri;
+		return uri;
 	}
 
+	/**
+	 * Gets the name of the plugin group, extracted from the URI.
+	 *
+	 * @return                                  the name of the plugin group, extracted from the URI.
+	 * @since                                   4.0
+	 */
 	public String getName()
 	{
 		int index = this.getUri().lastIndexOf(":");
 		return this.getUri().substring(index + 1);
 	}
 
+	/**
+	 * Gets the human-readable title of the plugin group.
+	 *
+	 * @return                                  the human-readable title of the plugin group.
+	 * @since                                   4.0
+	 */
 	public String getTitle()
 	{
-		return _title;
+		return title;
 	}
 
+	/**
+	 * Gets the description of the plugin group.
+	 *
+	 * @return                                  the description of the plugin group.
+	 * @since                                   4.0
+	 */
 	public String getDescription()
 	{
-		return _description;
+		return description;
 	}
 }

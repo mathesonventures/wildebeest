@@ -72,7 +72,7 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 		State result = null;
 		if (declaredStateId != null)
 		{
-			result = Wildebeest.stateForId(resource, declaredStateId.toString());
+			result = Wildebeest.findState(resource, declaredStateId.toString());
 
 			// If the declared state ID is not known, throw
 			if (result == null)
@@ -91,7 +91,7 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 		PrintStream output,
 		Resource resource,
 		Instance instance,
-		String stateId)
+		UUID stateId)
     {
 		if (output == null) { throw new IllegalArgumentException("output"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }

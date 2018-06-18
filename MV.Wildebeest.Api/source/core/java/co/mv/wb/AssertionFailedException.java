@@ -16,6 +16,8 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -27,10 +29,9 @@ import java.util.UUID;
  */
 public class AssertionFailedException extends Exception
 {
-	private String stateId = null;
-	private boolean stateIdSet = false;
-	private List<AssertionResult> assertionResults = null;
-	private boolean assertionResultsSet = false;
+	private final UUID stateId;
+	private final List<AssertionResult> assertionResults;
+
 	/**
 	 * Creates a new AssertionFailedException for the specified state and AssertionResult.
 	 * 
@@ -40,37 +41,25 @@ public class AssertionFailedException extends Exception
 	 * @since                                   1.0
 	 */
 	public AssertionFailedException(
-		String stateId,
+		UUID stateId,
 		List<AssertionResult> assertionResults)
 	{
-		this.setStateId(stateId);
-		this.setAssertionResults(assertionResults);
+		if (stateId == null) throw new ArgumentNullException("stateId");
+		if (assertionResults == null) throw new ArgumentNullException("assertionResults");
+
+		this.stateId = stateId;
+		this.assertionResults = assertionResults;
 	}
-
-
+	
 	/**
-	 * Gets the ID or Label of the State for which Assertion evaluation failed.
+	 * Gets the identity of the State for which Assertion evaluation failed.
 	 * 
-	 * @return                                   the ID of the State for which Assertion evaluation failed
+	 * @return                                  the ID of the State for which Assertion evaluation failed
 	 * @since                                   1.0
 	 */
-	public String getStateId() {
-		if(!stateIdSet) {
-			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
-		}
-		return stateId;
-	}
-
-	private void setStateId(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("stateId cannot be null");
-		}
-		boolean changing = !stateIdSet || stateId != value;
-		if(changing) {
-			stateIdSet = true;
-			stateId = value;
-		}
+	public UUID getStateId()
+	{
+		return this.stateId;
 	}
 
 	/**
@@ -79,22 +68,8 @@ public class AssertionFailedException extends Exception
 	 * @return                                  the set of result items from the assertions that were evalulated
 	 * @since                                   1.0
 	 */
-	public List<AssertionResult> getAssertionResults() {
-		if(!assertionResultsSet) {
-			throw new IllegalStateException("assertionResults not set.  Use the HasAssertionResults() method to check its state before accessing it.");
-		}
-		return assertionResults;
+	public List<AssertionResult> getAssertionResults()
+	{
+		return this.assertionResults;
 	}
-
-	private void setAssertionResults(List<AssertionResult> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("assertionResults cannot be null");
-		}
-		boolean changing = !assertionResultsSet || assertionResults != value;
-		if(changing) {
-			assertionResultsSet = true;
-			assertionResults = value;
-		}
-	}
-
 }

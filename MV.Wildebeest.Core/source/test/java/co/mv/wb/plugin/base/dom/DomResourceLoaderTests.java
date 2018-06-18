@@ -17,7 +17,7 @@
 package co.mv.wb.plugin.base.dom;
 
 import co.mv.wb.*;
-import co.mv.wb.fixture.FixtureCreator;
+import co.mv.wb.fixture.FixtureBuilder;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.impl.WildebeestApiImpl;
@@ -48,8 +48,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResource() throws
             LoaderFault,
-            PluginBuildException,
-            MissingReferenceException {
+            MissingReferenceException,
+            PluginBuildException {
 
         //
         // Setup
@@ -57,9 +57,9 @@ public class DomResourceLoaderTests
 
         UUID resourceId = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
+        String resourceXml = FixtureBuilder.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-                .render();
+                .build();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
         Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
@@ -108,8 +108,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForStateWithLabel() throws
             LoaderFault,
-            PluginBuildException,
-            MissingReferenceException {
+        MissingReferenceException,
+            PluginBuildException {
 
         //
         // Setup
@@ -118,7 +118,7 @@ public class DomResourceLoaderTests
         UUID resourceId = UUID.randomUUID();
         UUID stateId = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
+        String resourceXml = FixtureBuilder.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
                 .state(stateId, "Foo")
                 .render();
@@ -175,8 +175,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForStateWithNoLabel() throws
             LoaderFault,
-            PluginBuildException,
-            MissingReferenceException {
+        MissingReferenceException,
+            PluginBuildException {
 
         //
         // Setup
@@ -185,7 +185,7 @@ public class DomResourceLoaderTests
         UUID resourceId = UUID.randomUUID();
         UUID stateId = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
+        String resourceXml = FixtureBuilder.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
                 .state(stateId, null )
                 .render();
@@ -243,8 +243,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForStateWithLabelAndDescription() throws
             LoaderFault,
-            PluginBuildException,
-            MissingReferenceException {
+            MissingReferenceException,
+            PluginBuildException {
 
         //
         // Setup
@@ -253,7 +253,7 @@ public class DomResourceLoaderTests
         UUID resourceId = UUID.randomUUID();
         UUID stateId = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
+        String resourceXml = FixtureBuilder.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
                 .state(stateId, "Some random label", "Some random test description")
                 .render();
@@ -312,8 +312,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForMultipleStates() throws
             LoaderFault,
-            PluginBuildException,
-            MissingReferenceException {
+            MissingReferenceException,
+            PluginBuildException {
 
         //
         // Setup
@@ -323,7 +323,7 @@ public class DomResourceLoaderTests
         UUID state1Id = UUID.randomUUID();
         UUID state2Id = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
+        String resourceXml = FixtureBuilder.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
                 .state(state1Id, "Foo")
                 .state(state2Id, "Bar")
@@ -386,8 +386,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForStateWithOneAssertion() throws
             LoaderFault,
-            PluginBuildException,
-            MissingReferenceException {
+            MissingReferenceException,
+            PluginBuildException {
 
         //
         // Setup
@@ -397,11 +397,11 @@ public class DomResourceLoaderTests
         UUID stateId = UUID.randomUUID();
         UUID assertion1Id = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
+        String resourceXml = FixtureBuilder.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
                 .state(stateId, "Foo")
-                .assertion(FakeConstants.Fake.getUri(), assertion1Id).innerXml("<tag>Foo</tag>")
-                .render();
+                .assertion(FakeConstants.Fake.getUri(), assertion1Id).withInnerXml("<tag>Foo</tag>")
+                .build();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
         assertionBuilders.put(FakeConstants.Fake.getUri(), new DomTagAssertionBuilder());
@@ -456,8 +456,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForStateWithMultipleAssertions() throws
             LoaderFault,
-            PluginBuildException,
-            MissingReferenceException {
+            MissingReferenceException,
+            PluginBuildException {
 
         //
         // Setup
@@ -468,12 +468,12 @@ public class DomResourceLoaderTests
         UUID assertion1Id = UUID.randomUUID();
         UUID assertion2Id = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
+        String resourceXml = FixtureBuilder.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
                 .state(stateId, "Foo")
-                .assertion(FakeConstants.Fake.getUri(), assertion1Id).innerXml("<tag>Foo</tag>")
-                .assertion(FakeConstants.Fake.getUri(), assertion2Id).innerXml("<tag>Bar</tag>")
-                .render();
+                .assertion(FakeConstants.Fake.getUri(), assertion1Id).withInnerXml("<tag>Foo</tag>")
+                .assertion(FakeConstants.Fake.getUri(), assertion2Id).withInnerXml("<tag>Bar</tag>")
+                .build();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
         assertionBuilders.put(FakeConstants.Fake.getUri(), new DomTagAssertionBuilder());
@@ -528,8 +528,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForMigrationWithFromStateId() throws
             LoaderFault,
-            PluginBuildException,
-            MissingReferenceException {
+            MissingReferenceException,
+            PluginBuildException {
 
         //
         // Setup
@@ -539,11 +539,11 @@ public class DomResourceLoaderTests
         UUID state1Id = UUID.randomUUID();
         UUID migrationId = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
-                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-                .state(state1Id, "Foo")
-                .migration(FakeConstants.Fake.getUri(), migrationId, state1Id.toString(), null).innerXml("<tag>Blah</tag>")
-                .render();
+        String resourceXml = FixtureBuilder.create()
+            .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+            .state(state1Id, "Foo")
+            .migration(FakeConstants.Fake.getUri(), migrationId, state1Id.toString(), null).withInnerXml("<tag>Blah</tag>")
+            .render();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 
@@ -551,13 +551,13 @@ public class DomResourceLoaderTests
         migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
 
         DomResourceLoader resourceBuilder = new DomResourceLoader(
-                ResourceTypeServiceBuilder
-                        .create()
-                        .with(FakeConstants.Fake)
-                        .build(),
-                assertionBuilders,
-                migrationBuilders,
-                resourceXml);
+            ResourceTypeServiceBuilder
+                .create()
+                .with(FakeConstants.Fake)
+                .build(),
+            assertionBuilders,
+            migrationBuilders,
+            resourceXml);
 
         //
         // Execute
@@ -601,11 +601,11 @@ public class DomResourceLoaderTests
         UUID state1Id = UUID.randomUUID();
         UUID migrationId = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
-              .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-              .state(state1Id, "Foo")
-              .migration(FakeConstants.Fake.getUri(), migrationId, "Foo", null).innerXml("<tag>Blah</tag>")
-              .render();
+        String resourceXml = FixtureBuilder.create()
+            .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+            .state(state1Id, "Foo")
+            .migration(FakeConstants.Fake.getUri(), migrationId, "Foo", null).withInnerXml("<tag>Blah</tag>")
+            .render();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 
@@ -613,13 +613,13 @@ public class DomResourceLoaderTests
         migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
 
         DomResourceLoader resourceBuilder = new DomResourceLoader(
-              ResourceTypeServiceBuilder
-                    .create()
-                    .with(FakeConstants.Fake)
-                    .build(),
-              assertionBuilders,
-              migrationBuilders,
-              resourceXml);
+            ResourceTypeServiceBuilder
+                .create()
+                .with(FakeConstants.Fake)
+                .build(),
+            assertionBuilders,
+            migrationBuilders,
+            resourceXml);
 
         //
         // Execute
@@ -651,8 +651,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForMigrationsWithToStateId() throws
             LoaderFault,
-            PluginBuildException,
-            MissingReferenceException {
+            MissingReferenceException,
+            PluginBuildException {
 
         //
         // Setup
@@ -662,11 +662,11 @@ public class DomResourceLoaderTests
         UUID state1Id = UUID.randomUUID();
         UUID migrationId = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
-                .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-                .state(state1Id, "Foo")
-                .migration(FakeConstants.Fake.getUri(), migrationId, null, state1Id.toString()).innerXml("<tag>Blah</tag>")
-                .render();
+        String resourceXml = FixtureBuilder.create()
+            .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+            .state(state1Id, "Foo")
+            .migration(FakeConstants.Fake.getUri(), migrationId, null, state1Id.toString()).withInnerXml("<tag>Blah</tag>")
+            .render();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 
@@ -674,13 +674,13 @@ public class DomResourceLoaderTests
         migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
 
         DomResourceLoader resourceBuilder = new DomResourceLoader(
-                ResourceTypeServiceBuilder
-                        .create()
-                        .with(FakeConstants.Fake)
-                        .build(),
-                assertionBuilders,
-                migrationBuilders,
-                resourceXml);
+            ResourceTypeServiceBuilder
+                .create()
+                .with(FakeConstants.Fake)
+                .build(),
+            assertionBuilders,
+            migrationBuilders,
+            resourceXml);
 
         //
         // Execute
@@ -725,11 +725,11 @@ public class DomResourceLoaderTests
         UUID state1Id = UUID.randomUUID();
         UUID migrationId = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
-              .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-              .state(state1Id, "Foo")
-              .migration(FakeConstants.Fake.getUri(), migrationId, null, "Foo").innerXml("<tag>Blah</tag>")
-              .render();
+        String resourceXml = FixtureBuilder.create()
+            .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+            .state(state1Id, "Foo")
+            .migration(FakeConstants.Fake.getUri(), migrationId, null, "Foo").withInnerXml("<tag>Blah</tag>")
+            .render();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 
@@ -737,13 +737,13 @@ public class DomResourceLoaderTests
         migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
 
         DomResourceLoader resourceBuilder = new DomResourceLoader(
-              ResourceTypeServiceBuilder
-                    .create()
-                    .with(FakeConstants.Fake)
-                    .build(),
-              assertionBuilders,
-              migrationBuilders,
-              resourceXml);
+            ResourceTypeServiceBuilder
+                .create()
+                .with(FakeConstants.Fake)
+                .build(),
+            assertionBuilders,
+            migrationBuilders,
+            resourceXml);
 
         //
         // Execute
@@ -775,8 +775,8 @@ public class DomResourceLoaderTests
     @Test
     public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws
             LoaderFault,
-            PluginBuildException,
-            MissingReferenceException {
+            MissingReferenceException,
+            PluginBuildException {
 
         //
         // Setup
@@ -787,11 +787,11 @@ public class DomResourceLoaderTests
         UUID state2Id = UUID.randomUUID();
         UUID migrationId = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
+        String resourceXml = FixtureBuilder.create()
                 .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
                 .state(state1Id, "Foo")
                 .state(state2Id, "Bar")
-                .migration(FakeConstants.Fake.getUri(), migrationId, state1Id.toString(), state2Id.toString()).innerXml("<tag>Blah</tag>")
+                .migration(FakeConstants.Fake.getUri(), migrationId, state1Id.toString(), state2Id.toString()).withInnerXml("<tag>Blah</tag>")
                 .render();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
@@ -989,12 +989,12 @@ public class DomResourceLoaderTests
         UUID state2Id = UUID.randomUUID();
         UUID migrationId = UUID.randomUUID();
 
-        String resourceXml = FixtureCreator.create()
-              .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-              .state(state1Id, "Foo")
-              .state(state2Id, "Bar")
-              .migration(FakeConstants.Fake.getUri(), migrationId, "Foo", "Bar").innerXml("<tag>Blah</tag>")
-              .render();
+        String resourceXml = FixtureBuilder.create()
+            .resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+            .state(state1Id, "Foo")
+            .state(state2Id, "Bar")
+            .migration(FakeConstants.Fake.getUri(), migrationId, "Foo", "Bar").withInnerXml("<tag>Blah</tag>")
+            .render();
 
         Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
 
@@ -1002,13 +1002,13 @@ public class DomResourceLoaderTests
         migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
 
         DomResourceLoader resourceBuilder = new DomResourceLoader(
-              ResourceTypeServiceBuilder
-                    .create()
-                    .with(FakeConstants.Fake)
-                    .build(),
-              assertionBuilders,
-              migrationBuilders,
-              resourceXml);
+            ResourceTypeServiceBuilder
+                .create()
+                .with(FakeConstants.Fake)
+                .build(),
+            assertionBuilders,
+            migrationBuilders,
+            resourceXml);
 
         //
         // Execute

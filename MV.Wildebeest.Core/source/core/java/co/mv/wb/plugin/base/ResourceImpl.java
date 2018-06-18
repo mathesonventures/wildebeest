@@ -20,6 +20,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourceType;
 import co.mv.wb.State;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,13 @@ import java.util.UUID;
  */
 public final class ResourceImpl implements Resource
 {
+	private final UUID resourceId;
+	private final ResourceType type;
+	private final String name;
+	private final List<State> states;
+	private final List<Migration> migrations;
+	private final Optional<String> defaultTarget;
+
 	/**
 	 * Creates a new concrete Resource instance.
 	 * 
@@ -48,236 +56,48 @@ public final class ResourceImpl implements Resource
 		String name,
 		Optional<String> defaultTarget)
 	{
-		this.setResourceId(resourceId);
-		this.setType(type);
-		this.setName(name);
-		this.setStates(new ArrayList<>());
-		this.setMigrations(new ArrayList<>());
-		this.setDefaultTarget(defaultTarget);
+		if (resourceId == null) throw new ArgumentNullException("resourceId");
+		if (type == null) throw new ArgumentNullException("type");
+		if (name == null) throw new ArgumentNullException("name");
+		if (defaultTarget == null) throw new ArgumentNullException("defaultTarget");
+
+		this.resourceId = resourceId;
+		this.type = type;
+		this.name = name;
+		this.states = new ArrayList<>();
+		this.migrations = new ArrayList<>();
+		this.defaultTarget = defaultTarget;
 	}
 
-	// <editor-fold desc="ResourceId" defaultstate="collapsed">
-
-	private UUID _resourceId = null;
-	private boolean _resourceId_set = false;
-
-	@Override public UUID getResourceId() {
-		if(!_resourceId_set) {
-			throw new IllegalStateException("resourceId not set.  Use the HasResourceId() method to check its state before accessing it.");
-		}
-		return _resourceId;
+	@Override public UUID getResourceId()
+	{
+		return this.resourceId;
 	}
 
-	private void setResourceId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("resourceId cannot be null");
-		}
-		boolean changing = !_resourceId_set || _resourceId != value;
-		if(changing) {
-			_resourceId_set = true;
-			_resourceId = value;
-		}
+	@Override
+	public ResourceType getType()
+	{
+		return this.type;
 	}
 
-	private void clearResourceId() {
-		if(_resourceId_set) {
-			_resourceId_set = true;
-			_resourceId = null;
-		}
+	@Override public String getName()
+	{
+		return this.name;
 	}
 
-	private boolean hasResourceId() {
-		return _resourceId_set;
+	@Override public List<State> getStates()
+	{
+		return this.states;
 	}
 
-	// </editor-fold>
-
-	// <editor-fold desc="Type" defaultstate="collapsed">
-
-	private ResourceType _type = null;
-	private boolean _type_set = false;
-
-	public ResourceType getType() {
-		if(!_type_set) {
-			throw new IllegalStateException("type not set.");
-		}
-		if(_type == null) {
-			throw new IllegalStateException("type should not be null");
-		}
-		return _type;
+	@Override public List<Migration> getMigrations()
+	{
+		return this.migrations;
 	}
 
-	private void setType(
-			ResourceType value) {
-		if(value == null) {
-			throw new IllegalArgumentException("type cannot be null");
-		}
-		boolean changing = !_type_set || _type != value;
-		if(changing) {
-			_type_set = true;
-			_type = value;
-		}
+	@Override
+	public Optional<String> getDefaultTarget()
+	{
+		return this.defaultTarget;
 	}
-
-	private void clearType() {
-		if(_type_set) {
-			_type_set = true;
-			_type = null;
-		}
-	}
-
-	private boolean hasType() {
-		return _type_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="Name" defaultstate="collapsed">
-
-	private String _name = null;
-	private boolean _name_set = false;
-
-	@Override public String getName() {
-		if(!_name_set) {
-			throw new IllegalStateException("name not set.  Use the HasName() method to check its state before accessing it.");
-		}
-		return _name;
-	}
-
-	private void setName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("name cannot be null");
-		}
-		boolean changing = !_name_set || !_name.equals(value);
-		if(changing) {
-			_name_set = true;
-			_name = value;
-		}
-	}
-
-	private void clearName() {
-		if(_name_set) {
-			_name_set = true;
-			_name = null;
-		}
-	}
-
-	private boolean hasName() {
-		return _name_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="States" defaultstate="collapsed">
-
-	private List<State> _states = null;
-	private boolean _states_set = false;
-
-	@Override public List<State> getStates() {
-		if(!_states_set) {
-			throw new IllegalStateException("states not set.  Use the HasStates() method to check its state before accessing it.");
-		}
-		return _states;
-	}
-
-	private void setStates(List<State> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("states cannot be null");
-		}
-		boolean changing = !_states_set || _states != value;
-		if(changing) {
-			_states_set = true;
-			_states = value;
-		}
-	}
-
-	private void clearStates() {
-		if(_states_set) {
-			_states_set = true;
-			_states = null;
-		}
-	}
-
-	private boolean hasStates() {
-		return _states_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="Migrations" defaultstate="collapsed">
-
-	private List<Migration> _migrations = null;
-	private boolean _migrations_set = false;
-
-	@Override public List<Migration> getMigrations() {
-		if(!_migrations_set) {
-			throw new IllegalStateException("migrations not set.  Use the HasMigrations() method to check its state before accessing it.");
-		}
-		return _migrations;
-	}
-
-	private void setMigrations(List<Migration> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("migrations cannot be null");
-		}
-		boolean changing = !_migrations_set || _migrations != value;
-		if(changing) {
-			_migrations_set = true;
-			_migrations = value;
-		}
-	}
-
-	private void clearMigrations() {
-		if(_migrations_set) {
-			_migrations_set = true;
-			_migrations = null;
-		}
-	}
-
-	public boolean hasMigrations() {
-		return _migrations_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="DefaultTarget" defaultstate="collapsed">
-
-	private Optional<String> _defaultTarget = null;
-	private boolean _defaultTarget_set = false;
-
-	public Optional<String> getDefaultTarget() {
-		if(!_defaultTarget_set) {
-			throw new IllegalStateException("defaultTarget not set.");
-		}
-		if(_defaultTarget == null) {
-			throw new IllegalStateException("defaultTarget should not be null");
-		}
-		return _defaultTarget;
-	}
-
-	private void setDefaultTarget(Optional<String> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("defaultTarget cannot be null");
-		}
-		boolean changing = !_defaultTarget_set || _defaultTarget != value;
-		if(changing) {
-			_defaultTarget_set = true;
-			_defaultTarget = value;
-		}
-	}
-
-	private void clearDefaultTarget() {
-		if(_defaultTarget_set) {
-			_defaultTarget_set = true;
-			_defaultTarget = null;
-		}
-	}
-
-	private boolean hasDefaultTarget() {
-		return _defaultTarget_set;
-	}
-
-	// </editor-fold>
 }

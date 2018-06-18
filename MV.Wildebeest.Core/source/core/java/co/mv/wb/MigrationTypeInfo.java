@@ -25,12 +25,12 @@ import co.mv.wb.framework.ArgumentNullException;
  */
 public class MigrationTypeInfo
 {
-	private final String _pluginGroupUri;
-	private final String _uri;
-	private final String _name;
-	private final String _description;
-	private final String _example;
-	private final Class _migrationClass;
+	private final String pluginGroupUri;
+	private final String uri;
+	private final String name;
+	private final String description;
+	private final String example;
+	private final Class migrationClass;
 
 	public MigrationTypeInfo(
 		String pluginGroupUri,
@@ -47,41 +47,41 @@ public class MigrationTypeInfo
 		if (example == null) throw new ArgumentNullException("example");
 		if (migrationClass == null) throw new ArgumentNullException("migrationClass");
 
-		_pluginGroupUri = pluginGroupUri;
-		_uri = uri;
-		_name = name;
-		_description = description;
-		_example = example;
-		_migrationClass = migrationClass;
+		this.pluginGroupUri = pluginGroupUri;
+		this.uri = uri;
+		this.name = name;
+		this.description = description;
+		this.example = example;
+		this.migrationClass = migrationClass;
 	}
 
 	public String getPluginGroupUri()
 	{
-		return _pluginGroupUri;
+		return pluginGroupUri;
 	}
 
 	public String getUri()
 	{
-		return _uri;
+		return this.uri;
 	}
 
 	public String getName()
 	{
-		return _name;
+		return this.name;
 	}
 
 	public String getDescription()
 	{
-		return _description;
+		return this.description;
 	}
 
 	public String getExample()
 	{
-		return _example;
+		return this.example;
 	}
 
 	public Class getMigrationClass()
 	{
-		return _migrationClass;
+		return this.migrationClass;
 	}
 }

@@ -24,6 +24,7 @@ import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
 
 import java.io.PrintStream;
+import java.util.UUID;
 
 /**
  * {@link ResourcePlugin} for the Fake plugin implementation.
@@ -32,41 +33,14 @@ import java.io.PrintStream;
  */
 public class FakeResourcePlugin implements ResourcePlugin
 {
-	private String stateId = null;
-	private boolean stateIdSet = false;
+	private UUID stateId;
 
-	public String getStateId() {
-		if(!stateIdSet) {
-			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
-		}
-		return stateId;
+	public UUID getStateId()
+	{
+		return this.stateId;
 	}
 
-	private void setStateId(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("stateId cannot be null");
-		}
-		boolean changing = !stateIdSet || stateId != value;
-		if(changing) {
-			stateIdSet = true;
-			stateId = value;
-		}
-	}
-
-	private void clearStateId() {
-		if(stateIdSet) {
-			stateIdSet = true;
-			stateId = null;
-		}
-	}
-
-	private boolean hasStateId() {
-		return stateIdSet;
-	}
-
-	@Override
-	public State currentState(
+	@Override public State currentState(
 		Resource resource,
 		Instance instance)
 	{
@@ -76,7 +50,7 @@ public class FakeResourcePlugin implements ResourcePlugin
 		if (fake == null) { throw new IllegalArgumentException("instance must be of type FakeInstance"); }
 
 		return fake.hasStateId()
-			? Wildebeest.stateForId(resource, fake.getStateId().toString())
+			? Wildebeest.findState(resource, fake.getStateId().toString())
 			: null;
 	}
 
@@ -85,7 +59,7 @@ public class FakeResourcePlugin implements ResourcePlugin
 		PrintStream output,
 		Resource resource,
 		Instance instance,
-		String stateId)
+		UUID stateId)
 	{
 		if (output == null) { throw new IllegalArgumentException("output cannot be null"); }
 		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
@@ -93,6 +67,6 @@ public class FakeResourcePlugin implements ResourcePlugin
 		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
 		if (stateId == null) { throw new IllegalArgumentException("stateId must be of type FakeInstance"); }
 		
-		this.setStateId(stateId);
+		this.stateId = stateId;
 	}
 }

@@ -16,6 +16,8 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 /**
  * Indicates that the state specified for a migrate or a jumpstate command not defined for the current resource.
  * 
@@ -23,50 +25,32 @@ package co.mv.wb;
  */
 public class UnknownStateSpecifiedException extends Exception
 {
+	private final String specifiedState;
+
+    /**
+     * Constructs a new UnknownStateException with the supplied specifiedState.
+     *
+     * @param       specifiedState              the state that was requested but is unknown.
+     * @since                                   3.0
+     */
     public UnknownStateSpecifiedException(String specifiedState)
     {
         super(String.format("State specified is unknown in this resource: \"%s\"", specifiedState));
-        
-        this.setSpecifiedState(specifiedState);
+
+        if (specifiedState == null) throw new ArgumentNullException("specifiedState");
+
+        this.specifiedState = specifiedState;
     }
-    
-	// <editor-fold desc="SpecifiedState" defaultstate="collapsed">
 
-	private String _specifiedState = null;
-	private boolean _specifiedState_set = false;
-
-	public String getSpecifiedState() {
-		if(!_specifiedState_set) {
-			throw new IllegalStateException("specifiedState not set.");
-		}
-		if(_specifiedState == null) {
-			throw new IllegalStateException("specifiedState should not be null");
-		}
-		return _specifiedState;
+    /**
+     * Gets the state that was requested but is unknown, resulting in this exception being thrown.
+     *
+     * @return                                  the state that was requested but is unknown, resulting in this exception
+     *                                          being thrown.
+     * @since                                   3.0
+     */
+	public String getSpecifiedState()
+	{
+		return this.specifiedState;
 	}
-
-	private void setSpecifiedState(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("specifiedState cannot be null");
-		}
-		boolean changing = !_specifiedState_set || _specifiedState != value;
-		if(changing) {
-			_specifiedState_set = true;
-			_specifiedState = value;
-		}
-	}
-
-	private void clearSpecifiedState() {
-		if(_specifiedState_set) {
-			_specifiedState_set = true;
-			_specifiedState = null;
-		}
-	}
-
-	private boolean hasSpecifiedState() {
-		return _specifiedState_set;
-	}
-
-	// </editor-fold>
 }

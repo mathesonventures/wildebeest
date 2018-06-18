@@ -18,6 +18,7 @@ package co.mv.wb.plugin.base;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.State;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +30,13 @@ import java.util.UUID;
  *
  * @since                                       1.0
  */
-public class ImmutableState implements State {
+public class ImmutableState implements State
+{
 
-	private UUID stateId = null;
-	private boolean stateIdSet = false;
-	private Optional<String> label = null;
-	private boolean labelSet = false;
-	private List<Assertion> assertions = null;
-	private boolean assertionsSet = false;
-	private Optional<String> description = null;
-	private boolean descriptionSet = false;
+	private final UUID stateId;
+	private final Optional<String> label;
+	private final List<Assertion> assertions;
+	private final Optional<String> description;
 
 	/**
 	 * Creates a new ImmutableState with the supplied ID.
@@ -46,10 +44,14 @@ public class ImmutableState implements State {
 	 * @param stateId the ID of the new state
 	 */
 	public ImmutableState(
-			UUID stateId) {
-		this.setStateId(stateId);
-		this.setLabel(Optional.empty());
-		this.setAssertions(new ArrayList<>());
+		UUID stateId)
+	{
+		if (stateId == null) throw new ArgumentNullException("stateId");
+
+		this.stateId = stateId;
+		this.label = Optional.empty();
+		this.assertions = new ArrayList<>();
+		this.description = Optional.empty();
 	}
 
 	/**
@@ -59,14 +61,16 @@ public class ImmutableState implements State {
 	 * @param label   the unique label of the new state
 	 */
 	public ImmutableState(
-			UUID stateId,
-			Optional<String> label) {
-		if (stateId == null || label == null ) {
-			throw new IllegalStateException("label should not be null");
-		}
-		this.setStateId(stateId);
-		this.setLabel(label);
-		this.setAssertions(new ArrayList<>());
+		UUID stateId,
+		Optional<String> label)
+	{
+		if (stateId == null) throw new ArgumentNullException("stateId");
+		if (label == null) throw new ArgumentNullException("label");
+
+		this.stateId = stateId;
+		this.label = label;
+		this.assertions = new ArrayList<>();
+		this.description = Optional.empty();
 	}
 
 	/**
@@ -76,13 +80,16 @@ public class ImmutableState implements State {
 	 * @param assertions the assertions that apply to this state
 	 */
 	public ImmutableState(
-			UUID stateId,
-			List<Assertion> assertions) {
-		if (stateId == null|| assertions == null) {
-			throw new IllegalStateException("label should not be null");
-		}
-		this.setStateId(stateId);
-		this.setAssertions(assertions);
+		UUID stateId,
+		List<Assertion> assertions)
+	{
+		if (stateId == null) throw new ArgumentNullException("stateId");
+		if (assertions == null) throw new ArgumentNullException("assertions");
+
+		this.stateId = stateId;
+		this.label = Optional.empty();
+		this.assertions = assertions;
+		this.description = Optional.empty();
 	}
 
 	/**
@@ -93,15 +100,16 @@ public class ImmutableState implements State {
 	 * @param assertions the assertions that apply to this state
 	 */
 	public ImmutableState(
-			UUID stateId,
-			Optional<String> label,
-			List<Assertion> assertions) {
-		if (stateId == null || label == null || assertions == null) {
-			throw new IllegalStateException("label should not be null");
-		}
-		this.setStateId(stateId);
-		this.setLabel(label);
-		this.setAssertions(assertions);
+		UUID stateId,
+		Optional<String> label,
+		List<Assertion> assertions)
+	{
+		if (stateId == null) throw new ArgumentNullException("stateId");
+
+		this.stateId = stateId;
+		this.label = Optional.empty();
+		this.assertions = new ArrayList<>();
+		this.description = Optional.empty();
 	}
 
 	/**
@@ -112,15 +120,18 @@ public class ImmutableState implements State {
 	 * @param description the description that apply to this state
 	 */
 	public ImmutableState(
-			UUID stateId,
-			Optional<String> label,
-			Optional<String> description) {
-		if (stateId == null || label == null || description == null) {
-			throw new IllegalStateException("Passed values should not be null");
-		}
-		this.setStateId(stateId);
-		this.setLabel(label);
-		this.setDescription(description);
+		UUID stateId,
+		Optional<String> label,
+		Optional<String> description)
+	{
+		if (stateId == null) throw new ArgumentNullException("stateId");
+		if (label == null) throw new ArgumentNullException("label");
+		if (description == null) throw new ArgumentNullException("description");
+
+		this.stateId = stateId;
+		this.label = label;
+		this.assertions = new ArrayList<>();
+		this.description = description;
 	}
 
 	/**
@@ -132,92 +143,49 @@ public class ImmutableState implements State {
 	 * @param description the description that apply to this state
 	 */
 	public ImmutableState(
-			UUID stateId,
-			Optional<String> label,
-			List<Assertion> assertions,
-			Optional<String> description) {
-		if (stateId == null || label == null || assertions == null || description == null ) {
-			throw new IllegalStateException("Passed values should not be null");
-		}
-		this.setStateId(stateId);
-		this.setLabel(label);
-		this.setAssertions(assertions);
-		this.setDescription(description);
+		UUID stateId,
+		Optional<String> label,
+		List<Assertion> assertions,
+		Optional<String> description)
+	{
+		if (stateId == null) throw new ArgumentNullException("stateId");
+		if (label == null) throw new ArgumentNullException("label");
+		if (assertions == null) throw new ArgumentNullException("assertions");
+		if (description == null) throw new ArgumentNullException("description");
+
+		this.stateId = stateId;
+		this.label = label;
+		this.assertions = assertions;
+		this.description = description;
 	}
 
 	@Override
-	public UUID getStateId() {
-		return stateId;
-	}
-
-	private void setStateId(
-			UUID value) {
-		boolean changing = !stateIdSet || stateId != value;
-		if (changing) {
-			stateIdSet = true;
-			stateId = value;
-		}
-	}
-
-	private void clearStateId() {
-		if (stateIdSet) {
-			stateIdSet = true;
-			stateId = null;
-		}
-	}
-
-	private boolean hasStateId() {
-		return stateIdSet;
-	}
-
-	public Optional<String> getLabel() {
-		return label;
-	}
-
-	private void setLabel(Optional<String> value) {
-		boolean changing = !labelSet || label != value;
-		if (changing) {
-			labelSet = true;
-			label = value;
-		}
+	public UUID getStateId()
+	{
+		return this.stateId;
 	}
 
 	@Override
-	public List<Assertion> getAssertions() {
-		return assertions;
-	}
-
-	private void setAssertions(List<Assertion> value) {
-		boolean changing = !assertionsSet || assertions != value;
-		if (changing) {
-			assertionsSet = true;
-			assertions = value;
-		}
-	}
-
-	private void clearAssertions() {
-		if (assertionsSet) {
-			assertionsSet = true;
-			assertions = null;
-		}
-	}
-
-	private boolean hasAssertions() {
-		return assertionsSet;
+	public Optional<String> getLabel()
+	{
+		return this.label;
 	}
 
 	@Override
-	public String getDisplayName() {
-		return this.getLabel().orElse(this.getStateId().toString());
+	public List<Assertion> getAssertions()
+	{
+		return this.assertions;
 	}
 
 	@Override
-	public Optional<String> getDescription() {
-		return description;
+	public String getDisplayName()
+	{
+		return this.label.orElse(this.stateId.toString());
 	}
 
-	public void setDescription(Optional<String> value) {
-		boolean changing = !descriptionSet || this.description != value;
-		this.description = value;
+	@Override
+	public Optional<String> getDescription()
+	{
+		return this.description;
 	}
 }

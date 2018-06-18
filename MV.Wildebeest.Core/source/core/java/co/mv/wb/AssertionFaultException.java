@@ -16,6 +16,8 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 import java.util.UUID;
 
 /**
@@ -25,6 +27,8 @@ import java.util.UUID;
  */
 public class AssertionFaultException extends RuntimeException
 {
+	private final UUID assertionId;
+
 	/**
 	 * Creates a new AssertionFaultException with the supplied ID and root cause.
 	 * 
@@ -37,47 +41,19 @@ public class AssertionFaultException extends RuntimeException
 		Exception cause)
 	{
 		super(cause);
+
+		if (assertionId == null) throw new ArgumentNullException("assertionId");
+		
+		this.assertionId = assertionId;
 	}
 	
-	// <editor-fold desc="AssertionId" defaultstate="collapsed">
-
-	private UUID _assertionId = null;
-	private boolean _assertionId_set = false;
-
 	/**
 	 * Gets the ID of the Assertion that was faulted.
 	 * 
 	 * @since                                   1.0
 	 */
-	public UUID getAssertionId() {
-		if(!_assertionId_set) {
-			throw new IllegalStateException("assertionId not set.  Use the HasAssertionId() method to check its state before accessing it.");
-		}
-		return _assertionId;
+	public UUID getAssertionId()
+	{
+		return this.assertionId;
 	}
-
-	private void setAssertionId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("assertionId cannot be null");
-		}
-		boolean changing = !_assertionId_set || _assertionId != value;
-		if(changing) {
-			_assertionId_set = true;
-			_assertionId = value;
-		}
-	}
-
-	private void clearAssertionId() {
-		if(_assertionId_set) {
-			_assertionId_set = true;
-			_assertionId = null;
-		}
-	}
-
-	private boolean hasAssertionId() {
-		return _assertionId_set;
-	}
-
-	// </editor-fold>
 }

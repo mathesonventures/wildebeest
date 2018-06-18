@@ -25,18 +25,18 @@ import co.mv.wb.framework.ArgumentNullException;
  */
 public class PluginBuildException extends Exception
 {
-	private Messages _messages;
+	private final Messages messages;
 
 	public PluginBuildException(
 		Messages messages)
 	{
 		if (messages == null) throw new ArgumentNullException("messages");
 
-		_messages = messages;
+		this.messages = messages;
 	}
 
 	public Messages getMessages()
 	{
-		return _messages;
+		return messages;
 	}
 }

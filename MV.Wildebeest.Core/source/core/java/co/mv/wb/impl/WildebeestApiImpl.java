@@ -18,20 +18,26 @@ package co.mv.wb.impl;
 
 import co.mv.wb.*;
 
+import co.mv.wb.XmlValidationException;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.Util;
 import co.mv.wb.plugin.base.ImmutableAssertionResult;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
-import org.xml.sax.*;
+import org.xml.sax.SAXException;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +57,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 	private final PrintStream output;
 	private Map<ResourceType, ResourcePlugin> resourcePlugins = null;
-	private boolean resourcePluginsSet = false;
 	private PluginManager pluginManager = null;
-	private boolean pluginManagerSet = false;
 
 
 
@@ -72,80 +76,35 @@ public class WildebeestApiImpl implements WildebeestApi
 		this.output = output;
 	}
 
-	private Map<ResourceType, ResourcePlugin> getResourcePlugins() {
-		if(!resourcePluginsSet) {
-			throw new IllegalStateException("resourcePlugins not set.");
-		}
-		if(resourcePlugins == null) {
-			throw new IllegalStateException("resourcePlugins should not be null");
-		}
-		return resourcePlugins;
+	private Map<ResourceType, ResourcePlugin> getResourcePlugins()
+	{
+		return this.resourcePlugins;
 	}
 
-	public void setResourcePlugins(Map<ResourceType, ResourcePlugin> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("resourcePlugins cannot be null");
-		}
-		boolean changing = !resourcePluginsSet || resourcePlugins != value;
-		if(changing) {
-			resourcePluginsSet = true;
-			resourcePlugins = value;
-		}
+	public void setResourcePlugins(Map<ResourceType, ResourcePlugin> value)
+	{
+		this.resourcePlugins = value;
 	}
 
-	private void clearResourcePlugins() {
-		if(resourcePluginsSet) {
-			resourcePluginsSet = true;
-			resourcePlugins = null;
-		}
+	public PluginManager getPluginManager()
+	{
+		return this.pluginManager;
 	}
 
-	private boolean hasResourcePlugins() {
-		return resourcePluginsSet;
+	public void setPluginManager(PluginManager value)
+	{
+		this.pluginManager = value;
 	}
 
-	public PluginManager getPluginManager() {
-		if(!pluginManagerSet) {
-			throw new IllegalStateException("pluginManager not set.");
-		}
-		if(pluginManager == null) {
-			throw new IllegalStateException("pluginManager should not be null");
-		}
-		return pluginManager;
-	}
-
-	public void setPluginManager(
-		PluginManager value) {
-		if(value == null) {
-			throw new IllegalArgumentException("pluginManager cannot be null");
-		}
-		boolean changing = !pluginManagerSet || pluginManager != value;
-		if(changing) {
-			pluginManagerSet = true;
-			pluginManager = value;
-		}
-	}
-
-	private void clearPluginManager() {
-		if(pluginManagerSet) {
-			pluginManagerSet = true;
-			pluginManager = null;
-		}
-	}
-
-	private boolean hasPluginManager() {
-		return pluginManagerSet;
-	}
 
 	public Resource loadResource(
-		File resourceFile)
-			throws
+		File resourceFile) throws
 			FileLoadException,
 			LoaderFault,
 			PluginBuildException,
 			XmlValidationException,
 			MissingReferenceException {
-		if (resourceFile == null) { throw new IllegalArgumentException("resourceFile cannot be null"); }
+		if (resourceFile == null) throw new ArgumentNullException("resourceFile");
 
 		// Get the absolute file for this resource - this ensures that getParentFile works correctly
 		resourceFile = resourceFile.getAbsoluteFile();
@@ -203,7 +162,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			PluginBuildException,
 			XmlValidationException
 	{
-		if (instanceFile == null) { throw new IllegalArgumentException("instanceFile"); }
+		if (instanceFile == null) throw new ArgumentNullException("instanceFile");
 
 		// Load Instance
 		String instanceXml;
@@ -290,8 +249,8 @@ public class WildebeestApiImpl implements WildebeestApi
 		Instance instance) throws
 			IndeterminateStateException
 	{
-		if (resource == null) { throw new IllegalArgumentException("resource cannot be null"); }
-		if (instance == null) { throw new IllegalArgumentException("instance cannot be null"); }
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (instance == null) throw new ArgumentNullException("instance");
 
 		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
 			this.getResourcePlugins(),
@@ -382,10 +341,10 @@ public class WildebeestApiImpl implements WildebeestApi
 			String migrationTypeUri = migration.getClass().getAnnotation(MigrationType.class).uri();
 			MigrationPlugin migrationPlugin = this.getPluginManager().getMigrationPlugin(migrationTypeUri);
 
-			Optional<State> fromState = migration.getFromState().map(stateId -> Wildebeest.stateForId(
+			Optional<State> fromState = migration.getFromState().map(stateId -> Wildebeest.findState(
 				resource,
 				stateId));
-			Optional<State> toState = migration.getToState().map(stateId -> Wildebeest.stateForId(
+			Optional<State> toState = migration.getToState().map(stateId -> Wildebeest.findState(
 				resource,
 				stateId));
 
@@ -397,7 +356,7 @@ public class WildebeestApiImpl implements WildebeestApi
 				toState));
 
 			migrationPlugin.perform(
-				  output,
+				output,
 				migration,
 				instance);
 
@@ -407,17 +366,17 @@ public class WildebeestApiImpl implements WildebeestApi
 
 			// Update the state
 			resourcePlugin.setStateId(
-				  output,
+				output,
 				resource,
 				instance,
-				migration.getToState().get());
+				toState.get().getStateId());
 
 			// Assert the new state
 			List<AssertionResult> assertionResults = this.assertState(
 				resource,
 				instance);
 
-			WildebeestApiImpl.throwIfFailed(migration.getToState().get(), assertionResults);
+			WildebeestApiImpl.throwIfFailed(toState.get().getStateId(), assertionResults);
 		}
 	}
 
@@ -446,7 +405,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource,
 			targetState);
 
-		State state = Wildebeest.stateForId(
+		State state = Wildebeest.findState(
 			resource,
 			targetStateId.toString());
 
@@ -461,16 +420,17 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource,
 			instance);
 
-		WildebeestApiImpl.throwIfFailed(state.getStateId().toString(), assertionResults);
+		WildebeestApiImpl.throwIfFailed(state.getStateId(), assertionResults);
 
 		resourcePlugin.setStateId(
-			  output,
+			output,
 			resource,
 			instance,
-			targetStateId.toString());
+			targetStateId);
 	}
 
-	@Override public String describePlugins()
+	@Override
+	public String describePlugins()
 	{
 		StringBuilder output = new StringBuilder();
 
@@ -685,7 +645,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	}
 
 	private static void throwIfFailed(
-		String stateId,
+		UUID stateId,
 		List<AssertionResult> assertionResults) throws AssertionFailedException
 	{
 		if (stateId == null) { throw new IllegalArgumentException("stateId cannot be null"); }
@@ -730,7 +690,7 @@ public class WildebeestApiImpl implements WildebeestApi
 				.forEach(
 					migration ->
 					{
-						State toState = Wildebeest.stateForId(
+						State toState = Wildebeest.findState(
 							resource,
 							migration.getToState().get());
 						List<Migration> thisPathCopy = new ArrayList<>(thisPath);

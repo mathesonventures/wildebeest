@@ -16,6 +16,8 @@
 
 package co.mv.wb.fixture;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 import java.util.UUID;
 
 /**
@@ -25,243 +27,95 @@ import java.util.UUID;
  */
 public class AssertionCreator
 {
+	private final FixtureBuilder creator;
+	private final StateCreator state;
+	private final String type;
+	private final UUID assertionId;
+	private final String innerXml;
+
 	public AssertionCreator(
-		FixtureCreator creator,
+		FixtureBuilder creator,
 		StateCreator state,
 		String type,
 		UUID assertionId)
 	{
-		this.setCreator(creator);
-		this.setState(state);
-		this.setType(type);
-		this.setAssertionId(assertionId);
-		this.setInnerXml("");
+		this(
+			creator,
+			state,
+			type,
+			assertionId,
+			"");
 	}
 
-	// <editor-fold desc="Creator" defaultstate="collapsed">
-
-	private FixtureCreator _creator = null;
-	private boolean _creator_set = false;
-
-	private FixtureCreator getCreator() {
-		if(!_creator_set) {
-			throw new IllegalStateException("creator not set.");
-		}
-		if(_creator == null) {
-			throw new IllegalStateException("creator should not be null");
-		}
-		return _creator;
-	}
-
-	private void setCreator(
-		FixtureCreator value) {
-		if(value == null) {
-			throw new IllegalArgumentException("creator cannot be null");
-		}
-		boolean changing = !_creator_set || _creator != value;
-		if(changing) {
-			_creator_set = true;
-			_creator = value;
-		}
-	}
-
-	private void clearCreator() {
-		if(_creator_set) {
-			_creator_set = true;
-			_creator = null;
-		}
-	}
-
-	private boolean hasCreator() {
-		return _creator_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="State" defaultstate="collapsed">
-
-	private StateCreator _state = null;
-	private boolean _state_set = false;
-
-	private StateCreator getState() {
-		if(!_state_set) {
-			throw new IllegalStateException("state not set.");
-		}
-		if(_state == null) {
-			throw new IllegalStateException("state should not be null");
-		}
-		return _state;
-	}
-
-	private void setState(
-		StateCreator value) {
-		if(value == null) {
-			throw new IllegalArgumentException("state cannot be null");
-		}
-		boolean changing = !_state_set || _state != value;
-		if(changing) {
-			_state_set = true;
-			_state = value;
-		}
-	}
-
-	private void clearState() {
-		if(_state_set) {
-			_state_set = true;
-			_state = null;
-		}
-	}
-
-	private boolean hasState() {
-		return _state_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="Type" defaultstate="collapsed">
-
-	private String _type = null;
-	private boolean _type_set = false;
-
-	public String getType() {
-		if(!_type_set) {
-			throw new IllegalStateException("type not set.");
-		}
-		if(_type == null) {
-			throw new IllegalStateException("type should not be null");
-		}
-		return _type;
-	}
-
-	private void setType(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("type cannot be null");
-		}
-		boolean changing = !_type_set || !_type.equals(value);
-		if(changing) {
-			_type_set = true;
-			_type = value;
-		}
-	}
-
-	private void clearType() {
-		if(_type_set) {
-			_type_set = true;
-			_type = null;
-		}
-	}
-
-	private boolean hasType() {
-		return _type_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="AssertionId" defaultstate="collapsed">
-
-	private UUID _assertionId = null;
-	private boolean _assertionId_set = false;
-
-	public UUID getAssertionId() {
-		if(!_assertionId_set) {
-			throw new IllegalStateException("assertionId not set.");
-		}
-		if(_assertionId == null) {
-			throw new IllegalStateException("assertionId should not be null");
-		}
-		return _assertionId;
-	}
-
-	private void setAssertionId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("assertionId cannot be null");
-		}
-		boolean changing = !_assertionId_set || _assertionId != value;
-		if(changing) {
-			_assertionId_set = true;
-			_assertionId = value;
-		}
-	}
-
-	private void clearAssertionId() {
-		if(_assertionId_set) {
-			_assertionId_set = true;
-			_assertionId = null;
-		}
-	}
-
-	private boolean hasAssertionId() {
-		return _assertionId_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="InnerXml" defaultstate="collapsed">
-
-	private String _innerXml = null;
-	private boolean _innerXml_set = false;
-
-	public String getInnerXml() {
-		if(!_innerXml_set) {
-			throw new IllegalStateException("innerXml not set.");
-		}
-		if(_innerXml == null) {
-			throw new IllegalStateException("innerXml should not be null");
-		}
-		return _innerXml;
-	}
-
-	private void setInnerXml(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("innerXml cannot be null");
-		}
-		boolean changing = !_innerXml_set || !_innerXml.equals(value);
-		if(changing) {
-			_innerXml_set = true;
-			_innerXml = value;
-		}
-	}
-
-	private void clearInnerXml() {
-		if(_innerXml_set) {
-			_innerXml_set = true;
-			_innerXml = null;
-		}
-	}
-
-	private boolean hasInnerXml() {
-		return _innerXml_set;
-	}
-
-	// </editor-fold>
-	
-	public AssertionCreator innerXml(String innerXml)
+	private AssertionCreator(
+		FixtureBuilder creator,
+		StateCreator state,
+		String type,
+		UUID assertionId,
+		String innerXml)
 	{
-		this.setInnerXml(innerXml);
-		return this;
+		if (creator == null) throw new ArgumentNullException("builder");
+		if (state == null) throw new ArgumentNullException("state");
+		if (type == null) throw new ArgumentNullException("type");
+		if (assertionId == null) throw new ArgumentNullException("assertionId");
+		if (innerXml == null) throw new ArgumentNullException("withInnerXml");
+
+		this.creator = creator;
+		this.state = state;
+		this.type = type;
+		this.assertionId = assertionId;
+		this.innerXml = innerXml;
+	}
+
+	public String getType()
+	{
+		return type;
+	}
+
+	public UUID getAssertionId()
+	{
+		return assertionId;
+	}
+
+	public String getInnerXml()
+	{
+		return innerXml;
+	}
+
+	public AssertionCreator withInnerXml(String innerXml)
+	{
+		if (innerXml == null) throw new ArgumentNullException("withInnerXml");
+		
+		return new AssertionCreator(
+			this.creator,
+			this.state,
+			this.type,
+			this.assertionId,
+			innerXml);
 	}
 	
 	public AssertionCreator appendInnerXml(String innerXml)
 	{
-		if (innerXml == null) { throw new IllegalArgumentException("innerXml cannot be null"); }
-		
-		this.setInnerXml(this.getInnerXml() + innerXml);
-		return this;
+		if (innerXml == null) throw new ArgumentNullException("withInnerXml");
+
+		return new AssertionCreator(
+			this.creator,
+			this.state,
+			this.type,
+			this.assertionId,
+			this.innerXml + innerXml);
 	}
-	
+
 	public StateCreator state()
 	{
-		return this.getState();
+		return this.state;
 	}
 	
 	public AssertionCreator assertion(
 		String type,
 		UUID assertionId)
 	{
-		return this.getState().assertion(type, assertionId);
+		return this.state.assertion(type, assertionId);
 	}
 	
 	public StateCreator state(
@@ -271,17 +125,17 @@ public class AssertionCreator
 		return this.state().resource().state(stateId, label);
 	}
 	
-	public MigrationCreator migration(
+	public MigrationBuilder migration(
 		String type,
 		UUID migrationId,
-		String fromStateId,
-		String toStateId)
+		String fromState,
+		String toState)
 	{
-		return this.state().resource().migration(type, migrationId, fromStateId, toStateId);
+		return this.state().resource().migration(type, migrationId, fromState, toState);
 	}
 	
-	public String render()
+	public String build()
 	{
-		return this.getCreator().render();
+		return this.creator.build();
 	}
 }

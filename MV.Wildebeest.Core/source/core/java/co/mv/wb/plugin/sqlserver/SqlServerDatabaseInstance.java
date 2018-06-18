@@ -18,6 +18,7 @@ package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.FaultException;
 import co.mv.wb.Instance;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.generaldatabase.DatabaseConstants;
 import co.mv.wb.plugin.generaldatabase.DatabaseInstance;
@@ -37,6 +38,14 @@ import java.sql.SQLException;
  */
 public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabaseInstance
 {
+	private final String hostName;
+	private final String instanceName;
+	private final int port;
+	private final String adminUsername;
+	private final String adminPassword;
+	private String databaseName;
+	private String stateTableName;
+
 	/**
 	 * Creates a new SqlServerDatabaseInstance.
 	 * 
@@ -62,281 +71,58 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 		String databaseName,
 		String stateTableName)
 	{
+		if (hostName == null) throw new ArgumentNullException("hostName");
+		if (adminUsername == null) throw new ArgumentNullException("adminUsername");
+		if (adminPassword == null) throw new ArgumentNullException("adminPassword");
+		if (databaseName == null) throw new ArgumentNullException("databaseName");
+
 		if (stateTableName == null || stateTableName.trim().equals(""))
 		{
 			stateTableName = DatabaseConstants.DefaultStateTableName;
 		}
-		
-		this.setHostName(hostName);
-		if (instanceName != null)
-		{
-			this.setInstanceName(instanceName);
-		}
-		this.setPort(port);
-		this.setAdminUsername(adminUsername);
-		this.setAdminPassword(adminPassword);
-		this.setDatabaseName(databaseName);
-		if (stateTableName != null)
-		{
-			this.setStateTableName(stateTableName);
-		}
+
+		this.hostName = hostName;
+		this.instanceName = instanceName;
+		this.port = port;
+		this.adminUsername = adminUsername;
+		this.adminPassword = adminPassword;
+		this.databaseName = databaseName;
+		this.stateTableName = stateTableName;
 	}
 
-	// <editor-fold desc="HostName" defaultstate="collapsed">
-
-	private String _hostName = null;
-	private boolean _hostName_set = false;
-
-	@Override public final String getHostName() {
-		if(!_hostName_set) {
-			throw new IllegalStateException("hostName not set.  Use the HasHostName() method to check its state before accessing it.");
-		}
-		return _hostName;
+	@Override public final String getHostName()
+	{
+		return this.hostName;
 	}
 
-	public final void setHostName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("hostName cannot be null");
-		}
-		boolean changing = !_hostName_set || !_hostName.equals(value);
-		if(changing) {
-			_hostName_set = true;
-			_hostName = value;
-		}
+	@Override public final int getPort()
+	{
+		return this.port;
 	}
 
-	private void clearHostName() {
-		if(_hostName_set) {
-			_hostName_set = true;
-			_hostName = null;
-		}
+	@Override public final String getAdminUsername()
+	{
+		return this.adminUsername;
 	}
 
-	private boolean hasHostName() {
-		return _hostName_set;
+	@Override public final String getAdminPassword()
+	{
+		return this.adminPassword;
 	}
 
-	// </editor-fold>
-
-	// <editor-fold desc="InstanceName" defaultstate="collapsed">
-
-	private String _instanceName = null;
-	private boolean _instanceName_set = false;
-
-	private String getInstanceName() {
-		if(!_instanceName_set) {
-			throw new IllegalStateException("instanceName not set.  Use the HasInstanceName() method to check its state before accessing it.");
-		}
-		return _instanceName;
+	@Override public final String getDatabaseName()
+	{
+		return this.databaseName;
 	}
 
-	public final void setInstanceName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("instanceName cannot be null");
-		}
-		boolean changing = !_instanceName_set || !_instanceName.equals(value);
-		if(changing) {
-			_instanceName_set = true;
-			_instanceName = value;
-		}
+	@Override public final String getStateTableName()
+	{
+		return this.stateTableName;
 	}
 
-	private void clearInstanceName() {
-		if(_instanceName_set) {
-			_instanceName_set = true;
-			_instanceName = null;
-		}
-	}
-
-	private boolean hasInstanceName() {
-		return _instanceName_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="Port" defaultstate="collapsed">
-
-	private int _port = 0;
-	private boolean _port_set = false;
-
-	@Override public final int getPort() {
-		if(!_port_set) {
-			throw new IllegalStateException("port not set.");
-		}
-		return _port;
-	}
-
-	public final void setPort(
-		int value) {
-		boolean changing = !_port_set || _port != value;
-		if(changing) {
-			_port_set = true;
-			_port = value;
-		}
-	}
-
-	private void clearPort() {
-		if(_port_set) {
-			_port_set = true;
-			_port = 0;
-		}
-	}
-
-	private boolean hasPort() {
-		return _port_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="AdminUsername" defaultstate="collapsed">
-
-	private String _adminUsername = null;
-	private boolean _adminUsername_set = false;
-
-	@Override public final String getAdminUsername() {
-		if(!_adminUsername_set) {
-			throw new IllegalStateException("adminUsername not set.  Use the HasAdminUsername() method to check its state before accessing it.");
-		}
-		return _adminUsername;
-	}
-
-	public final void setAdminUsername(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("adminUsername cannot be null");
-		}
-		boolean changing = !_adminUsername_set || !_adminUsername.equals(value);
-		if(changing) {
-			_adminUsername_set = true;
-			_adminUsername = value;
-		}
-	}
-
-	private void clearAdminUsername() {
-		if(_adminUsername_set) {
-			_adminUsername_set = true;
-			_adminUsername = null;
-		}
-	}
-
-	private boolean hasAdminUsername() {
-		return _adminUsername_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="AdminPassword" defaultstate="collapsed">
-
-	private String _adminPassword = null;
-	private boolean _adminPassword_set = false;
-
-	@Override public final String getAdminPassword() {
-		if(!_adminPassword_set) {
-			throw new IllegalStateException("adminPassword not set.  Use the HasAdminPassword() method to check its state before accessing it.");
-		}
-		return _adminPassword;
-	}
-
-	public final void setAdminPassword(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("adminPassword cannot be null");
-		}
-		boolean changing = !_adminPassword_set || !_adminPassword.equals(value);
-		if(changing) {
-			_adminPassword_set = true;
-			_adminPassword = value;
-		}
-	}
-
-	private void clearAdminPassword() {
-		if(_adminPassword_set) {
-			_adminPassword_set = true;
-			_adminPassword = null;
-		}
-	}
-
-	private boolean hasAdminPassword() {
-		return _adminPassword_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="DatabaseName" defaultstate="collapsed">
-
-	private String _databaseName = null;
-	private boolean _databaseName_set = false;
-
-	@Override public final String getDatabaseName() {
-		if(!_databaseName_set) {
-			throw new IllegalStateException("databaseName not set.");
-		}
-		if(_databaseName == null) {
-			throw new IllegalStateException("databaseName should not be null");
-		}
-		return _databaseName;
-	}
-
-	@Override public final void setDatabaseName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("databaseName cannot be null");
-		}
-		boolean changing = !_databaseName_set || !_databaseName.equals(value);
-		if(changing) {
-			_databaseName_set = true;
-			_databaseName = value;
-		}
-	}
-
-	private void clearDatabaseName() {
-		if(_databaseName_set) {
-			_databaseName_set = true;
-			_databaseName = null;
-		}
-	}
-
-	private boolean hasDatabaseName() {
-		return _databaseName_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="StateTableName" defaultstate="collapsed">
-
-	private String _stateTableName = null;
-	private boolean _stateTableName_set = false;
-
-	@Override public final String getStateTableName() {
-		if(!_stateTableName_set) {
-			throw new IllegalStateException("stateTableName not set.  Use the HasStateTableName() method to check its state before accessing it.");
-		}
-		return _stateTableName;
-	}
-
-	@Override public final void setStateTableName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("stateTableName cannot be null");
-		}
-		boolean changing = !_stateTableName_set || !_stateTableName.equals(value);
-		if(changing) {
-			_stateTableName_set = true;
-			_stateTableName = value;
-		}
-	}
-
-	@Override public void clearStateTableName() {
-		if(_stateTableName_set) {
-			_stateTableName_set = true;
-			_stateTableName = null;
-		}
-	}
-
-	@Override public boolean hasStateTableName() {
-		return _stateTableName_set;
+	@Override public boolean hasStateTableName()
+	{
+		return this.stateTableName != null;
 	}
 
 	// </editor-fold>
@@ -350,9 +136,9 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 	{
 		SQLServerDataSource result = new SQLServerDataSource();
 		result.setServerName(this.getHostName());
-		if (this.hasInstanceName())
+		if (this.instanceName != null)
 		{
-			result.setInstanceName(this.getInstanceName());
+			result.setInstanceName(this.instanceName);
 		}
 		result.setPortNumber(this.getPort());
 		result.setUser(this.getAdminUsername());
@@ -371,9 +157,9 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 	{
 		SQLServerDataSource result = new SQLServerDataSource();
 		result.setServerName(this.getHostName());
-		if (this.hasInstanceName())
+		if (this.instanceName != null)
 		{
-			result.setInstanceName(this.getInstanceName());
+			result.setInstanceName(this.instanceName);
 		}
 		result.setPortNumber(this.getPort());
 		result.setUser(this.getAdminUsername());
@@ -385,7 +171,7 @@ public class SqlServerDatabaseInstance implements DatabaseInstance, JdbcDatabase
 
 	@Override public boolean databaseExists()
 	{
-		boolean result = false;
+		boolean result;
 		
 		Connection conn = null;
 		PreparedStatement ps = null;

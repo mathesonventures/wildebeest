@@ -38,9 +38,9 @@ public interface MigrationBuilder
 	 * Builds a new {@link Migration}.
 	 * 
 	 * @param       migrationId                 the ID for the new {@link Migration}.
-	 * @param       fromState                 the source state for the new {@link Migration} or null to migrate from
+	 * @param       fromState                   the source state for the new {@link Migration} or null to migrate from
 	 *                                          the non-existent state.
-	 * @param       toState                   the target state for the new {@link Migration} or null to migrate to
+	 * @param       toState                     the target state for the new {@link Migration} or null to migrate to
 	 *                                          the non-existent state.
 	 * @param       baseDir                     the base directory to use for resolving relative paths.
 	 * @return                                  the new {@link Migration} instance.

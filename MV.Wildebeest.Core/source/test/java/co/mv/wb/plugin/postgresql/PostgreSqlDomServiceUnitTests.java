@@ -23,7 +23,7 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
-import co.mv.wb.fixture.FixtureCreator;
+import co.mv.wb.fixture.FixtureBuilder;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
@@ -41,7 +41,8 @@ import java.util.UUID;
  */
 public class PostgreSqlDomServiceUnitTests
 {
-	@Test public void postgreSqlDatabaseResourceLoadFromValidDocumentSucceeds() throws
+	@Test
+	public void postgreSqlDatabaseResourceLoadFromValidDocumentSucceeds() throws
 			LoaderFault,
 			PluginBuildException,
 			MissingReferenceException {
@@ -49,9 +50,9 @@ public class PostgreSqlDomServiceUnitTests
 		UUID resourceId = UUID.randomUUID();
 		String resourceName = "Foo";
 		
-		String resourceXml = FixtureCreator.create()
+		String resourceXml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), resourceId, resourceName)
-			.render();
+			.build();
 		
 		DomResourceLoader loader = DomPlugins.resourceLoader(
 			ResourceTypeServiceBuilder
@@ -69,7 +70,8 @@ public class PostgreSqlDomServiceUnitTests
 		Assert.assertEquals("resource.name", resourceName, resource.getName());
 	}
 	
-	@Test public void postgreSqlDatabaseInstanceLoadFromValidDocumentSucceeds() throws
+	@Test
+	public void postgreSqlDatabaseInstanceLoadFromValidDocumentSucceeds() throws
 		LoaderFault,
 		PluginBuildException
 	{

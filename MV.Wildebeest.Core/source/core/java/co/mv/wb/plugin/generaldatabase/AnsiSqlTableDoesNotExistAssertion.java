@@ -51,6 +51,9 @@ import java.util.UUID;
 )
 public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 {
+	private final String schemaName;
+	private final String tableName;
+
 	/**
 	 * Creates a new AnsiSqlTableDoesNotExistAssertion.
 	 * 
@@ -67,9 +70,9 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 		String tableName)
 	{
 		super(assertionId, seqNum);
-		
-		this.setSchemaName(schemaName);
-		this.setTableName(tableName);
+
+		this.schemaName = schemaName;
+		this.tableName = tableName;
 	}
 	
 	@Override public String getDescription()
@@ -77,53 +80,16 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 		return String.format("Table '%s' does not exist in schema '%s'", this.getTableName(), this.getSchemaName());
 	}
 
-	// <editor-fold desc="SchemaName" defaultstate="collapsed">
-
-	private String _schemaName = null;
-	private boolean _schemaName_set = false;
-
 	/**
 	 * Gets the name of the schema to check.
 	 * 
 	 * @return                                  the schema name to check
 	 * @since                                   2.0
 	 */
-	public String getSchemaName() {
-		if(!_schemaName_set) {
-			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
-		}
-		return _schemaName;
+	public String getSchemaName()
+	{
+		return this.schemaName;
 	}
-
-	private void setSchemaName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("schemaName cannot be null");
-		}
-		boolean changing = !_schemaName_set || !_schemaName.equals(value);
-		if(changing) {
-			_schemaName_set = true;
-			_schemaName = value;
-		}
-	}
-
-	private void clearSchemaName() {
-		if(_schemaName_set) {
-			_schemaName_set = true;
-			_schemaName = null;
-		}
-	}
-
-	private boolean hasSchemaName() {
-		return _schemaName_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="TableName" defaultstate="collapsed">
-
-	private String _tableName = null;
-	private boolean _tableName_set = false;
 
 	/**
 	 * Gets the name of the table to check.
@@ -131,38 +97,11 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 	 * @return                                  the name of the table to check
 	 * @since                                   2.0
 	 */
-	public String getTableName() {
-		if(!_tableName_set) {
-			throw new IllegalStateException("tableName not set.  Use the HasTableName() method to check its state before accessing it.");
-		}
-		return _tableName;
+	public String getTableName()
+	{
+		return this.tableName;
 	}
 
-	private void setTableName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("tableName cannot be null");
-		}
-		boolean changing = !_tableName_set || !_tableName.equals(value);
-		if(changing) {
-			_tableName_set = true;
-			_tableName = value;
-		}
-	}
-
-	private void clearTableName() {
-		if(_tableName_set) {
-			_tableName_set = true;
-			_tableName = null;
-		}
-	}
-
-	private boolean hasTableName() {
-		return _tableName_set;
-	}
-
-	// </editor-fold>
-	
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(

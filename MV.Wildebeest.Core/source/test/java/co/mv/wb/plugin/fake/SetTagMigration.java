@@ -19,6 +19,7 @@ package co.mv.wb.plugin.fake;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
@@ -40,8 +41,7 @@ import java.util.UUID;
 )
 public class SetTagMigration extends BaseMigration
 {
-	private String tag = null;
-	private boolean tagSet = false;
+	private final String tag;
 
 	public SetTagMigration(
 		UUID migrationId,
@@ -50,38 +50,15 @@ public class SetTagMigration extends BaseMigration
 		String tag)
 	{
 		super(migrationId, fromState, toState);
-		
-		this.setTag(tag);
-	}
 
-	public String getTag() {
-		if(!tagSet) {
-			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
-		}
-		return tag;
-	}
+		if (tag == null) throw new ArgumentNullException("tag");
 
-	private void setTag(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("tag cannot be null");
-		}
-		boolean changing = !tagSet || !tag.equals(value);
-		if(changing) {
-			tagSet = true;
-			tag = value;
-		}
+		this.tag = tag;
 	}
-
-	private void clearTag() {
-		if(tagSet) {
-			tagSet = true;
-			tag = null;
-		}
-	}
-
-	private boolean hasTag() {
-		return tagSet;
+	
+	public String getTag()
+	{
+		return this.tag;
 	}
 
 	@Override

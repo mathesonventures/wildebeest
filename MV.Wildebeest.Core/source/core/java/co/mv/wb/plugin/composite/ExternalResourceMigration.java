@@ -51,14 +51,21 @@ import java.util.UUID;
 )
 public class ExternalResourceMigration extends BaseMigration
 {
-	private File baseDir = null;
-	private boolean baseDirSet = false;
-	private String fileName = null;
-	private boolean filenameSet = false;
-	private Optional<String> target = null;
-	private boolean targetSet = false;
+	private final File baseDir;
+	private final String fileName;
+	private final Optional<String> target;
 
-
+	/**
+	 * Constructs a new ExternalResourceMigration.
+	 *
+	 * @param       migrationId                 the ID of the migration.
+	 * @param       fromStateId                 the from state for the migration, if any.
+	 * @param       toStateId                   the to state for the migration, if any.
+	 * @param       baseDir                     the base directory for resolving external resources for this migration.
+	 * @param       fileName                    the filename of the external resource.
+	 * @param       target                      the target in the external resource that we will migrate to.
+	 * @since                                   4.0
+	 */
 	public ExternalResourceMigration(
 		UUID migrationId,
 		Optional<String> fromState,
@@ -69,110 +76,43 @@ public class ExternalResourceMigration extends BaseMigration
 	{
 		super(migrationId, fromState, toState);
 
-		this.setBaseDir(baseDir);
-		this.setFileName(fileName);
-		this.setTarget(target);
+		this.baseDir = baseDir;
+		this.fileName = fileName;
+		this.target = target;
 	}
 
-	public File getBaseDir() {
-		if(!baseDirSet) {
-			throw new IllegalStateException("baseDir not set.");
-		}
-		if(baseDir == null) {
-			throw new IllegalStateException("baseDir should not be null");
-		}
-		return baseDir;
+	/**
+	 * Gets the base directory for resolving external resources for this migration.
+	 *
+	 * @return                                  the base directory for resolving external resources for this migration.
+	 * @since                                   4.0
+	 */
+	public File getBaseDir()
+	{
+		return this.baseDir;
 	}
 
-	private void setBaseDir(
-		File value) {
-		if(value == null) {
-			throw new IllegalArgumentException("baseDir cannot be null");
-		}
-		boolean changing = !baseDirSet || baseDir != value;
-		if(changing) {
-			baseDirSet = true;
-			baseDir = value;
-		}
+	/**
+	 * Gets the filename of the external resource.
+	 *
+	 * @return                                  the filename of the external resource.
+	 * @since                                   4.0
+	 */
+	public String getFileName()
+	{
+		return this.fileName;
 	}
 
-	private void clearBaseDir() {
-		if(baseDirSet) {
-			baseDirSet = true;
-			baseDir = null;
-		}
+	/**
+	 * Gets the target in the external resource that we will migrate to.
+	 *
+	 * @return                                  the target in the external resource that we will migrate to.
+	 * @since                                   4.0
+	 */
+	public Optional<String> getTarget()
+	{
+		return this.target;
 	}
-
-	private boolean hasBaseDir() {
-		return baseDirSet;
-	}
-
-	public String getFileName() {
-		if(!filenameSet) {
-			throw new IllegalStateException("fileName not set.");
-		}
-		if(fileName == null) {
-			throw new IllegalStateException("fileName should not be null");
-		}
-		return fileName;
-	}
-
-	private void setFileName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("fileName cannot be null");
-		}
-		boolean changing = !filenameSet || !fileName.equals(value);
-		if(changing) {
-			filenameSet = true;
-			fileName = value;
-		}
-	}
-
-	private void clearFileName() {
-		if(filenameSet) {
-			filenameSet = true;
-			fileName = null;
-		}
-	}
-
-	private boolean hasFileName() {
-		return filenameSet;
-	}
-
-	public Optional<String> getTarget() {
-		if(!targetSet) {
-			throw new IllegalStateException("target not set.");
-		}
-		if(target == null) {
-			throw new IllegalStateException("target should not be null");
-		}
-		return target;
-	}
-
-	private void setTarget(
-		Optional<String> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("target cannot be null");
-		}
-		boolean changing = !targetSet || !target.equals(value);
-		if(changing) {
-			targetSet = true;
-			target = value;
-		}
-	}
-
-	private void clearTarget() {
-		if(targetSet) {
-			targetSet = true;
-			target = null;
-		}
-	}
-
-	private boolean hasTarget() {
-		return targetSet;
-	}
-
 
 	@Override
 	public List<ResourceType> getApplicableTypes()

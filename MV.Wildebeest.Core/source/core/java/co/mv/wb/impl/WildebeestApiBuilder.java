@@ -35,11 +35,18 @@ import java.util.Map;
  */
 public class WildebeestApiBuilder
 {
-	private final WildebeestApiImpl _wildebeestApi;
-	private final Map<ResourceType, ResourcePlugin> _resourcePlugins;
-	private final PluginManager _pluginManager;
+	private final WildebeestApiImpl wildebeestApi;
+	private final Map<ResourceType, ResourcePlugin> resourcePlugins;
+	private final PluginManager pluginManager;
 
-	public static WildebeestApiBuilder build(
+	/**
+	 * Creates a new WildebeestApiBuilder with the specified PrintStream for Wildebeest to output to.
+	 *
+	 * @param       output                      the PrintStream that Wildebeest should output to.
+	 * @return                                  a new WildebeestApiBuilder.
+	 * @since                                   4.0
+	 */
+	public static WildebeestApiBuilder create(
 		PrintStream output)
 	{
 		if (output == null) throw new ArgumentNullException("output");
@@ -61,44 +68,71 @@ public class WildebeestApiBuilder
 		if (resourcePlugins == null) throw new ArgumentNullException("resourcePlugins");
 		if (pluginManager == null) throw new ArgumentNullException("pluginManager");
 
-		_wildebeestApi = wildebeestApi;
-		_resourcePlugins = resourcePlugins;
-		_pluginManager = pluginManager;
+		this.wildebeestApi = wildebeestApi;
+		this.resourcePlugins = resourcePlugins;
+		this.pluginManager = pluginManager;
 	}
 
+	/**
+	 * Fluently adds the factory-preset {@link ResourcePlugin}'s to the builder.  A new builder is returned and the
+	 * original builder is left unmutated.
+	 *
+	 * @return                                  a new WildebeestApiBuilder with all the state of the source builder plus
+	 *                                          the factory-preset ResourcePlugin's registered.
+	 */
 	public WildebeestApiBuilder withFactoryResourcePlugins()
 	{
-		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>(_resourcePlugins);
-		resourcePlugins.putAll(Wildebeest.getResourcePlugins());
+		Map<ResourceType, ResourcePlugin> updatedResourcePlugins = new HashMap<>(this.resourcePlugins);
+		updatedResourcePlugins.putAll(Wildebeest.getResourcePlugins());
 
 		return new WildebeestApiBuilder(
-			_wildebeestApi,
-			resourcePlugins,
-			_pluginManager);
+			wildebeestApi,
+			updatedResourcePlugins,
+			pluginManager);
 	}
 
+	/**
+	 * Fluently adds a {@link PluginManager} with the factory-preset plugin groups and migration plugins registered.
+	 *
+	 * @return                                  a new WildebeestApiBuilder with a PluginManager configured with the
+	 *                                          factory-preset plugin groups and migration plugins registered.
+	 */
 	public WildebeestApiBuilder withFactoryPluginManager()
 	{
 		return this.withPluginManager(new PluginManagerImpl(
 			Wildebeest.getPluginGroups(),
-			Wildebeest.getMigrationPlugins(_wildebeestApi)));
+			Wildebeest.getMigrationPlugins(wildebeestApi)));
 	}
 
+	/**
+	 * Fluently adds a {@link PluginManager} to the builder.  A new builder instance is returned with the supplied
+	 * PluginManager added, and the original builder is left unmutated.
+	 *
+	 * @param       pluginManager               the PluginManager to add to the builder.
+	 * @return                                  a new WildebeestApiBuilder with the state of the source builder plus the
+	 *                                          supplied PluginManager.
+	 */
 	public WildebeestApiBuilder withPluginManager(PluginManager pluginManager)
 	{
 		if (pluginManager == null) throw new ArgumentNullException("pluginManager");
 
 		return new WildebeestApiBuilder(
-			_wildebeestApi,
-			_resourcePlugins,
+			wildebeestApi,
+			resourcePlugins,
 			pluginManager);
 	}
 
+	/**
+	 * Builds a new {@link WildebeestApi} with the plugins that were registered to this builder.
+	 *
+	 * @return                                  a new WildebeestApi instance with the plugins that were registered to
+	 *                                          this builder.
+	 */
 	public WildebeestApi get()
 	{
-		_wildebeestApi.setResourcePlugins(_resourcePlugins);
-		_wildebeestApi.setPluginManager(_pluginManager);
+		wildebeestApi.setResourcePlugins(resourcePlugins);
+		wildebeestApi.setPluginManager(pluginManager);
 
-		return _wildebeestApi;
+		return wildebeestApi;
 	}
 }

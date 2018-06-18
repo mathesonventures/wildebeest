@@ -43,7 +43,8 @@ import static org.junit.Assert.fail;
  */
 public class MySqlTableDoesNotExistAssertionTests
 {
-	@Test public void applyForExistingTableFails() throws
+	@Test
+	public void applyForExistingTableFails() throws
 		IndeterminateStateException,
 		AssertionFailedException,
 		MigrationNotPossibleException,
@@ -145,7 +146,8 @@ public class MySqlTableDoesNotExistAssertionTests
 		
 	}
 	 
-	@Test public void applyForNonExistentTableSucceeds() throws
+	@Test
+	public void applyForNonExistentTableSucceeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -234,7 +236,8 @@ public class MySqlTableDoesNotExistAssertionTests
 		Asserts.assertAssertionResponse(true, "Table ProductType does not exist", response, "response");
 	}
 	 
-	@Test public void applyForNonExistentDatabaseFails() throws SQLException
+	@Test
+	public void applyForNonExistentDatabaseFails() throws SQLException
 	{
 		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -264,7 +267,8 @@ public class MySqlTableDoesNotExistAssertionTests
 			response, "response");
 	}
 	 
-	@Test public void applyForNullInstanceFails()
+	@Test
+	public void applyForNullInstanceFails()
 	{
 		// Setup
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(
@@ -285,7 +289,8 @@ public class MySqlTableDoesNotExistAssertionTests
 		}
 	}
 	 
-	@Test public void applyForIncorrectInstanceTypeFails()
+	@Test
+	public void applyForIncorrectInstanceTypeFails()
 	{
 		// Setup
 		MySqlTableDoesNotExistAssertion assertion = new MySqlTableDoesNotExistAssertion(

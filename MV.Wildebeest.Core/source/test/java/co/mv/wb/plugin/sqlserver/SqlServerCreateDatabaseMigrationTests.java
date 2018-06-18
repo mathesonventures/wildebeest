@@ -30,7 +30,8 @@ import static org.junit.Assert.fail;
 
 public class SqlServerCreateDatabaseMigrationTests
 {
-	@Test public void performForNonExistantDatabaseSucceeds() throws
+	@Test
+	public void performForNonExistantDatabaseSucceeds() throws
 		MigrationFailedException
 	{
 		// Setup
@@ -71,7 +72,8 @@ public class SqlServerCreateDatabaseMigrationTests
 		}
 	}
 
-	@Test public void performForExistantDatabaseFails() throws SQLException
+	@Test
+	public void performForExistantDatabaseFails() throws SQLException
 	{
 		// Setup
 		PrintStream output = System.out;

@@ -16,6 +16,8 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
+
 import java.util.UUID;
 
 /**
@@ -25,6 +27,8 @@ import java.util.UUID;
  */
 public class MigrationFailedException extends Exception
 {
+	private final UUID migrationId;
+
 	/**
 	 * Creates a new MigrationFailedException for the specified ID with the specified failure messages.
 	 * 
@@ -38,13 +42,11 @@ public class MigrationFailedException extends Exception
 	{
 		super(message);
 
-		this.setMigrationId(migrationId);
+		if (migrationId == null) throw new ArgumentNullException("migrationId");
+		if (message == null) throw new ArgumentNullException("message");
+
+		this.migrationId = migrationId;
 	}
-
-	// <editor-fold desc="MigrationId" defaultstate="collapsed">
-
-	private UUID _migrationId = null;
-	private boolean _migrationId_set = false;
 
 	/**
 	 * Gets the ID of the Migration that failed
@@ -52,24 +54,8 @@ public class MigrationFailedException extends Exception
 	 * @return                                  the ID of the Migration that failed
 	 * @since                                   1.0
 	 */
-	public UUID getMigrationId() {
-		if(!_migrationId_set) {
-			throw new IllegalStateException("migrationId not set.  Use the HasMigrationId() method to check its state before accessing it.");
-		}
-		return _migrationId;
+	public UUID getMigrationId()
+	{
+		return this.migrationId;
 	}
-
-	private void setMigrationId(
-		UUID value) {
-		if(value == null) {
-			throw new IllegalArgumentException("migrationId cannot be null");
-		}
-		boolean changing = !_migrationId_set || _migrationId != value;
-		if(changing) {
-			_migrationId_set = true;
-			_migrationId = value;
-		}
-	}
-
-	// </editor-fold>
 }

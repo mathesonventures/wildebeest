@@ -36,11 +36,11 @@ import java.util.UUID;
 
 public class TestContext_SimpleFakeResource_Builder
 {
-	private String _defaultTarget;
+	private String defaultTarget;
 
 	private TestContext_SimpleFakeResource_Builder()
 	{
-		_defaultTarget = null;
+		defaultTarget = null;
 	}
 
 	public static TestContext_SimpleFakeResource_Builder create()
@@ -53,7 +53,7 @@ public class TestContext_SimpleFakeResource_Builder
 	{
 		if (defaultTarget == null) throw new ArgumentNullException("defaultTarget");
 
-		_defaultTarget = defaultTarget;
+		this.defaultTarget = defaultTarget;
 
 		return this;
 	}
@@ -67,7 +67,7 @@ public class TestContext_SimpleFakeResource_Builder
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"MyResource",
-			Optional.ofNullable(_defaultTarget));
+			Optional.ofNullable(defaultTarget));
 
 		// Foo State
 		UUID fooStateId = UUID.randomUUID();

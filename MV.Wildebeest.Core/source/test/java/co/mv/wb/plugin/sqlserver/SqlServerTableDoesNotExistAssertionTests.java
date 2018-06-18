@@ -43,7 +43,8 @@ import static org.junit.Assert.fail;
  */
 public class SqlServerTableDoesNotExistAssertionTests
 {
-	@Test public void applyForExistingTableFails() throws
+	@Test
+	public void applyForExistingTableFails() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -147,7 +148,8 @@ public class SqlServerTableDoesNotExistAssertionTests
 		
 	}
 	 
-	@Test public void applyForNonExistentTableSucceeds() throws
+	@Test
+	public void applyForNonExistentTableSucceeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -238,7 +240,8 @@ public class SqlServerTableDoesNotExistAssertionTests
 		
 	}
 	 
-	@Test public void applyForNonExistentDatabaseFails() throws SQLException
+	@Test
+	public void applyForNonExistentDatabaseFails() throws SQLException
 	{
 		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -270,7 +273,8 @@ public class SqlServerTableDoesNotExistAssertionTests
 			response, "response");
 	}
 	 
-	@Test public void applyForNullInstanceFails()
+	@Test
+	public void applyForNullInstanceFails()
 	{
 		// Setup
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
@@ -292,7 +296,8 @@ public class SqlServerTableDoesNotExistAssertionTests
 		}
 	}
 	 
-	@Test public void applyForIncorrectInstanceTypeFails()
+	@Test
+	public void applyForIncorrectInstanceTypeFails()
 	{
 		// Setup
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(

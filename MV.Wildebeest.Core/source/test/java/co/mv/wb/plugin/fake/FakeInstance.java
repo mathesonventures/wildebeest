@@ -17,88 +17,65 @@
 package co.mv.wb.plugin.fake;
 
 import co.mv.wb.Instance;
+import co.mv.wb.framework.ArgumentNullException;
+
+import java.util.UUID;
 
 /**
  * {@link Instance} for the Fake plugin implementation.
  *
  * @since                                       1.0
  */
-public class FakeInstance implements Instance
+public final class FakeInstance implements Instance
 {
-	private String stateId = null;
-	private boolean stateIdSet = false;
+	private UUID stateId = null;
 	private String tag = null;
-	private boolean tagSet = false;
-
 
 	public FakeInstance()
     {
     }
 
-	public FakeInstance(String stateId)
+	public FakeInstance(UUID stateId)
 	{
 		this.setStateId(stateId);
 	}
-
-
-	public String getStateId() {
-		if(!stateIdSet) {
+	
+	public UUID getStateId()
+	{
+		if(this.stateId == null)
+		{
 			throw new IllegalStateException("stateId not set.  Use the HasStateId() method to check its state before accessing it.");
 		}
+
 		return stateId;
 	}
 
-	public final void setStateId(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("stateId cannot be null");
-		}
-		boolean changing = !stateIdSet || stateId != value;
-		if(changing) {
-			stateIdSet = true;
-			stateId = value;
-		}
-	}
+	public void setStateId(
+		UUID value)
+	{
+		if (value == null) throw new ArgumentNullException("value");
 
-	public void clearStateId() {
-		if(stateIdSet) {
-			stateIdSet = true;
-			stateId = null;
-		}
+		this.stateId = value;
 	}
 
 	public boolean hasStateId() {
-		return stateIdSet;
+		return this.stateId != null;
 	}
 
-	public String getTag() {
-		if(!tagSet) {
+	public String getTag()
+	{
+		if(this.tag == null)
+		{
 			throw new IllegalStateException("tag not set.  Use the HasTag() method to check its state before accessing it.");
 		}
 		return tag;
 	}
 
 	public void setTag(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("tag cannot be null");
-		}
-		boolean changing = !tagSet || !tag.equals(value);
-		if(changing) {
-			tagSet = true;
-			tag = value;
-		}
-	}
+		String value)
+	{
+		if (value == null) throw new ArgumentNullException("value");
 
-	public void clearTag() {
-		if(tagSet) {
-			tagSet = true;
-			tag = null;
-		}
+		this.tag = value;
 	}
-
-	public boolean hasTag() {
-		return tagSet;
-	}
-
 }

@@ -24,6 +24,7 @@ import co.mv.wb.MigrationType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.base.BaseAssertion;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
@@ -58,6 +59,9 @@ import java.util.UUID;
 )
 public class RowExistsAssertion extends BaseAssertion implements Assertion
 {
+	private final String description;
+	private final String sql;
+
 	/**
 	 * Creates a new RowDoesNotExistAssertion.
 	 * 
@@ -73,84 +77,19 @@ public class RowExistsAssertion extends BaseAssertion implements Assertion
 		String sql)
 	{
 		super(assertionId, seqNum);
-		this.setDescription(description);
-		this.setSql(sql);
-	}
-	
-	// <editor-fold desc="Description" defaultstate="collapsed">
 
-	private String _description = null;
-	private boolean _description_set = false;
+		if (description == null) throw new ArgumentNullException("description");
+		if (sql == null) throw new ArgumentNullException("sql");
 
-	@Override public String getDescription() {
-		if(!_description_set) {
-			throw new IllegalStateException("description not set.  Use the HasDescription() method to check its state before accessing it.");
-		}
-		return _description;
+		this.description = description;
+		this.sql = sql;
 	}
 
-	private void setDescription(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("description cannot be null");
-		}
-		boolean changing = !_description_set || !_description.equals(value);
-		if(changing) {
-			_description_set = true;
-			_description = value;
-		}
+	@Override public String getDescription()
+	{
+		return this.description;
 	}
 
-	private void clearDescription() {
-		if(_description_set) {
-			_description_set = true;
-			_description = null;
-		}
-	}
-
-	private boolean hasDescription() {
-		return _description_set;
-	}
-
-	// </editor-fold>
-	
-	// <editor-fold desc="Sql" defaultstate="collapsed">
-
-	private String _sql = null;
-	private boolean _sql_set = false;
-
-	private String getSql() {
-		if(!_sql_set) {
-			throw new IllegalStateException("sql not set.  Use the HasSql() method to check its state before accessing it.");
-		}
-		return _sql;
-	}
-
-	private void setSql(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("sql cannot be null");
-		}
-		boolean changing = !_sql_set || !_sql.equals(value);
-		if(changing) {
-			_sql_set = true;
-			_sql = value;
-		}
-	}
-
-	private void clearSql() {
-		if(_sql_set) {
-			_sql_set = true;
-			_sql = null;
-		}
-	}
-
-	private boolean hasSql() {
-		return _sql_set;
-	}
-
-	// </editor-fold>
-	
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
@@ -178,7 +117,7 @@ public class RowExistsAssertion extends BaseAssertion implements Assertion
 			try
 			{
 				conn = ds.getConnection();
-				ps = conn.prepareStatement(this.getSql());
+				ps = conn.prepareStatement(this.sql);
 				rs = ps.executeQuery();
 
 				int rowCount = 0;

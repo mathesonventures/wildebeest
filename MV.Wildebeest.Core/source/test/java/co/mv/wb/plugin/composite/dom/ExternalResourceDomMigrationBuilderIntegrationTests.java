@@ -22,7 +22,7 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
-import co.mv.wb.fixture.FixtureCreator;
+import co.mv.wb.fixture.FixtureBuilder;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
@@ -45,10 +45,11 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 {
 
 	//
-	// build
+	// create
 	//
 	
-	@Test public void build_forValidDocument_succeeds() throws
+	@Test
+	public void build_forValidDocument_succeeds() throws
 			LoaderFault,
 			PluginBuildException,
             MissingReferenceException
@@ -59,12 +60,12 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 		UUID state2Id = UUID.randomUUID();
 		UUID migration1Id = UUID.randomUUID();
 		
-		String resourceXml = FixtureCreator.create()
+		String resourceXml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), resourceId, "Test")
 			.state(state1Id, "state1")
 			.state(state2Id, "state2")
 			.migration("External", migration1Id, state1Id.toString(), state2Id.toString())
-				.innerXml("<filename>foo.wbr</filename><target>bar</target>")
+				.withInnerXml("<filename>foo.wbr</filename><target>bar</target>")
 			.render();
 		
 		System.out.println("resourceXml: " + resourceXml);

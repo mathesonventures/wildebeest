@@ -154,7 +154,8 @@ public class IntegrationTests
 		
 	}
 	
-	@Test public void loadMySqlDatabaseResource() throws
+	@Test
+	public void loadMySqlDatabaseResource() throws
 			LoaderFault,
 			PluginBuildException,
             MissingReferenceException
@@ -176,7 +177,8 @@ public class IntegrationTests
 		assertResource(resource);
 	}
 	
-	@Test public void loadMySqlDatabaseInstance() throws
+	@Test
+	public void loadMySqlDatabaseInstance() throws
 		LoaderFault,
 		PluginBuildException
 	{
@@ -194,7 +196,8 @@ public class IntegrationTests
 		assertInstance(instance, databaseName);
 	}
 	
-	@Test public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
+	@Test
+	public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,

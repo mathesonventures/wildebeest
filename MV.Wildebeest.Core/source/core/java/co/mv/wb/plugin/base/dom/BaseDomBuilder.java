@@ -33,6 +33,8 @@ import java.util.Optional;
  */
 public abstract class BaseDomBuilder implements DomBuilder
 {
+	private final XPath xpath;
+
 	/**
 	 * Creates a new BaseDomBuilder.
 	 * 
@@ -40,7 +42,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 	 */
 	protected BaseDomBuilder()
 	{
-		this.setXPath(XPathFactory.newInstance().newXPath());
+		this.xpath = XPathFactory.newInstance().newXPath();
 	}
 	
 	// <editor-fold desc="Element" defaultstate="collapsed">
@@ -61,7 +63,8 @@ public abstract class BaseDomBuilder implements DomBuilder
 		return _element;
 	}
 
-	@Override public void setElement(
+	@Override
+	public void setElement(
 		Element value) {
 		if(value == null) {
 			throw new IllegalArgumentException("element cannot be null");
@@ -80,50 +83,10 @@ public abstract class BaseDomBuilder implements DomBuilder
 		}
 	}
 
-	private boolean hasElement() {
-		return _element_set;
-	}
-
 	// </editor-fold>
 	
-	// <editor-fold desc="XPath" defaultstate="collapsed">
-
-	private XPath _xPath = null;
-	private boolean _xPath_set = false;
-
-	private XPath getXPath() {
-		if(!_xPath_set) {
-			throw new IllegalStateException("xPath not set.  Use the HasXPath() method to check its state before accessing it.");
-		}
-		return _xPath;
-	}
-
-	private void setXPath(
-		XPath value) {
-		if(value == null) {
-			throw new IllegalArgumentException("xPath cannot be null");
-		}
-		boolean changing = !_xPath_set || _xPath != value;
-		if(changing) {
-			_xPath_set = true;
-			_xPath = value;
-		}
-	}
-
-	private void clearXPath() {
-		if(_xPath_set) {
-			_xPath_set = true;
-			_xPath = null;
-		}
-	}
-
-	private boolean hasXPath() {
-		return _xPath_set;
-	}
-
-	// </editor-fold>
-	
-	@Override public void reset()
+	@Override
+	public void reset()
 	{
 		this.clearElement();
 	}
@@ -149,7 +112,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 
 		try
 		{
-			node  = (Node)this.getXPath().compile(xpath).evaluate(this.getElement(), XPathConstants.NODE);
+			node  = (Node)this.xpath.compile(xpath).evaluate(this.getElement(), XPathConstants.NODE);
 			if (node != null)
 			{
 				Element element = ModelExtensions.As(node, Element.class);
@@ -163,6 +126,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 		}
 		catch (XPathExpressionException e)
 		{
+			// TODO: This should be handled.
 		}
 
 		if (result == null)

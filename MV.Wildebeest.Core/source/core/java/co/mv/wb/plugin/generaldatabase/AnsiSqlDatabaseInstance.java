@@ -31,22 +31,7 @@ public interface AnsiSqlDatabaseInstance extends DatabaseInstance
 	 * @since                                   4.0
 	 */
 	String getMetaSchemaName();
-	
-	/**
-	 * Sets the name of the schema where meta data is tracked by Wildebeest.
-	 * 
-	 * @param       value                       the name of the schema where meta data is tracked by Wildebeest.
-	 * @since                                   4.0
-	 */
-	void setMetaSchemaName(String value);
 
-	/**
-	 * Clears the meta data schema name for this instance, leaving Wildebeest to choose the schema to be used.
-	 * 
-	 * @since                                   4.0
-	 */
-	void clearMetaSchemaName();
-	
 	/**
 	 * Returns whether or not this instance has a meta data schema name specified.
 	 * 

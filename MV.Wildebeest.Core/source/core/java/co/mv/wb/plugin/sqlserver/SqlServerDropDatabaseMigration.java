@@ -52,8 +52,8 @@ public class SqlServerDropDatabaseMigration extends BaseMigration
 	 * Creates a new SqlServerCreateDatabseMigration.
 	 * 
 	 * @param       migrationId                 the ID of the new migration.
-	 * @param       fromState                 the source state for this migration.
-	 * @param       toState                   the target state for this migration.
+	 * @param       fromState                   the source state for this migration.
+	 * @param       toState                     the target state for this migration.
 	 * @since                                   2.0
 	 */
 	public SqlServerDropDatabaseMigration(

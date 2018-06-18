@@ -59,8 +59,8 @@ public class SqlServerCreateSchemaDomMigrationBuilder extends BaseDomMigrationBu
 		
 		return new SqlServerCreateSchemaMigration(
 			migrationId,
-			  fromState,
-			  toState,
+			fromState,
+			toState,
 			schemaName.get());
 	}
 }

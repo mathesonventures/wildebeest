@@ -20,6 +20,10 @@ import co.mv.wb.Instance;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.PrintStream;
 
@@ -30,7 +34,17 @@ import java.io.PrintStream;
  */
 public class SetTagMigrationPlugin implements MigrationPlugin
 {
-	@Override public void perform(
+	private final Resource resource;
+
+	public SetTagMigrationPlugin(Resource resource)
+	{
+		if (resource == null) throw new ArgumentNullException("resource");
+
+		this.resource = resource;
+	}
+
+	@Override
+	public void perform(
 		PrintStream output,
 		Migration migration,
 		Instance instance)
@@ -53,6 +67,8 @@ public class SetTagMigrationPlugin implements MigrationPlugin
 
 		instanceT.setTag(migrationT.getTag());
 
-		instanceT.setStateId(migration.getToState().get());
+		State toState = Wildebeest.findState(this.resource, migration.getToState().get());
+
+		instanceT.setStateId(toState.getStateId());
 	}
 }

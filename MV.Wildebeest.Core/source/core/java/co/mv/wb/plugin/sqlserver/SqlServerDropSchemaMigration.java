@@ -20,6 +20,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
@@ -47,15 +48,14 @@ import java.util.UUID;
 )
 public class SqlServerDropSchemaMigration extends BaseMigration
 {
-	private String schemaName = null;
-	private boolean schemaNameSet = false;
+	private final String schemaName;
 
 	/**
 	 * Creates a new SqlServerDropSchemaMigration.
 	 * 
 	 * @param       migrationId                 the ID of the new migration.
-	 * @param       fromState                 the source state for this migration.
-	 * @param       toState                   the target state for this migration.
+	 * @param       fromState                   the source state for this migration.
+	 * @param       toState                     the target state for this migration.
 	 * @param       schemaName                  the name of the schema to be dropped.
 	 * @since                                   2.0
 	 */
@@ -67,44 +67,22 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 	{
 		super(migrationId, fromState, toState);
 
-		this.setSchemaName(schemaName);
-	}
+		if (schemaName == null) throw new ArgumentNullException("schemaName");
 
+		this.schemaName = schemaName;
+	}
+	
 	/**
 	 * Returns the name of the schema to be dropped.
 	 * 
 	 * @return                                  the name of the schema to be dropped
 	 * @since                                   2.0
 	 */
-	public final String getSchemaName() {
-		if(!schemaNameSet) {
-			throw new IllegalStateException("schemaName not set.  Use the HasSchemaName() method to check its state before accessing it.");
-		}
+	public final String getSchemaName()
+	{
 		return schemaName;
 	}
 
-	private void setSchemaName(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("schemaName cannot be null");
-		}
-		boolean changing = !schemaNameSet || !schemaName.equals(value);
-		if(changing) {
-			schemaNameSet = true;
-			schemaName = value;
-		}
-	}
-
-	private void clearSchemaName() {
-		if(schemaNameSet) {
-			schemaNameSet = true;
-			schemaName = null;
-		}
-	}
-
-	private boolean hasSchemaName() {
-		return schemaNameSet;
-	}
 	
 	@Override
 	public List<ResourceType> getApplicableTypes()

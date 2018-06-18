@@ -17,6 +17,7 @@
 package co.mv.wb.plugin.base;
 
 import co.mv.wb.AssertionResponse;
+import co.mv.wb.framework.ArgumentNullException;
 
 /**
  * An {@link AssertionResponse} that cannot be modified after it's initial construction.
@@ -25,6 +26,9 @@ import co.mv.wb.AssertionResponse;
  */
 public class ImmutableAssertionResponse implements AssertionResponse
 {
+	private final boolean result;
+	private final String message;
+
 	/**
 	 * Creates a new ImmutableAssertionResponse instance.
 	 * 
@@ -35,78 +39,21 @@ public class ImmutableAssertionResponse implements AssertionResponse
 		boolean result,
 		String message)
 	{
-		this.setResult(result);
-		this.setMessage(message);
+		if (message == null) throw new ArgumentNullException("message");
+
+		this.result = result;
+		this.message = message;
 	}
 	
-	// <editor-fold desc="Result" defaultstate="collapsed">
-
-	private boolean _result = false;
-	private boolean _result_set = false;
-
-	@Override public boolean getResult() {
-		if(!_result_set) {
-			throw new IllegalStateException("result not set.  Use the HasResult() method to check its state before accessing it.");
-		}
-		return _result;
+	@Override
+	public boolean getResult()
+	{
+		return this.result;
 	}
 
-	private void setResult(
-		boolean value) {
-		boolean changing = !_result_set || _result != value;
-		if(changing) {
-			_result_set = true;
-			_result = value;
-		}
+	@Override
+	public String getMessage()
+	{
+		return this.message;
 	}
-
-	private void clearResult() {
-		if(_result_set) {
-			_result_set = true;
-			_result = false;
-		}
-	}
-
-	private boolean hasResult() {
-		return _result_set;
-	}
-
-	// </editor-fold>
-
-	// <editor-fold desc="Message" defaultstate="collapsed">
-
-	private String _message = null;
-	private boolean _message_set = false;
-
-	@Override public String getMessage() {
-		if(!_message_set) {
-			throw new IllegalStateException("message not set.  Use the HasMessage() method to check its state before accessing it.");
-		}
-		return _message;
-	}
-
-	private void setMessage(
-		String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("message cannot be null");
-		}
-		boolean changing = !_message_set || !_message.equals(value);
-		if(changing) {
-			_message_set = true;
-			_message = value;
-		}
-	}
-
-	private void clearMessage() {
-		if(_message_set) {
-			_message_set = true;
-			_message = null;
-		}
-	}
-
-	private boolean hasMessage() {
-		return _message_set;
-	}
-
-	// </editor-fold>
 }

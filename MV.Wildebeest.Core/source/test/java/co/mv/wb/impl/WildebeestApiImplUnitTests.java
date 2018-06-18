@@ -44,7 +44,8 @@ public class WildebeestApiImplUnitTests
 	 *
 	 * @since                                   4.0
 	 */
-	@Test public void migrate_targetSpecifiedNoDefault_succeeds() throws
+	@Test
+	public void migrate_targetSpecifiedNoDefault_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -85,7 +86,8 @@ public class WildebeestApiImplUnitTests
 	 *
 	 * @since                                   4.0
 	 */
-	@Test public void migrate_targetSpecifiedWithDefault_succeeds() throws
+	@Test
+	public void migrate_targetSpecifiedWithDefault_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -126,7 +128,8 @@ public class WildebeestApiImplUnitTests
 	 *
 	 * @since                                   4.0
 	 */
-	@Test public void migrate_targetNotSpecifiedNoDefault_throws() throws
+	@Test
+	public void migrate_targetNotSpecifiedNoDefault_throws() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -160,7 +163,8 @@ public class WildebeestApiImplUnitTests
 	 *
 	 * @since                                   4.0
 	 */
-	@Test public void migrate_targetNotSpecifiedWithDefault_succeeds() throws
+	@Test
+	public void migrate_targetNotSpecifiedWithDefault_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,

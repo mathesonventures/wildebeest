@@ -31,7 +31,8 @@ import java.util.UUID;
  */
 public class DomSetTagMigrationBuilder extends BaseDomMigrationBuilder
 {
-	@Override public Migration build(
+	@Override
+	public Migration build(
 		UUID migrationId,
 		Optional<String> fromState,
 		Optional<String> toState,

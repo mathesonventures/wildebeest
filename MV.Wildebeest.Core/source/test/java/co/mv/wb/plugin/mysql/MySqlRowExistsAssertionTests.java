@@ -26,7 +26,8 @@ import org.junit.Test;
 
 public class MySqlRowExistsAssertionTests
 {
-	@Test public void applyForNonExistentRowFails()
+	@Test
+	public void applyForNonExistentRowFails()
 	{
 		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -67,7 +68,8 @@ public class MySqlRowExistsAssertionTests
 		assertEquals("response.message", "Expected to find exactly one row, but found 0", response.getMessage());
 	}
 	
-	@Test public void applyForExistentRowSucceeds()
+	@Test
+	public void applyForExistentRowSucceeds()
 	{
 		// Setup
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -109,7 +111,9 @@ public class MySqlRowExistsAssertionTests
 		assertEquals("response.message", "Exactly one row exists, as expected", response.getMessage());
 	}
 	
-	@Ignore @Test public void applyForNonExistentTableFails()
+	@Ignore
+	@Test
+	public void applyForNonExistentTableFails()
 	{
 		throw new UnsupportedOperationException();
 	}

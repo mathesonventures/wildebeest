@@ -26,6 +26,8 @@ import java.util.List;
  */
 public class Messages
 {
+	private final List<String> messages;
+
 	/**
 	 * Creates a new Messages container.
 	 * 
@@ -33,51 +35,20 @@ public class Messages
 	 */
 	public Messages()
 	{
-		this.setMessages(new ArrayList<>());
+		this.messages = new ArrayList<>();
 	}
 	
-	// <editor-fold desc="Messages" defaultstate="collapsed">
-
-	private List<String> _messages = null;
-	private boolean _messages_set = false;
-
 	/**
 	 * Gets the set of messages that have been raised.
 	 * 
 	 * @return                                  the set of messages that have been raised
 	 * @since                                   2.0
 	 */
-	public List<String> getMessages() {
-		if(!_messages_set) {
-			throw new IllegalStateException("messages not set.  Use the HasMessages() method to check its state before accessing it.");
-		}
-		return _messages;
+	public List<String> getMessages()
+	{
+		return this.messages;
 	}
 
-	private void setMessages(List<String> value) {
-		if(value == null) {
-			throw new IllegalArgumentException("messages cannot be null");
-		}
-		boolean changing = !_messages_set || _messages != value;
-		if(changing) {
-			_messages_set = true;
-			_messages = value;
-		}
-	}
-
-	private void clearMessages() {
-		if(_messages_set) {
-			_messages_set = true;
-			_messages = null;
-		}
-	}
-
-	private boolean hasMessages() {
-		return _messages_set;
-	}
-
-	// </editor-fold>
-	
 	/**
 	 * Adds a plain-text message to the collection.
 	 * 
@@ -89,7 +60,7 @@ public class Messages
 		if (message == null) { throw new IllegalArgumentException("message cannot be null"); }
 		if ("".equals(message.trim())) { throw new IllegalArgumentException("message cannot be empty"); }
 		
-		this.getMessages().add(message);
+		this.messages.add(message);
 	}
 	
 	/**
@@ -116,6 +87,6 @@ public class Messages
 	 */
 	public int size()
 	{
-		return this.getMessages().size();
+		return this.messages.size();
 	}
 }

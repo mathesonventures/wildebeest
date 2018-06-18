@@ -51,9 +51,9 @@ public class MySqlDropDatabaseMigration extends BaseMigration
 	 * Creates a new MySqlDropDatabaseMigration.
 	 * 
 	 * @param       migrationId                 the ID of the new migration.
-	 * @param       fromState                 the source-state for the migration, or null if this migration
+	 * @param       fromState                   the source-state for the migration, or null if this migration
 	 *                                          transitions from the non-existent state.
-	 * @param       toState                   the target-state for the migration, or null if this migration
+	 * @param       toState                     the target-state for the migration, or null if this migration
 	 *                                          transitions to the non-existent state.
 	 * @since                                   1.0
 	 */
