@@ -31,7 +31,7 @@ public class AssertionCreator
 	private final StateCreator state;
 	private final String type;
 	private final UUID assertionId;
-	private final String innerXml;
+	private String innerXml;
 
 	public AssertionCreator(
 		FixtureBuilder creator,
@@ -85,25 +85,19 @@ public class AssertionCreator
 	public AssertionCreator withInnerXml(String innerXml)
 	{
 		if (innerXml == null) throw new ArgumentNullException("withInnerXml");
-		
-		return new AssertionCreator(
-			this.creator,
-			this.state,
-			this.type,
-			this.assertionId,
-			innerXml);
+
+		this.innerXml = innerXml;
+
+		return this;
 	}
 	
 	public AssertionCreator appendInnerXml(String innerXml)
 	{
 		if (innerXml == null) throw new ArgumentNullException("withInnerXml");
 
-		return new AssertionCreator(
-			this.creator,
-			this.state,
-			this.type,
-			this.assertionId,
-			this.innerXml + innerXml);
+		this.innerXml = this.innerXml + innerXml;
+
+		return this;
 	}
 
 	public StateCreator state()

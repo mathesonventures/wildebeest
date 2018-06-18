@@ -34,7 +34,7 @@ public class MigrationBuilder
 	private final UUID migrationId;
 	private final String fromState;
 	private final String toState;
-	private final String innerXml;
+	private String innerXml;
 
 	public MigrationBuilder(
 		FixtureBuilder creator,
@@ -111,14 +111,9 @@ public class MigrationBuilder
 	{
 		if (innerXml == null) throw new ArgumentNullException("innerXml");
 
-		return new MigrationBuilder(
-			this.creator,
-			this.resource,
-			this.type,
-			this.migrationId,
-			this.fromState,
-			this.toState,
-			innerXml);
+		this.innerXml = innerXml;
+
+		return this;
 	}
 	
 	public ResourceBuilder resource()
@@ -129,10 +124,10 @@ public class MigrationBuilder
 	public MigrationBuilder migration(
 		String type,
 		UUID migrationId,
-		String fromStateId,
-		String toStateId)
+		String fromState,
+		String toState)
 	{
-		return this.getResource().migration(type, migrationId, fromStateId, toStateId);
+		return this.getResource().migration(type, migrationId, fromState, toState);
 	}
 	
 	public String render()
