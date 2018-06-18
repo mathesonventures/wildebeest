@@ -23,8 +23,57 @@ package co.mv.wb;
  */
 public class MissingReferenceException extends Exception
 {
-	public MissingReferenceException(String ref)
+	private final String type;
+	private final String ref;
+	private final String referrerType;
+	private final String referrerId;
+
+	public MissingReferenceException(
+		String type,
+		String ref,
+		String referrerType,
+		String referrerId
+	)
 	{
-		super(ref);
+		super(structureMetadata(type, ref, referrerType, referrerId));
+		this.ref = ref;
+		this.type = type;
+		this.referrerType = referrerType;
+		this.referrerId = referrerId;
 	}
+
+	public static String structureMetadata
+		(
+			String type,
+			String ref,
+			String referrerType,
+			String referrerId
+		)
+	{
+		String message = String.format(referrerType + " " + referrerId + " does not contain " + type + " " + ref);
+
+		return message;
+	}
+
+	public String getType()
+	{
+		return this.type;
+	}
+
+	public String getRef()
+	{
+		return this.ref;
+	}
+
+	public String getReferrerType()
+	{
+		return this.referrerType;
+	}
+
+	public String getReferrerId()
+	{
+		return this.referrerId;
+	}
+
 }
+
