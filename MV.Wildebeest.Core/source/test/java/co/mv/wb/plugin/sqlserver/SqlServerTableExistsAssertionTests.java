@@ -26,6 +26,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationInvalidStateException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.MissingReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -66,7 +67,7 @@ public class SqlServerTableExistsAssertionTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+		MissingReferenceException
 	{
 
 		//
@@ -170,7 +171,7 @@ public class SqlServerTableExistsAssertionTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+		MissingReferenceException
 	{
 
 		//

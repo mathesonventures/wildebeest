@@ -123,7 +123,7 @@ public interface WildebeestApi
 		InvalidStateSpecifiedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException;
+		MissingReferenceException;
 
 	/**
 	 * Jumps the recorded state of the specified instance to the supplied target state.  This can be useful when you are

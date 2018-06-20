@@ -318,7 +318,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+		MissingReferenceException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
@@ -758,7 +758,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	 * @since 4.0
 	 */
 	private static void validateMigrationStates(
-		Resource resource) throws MigrationInvalidStateException
+		Resource resource) throws MissingReferenceException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 
@@ -793,18 +793,21 @@ public class WildebeestApiImpl implements WildebeestApi
 					migrationFromStateValid = true;
 				}
 
-				if (migrationFromStateValid == true && migrationToStateValid == true)
+				if (migrationFromStateValid && migrationToStateValid)
 				{
 					break;
 				}
 			}
 
-			if (migrationFromStateValid == false || migrationToStateValid == false)
+			if (!migrationFromStateValid || !migrationToStateValid )
 			{
-				throw new MigrationInvalidStateException(
-					m.getMigrationId(),
-					"Migration " + m.getMigrationId().toString() + " has invalid state, " +
-						"please fix this before restarting migration");
+				throw new MissingReferenceException
+					(
+						"State",
+						m.getToState() + " or " + m.getFromState(),
+						m.getApplicableTypes().toString(),
+						m.getMigrationId().toString()
+					);
 			}
 		}
 	}

@@ -75,7 +75,7 @@ public class IntegrationTests
 		SQLException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+		MissingReferenceException
 	{
 
 		//

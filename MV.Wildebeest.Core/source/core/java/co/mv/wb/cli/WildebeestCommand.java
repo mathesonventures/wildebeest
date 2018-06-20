@@ -25,7 +25,6 @@ import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationInvalidStateException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MissingReferenceException;
 import co.mv.wb.OutputFormatter;
@@ -220,9 +219,9 @@ public class WildebeestCommand
 						{
 							this.output.println(OutputFormatter.assertionFailed(e));
 						}
-						catch (MigrationInvalidStateException e)
+						catch (MissingReferenceException e)
 						{
-							this.output.print(OutputFormatter.migrationInvalidState(e));
+							this.output.print(OutputFormatter.missingReferenceException(e));
 						}
 					}
 				}

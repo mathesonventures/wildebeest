@@ -247,7 +247,7 @@ public class DomResourceLoader implements ResourceLoader
 																.get(refGroup);
 															if (assertions == null)
 															{
-																throw new MissingReferenceException(refGroup);
+																throw new MissingReferenceException(refGroup,"","","");
 															}
 															for (Assertion assertion : assertions)
 															{
