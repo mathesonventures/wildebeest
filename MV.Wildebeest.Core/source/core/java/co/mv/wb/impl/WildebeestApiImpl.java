@@ -339,9 +339,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			throw new TargetNotSpecifiedException();
 		}
 
-		UUID targetStateId = WildebeestApiImpl.getTargetStateId(
-			resource,
-			ts.get());
+		UUID targetStateId = Wildebeest.findState(resource, ts.get()).getStateId();
 
 		State currentState = resourcePlugin.currentState(
 			resource,
@@ -419,15 +417,14 @@ public class WildebeestApiImpl implements WildebeestApi
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
-		if (targetState != null && "".equals(targetState.trim())) throw new IllegalArgumentException("targetState cannot be empty");
+		if (targetState != null && "".equals(targetState.trim()))
+			throw new IllegalArgumentException("targetState cannot be empty");
 
 		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
 			this.getResourcePlugins(),
 			resource.getType());
 
-		UUID targetStateId = getTargetStateId(
-			resource,
-			targetState);
+		UUID targetStateId = Wildebeest.findState(resource, targetState).getStateId();
 
 		State state = Wildebeest.findState(
 			resource,
@@ -804,7 +801,8 @@ public class WildebeestApiImpl implements WildebeestApi
 
 			if (migrationFromStateValid == false || migrationToStateValid == false)
 			{
-				throw new MigrationInvalidStateException(m.getMigrationId(),
+				throw new MigrationInvalidStateException(
+					m.getMigrationId(),
 					"Migration " + m.getMigrationId().toString() + " has invalid state, " +
 						"please fix this before restarting migration");
 			}

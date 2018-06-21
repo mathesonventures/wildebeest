@@ -199,7 +199,7 @@ public class Wildebeest
 		{
 			result = resource
 				.getStates().stream()
-				.filter(s -> state.equals(s.getLabel()))
+				.filter(s -> state.equals(s.getLabel().get()))
 				.findFirst()
 				.orElse(null);
 		}
