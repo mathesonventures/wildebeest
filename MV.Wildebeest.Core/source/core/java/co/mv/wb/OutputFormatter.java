@@ -67,7 +67,7 @@ public class OutputFormatter
 	}
 
 	public static String missingReference(
-		MissingReferenceException e)
+		InvalidReferenceException e)
 	{
 		return String.format(
 			"Missing referred resource: \"%s\"",
@@ -171,7 +171,7 @@ public class OutputFormatter
 		return String.format("Migration failed: %s", e.getMessage());
 	}
 
-	public static String missingReferenceException(MissingReferenceException e)
+	public static String missingReferenceException(InvalidReferenceException e)
 	{
 		return String.format("Migration not possible: %s", e.getMessage());
 	}

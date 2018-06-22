@@ -26,7 +26,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationInvalidStateException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
@@ -75,7 +75,7 @@ public class IntegrationTests
 		SQLException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 
 		//
@@ -175,7 +175,7 @@ public class IntegrationTests
 	public void loadMySqlDatabaseResource() throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		ProductCatalogueMySqlDatabaseResource prodCatResource = new ProductCatalogueMySqlDatabaseResource();
@@ -226,7 +226,7 @@ public class IntegrationTests
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
 		MigrationInvalidStateException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 
 		PrintStream output = System.out;

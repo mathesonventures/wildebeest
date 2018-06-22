@@ -18,7 +18,7 @@ package co.mv.wb.plugin.composite.dom;
 
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
@@ -52,7 +52,7 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 	public void build_forValidDocument_succeeds() throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		UUID resourceId = UUID.randomUUID();

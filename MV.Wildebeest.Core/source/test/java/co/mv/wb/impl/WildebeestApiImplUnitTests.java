@@ -20,9 +20,8 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationInvalidStateException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
@@ -64,7 +63,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -106,7 +105,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
@@ -148,7 +147,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -183,7 +182,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;

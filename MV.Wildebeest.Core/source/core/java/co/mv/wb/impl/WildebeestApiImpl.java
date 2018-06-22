@@ -28,11 +28,10 @@ import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationInvalidStateException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationType;
 import co.mv.wb.MigrationTypeInfo;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.PluginManager;
@@ -129,7 +128,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		LoaderFault,
 		PluginBuildException,
 		XmlValidationException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		if (resourceFile == null) throw new ArgumentNullException("resourceFile");
 
@@ -318,7 +317,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
@@ -758,7 +757,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	 * @since 4.0
 	 */
 	private static void validateMigrationStates(
-		Resource resource) throws MissingReferenceException
+		Resource resource) throws InvalidReferenceException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 
@@ -801,7 +800,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 			if (!migrationFromStateValid || !migrationToStateValid )
 			{
-				throw new MissingReferenceException
+				throw new InvalidReferenceException
 					(
 						"State",
 						m.getToState() + " or " + m.getFromState(),

@@ -22,7 +22,7 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.Messages;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
@@ -127,7 +127,7 @@ public class DomResourceLoader implements ResourceLoader
 	public Resource load(File baseDir) throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		if (baseDir == null) throw new ArgumentNullException("baseDir");
 
@@ -247,7 +247,7 @@ public class DomResourceLoader implements ResourceLoader
 																.get(refGroup);
 															if (assertions == null)
 															{
-																throw new MissingReferenceException(refGroup,"","","");
+																throw new InvalidReferenceException(refGroup,"","","");
 															}
 															for (Assertion assertion : assertions)
 															{

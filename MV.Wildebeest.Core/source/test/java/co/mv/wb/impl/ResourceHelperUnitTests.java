@@ -29,7 +29,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationInvalidStateException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -44,8 +44,6 @@ import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.SetTagMigration;
 import co.mv.wb.plugin.fake.SetTagMigrationPlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
-import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
-import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -227,7 +225,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -277,7 +275,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 
 		//
@@ -371,7 +369,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 
 		//
@@ -515,7 +513,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 
 		//
@@ -590,7 +588,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 
 		//
@@ -666,7 +664,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 
 		//

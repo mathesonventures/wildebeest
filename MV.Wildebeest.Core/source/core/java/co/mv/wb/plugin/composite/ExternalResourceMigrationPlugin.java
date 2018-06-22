@@ -27,7 +27,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationPluginType;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
@@ -91,7 +91,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 				migrationT.getBaseDir(),
 				migrationT.getFileName()));
 		}
-		catch (FileLoadException | LoaderFault | PluginBuildException | XmlValidationException | MissingReferenceException e)
+		catch (FileLoadException | LoaderFault | PluginBuildException | XmlValidationException | InvalidReferenceException e)
 		{
 			throw new MigrationFailedException(migration.getMigrationId(), "Unable to load");
 		}
@@ -151,7 +151,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 					ExternalResourceMigrationPlugin.ExceptionFormatString,
 					OutputFormatter.assertionFailed(e)));
 		}
-		catch (MissingReferenceException e)
+		catch (InvalidReferenceException e)
 		{
 			throw new MigrationFailedException(
 				migration.getMigrationId(),

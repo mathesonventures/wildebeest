@@ -26,7 +26,7 @@ import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
@@ -219,7 +219,7 @@ public class WildebeestCommand
 						{
 							this.output.println(OutputFormatter.assertionFailed(e));
 						}
-						catch (MissingReferenceException e)
+						catch (InvalidReferenceException e)
 						{
 							this.output.print(OutputFormatter.missingReferenceException(e));
 						}
@@ -334,7 +334,7 @@ public class WildebeestCommand
 		{
 			out.println(OutputFormatter.resourceValidation(e, "resource"));
 		}
-		catch (MissingReferenceException e)
+		catch (InvalidReferenceException e)
 		{
 			out.println(OutputFormatter.missingReference(e));
 		}
