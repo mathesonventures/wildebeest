@@ -325,7 +325,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 		if (targetState == null) throw new ArgumentNullException("targetState");
-		
+
 		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
 			this.getResourcePlugins(),
 			resource.getType());
@@ -754,7 +754,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	}
 
 	/**
-	 * Retrives all migrations from plugin and throws an error if migrations refer to state that does not exist
+	 * Retrives all migrations from plugin and throws an error if migration refers to state that does not exist
 	 *
 	 * @param resource Resource that is used to perform migration .
 	 * @since 4.0
@@ -780,6 +780,18 @@ public class WildebeestApiImpl implements WildebeestApi
 						"Migration \"%s\" from non-existent to non-existent is invalid",
 						m.getMigrationId().toString()));
 */
+			}
+			boolean migrationToStateValid = false;
+			boolean migrationFromStateValid = false;
+
+			//check do states exist in migration, if they don't set them to true so they don't throw errors
+			if (!m.getToState().isPresent())
+			{
+				migrationToStateValid = true;
+			}
+			if (!m.getFromState().isPresent())
+			{
+				migrationFromStateValid = true;
 			}
 
 			// If either of the terminals are not set then they are valid
@@ -832,7 +844,9 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 	}
 
-	private static boolean stateEquals(Optional<String> stateRef, State state)
+	private static boolean stateEquals(
+		Optional<String> stateRef,
+		State state)
 	{
 		if (stateRef == null) throw new ArgumentNullException("stateRef");
 		if (state == null) throw new ArgumentNullException("state");
