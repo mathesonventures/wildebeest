@@ -21,52 +21,59 @@ package co.mv.wb;
  *
  * @since 4.0
  */
-public class InvalidReferenceException extends Exception {
-    private final String type;
-    private final String ref;
-    private final String referrerType;
-    private final String referrerId;
+public class InvalidReferenceException extends Exception
+{
+	private final String type;
+	private final String ref;
+	private final String referrerType;
+	private final String referrerId;
 
-    public InvalidReferenceException(
-            String type,
-            String ref,
-            String referrerType,
-            String referrerId
-    ) {
-        super(structureMetadata(type, ref, referrerType, referrerId));
-        this.ref = ref;
-        this.type = type;
-        this.referrerType = referrerType;
-        this.referrerId = referrerId;
-    }
+	public InvalidReferenceException(
+		String type,
+		String ref,
+		String referrerType,
+		String referrerId
+	)
+	{
+		super(structureMetadata(type, ref, referrerType, referrerId));
+		this.ref = ref;
+		this.type = type;
+		this.referrerType = referrerType;
+		this.referrerId = referrerId;
+	}
 
-    public static String structureMetadata
-            (
-                    String type,
-                    String ref,
-                    String referrerType,
-                    String referrerId
-            ) {
-        String message = String.format(referrerType + " " + referrerId + " does not contain " + type + " " + ref);
+	public static String structureMetadata
+		(
+			String type,
+			String ref,
+			String referrerType,
+			String referrerId
+		)
+	{
+		String message = String.format("%s %s does not contain %s %s", referrerType, referrerId, type, ref);
 
-        return message;
-    }
+		return message;
+	}
 
-    public String getType() {
-        return this.type;
-    }
+	public String getType()
+	{
+		return this.type;
+	}
 
-    public String getRef() {
-        return this.ref;
-    }
+	public String getRef()
+	{
+		return this.ref;
+	}
 
-    public String getReferrerType() {
-        return this.referrerType;
-    }
+	public String getReferrerType()
+	{
+		return this.referrerType;
+	}
 
-    public String getReferrerId() {
-        return this.referrerId;
-    }
+	public String getReferrerId()
+	{
+		return this.referrerId;
+	}
 
 }
 
