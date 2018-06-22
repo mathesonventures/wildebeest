@@ -157,7 +157,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 				migration.getMigrationId(),
 				String.format(
 					ExternalResourceMigrationPlugin.ExceptionFormatString,
-					OutputFormatter.missingReferenceException(e)));
+					OutputFormatter.invalidReferenceException(e)));
 		}
 	}
 }

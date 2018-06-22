@@ -80,6 +80,7 @@ public class WildebeestApiImpl implements WildebeestApi
 {
 	private static final String RESOURCE_XSD = "resource.xsd";
 	private static final String INSTANCE_XSD = "instance.xsd";
+	private static final String STATE = "State";
 
 	private final PrintStream output;
 	private Map<ResourceType, ResourcePlugin> resourcePlugins = null;
@@ -128,7 +129,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		LoaderFault,
 		PluginBuildException,
 		XmlValidationException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		if (resourceFile == null) throw new ArgumentNullException("resourceFile");
 
@@ -317,7 +318,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
@@ -798,12 +799,22 @@ public class WildebeestApiImpl implements WildebeestApi
 				}
 			}
 
-			if (!migrationFromStateValid || !migrationToStateValid )
+			if (!migrationFromStateValid)
 			{
 				throw new InvalidReferenceException
 					(
-						"State",
-						m.getToState() + " or " + m.getFromState(),
+						STATE,
+						m.getFromState().get(),
+						m.getApplicableTypes().toString(),
+						m.getMigrationId().toString()
+					);
+			}
+			else if (!migrationToStateValid)
+			{
+				throw new InvalidReferenceException
+					(
+						STATE,
+						m.getFromState().get(),
 						m.getApplicableTypes().toString(),
 						m.getMigrationId().toString()
 					);

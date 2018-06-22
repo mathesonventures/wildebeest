@@ -221,7 +221,7 @@ public class WildebeestCommand
 						}
 						catch (InvalidReferenceException e)
 						{
-							this.output.print(OutputFormatter.missingReferenceException(e));
+							this.output.print(OutputFormatter.invalidReferenceException(e));
 						}
 					}
 				}

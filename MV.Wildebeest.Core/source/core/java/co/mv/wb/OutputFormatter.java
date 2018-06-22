@@ -171,7 +171,7 @@ public class OutputFormatter
 		return String.format("Migration failed: %s", e.getMessage());
 	}
 
-	public static String missingReferenceException(InvalidReferenceException e)
+	public static String invalidReferenceException(InvalidReferenceException e)
 	{
 		return String.format("Migration not possible: %s", e.getMessage());
 	}
