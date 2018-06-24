@@ -16,15 +16,35 @@
 
 package co.mv.wb;
 
-/**
- * Indicates that a referred resource is missing in the XML
- *
- * @since 4.0
- */
-public class MissingReferenceException extends Exception
+import co.mv.wb.framework.ArgumentNullException;
+
+public enum EntityType
 {
-	public MissingReferenceException(String ref)
+	State("urn:co.mv.wildebeest:state", "State"),
+	Migration("urn:co.mv.wildebeest:migration", "Migration"),
+	AssertionGroup("urn:co.mv.wildebeest:assertionGroup", "Assertion Group");
+
+	private final String urn;
+	private final String name;
+
+	EntityType(
+		String urn,
+		String name)
 	{
-		super(ref);
+		if (urn == null) throw new ArgumentNullException("urn");
+		if (name == null) throw new ArgumentNullException("name");
+
+		this.urn = urn;
+		this.name = name;
+	}
+
+	public String getUrn()
+	{
+		return this.urn;
+	}
+
+	public String getName()
+	{
+		return this.name;
 	}
 }
