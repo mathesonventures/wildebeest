@@ -19,10 +19,10 @@ package co.mv.wb.impl;
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -73,7 +73,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -115,7 +115,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
@@ -157,7 +157,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -192,7 +192,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -233,7 +233,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+		InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -281,7 +281,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+		InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -315,8 +315,9 @@ public class WildebeestApiImplUnitTests
 			context.instance,
 			Optional.empty());
 
-		TagAssertion initialStateAssertionResult = (TagAssertion)context.resource.getStates().get(1).getAssertions().get(0);
-		assertEquals(initialStateAssertionResult.getCalledNTimes(), 1 );
+		TagAssertion initialStateAssertionResult =
+			(TagAssertion)context.resource.getStates().get(1).getAssertions().get(0);
+		assertEquals(initialStateAssertionResult.getCalledNTimes(), 1);
 
 		// Verify
 		assertFakeInstance(
@@ -338,7 +339,7 @@ public class WildebeestApiImplUnitTests
 		MigrationNotPossibleException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+		InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -376,8 +377,9 @@ public class WildebeestApiImplUnitTests
 		}
 		catch (AssertionFailedException asrFailedEx)
 		{
-			TagAssertion initialStateAssertionResult = (TagAssertion)context.resource.getStates().get(1).getAssertions().get(0);
-			assertEquals(initialStateAssertionResult.getCalledNTimes(), 1 );
+			TagAssertion initialStateAssertionResult =
+				(TagAssertion)context.resource.getStates().get(1).getAssertions().get(0);
+			assertEquals(initialStateAssertionResult.getCalledNTimes(), 1);
 
 			FakeInstance fakeInstance = (FakeInstance)context.instance;
 			Assert.assertTrue(
