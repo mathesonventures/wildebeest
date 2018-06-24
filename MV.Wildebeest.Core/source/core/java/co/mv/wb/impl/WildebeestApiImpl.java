@@ -781,19 +781,7 @@ public class WildebeestApiImpl implements WildebeestApi
 						m.getMigrationId().toString()));
 */
 			}
-			boolean migrationToStateValid = false;
-			boolean migrationFromStateValid = false;
-
-			//check do states exist in migration, if they don't set them to true so they don't throw errors
-			if (!m.getToState().isPresent())
-			{
-				migrationToStateValid = true;
-			}
-			if (!m.getFromState().isPresent())
-			{
-				migrationFromStateValid = true;
-			}
-
+			
 			// If either of the terminals are not set then they are valid
 			boolean fromIsValid = !m.getFromState().isPresent();
 			boolean toIsValid = !m.getToState().isPresent();
