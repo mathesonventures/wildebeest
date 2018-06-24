@@ -18,12 +18,14 @@ package co.mv.wb.plugin.base.dom;
 
 import co.mv.wb.AssertionBuilder;
 import co.mv.wb.Asserts;
+import co.mv.wb.ExpectException;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationBuilder;
 import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.fixture.FixtureBuilder;
 import co.mv.wb.framework.ArgumentNullException;
@@ -34,6 +36,7 @@ import co.mv.wb.plugin.fake.SetTagMigration;
 import co.mv.wb.plugin.fake.TagAssertion;
 import co.mv.wb.plugin.fake.dom.DomSetTagMigrationBuilder;
 import co.mv.wb.plugin.fake.dom.DomTagAssertionBuilder;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
@@ -862,15 +865,21 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResource_validMysqlAssertionGroup_succeeds()
+	public void loadResource_validMysqlAssertionGroup_succeeds() throws
+		InvalidReferenceException,
+		LoaderFault,
+		FileLoadException,
+		PluginBuildException,
+		XmlValidationException
 	{
-		Resource resource = this.loadResource("MySqlDatabase/database.wbresources.uses.assertionGroup.xml");
+		// Setup
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(System.out);
+		String resourceFilePath = "MySqlDatabase/database.wbresources.uses.assertionGroup.xml";
 
-		//
-		// Verify
-		//
+		// Execute
+		Resource resource = wildebeestApi.loadResource(new File(resourceFilePath));
 
-		// Resource
+		// Verify Resource
 		assertNotNull("resource", resource);
 		Asserts.assertResource(
 			UUID.fromString("0d39b8fb-5b5c-48cd-845c-9c4d55f94303"),
@@ -878,13 +887,13 @@ public class DomResourceLoaderTests
 			resource,
 			"resource");
 
-		// States
+		// Verify States
 		assertEquals(
 			"resource.states.size",
 			2,
 			resource.getStates().size());
 
-		// Assertions
+		// Verify Assertions
 		assertEquals(
 			"resource.state[0].assertions.size",
 			1,
@@ -893,18 +902,24 @@ public class DomResourceLoaderTests
 			"resource.state[1].assertions.size",
 			6,
 			resource.getStates().get(1).getAssertions().size());
-
 	}
 
 	@Test
-	public void loadResource_validPostgreAssertionGroup_succeeds()
+	public void loadResource_validPostgreAssertionGroup_succeeds() throws
+		InvalidReferenceException,
+		LoaderFault,
+		FileLoadException,
+		PluginBuildException,
+		XmlValidationException
 	{
-		Resource resource = this.loadResource("PostgreSqlDatabase/database.wbresources.uses.assertionGroup.xml");
-		//
-		// Verify
-		//
+		// Setup
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(System.out);
+		String resourceFilePath = "PostgreSqlDatabase/database.wbresources.uses.assertionGroup.xml";
 
-		// Resource
+		// Execute
+		Resource resource = wildebeestApi.loadResource(new File(resourceFilePath));
+
+		// Verify Resource
 		assertNotNull("resource", resource);
 		Asserts.assertResource(
 			UUID.fromString("38d0eabd-ab40-4c37-96a7-fcacb43bd059"),
@@ -912,13 +927,13 @@ public class DomResourceLoaderTests
 			resource,
 			"resource");
 
-		// States
+		// Verify States
 		assertEquals(
 			"resource.states.size",
 			3,
 			resource.getStates().size());
 
-		// Assertions
+		// Verify Assertions
 		assertEquals(
 			"resource.state[0].assertions.size",
 			1,
@@ -931,18 +946,24 @@ public class DomResourceLoaderTests
 			"resource.state[2].assertions.size",
 			1,
 			resource.getStates().get(2).getAssertions().size());
-
 	}
 
 	@Test
-	public void loadResource_validSqlServerAssertionGroup_succeeds()
+	public void loadResource_validSqlServerAssertionGroup_succeeds() throws
+		InvalidReferenceException,
+		LoaderFault,
+		FileLoadException,
+		PluginBuildException,
+		XmlValidationException
 	{
-		Resource resource = this.loadResource("SqlServerDatabase/database.wbresources.uses.assertionGroup.xml");
-		//
-		// Verify
-		//
+		// Setup
+		WildebeestApi wildebeestApi = new WildebeestApiImpl(System.out);
+		String resourceFilePath = "SqlServerDatabase/database.wbresources.uses.assertionGroup.xml";
 
-		// Resource
+		// Execute
+		Resource resource = wildebeestApi.loadResource(new File(resourceFilePath));
+
+		// Verify Resource
 		assertNotNull("resource", resource);
 		Asserts.assertResource(
 			UUID.fromString("58699f8a-22fa-4784-9768-3fcc3b2619b4"),
@@ -950,13 +971,13 @@ public class DomResourceLoaderTests
 			resource,
 			"resource");
 
-		// States
+		// Verify States
 		assertEquals(
 			"resource.states.size",
 			2,
 			resource.getStates().size());
 
-		// Assertions
+		// Verify Assertions
 		assertEquals(
 			"resource.state[0].assertions.size",
 			1,
@@ -965,38 +986,30 @@ public class DomResourceLoaderTests
 			"resource.state[1].assertions.size",
 			5,
 			resource.getStates().get(1).getAssertions().size());
-
 	}
 
 	@Test
-	public void loadResource_withMissingAssertionGroup_fails()
+	public void loadResource_withMissingAssertionGroup_throwsXmlValidationException()
 	{
-		Resource resource = this.loadResource("InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml");
-		assertNull(resource);
-	}
+		// Setup
+		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
+		String resourceFilePath = "InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml";
 
-
-	private Resource loadResource(
-		String filename)
-	{
-		if (filename == null) throw new ArgumentNullException("filename");
-
-		try
+		// Execute and Verify
+		new ExpectException(XmlValidationException.class)
 		{
-			//
-			// Execute
-			//
-			WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
-			Resource resource = wildebeestApi.loadResource(new File(filename));
-			return resource;
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.loadResource(new File(resourceFilePath));
+			}
 
-		}
-		catch (LoaderFault | PluginBuildException | InvalidReferenceException | FileLoadException
-			| XmlValidationException loaderFault)
-		{
-			loaderFault.printStackTrace();
-		}
-		return null;
+			@Override public void verify(Exception e)
+			{
+				Assert.assertTrue(
+					"e.message",
+					e.getMessage().contains("Attribute 'ref' must appear on element 'assertionRef'"));
+			}
+		}.perform();
 	}
 
 	@Test
