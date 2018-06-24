@@ -56,7 +56,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResource() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -117,7 +117,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForStateWithLabel() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -185,7 +185,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForStateWithNoLabel() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -254,7 +254,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForStateWithLabelAndDescription() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -324,7 +324,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForMultipleStates() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -399,7 +399,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForStateWithOneAssertion() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -470,7 +470,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForStateWithMultipleAssertions() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -527,7 +527,7 @@ public class DomResourceLoaderTests
 			2,
 			resource.getStates().get(0).getAssertions().size());
 		Asserts.assertTagAssertion(
-			assertion1Id,  0, "Foo",
+			assertion1Id, 0, "Foo",
 			(TagAssertion)resource.getStates().get(0).getAssertions().get(0),
 			"resource.states[0].assertions[0]");
 		Asserts.assertTagAssertion(
@@ -543,7 +543,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForMigrationWithFromStateId() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -598,7 +598,7 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.of(state1Id), Optional.empty(), "Blah",
+			migrationId, Optional.of(state1Id.toString()), Optional.empty(), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
@@ -609,7 +609,7 @@ public class DomResourceLoaderTests
 	public void loadResourceForMigrationWithFromStateAsLabel() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -661,7 +661,7 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.of(state1Id), Optional.empty(), "Blah",
+			migrationId, Optional.of("Foo"), Optional.empty(), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
@@ -670,7 +670,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForMigrationsWithToStateId() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -725,7 +725,7 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.empty(), Optional.of(state1Id), "Blah",
+			migrationId, Optional.empty(), Optional.of(state1Id.toString()), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
@@ -736,7 +736,7 @@ public class DomResourceLoaderTests
 	public void loadResourceForMigrationsWithToStateIdAsLabel() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -788,7 +788,7 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.empty(), Optional.of(state1Id), "Blah",
+			migrationId, Optional.empty(), Optional.of("Foo"), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
@@ -797,7 +797,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -855,7 +855,7 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.of(state1Id), Optional.of(state2Id), "Blah",
+			migrationId, Optional.of(state1Id.toString()), Optional.of(state2Id.toString()), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
@@ -969,7 +969,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceXml_withMissingAssertionGroup_fails()
+	public void loadResource_withMissingAssertionGroup_fails()
 	{
 		Resource resource = this.loadResource("InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml");
 		assertNull(resource);
@@ -1003,7 +1003,7 @@ public class DomResourceLoaderTests
 	public void loadResourceForMigrationsWithFromStateIdAndToStateIdAsLabels() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -1058,7 +1058,7 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.of(state1Id), Optional.of(state2Id), "Blah",
+			migrationId, Optional.of("Foo"), Optional.of("Bar"), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 

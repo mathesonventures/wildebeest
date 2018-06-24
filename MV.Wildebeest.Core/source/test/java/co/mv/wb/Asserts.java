@@ -112,8 +112,8 @@ public class Asserts
 
 	public static void assertMigration(
 		UUID expectedMigrationId,
-		Optional<UUID> expectedFromStateId,
-		Optional<UUID> expectedToStateId,
+		Optional<String> expectedFromStateId,
+		Optional<String> expectedToStateId,
 		Migration actual,
 		String name)
 	{
@@ -221,8 +221,8 @@ public class Asserts
 
 	public static void assertFakeMigration(
 		UUID expectedMigrationId,
-		Optional<UUID> expectedFromStateId,
-		Optional<UUID> expectedToStateId,
+		Optional<String> expectedFromStateId,
+		Optional<String> expectedToStateId,
 		String expectedTag,
 		SetTagMigration actual,
 		String name)

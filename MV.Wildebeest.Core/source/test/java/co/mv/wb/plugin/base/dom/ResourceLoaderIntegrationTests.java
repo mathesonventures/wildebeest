@@ -131,17 +131,17 @@ public class ResourceLoaderIntegrationTests
 		Asserts.assertMigration(
 			ProductCatalogueMySqlDatabaseResource.MigrationIdCreateDatabase,
 			Optional.empty(),
-			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated.toString()),
 			resource.getMigrations().get(0), "resource.migrations[0]");
 		Asserts.assertMigration(
 			ProductCatalogueMySqlDatabaseResource.MigrationIdLoadCoreSchema,
-			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated),
-			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated.toString()),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded.toString()),
 			resource.getMigrations().get(1), "resource.migrations[1]");
 		Asserts.assertMigration(
 			ProductCatalogueMySqlDatabaseResource.MigrationIdLoadReferenceData,
-			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded),
-			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded.toString()),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded.toString()),
 			resource.getMigrations().get(2), "resource.migrations[2]");
 
 		//
