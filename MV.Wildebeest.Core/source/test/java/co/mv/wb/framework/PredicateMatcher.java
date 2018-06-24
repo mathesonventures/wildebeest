@@ -21,10 +21,22 @@ import org.hamcrest.Description;
 
 import java.util.function.Function;
 
+/**
+ * A {@link org.hamcrest.Matcher} that applies a predicate to determine the result.
+ *
+ * @param <T> the input type for the predicate.
+ * @since 4.0
+ */
 public class PredicateMatcher<T> extends BaseMatcher<T>
 {
-	private Function<T, Boolean> predicate;
+	private final Function<T, Boolean> predicate;
 
+	/**
+	 * Creates a new PredicateMatcher with the supplied predicate.
+	 *
+	 * @param predicate the predicate that will be applied to determine the match result.
+	 * @since 4.0
+	 */
 	public PredicateMatcher(Function<T, Boolean> predicate)
 	{
 		if (predicate == null) throw new ArgumentNullException("predicate");
