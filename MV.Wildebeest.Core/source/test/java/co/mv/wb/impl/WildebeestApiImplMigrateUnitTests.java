@@ -18,6 +18,7 @@ package co.mv.wb.impl;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
+import co.mv.wb.ExpectException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
@@ -31,7 +32,9 @@ import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
+import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
+import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.SetTagMigrationPlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Assert;
@@ -122,6 +125,7 @@ public class WildebeestApiImplMigrateUnitTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		// Execute
@@ -159,6 +163,7 @@ public class WildebeestApiImplMigrateUnitTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
@@ -166,10 +171,21 @@ public class WildebeestApiImplMigrateUnitTests
 			.getResourceWithNonExistantInitialState();
 
 		// Execute and Verify
-		wildebeestApi.migrate(
-			context.resource,
-			context.instance,
-			Optional.empty());
+		new ExpectException(TargetNotSpecifiedException.class)
+		{
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.migrate(
+					context.resource,
+					context.instance,
+					Optional.empty());
+			}
+
+			@Override public void verify(Exception e)
+			{
+				// No additional verification needed
+			}
+		}.perform();
 	}
 
 	/**
@@ -194,6 +210,7 @@ public class WildebeestApiImplMigrateUnitTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
@@ -243,7 +260,7 @@ public class WildebeestApiImplMigrateUnitTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
-			.withCustomResourcePlugins(context.resourcePlugins)
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withPluginManager(new PluginManagerImpl(
 				Wildebeest.getPluginGroups(),
 				migrationPlugins))
@@ -298,7 +315,7 @@ public class WildebeestApiImplMigrateUnitTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
-			.withCustomResourcePlugins(context.resourcePlugins)
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withPluginManager(new PluginManagerImpl(
 				Wildebeest.getPluginGroups(),
 				migrationPlugins))
@@ -356,7 +373,7 @@ public class WildebeestApiImplMigrateUnitTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
-			.withCustomResourcePlugins(context.resourcePlugins)
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withPluginManager(new PluginManagerImpl(
 				Wildebeest.getPluginGroups(),
 				migrationPlugins))

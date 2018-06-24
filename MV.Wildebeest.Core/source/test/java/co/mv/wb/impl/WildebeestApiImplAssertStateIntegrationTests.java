@@ -56,8 +56,6 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -65,15 +63,13 @@ public class WildebeestApiImplAssertStateIntegrationTests
 			Optional.empty());
 
 		State state = new ImmutableState(UUID.randomUUID());
-
 		resource.getStates().add(state);
 
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		// Execute
@@ -90,8 +86,6 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	public void assertState_oneAssertion_succeeds() throws IndeterminateStateException
 	{
 		// Setup
-		PrintStream output = System.out;
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -111,9 +105,8 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
+			.wildebeestApi(System.out)
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		// Execute
@@ -125,7 +118,11 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		assertNotNull("results", results);
 		assertEquals("results.size", 1, results.size());
 		Asserts.assertAssertionResult(
-			assertion1.getAssertionId(), true, "Tag is \"Foo\"", results.get(0), "results[0]");
+			assertion1.getAssertionId(),
+			true,
+			"Tag is \"Foo\" as expected",
+			results.get(0),
+			"results[0]");
 	}
 
 	@Test
@@ -160,8 +157,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
+			.withResourcePlugin(FakeConstants.Fake, resourcePlugin)
 			.get();
 
 		// Execute
@@ -173,7 +169,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		assertNotNull("results", results);
 		assertEquals("results.size", 2, results.size());
 		Asserts.assertAssertionResult(
-			assertion1Id, true, "Tag is \"Foo\"",
+			assertion1Id, true, "Tag is \"Foo\" as expected",
 			results.get(0), "results[0]");
 		Asserts.assertAssertionResult(
 			assertion2Id, false, "Tag expected to be \"Bar\" but was \"Foo\"",

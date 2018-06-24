@@ -77,17 +77,36 @@ public class WildebeestApiBuilder
 	 * Fluently adds the factory-preset {@link ResourcePlugin}'s to the builder.  A new builder is returned and the
 	 * original builder is left unmutated.
 	 *
-	 * @return a new WildebeestApiBuilder with all the state of the source builder plus
-	 * the factory-preset ResourcePlugin's registered.
+	 * @return a new WildebeestApiBuilder with all the state of the source builder plus the factory-preset
+	 * ResourcePlugin's registered.
 	 */
 	public WildebeestApiBuilder withFactoryResourcePlugins()
 	{
-		Map<ResourceType, ResourcePlugin> updatedResourcePlugins = new HashMap<>(this.resourcePlugins);
-		updatedResourcePlugins.putAll(Wildebeest.getResourcePlugins());
+		Map<ResourceType, ResourcePlugin> updated = new HashMap<>(this.resourcePlugins);
+		updated.putAll(Wildebeest.getResourcePlugins());
 
 		return new WildebeestApiBuilder(
 			wildebeestApi,
-			updatedResourcePlugins,
+			updated,
+			pluginManager);
+	}
+
+	/**
+	 * Adds the supplied ResourceType -> ResourcePlugin mapping to the builder.
+	 *
+	 * @param resourceType the new ResourceType being mapped.
+	 * @param resourcePlugin the ResourcePlugin being mapped.
+	 * @return a new WildebeestApiBuilder wtih all the state of the source builder plus the new mapping added to the set
+	 * of resource plugins.
+	 */
+	public WildebeestApiBuilder withResourcePlugin(ResourceType resourceType, ResourcePlugin resourcePlugin)
+	{
+		Map<ResourceType, ResourcePlugin> updated = new HashMap<>(this.resourcePlugins);
+		updated.put(resourceType, resourcePlugin);
+
+		return new WildebeestApiBuilder(
+			wildebeestApi,
+			updated,
 			pluginManager);
 	}
 
@@ -135,13 +154,4 @@ public class WildebeestApiBuilder
 
 		return wildebeestApi;
 	}
-
-	public WildebeestApiBuilder withCustomResourcePlugins(Map<ResourceType,ResourcePlugin> resourcePlugins)
-	{
-		return new WildebeestApiBuilder(
-			wildebeestApi,
-			resourcePlugins,
-			pluginManager);
-	}
-
 }

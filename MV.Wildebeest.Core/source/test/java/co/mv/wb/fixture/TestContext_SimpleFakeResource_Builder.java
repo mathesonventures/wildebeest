@@ -62,9 +62,6 @@ public class TestContext_SimpleFakeResource_Builder
 
 	public TestContext_SimpleFakeResource getResourceWithNonExistantInitialState()
 	{
-		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
-		resourcePlugins.put(FakeConstants.Fake, new FakeResourcePlugin());
-
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -102,7 +99,6 @@ public class TestContext_SimpleFakeResource_Builder
 		Instance instance = new FakeInstance();
 
 		return new TestContext_SimpleFakeResource(
-			resourcePlugins,
 			resource,
 			fooStateId,
 			fooState,
@@ -113,9 +109,6 @@ public class TestContext_SimpleFakeResource_Builder
 
 	public TestContext_SimpleFakeResource getResourceWithInitialState()
 	{
-		Map<ResourceType, ResourcePlugin> resourcePlugins = new HashMap<>();
-		resourcePlugins.put(FakeConstants.Fake, new FakeResourcePlugin());
-
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -148,7 +141,6 @@ public class TestContext_SimpleFakeResource_Builder
 		Instance instance = new FakeInstance(initialStateId);
 		((FakeInstance)instance).setTag("initialState");
 		return new TestContext_SimpleFakeResource(
-			resourcePlugins,
 			resource,
 			finalStateId,
 			finalState,
