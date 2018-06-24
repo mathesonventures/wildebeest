@@ -67,10 +67,8 @@ public class SetTagMigrationPlugin implements MigrationPlugin
 			throw new IllegalArgumentException("instance must be a FakeInstance");
 		}
 
-		instanceT.setTag(migrationT.getTag());
-
 		State toState = Wildebeest.findState(this.resource, migration.getToState().get());
-
 		instanceT.setStateId(toState.getStateId());
+		instanceT.setTag(migrationT.getTag());
 	}
 }

@@ -34,13 +34,6 @@ import java.util.UUID;
  */
 public class FakeResourcePlugin implements ResourcePlugin
 {
-	private UUID stateId;
-
-	public UUID getStateId()
-	{
-		return this.stateId;
-	}
-
 	@Override public State currentState(
 		Resource resource,
 		Instance instance)
@@ -69,13 +62,14 @@ public class FakeResourcePlugin implements ResourcePlugin
 		if (output == null) throw new ArgumentNullException("output");
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
+		if (stateId == null) throw new ArgumentNullException("stateId");
 
-		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
-		if (stateId == null)
+		FakeInstance instanceT = ModelExtensions.As(instance, FakeInstance.class);
+		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("stateId must be of type FakeInstance");
 		}
 
-		this.stateId = stateId;
+		instanceT.setStateId(stateId);
 	}
 }

@@ -16,9 +16,9 @@
 
 package co.mv.wb.plugin.composite.dom;
 
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
@@ -28,6 +28,8 @@ import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
 import co.mv.wb.plugin.composite.ExternalResourceMigration;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Optional;
@@ -43,16 +45,12 @@ import static org.junit.Assert.assertNotNull;
  */
 public class ExternalResourceDomMigrationBuilderIntegrationTests
 {
-
-	//
-	// create
-	//
-
+	private static final Logger LOG = LoggerFactory.getLogger(ExternalResourceDomMigrationBuilderIntegrationTests.class);
 	@Test
-	public void build_forValidDocument_succeeds() throws
+	public void load_forValidDocument_succeeds() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		UUID resourceId = UUID.randomUUID();
@@ -68,7 +66,7 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 			.withInnerXml("<filename>foo.wbr</filename><target>bar</target>")
 			.render();
 
-		System.out.println("resourceXml: " + resourceXml);
+		LOG.debug("resourceXml: " + resourceXml);
 
 		DomResourceLoader resourceLoader = DomPlugins.resourceLoader(
 			ResourceTypeServiceBuilder
@@ -88,5 +86,4 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 		assertEquals("migration.filename", "foo.wbr", migrationT.getFileName());
 		assertEquals("migration.target", Optional.of("bar"), migrationT.getTarget());
 	}
-
 }
