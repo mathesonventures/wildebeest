@@ -20,15 +20,14 @@ import co.mv.wb.AssertionBuilder;
 import co.mv.wb.Asserts;
 import co.mv.wb.ExpectException;
 import co.mv.wb.FileLoadException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationBuilder;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.fixture.FixtureBuilder;
-import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.impl.WildebeestApiImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -47,7 +46,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests for {@link DomResourceLoader}.
@@ -118,7 +116,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForStateWithLabel() throws
+	public void loadResource_stateWithLabel_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -186,7 +184,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForStateWithNoLabel() throws
+	public void loadResource_stateWithNoLabel_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -255,7 +253,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForStateWithLabelAndDescription() throws
+	public void loadResource_stateWithLabelAndDescription_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -325,7 +323,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForMultipleStates() throws
+	public void loadResource_resourceWithMultipleStates_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -400,7 +398,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForStateWithOneAssertion() throws
+	public void loadResource_stateWithOneAssertion_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -471,7 +469,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForStateWithMultipleAssertions() throws
+	public void loadResource_stateWithMultipleAssertions_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -544,7 +542,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForMigrationWithFromStateId() throws
+	public void loadResource_migrationWithFromStateAsId_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -609,7 +607,7 @@ public class DomResourceLoaderTests
 
 
 	@Test
-	public void loadResourceForMigrationWithFromStateAsLabel() throws
+	public void loadResource_migrationWithFromStateAsLabel_succeeds() throws
 		LoaderFault,
 		PluginBuildException,
 		InvalidReferenceException
@@ -671,7 +669,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForMigrationsWithToStateId() throws
+	public void loadResource_migrationsWithToStateAsId_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -736,7 +734,7 @@ public class DomResourceLoaderTests
 
 
 	@Test
-	public void loadResourceForMigrationsWithToStateIdAsLabel() throws
+	public void loadResource_migrationsWithToStateAsLabel_succeeds() throws
 		LoaderFault,
 		PluginBuildException,
 		InvalidReferenceException
@@ -798,7 +796,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws
+	public void loadResource_migrationsWithFromStateAndToStateAsIds_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -859,6 +857,71 @@ public class DomResourceLoaderTests
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
 			migrationId, Optional.of(state1Id.toString()), Optional.of(state2Id.toString()), "Blah",
+			(SetTagMigration)resource.getMigrations().get(0),
+			"resource.migrations[0]");
+
+	}
+
+	@Test
+	public void loadResource_migrationsWithFromStateAndToStateAsLabels_succeeds() throws
+		LoaderFault,
+		PluginBuildException,
+		InvalidReferenceException
+	{
+
+		//
+		// Setup
+		//
+
+		UUID resourceId = UUID.randomUUID();
+		UUID state1Id = UUID.randomUUID();
+		UUID state2Id = UUID.randomUUID();
+		UUID migrationId = UUID.randomUUID();
+
+		String resourceXml = FixtureBuilder.create()
+			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
+			.state(state1Id, "Foo")
+			.state(state2Id, "Bar")
+			.migration(FakeConstants.Fake.getUri(), migrationId, "Foo", "Bar").withInnerXml("<tag>Blah</tag>")
+			.render();
+
+		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
+
+		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
+		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
+
+		DomResourceLoader resourceBuilder = new DomResourceLoader(
+			ResourceTypeServiceBuilder
+				.create()
+				.with(FakeConstants.Fake)
+				.build(),
+			assertionBuilders,
+			migrationBuilders,
+			resourceXml);
+
+		//
+		// Execute
+		//
+
+		Resource resource = resourceBuilder.load(new File("."));
+
+		//
+		// Verify
+		//
+
+		// Resource
+		assertNotNull("resource", resource);
+		Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
+
+		// States
+		assertEquals("resource.states.size", 2, resource.getStates().size());
+		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
+		Asserts.assertState(state2Id, Optional.of("Bar"), resource.getStates().get(1), "resource.state[1]");
+
+		// Migrations
+		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
+		Asserts.assertFakeMigration(
+			migrationId, Optional.of("Foo"), Optional.of("Bar"), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
@@ -1011,70 +1074,4 @@ public class DomResourceLoaderTests
 			}
 		}.perform();
 	}
-
-	@Test
-	public void loadResourceForMigrationsWithFromStateIdAndToStateIdAsLabels() throws
-		LoaderFault,
-		PluginBuildException,
-		InvalidReferenceException
-	{
-
-		//
-		// Setup
-		//
-
-		UUID resourceId = UUID.randomUUID();
-		UUID state1Id = UUID.randomUUID();
-		UUID state2Id = UUID.randomUUID();
-		UUID migrationId = UUID.randomUUID();
-
-		String resourceXml = FixtureBuilder.create()
-			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-			.state(state1Id, "Foo")
-			.state(state2Id, "Bar")
-			.migration(FakeConstants.Fake.getUri(), migrationId, "Foo", "Bar").withInnerXml("<tag>Blah</tag>")
-			.render();
-
-		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
-
-		Map<String, MigrationBuilder> migrationBuilders = new HashMap<>();
-		migrationBuilders.put(FakeConstants.Fake.getUri(), new DomSetTagMigrationBuilder());
-
-		DomResourceLoader resourceBuilder = new DomResourceLoader(
-			ResourceTypeServiceBuilder
-				.create()
-				.with(FakeConstants.Fake)
-				.build(),
-			assertionBuilders,
-			migrationBuilders,
-			resourceXml);
-
-		//
-		// Execute
-		//
-
-		Resource resource = resourceBuilder.load(new File("."));
-
-		//
-		// Verify
-		//
-
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(resourceId, "Product Catalogue Database", resource, "resource");
-
-		// States
-		assertEquals("resource.states.size", 2, resource.getStates().size());
-		Asserts.assertState(state1Id, Optional.of("Foo"), resource.getStates().get(0), "resource.state[0]");
-		Asserts.assertState(state2Id, Optional.of("Bar"), resource.getStates().get(1), "resource.state[1]");
-
-		// Migrations
-		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
-		Asserts.assertFakeMigration(
-			migrationId, Optional.of("Foo"), Optional.of("Bar"), "Blah",
-			(SetTagMigration)resource.getMigrations().get(0),
-			"resource.migrations[0]");
-
-	}
-
 }

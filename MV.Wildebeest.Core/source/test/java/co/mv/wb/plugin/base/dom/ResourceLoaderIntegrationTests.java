@@ -61,7 +61,6 @@ public class ResourceLoaderIntegrationTests
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
 		InvalidReferenceException
-
 	{
 
 		//
