@@ -18,7 +18,7 @@ package co.mv.wb.plugin.postgresql;
 
 import co.mv.wb.Instance;
 import co.mv.wb.LoaderFault;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
@@ -46,7 +46,7 @@ public class PostgreSqlDomServiceUnitTests
 	public void postgreSqlDatabaseResourceLoadFromValidDocumentSucceeds() throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		UUID resourceId = UUID.randomUUID();

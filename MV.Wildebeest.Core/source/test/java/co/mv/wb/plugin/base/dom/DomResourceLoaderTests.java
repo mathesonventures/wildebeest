@@ -21,7 +21,7 @@ import co.mv.wb.Asserts;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationBuilder;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.XmlValidationException;
@@ -56,7 +56,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResource() throws
 		LoaderFault,
-		MissingReferenceException,
+            InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -117,7 +117,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForStateWithLabel() throws
 		LoaderFault,
-		MissingReferenceException,
+            InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -185,7 +185,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForStateWithNoLabel() throws
 		LoaderFault,
-		MissingReferenceException,
+            InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -254,7 +254,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForStateWithLabelAndDescription() throws
 		LoaderFault,
-		MissingReferenceException,
+            InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -324,7 +324,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForMultipleStates() throws
 		LoaderFault,
-		MissingReferenceException,
+            InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -399,7 +399,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForStateWithOneAssertion() throws
 		LoaderFault,
-		MissingReferenceException,
+            InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -470,7 +470,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForStateWithMultipleAssertions() throws
 		LoaderFault,
-		MissingReferenceException,
+            InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -543,7 +543,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForMigrationWithFromStateId() throws
 		LoaderFault,
-		MissingReferenceException,
+            InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -609,7 +609,7 @@ public class DomResourceLoaderTests
 	public void loadResourceForMigrationWithFromStateAsLabel() throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 
 		//
@@ -670,7 +670,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForMigrationsWithToStateId() throws
 		LoaderFault,
-		MissingReferenceException,
+            InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -736,7 +736,7 @@ public class DomResourceLoaderTests
 	public void loadResourceForMigrationsWithToStateIdAsLabel() throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 
 		//
@@ -797,7 +797,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws
 		LoaderFault,
-		MissingReferenceException,
+            InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -991,7 +991,7 @@ public class DomResourceLoaderTests
 			return resource;
 
 		}
-		catch (LoaderFault | PluginBuildException | MissingReferenceException | FileLoadException
+		catch (LoaderFault | PluginBuildException | InvalidReferenceException | FileLoadException
 			| XmlValidationException loaderFault)
 		{
 			loaderFault.printStackTrace();
@@ -1003,7 +1003,7 @@ public class DomResourceLoaderTests
 	public void loadResourceForMigrationsWithFromStateIdAndToStateIdAsLabels() throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 
 		//

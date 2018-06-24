@@ -23,9 +23,8 @@ import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationInvalidStateException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
@@ -98,8 +97,7 @@ public class WildebeestCommandUnitTests
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
 		XmlValidationException,
-		MigrationInvalidStateException,
-		MissingReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
