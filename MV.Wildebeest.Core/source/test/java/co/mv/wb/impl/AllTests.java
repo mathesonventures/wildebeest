@@ -25,7 +25,8 @@ import org.junit.runners.Suite;
 		WildebeestApiImplAssertStateIntegrationTests.class,
 		WildebeestApiImplJumpStateIntegrationTests.class,
 		WildebeestApiImplMigrateIntegrationTests.class,
-		WildebeestApiImplUnitTests.class
+		WildebeestApiImplMigrateUnitTests.class,
+		WildebeestApiImplValidateXmlUnitTests.class
 	})
 public class AllTests
 {

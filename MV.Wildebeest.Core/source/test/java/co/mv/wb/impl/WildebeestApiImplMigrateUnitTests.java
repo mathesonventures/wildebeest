@@ -29,20 +29,15 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.XmlValidationException;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
-import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.SetTagMigrationPlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +51,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @since 4.0
  */
-public class WildebeestApiImplUnitTests
+public class WildebeestApiImplMigrateUnitTests
 {
 	/**
 	 * A call to migrate specified a target and the resource does not have a default.  WildebeestApiImpl correctly
@@ -386,170 +381,5 @@ public class WildebeestApiImplUnitTests
 				"Assertion Failed Exception Encountered " + asrFailedEx,
 				fakeInstance.getTag() != "NewTag");
 		}
-	}
-
-	@Test
-	public void validateResourceXml_invalidMySqlResource_fails()
-	{
-		// Execute and Verify
-		this.validateResourceXml_fails("MySqlDatabase/database.wbresource.xml");
-	}
-
-	@Test
-	public void validateXml_invalidSqlServerResource_fails()
-	{
-		// Execute and Verify
-		this.validateResourceXml_fails("SqlServerDatabase/database.wbresource.xml");
-	}
-
-	@Test
-	public void validateXml_validPostgreSqlResource_succeeds()
-	{
-		// Execute and Verify
-		this.validateResourceXml_succeeds("PostgreSqlDatabase/database.wbresource.xml");
-	}
-
-	@Test
-	public void validateXml_invalidResource_fails()
-	{
-		// Execute and Verify
-		this.validateResourceXml_fails("InvalidXml/InvalidSampleResources.xml");
-	}
-
-	@Test
-	public void validateXml_validMySqlInstance_succeeds()
-	{
-		// Execute and Verify
-		this.validateInstanceXml_succeeds("MySqlDatabase/staging_db.wbinstance.xml");
-	}
-
-	@Test
-	public void validateXml_invalidSqlServerInstance_fails()
-	{
-		// Execute and Verify
-		this.validateInstanceXml_fails("SqlServerDatabase/staging_db.wbinstance.xml");
-	}
-
-	@Test
-	public void validateXml_validPostgreSqlInstance_succeeds()
-	{
-		// Execute and Verify
-		this.validateInstanceXml_succeeds("PostgreSqlDatabase/staging.wbinstance.xml");
-	}
-
-	@Test
-	public void validateXml_invalidInstance_fails()
-	{
-		// Execute and Verify
-		this.validateInstanceXml_fails("InvalidXml/InvalidInstanceSampleResources.xml");
-	}
-
-	/**
-	 * A generic test that expects the supplied XML file to be valid according to the resource XSD schema.
-	 *
-	 * @param filename the resource XML file to validate.
-	 * @since 4.0
-	 */
-	private void validateResourceXml_succeeds(
-		String filename)
-	{
-		if (filename == null) throw new ArgumentNullException("filename");
-
-		try
-		{
-			WildebeestApiImpl.validateResourceXml(this.readAllText(filename));
-		}
-		catch (XmlValidationException e)
-		{
-			Assert.fail(
-				"the XML file was expected to be valid according to the resource schema, but was not: " +
-					e.getMessage());
-		}
-	}
-
-	/**
-	 * A generic test that expects the supplied XML file to be INVALID according to the resource XSD schema.
-	 *
-	 * @param filename the resource XML file to validate.
-	 * @since 4.0
-	 */
-	private void validateResourceXml_fails(
-		String filename)
-	{
-		if (filename == null) throw new ArgumentNullException("filename");
-
-		try
-		{
-			WildebeestApiImpl.validateResourceXml(this.readAllText(filename));
-			Assert.fail("The XML file was expected to be invalid according to the resource schema, but it passed " +
-				"validation");
-		}
-		catch (XmlValidationException e)
-		{
-			// Expected.
-		}
-	}
-
-	/**
-	 * A generic test that expects the supplied XML file to be valid according to the instance XSD schema.
-	 *
-	 * @param filename the instance XML file to validate.
-	 * @since 4.0
-	 */
-	private void validateInstanceXml_succeeds(
-		String filename)
-	{
-		if (filename == null) throw new ArgumentNullException("filename");
-
-		try
-		{
-			WildebeestApiImpl.validateInstanceXml(this.readAllText(filename));
-		}
-		catch (XmlValidationException e)
-		{
-			Assert.fail(
-				"the XML file was expected to be valid according to the schema, but was not: " +
-					e.getMessage());
-		}
-	}
-
-	/**
-	 * A generic test that expects the supplied XML file to be INVALID according to the instance XSD schema.
-	 *
-	 * @param filename the instance XML file to validate.
-	 * @since 4.0
-	 */
-	private void validateInstanceXml_fails(
-		String filename)
-	{
-		if (filename == null) throw new ArgumentNullException("filename");
-
-		try
-		{
-			WildebeestApiImpl.validateInstanceXml(this.readAllText(filename));
-			Assert.fail("The XML file was expected to be invalid according to the instance schema, but it passed " +
-				"validation");
-		}
-		catch (XmlValidationException e)
-		{
-			// Expected.
-		}
-	}
-
-	private String readAllText(String filename)
-	{
-		if (filename == null) throw new ArgumentNullException("filename");
-
-		final String result;
-		try
-		{
-			result = new String(Files.readAllBytes(new File(filename).toPath()));
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-
-		return result;
 	}
 }
