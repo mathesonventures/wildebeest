@@ -29,7 +29,7 @@ import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.fixture.FixtureBuilder;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
-import co.mv.wb.impl.WildebeestApiImpl;
+import co.mv.wb.impl.WildebeestApiBuilder;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.SetTagMigration;
 import co.mv.wb.plugin.fake.TagAssertion;
@@ -936,7 +936,7 @@ public class DomResourceLoaderTests
 		XmlValidationException
 	{
 		// Setup
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(System.out);
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
 		String resourceFilePath = "MySqlDatabase/database.wbresources.uses.assertionGroup.xml";
 
 		// Execute
@@ -976,7 +976,7 @@ public class DomResourceLoaderTests
 		XmlValidationException
 	{
 		// Setup
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(System.out);
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
 		String resourceFilePath = "PostgreSqlDatabase/database.wbresources.uses.assertionGroup.xml";
 
 		// Execute
@@ -1020,7 +1020,7 @@ public class DomResourceLoaderTests
 		XmlValidationException
 	{
 		// Setup
-		WildebeestApi wildebeestApi = new WildebeestApiImpl(System.out);
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
 		String resourceFilePath = "SqlServerDatabase/database.wbresources.uses.assertionGroup.xml";
 
 		// Execute
@@ -1055,7 +1055,7 @@ public class DomResourceLoaderTests
 	public void loadResource_withMissingAssertionGroup_throwsXmlValidationException()
 	{
 		// Setup
-		WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
 		String resourceFilePath = "InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml";
 
 		// Execute and Verify

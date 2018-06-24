@@ -17,8 +17,6 @@
 package co.mv.wb.impl;
 
 import co.mv.wb.AssertionType;
-import co.mv.wb.MigrationPlugin;
-import co.mv.wb.MigrationPluginType;
 import co.mv.wb.MigrationType;
 import co.mv.wb.MigrationTypeInfo;
 import co.mv.wb.PluginGroup;
@@ -28,7 +26,6 @@ import co.mv.wb.framework.Util;
 import org.reflections.Reflections;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -41,40 +38,18 @@ public class PluginManagerImpl implements PluginManager
 	private static final String SCAN_PACKAGE = "co.mv.wb";
 
 	private final List<PluginGroup> pluginGroups;
-	private final Map<String, MigrationPlugin> migrationPlugins;
 
 	/**
 	 * Constructs a new PluginManagerImpl with the specified plugin groups and migration plugins registered.
 	 *
-	 * @param pluginGroups     the plugin groups to be registered in this PluginManager.
-	 * @param migrationPlugins the migration plugins to be registered in this PluginManager.
+	 * @param pluginGroups the plugin groups to be registered in this PluginManager.
 	 */
 	public PluginManagerImpl(
-		List<PluginGroup> pluginGroups,
-		List<MigrationPlugin> migrationPlugins)
+		List<PluginGroup> pluginGroups)
 	{
 		if (pluginGroups == null) throw new ArgumentNullException("pluginGroups");
-		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
 
 		this.pluginGroups = pluginGroups;
-
-		this.migrationPlugins = migrationPlugins
-			.stream()
-			.collect(Collectors.toMap(
-				x ->
-				{
-					MigrationPluginType migrationPluginType = x.getClass().getAnnotation(MigrationPluginType.class);
-
-					if (migrationPluginType == null)
-					{
-						throw new RuntimeException(String.format(
-							"MigrationPlugin %s doesn't have a MigrationPluginType",
-							x.getClass().getName()));
-					}
-
-					return migrationPluginType.uri();
-				},
-				x -> x));
 	}
 
 	@Override
@@ -105,20 +80,6 @@ public class PluginManagerImpl implements PluginManager
 						migrationClass);
 				})
 			.collect(Collectors.toList());
-	}
-
-	@Override
-	public MigrationPlugin getMigrationPlugin(
-		String uri)
-	{
-		if (uri == null) throw new ArgumentNullException("uri");
-
-		if (!migrationPlugins.containsKey(uri))
-		{
-			throw new RuntimeException(String.format("no MigrationPlugin found for uri: %s", uri));
-		}
-
-		return migrationPlugins.get(uri);
 	}
 
 	@Override

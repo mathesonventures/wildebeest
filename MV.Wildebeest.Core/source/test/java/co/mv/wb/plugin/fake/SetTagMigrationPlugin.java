@@ -67,8 +67,10 @@ public class SetTagMigrationPlugin implements MigrationPlugin
 			throw new IllegalArgumentException("instance must be a FakeInstance");
 		}
 
+		// TODO: These two lines should not be here because it should not be the resposibility of the migration plugin to update the tracked state of the instance.  Once MVWB-65 is done these can be removed and this class's private Resource field can be removed.
 		State toState = Wildebeest.findState(this.resource, migration.getToState().get());
 		instanceT.setStateId(toState.getStateId());
+
 		instanceT.setTag(migrationT.getTag());
 	}
 }

@@ -84,8 +84,10 @@ public class WildebeestApiImpl implements WildebeestApi
 	private static final String INSTANCE_XSD = "instance.xsd";
 
 	private final PrintStream output;
-	private Map<ResourceType, ResourcePlugin> resourcePlugins = null;
-	private PluginManager pluginManager = null;
+
+	private Map<ResourceType, ResourcePlugin> resourcePlugins;
+	private PluginManager pluginManager;
+	private Map<String, MigrationPlugin> migrationPlugins;
 
 
 	/**
@@ -95,34 +97,66 @@ public class WildebeestApiImpl implements WildebeestApi
 	 * @param output the PrintStream that should be used for output to the user.
 	 * @since 1.0
 	 */
-	public WildebeestApiImpl(
-		PrintStream output)
+	public WildebeestApiImpl(PrintStream output)
 	{
 		if (output == null) throw new ArgumentNullException("output");
 
 		this.output = output;
+		this.resourcePlugins = null;
+		this.pluginManager = null;
+		this.migrationPlugins = null;
 	}
 
 	private Map<ResourceType, ResourcePlugin> getResourcePlugins()
 	{
+		if (this.resourcePlugins == null)
+		{
+			throw new IllegalStateException("resourcePlugins not set");
+		}
+
 		return this.resourcePlugins;
 	}
 
-	public void setResourcePlugins(Map<ResourceType, ResourcePlugin> value)
+	public void setResourcePlugins(Map<ResourceType, ResourcePlugin> resourcePlugins)
 	{
-		this.resourcePlugins = value;
+		if (resourcePlugins == null) throw new ArgumentNullException("resourcePlugins");
+
+		this.resourcePlugins = resourcePlugins;
 	}
 
-	public PluginManager getPluginManager()
+	private PluginManager getPluginManager()
 	{
+		if (this.pluginManager == null)
+		{
+			throw new IllegalStateException("pluginManager not set");
+		}
+
 		return this.pluginManager;
 	}
 
-	public void setPluginManager(PluginManager value)
+	public void setPluginManager(PluginManager pluginManager)
 	{
-		this.pluginManager = value;
+		if (pluginManager == null) throw new ArgumentNullException("pluginManager");
+
+		this.pluginManager = pluginManager;
 	}
 
+	private Map<String, MigrationPlugin> getMigrationPlugins()
+	{
+		if (this.migrationPlugins == null)
+		{
+			throw new IllegalStateException("migrationPlugins not set");
+		}
+
+		return this.migrationPlugins;
+	}
+
+	public void setMigrationPlugins(Map<String, MigrationPlugin> migrationPlugins)
+	{
+		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
+
+		this.migrationPlugins = migrationPlugins;
+	}
 
 	public Resource loadResource(
 		File resourceFile) throws
@@ -242,8 +276,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
-			this.getResourcePlugins(),
+		ResourcePlugin resourcePlugin = this.getResourcePlugin(
 			resource.getType());
 
 		State state = resourcePlugin.currentState(
@@ -280,8 +313,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
-			this.getResourcePlugins(),
+		ResourcePlugin resourcePlugin = this.getResourcePlugin(
 			resource.getType());
 
 		State state = resourcePlugin.currentState(
@@ -324,8 +356,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (instance == null) throw new ArgumentNullException("instance");
 		if (targetState == null) throw new ArgumentNullException("targetState");
 
-		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
-			this.getResourcePlugins(),
+		ResourcePlugin resourcePlugin = this.getResourcePlugin(
 			resource.getType());
 
 		// Resolve the target state
@@ -373,7 +404,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		for (Migration migration : path)
 		{
 			String migrationTypeUri = migration.getClass().getAnnotation(MigrationType.class).uri();
-			MigrationPlugin migrationPlugin = this.getPluginManager().getMigrationPlugin(migrationTypeUri);
+			MigrationPlugin migrationPlugin = this.getMigrationPlugin(migrationTypeUri);
 
 			Optional<State> fromState = migration.getFromState().map(stateId -> Wildebeest.findState(
 				resource,
@@ -429,8 +460,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (targetState != null && "".equals(targetState.trim()))
 			throw new IllegalArgumentException("targetState cannot be empty");
 
-		ResourcePlugin resourcePlugin = WildebeestApiImpl.getResourcePlugin(
-			this.getResourcePlugins(),
+		ResourcePlugin resourcePlugin = this.getResourcePlugin(
 			resource.getType());
 
 		UUID targetStateId = Wildebeest.findState(resource, targetState).getStateId();
@@ -651,19 +681,16 @@ public class WildebeestApiImpl implements WildebeestApi
 	/**
 	 * Looks up the ResourcePlugin for the supplied ResourceType.
 	 *
-	 * @param resourcePlugins the set of available ResourcePlugins.
-	 * @param resourceType    the ResourceType for which a plugin should be retrieved.
+	 * @param resourceType the ResourceType for which a plugin should be retrieved.
 	 * @return the ResourcePlugin that corresponds to the supplied ResourceType.
 	 * @since 4.0
 	 */
-	private static ResourcePlugin getResourcePlugin(
-		Map<ResourceType, ResourcePlugin> resourcePlugins,
+	private ResourcePlugin getResourcePlugin(
 		ResourceType resourceType)
 	{
-		if (resourcePlugins == null) throw new ArgumentNullException("resourcePlugins");
 		if (resourceType == null) throw new ArgumentNullException("resourceType");
 
-		ResourcePlugin resourcePlugin = resourcePlugins.get(resourceType);
+		ResourcePlugin resourcePlugin = this.getResourcePlugins().get(resourceType);
 
 		if (resourcePlugin == null)
 		{
@@ -673,6 +700,26 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		return resourcePlugin;
+	}
+
+	/**
+	 * Looks up the MigrationPlugin for the supplied MigrationType URI.
+	 *
+	 * @param uri the URI identifying the MigrationType of interest.
+	 * @return the MigrationPlugin for the supplied MigrationType URI.
+	 * @since 4.0
+	 */
+	private MigrationPlugin getMigrationPlugin(
+		String uri)
+	{
+		if (uri == null) throw new ArgumentNullException("uri");
+
+		if (!this.getMigrationPlugins().containsKey(uri))
+		{
+			throw new RuntimeException(String.format("no MigrationPlugin found for uri: %s", uri));
+		}
+
+		return this.getMigrationPlugins().get(uri);
 	}
 
 	private static void throwIfFailed(

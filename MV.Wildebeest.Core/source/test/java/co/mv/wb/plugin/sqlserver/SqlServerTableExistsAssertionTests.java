@@ -183,6 +183,7 @@ public class SqlServerTableExistsAssertionTests
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
 			.withFactoryPluginManager()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		SqlServerProperties properties = SqlServerProperties.get();

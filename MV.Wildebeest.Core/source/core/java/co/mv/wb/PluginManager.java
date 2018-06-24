@@ -42,15 +42,6 @@ public interface PluginManager
 	List<MigrationTypeInfo> getMigrationTypeInfos();
 
 	/**
-	 * Looks up the MigrationPlugin for the supplied MigrationType URI.
-	 *
-	 * @param uri the URI identifying the MigrationType of interest.
-	 * @return the MigrationPlugin for the supplied MigrationType URI.
-	 * @since 4.0
-	 */
-	MigrationPlugin getMigrationPlugin(String uri);
-
-	/**
 	 * Returns a list of AssertionType's representing all assertions known to Wildebeest.
 	 *
 	 * @return a list of AssertionType's representing all available assertions.

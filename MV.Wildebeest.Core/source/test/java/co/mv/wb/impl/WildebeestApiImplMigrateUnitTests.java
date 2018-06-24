@@ -24,7 +24,6 @@ import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.MigrationPlugin;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
@@ -41,8 +40,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -76,14 +73,16 @@ public class WildebeestApiImplMigrateUnitTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.get();
-
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withDefaultTarget("bar")
 			.getResourceWithNonExistantInitialState();
+
+		WildebeestApi wildebeestApi = Wildebeest
+			.wildebeestApi(output)
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
+			.get();
 
 		// Execute
 		wildebeestApi.migrate(
@@ -126,6 +125,7 @@ public class WildebeestApiImplMigrateUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
 
 		// Execute
@@ -208,15 +208,16 @@ public class WildebeestApiImplMigrateUnitTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
-			.get();
-
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withDefaultTarget("bar")
 			.getResourceWithNonExistantInitialState();
+
+		WildebeestApi wildebeestApi = Wildebeest
+			.wildebeestApi(output)
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
+			.get();
 
 		// Execute
 		wildebeestApi.migrate(
@@ -255,15 +256,12 @@ public class WildebeestApiImplMigrateUnitTests
 			.withDefaultTarget("bar")
 			.getResourceWithNonExistantInitialState();
 
-		List<MigrationPlugin> migrationPlugins = new ArrayList<>();
-		migrationPlugins.add(new SetTagMigrationPlugin(context.resource));
-
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withPluginManager(new PluginManagerImpl(
-				Wildebeest.getPluginGroups(),
-				migrationPlugins))
+				Wildebeest.getPluginGroups()))
+			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
 
 		// Execute
@@ -310,15 +308,12 @@ public class WildebeestApiImplMigrateUnitTests
 			"initialState");
 		initialState.getAssertions().add(initialStateAssertion1);
 
-		List<MigrationPlugin> migrationPlugins = new ArrayList<>();
-		migrationPlugins.add(new SetTagMigrationPlugin(context.resource));
-
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withPluginManager(new PluginManagerImpl(
-				Wildebeest.getPluginGroups(),
-				migrationPlugins))
+				Wildebeest.getPluginGroups()))
+			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
 
 		// Execute
@@ -368,16 +363,14 @@ public class WildebeestApiImplMigrateUnitTests
 			"NewTag");
 		initialState.getAssertions().add(initialStateAssertion1);
 
-		List<MigrationPlugin> migrationPlugins = new ArrayList<>();
-		migrationPlugins.add(new SetTagMigrationPlugin(context.resource));
-
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withPluginManager(new PluginManagerImpl(
-				Wildebeest.getPluginGroups(),
-				migrationPlugins))
+				Wildebeest.getPluginGroups()))
+			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
+
 		try
 		{
 			// Execute
