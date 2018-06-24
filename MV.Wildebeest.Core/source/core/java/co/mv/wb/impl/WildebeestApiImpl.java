@@ -20,6 +20,7 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
 import co.mv.wb.AssertionType;
+import co.mv.wb.EntityType;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
@@ -28,6 +29,7 @@ import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationType;
 import co.mv.wb.MigrationTypeInfo;
@@ -80,7 +82,6 @@ public class WildebeestApiImpl implements WildebeestApi
 {
 	private static final String RESOURCE_XSD = "resource.xsd";
 	private static final String INSTANCE_XSD = "instance.xsd";
-	private static final String STATE = "State";
 
 	private final PrintStream output;
 	private Map<ResourceType, ResourcePlugin> resourcePlugins = null;
@@ -317,6 +318,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
 		MigrationFailedException,
+		MigrationNotPossibleException,
 		UnknownStateSpecifiedException,
 		InvalidReferenceException
 	{
@@ -752,74 +754,90 @@ public class WildebeestApiImpl implements WildebeestApi
 	}
 
 	/**
-	 * Retrives all migrations from plugin and throws an error if migration refers to state that does not exist
+	 * Retrives all migrations from plugin and throws an error if migrations refer to state that does not exist
 	 *
 	 * @param resource Resource that is used to perform migration .
 	 * @since 4.0
 	 */
 	private static void validateMigrationStates(
-		Resource resource) throws InvalidReferenceException
+		Resource resource) throws MigrationNotPossibleException, InvalidReferenceException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 
 		List<Migration> migrations = resource.getMigrations();
 		List<State> states = resource.getStates();
 
-		for (Migration m : migrations
-			)
+		for (Migration m : migrations)
 		{
-			boolean migrationToStateValid = false;
-			boolean migrationFromStateValid = false;
-
-			//check do states exist in migration, if they don't set them to true so they don't throw errors
-			if (!m.getToState().isPresent())
+			// If neither terminals are present, then the migration is invalid because it is declaring that it will
+			// migrate from non-existent to non-existent.
+			if (!m.getFromState().isPresent() && !m.getToState().isPresent())
 			{
-				migrationToStateValid = true;
+				throw new MigrationNotPossibleException();
+/*
+				TODO: return a fully formed exception for this case with the following message
+					String.format(
+						"Migration \"%s\" from non-existent to non-existent is invalid",
+						m.getMigrationId().toString()));
+*/
 			}
-			if (!m.getFromState().isPresent())
-			{
-				migrationFromStateValid = true;
-			}
 
-			for (State s : states
-				)
-			{
-				if (m.getToState().equals(s.getStateId()) || m.getToState().equals(s.getLabel()))
-				{
-					migrationToStateValid = true;
-				}
-				if (m.getFromState().equals(s.getStateId()) || m.getFromState().equals(s.getLabel()))
-				{
-					migrationFromStateValid = true;
-				}
+			// If either of the terminals are not set then they are valid
+			boolean fromIsValid = !m.getFromState().isPresent();
+			boolean toIsValid = !m.getToState().isPresent();
 
-				if (migrationFromStateValid && migrationToStateValid)
+			// Search the states for those that match the non-empty references on the migration.
+			for (State s : states)
+			{
+				fromIsValid |= WildebeestApiImpl.stateEquals(m.getFromState(), s);
+				toIsValid |= WildebeestApiImpl.stateEquals(m.getToState(), s);
+
+				if (fromIsValid && toIsValid)
 				{
 					break;
 				}
 			}
 
-			if (!migrationFromStateValid)
+			// If after checking all states in the resource either the from or to references do not match a state, then
+			// the migration  definition is invalid as it is referring to an unknown state.  Craft a message specifying
+			// either or both of the invalid references
+			if (!fromIsValid && !toIsValid)
 			{
-				throw new InvalidReferenceException
-					(
-						STATE,
-						m.getFromState().get(),
-						m.getApplicableTypes().toString(),
-						m.getMigrationId().toString()
-					);
+				throw InvalidReferenceException.twoReferences(
+					EntityType.State,
+					m.getFromState().get(),
+					EntityType.State,
+					m.getToState().get(),
+					EntityType.Migration,
+					m.getMigrationId().toString());
 			}
-			else if (!migrationToStateValid)
+			if (!fromIsValid)
 			{
-				throw new InvalidReferenceException
-					(
-						STATE,
-						m.getToState().get(),
-						m.getApplicableTypes().toString(),
-						m.getMigrationId().toString()
-					);
+				// Note: no need to check m.getFromState().isPresent() because if its empty then fromIsValid is true
+				throw InvalidReferenceException.oneReference(
+					EntityType.State,
+					m.getFromState().get(),
+					EntityType.Migration,
+					m.getMigrationId().toString());
+			}
+			else if (!toIsValid)
+			{
+				// Note: no need to check m.getToState().isPresent() because if its empty then toIsValid is true
+				throw InvalidReferenceException.oneReference(
+					EntityType.State,
+					m.getToState().get(),
+					EntityType.Migration,
+					m.getMigrationId().toString());
 			}
 		}
 	}
 
+	private static boolean stateEquals(Optional<String> stateRef, State state)
+	{
+		if (stateRef == null) throw new ArgumentNullException("stateRef");
+		if (state == null) throw new ArgumentNullException("state");
+
+		return stateRef.isPresent() &&
+			(stateRef.get().equals(state.getStateId().toString()) || stateRef.get().equals(state.getLabel()));
+	}
 }

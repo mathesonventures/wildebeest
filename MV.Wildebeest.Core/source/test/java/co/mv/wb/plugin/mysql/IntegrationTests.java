@@ -23,7 +23,6 @@ import co.mv.wb.Instance;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationInvalidStateException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.InvalidReferenceException;
@@ -225,8 +224,7 @@ public class IntegrationTests
 		SQLException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		PrintStream output = System.out;

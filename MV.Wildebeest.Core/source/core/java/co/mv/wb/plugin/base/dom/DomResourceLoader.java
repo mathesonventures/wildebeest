@@ -18,6 +18,7 @@ package co.mv.wb.plugin.base.dom;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionBuilder;
+import co.mv.wb.EntityType;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Messages;
 import co.mv.wb.Migration;
@@ -127,7 +128,7 @@ public class DomResourceLoader implements ResourceLoader
 	public Resource load(File baseDir) throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		if (baseDir == null) throw new ArgumentNullException("baseDir");
 
@@ -239,24 +240,38 @@ public class DomResourceLoader implements ResourceLoader
 													{
 														case XA_ASSERTION_REF_TYPE_SINGLE:
 															break;
+
 														case XA_ASSERTION_REF_TYPE_SELECTOR:
 															break;
+
 														case XA_ASSERTION_REF_TYPE_GROUP:
+															// Get the name of the group we're referencing and validate
+															// that it exists.
 															String refGroup = asrXe.getAttribute("ref");
 															List<Assertion> assertions = assertionGroupsMap
 																.get(refGroup);
+
+															// If the group couldn't be found then This state is
+															// referencing an AssertionGroup that does not exist.
 															if (assertions == null)
 															{
-																throw new InvalidReferenceException(refGroup,"","","");
+																throw InvalidReferenceException.oneReference(
+																	EntityType.AssertionGroup,
+																	refGroup,
+																	EntityType.State,
+																	state.getStateId().toString());
 															}
+
 															for (Assertion assertion : assertions)
 															{
 																verifyAssertionIsApplicable(resource, assertion);
 																state.getAssertions().add(assertion);
 															}
+
 															break;
 													}
 													break;
+
 												default:
 													asr = buildAssertion(
 														this.assertionBuilders,

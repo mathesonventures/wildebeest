@@ -22,7 +22,6 @@ import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationInvalidStateException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.PluginBuildException;
@@ -61,8 +60,7 @@ public class ResourceLoaderIntegrationTests
 		SQLException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException,
-		MigrationInvalidStateException
+		InvalidReferenceException
 
 	{
 
