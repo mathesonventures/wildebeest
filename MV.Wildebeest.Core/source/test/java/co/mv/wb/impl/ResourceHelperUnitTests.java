@@ -26,9 +26,9 @@ import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.MigrationInvalidStateException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -224,7 +224,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+            InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -274,7 +274,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+            InvalidReferenceException
 	{
 
 		//
@@ -368,7 +368,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+            InvalidReferenceException
 	{
 
 		//
@@ -512,7 +512,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+            InvalidReferenceException
 	{
 
 		//
@@ -587,7 +587,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+            InvalidReferenceException
 	{
 
 		//
@@ -663,7 +663,7 @@ public class ResourceHelperUnitTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+            InvalidReferenceException
 	{
 
 		//
@@ -872,8 +872,7 @@ public class ResourceHelperUnitTests
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
 		JumpStateFailedException,
-		UnknownStateSpecifiedException,
-		MigrationInvalidStateException
+		UnknownStateSpecifiedException
 	{
 
 		//
@@ -921,7 +920,7 @@ public class ResourceHelperUnitTests
 		assertEquals("instance.tag", "Foo", instance.getTag());
 
 	}
-
+	
 }
 
 

@@ -18,7 +18,7 @@ package co.mv.wb.plugin.generaldatabase.dom;
 
 import co.mv.wb.Asserts;
 import co.mv.wb.LoaderFault;
-import co.mv.wb.MissingReferenceException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
@@ -49,7 +49,7 @@ public class AnsiSqlDomServiceUnitTests
 	public void ansiSqlCreateDatabaseMigrationLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
@@ -97,7 +97,7 @@ public class AnsiSqlDomServiceUnitTests
 	public void ansiSqlDropDatabaseMigrationLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
@@ -143,7 +143,7 @@ public class AnsiSqlDomServiceUnitTests
 	public void ansiSqlTableExistsAssertionLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
@@ -189,7 +189,7 @@ public class AnsiSqlDomServiceUnitTests
 	public void ansiSqlTableDoesNotExistAssertionLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException,
-		MissingReferenceException
+            InvalidReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
