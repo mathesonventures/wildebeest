@@ -316,10 +316,8 @@ public class WildebeestApiImpl implements WildebeestApi
 		AssertionFailedException,
 		TargetNotSpecifiedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
-		UnknownStateSpecifiedException,
 		InvalidReferenceException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
@@ -781,7 +779,7 @@ public class WildebeestApiImpl implements WildebeestApi
 						m.getMigrationId().toString()));
 */
 			}
-			
+
 			// If either of the terminals are not set then they are valid
 			boolean fromIsValid = !m.getFromState().isPresent();
 			boolean toIsValid = !m.getToState().isPresent();
