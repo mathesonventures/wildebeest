@@ -16,19 +16,15 @@
 
 package co.mv.wb.impl;
 
-import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
-import co.mv.wb.AssertionResult;
-import co.mv.wb.Asserts;
-import co.mv.wb.ExpectException;
 import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.Instance;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
-import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -48,173 +44,20 @@ import org.junit.Test;
 
 import java.io.PrintStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-public class WildebeestApiImplIntegrationTests
+/**
+ * Integration tests for the {@link WildebeestApi#migrate(Resource, Instance, Optional)} implementation on
+ * {@link WildebeestApiImpl}.
+ *
+ * @since 4.0
+ */
+public class WildebeestApiImplMigrateIntegrationTests
 {
-
-	//
-	// assertState()
-	//
-
-	@Test
-	public void assertState_noAssertions_succeeds() throws IndeterminateStateException
-	{
-		// Setup
-		PrintStream output = System.out;
-
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-
-		Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"Resource",
-			Optional.empty());
-
-		State state = new ImmutableState(UUID.randomUUID());
-
-		resource.getStates().add(state);
-
-		FakeInstance instance = new FakeInstance(state.getStateId());
-
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
-			.get();
-
-		// Execute
-		List<AssertionResult> results = wildebeestApi.assertState(
-			resource,
-			instance);
-
-		// Verify
-		assertNotNull("results", results);
-		assertEquals("results.size", 0, results.size());
-	}
-
-	@Test
-	public void assertState_oneAssertion_succeeds() throws IndeterminateStateException
-	{
-		// Setup
-		PrintStream output = System.out;
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"Resource",
-			Optional.empty());
-
-		State state = new ImmutableState(UUID.randomUUID());
-		resource.getStates().add(state);
-
-		Assertion assertion1 = new TagAssertion(
-			UUID.randomUUID(),
-			0,
-			"Foo");
-		state.getAssertions().add(assertion1);
-
-		FakeInstance instance = new FakeInstance(state.getStateId());
-		instance.setTag("Foo");
-
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
-			.get();
-
-		// Execute
-		List<AssertionResult> results = wildebeestApi.assertState(
-			resource,
-			instance);
-
-		// Verify
-		assertNotNull("results", results);
-		assertEquals("results.size", 1, results.size());
-		Asserts.assertAssertionResult(
-			assertion1.getAssertionId(), true, "Tag is \"Foo\"", results.get(0), "results[0]");
-	}
-
-	@Test
-	public void assertState_multipleAssertions_succeeds() throws IndeterminateStateException
-	{
-		// Setup
-		PrintStream output = System.out;
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"Resource",
-			Optional.empty());
-
-		State state = new ImmutableState(UUID.randomUUID());
-		resource.getStates().add(state);
-
-		UUID assertion1Id = UUID.randomUUID();
-		state.getAssertions().add(new TagAssertion(
-			assertion1Id,
-			0,
-			"Foo"));
-
-		UUID assertion2Id = UUID.randomUUID();
-		state.getAssertions().add(new TagAssertion(
-			assertion2Id,
-			1,
-			"Bar"));
-
-		FakeInstance instance = new FakeInstance(state.getStateId());
-		instance.setTag("Foo");
-
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
-			.get();
-
-		// Execute
-		List<AssertionResult> results = wildebeestApi.assertState(
-			resource,
-			instance);
-
-		// Verify
-		assertNotNull("results", results);
-		assertEquals("results.size", 2, results.size());
-		Asserts.assertAssertionResult(
-			assertion1Id, true, "Tag is \"Foo\"",
-			results.get(0), "results[0]");
-		Asserts.assertAssertionResult(
-			assertion2Id, false, "Tag expected to be \"Bar\" but was \"Foo\"",
-			results.get(1), "results[1]");
-	}
-
-	/**
-	 * Verifies that when the internal call to currentState() results in an IndeterminateStateException, assertState
-	 * handles that properly.
-	 */
-	@Ignore
-	@Test
-	public void assertState_resourceIndeterminateState_throws()
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	@Ignore
-	@Test
-	public void assertState_faultingAssertion_throws()
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	//
-	// migrate()
-	//
-
 	@Test
 	public void migrate_nonExistentToFirstState_succeeds() throws
 		AssertionFailedException,
@@ -224,7 +67,7 @@ public class WildebeestApiImplIntegrationTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -274,7 +117,7 @@ public class WildebeestApiImplIntegrationTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -368,7 +211,7 @@ public class WildebeestApiImplIntegrationTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -512,7 +355,7 @@ public class WildebeestApiImplIntegrationTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -587,7 +430,7 @@ public class WildebeestApiImplIntegrationTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -663,7 +506,7 @@ public class WildebeestApiImplIntegrationTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -742,185 +585,4 @@ public class WildebeestApiImplIntegrationTests
 	{
 		throw new UnsupportedOperationException();
 	}
-
-	//
-	// jumpstate()
-	//
-
-	@Test
-	public void jumpstate_assertionFail_throws()
-	{
-
-		//
-		// Setup
-		//
-
-		PrintStream output = System.out;
-
-		// Resource
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"Resource",
-			Optional.empty());
-
-		// State 1
-		final UUID state1Id = UUID.randomUUID();
-		State state = new ImmutableState(state1Id);
-		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "Foo"));
-		resource.getStates().add(state);
-
-		// Instance
-		final FakeInstance instance = new FakeInstance();
-		instance.setTag("Bar");
-
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
-			.get();
-
-		//
-		// Execute and Verify
-		//
-
-		new ExpectException(AssertionFailedException.class)
-		{
-			@Override public void invoke() throws Exception
-			{
-				wildebeestApi.jumpstate(
-					resource,
-					instance,
-					state1Id.toString());
-			}
-
-			@Override public void verify(Exception e)
-			{
-				AssertionFailedException te = (AssertionFailedException)e;
-
-				assertEquals("te.assertionResults.size", 1, te.getAssertionResults().size());
-				assertEquals(
-					"te.assertionResults[0].message",
-					"Tag not as expected",
-					te.getAssertionResults().get(0).getMessage());
-			}
-		}.perform();
-
-	}
-
-	@Test
-	public void jumpstate_nonExistentState_throws()
-	{
-
-		//
-		// Setup
-		//
-
-		PrintStream output = System.out;
-
-		// Resource
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"Resource",
-			Optional.empty());
-
-		// Instance
-		final FakeInstance instance = new FakeInstance();
-
-		// Target State ID
-		final UUID targetStateId = UUID.randomUUID();
-
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
-			.get();
-
-		//
-		// Execute and Verify
-		//
-
-		new ExpectException(JumpStateFailedException.class)
-		{
-			@Override public void invoke() throws Exception
-			{
-				wildebeestApi.jumpstate(
-					resource,
-					instance,
-					targetStateId.toString());
-			}
-
-			@Override public void verify(Exception e)
-			{
-				JumpStateFailedException te = (JumpStateFailedException)e;
-
-				assertEquals(
-					"e.message",
-					"This resource does not have a state with ID " + targetStateId.toString(),
-					te.getMessage());
-			}
-		}.perform();
-
-	}
-
-	@Test
-	public void jumpstate_existentState_succeeds() throws
-		AssertionFailedException,
-		IndeterminateStateException,
-		InvalidStateSpecifiedException,
-		JumpStateFailedException,
-		UnknownStateSpecifiedException
-	{
-
-		//
-		// Setup
-		//
-
-		PrintStream output = System.out;
-
-		// Resource
-		Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"Resource",
-			Optional.empty());
-
-		// State 1
-		final UUID state1Id = UUID.randomUUID();
-		State state = new ImmutableState(state1Id);
-		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "Foo"));
-		resource.getStates().add(state);
-
-		// Instance
-		final FakeInstance instance = new FakeInstance();
-		instance.setTag("Foo");
-
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
-			.get();
-
-		//
-		// Execute
-		//
-
-		wildebeestApi.jumpstate(
-			resource,
-			instance,
-			state1Id.toString());
-
-		//
-		// Verify
-		//
-
-		assertEquals("instance.tag", "Foo", instance.getTag());
-
-	}
-	
 }
-
-
