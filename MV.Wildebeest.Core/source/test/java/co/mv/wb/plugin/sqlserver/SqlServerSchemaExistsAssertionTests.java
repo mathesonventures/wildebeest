@@ -206,28 +206,6 @@ public class SqlServerSchemaExistsAssertionTests
 	}
 
 	@Test
-	public void applyForNullInstanceFails()
-	{
-		// Setup
-		SqlServerSchemaExistsAssertion assertion = new SqlServerSchemaExistsAssertion(
-			UUID.randomUUID(),
-			0,
-			"prd");
-
-		// Execute and Verify
-		try
-		{
-			AssertionResponse response = assertion.perform(null);
-
-			fail("IllegalArgumentException expected");
-		}
-		catch (IllegalArgumentException e)
-		{
-			assertEquals("e.message", "instance cannot be null", e.getMessage());
-		}
-	}
-
-	@Test
 	public void applyForIncorrectInstanceTypeFails()
 	{
 		// Setup

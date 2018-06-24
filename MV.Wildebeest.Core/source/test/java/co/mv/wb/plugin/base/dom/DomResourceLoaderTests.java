@@ -18,22 +18,24 @@ package co.mv.wb.plugin.base.dom;
 
 import co.mv.wb.AssertionBuilder;
 import co.mv.wb.Asserts;
+import co.mv.wb.ExpectException;
 import co.mv.wb.FileLoadException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationBuilder;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
+import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.fixture.FixtureBuilder;
-import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
-import co.mv.wb.impl.WildebeestApiImpl;
+import co.mv.wb.impl.WildebeestApiBuilder;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.SetTagMigration;
 import co.mv.wb.plugin.fake.TagAssertion;
 import co.mv.wb.plugin.fake.dom.DomSetTagMigrationBuilder;
 import co.mv.wb.plugin.fake.dom.DomTagAssertionBuilder;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
@@ -44,7 +46,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests for {@link DomResourceLoader}.
@@ -56,7 +57,7 @@ public class DomResourceLoaderTests
 	@Test
 	public void loadResource() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -115,9 +116,9 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForStateWithLabel() throws
+	public void loadResource_stateWithLabel_succeeds() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -183,9 +184,9 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForStateWithNoLabel() throws
+	public void loadResource_stateWithNoLabel_succeeds() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -252,9 +253,9 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForStateWithLabelAndDescription() throws
+	public void loadResource_stateWithLabelAndDescription_succeeds() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -322,9 +323,9 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForMultipleStates() throws
+	public void loadResource_resourceWithMultipleStates_succeeds() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -397,9 +398,9 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForStateWithOneAssertion() throws
+	public void loadResource_stateWithOneAssertion_succeeds() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -468,9 +469,9 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForStateWithMultipleAssertions() throws
+	public void loadResource_stateWithMultipleAssertions_succeeds() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -527,7 +528,7 @@ public class DomResourceLoaderTests
 			2,
 			resource.getStates().get(0).getAssertions().size());
 		Asserts.assertTagAssertion(
-			assertion1Id,  0, "Foo",
+			assertion1Id, 0, "Foo",
 			(TagAssertion)resource.getStates().get(0).getAssertions().get(0),
 			"resource.states[0].assertions[0]");
 		Asserts.assertTagAssertion(
@@ -541,9 +542,9 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceForMigrationWithFromStateId() throws
+	public void loadResource_migrationWithFromStateAsId_succeeds() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -598,7 +599,7 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.of(state1Id), Optional.empty(), "Blah",
+			migrationId, Optional.of(state1Id.toString()), Optional.empty(), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
@@ -606,10 +607,10 @@ public class DomResourceLoaderTests
 
 
 	@Test
-	public void loadResourceForMigrationWithFromStateAsLabel() throws
+	public void loadResource_migrationWithFromStateAsLabel_succeeds() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -661,16 +662,16 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.of(state1Id), Optional.empty(), "Blah",
+			migrationId, Optional.of("Foo"), Optional.empty(), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
 	}
 
 	@Test
-	public void loadResourceForMigrationsWithToStateId() throws
+	public void loadResource_migrationsWithToStateAsId_succeeds() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -725,7 +726,7 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.empty(), Optional.of(state1Id), "Blah",
+			migrationId, Optional.empty(), Optional.of(state1Id.toString()), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
@@ -733,10 +734,10 @@ public class DomResourceLoaderTests
 
 
 	@Test
-	public void loadResourceForMigrationsWithToStateIdAsLabel() throws
+	public void loadResource_migrationsWithToStateAsLabel_succeeds() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -788,16 +789,16 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.empty(), Optional.of(state1Id), "Blah",
+			migrationId, Optional.empty(), Optional.of("Foo"), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
 	}
 
 	@Test
-	public void loadResourceForMigrationsWithFromStateIdAndToStateId() throws
+	public void loadResource_migrationsWithFromStateAndToStateAsIds_succeeds() throws
 		LoaderFault,
-            InvalidReferenceException,
+		InvalidReferenceException,
 		PluginBuildException
 	{
 
@@ -855,155 +856,17 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.of(state1Id), Optional.of(state2Id), "Blah",
+			migrationId, Optional.of(state1Id.toString()), Optional.of(state2Id.toString()), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
 	}
 
 	@Test
-	public void loadResource_validMysqlAssertionGroup_succeeds()
-	{
-		Resource resource = this.loadResource("MySqlDatabase/database.wbresources.uses.assertionGroup.xml");
-
-		//
-		// Verify
-		//
-
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(
-			UUID.fromString("0d39b8fb-5b5c-48cd-845c-9c4d55f94303"),
-			"Product Catalogue Database",
-			resource,
-			"resource");
-
-		// States
-		assertEquals(
-			"resource.states.size",
-			2,
-			resource.getStates().size());
-
-		// Assertions
-		assertEquals(
-			"resource.state[0].assertions.size",
-			1,
-			resource.getStates().get(0).getAssertions().size());
-		assertEquals(
-			"resource.state[1].assertions.size",
-			6,
-			resource.getStates().get(1).getAssertions().size());
-
-	}
-
-	@Test
-	public void loadResource_validPostgreAssertionGroup_succeeds()
-	{
-		Resource resource = this.loadResource("PostgreSqlDatabase/database.wbresources.uses.assertionGroup.xml");
-		//
-		// Verify
-		//
-
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(
-			UUID.fromString("38d0eabd-ab40-4c37-96a7-fcacb43bd059"),
-			"Product Catalogue Database",
-			resource,
-			"resource");
-
-		// States
-		assertEquals(
-			"resource.states.size",
-			3,
-			resource.getStates().size());
-
-		// Assertions
-		assertEquals(
-			"resource.state[0].assertions.size",
-			1,
-			resource.getStates().get(0).getAssertions().size());
-		assertEquals(
-			"resource.state[1].assertions.size",
-			0,
-			resource.getStates().get(1).getAssertions().size());
-		assertEquals(
-			"resource.state[2].assertions.size",
-			1,
-			resource.getStates().get(2).getAssertions().size());
-
-	}
-
-	@Test
-	public void loadResource_validSqlServerAssertionGroup_succeeds()
-	{
-		Resource resource = this.loadResource("SqlServerDatabase/database.wbresources.uses.assertionGroup.xml");
-		//
-		// Verify
-		//
-
-		// Resource
-		assertNotNull("resource", resource);
-		Asserts.assertResource(
-			UUID.fromString("58699f8a-22fa-4784-9768-3fcc3b2619b4"),
-			"Product Catalogue Database",
-			resource,
-			"resource");
-
-		// States
-		assertEquals(
-			"resource.states.size",
-			2,
-			resource.getStates().size());
-
-		// Assertions
-		assertEquals(
-			"resource.state[0].assertions.size",
-			1,
-			resource.getStates().get(0).getAssertions().size());
-		assertEquals(
-			"resource.state[1].assertions.size",
-			5,
-			resource.getStates().get(1).getAssertions().size());
-
-	}
-
-	@Test
-	public void loadResourceXml_withMissingAssertionGroup_fails()
-	{
-		Resource resource = this.loadResource("InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml");
-		assertNull(resource);
-	}
-
-
-	private Resource loadResource(
-		String filename)
-	{
-		if (filename == null) throw new ArgumentNullException("filename");
-
-		try
-		{
-			//
-			// Execute
-			//
-			WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
-			Resource resource = wildebeestApi.loadResource(new File(filename));
-			return resource;
-
-		}
-		catch (LoaderFault | PluginBuildException | InvalidReferenceException | FileLoadException
-			| XmlValidationException loaderFault)
-		{
-			loaderFault.printStackTrace();
-		}
-		return null;
-	}
-
-	@Test
-	public void loadResourceForMigrationsWithFromStateIdAndToStateIdAsLabels() throws
+	public void loadResource_migrationsWithFromStateAndToStateAsLabels_succeeds() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -1058,10 +921,157 @@ public class DomResourceLoaderTests
 		// Migrations
 		assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
 		Asserts.assertFakeMigration(
-			migrationId, Optional.of(state1Id), Optional.of(state2Id), "Blah",
+			migrationId, Optional.of("Foo"), Optional.of("Bar"), "Blah",
 			(SetTagMigration)resource.getMigrations().get(0),
 			"resource.migrations[0]");
 
 	}
 
+	@Test
+	public void loadResource_validMysqlAssertionGroup_succeeds() throws
+		InvalidReferenceException,
+		LoaderFault,
+		FileLoadException,
+		PluginBuildException,
+		XmlValidationException
+	{
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "MySqlDatabase/database.wbresources.uses.assertionGroup.xml";
+
+		// Execute
+		Resource resource = wildebeestApi.loadResource(new File(resourceFilePath));
+
+		// Verify Resource
+		assertNotNull("resource", resource);
+		Asserts.assertResource(
+			UUID.fromString("0d39b8fb-5b5c-48cd-845c-9c4d55f94303"),
+			"Product Catalogue Database",
+			resource,
+			"resource");
+
+		// Verify States
+		assertEquals(
+			"resource.states.size",
+			2,
+			resource.getStates().size());
+
+		// Verify Assertions
+		assertEquals(
+			"resource.state[0].assertions.size",
+			1,
+			resource.getStates().get(0).getAssertions().size());
+		assertEquals(
+			"resource.state[1].assertions.size",
+			6,
+			resource.getStates().get(1).getAssertions().size());
+	}
+
+	@Test
+	public void loadResource_validPostgreAssertionGroup_succeeds() throws
+		InvalidReferenceException,
+		LoaderFault,
+		FileLoadException,
+		PluginBuildException,
+		XmlValidationException
+	{
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "PostgreSqlDatabase/database.wbresources.uses.assertionGroup.xml";
+
+		// Execute
+		Resource resource = wildebeestApi.loadResource(new File(resourceFilePath));
+
+		// Verify Resource
+		assertNotNull("resource", resource);
+		Asserts.assertResource(
+			UUID.fromString("38d0eabd-ab40-4c37-96a7-fcacb43bd059"),
+			"Product Catalogue Database",
+			resource,
+			"resource");
+
+		// Verify States
+		assertEquals(
+			"resource.states.size",
+			3,
+			resource.getStates().size());
+
+		// Verify Assertions
+		assertEquals(
+			"resource.state[0].assertions.size",
+			1,
+			resource.getStates().get(0).getAssertions().size());
+		assertEquals(
+			"resource.state[1].assertions.size",
+			0,
+			resource.getStates().get(1).getAssertions().size());
+		assertEquals(
+			"resource.state[2].assertions.size",
+			1,
+			resource.getStates().get(2).getAssertions().size());
+	}
+
+	@Test
+	public void loadResource_validSqlServerAssertionGroup_succeeds() throws
+		InvalidReferenceException,
+		LoaderFault,
+		FileLoadException,
+		PluginBuildException,
+		XmlValidationException
+	{
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "SqlServerDatabase/database.wbresources.uses.assertionGroup.xml";
+
+		// Execute
+		Resource resource = wildebeestApi.loadResource(new File(resourceFilePath));
+
+		// Verify Resource
+		assertNotNull("resource", resource);
+		Asserts.assertResource(
+			UUID.fromString("58699f8a-22fa-4784-9768-3fcc3b2619b4"),
+			"Product Catalogue Database",
+			resource,
+			"resource");
+
+		// Verify States
+		assertEquals(
+			"resource.states.size",
+			2,
+			resource.getStates().size());
+
+		// Verify Assertions
+		assertEquals(
+			"resource.state[0].assertions.size",
+			1,
+			resource.getStates().get(0).getAssertions().size());
+		assertEquals(
+			"resource.state[1].assertions.size",
+			5,
+			resource.getStates().get(1).getAssertions().size());
+	}
+
+	@Test
+	public void loadResource_withMissingAssertionGroup_throwsXmlValidationException()
+	{
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml";
+
+		// Execute and Verify
+		new ExpectException(XmlValidationException.class)
+		{
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.loadResource(new File(resourceFilePath));
+			}
+
+			@Override public void verify(Exception e)
+			{
+				Assert.assertTrue(
+					"e.message",
+					e.getMessage().contains("Attribute 'ref' must appear on element 'assertionRef'"));
+			}
+		}.perform();
+	}
 }

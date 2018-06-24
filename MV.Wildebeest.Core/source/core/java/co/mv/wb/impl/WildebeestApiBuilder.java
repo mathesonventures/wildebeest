@@ -16,7 +16,9 @@
 
 package co.mv.wb.impl;
 
-import co.mv.wb.PluginManager;
+import co.mv.wb.MigrationPlugin;
+import co.mv.wb.MigrationPluginType;
+import co.mv.wb.PluginGroup;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
@@ -26,7 +28,9 @@ import co.mv.wb.framework.ArgumentNullException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A fluent builder for WildebeestApi implementation.
@@ -36,8 +40,9 @@ import java.util.Map;
 public class WildebeestApiBuilder
 {
 	private final WildebeestApiImpl wildebeestApi;
+	private final List<PluginGroup> pluginGroups;
 	private final Map<ResourceType, ResourcePlugin> resourcePlugins;
-	private final PluginManager pluginManager;
+	private final Map<String, MigrationPlugin> migrationPlugins;
 
 	/**
 	 * Creates a new WildebeestApiBuilder with the specified PrintStream for Wildebeest to output to.
@@ -53,73 +58,164 @@ public class WildebeestApiBuilder
 
 		return new WildebeestApiBuilder(
 			new WildebeestApiImpl(output),
+			new ArrayList<>(),
 			new HashMap<>(),
-			new PluginManagerImpl(
-				new ArrayList<>(),
-				new ArrayList<>()));
+			new HashMap<>());
 	}
 
 	private WildebeestApiBuilder(
 		WildebeestApiImpl wildebeestApi,
+		List<PluginGroup> pluginGroups,
 		Map<ResourceType, ResourcePlugin> resourcePlugins,
-		PluginManager pluginManager)
+		Map<String, MigrationPlugin> migrationPlugins)
 	{
 		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
+		if (pluginGroups == null) throw new ArgumentNullException("pluginGroups");
 		if (resourcePlugins == null) throw new ArgumentNullException("resourcePlugins");
-		if (pluginManager == null) throw new ArgumentNullException("pluginManager");
+		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
 
 		this.wildebeestApi = wildebeestApi;
+		this.pluginGroups = pluginGroups;
 		this.resourcePlugins = resourcePlugins;
-		this.pluginManager = pluginManager;
+		this.migrationPlugins = migrationPlugins;
+	}
+
+	/**
+	 * Fluently adds the factory set of PluginGroups to the builder.
+	 *
+	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
+	 * @since 4.0
+	 */
+	public WildebeestApiBuilder withFactoryPluginGroups()
+	{
+		List<PluginGroup> updated = new ArrayList<>(this.pluginGroups);
+		updated.addAll(Wildebeest.getPluginGroups());
+
+		return new WildebeestApiBuilder(
+			this.wildebeestApi,
+			updated,
+			this.resourcePlugins,
+			this.migrationPlugins);
 	}
 
 	/**
 	 * Fluently adds the factory-preset {@link ResourcePlugin}'s to the builder.  A new builder is returned and the
 	 * original builder is left unmutated.
 	 *
-	 * @return a new WildebeestApiBuilder with all the state of the source builder plus
-	 * the factory-preset ResourcePlugin's registered.
+	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
+	 * @since 4.0
 	 */
 	public WildebeestApiBuilder withFactoryResourcePlugins()
 	{
-		Map<ResourceType, ResourcePlugin> updatedResourcePlugins = new HashMap<>(this.resourcePlugins);
-		updatedResourcePlugins.putAll(Wildebeest.getResourcePlugins());
+		Map<ResourceType, ResourcePlugin> updated = new HashMap<>(this.resourcePlugins);
+		updated.putAll(Wildebeest.getResourcePlugins());
 
 		return new WildebeestApiBuilder(
-			wildebeestApi,
-			updatedResourcePlugins,
-			pluginManager);
+			this.wildebeestApi,
+			this.pluginGroups,
+			updated,
+			this.migrationPlugins);
 	}
 
 	/**
-	 * Fluently adds a {@link PluginManager} with the factory-preset plugin groups and migration plugins registered.
+	 * Fluently adds the supplied ResourceType -> ResourcePlugin mapping to the builder.  A new builder is returned and
+	 * the original builder is left unmutated.
 	 *
-	 * @return a new WildebeestApiBuilder with a PluginManager configured with the
-	 * factory-preset plugin groups and migration plugins registered.
+	 * @param resourceType   the new ResourceType being mapped.
+	 * @param resourcePlugin the ResourcePlugin being mapped.
+	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
+	 * @since 4.0
 	 */
-	public WildebeestApiBuilder withFactoryPluginManager()
+	public WildebeestApiBuilder withResourcePlugin(
+		ResourceType resourceType,
+		ResourcePlugin resourcePlugin)
 	{
-		return this.withPluginManager(new PluginManagerImpl(
-			Wildebeest.getPluginGroups(),
-			Wildebeest.getMigrationPlugins(wildebeestApi)));
+		Map<ResourceType, ResourcePlugin> updated = new HashMap<>(this.resourcePlugins);
+		updated.put(resourceType, resourcePlugin);
+
+		return new WildebeestApiBuilder(
+			this.wildebeestApi,
+			this.pluginGroups,
+			updated,
+			this.migrationPlugins);
 	}
 
 	/**
-	 * Fluently adds a {@link PluginManager} to the builder.  A new builder instance is returned with the supplied
-	 * PluginManager added, and the original builder is left unmutated.
+	 * Fluently adds the factory set of MigrationPlugins to the builder.  A new builder is returned and the original
+	 * builder is left unmutated.
 	 *
-	 * @param pluginManager the PluginManager to add to the builder.
-	 * @return a new WildebeestApiBuilder with the state of the source builder plus the
-	 * supplied PluginManager.
+	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
+	 * @since 4.0
 	 */
-	public WildebeestApiBuilder withPluginManager(PluginManager pluginManager)
+	public WildebeestApiBuilder withFactoryMigrationPlugins()
 	{
-		if (pluginManager == null) throw new ArgumentNullException("pluginManager");
+		Map<String, MigrationPlugin> updated = new HashMap<>(this.migrationPlugins);
+
+		Map<String, MigrationPlugin> factory = Wildebeest
+			.getMigrationPlugins(this.wildebeestApi)
+			.stream()
+			.collect(Collectors.toMap(
+				x ->
+				{
+					MigrationPluginType migrationPluginType = x.getClass().getAnnotation(MigrationPluginType.class);
+
+					if (migrationPluginType == null)
+					{
+						throw new RuntimeException(String.format(
+							"MigrationPlugin %s doesn't have a MigrationPluginType",
+							x.getClass().getName()));
+					}
+
+					return migrationPluginType.uri();
+				},
+				x -> x));
+
+		updated.putAll(factory);
 
 		return new WildebeestApiBuilder(
-			wildebeestApi,
-			resourcePlugins,
-			pluginManager);
+			this.wildebeestApi,
+			this.pluginGroups,
+			this.resourcePlugins,
+			updated);
+	}
+
+	/**
+	 * Fluently adds the supplied {@link MigrationPlugin} to the builder.  A new builder is returned and the
+	 * original builder is left unmutated.
+	 *
+	 * @param migrationPlugin the MigrationPlugin to be added to the builder
+	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
+	 * @since 4.0
+	 */
+	public WildebeestApiBuilder withMigrationPlugin(MigrationPlugin migrationPlugin)
+	{
+		if (migrationPlugin == null) throw new ArgumentNullException("migrationPlugin");
+
+		Map<String, MigrationPlugin> updated = new HashMap<>(this.migrationPlugins);
+
+		updated.put(
+			WildebeestApiBuilder.getMigrationTypeUri(migrationPlugin),
+			migrationPlugin);
+
+		return new WildebeestApiBuilder(
+			this.wildebeestApi,
+			this.pluginGroups,
+			this.resourcePlugins,
+			updated);
+	}
+
+	private static String getMigrationTypeUri(MigrationPlugin migrationPlugin)
+	{
+		MigrationPluginType migrationPluginType = migrationPlugin.getClass().getAnnotation(MigrationPluginType.class);
+
+		if (migrationPluginType == null)
+		{
+			throw new RuntimeException(String.format(
+				"MigrationPlugin %s doesn't have a MigrationPluginType",
+				migrationPlugin.getClass().getName()));
+		}
+
+		return migrationPluginType.uri();
 	}
 
 	/**
@@ -130,18 +226,10 @@ public class WildebeestApiBuilder
 	 */
 	public WildebeestApi get()
 	{
-		wildebeestApi.setResourcePlugins(resourcePlugins);
-		wildebeestApi.setPluginManager(pluginManager);
+		this.wildebeestApi.setPluginGroups(pluginGroups);
+		this.wildebeestApi.setResourcePlugins(this.resourcePlugins);
+		this.wildebeestApi.setMigrationPlugins(this.migrationPlugins);
 
-		return wildebeestApi;
+		return this.wildebeestApi;
 	}
-
-	public WildebeestApiBuilder withCustomResourcePlugins(Map<ResourceType,ResourcePlugin> resourcePlugins)
-	{
-		return new WildebeestApiBuilder(
-			wildebeestApi,
-			resourcePlugins,
-			pluginManager);
-	}
-
 }

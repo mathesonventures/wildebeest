@@ -21,12 +21,12 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
@@ -64,8 +64,9 @@ public class WildebeestCommand
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
+			.withFactoryPluginGroups()
 			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
