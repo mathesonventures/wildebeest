@@ -20,12 +20,12 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -67,7 +67,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -172,7 +172,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		MigrationFailedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -286,29 +286,6 @@ public class SqlServerTableDoesNotExistAssertionTests
 		Asserts.assertAssertionResponse(
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
-	}
-
-	@Test
-	public void applyForNullInstanceFails()
-	{
-		// Setup
-		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
-			UUID.randomUUID(),
-			0,
-			"dbo",
-			"TableName");
-
-		// Execute and Verify
-		try
-		{
-			AssertionResponse response = assertion.perform(null);
-
-			fail("IllegalArgumentException expected");
-		}
-		catch (IllegalArgumentException e)
-		{
-			assertEquals("e.message", "instance cannot be null", e.getMessage());
-		}
 	}
 
 	@Test
