@@ -24,6 +24,7 @@ import co.mv.wb.EntityType;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.LoaderFault;
@@ -33,7 +34,6 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationType;
 import co.mv.wb.MigrationTypeInfo;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.PluginManager;
@@ -360,6 +360,15 @@ public class WildebeestApiImpl implements WildebeestApi
 		List<Migration> path = paths.get(0);
 
 		validateMigrationStates(resource);
+
+		if (currentState != null)
+		{
+			List<AssertionResult> initialAssertionResults = this.assertState(
+				resource,
+				instance);
+
+			WildebeestApiImpl.throwIfFailed(currentState.getStateId(), initialAssertionResults);
+		}
 
 		for (Migration migration : path)
 		{
@@ -708,7 +717,7 @@ public class WildebeestApiImpl implements WildebeestApi
 				.stream()
 				.filter(m ->
 					(!m.getFromState().isPresent() && fromState == null) ||
-						(m.getFromState().isPresent() && m.getFromState().equals(fromState)))
+						(m.getFromState().isPresent() && m.getFromState().get().equals(fromState.toString())))
 				.forEach(
 					migration ->
 					{
