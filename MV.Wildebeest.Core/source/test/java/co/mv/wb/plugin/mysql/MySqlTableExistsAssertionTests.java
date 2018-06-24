@@ -80,7 +80,6 @@ public class MySqlTableExistsAssertionTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -179,7 +178,6 @@ public class MySqlTableExistsAssertionTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();

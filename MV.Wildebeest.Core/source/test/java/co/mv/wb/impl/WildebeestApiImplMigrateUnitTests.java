@@ -259,8 +259,6 @@ public class WildebeestApiImplMigrateUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
-			.withPluginManager(new PluginManagerImpl(
-				Wildebeest.getPluginGroups()))
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
 
@@ -311,8 +309,6 @@ public class WildebeestApiImplMigrateUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
-			.withPluginManager(new PluginManagerImpl(
-				Wildebeest.getPluginGroups()))
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
 
@@ -366,8 +362,6 @@ public class WildebeestApiImplMigrateUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
-			.withPluginManager(new PluginManagerImpl(
-				Wildebeest.getPluginGroups()))
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
 

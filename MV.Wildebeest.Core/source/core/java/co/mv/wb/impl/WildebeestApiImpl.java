@@ -36,7 +36,7 @@ import co.mv.wb.MigrationType;
 import co.mv.wb.MigrationTypeInfo;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
-import co.mv.wb.PluginManager;
+import co.mv.wb.PluginGroup;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
@@ -52,6 +52,7 @@ import co.mv.wb.plugin.base.ImmutableAssertionResult;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
+import org.reflections.Reflections;
 import org.xml.sax.SAXException;
 
 import javax.xml.transform.Source;
@@ -71,6 +72,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Provides a generic interface that can be adapted to different environments.  For example the WildebeestCommand
@@ -85,8 +87,8 @@ public class WildebeestApiImpl implements WildebeestApi
 
 	private final PrintStream output;
 
+	private List<PluginGroup> pluginGroups;
 	private Map<ResourceType, ResourcePlugin> resourcePlugins;
-	private PluginManager pluginManager;
 	private Map<String, MigrationPlugin> migrationPlugins;
 
 
@@ -102,9 +104,26 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (output == null) throw new ArgumentNullException("output");
 
 		this.output = output;
+		this.pluginGroups = null;
 		this.resourcePlugins = null;
-		this.pluginManager = null;
 		this.migrationPlugins = null;
+	}
+
+	private List<PluginGroup> getPluginGroups()
+	{
+		if (this.pluginGroups == null)
+		{
+			throw new IllegalStateException("pluginGroups not set");
+		}
+
+		return this.pluginGroups;
+	}
+
+	public void setPluginGroups(List<PluginGroup> pluginGroups)
+	{
+		if (pluginGroups == null) throw new ArgumentNullException("pluginGroups");
+
+		this.pluginGroups = pluginGroups;
 	}
 
 	private Map<ResourceType, ResourcePlugin> getResourcePlugins()
@@ -122,23 +141,6 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (resourcePlugins == null) throw new ArgumentNullException("resourcePlugins");
 
 		this.resourcePlugins = resourcePlugins;
-	}
-
-	private PluginManager getPluginManager()
-	{
-		if (this.pluginManager == null)
-		{
-			throw new IllegalStateException("pluginManager not set");
-		}
-
-		return this.pluginManager;
-	}
-
-	public void setPluginManager(PluginManager pluginManager)
-	{
-		if (pluginManager == null) throw new ArgumentNullException("pluginManager");
-
-		this.pluginManager = pluginManager;
 	}
 
 	private Map<String, MigrationPlugin> getMigrationPlugins()
@@ -498,8 +500,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		output.append("<groups>");
 
-		this.getPluginManager()
-			.getPluginGroups()
+		this.getPluginGroups()
 			.stream()
 			.forEach(x -> output
 				.append("<group ")
@@ -513,7 +514,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		output.append("<plugins>");
 
 		// Migrations
-		for (MigrationTypeInfo info : this.getPluginManager().getMigrationTypeInfos())
+		for (MigrationTypeInfo info : WildebeestApiImpl.getMigrationTypeInfos())
 		{
 			WildebeestApiImpl.pluginElement(
 				output,
@@ -526,7 +527,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		// Assertions
-		for (AssertionType info : this.getPluginManager().getAssertionTypes())
+		for (AssertionType info : WildebeestApiImpl.getAssertionTypes())
 		{
 			WildebeestApiImpl.pluginElement(
 				output,
@@ -895,5 +896,39 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		return stateRef.isPresent() &&
 			(stateRef.get().equals(state.getStateId().toString()) || stateRef.get().equals(state.getLabel()));
+	}
+
+	private static List<MigrationTypeInfo> getMigrationTypeInfos()
+	{
+		Reflections reflections = new Reflections(Wildebeest.class.getPackage().getName());
+
+		return reflections
+			.getTypesAnnotatedWith(MigrationType.class)
+			.stream()
+			.map(
+				migrationClass ->
+				{
+					MigrationType migrationType = migrationClass.getAnnotation(MigrationType.class);
+
+					return new MigrationTypeInfo(
+						migrationType.pluginGroupUri(),
+						migrationType.uri(),
+						Util.nameFromUri(migrationType.uri()),
+						migrationType.description(),
+						migrationType.example(),
+						migrationClass);
+				})
+			.collect(Collectors.toList());
+	}
+
+	private static List<AssertionType> getAssertionTypes()
+	{
+		Reflections reflections = new Reflections(Wildebeest.class.getPackage().getName());
+
+		return reflections
+			.getTypesAnnotatedWith(AssertionType.class)
+			.stream()
+			.map(assertionClass -> assertionClass.getAnnotation(AssertionType.class))
+			.collect(Collectors.toList());
 	}
 }
