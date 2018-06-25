@@ -28,6 +28,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.fixture.FixtureBuilder;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.impl.WildebeestApiBuilder;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -1053,43 +1054,50 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceXml_assertionGroup_withInvalidXML_fails() throws
-		LoaderFault,
-		FileLoadException,
-		PluginBuildException,
-		InvalidReferenceException
+	public void loadResourceXml_assertionGroup_withInvalidXML_fails()
 	{
-		try
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml";
+
+		new ExpectException(XmlValidationException.class)
 		{
-			WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
-			Resource resource =
-				wildebeestApi.loadResource(new File("InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml"));
-			Assert.fail("This is expected to encounter xml validation exception");
-		}
-		catch (XmlValidationException e)
-		{
-			e.printStackTrace();
-		}
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.loadResource(new File(resourceFilePath));
+			}
+
+			@Override public void verify(Exception e)
+			{
+				Assert.assertTrue(
+					"e.message",
+					e.getMessage().contains("Attribute 'ref' must appear on element 'assertionRef'"));
+			}
+		}.perform();
 	}
 
 	@Test
-	public void loadResourceXml_assertionGroup_withInvalidRef_fails() throws
-		LoaderFault,
-		FileLoadException,
-		PluginBuildException,
-		XmlValidationException
+	public void loadResourceXml_assertionGroup_withInvalidRef_fails()
 	{
-		try
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "InvalidXml/InvalidReferenceSampleResourceUsesAssertionGroup.xml";
+
+		new ExpectException(InvalidReferenceException.class)
 		{
-			WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
-			Resource resource =
-				wildebeestApi.loadResource(new File("InvalidXml/InvalidReferenceSampleResourceUsesAssertionGroup.xml"));
-			Assert.fail("This is expected to encounter invalid reference exception");
-		}
-		catch (InvalidReferenceException e)
-		{
-			e.printStackTrace();
-		}
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.loadResource(new File(resourceFilePath));
+			}
+
+			@Override public void verify(Exception e)
+			{
+				Assert.assertTrue(
+					"e.message",
+					e.getMessage().contains("State:363568f1-aaed-4a50-bea0-9ddee713cc11 has invalid references to: " +
+						"[ Assertion Group:group1 ]"));
+			}
+		}.perform();
 	}
 
 	@Test
@@ -1200,59 +1208,63 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResourceXml_withInvalidXML_singleAssertion_fails() throws
-		LoaderFault,
-		FileLoadException,
-		PluginBuildException,
-		InvalidReferenceException
+	public void loadResourceXml_withInvalidXML_singleAssertion_fails()
 	{
-		try
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "InvalidXml/InvalidSampleResourceUsesSingleAssertRef.xml";
+
+		new ExpectException(XmlValidationException.class)
 		{
-			WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
-			Resource resource =
-				wildebeestApi.loadResource(new File("InvalidXml/InvalidSampleResourceUsesSingleAssertRef.xml"));
-			Assert.fail("This is expected to encounter xml validation exception");
-		}
-		catch (XmlValidationException e)
-		{
-			e.printStackTrace();
-		}
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.loadResource(new File(resourceFilePath));
+			}
+
+			@Override public void verify(Exception e)
+			{
+				Assert.assertTrue(
+					"e.message",
+					e.getMessage().contains("Attribute 'test' is not allowed to appear in element 'assertionRef'"));
+			}
+		}.perform();
 	}
 
 	@Test
-	public void loadResourceXml_withInvalidRef_singleAssertion_fails() throws
-		LoaderFault,
-		FileLoadException,
-		PluginBuildException,
-		XmlValidationException
+	public void loadResourceXml_withInvalidRef_singleAssertion_fails()
 	{
-		try
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "InvalidXml/InvalidSampleResourceSingleAssertMissingRef.xml";
+
+		new ExpectException(InvalidReferenceException.class)
 		{
-			WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
-			Resource resource =
-				wildebeestApi.loadResource(new File("InvalidXml/InvalidSampleResourceSingleAssertMissingRef.xml"));
-			Assert.fail("This is expected to encounter invalid reference exception");
-		}
-		catch (InvalidReferenceException e)
-		{
-			e.printStackTrace();
-		}
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.loadResource(new File(resourceFilePath));
+			}
+
+			@Override public void verify(Exception e)
+			{
+				Assert.assertTrue(
+					"e.message",
+					e.getMessage().contains("State:199b7cc1-3cc6-48ca-b012-a70d05d5b5e7 has invalid references to:" +
+						" [ Assertion:DatabaseExisting2 ]"));
+			}
+		}.perform();
 	}
 
 	private Resource loadResource(
-		String filename)
+		String resourceFilePath)
 	{
-		if (filename == null) throw new ArgumentNullException("filename");
+		if (resourceFilePath == null) throw new ArgumentNullException("resourceFilePath");
 
 		try
 		{
-			//
+			// Setup
+			WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
 			// Execute
-			//
-			WildebeestApiImpl wildebeestApi = new WildebeestApiImpl(System.out);
-			Resource resource = wildebeestApi.loadResource(new File(filename));
-			return resource;
-
+			return wildebeestApi.loadResource(new File(resourceFilePath));
 		}
 		catch (LoaderFault | PluginBuildException | InvalidReferenceException | FileLoadException
 			| XmlValidationException loaderFault)
