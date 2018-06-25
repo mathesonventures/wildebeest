@@ -20,12 +20,12 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -68,7 +68,7 @@ public class MySqlTableExistsAssertionTests
 		SQLException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -80,7 +80,6 @@ public class MySqlTableExistsAssertionTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -167,7 +166,7 @@ public class MySqlTableExistsAssertionTests
 		SQLException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 
 		//
@@ -179,7 +178,6 @@ public class MySqlTableExistsAssertionTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -281,28 +279,6 @@ public class MySqlTableExistsAssertionTests
 			false, "Database " + databaseName + " does not exist",
 			response, "response");
 
-	}
-
-	@Test
-	public void applyForNullInstanceFails()
-	{
-		// Setup
-		MySqlTableExistsAssertion assertion = new MySqlTableExistsAssertion(
-			UUID.randomUUID(),
-			0,
-			"TableName");
-
-		// Execute
-		try
-		{
-			AssertionResponse response = assertion.perform(null);
-
-			fail("IllegalArgumentException expected");
-		}
-		catch (IllegalArgumentException e)
-		{
-			assertEquals("e.message", "instance cannot be null", e.getMessage());
-		}
 	}
 
 	@Test

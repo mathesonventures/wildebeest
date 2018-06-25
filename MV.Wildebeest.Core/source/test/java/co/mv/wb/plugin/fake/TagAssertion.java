@@ -85,8 +85,8 @@ public class TagAssertion extends BaseAssertion
 	{
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
-		if (fake == null)
+		FakeInstance instanceT = ModelExtensions.As(instance, FakeInstance.class);
+		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a FakeInstance");
 		}
@@ -94,13 +94,17 @@ public class TagAssertion extends BaseAssertion
 		this.calledNTimes += 1;
 		AssertionResponse response;
 
-		if (this.getTag().equals(fake.getTag()))
+		if (this.getTag().equals(instanceT.getTag()))
 		{
-			response = new ImmutableAssertionResponse(true, "Tag is as expected");
+			response = new ImmutableAssertionResponse(
+				true,
+				String.format("Tag is \"%s\" as expected", this.getTag()));
 		}
 		else
 		{
-			response = new ImmutableAssertionResponse(false, "Tag not as expected");
+			response = new ImmutableAssertionResponse(
+				false,
+				String.format("Tag expected to be \"%s\" but was \"%s\"", this.getTag(), instanceT.getTag()));
 		}
 
 		return response;

@@ -22,8 +22,11 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 	{
-		ResourceHelperUnitTests.class,
-		WildebeestApiImplUnitTests.class
+		WildebeestApiImplAssertStateIntegrationTests.class,
+		WildebeestApiImplJumpStateIntegrationTests.class,
+		WildebeestApiImplMigrateIntegrationTests.class,
+		WildebeestApiImplMigrateUnitTests.class,
+		WildebeestApiImplValidateXmlUnitTests.class
 	})
 public class AllTests
 {

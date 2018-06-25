@@ -19,11 +19,11 @@ package co.mv.wb.plugin.base.dom;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -61,7 +61,6 @@ public class ResourceLoaderIntegrationTests
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
 		InvalidReferenceException
-
 	{
 
 		//
@@ -92,7 +91,6 @@ public class ResourceLoaderIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(output)
 			.withFactoryResourcePlugins()
-			.withFactoryPluginManager()
 			.get();
 
 		//
@@ -131,17 +129,17 @@ public class ResourceLoaderIntegrationTests
 		Asserts.assertMigration(
 			ProductCatalogueMySqlDatabaseResource.MigrationIdCreateDatabase,
 			Optional.empty(),
-			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated.toString()),
 			resource.getMigrations().get(0), "resource.migrations[0]");
 		Asserts.assertMigration(
 			ProductCatalogueMySqlDatabaseResource.MigrationIdLoadCoreSchema,
-			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated),
-			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdDatabaseCreated.toString()),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded.toString()),
 			resource.getMigrations().get(1), "resource.migrations[1]");
 		Asserts.assertMigration(
 			ProductCatalogueMySqlDatabaseResource.MigrationIdLoadReferenceData,
-			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded),
-			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdCoreSchemaLoaded.toString()),
+			Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded.toString()),
 			resource.getMigrations().get(2), "resource.migrations[2]");
 
 		//

@@ -27,8 +27,6 @@ import java.util.UUID;
 
 public class TestContext_SimpleFakeResource
 {
-	public final Map<ResourceType, ResourcePlugin> resourcePlugins;
-
 	public final Resource resource;
 	public final UUID fooStateId;
 	public final State fooState;
@@ -37,7 +35,6 @@ public class TestContext_SimpleFakeResource
 	public final Instance instance;
 
 	TestContext_SimpleFakeResource(
-		Map<ResourceType, ResourcePlugin> resourcePlugins,
 		Resource resource,
 		UUID fooStateId,
 		State fooState,
@@ -45,8 +42,6 @@ public class TestContext_SimpleFakeResource
 		State barState,
 		Instance instance)
 	{
-		this.resourcePlugins = resourcePlugins;
-
 		this.resource = resource;
 		this.fooStateId = fooStateId;
 		this.fooState = fooState;
