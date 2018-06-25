@@ -4,6 +4,7 @@
     <xs:element name="resource">
         <xs:complexType>
             <xs:sequence>
+                <xs:element name="assertions" type="AssertionDefinitions" minOccurs="0"/>
                 <xs:element name="assertionGroups" type="AssertionGroups" minOccurs="0"/>
                 <xs:element name="states" type="States"/>
                 <xs:element name="migrations" type="Migrations"/>
@@ -13,6 +14,7 @@
             <xs:attribute name="name" type="xs:string" />
         </xs:complexType>
     </xs:element>
+
     <xs:simpleType name="ResourcesType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="co.mv.wb.MySqlDatabase"/>
@@ -20,6 +22,11 @@
             <xs:enumeration value="co.mv.wb.SqlServerDatabase"/>
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:complexType name="AssertionDefinitions">
+        <xs:group ref="AssertionElement"></xs:group>
+    </xs:complexType>
+
     <xs:complexType name="AssertionGroups">
         <xs:sequence maxOccurs="unbounded">
             <xs:element name="assertionGroup" type="AssertionGroup"/>
@@ -27,13 +34,23 @@
     </xs:complexType>
 
     <xs:complexType name="AssertionGroup">
-        <xs:choice>
+        <xs:choice maxOccurs="unbounded">
             <xs:group ref="AssertionElement"/>
-            <xs:element name="assertionRef" type="AssertionRef" maxOccurs="unbounded"/>
+            <xs:group ref="AssertionRefElement"/>
         </xs:choice>
+        <xs:attribute name="id" type="uuid" use="required" />
         <xs:attribute name="name" type="xs:string" use="required" />
     </xs:complexType>
 
+    <xs:group name="AssertionRefElement">
+        <xs:sequence>
+            <xs:element name="assertionRef" type="AssertionRef" maxOccurs="unbounded">
+                <xs:alternative test="@type='single'" type="SingleAssertionRef"/>
+                <xs:alternative test="@type='selector'" type="SelectorAssertionRef"/>
+                <xs:alternative test="@type='group'" type="GroupAssertionRef"/>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
     <xs:complexType name="AssertionRef">
         <xs:attribute name="type" type="AssertionRefType" use="required" />
 
@@ -82,11 +99,7 @@
     <xs:complexType name="Assertions">
         <xs:choice maxOccurs="unbounded">
             <xs:group ref="AssertionElement"/>
-            <xs:element name="assertionRef" type="AssertionRef" maxOccurs="unbounded">
-                <xs:alternative test="@type='single'" type="Single"/>
-                <xs:alternative test="@type='selector'" type="Selector"/>
-                <xs:alternative test="@type='group'" type="Group"/>
-            </xs:element>
+            <xs:group ref="AssertionRefElement"/>
         </xs:choice>
     </xs:complexType>
 
@@ -112,7 +125,7 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:complexType name="Single">
+    <xs:complexType name="SingleAssertionRef">
         <xs:complexContent>
             <xs:extension base="AssertionRef">
                 <xs:attribute name="ref" type="xs:string" use="required"/>
@@ -120,7 +133,7 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="Selector">
+    <xs:complexType name="SelectorAssertionRef">
         <xs:complexContent>
             <xs:extension base="AssertionRef">
                 <xs:sequence>
@@ -131,7 +144,7 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="Group">
+    <xs:complexType name="GroupAssertionRef">
         <xs:complexContent>
             <xs:extension base="AssertionRef">
                 <xs:attribute name="groupName" type="xs:string" />

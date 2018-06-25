@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <resource type="co.mv.wb.SqlServerDatabase" id="58699f8a-22fa-4784-9768-3fcc3b2619b4" name="Product Catalogue Database">
     <assertionGroups>
-        <assertionGroup name="group1">
+        <assertionGroup name="group1" id="af32a1e6-ae4c-42b8-a1fd-b11b461f8e39">
             <assertion type="DatabaseExists" id="dc4bd5da-239a-4e00-8daf-adb8e4d1c2f9" />
         </assertionGroup>
-        <assertionGroup name="group2">
+        <assertionGroup name="group2" id="cca13b6d-b99a-4d73-a0f5-c37440f9b446">
             <assertion type="SqlServerTableExists" id="397a6a63-15ab-412f-922b-2c020b372a9f">
                 <schemaName>dbo</schemaName>
                 <tableName>ProductType</tableName>

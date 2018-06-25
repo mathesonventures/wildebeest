@@ -13,7 +13,7 @@
 		</assertion>
 	</assertions>
 	<assertionGroups>
-		<assertionGroup name="group1" id="af32a1e6-ae4c-42b8-a1fd-b11b461f8e39">
+		<assertionGroup name="group2" id="a132a1e6-ae4c-42b8-a1fd-b11b461f8e39">
 			<assertionRef type="single" ref="3808ba63-f055-4bf7-88fe-023546e6ed16"/>
 			<assertion type="RowExists" id="c1ea9cfb-bbf5-4262-8512-4bc13ebb05a4">
 				<description>ProductType HW exists</description>
