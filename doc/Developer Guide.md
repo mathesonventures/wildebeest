@@ -186,7 +186,7 @@ $ ant -version
 Apache Ant(TM) version 1.8.2 compiled on December 20 2010
 ```
 
-### Docker 
+## Docker 
 
 
 
@@ -194,7 +194,7 @@ Apache Ant(TM) version 1.8.2 compiled on December 20 2010
 :exclamation: Linux may require sudo in front of every docker command
 
 
-##### MYSQL Docker:
+### MYSQL Docker:
 
 1. First step is to pull mysql image from official docker repo 
     ```    
@@ -223,7 +223,7 @@ Apache Ant(TM) version 1.8.2 compiled on December 20 2010
     $ docker exec -it name-of-container mysql -uroot -p
     ```
 
-##### SQLServer docker:
+### SQLServer docker:
 
 
 1. First step is to pull sqlserver image from official docker repo 
@@ -262,7 +262,7 @@ Apache Ant(TM) version 1.8.2 compiled on December 20 2010
     $ /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P '<YourNewStrong!Passw0rd>'
     ```
 
-##### Postgres docker 
+### Postgres docker 
 
 1. First step is to pull postgres image from official docker repo 
     ```
