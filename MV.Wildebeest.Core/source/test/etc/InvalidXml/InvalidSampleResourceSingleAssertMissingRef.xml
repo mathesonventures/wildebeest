@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <resource type="co.mv.wb.MySqlDatabase" id="0d39b8fb-5b5c-48cd-845c-9c4d55f94303" name="Product Catalogue Database">
+    <assertions>
+        <assertion type="DatabaseExists" id="6be515a3-be32-490a-944a-ebcf17fec8a6" name="DatabaseExisting1"/>
+    </assertions>
     <assertionGroups>
         <assertionGroup name="group1" id="af32a1e6-ae4c-42b8-a1fd-b11b461f8e39">
             <assertion type="MySqlTableExists" id="3808ba63-f055-4bf7-88fe-023546e6ed16">
@@ -16,13 +19,13 @@
     <states>
         <state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" label="Database Created">
             <assertions>
-                <assertion type="DatabaseExists" id="6be515a3-be32-490a-944a-ebcf17fec8a6"/>
+                <assertionRef type="single" ref="DatabaseExisting2"/>
             </assertions>
         </state>
 
         <state id="363568f1-aaed-4a50-bea0-9ddee713cc11" label="Core Schema Loaded">
             <assertions>
-                <assertionRef type="group"/>
+                <assertionRef type="group" ref="group1" />
                 <assertion type="DatabaseExists" id="6be515a3-be32-490a-944a-ebcf17fec8a6" name="AssertionName1"/>
                 <assertion type="RowExists" id="2d22dfc4-9f6d-4286-93e8-ded9aac0e047">
                     <description>ProductType SW exists</description>
@@ -47,13 +50,13 @@
         <migration
                 type="MySqlCreateDatabase"
                 id="6b21e1e3-ff3a-44b3-84ec-e21fb01c0110"
-                toStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" />
+                toState="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" />
 
         <migration
                 type="SqlScript"
                 id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
-                fromStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"
-                toStateId="363568f1-aaed-4a50-bea0-9ddee713cc11">
+                fromState="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7"
+                toState="363568f1-aaed-4a50-bea0-9ddee713cc11">
             <sql><![CDATA[
 
 /* ProductType */
@@ -86,8 +89,8 @@ CREATE TABLE  `Product` (
         <migration
                 type="SqlScript"
                 id="8b57f16d-c690-4f10-b68f-6f1ee75fe32b"
-                fromStateId="363568f1-aaed-4a50-bea0-9ddee713cc11"
-                toStateId="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7">
+                fromState="363568f1-aaed-4a50-bea0-9ddee713cc11"
+                toState="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7">
             <sql><![CDATA[
 
 DROP TABLE Product;
@@ -97,3 +100,4 @@ DROP TABLE ProductType;
         </migration>
     </migrations>
 </resource>
+

@@ -171,10 +171,28 @@ public class DomResourceLoader implements ResourceLoader
 				name,
 				defaultTarget);
 
+			HashMap<String, Assertion> assertionsMap = new HashMap<>();
 			HashMap<String, List<Assertion>> assertionGroupsMap = new HashMap<>();
 			for (int i = 0; i < resourceXe.getChildNodes().getLength(); i++)
 			{
 				Element childXe = ModelExtensions.As(resourceXe.getChildNodes().item(i), Element.class);
+				if (childXe != null && XE_ASSERTIONS.equals(childXe.getTagName()))
+				{
+					for (int asrsIndex = 0; asrsIndex < childXe.getChildNodes().getLength(); asrsIndex++)
+					{
+						Element asrsXe = ModelExtensions.As(childXe.getChildNodes().item(asrsIndex), Element.class);
+
+						if (asrsXe != null)
+						{
+							Assertion asr = buildAssertion(this.assertionBuilders, asrsXe, asrsIndex);
+							assertionsMap.put(asrsXe.getAttribute("id"), asr);
+							if (!asrsXe.getAttribute("name").trim().isEmpty())
+							{
+								assertionsMap.put(asrsXe.getAttribute("name"), asr);
+							}
+						}
+					}
+				}
 
 				if (childXe != null && XE_ASSERTION_GROUPS.equals(childXe.getTagName()))
 				{
@@ -193,9 +211,25 @@ public class DomResourceLoader implements ResourceLoader
 
 								if (asrXe != null)
 								{
-									assertions.add(buildAssertion(this.assertionBuilders, asrXe, asrIndex));
+									if (asrXe.getTagName().equals(XE_ASSERTION_REF) &&
+										asrXe.getAttribute(XA_ASSERTION_REF_TYPE).equals(XA_ASSERTION_REF_TYPE_SINGLE))
+									{
+										String ref = asrXe.getAttribute("ref");
+										assertions.add(findReferredAssertion(
+											ref,
+											assertionsMap,
+											EntityType.AssertionGroup,
+											asrGrpXe.getAttribute(XA_ASSERTION_GROUP_ID)
+										));
+									}
+									else
+									{
+										assertions.add(buildAssertion(
+											this.assertionBuilders,
+											asrXe,
+											asrIndex));
+									}
 								}
-
 							}
 
 							assertionGroupsMap.put(asrGrpXe.getAttribute(XA_ASSERTION_GROUP_NAME), assertions);
@@ -232,54 +266,45 @@ public class DomResourceLoader implements ResourceLoader
 
 										if (asrXe != null)
 										{
-											Assertion asr;
+											List<Assertion> assertions = new ArrayList<>();
 											switch (asrXe.getTagName())
 											{
 												case XE_ASSERTION_REF:
-													switch (asrXe.getAttribute(XA_ASSERTION_REF_TYPE))
+													String ref = asrXe.getAttribute("ref");
+													if (asrXe
+														.getAttribute(XA_ASSERTION_REF_TYPE)
+														.equals(XA_ASSERTION_REF_TYPE_SINGLE))
 													{
-														case XA_ASSERTION_REF_TYPE_SINGLE:
-															break;
-
-														case XA_ASSERTION_REF_TYPE_SELECTOR:
-															break;
-
-														case XA_ASSERTION_REF_TYPE_GROUP:
-															// Get the name of the group we're referencing and validate
-															// that it exists.
-															String refGroup = asrXe.getAttribute("ref");
-															List<Assertion> assertions = assertionGroupsMap
-																.get(refGroup);
-
-															// If the group couldn't be found then This state is
-															// referencing an AssertionGroup that does not exist.
-															if (assertions == null)
-															{
-																throw InvalidReferenceException.oneReference(
-																	EntityType.AssertionGroup,
-																	refGroup,
-																	EntityType.State,
-																	state.getStateId().toString());
-															}
-
-															for (Assertion assertion : assertions)
-															{
-																verifyAssertionIsApplicable(resource, assertion);
-																state.getAssertions().add(assertion);
-															}
-
-															break;
+														assertions.add(findReferredAssertion(
+															ref,
+															assertionsMap,
+															EntityType.State,
+															state.getStateId().toString()
+														));
 													}
-													break;
+													else
+													{
+														assertions.addAll(findReferredAssertionGroup(
+															ref,
+															assertionGroupsMap,
+															EntityType.State,
+															state.getStateId().toString()
+														));
+													}
 
+													break;
 												default:
-													asr = buildAssertion(
+													assertions.add(buildAssertion(
 														this.assertionBuilders,
 														asrXe,
-														asrIndex);
-													verifyAssertionIsApplicable(resource, asr);
-													state.getAssertions().add(asr);
+														asrIndex));
 													break;
+											}
+
+											for (Assertion assertion : assertions)
+											{
+												verifyAssertionIsApplicable(resource, assertion);
+												state.getAssertions().add(assertion);
 											}
 										}
 									}
@@ -324,6 +349,46 @@ public class DomResourceLoader implements ResourceLoader
 		}
 
 		return resource;
+	}
+
+	private List<Assertion> findReferredAssertionGroup(
+		String ref,
+		HashMap<String,List<Assertion>> assertionGroupsMap,
+		EntityType referrerEntityType,
+		String referrerId) throws
+		InvalidReferenceException
+	{
+		List<Assertion> groupAssertions = assertionGroupsMap.get(ref);
+		if (groupAssertions == null)
+		{
+			throw InvalidReferenceException.oneReference(
+				EntityType.AssertionGroup,
+				ref,
+				referrerEntityType,
+				referrerId
+			);
+		}
+		return groupAssertions;
+	}
+
+	private Assertion findReferredAssertion(
+		String ref,
+		HashMap<String, Assertion> assertionsMap,
+		EntityType referrerEntityType,
+		String referrerId) throws
+		InvalidReferenceException
+	{
+		Assertion asr = assertionsMap.get(ref);
+		if (asr == null)
+		{
+			throw InvalidReferenceException.oneReference(
+				EntityType.Assertion,
+				ref,
+				referrerEntityType,
+				referrerId
+			);
+		}
+		return asr;
 	}
 
 	private void verifyAssertionIsApplicable(

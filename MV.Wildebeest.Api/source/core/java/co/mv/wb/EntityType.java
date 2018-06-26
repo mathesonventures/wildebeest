@@ -22,7 +22,8 @@ public enum EntityType
 {
 	State("urn:co.mv.wildebeest:state", "State"),
 	Migration("urn:co.mv.wildebeest:migration", "Migration"),
-	AssertionGroup("urn:co.mv.wildebeest:assertionGroup", "Assertion Group");
+	AssertionGroup("urn:co.mv.wildebeest:assertionGroup", "Assertion Group"),
+	Assertion("urn:co.mv.wildebeest:assertion", "Assertion");
 
 	private final String urn;
 	private final String name;

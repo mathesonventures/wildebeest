@@ -28,6 +28,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.fixture.FixtureBuilder;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.impl.WildebeestApiBuilder;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -1049,6 +1050,228 @@ public class DomResourceLoaderTests
 			"resource.state[1].assertions.size",
 			5,
 			resource.getStates().get(1).getAssertions().size());
+
+	}
+
+	@Test
+	public void loadResourceXml_assertionGroup_withInvalidXML_fails()
+	{
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml";
+
+		new ExpectException(XmlValidationException.class)
+		{
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.loadResource(new File(resourceFilePath));
+			}
+
+			@Override public void verify(Exception e)
+			{
+				Assert.assertTrue(
+					"e.message",
+					e.getMessage().contains("Attribute 'ref' must appear on element 'assertionRef'"));
+			}
+		}.perform();
+	}
+
+	@Test
+	public void loadResourceXml_assertionGroup_withInvalidRef_fails()
+	{
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "InvalidXml/InvalidReferenceSampleResourceUsesAssertionGroup.xml";
+
+		new ExpectException(InvalidReferenceException.class)
+		{
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.loadResource(new File(resourceFilePath));
+			}
+
+			@Override public void verify(Exception e)
+			{
+				Assert.assertTrue(
+					"e.message",
+					e.getMessage().contains("State:363568f1-aaed-4a50-bea0-9ddee713cc11 has invalid references to: " +
+						"[ Assertion Group:group1 ]"));
+			}
+		}.perform();
+	}
+
+	@Test
+	public void loadResource_validMysql_withSingleAssertRef_succeeds()
+	{
+		Resource resource = this.loadResource("MySqlDatabase/database.wbresources.uses.singleAssertionRef.xml");
+
+		//
+		// Verify
+		//
+
+		// Resource
+		assertNotNull("resource", resource);
+		Asserts.assertResource(
+			UUID.fromString("0d39b8fb-5b5c-48cd-845c-9c4d55f94303"),
+			"Product Catalogue Database",
+			resource,
+			"resource");
+
+		// States
+		assertEquals(
+			"resource.states.size",
+			2,
+			resource.getStates().size());
+
+		// Assertions
+		assertEquals(
+			"resource.state[0].assertions.size",
+			1,
+			resource.getStates().get(0).getAssertions().size());
+		assertEquals(
+			"resource.state[1].assertions.size",
+			6,
+			resource.getStates().get(1).getAssertions().size());
+
+	}
+
+	@Test
+	public void loadResource_validPostgre_withSingleAssertRef_succeeds()
+	{
+		Resource resource = this.loadResource("PostgreSqlDatabase/database.wbresources.uses.singleAssertionRef.xml");
+		//
+		// Verify
+		//
+
+		// Resource
+		assertNotNull("resource", resource);
+		Asserts.assertResource(
+			UUID.fromString("38d0eabd-ab40-4c37-96a7-fcacb43bd059"),
+			"Product Catalogue Database",
+			resource,
+			"resource");
+
+		// States
+		assertEquals(
+			"resource.states.size",
+			3,
+			resource.getStates().size());
+
+		// Assertions
+		assertEquals(
+			"resource.state[0].assertions.size",
+			1,
+			resource.getStates().get(0).getAssertions().size());
+		assertEquals(
+			"resource.state[1].assertions.size",
+			0,
+			resource.getStates().get(1).getAssertions().size());
+		assertEquals(
+			"resource.state[2].assertions.size",
+			1,
+			resource.getStates().get(2).getAssertions().size());
+
+	}
+
+	@Test
+	public void loadResource_validSqlServer_withSingleAssertRef_succeeds()
+	{
+		Resource resource = this.loadResource("SqlServerDatabase/database.wbresources.uses.singleAssertionRef.xml");
+		//
+		// Verify
+		//
+
+		// Resource
+		assertNotNull("resource", resource);
+		Asserts.assertResource(
+			UUID.fromString("58699f8a-22fa-4784-9768-3fcc3b2619b4"),
+			"Product Catalogue Database",
+			resource,
+			"resource");
+
+		// States
+		assertEquals(
+			"resource.states.size",
+			2,
+			resource.getStates().size());
+
+		// Assertions
+		assertEquals(
+			"resource.state[0].assertions.size",
+			1,
+			resource.getStates().get(0).getAssertions().size());
+		assertEquals(
+			"resource.state[1].assertions.size",
+			5,
+			resource.getStates().get(1).getAssertions().size());
+
+	}
+
+	@Test
+	public void loadResourceXml_withInvalidXML_singleAssertion_fails()
+	{
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "InvalidXml/InvalidSampleResourceUsesSingleAssertRef.xml";
+
+		new ExpectException(XmlValidationException.class)
+		{
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.loadResource(new File(resourceFilePath));
+			}
+
+			@Override public void verify(Exception e)
+			{
+				Assert.assertTrue(
+					"e.message",
+					e.getMessage().contains("Attribute 'test' is not allowed to appear in element 'assertionRef'"));
+			}
+		}.perform();
+	}
+
+	@Test
+	public void loadResourceXml_withInvalidRef_singleAssertion_fails()
+	{
+		// Setup
+		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		String resourceFilePath = "InvalidXml/InvalidSampleResourceSingleAssertMissingRef.xml";
+
+		new ExpectException(InvalidReferenceException.class)
+		{
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.loadResource(new File(resourceFilePath));
+			}
+
+			@Override public void verify(Exception e)
+			{
+				Assert.assertTrue(
+					"e.message",
+					e.getMessage().contains("State:199b7cc1-3cc6-48ca-b012-a70d05d5b5e7 has invalid references to:" +
+						" [ Assertion:DatabaseExisting2 ]"));
+			}
+		}.perform();
+	}
+
+	private Resource loadResource(
+		String resourceFilePath)
+	{
+		if (resourceFilePath == null) throw new ArgumentNullException("resourceFilePath");
+
+		try
+		{
+			// Setup
+			WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+			// Execute
+			return wildebeestApi.loadResource(new File(resourceFilePath));
+		}
+		catch (LoaderFault | PluginBuildException | InvalidReferenceException | FileLoadException
+			| XmlValidationException loaderFault)
+		{
+			loaderFault.printStackTrace();
+		}
+		return null;
 	}
 
 	@Test

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <resource type="co.mv.wb.PostgreSqlDatabase" id="38d0eabd-ab40-4c37-96a7-fcacb43bd059" name="Product Catalogue Database">
+    <assertions>
+        <assertion type="DatabaseExists" id="6be515a3-be32-490a-944a-ebcf17fec8a6" />
+    </assertions>
     <assertionGroups>
-        <assertionGroup name="group1" id="af32a1e6-ae4c-42b8-a1fd-b11b461f8e39">
-            <assertion type="DatabaseExists" id="6be515a3-be32-490a-944a-ebcf17fec8a6" />
-        </assertionGroup>
-        <assertionGroup name="group2" id="cca13b6d-b99a-4d73-a0f5-c37440f9b446">
+        <assertionGroup name="group2" id="af32a1e6-ae4c-42b8-a1fd-b11b461f8e39">
             <assertion type="AnsiSqlTableExists" id="84a3d24b-396c-4784-abb2-c2e485ff77a4">
                 <schemaName>ProdCat</schemaName>
                 <tableName>ProductType</tableName>
@@ -15,7 +15,7 @@
 
         <state id="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79" label="Database Created">
             <assertions>
-                <assertionRef type="group" ref="group1" />
+                <assertionRef type="single" ref="6be515a3-be32-490a-944a-ebcf17fec8a6"/>
             </assertions>
         </state>
 
@@ -31,7 +31,7 @@
 
         <state id="434fb1fd-e903-4b0f-a2b3-b1014360f799">
             <assertions>
-                <assertionRef type="group" ref="cca13b6d-b99a-4d73-a0f5-c37440f9b446" />
+                <assertionRef type="group" ref="group2" />
             </assertions>
         </state>
 
