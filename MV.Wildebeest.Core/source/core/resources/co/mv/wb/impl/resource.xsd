@@ -46,7 +46,6 @@
         <xs:sequence>
             <xs:element name="assertionRef" type="AssertionRef" maxOccurs="unbounded">
                 <xs:alternative test="@type='single'" type="SingleAssertionRef"/>
-                <xs:alternative test="@type='selector'" type="SelectorAssertionRef"/>
                 <xs:alternative test="@type='group'" type="GroupAssertionRef"/>
             </xs:element>
         </xs:sequence>
@@ -60,7 +59,6 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="single"/>
             <xs:enumeration value="group"/>
-            <xs:enumeration value="selector"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -129,17 +127,6 @@
         <xs:complexContent>
             <xs:extension base="AssertionRef">
                 <xs:attribute name="ref" type="xs:string" use="required"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:complexType name="SelectorAssertionRef">
-        <xs:complexContent>
-            <xs:extension base="AssertionRef">
-                <xs:sequence>
-                    <xs:element name="include" type="xs:string" maxOccurs="unbounded"/>
-                    <xs:element name="exclude" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
