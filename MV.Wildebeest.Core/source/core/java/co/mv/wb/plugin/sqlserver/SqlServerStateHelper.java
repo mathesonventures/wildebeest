@@ -73,9 +73,10 @@ public class SqlServerStateHelper
 		DatabaseHelper.execute(
 			appDataSource,
 			String.format(
-				"INSERT INTO %s(ResourceId, StateId) VALUES('%s', '%s');",
+				"INSERT INTO %s(ResourceId, StateId, LastMigrationInstant) VALUES('%s', '%s', '%s');",
 				stateTableName,
 				resourceId,
+				DatabaseHelper.getInstant(),
 				stateId));
 	}
 
@@ -178,6 +179,7 @@ public class SqlServerStateHelper
 			.append("CREATE TABLE ").append(stateTableName).append("(")
 			.append("ResourceId uniqueidentifier NOT NULL, ")
 			.append("StateId uniqueidentifier NOT NULL, ")
+			.append("LastMigrationInstant datetimeoffset NOT NULL, ")
 			.append("PRIMARY KEY (ResourceId)")
 			.append(");").toString());
 	}

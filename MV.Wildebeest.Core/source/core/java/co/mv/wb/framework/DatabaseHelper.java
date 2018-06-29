@@ -23,6 +23,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Provides a set of convenience methods for working with JDBC-accessed databases.
@@ -202,5 +205,19 @@ public class DatabaseHelper
 		{
 			rs.close();
 		}
+	}
+
+	/**
+	 * Gets DateTimeOffset to log time, it is timezone aware
+	 *
+	 * @return time as String
+	 * @since 4.0
+	 */
+	public static String getInstant()
+	{
+		String time = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm a").format(ZonedDateTime.now());
+		System.out.println(time);
+		// 5/1/2008 8:06:32 AM -07:00
+		return time;
 	}
 }
