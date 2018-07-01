@@ -743,6 +743,10 @@ public class WildebeestApiImpl implements WildebeestApi
 		Optional<UUID> fromState,
 		Optional<UUID> targetState)
 	{
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (fromState == null) throw new ArgumentNullException("fromState");
+		if (targetState == null) throw new ArgumentNullException("targetState");
+
 		return findPaths(resource, fromState, targetState, new ArrayList<>());
 	}
 
