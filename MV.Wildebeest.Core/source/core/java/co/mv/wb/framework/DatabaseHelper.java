@@ -17,12 +17,16 @@
 package co.mv.wb.framework;
 
 import co.mv.wb.FaultException;
+import microsoft.sql.DateTimeOffset;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -213,11 +217,8 @@ public class DatabaseHelper
 	 * @return time as String
 	 * @since 4.0
 	 */
-	public static String getInstant()
+	public static DateTimeOffset getInstant()
 	{
-		String time = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm a").format(ZonedDateTime.now());
-		System.out.println(time);
-		// 5/1/2008 8:06:32 AM -07:00
-		return time;
+		return DateTimeOffset.valueOf(new Timestamp(System.currentTimeMillis()),0);
 	}
 }

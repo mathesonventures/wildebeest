@@ -76,8 +76,8 @@ public class SqlServerStateHelper
 				"INSERT INTO %s(ResourceId, StateId, LastMigrationInstant) VALUES('%s', '%s', '%s');",
 				stateTableName,
 				resourceId,
-				DatabaseHelper.getInstant(),
-				stateId));
+				stateId,
+				DatabaseHelper.getInstant()));
 	}
 
 
