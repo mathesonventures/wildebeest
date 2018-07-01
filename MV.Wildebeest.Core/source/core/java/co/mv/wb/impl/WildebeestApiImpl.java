@@ -372,18 +372,16 @@ public class WildebeestApiImpl implements WildebeestApi
 			throw new TargetNotSpecifiedException();
 		}
 
-		UUID targetStateId = Wildebeest.findState(resource, ts.get()).getStateId();
-
 		State currentState = resourcePlugin.currentState(
 			resource,
 			instance);
 
-		UUID currentStateId = currentState == null ? null : currentState.getStateId();
+		Optional<UUID> currentStateId = currentState == null ?
+			Optional.empty() : Optional.ofNullable(currentState.getStateId());
 
-		List<List<Migration>> paths = new ArrayList<>();
-		List<Migration> thisPath = new ArrayList<>();
+		Optional<UUID> targetStateId = Optional.ofNullable(Wildebeest.findState(resource, ts.get()).getStateId());
 
-		WildebeestApiImpl.findPaths(resource, paths, thisPath, currentStateId, targetStateId);
+		List<List<Migration>> paths = WildebeestApiImpl.findPaths(resource, currentStateId, targetStateId);
 
 		if (paths.size() != 1)
 		{
@@ -740,43 +738,80 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 	}
 
-	private static void findPaths(
+	public static List<List<Migration>> findPaths(
 		Resource resource,
-		List<List<Migration>> paths,
-		List<Migration> thisPath,
-		UUID fromState,
-		UUID targetState)
+		Optional<UUID> fromState,
+		Optional<UUID> targetState)
 	{
-		if (resource == null) throw new ArgumentNullException("resource");
-		if (paths == null) throw new ArgumentNullException("paths");
-		if (thisPath == null) throw new ArgumentNullException("thisPath");
+		return findPaths(resource, fromState, targetState, new ArrayList<>());
+	}
 
-		// Have we reached the target state?
-		if ((fromState == null && targetState == null) ||
-			(fromState != null && fromState.equals(targetState)))
-		{
-			paths.add(thisPath);
-		}
+	private static List<List<Migration>> findPaths(
+		Resource resource,
+		Optional<UUID> fromState,
+		Optional<UUID> targetState,
+		List<Migration> currPath)
+	{
+		List<List<Migration>> paths = new ArrayList<>();
+		List<Migration> possibleMigrations = findPossibleMigrations(fromState, resource.getMigrations());
 
-		// If we have not reached the target state, keep traversing the graph
-		else
+		possibleMigrations.forEach(migration ->
 		{
-			resource.getMigrations()
-				.stream()
-				.filter(m ->
-					(!m.getFromState().isPresent() && fromState == null) ||
-						(m.getFromState().isPresent() && m.getFromState().get().equals(fromState.toString())))
-				.forEach(
-					migration ->
-					{
-						State toState = Wildebeest.findState(
-							resource,
-							migration.getToState().get());
-						List<Migration> thisPathCopy = new ArrayList<>(thisPath);
-						thisPathCopy.add(migration);
-						findPaths(resource, paths, thisPathCopy, toState.getStateId(), targetState);
-					});
-		}
+			List<Migration> pathSplit = new ArrayList<>(currPath);
+			if (migration.getToState().isPresent() && pathSplit.toString().contains(migration.getToState().get()))
+			{
+				//Circular path detected
+				return;
+			}
+
+			pathSplit.add(migration);
+
+			Optional<String> toState = migration.getToState();
+			if (toState.isPresent())
+			{
+				if (targetState.isPresent() && toState.get().equals(targetState.get().toString()))
+				{
+					//A complete path found
+					paths.add(pathSplit);
+				}
+				else
+				{
+					//Add all complete path found to paths
+					paths.addAll(findPaths(
+						resource,
+						Optional.of(UUID.fromString(toState.get())),
+						targetState,
+						pathSplit
+					));
+				}
+			}
+			else
+			{
+				if (!targetState.isPresent())
+				{
+					//A complete path found
+					paths.add(pathSplit);
+				}
+			}
+		});
+		return paths;
+	}
+
+	private static List<Migration> findPossibleMigrations(
+		Optional<UUID> fromState,
+		List<Migration> migrations)
+	{
+		return migrations.parallelStream().filter(m ->
+		{
+			if (fromState.isPresent())
+			{
+				return m.getFromState().isPresent() && m.getFromState().get().equals(fromState.get().toString());
+			}
+			else
+			{
+				return !m.getFromState().isPresent();
+			}
+		}).collect(Collectors.toList());
 	}
 
 	private static void validateXml(

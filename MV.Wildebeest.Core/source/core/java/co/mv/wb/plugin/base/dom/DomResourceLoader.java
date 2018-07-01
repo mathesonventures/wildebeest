@@ -19,11 +19,11 @@ package co.mv.wb.plugin.base.dom;
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionBuilder;
 import co.mv.wb.EntityType;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Messages;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
@@ -71,7 +71,6 @@ public class DomResourceLoader implements ResourceLoader
 
 	private static final String XE_STATES = "states";
 
-	private static final String XE_STATE = "state";
 	private static final String XA_STATE_ID = "id";
 	private static final String XA_STATE_LABEL = "label";
 	private static final String XA_STATE_DESCRIPTION = "description";
@@ -84,8 +83,6 @@ public class DomResourceLoader implements ResourceLoader
 	private static final String XE_ASSERTION_REF = "assertionRef";
 	private static final String XA_ASSERTION_REF_TYPE = "type";
 	private static final String XA_ASSERTION_REF_TYPE_SINGLE = "single";
-	private static final String XA_ASSERTION_REF_TYPE_SELECTOR = "selector";
-	private static final String XA_ASSERTION_REF_TYPE_GROUP = "group";
 
 	private static final String XE_MIGRATIONS = "migrations";
 	private static final String XA_MIGRATION_TYPE = "type";
@@ -353,7 +350,7 @@ public class DomResourceLoader implements ResourceLoader
 
 	private List<Assertion> findReferredAssertionGroup(
 		String ref,
-		HashMap<String,List<Assertion>> assertionGroupsMap,
+		HashMap<String, List<Assertion>> assertionGroupsMap,
 		EntityType referrerEntityType,
 		String referrerId) throws
 		InvalidReferenceException

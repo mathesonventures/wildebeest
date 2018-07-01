@@ -71,4 +71,11 @@ public abstract class BaseMigration implements Migration
 	{
 		return this.toState;
 	}
+
+	@Override
+	public String toString() {
+		String fromState = this.fromState.isPresent() ? this.fromState.get() : "_";
+		String toState = this.toState.isPresent() ? this.toState.get() : "_";
+		return fromState+"->"+toState;
+	}
 }
