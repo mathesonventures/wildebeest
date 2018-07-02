@@ -203,6 +203,7 @@ public class PostgreSqlStateHelper
 				.append(stateTableName).append("(")
 				.append("ResourceId UUID NOT NULL, ")
 				.append("StateId UUID NOT NULL, ")
+				.append("LastMigrationInstant timestamp NOT NULL")
 				.append("CONSTRAINT PK_").append(stateTableName).append(" PRIMARY KEY (ResourceId)")
 				.append(");").toString());
 		}
