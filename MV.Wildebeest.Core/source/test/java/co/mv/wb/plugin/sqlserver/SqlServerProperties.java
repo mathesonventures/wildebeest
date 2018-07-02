@@ -72,7 +72,7 @@ public class SqlServerProperties
 		String portRaw = System.getProperty("sqlServer.port");
 		if (portRaw == null)
 		{
-			result.port = 1433;
+			result.port = 11433;
 		}
 		else
 		{
@@ -84,7 +84,7 @@ public class SqlServerProperties
 		String username = System.getProperty("sqlServer.username");
 		if (username == null)
 		{
-			result.username = "wb";
+			result.username = "SA";
 		}
 		else
 		{
@@ -96,7 +96,7 @@ public class SqlServerProperties
 		String password = System.getProperty("sqlServer.password");
 		if (password == null)
 		{
-			result.password = "password";
+			result.password = "Password123!";
 		}
 		else
 		{
