@@ -13,14 +13,17 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigration;
 
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.PrintStream;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -55,8 +58,8 @@ public class PostgreSqlStateTrackingTests
 			"postgres",
 			"Password123!",
 			databaseName,
-			null,
-			null);
+			"wb",
+			"wb_state");
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -79,6 +82,22 @@ public class PostgreSqlStateTrackingTests
 			resource,
 			instance,
 			Optional.of(created.getStateId().toString()));
+
+		//
+
+		try
+		{
+			DatabaseHelper.execute(instance.getAppDataSource(),
+				String.format("SELECT LastMigrationInstant FROM %s.%s ",
+				instance.getMetaSchemaName(),
+				instance.getStateTableName()));
+
+		}
+		catch (SQLException e)
+		{
+			e.getCause();
+			Assert.fail();
+		}
 
 	}
 

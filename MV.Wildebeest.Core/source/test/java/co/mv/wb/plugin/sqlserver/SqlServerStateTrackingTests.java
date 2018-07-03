@@ -110,8 +110,6 @@ public class SqlServerStateTrackingTests
 		// Execute and Verify
 		//
 
-		AssertionResponse response = null;
-
 		try
 		{
 			DatabaseHelper.execute(instance.getAppDataSource(),
@@ -126,7 +124,7 @@ public class SqlServerStateTrackingTests
 		}
 		finally
 		{
-			SqlServerUtil.tryDropDatabase(instance);
+			//TODO drop database
 		}
 
 	}
