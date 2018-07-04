@@ -72,10 +72,11 @@ public class MySqlStateHelper
 		DatabaseHelper.execute(
 			appDataSource,
 			String.format(
-				"INSERT INTO %s(ResourceId, StateId) VALUES('%s', '%s');",
+				"INSERT INTO %s(ResourceId, StateId, LastMigrationInstant) VALUES('%s', '%s' , '%s');",
 				stateTableName,
 				resourceId,
-				stateId));
+				stateId,
+				DatabaseHelper.getMysqlInstant()));
 	}
 
 	/**
@@ -174,6 +175,7 @@ public class MySqlStateHelper
 			.append("CREATE TABLE IF NOT EXISTS `").append(stateTableName).append("`(")
 			.append("`ResourceId` char(36) NOT NULL, ")
 			.append("`StateId` char(36) NOT NULL, ")
+			.append("`LastMigrationInstant` datetime NOT NULL, ")
 			.append("PRIMARY KEY (`ResourceId`)")
 			.append(");").toString());
 	}

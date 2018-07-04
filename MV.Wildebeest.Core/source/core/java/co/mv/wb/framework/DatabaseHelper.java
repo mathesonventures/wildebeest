@@ -221,4 +221,14 @@ public class DatabaseHelper
 	{
 		return DateTimeOffset.valueOf(new Timestamp(System.currentTimeMillis()),0);
 	}
+
+	public static String getMysqlInstant()
+	{
+		Timestamp t = new Timestamp(System.currentTimeMillis());
+		java.text.SimpleDateFormat sdf =
+			new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String currentTime = sdf.format(t);
+		return currentTime;
+	}
 }
