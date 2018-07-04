@@ -50,7 +50,7 @@ public class PostgreSqlStateTrackingTests
 			.withFactoryMigrationPlugins()
 			.get();
 
-		String databaseName = DatabaseFixtureHelper.databaseName();
+		String databaseName = DatabaseFixtureHelper.databaseName().toLowerCase();
 
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",

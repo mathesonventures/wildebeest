@@ -117,7 +117,7 @@ public class PostgreSqlDatabaseInstance
 		ds.setPortNumber(this.getPort());
 		ds.setUser(this.getAdminUsername());
 		ds.setPassword(this.getAdminPassword());
-		ds.setDatabaseName(this.getDatabaseName());
+		ds.setDatabaseName(this.getDatabaseName().toLowerCase());
 
 		return ds;
 	}
@@ -126,6 +126,6 @@ public class PostgreSqlDatabaseInstance
 	{
 		return DatabaseHelper.rowExists(
 			this.getAdminDataSource(),
-			String.format("SELECT * FROM pg_database WHERE datname = '%s';", this.getDatabaseName()));
+			String.format("SELECT * FROM pg_database WHERE datname = '%s';", this.getDatabaseName().toLowerCase()));
 	}
 }
