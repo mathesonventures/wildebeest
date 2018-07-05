@@ -26,15 +26,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/mysql-connector-java-5.1.22.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/target/core/libcompile/postgresql-9.3-1100-jdbc41.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -155,6 +146,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/target/test/librun/xml-apis-1.4.01.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/mysql-connector-java-8.0.11.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
