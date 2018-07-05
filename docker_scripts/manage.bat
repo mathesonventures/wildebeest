@@ -47,20 +47,20 @@ IF NOT "%1"=="" (
 			docker pull postgres
 			
 			docker run -it -p 127.0.0.1:13306:3306 --name %mysql_container% -e MYSQL_ROOT_PASSWORD=Password123! -d mysql:latest
-			docker run -it -p 127.0.0.1:11433:1433 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password123!' --name %sqlserver_container% -d microsoft/mssql-server-linux:2017-latest
+			docker run -it -p 127.0.0.1:11433:1433 -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Password123!" --name %sqlserver_container% -d microsoft/mssql-server-linux:2017-latest
 			docker run -it -p 127.0.0.1:15432:5432 --name %postgresserver_container% -e POSTGRES_PASSWORD=Password123! -d postgres
 			EXIT /B 0
 		)	
 	IF "%1"=="--clean" (	
-		echo "Stoping containers :"
+		echo Stoping containers :
 			docker stop %mysql_container%
 			docker stop %sqlserver_container%
 			docker stop %postgresserver_container%
-			echo "Removing containers :"
+			echo Removing containers :
 			docker rm %mysql_container%
 			docker rm %sqlserver_container%
 			docker rm %postgresserver_container%
-			echo "Removing images :"
+			echo Removing images :
 			docker rmi mysql:latest
 			docker rmi microsoft/mssql-server-linux:2017-latest
 			docker rmi postgres
