@@ -65,7 +65,7 @@ setup(){
     docker pull microsoft/mssql-server-linux:2017-latest
     docker pull postgres
     
-    docker run -it -p 127.0.0.1:13306:3306 --name mysqlserver -e MYSQL_ROOT_PASSWORD=Password123! -d mysql:latest
+    docker run -it -p 127.0.0.1:13306:3306 --name $mysql_container -e MYSQL_ROOT_PASSWORD=Password123! -d mysql:latest
     docker run -it -p 127.0.0.1:11433:1433 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password123!' --name $sqlserver_container -d microsoft/mssql-server-linux:2017-latest
     docker run -it -p 127.0.0.1:15432:5432 --name $postgresserver_container -e POSTGRES_PASSWORD=Password123! -d postgres
 }
