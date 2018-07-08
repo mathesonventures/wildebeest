@@ -101,7 +101,7 @@ public class AnsiSqlDomServiceUnitTests
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
-		UUID toState = UUID.randomUUID();
+		String toState = UUID.randomUUID().toString();
 
 		String xml = FixtureBuilder.create()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
