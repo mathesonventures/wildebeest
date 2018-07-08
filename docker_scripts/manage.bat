@@ -72,5 +72,17 @@ IF NOT "%1"=="" (
 			EXIT /B 0
 		)		
 	)
+echo Script to help use manage docker containers
+echo Usage script_name --[Argument] ... 
+echo 
+echo --clean   Removes docker containers and images 
+echo --help    Prints help message and exits script
+echo --list    lists all running docker containers
+echo --setup   pulls and creates all predefined docker containers to be ready for use
+echo default password will be used for all databases: Password123!
+echo --start   starts docker containers predefined in script
+echo --stop    stops all docker containers predefined in script
+EXIT /B 0		
+
 
 	
