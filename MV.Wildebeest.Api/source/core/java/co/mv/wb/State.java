@@ -36,12 +36,12 @@ public interface State
 	UUID getStateId();
 
 	/**
-	 * Gets the optional label of this State.
+	 * Gets the optional name of this State.
 	 *
-	 * @return the label of this State, if it has one
+	 * @return the name of this State, if it has one
 	 * @since 1.0
 	 */
-	Optional<String> getLabel();
+	Optional<String> getName();
 
 	/**
 	 * Gets the set of Assertions that should be used to verify this State.
@@ -52,9 +52,9 @@ public interface State
 	List<Assertion> getAssertions();
 
 	/**
-	 * Returns the label if the state has one, otherwise returns it's ID.
+	 * Returns the name if the state has one, otherwise returns it's ID.
 	 *
-	 * @return the label if the State has one, otherwise it's unique ID
+	 * @return the name if the State has one, otherwise it's unique ID
 	 * @since 1.0
 	 */
 	String getDisplayName();

@@ -3,7 +3,7 @@
 
 	<states>
 
-		<state id="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79" label="Database Created">
+		<state id="5e9981fa-3b1b-4ea9-8547-b50f7ef2aa79" name="Database Created">
 			<assertions>
 				<assertion type="DatabaseExists" id="6be515a3-be32-490a-944a-ebcf17fec8a6" />
 			</assertions>
@@ -29,7 +29,7 @@
 		</state>
 
 <!--
-		<state id="6096d6fc-2b04-45cf-88cf-9ab49629f50e" label="Core Schema Loaded">
+		<state id="6096d6fc-2b04-45cf-88cf-9ab49629f50e" name="Core Schema Loaded">
 			<assertions>
 				<assertion type="SqlServerTableExists" id="397a6a63-15ab-412f-922b-2c020b372a9f">
 					<schemaName>dbo</schemaName>

@@ -148,4 +148,22 @@ public class TestContext_SimpleFakeResource_Builder
 			initialState,
 			instance);
 	}
+
+	public TestContext_SimpleFakeResource getResourceAndInstanceOnly(){
+		Resource resource = new ResourceImpl(
+				UUID.randomUUID(),
+				FakeConstants.Fake,
+				"MyResource",
+				Optional.ofNullable(defaultTarget));
+
+		Instance instance = new FakeInstance();
+
+		return new TestContext_SimpleFakeResource(
+				resource,
+				null,
+				null,
+				null,
+				null,
+				instance);
+	}
 }

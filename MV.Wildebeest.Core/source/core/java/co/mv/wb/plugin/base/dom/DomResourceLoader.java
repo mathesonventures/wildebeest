@@ -19,11 +19,11 @@ package co.mv.wb.plugin.base.dom;
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionBuilder;
 import co.mv.wb.EntityType;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Messages;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
@@ -71,9 +71,8 @@ public class DomResourceLoader implements ResourceLoader
 
 	private static final String XE_STATES = "states";
 
-	private static final String XE_STATE = "state";
 	private static final String XA_STATE_ID = "id";
-	private static final String XA_STATE_LABEL = "label";
+	private static final String XA_STATE_NAME = "name";
 	private static final String XA_STATE_DESCRIPTION = "description";
 
 	private static final String XE_ASSERTIONS = "assertions";
@@ -84,8 +83,6 @@ public class DomResourceLoader implements ResourceLoader
 	private static final String XE_ASSERTION_REF = "assertionRef";
 	private static final String XA_ASSERTION_REF_TYPE = "type";
 	private static final String XA_ASSERTION_REF_TYPE_SINGLE = "single";
-	private static final String XA_ASSERTION_REF_TYPE_SELECTOR = "selector";
-	private static final String XA_ASSERTION_REF_TYPE_GROUP = "group";
 
 	private static final String XE_MIGRATIONS = "migrations";
 	private static final String XA_MIGRATION_TYPE = "type";
@@ -353,7 +350,7 @@ public class DomResourceLoader implements ResourceLoader
 
 	private List<Assertion> findReferredAssertionGroup(
 		String ref,
-		HashMap<String,List<Assertion>> assertionGroupsMap,
+		HashMap<String, List<Assertion>> assertionGroupsMap,
 		EntityType referrerEntityType,
 		String referrerId) throws
 		InvalidReferenceException
@@ -425,15 +422,15 @@ public class DomResourceLoader implements ResourceLoader
 
 		final State result;
 		final UUID id = UUID.fromString(element.getAttribute(XA_STATE_ID));
-		String label = null;
+		String name = null;
 		String description = null;
 		int condition = 0;
 
-		// TODO: Optimize this logic - we can resolve the optionality of label and description at the time of parsing, and then always call the three-arg constructor,
+		// TODO: Optimize this logic - we can resolve the optionality of name and description at the time of parsing, and then always call the three-arg constructor,
 
-		if (element.hasAttribute(XA_STATE_LABEL))
+		if (element.hasAttribute(XA_STATE_NAME))
 		{
-			label = element.getAttribute(XA_STATE_LABEL);
+			name = element.getAttribute(XA_STATE_NAME);
 			condition++;
 		}
 
@@ -446,10 +443,10 @@ public class DomResourceLoader implements ResourceLoader
 		switch (condition)
 		{
 			case 1:
-				result = new ImmutableState(id, Optional.of(label));
+				result = new ImmutableState(id, Optional.of(name));
 				break;
 			case 2:
-				result = new ImmutableState(id, Optional.of(label), Optional.of(description));
+				result = new ImmutableState(id, Optional.of(name), Optional.of(description));
 				break;
 			default:
 				result = new ImmutableState(id);

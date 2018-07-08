@@ -32,7 +32,7 @@ public class StateBuilder
 	private final FixtureBuilder builder;
 	private final ResourceBuilder resourceBuilder;
 	private final UUID stateId;
-	private final String label;
+	private final String name;
 	private final String description;
 	private final List<AssertionBuilder> assertions;
 
@@ -40,7 +40,7 @@ public class StateBuilder
 		FixtureBuilder builder,
 		ResourceBuilder resourceBuilder,
 		UUID stateId,
-		String label,
+		String name,
 		String description)
 	{
 		if (builder == null) throw new ArgumentNullException("builder");
@@ -50,7 +50,7 @@ public class StateBuilder
 		this.builder = builder;
 		this.resourceBuilder = resourceBuilder;
 		this.stateId = stateId;
-		this.label = label;
+		this.name = name;
 		this.description = description;
 		this.assertions = new ArrayList<>();
 	}
@@ -60,14 +60,14 @@ public class StateBuilder
 		return this.stateId;
 	}
 
-	public String getLabel()
+	public String getName()
 	{
-		return this.label;
+		return this.name;
 	}
 
-	public boolean hasLabel()
+	public boolean hasName()
 	{
-		return this.label != null;
+		return this.name != null;
 	}
 
 	public String getDescription()
@@ -101,9 +101,9 @@ public class StateBuilder
 
 	public StateBuilder state(
 		UUID stateId,
-		String label)
+		String name)
 	{
-		return this.resourceBuilder.state(stateId, label);
+		return this.resourceBuilder.state(stateId, name);
 	}
 
 	public MigrationBuilder migration(
