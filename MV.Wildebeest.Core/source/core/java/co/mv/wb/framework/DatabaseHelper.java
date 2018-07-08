@@ -20,16 +20,10 @@ import co.mv.wb.FaultException;
 import microsoft.sql.DateTimeOffset;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.*;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Provides a set of convenience methods for working with JDBC-accessed databases.
@@ -49,7 +43,8 @@ public class DatabaseHelper
 	 */
 	public static void execute(
 		DataSource dataSource,
-		String sql) throws SQLException
+		String sql,
+		List<Param> params) throws SQLException
 	{
 		if (dataSource == null) throw new ArgumentNullException("dataSource");
 		if (sql == null) throw new ArgumentNullException("sql");
@@ -62,6 +57,21 @@ public class DatabaseHelper
 		{
 			conn = dataSource.getConnection();
 			ps = conn.prepareStatement(sql);
+
+			for (int i= 0; i < params.size(); i ++)
+			{
+				Param p = params.get(i);
+
+				if (p.getValue() instanceof String)
+				{
+					ps.setString(i, (String)p.getValue());
+				}
+				else if (p.getValue() instanceof Date)
+				{
+					ps.setDate(i, (Date)p.getValue());
+				}
+			}
+
 			ps.execute();
 		}
 		finally

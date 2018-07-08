@@ -20,12 +20,14 @@ import co.mv.wb.FaultException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
+import co.mv.wb.framework.Param;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -72,11 +74,15 @@ public class MySqlStateHelper
 		DatabaseHelper.execute(
 			appDataSource,
 			String.format(
-				"INSERT INTO %s(ResourceId, StateId, LastMigrationInstant) VALUES('%s', '%s' , '%s');",
+				"INSERT INTO %s(ResourceId, StateId) VALUES(@0, @1);",  // TODO: What is the correct syntax for indexed parameters?  Also note we'll still need to String.format to get the table name in place - not ideal but we can improve that later.
 				stateTableName,
 				resourceId,
-				stateId,
-				DatabaseHelper.getInstant().toString()));
+				stateId),
+			Arrays.asList(
+				new Param("resourceId", resourceId),
+				new Param("stateId", stateId),
+				new Param("lastUpdatedInstant", new DateTime().toDate())
+			));
 	}
 
 	/**
