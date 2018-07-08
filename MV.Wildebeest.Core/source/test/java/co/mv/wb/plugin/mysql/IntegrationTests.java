@@ -308,7 +308,7 @@ public class IntegrationTests
 		XmlBuilder instanceXml = new XmlBuilder();
 		instanceXml
 			.processingInstruction()
-			.openElement("instance type=\"MySqlDatabase\" id=\"" + UUID.randomUUID() + "\"")
+			.openElement("instance type=\"co.mv.wb.MySqlDatabase\" id=\"" + UUID.randomUUID() + "\"")
 			.openElement("hostName").append("127.0.0.1").closeElement("hostName")
 			.openElement("port").append("3306").closeElement("port")
 			.openElement("adminUsername").append("root").closeElement("adminUsername")

@@ -30,9 +30,25 @@ public class PluginBuildException extends Exception
 	public PluginBuildException(
 		Messages messages)
 	{
+		super(PluginBuildException.buildMessage(messages));
+
 		if (messages == null) throw new ArgumentNullException("messages");
 
 		this.messages = messages;
+	}
+
+	private static String buildMessage(Messages messages)
+	{
+		if (messages == null) throw new ArgumentNullException("messages");
+
+		StringBuilder m = new StringBuilder();
+
+		for (String message : messages.getMessages())
+		{
+			m.append("- ").append(message).append("\n");
+		}
+
+		return m.toString();
 	}
 
 	public Messages getMessages()
