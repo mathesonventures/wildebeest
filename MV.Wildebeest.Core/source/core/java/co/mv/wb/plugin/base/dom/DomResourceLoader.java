@@ -72,7 +72,7 @@ public class DomResourceLoader implements ResourceLoader
 	private static final String XE_STATES = "states";
 
 	private static final String XA_STATE_ID = "id";
-	private static final String XA_STATE_LABEL = "label";
+	private static final String XA_STATE_NAME = "name";
 	private static final String XA_STATE_DESCRIPTION = "description";
 
 	private static final String XE_ASSERTIONS = "assertions";
@@ -422,15 +422,15 @@ public class DomResourceLoader implements ResourceLoader
 
 		final State result;
 		final UUID id = UUID.fromString(element.getAttribute(XA_STATE_ID));
-		String label = null;
+		String name = null;
 		String description = null;
 		int condition = 0;
 
-		// TODO: Optimize this logic - we can resolve the optionality of label and description at the time of parsing, and then always call the three-arg constructor,
+		// TODO: Optimize this logic - we can resolve the optionality of name and description at the time of parsing, and then always call the three-arg constructor,
 
-		if (element.hasAttribute(XA_STATE_LABEL))
+		if (element.hasAttribute(XA_STATE_NAME))
 		{
-			label = element.getAttribute(XA_STATE_LABEL);
+			name = element.getAttribute(XA_STATE_NAME);
 			condition++;
 		}
 
@@ -443,10 +443,10 @@ public class DomResourceLoader implements ResourceLoader
 		switch (condition)
 		{
 			case 1:
-				result = new ImmutableState(id, Optional.of(label));
+				result = new ImmutableState(id, Optional.of(name));
 				break;
 			case 2:
-				result = new ImmutableState(id, Optional.of(label), Optional.of(description));
+				result = new ImmutableState(id, Optional.of(name), Optional.of(description));
 				break;
 			default:
 				result = new ImmutableState(id);

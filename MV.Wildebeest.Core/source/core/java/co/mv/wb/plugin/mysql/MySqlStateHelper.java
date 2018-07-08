@@ -86,7 +86,7 @@ public class MySqlStateHelper
 	 * @param resourceId     the ID of the resource for which the state should be queried.
 	 * @param appDataSource  the DataSource for interacting with the database.
 	 * @param stateTableName the name of the state tracking table in use for this instance.
-	 * @return the ID or Label of the state that the instance is in for the specified resource.
+	 * @return the ID or name of the state that the instance is in for the specified resource.
 	 * @throws IndeterminateStateException if the current state of the instance cannot be determined for the
 	 *                                     specified resource.
 	 * @since 1.0

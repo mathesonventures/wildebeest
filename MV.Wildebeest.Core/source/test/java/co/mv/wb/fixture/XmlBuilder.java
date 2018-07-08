@@ -205,26 +205,26 @@ public class XmlBuilder
 
 	public XmlBuilder state(
 		UUID stateId,
-		String label)
+		String name)
 	{
 		if (stateId == null) throw new ArgumentNullException("stateId");
-		if (label == null) throw new ArgumentNullException("label");
-		if ("".equals(label)) throw new IllegalArgumentException("label cannot be empty");
+		if (name == null) throw new ArgumentNullException("name");
+		if ("".equals(name)) throw new IllegalArgumentException("name cannot be empty");
 
-		this.element("state", "id", stateId.toString(), "label", label);
+		this.element("state", "id", stateId.toString(), "name", name);
 
 		return this;
 	}
 
 	public XmlBuilder openState(
 		UUID stateId,
-		String label)
+		String name)
 	{
 		if (stateId == null) throw new ArgumentNullException("stateId");
-		if (label == null) throw new ArgumentNullException("label");
-		if ("".equals(label)) throw new IllegalArgumentException("label cannot be empty");
+		if (name == null) throw new ArgumentNullException("name");
+		if ("".equals(name)) throw new IllegalArgumentException("name cannot be empty");
 
-		return this.openElement("state", "id", stateId.toString(), "label", label);
+		return this.openElement("state", "id", stateId.toString(), "name", name);
 	}
 
 	public XmlBuilder closeState()

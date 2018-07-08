@@ -77,18 +77,18 @@ public class FixtureBuilder
 		// States
 		for (StateBuilder state : this.resourceBuilder.getStates())
 		{
-			if (state.hasDescription() && state.hasLabel())
+			if (state.hasDescription() && state.hasName())
 			{
 				xml.openElement(
 					"state",
 					"id",
 					state.getStateId().toString(),
-					"label",
-					state.getLabel(),
+					"name",
+					state.getName(),
 					"description",
 					state.getDescription());
 			}
-			else if (state.hasDescription() && !state.hasLabel())
+			else if (state.hasDescription() && !state.hasName())
 			{
 				xml.openElement(
 					"state",
@@ -97,9 +97,9 @@ public class FixtureBuilder
 					"description",
 					state.getDescription());
 			}
-			else if (state.hasLabel())
+			else if (state.hasName())
 			{
-				xml.openElement("state", "id", state.getStateId().toString(), "label", state.getLabel());
+				xml.openElement("state", "id", state.getStateId().toString(), "name", state.getName());
 			}
 			else
 			{

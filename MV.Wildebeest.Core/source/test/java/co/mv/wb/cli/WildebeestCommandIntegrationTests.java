@@ -204,7 +204,7 @@ public class WildebeestCommandIntegrationTests
 		}
 	}
 
-	@Test public void mySqlDatabaseMigrateToInvalidStateLabel()
+	@Test public void mySqlDatabaseMigrateToInvalidStateName()
 	{
 		// Setup
 		PrintStream output = System.out;
@@ -233,7 +233,7 @@ public class WildebeestCommandIntegrationTests
 
 	}
 
-	@Test public void mySqlDatabaseMigrateToUnknownStateLabel()
+	@Test public void mySqlDatabaseMigrateToUnknownStateName()
 	{
 
 		//

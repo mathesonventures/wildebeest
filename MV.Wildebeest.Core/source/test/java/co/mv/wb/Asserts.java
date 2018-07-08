@@ -56,19 +56,19 @@ public class Asserts
 
 	public static void assertState(
 		UUID expectedStateId,
-		Optional<String> expectedLabel,
+		Optional<String> expectedName,
 		State actual,
 		String name)
 	{
 		if (name == null) throw new ArgumentNullException("name");
 
 		assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
-		assertEquals(name + ".label", expectedLabel, actual.getLabel());
+		assertEquals(name + ".name", expectedName, actual.getName());
 	}
 
 	public static void assertState(
 		UUID expectedStateId,
-		Optional<String> expectedLabel,
+		Optional<String> expectedName,
 		Optional<String> expectedDescription,
 		State actual,
 		String name)
@@ -76,7 +76,7 @@ public class Asserts
 		if (name == null) throw new ArgumentNullException("name");
 
 		assertEquals(name + ".stateId", expectedStateId, actual.getStateId());
-		assertEquals(name + ".label", expectedLabel, actual.getLabel());
+		assertEquals(name + ".name", expectedName, actual.getName());
 		assertEquals(name + ".description", expectedDescription, actual.getDescription());
 	}
 

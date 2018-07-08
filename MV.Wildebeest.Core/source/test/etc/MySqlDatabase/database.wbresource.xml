@@ -3,13 +3,13 @@
 
 	<states>
 
-		<state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" label="Database Created">
+		<state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" name="Database Created">
 			<assertions>
 				<assertion type="DatabaseExists" id="19b64fb6-f95f-4221-bc64-303f62a3eda8" />
 			</assertions>
 		</state>
 
-		<state id="363568f1-aaed-4a50-bea0-9ddee713cc11" label="Core Schema Loaded">
+		<state id="363568f1-aaed-4a50-bea0-9ddee713cc11" name="Core Schema Loaded">
 			<assertions>
 				<assertion type="MySqlTableExists" id="3808ba63-f055-4bf7-88fe-023546e6ed16">
 					<tableName>ProductType</tableName>

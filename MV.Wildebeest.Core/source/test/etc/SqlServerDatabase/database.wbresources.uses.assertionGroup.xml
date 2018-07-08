@@ -35,13 +35,13 @@
     </assertionGroups>
     <states>
 
-        <state id="b68fc5c0-35c9-49b8-b555-9e7634fe0de3" label="Database Created">
+        <state id="b68fc5c0-35c9-49b8-b555-9e7634fe0de3" name="Database Created">
             <assertions>
                 <assertionRef type="group" ref="group1" />
             </assertions>
         </state>
 
-        <state id="6096d6fc-2b04-45cf-88cf-9ab49629f50e" label="Core Schema Loaded">
+        <state id="6096d6fc-2b04-45cf-88cf-9ab49629f50e" name="Core Schema Loaded">
             <assertions>
                 <assertionRef type="group" ref="group2" />
             </assertions>

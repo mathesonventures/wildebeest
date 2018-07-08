@@ -82,19 +82,19 @@ public class ResourceBuilder
 
 	public StateBuilder state(
 		UUID stateId,
-		String label)
+		String name)
 	{
-		StateBuilder stateBuilder = new StateBuilder(this.builder, this, stateId, label, null);
+		StateBuilder stateBuilder = new StateBuilder(this.builder, this, stateId, name, null);
 		this.getStates().add(stateBuilder);
 		return stateBuilder;
 	}
 
 	public StateBuilder state(
 		UUID stateId,
-		String label,
+		String name,
 		String description)
 	{
-		StateBuilder stateBuilder = new StateBuilder(this.builder, this, stateId, label, description);
+		StateBuilder stateBuilder = new StateBuilder(this.builder, this, stateId, name, description);
 		this.getStates().add(stateBuilder);
 		return stateBuilder;
 	}
