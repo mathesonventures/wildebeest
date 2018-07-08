@@ -76,7 +76,7 @@ public class MySqlStateHelper
 				stateTableName,
 				resourceId,
 				stateId,
-				DatabaseHelper.getMysqlInstant()));
+				DatabaseHelper.getInstant().toString()));
 	}
 
 	/**

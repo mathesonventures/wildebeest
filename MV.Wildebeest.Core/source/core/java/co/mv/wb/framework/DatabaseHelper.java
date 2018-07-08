@@ -217,18 +217,14 @@ public class DatabaseHelper
 	 * @return time as String
 	 * @since 4.0
 	 */
-	public static DateTimeOffset getInstant()
+	public static String getInstant()
 	{
-		return DateTimeOffset.valueOf(new Timestamp(System.currentTimeMillis()),0);
-	}
-
-	public static String getMysqlInstant()
-	{
-		Timestamp t = new Timestamp(System.currentTimeMillis());
 		java.text.SimpleDateFormat sdf =
 			new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+		Timestamp t =  DateTimeOffset.valueOf(new Timestamp(System.currentTimeMillis()),0).getTimestamp();
 		String currentTime = sdf.format(t);
 		return currentTime;
 	}
+
 }
