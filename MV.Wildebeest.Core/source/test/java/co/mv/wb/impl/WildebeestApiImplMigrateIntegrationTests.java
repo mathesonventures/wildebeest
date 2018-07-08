@@ -418,7 +418,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 	}
 
 	@Test
-	public void migrate_toSameStateUsingLabel_succeeds() throws
+	public void migrate_toSameStateUsingName_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
@@ -445,7 +445,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
-		State state = new ImmutableState(state1Id, Optional.of("testLabel1"));
+		State state = new ImmutableState(state1Id, Optional.of("testName1"));
 		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state);
 
@@ -454,7 +454,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		Migration tran1 = new SetTagMigration(
 			migration1Id,
 			Optional.empty(),
-			Optional.of("testLabel1"),
+			Optional.of("testName1"),
 			"foo");
 		resource.getMigrations().add(tran1);
 

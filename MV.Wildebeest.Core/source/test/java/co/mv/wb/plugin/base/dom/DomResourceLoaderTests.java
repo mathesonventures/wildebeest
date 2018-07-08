@@ -117,7 +117,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResource_stateWithLabel_succeeds() throws
+	public void loadResource_stateWithName_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -185,7 +185,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResource_stateWithNoLabel_succeeds() throws
+	public void loadResource_stateWithNoName_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -254,7 +254,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResource_stateWithLabelAndDescription_succeeds() throws
+	public void loadResource_stateWithNameAndDescription_succeeds() throws
 		LoaderFault,
 		InvalidReferenceException,
 		PluginBuildException
@@ -269,7 +269,7 @@ public class DomResourceLoaderTests
 
 		String resourceXml = FixtureBuilder.create()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
-			.state(stateId, "Some random label", "Some random test description")
+			.state(stateId, "Some random name", "Some random test description")
 			.render();
 
 		Map<String, AssertionBuilder> assertionBuilders = new HashMap<>();
@@ -310,7 +310,7 @@ public class DomResourceLoaderTests
 			resource.getStates().size());
 		Asserts.assertState(
 			stateId,
-			Optional.of("Some random label"),
+			Optional.of("Some random name"),
 			Optional.of("Some random test description"),
 			resource.getStates().get(0),
 			"resource.state[0]");
@@ -608,7 +608,7 @@ public class DomResourceLoaderTests
 
 
 	@Test
-	public void loadResource_migrationWithFromStateAsLabel_succeeds() throws
+	public void loadResource_migrationWithFromStateAsName_succeeds() throws
 		LoaderFault,
 		PluginBuildException,
 		InvalidReferenceException
@@ -735,7 +735,7 @@ public class DomResourceLoaderTests
 
 
 	@Test
-	public void loadResource_migrationsWithToStateAsLabel_succeeds() throws
+	public void loadResource_migrationsWithToStateAsName_succeeds() throws
 		LoaderFault,
 		PluginBuildException,
 		InvalidReferenceException
@@ -864,7 +864,7 @@ public class DomResourceLoaderTests
 	}
 
 	@Test
-	public void loadResource_migrationsWithFromStateAndToStateAsLabels_succeeds() throws
+	public void loadResource_migrationsWithFromStateAndToStateAsName_succeeds() throws
 		LoaderFault,
 		PluginBuildException,
 		InvalidReferenceException

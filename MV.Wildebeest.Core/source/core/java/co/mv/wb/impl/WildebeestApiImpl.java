@@ -328,9 +328,9 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 		else
 		{
-			if (state.getLabel().isPresent())
+			if (state.getName().isPresent())
 			{
-				output.println(String.format("Current state: %s", state.getLabel()));
+				output.println(String.format("Current state: %s", state.getName()));
 			}
 			else
 			{
@@ -579,19 +579,19 @@ public class WildebeestApiImpl implements WildebeestApi
 			.append("</plugin>");
 	}
 
-	private static UUID stateIdForLabel(
+	private static UUID stateIdForName(
 		Resource resource,
-		String label)
+		String name)
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
-		if (label == null) throw new ArgumentNullException("label");
-		if ("".equals(label)) throw new IllegalArgumentException("label cannot be empty");
+		if (name == null) throw new ArgumentNullException("name");
+		if ("".equals(name)) throw new IllegalArgumentException("name cannot be empty");
 
 		State result = null;
 
 		for (State check : resource.getStates())
 		{
-			if (check.getLabel().map(label::equals).orElse(false))
+			if (check.getName().map(name::equals).orElse(false))
 			{
 				result = check;
 			}
@@ -623,7 +623,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			}
 			catch (IllegalArgumentException e)
 			{
-				targetStateId = WildebeestApiImpl.stateIdForLabel(
+				targetStateId = WildebeestApiImpl.stateIdForName(
 					resource,
 					targetState);
 			}
@@ -934,7 +934,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (state == null) throw new ArgumentNullException("state");
 
 		return stateRef.isPresent() &&
-			(stateRef.get().equals(state.getStateId().toString()) || stateRef.get().equals(state.getLabel()));
+			(stateRef.get().equals(state.getStateId().toString()) || stateRef.get().equals(state.getName()));
 	}
 
 	private static List<MigrationTypeInfo> getMigrationTypeInfos()

@@ -114,9 +114,9 @@ public class AssertionBuilder
 
 	public StateBuilder state(
 		UUID stateId,
-		String label)
+		String name)
 	{
-		return this.state().resource().state(stateId, label);
+		return this.state().resource().state(stateId, name);
 	}
 
 	public MigrationBuilder migration(

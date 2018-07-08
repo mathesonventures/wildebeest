@@ -73,7 +73,7 @@
             <xs:element name="assertions" type="Assertions" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="id" type="uuid" use="required" />
-        <xs:attribute name="label" type="xs:string" />
+        <xs:attribute name="name" type="xs:string" />
     </xs:complexType>
 
     <xs:group name="AssertionElement">

@@ -14,13 +14,13 @@
         </assertionGroup>
     </assertionGroups>
     <states>
-        <state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" label="Database Created">
+        <state id="199b7cc1-3cc6-48ca-b012-a70d05d5b5e7" name="Database Created">
             <assertions>
                 <assertion type="DatabaseExists" id="6be515a3-be32-490a-944a-ebcf17fec8a6"/>
             </assertions>
         </state>
 
-        <state id="363568f1-aaed-4a50-bea0-9ddee713cc11" label="Core Schema Loaded">
+        <state id="363568f1-aaed-4a50-bea0-9ddee713cc11" name="Core Schema Loaded">
             <assertions>
                 <assertionRef type="group"/>
                 <assertion type="DatabaseExists" id="6be515a3-be32-490a-944a-ebcf17fec8a6" name="AssertionName1"/>
