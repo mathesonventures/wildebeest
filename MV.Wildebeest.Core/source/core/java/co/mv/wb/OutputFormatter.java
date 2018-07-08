@@ -136,17 +136,16 @@ public class OutputFormatter
 					fromState.get().getDisplayName()));
 			}
 		}
+		else if (toState.isPresent())
+		{
+			result.append(String.format(
+				"Migrating from non-existent to \"%s\"",
+				toState.get().getDisplayName()));
+		}
 		else
-			if (toState.isPresent())
-			{
-				result.append(String.format(
-					"Migrating from non-existent to \"%s\"",
-					toState.get().getDisplayName()));
-			}
-			else
-			{
-				// Exception?
-			}
+		{
+			// Exception?
+		}
 
 		return result.toString();
 	}

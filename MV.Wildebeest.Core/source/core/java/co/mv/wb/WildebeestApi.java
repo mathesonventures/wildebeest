@@ -43,7 +43,7 @@ public interface WildebeestApi
 		LoaderFault,
 		PluginBuildException,
 		XmlValidationException,
-            InvalidReferenceException;
+		InvalidReferenceException;
 
 	/**
 	 * Deserializes an {@link Instance} from the specified descriptor file.
@@ -123,7 +123,7 @@ public interface WildebeestApi
 		InvalidStateSpecifiedException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
-            InvalidReferenceException;
+		InvalidReferenceException;
 
 	/**
 	 * Jumps the recorded state of the specified instance to the supplied target state.  This can be useful when you are

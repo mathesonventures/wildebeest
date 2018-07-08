@@ -59,7 +59,7 @@ public class ImmutableState implements State
 	 * Creates a new ImmutableState with an ID and a name.
 	 *
 	 * @param stateId the ID of the new state
-	 * @param name   the unique name of the new state
+	 * @param name    the unique name of the new state
 	 */
 	public ImmutableState(
 		UUID stateId,
@@ -97,7 +97,7 @@ public class ImmutableState implements State
 	 * Creates a new ImmutableState with an ID and a name, and with a set of {@link Assertion}s.
 	 *
 	 * @param stateId    the ID of the new state
-	 * @param name      the unique name of the new state
+	 * @param name       the unique name of the new state
 	 * @param assertions the assertions that apply to this state
 	 */
 	public ImmutableState(
@@ -117,7 +117,7 @@ public class ImmutableState implements State
 	 * Creates a new ImmutableState with an ID and a name, and with a set of {@link Assertion}s.
 	 *
 	 * @param stateId     the ID of the new state
-	 * @param name       the unique name of the new state
+	 * @param name        the unique name of the new state
 	 * @param description the description that apply to this state
 	 */
 	public ImmutableState(
@@ -139,7 +139,7 @@ public class ImmutableState implements State
 	 * Creates a new ImmutableState with an ID and a name, and with a set of {@link Assertion}s.
 	 *
 	 * @param stateId     the ID of the new state
-	 * @param name       the unique name of the new state
+	 * @param name        the unique name of the new state
 	 * @param assertions  the assertions that apply to this state
 	 * @param description the description that apply to this state
 	 */

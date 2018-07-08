@@ -100,10 +100,14 @@ public class ProductCatalogueMySqlDatabaseResource
 		if (stateIdDatabaseCreated == null) throw new ArgumentNullException("stateIdDatabaseCreated");
 		if (assertionIdDatabaseExists == null) throw new ArgumentNullException("assertionIdDatabaseExists");
 		if (stateIdCoreSchemaLoadedId == null) throw new ArgumentNullException("stateIdCoreSchemaLoadedId");
-		if (assertionIdProductTypeTableExists == null) throw new ArgumentNullException("assertionIdProductTypeTableExists");
-		if (stateIdInitialReferenceDataLoaded == null) throw new ArgumentNullException("stateIdInitialReferenceDataLoaded");
-		if (assertionIdProductTypeHwRowExists == null) throw new ArgumentNullException("assertionIdProductTypeHwRowExists");
-		if (assertionIdProductTypeSwRowExists == null) throw new ArgumentNullException("assertionIdProductTypeSwRowExists");
+		if (assertionIdProductTypeTableExists == null)
+			throw new ArgumentNullException("assertionIdProductTypeTableExists");
+		if (stateIdInitialReferenceDataLoaded == null)
+			throw new ArgumentNullException("stateIdInitialReferenceDataLoaded");
+		if (assertionIdProductTypeHwRowExists == null)
+			throw new ArgumentNullException("assertionIdProductTypeHwRowExists");
+		if (assertionIdProductTypeSwRowExists == null)
+			throw new ArgumentNullException("assertionIdProductTypeSwRowExists");
 		if (assertionIdProductTableExists == null) throw new ArgumentNullException("assertionIdProductTableExists");
 		if (migrationIdCreateDatabase == null) throw new ArgumentNullException("migrationIdCreateDatabase");
 		if (migrationIdLoadSchema == null) throw new ArgumentNullException("migrationIdLoadSchema");

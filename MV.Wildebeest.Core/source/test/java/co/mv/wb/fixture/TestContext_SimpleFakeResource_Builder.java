@@ -19,20 +19,15 @@ package co.mv.wb.fixture;
 import co.mv.wb.Assertion;
 import co.mv.wb.Instance;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourcePlugin;
-import co.mv.wb.ResourceType;
 import co.mv.wb.State;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
-import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.SetTagMigration;
 import co.mv.wb.plugin.fake.TagAssertion;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -149,21 +144,22 @@ public class TestContext_SimpleFakeResource_Builder
 			instance);
 	}
 
-	public TestContext_SimpleFakeResource getResourceAndInstanceOnly(){
+	public TestContext_SimpleFakeResource getResourceAndInstanceOnly()
+	{
 		Resource resource = new ResourceImpl(
-				UUID.randomUUID(),
-				FakeConstants.Fake,
-				"MyResource",
-				Optional.ofNullable(defaultTarget));
+			UUID.randomUUID(),
+			FakeConstants.Fake,
+			"MyResource",
+			Optional.ofNullable(defaultTarget));
 
 		Instance instance = new FakeInstance();
 
 		return new TestContext_SimpleFakeResource(
-				resource,
-				null,
-				null,
-				null,
-				null,
-				instance);
+			resource,
+			null,
+			null,
+			null,
+			null,
+			instance);
 	}
 }
