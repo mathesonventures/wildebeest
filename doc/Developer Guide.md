@@ -23,6 +23,7 @@
     2. [SqlServer Docker](#sqlServerDocker)
     3. [Postgres Docker](#postgresDocker)
     4. [Logs](#dockerlogs)
+    5. [Check databases from Docker](#checkDatabasesFromDocker)
 7. [Docker scripts](#developerScripts) 
     1. [Location](#location)
     2. [Linux/Osx script](#linuxOsxScript)
@@ -338,6 +339,41 @@ macOS (Docker 18.01+)	    ~/Library/Containers/com.docker.docker/Data/vms/0/cons
 macOS (Docker <18.01)	    ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/console-ring
 Windows	                    AppData\Local 
 ```    
+
+<a name="checkDatabasesFromDocker"></a>   
+### Check databases from docker
+
+Mysql from inside Docker:
+```   
+$ docker exec -it mysqlserver mysql -uroot -p
+```
+Postgres from inside Docker:
+```   
+$ psql  -U postgres --password
+```
+Postgres from host system: 
+```   
+$ psql -h localhost -p 15432 -d postgresserver -U postgres --password
+```
+SqlServer from inside Docker:
+```   
+$ docker exec -it sqlserver "bash"
+```
+Once inside the container, connect locally with sqlcmd. 
+Sqlcmd is not in the path by default, so you have to specify the full path.
+```   
+$ /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Password123!'
+```
+Alternative is, once inside docker to nagivate to 
+```   
+$ cd /opt/mssql-tools/
+```
+and from there execute 
+```   
+$ bin/sqlcmd -S localhost -U SA -P 'Password123!'
+```
+##### Default password for all docker containers , when setup by script is "Password123!" (omit quotation marks).
+
 
 <a name="developerScripts"></a>   
 ##Docker scripts 
