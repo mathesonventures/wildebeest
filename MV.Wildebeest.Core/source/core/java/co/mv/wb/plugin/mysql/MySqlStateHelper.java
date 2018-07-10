@@ -20,7 +20,7 @@ import co.mv.wb.FaultException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
-import co.mv.wb.framework.Param;
+import co.mv.wb.framework.SqlParameters;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -65,23 +65,23 @@ public class MySqlStateHelper
 			stateTableName);
 
 		DatabaseHelper.execute(
-			appDataSource,
-			String.format(
-				"DELETE FROM %s WHERE ResourceId = '%s';",
-				stateTableName,
-				resourceId));
+			  appDataSource,
+			  String.format(
+					"DELETE FROM %s WHERE ResourceId = ?;",
+					stateTableName),
+			  Arrays.asList(
+					new SqlParameters("resourceId", resourceId)
+			  ));
 
 		DatabaseHelper.execute(
 			appDataSource,
 			String.format(
-				"INSERT INTO %s(ResourceId, StateId) VALUES(@0, @1);",  // TODO: What is the correct syntax for indexed parameters?  Also note we'll still need to String.format to get the table name in place - not ideal but we can improve that later.
-				stateTableName,
-				resourceId,
-				stateId),
+				"INSERT INTO %s(ResourceId, StateId, LastMigrationInstant) VALUES(?, ?, ?);",  // TODO: What is the correct syntax for indexed parameters?  Also note we'll still need to String.format to get the table name in place - not ideal but we can improve that later.
+				stateTableName),
 			Arrays.asList(
-				new Param("resourceId", resourceId),
-				new Param("stateId", stateId),
-				new Param("lastUpdatedInstant", new DateTime().toDate())
+				new SqlParameters("resourceId", resourceId),
+				new SqlParameters("stateId", stateId),
+				new SqlParameters("lastUpdatedInstant", DatabaseHelper.getInstant())
 			));
 	}
 

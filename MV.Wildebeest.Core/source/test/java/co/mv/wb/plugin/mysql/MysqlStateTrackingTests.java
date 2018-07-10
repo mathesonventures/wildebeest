@@ -115,7 +115,7 @@ public class MysqlStateTrackingTests
 		}
 		finally
 		{
-			//TODO drop database
+		//	MySqlUtil.dropDatabase(instance, instance.getDatabaseName());
 		}
 	}
 }

@@ -17,7 +17,8 @@
 package co.mv.wb.framework;
 
 import co.mv.wb.FaultException;
-import microsoft.sql.DateTimeOffset;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeFieldType;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -42,9 +43,43 @@ public class DatabaseHelper
 	 * @since 1.0
 	 */
 	public static void execute(
+		  DataSource dataSource,
+		  String sql) throws SQLException
+	{
+		if (dataSource == null) throw new ArgumentNullException("dataSource");
+		if (sql == null) throw new ArgumentNullException("sql");
+		if ("".equals(sql)) throw new IllegalArgumentException("sql cannot be empty");
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try
+		{
+			conn = dataSource.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.execute();
+		}
+		finally
+		{
+			DatabaseHelper.release(ps);
+			DatabaseHelper.release(conn);
+		}
+	}
+
+	/**
+	 * Executes a SQL statement against the database represented by the supplied DataSource.
+	 *
+	 * @param dataSource the DataSource that represents the database to work with
+	 * @param sql        the SQL statement to execute against the target database.
+	 * @param params     the SQL query parameters
+	 * @throws SQLException may be thrown due to a mal-formed SQL statement, connectivity problem,
+	 *                      or some other issue.
+	 * @since 1.0
+	 */
+	public static void execute(
 		DataSource dataSource,
 		String sql,
-		List<Param> params) throws SQLException
+		List<SqlParameters> params) throws SQLException
 	{
 		if (dataSource == null) throw new ArgumentNullException("dataSource");
 		if (sql == null) throw new ArgumentNullException("sql");
@@ -58,17 +93,21 @@ public class DatabaseHelper
 			conn = dataSource.getConnection();
 			ps = conn.prepareStatement(sql);
 
-			for (int i= 0; i < params.size(); i ++)
+			for (int i = 0; i < params.size(); i++)
 			{
-				Param p = params.get(i);
+				SqlParameters p = params.get(i);
 
 				if (p.getValue() instanceof String)
 				{
-					ps.setString(i, (String)p.getValue());
+					ps.setString(i+1, (String)p.getValue());
 				}
-				else if (p.getValue() instanceof Date)
+				else if (p.getValue() instanceof DateTime)
 				{
-					ps.setDate(i, (Date)p.getValue());
+					ps.setTimestamp(i+1, new java.sql.Timestamp(( ((DateTime) p.getValue()).getMillis())));
+				}
+				else if (p.getValue() instanceof Object)
+				{
+					ps.setObject(i+1,p.getValue().toString());
 				}
 			}
 
@@ -227,14 +266,9 @@ public class DatabaseHelper
 	 * @return time as String
 	 * @since 4.0
 	 */
-	public static String getInstant()
+	public static DateTime getInstant()
 	{
-		java.text.SimpleDateFormat sdf =
-			new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-		Timestamp t =  DateTimeOffset.valueOf(new Timestamp(System.currentTimeMillis()),0).getTimestamp();
-		String currentTime = sdf.format(t);
-		return currentTime;
+		return new DateTime();
 	}
 
 }
