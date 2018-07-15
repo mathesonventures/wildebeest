@@ -35,7 +35,10 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -51,6 +54,7 @@ public class WildebeestCommand
 {
 	private final PrintStream output;
 	private final WildebeestApi wildebeestApi;
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestCommand.class);
 
 	/**
 	 * The main entry point for the command-line interface.
@@ -61,9 +65,10 @@ public class WildebeestCommand
 	public static void main(String[] args)
 	{
 		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryPluginGroups()
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -151,7 +156,7 @@ public class WildebeestCommand
 								resource.get(),
 								instance.get());
 						}
-						catch (IndeterminateStateException e)
+						catch (IndeterminateStateException | AssertionFailedException e)
 						{
 							this.output.println(e.getMessage());
 						}

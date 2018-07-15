@@ -27,6 +27,7 @@ import co.mv.wb.State;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -34,6 +35,8 @@ import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 import java.util.Optional;
@@ -49,6 +52,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class WildebeestApiImplJumpStateIntegrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplJumpStateIntegrationTests.class);
+
 	@Test
 	public void jumpstate_assertionFail_throws()
 	{
@@ -57,7 +62,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -78,7 +83,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		instance.setTag("Bar");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -118,7 +123,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -135,7 +140,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		final UUID targetStateId = UUID.randomUUID();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -176,10 +181,10 @@ public class WildebeestApiImplJumpStateIntegrationTests
 	{
 
 		//
-		// Setup
+		//Setup
 		//
 
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// Resource
 		Resource resource = new ResourceImpl(
@@ -199,7 +204,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 

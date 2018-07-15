@@ -36,10 +36,10 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.File;
-import java.io.PrintStream;
 
 /**
  * The {@link MigrationPlugin} for {@link ExternalResourceMigration}'s.
@@ -68,12 +68,12 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 	}
 
 	@Override public void perform(
-		PrintStream output,
+		EventSink eventSink,
 		Migration migration,
 		Instance instance) throws
 		MigrationFailedException
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 

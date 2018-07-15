@@ -17,8 +17,11 @@
 package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 import java.sql.SQLException;
@@ -30,12 +33,14 @@ import static org.junit.Assert.fail;
 
 public class SqlServerDropSchemaMigrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(SqlServerDropSchemaMigrationTests.class);
 	@Test
 	public void performForExistantSchemaSucceeds() throws
 		MigrationFailedException
 	{
 		// Setup
-		PrintStream output = System.out;
+
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		SqlServerProperties p = SqlServerProperties.get();
 
@@ -58,7 +63,7 @@ public class SqlServerDropSchemaMigrationTests
 			null);
 
 		createDatabaseRunner.perform(
-			output,
+			eventSink,
 			createDatabase,
 			instance);
 
@@ -71,7 +76,7 @@ public class SqlServerDropSchemaMigrationTests
 		SqlServerCreateSchemaMigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
 
 		createSchemaRunner.perform(
-			output,
+			eventSink,
 			createSchema,
 			instance);
 
@@ -87,7 +92,7 @@ public class SqlServerDropSchemaMigrationTests
 		{
 			// Execute
 			dropSchemaRunner.perform(
-				output,
+				eventSink,
 				dropSchema,
 				instance);
 		}
@@ -102,7 +107,8 @@ public class SqlServerDropSchemaMigrationTests
 	public void performForNonExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
 		// Setup
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+
 
 		SqlServerProperties p = SqlServerProperties.get();
 
@@ -125,7 +131,7 @@ public class SqlServerDropSchemaMigrationTests
 			null);
 
 		createDatabaseRunner.perform(
-			output,
+			eventSink,
 			createDatabase,
 			instance);
 
@@ -141,7 +147,7 @@ public class SqlServerDropSchemaMigrationTests
 		{
 			// Execute
 			dropSchemaRunner.perform(
-				output,
+				eventSink,
 				dropSchema,
 				instance);
 

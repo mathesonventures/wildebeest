@@ -32,6 +32,7 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeInstance;
@@ -39,6 +40,8 @@ import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
 import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 import java.sql.SQLException;
@@ -58,6 +61,7 @@ import static org.junit.Assert.fail;
  */
 public class MySqlTableDoesNotExistAssertionTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(MySqlTableDoesNotExistAssertionTests.class);
 	@Test
 	public void applyForExistingTableFails() throws
 		IndeterminateStateException,
@@ -71,11 +75,9 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 		// Setup
 		//
-
-		PrintStream output = System.out;
-
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -176,11 +178,9 @@ public class MySqlTableDoesNotExistAssertionTests
 		//
 		// Setup
 		//
-
-		PrintStream output = System.out;
-
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
