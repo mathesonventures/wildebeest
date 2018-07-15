@@ -29,8 +29,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -65,11 +63,12 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		createDatabaseRunner.perform(
 			eventSink,
 			createDatabase,
@@ -77,8 +76,8 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 
 		Migration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.empty(),
+			null,
+			null,
 			"prd");
 
 		MigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
@@ -115,7 +114,8 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 	public void applyForNonExistentSchemaSucceeds() throws
 		MigrationFailedException
 	{
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -131,8 +131,8 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 

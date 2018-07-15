@@ -48,14 +48,12 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState,
+		String fromState,
+		String toState,
 		File baseDir) throws
 		PluginBuildException
 	{
 		if (migrationId == null) throw new ArgumentNullException("migrationId");
-		if (fromState == null) throw new ArgumentNullException("fromState");
-		if (toState == null) throw new ArgumentNullException("toState");
 		if (baseDir == null) throw new ArgumentNullException("baseDir");
 
 		Migration result;
@@ -85,7 +83,7 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 			toState,
 			baseDir,
 			filename.get(),
-			target);
+			target.orElse(null));
 
 		return result;
 	}

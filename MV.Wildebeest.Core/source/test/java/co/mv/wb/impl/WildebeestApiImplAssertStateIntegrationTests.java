@@ -26,7 +26,6 @@ import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.event.Event;
 import co.mv.wb.event.EventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
@@ -39,9 +38,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -63,12 +60,13 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		AssertionFailedException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -96,12 +94,13 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		AssertionFailedException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -142,13 +141,14 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		AssertionFailedException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);

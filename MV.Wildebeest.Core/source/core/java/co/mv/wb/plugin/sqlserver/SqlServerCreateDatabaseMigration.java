@@ -24,7 +24,6 @@ import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -58,8 +57,8 @@ public class SqlServerCreateDatabaseMigration extends BaseMigration
 	 */
 	public SqlServerCreateDatabaseMigration(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState)
+		String fromState,
+		String toState)
 	{
 		super(migrationId, fromState, toState);
 	}

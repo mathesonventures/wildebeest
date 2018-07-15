@@ -59,10 +59,12 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -106,7 +108,8 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
@@ -166,10 +169,12 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -212,7 +217,8 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
@@ -246,11 +252,13 @@ public class WildebeestCommandIntegrationTests
 		//
 
 		PrintStream output = System.out;
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -270,7 +278,7 @@ public class WildebeestCommandIntegrationTests
 				"migrate",
 				"--resource:MySqlDatabase/database.wbresource.xml",
 				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-				"--targetState:Foo"
+				"--targetState:Core Schema Loaded"
 			});
 
 		//
@@ -292,10 +300,12 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -341,7 +351,8 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)

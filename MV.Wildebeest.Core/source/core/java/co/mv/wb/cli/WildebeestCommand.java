@@ -65,7 +65,8 @@ public class WildebeestCommand
 	public static void main(String[] args)
 	{
 		PrintStream output = System.out;
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
@@ -195,7 +196,7 @@ public class WildebeestCommand
 							this.wildebeestApi.migrate(
 								resource.get(),
 								instance.get(),
-								targetState);
+								targetState.orElse(null));
 						}
 						catch (TargetNotSpecifiedException e)
 						{

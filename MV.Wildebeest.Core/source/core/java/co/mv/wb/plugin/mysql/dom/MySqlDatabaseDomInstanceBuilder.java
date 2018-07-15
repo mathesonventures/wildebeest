@@ -70,14 +70,12 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			throw new PluginBuildException(messages);
 		}
 
-		Instance result = new MySqlDatabaseInstance(
+		return new MySqlDatabaseInstance(
 			hostName.get(),
 			port.get(),
 			adminUsername.get(),
 			adminPassword.get(),
 			databaseName.get(),
 			stateTableName.orElse(null));
-
-		return result;
 	}
 }

@@ -45,7 +45,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -75,13 +74,14 @@ public class WildebeestApiImplMigrateIntegrationTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		UUID state1Id = UUID.randomUUID();
 		State state = new ImmutableState(state1Id);
@@ -89,24 +89,22 @@ public class WildebeestApiImplMigrateIntegrationTests
 		resource.getStates().add(state);
 
 		UUID migration1Id = UUID.randomUUID();
-		Migration tran1 = new SetTagMigration(migration1Id, Optional.empty(), Optional.of(state1Id.toString()), "foo");
+		Migration tran1 = new SetTagMigration(migration1Id, null, state1Id.toString(), "foo");
 		resource.getMigrations().add(tran1);
-
-		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
 
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
-			.withFactoryResourcePlugins()
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withMigrationPlugin(new SetTagMigrationPlugin(resource))
 			.get();
 
 		// Execute
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(state1Id.toString()));
+			state1Id.toString());
 
 		// Verify
 		assertEquals("instance.tag", "foo", instance.getTag());
@@ -129,43 +127,44 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// The resource
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// State 1
-		State state1 = new ImmutableState(UUID.randomUUID(), Optional.of("State 1"));
+		State state1 = new ImmutableState(UUID.randomUUID(), "State 1");
 		state1.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state1);
 
 		// State 2
-		State state2 = new ImmutableState(UUID.randomUUID(), Optional.of("State 2"));
+		State state2 = new ImmutableState(UUID.randomUUID(), "State 2");
 		state2.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "bar"));
 		resource.getStates().add(state2);
 
 		// State 3
-		State state3 = new ImmutableState(UUID.randomUUID(), Optional.of("State 3"));
+		State state3 = new ImmutableState(UUID.randomUUID(), "State 3");
 		state3.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "bup"));
 		resource.getStates().add(state3);
 
 		// Migrate null -> State1
 		Migration tran1 = new SetTagMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(state1.getStateId().toString()),
+			null,
+			state1.getStateId().toString(),
 			"foo");
 		resource.getMigrations().add(tran1);
 
 		// Migrate State1 -> State2
 		Migration tran2 = new SetTagMigration(
 			UUID.randomUUID(),
-			Optional.of(state1.getStateId().toString()),
-			Optional.of(state2.getStateId().toString()),
+			state1.getStateId().toString(),
+			state2.getStateId().toString(),
 			"bar");
 
 		resource.getMigrations().add(tran2);
@@ -173,20 +172,18 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Migrate State2 -> State3
 		Migration tran3 = new SetTagMigration(
 			UUID.randomUUID(),
-			Optional.of(state2.getStateId().toString()),
-			Optional.of(state3.getStateId().toString()),
+			state2.getStateId().toString(),
+			state3.getStateId().toString(),
 			"bup");
 		resource.getMigrations().add(tran3);
-
-		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
-			.withFactoryResourcePlugins()
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withMigrationPlugin(new SetTagMigrationPlugin(resource))
 			.get();
 
 		//
@@ -196,7 +193,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(state3.getStateId().toString()));
+			state3.getStateId().toString());
 
 		//
 		// Verify
@@ -222,7 +219,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -230,7 +228,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -266,8 +264,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		UUID migration1Id = UUID.randomUUID();
 		Migration migration1 = new SetTagMigration(
 			migration1Id,
-			Optional.empty(),
-			Optional.of(state1Id.toString()),
+			null,
+			state1Id.toString(),
 			"state1");
 		resource.getMigrations().add(migration1);
 
@@ -275,8 +273,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		UUID migration2Id = UUID.randomUUID();
 		Migration migration2 = new SetTagMigration(
 			migration2Id,
-			Optional.of(state1Id.toString()),
-			Optional.of(stateB2Id.toString()),
+			state1Id.toString(),
+			stateB2Id.toString(),
 			"stateB2");
 		resource.getMigrations().add(migration2);
 
@@ -284,8 +282,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		UUID migration3Id = UUID.randomUUID();
 		Migration migration3 = new SetTagMigration(
 			migration3Id,
-			Optional.of(stateB2Id.toString()),
-			Optional.of(stateB3Id.toString()),
+			stateB2Id.toString(),
+			stateB3Id.toString(),
 			"stateB3");
 		resource.getMigrations().add(migration3);
 
@@ -293,8 +291,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		UUID migration4Id = UUID.randomUUID();
 		Migration migration4 = new SetTagMigration(
 			migration4Id,
-			Optional.of(state1Id.toString()),
-			Optional.of(stateC2Id.toString()),
+			state1Id.toString(),
+			stateC2Id.toString(),
 			"stateC2");
 		resource.getMigrations().add(migration4);
 
@@ -302,20 +300,18 @@ public class WildebeestApiImplMigrateIntegrationTests
 		UUID migration5Id = UUID.randomUUID();
 		Migration migration5 = new SetTagMigration(
 			migration5Id,
-			Optional.of(stateC2Id.toString()),
-			Optional.of(stateC3Id.toString()),
+			stateC2Id.toString(),
+			stateC3Id.toString(),
 			"stateC3");
 		resource.getMigrations().add(migration5);
-
-		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
-			.withFactoryResourcePlugins()
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withMigrationPlugin(new SetTagMigrationPlugin(resource))
 			.get();
 
 		//
@@ -325,7 +321,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(stateB3Id.toString()));
+			stateB3Id.toString());
 
 		//
 		// Verify
@@ -365,7 +361,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -373,7 +370,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -385,26 +382,24 @@ public class WildebeestApiImplMigrateIntegrationTests
 		UUID migration1Id = UUID.randomUUID();
 		Migration tran1 = new SetTagMigration(
 			migration1Id,
-			Optional.empty(),
-			Optional.of(state1Id.toString()),
+			null,
+			state1Id.toString(),
 			"foo");
 		resource.getMigrations().add(tran1);
-
-		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SetTagMigration.class, new SetTagMigrationPlugin(resource));
 
 		// Instance
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
-			.withFactoryResourcePlugins()
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withMigrationPlugin(new SetTagMigrationPlugin(resource))
 			.get();
 
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(state1Id.toString()));
+			state1Id.toString());
 
 		//
 		// Execute
@@ -413,7 +408,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(state1Id.toString()));
+			state1Id.toString());
 
 		//
 		// Verify
@@ -439,7 +434,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -447,11 +443,11 @@ public class WildebeestApiImplMigrateIntegrationTests
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
-		State state = new ImmutableState(state1Id, Optional.of("testName1"));
+		State state = new ImmutableState(state1Id, "testName1");
 		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "foo"));
 		resource.getStates().add(state);
 
@@ -459,8 +455,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		UUID migration1Id = UUID.randomUUID();
 		Migration tran1 = new SetTagMigration(
 			migration1Id,
-			Optional.empty(),
-			Optional.of("testName1"),
+			null,
+			"testName1",
 			"foo");
 		resource.getMigrations().add(tran1);
 
@@ -472,13 +468,13 @@ public class WildebeestApiImplMigrateIntegrationTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
-			.withFactoryResourcePlugins()
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(state1Id.toString()));
+			state1Id.toString());
 
 		//
 		// Execute
@@ -487,7 +483,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(state1Id.toString()));
+			state1Id.toString());
 
 		//
 		// Verify
@@ -514,7 +510,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -522,7 +519,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// State 1
 		UUID state1Id = UUID.randomUUID();
@@ -534,8 +531,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		UUID migration1Id = UUID.randomUUID();
 		Migration tran1 = new SetTagMigration(
 			migration1Id,
-			Optional.empty(),
-			Optional.of(state1Id.toString()),
+			null,
+			state1Id.toString(),
 			"foo");
 		resource.getMigrations().add(tran1);
 
@@ -553,7 +550,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(state1Id.toString()));
+			state1Id.toString());
 
 		//
 		// Execute
@@ -562,7 +559,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.empty());
+			null);
 
 		//
 		// Verify

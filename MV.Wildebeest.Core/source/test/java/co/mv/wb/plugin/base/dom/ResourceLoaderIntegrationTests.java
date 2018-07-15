@@ -30,7 +30,6 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.event.Event;
 import co.mv.wb.event.EventSink;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
@@ -43,7 +42,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -73,7 +71,8 @@ public class ResourceLoaderIntegrationTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		ProductCatalogueMySqlDatabaseResource productCatalogueResource = new ProductCatalogueMySqlDatabaseResource();
 
@@ -157,7 +156,7 @@ public class ResourceLoaderIntegrationTests
 			wildebeestApi.migrate(
 				resource,
 				instance,
-				Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded.toString()));
+				ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded.toString());
 		}
 		finally
 		{

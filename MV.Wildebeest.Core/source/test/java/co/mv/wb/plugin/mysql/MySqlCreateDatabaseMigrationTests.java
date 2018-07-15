@@ -17,7 +17,6 @@
 package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.event.Event;
 import co.mv.wb.event.EventSink;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
@@ -26,24 +25,24 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
-import java.util.Optional;
 import java.util.UUID;
 
 public class MySqlCreateDatabaseMigrationTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(AnsiSqlCreateDatabaseMigrationPlugin.class);
+
 	@Test
 	public void performForNonExistantDatabaseSucceeds() throws
 		MigrationFailedException
 	{
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		MySqlCreateDatabaseMigration migration = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MySqlCreateDatabaseMigrationPlugin migrationPlugin = new MySqlCreateDatabaseMigrationPlugin();
 
@@ -74,7 +73,8 @@ public class MySqlCreateDatabaseMigrationTests
 	@Test
 	public void performForExistantDatabaseFails()
 	{
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		String databaseName = MySqlUtil.createDatabase(
@@ -84,8 +84,8 @@ public class MySqlCreateDatabaseMigrationTests
 
 		MySqlCreateDatabaseMigration migration = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MySqlCreateDatabaseMigrationPlugin migrationPlugin = new MySqlCreateDatabaseMigrationPlugin();
 

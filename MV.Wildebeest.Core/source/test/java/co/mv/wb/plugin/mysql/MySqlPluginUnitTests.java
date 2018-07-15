@@ -26,8 +26,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -43,21 +41,22 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 	@Test
 	public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance instance = MySqlProperties.get().toInstance(databaseName);
 
 		Migration create = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MigrationPlugin createRunner = new MySqlCreateDatabaseMigrationPlugin();
 
 		Migration drop = new MySqlDropDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID().toString()),
-			Optional.empty());
+			UUID.randomUUID().toString(),
+			null);
 
 		MigrationPlugin dropRunner = new MySqlDropDatabaseMigrationPlugin();
 
@@ -84,22 +83,23 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 	@Test
 	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance instance = MySqlProperties.get().toInstance(databaseName);
 
 		Migration create = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MigrationPlugin createRunner = new MySqlCreateDatabaseMigrationPlugin();
 
 		Migration drop = new MySqlDropDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID().toString()),
-			Optional.empty());
+			UUID.randomUUID().toString(),
+			null);
 
 		MigrationPlugin dropRunner = new MySqlDropDatabaseMigrationPlugin();
 

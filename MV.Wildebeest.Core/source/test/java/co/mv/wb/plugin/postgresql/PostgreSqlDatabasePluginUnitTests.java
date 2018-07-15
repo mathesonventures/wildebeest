@@ -29,8 +29,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -41,11 +39,13 @@ import java.util.UUID;
 public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(PostgreSqlDatabasePluginUnitTests.class);
+
 	@Override
 	@Test
 	public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
@@ -58,15 +58,15 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID().toString()),
-			Optional.of(UUID.randomUUID().toString()));
+			UUID.randomUUID().toString(),
+			UUID.randomUUID().toString());
 
 		MigrationPlugin createRunner = new AnsiSqlCreateDatabaseMigrationPlugin();
 
 		Migration drop = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID().toString()),
-			Optional.of(UUID.randomUUID().toString()));
+			UUID.randomUUID().toString(),
+			UUID.randomUUID().toString());
 
 		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 
@@ -99,7 +99,8 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 	@Test
 	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
@@ -112,15 +113,15 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID().toString()),
-			Optional.of(UUID.randomUUID().toString()));
+			UUID.randomUUID().toString(),
+			UUID.randomUUID().toString());
 
 		MigrationPlugin createRunner = new AnsiSqlCreateDatabaseMigrationPlugin();
 
 		Migration drop = new AnsiSqlDropDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.of(UUID.randomUUID().toString()),
-			Optional.of(UUID.randomUUID().toString()));
+			UUID.randomUUID().toString(),
+			UUID.randomUUID().toString());
 
 		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 

@@ -16,8 +16,6 @@
 
 package co.mv.wb.event;
 
-import java.util.Optional;
-
 /**
  * Defines an event for Migration
  *
@@ -44,7 +42,7 @@ public class MigrationEvent extends Event
 	 */
 	public MigrationEvent(
 		String name,
-		Optional<String> message)
+		String message)
 	{
 		super(name, message);
 	}
@@ -56,7 +54,7 @@ public class MigrationEvent extends Event
 	 * @return the MigrationEvent created for Start Event
 	 * @since 4.0
 	 */
-	public static MigrationEvent start(Optional<String> message)
+	public static MigrationEvent start(String message)
 	{
 		return new MigrationEvent(MigrationEvent.Name.Start.name(), message);
 	}
@@ -68,7 +66,7 @@ public class MigrationEvent extends Event
 	 * @return the MigrationEvent created for Complete Event
 	 * @since 4.0
 	 */
-	public static MigrationEvent complete(Optional<String> message)
+	public static MigrationEvent complete(String message)
 	{
 		return new MigrationEvent(MigrationEvent.Name.Complete.name(), message);
 	}
@@ -82,6 +80,6 @@ public class MigrationEvent extends Event
 	 */
 	public static MigrationEvent failed(String message)
 	{
-		return new MigrationEvent(MigrationEvent.Name.Failed.name(), Optional.of(message));
+		return new MigrationEvent(MigrationEvent.Name.Failed.name(), message);
 	}
 }

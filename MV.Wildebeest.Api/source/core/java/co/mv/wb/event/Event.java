@@ -28,7 +28,7 @@ import java.util.Optional;
 public class Event
 {
 	private final String name;
-	private final Optional<String> message;
+	private final String message;
 
 	/**
 	 * Constructs a new Event with the supplied details.
@@ -39,10 +39,9 @@ public class Event
 	 */
 	public Event(
 		String name,
-		Optional<String> message)
+		String message)
 	{
 		if (name == null) throw new ArgumentNullException("name");
-		if (message == null) throw new ArgumentNullException("message");
 
 		this.name = name;
 		this.message = message;
@@ -67,6 +66,6 @@ public class Event
 	 */
 	public Optional<String> getMessage()
 	{
-		return this.message;
+		return Optional.ofNullable(this.message);
 	}
 }

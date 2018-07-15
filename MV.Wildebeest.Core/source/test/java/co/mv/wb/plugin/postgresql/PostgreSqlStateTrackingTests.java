@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.UUID;
 
 public class PostgreSqlStateTrackingTests
@@ -44,7 +43,8 @@ public class PostgreSqlStateTrackingTests
 		InvalidReferenceException
 	{
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
 			.withFactoryPluginGroups()
@@ -67,7 +67,7 @@ public class PostgreSqlStateTrackingTests
 			UUID.randomUUID(),
 			Wildebeest.PostgreSqlDatabase,
 			"Database",
-			Optional.empty());
+			null);
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -76,23 +76,25 @@ public class PostgreSqlStateTrackingTests
 		// Migrate -> created
 		Migration migration1 = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(created.getStateId().toString()));
+			null,
+			created.getStateId().toString());
 		resource.getMigrations().add(migration1);
 
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(created.getStateId().toString()));
+			created.getStateId().toString());
 
 		//
 
 		try
 		{
-			DatabaseHelper.execute(instance.getAppDataSource(),
-				String.format("SELECT LastMigrationInstant FROM %s.%s ",
-				instance.getMetaSchemaName(),
-				instance.getStateTableName()));
+			DatabaseHelper.execute(
+				instance.getAppDataSource(),
+				String.format(
+					"SELECT LastMigrationInstant FROM %s.%s ",
+					instance.getMetaSchemaName(),
+					instance.getStateTableName()));
 
 		}
 		catch (SQLException e)
@@ -100,7 +102,8 @@ public class PostgreSqlStateTrackingTests
 			e.getCause();
 			Assert.fail();
 		}
-		finally{
+		finally
+		{
 			//TODO drop database
 		}
 

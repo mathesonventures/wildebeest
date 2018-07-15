@@ -51,11 +51,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
@@ -68,6 +66,7 @@ import static org.junit.Assert.assertNotNull;
 public class IntegrationTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(IntegrationTests.class);
+
 	@Test
 	public void createDatabaseAddTableInsertRows() throws
 		AssertionFailedException,
@@ -84,7 +83,8 @@ public class IntegrationTests
 		//
 		// Setup
 		//
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
@@ -100,7 +100,7 @@ public class IntegrationTests
 			UUID.randomUUID(),
 			Wildebeest.MySqlDatabase,
 			"Database",
-			Optional.empty());
+			null);
 
 		// State: Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -117,21 +117,21 @@ public class IntegrationTests
 		// Migration: to Created
 		resource.getMigrations().add(new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(created.getStateId().toString())));
+			null,
+			created.getStateId().toString()));
 
 		// Migration: Created to Initial Schema
 		resource.getMigrations().add(new SqlScriptMigration(
 			UUID.randomUUID(),
-			Optional.of(created.getStateId().toString()),
-			Optional.of(initialSchema.getStateId().toString()),
+			created.getStateId().toString(),
+			initialSchema.getStateId().toString(),
 			MySqlElementFixtures.productCatalogueDatabase()));
 
 		// Migration: Initial Schema to Populated
 		resource.getMigrations().add(new SqlScriptMigration(
 			UUID.randomUUID(),
-			Optional.of(initialSchema.getStateId().toString()),
-			Optional.of(populated.getStateId().toString()),
+			initialSchema.getStateId().toString(),
+			populated.getStateId().toString(),
 			MySqlElementFixtures.productTypeRows()));
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
@@ -157,7 +157,7 @@ public class IntegrationTests
 			wildebeestApi.migrate(
 				resource,
 				instance,
-				Optional.of(populated.getStateId().toString()));
+				populated.getStateId().toString());
 		}
 		finally
 		{
@@ -228,7 +228,8 @@ public class IntegrationTests
 		UnknownStateSpecifiedException,
 		InvalidReferenceException
 	{
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
@@ -280,7 +281,7 @@ public class IntegrationTests
 			wildebeestApi.migrate(
 				resource,
 				instance,
-				Optional.of(ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded.toString()));
+				ProductCatalogueMySqlDatabaseResource.StateIdInitialReferenceDataLoaded.toString());
 		}
 		finally
 		{
@@ -311,9 +312,9 @@ public class IntegrationTests
 			.processingInstruction()
 			.openElement("instance type=\"co.mv.wb.MySqlDatabase\" id=\"" + UUID.randomUUID() + "\"")
 			.openElement("hostName").append("127.0.0.1").closeElement("hostName")
-			.openElement("port").append("3306").closeElement("port")
+			.openElement("port").append("13306").closeElement("port")
 			.openElement("adminUsername").append("root").closeElement("adminUsername")
-			.openElement("adminPassword").append("password").closeElement("adminPassword")
+			.openElement("adminPassword").append("Password123!").closeElement("adminPassword")
 			.openElement("databaseName").append(databaseName).closeElement("databaseName")
 			.closeElement("instance");
 
@@ -331,9 +332,9 @@ public class IntegrationTests
 		Asserts.assertInstance(MySqlDatabaseInstance.class, instance, "instance");
 		Asserts.assertMySqlDatabaseInstance(
 			"127.0.0.1",
-			3306,
+			13306,
 			"root",
-			"password",
+			"Password123!",
 			databaseName,
 			instance,
 			"instance");

@@ -18,7 +18,6 @@ package co.mv.wb;
 
 import java.io.File;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The main programmatic API for working with Wildebeest.
@@ -119,7 +118,7 @@ public interface WildebeestApi
 	void migrate(
 		Resource resource,
 		Instance instance,
-		Optional<String> targetState) throws
+		String targetState) throws
 		AssertionFailedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,

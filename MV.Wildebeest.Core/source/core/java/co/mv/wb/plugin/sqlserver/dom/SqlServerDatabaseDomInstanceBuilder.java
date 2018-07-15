@@ -72,7 +72,7 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			throw new PluginBuildException(messages);
 		}
 
-		Instance result = new SqlServerDatabaseInstance(
+		return new SqlServerDatabaseInstance(
 			hostName.get(),
 			instanceName.orElse(null),
 			port.get(),
@@ -80,7 +80,5 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			adminPassword.get(),
 			databaseName.get(),
 			stateTableName.orElse(null));
-
-		return result;
 	}
 }

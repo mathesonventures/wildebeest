@@ -34,7 +34,7 @@ import java.sql.SQLException;
  *
  * @since 4.0
  */
-@MigrationPluginType(uri = "co.mv.wb.generaldatabase:SqlScriptMigration")
+@MigrationPluginType(uri = "co.mv.wb.generaldatabase:SqlScript")
 public class SqlScriptMigrationPlugin implements MigrationPlugin
 {
 	@Override public void perform(

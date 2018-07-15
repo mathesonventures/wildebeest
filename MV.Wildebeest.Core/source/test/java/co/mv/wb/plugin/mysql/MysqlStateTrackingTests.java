@@ -24,11 +24,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 public class MysqlStateTrackingTests
@@ -51,7 +49,8 @@ public class MysqlStateTrackingTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
 			.withFactoryPluginGroups()
@@ -65,7 +64,7 @@ public class MysqlStateTrackingTests
 			UUID.randomUUID(),
 			Wildebeest.MySqlDatabase,
 			"Database",
-			Optional.empty());
+			null);
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -74,8 +73,8 @@ public class MysqlStateTrackingTests
 		// Migrate -> created
 		Migration migration1 = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(created.getStateId().toString()));
+			null,
+			created.getStateId().toString());
 		resource.getMigrations().add(migration1);
 
 
@@ -95,13 +94,15 @@ public class MysqlStateTrackingTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(created.getStateId().toString()));
+			created.getStateId().toString());
 
 
 		try
 		{
-			DatabaseHelper.execute(instance.getAppDataSource(),
-				String.format("SELECT LastMigrationInstant from %s",
+			DatabaseHelper.execute(
+				instance.getAppDataSource(),
+				String.format(
+					"SELECT LastMigrationInstant from %s",
 					instance.getStateTableName()));
 
 		}
@@ -112,7 +113,7 @@ public class MysqlStateTrackingTests
 		}
 		finally
 		{
-		//	MySqlUtil.dropDatabase(instance, instance.getDatabaseName());
+			//	MySqlUtil.dropDatabase(instance, instance.getDatabaseName());
 		}
 	}
 }

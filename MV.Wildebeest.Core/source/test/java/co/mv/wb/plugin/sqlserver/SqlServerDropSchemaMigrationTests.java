@@ -23,9 +23,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -34,20 +32,22 @@ import static org.junit.Assert.fail;
 public class SqlServerDropSchemaMigrationTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(SqlServerDropSchemaMigrationTests.class);
+
 	@Test
 	public void performForExistantSchemaSucceeds() throws
 		MigrationFailedException
 	{
 		// Setup
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		SqlServerProperties p = SqlServerProperties.get();
 
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
@@ -69,8 +69,8 @@ public class SqlServerDropSchemaMigrationTests
 
 		SqlServerCreateSchemaMigration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.empty(),
+			null,
+			null,
 			"prd");
 
 		SqlServerCreateSchemaMigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
@@ -82,8 +82,8 @@ public class SqlServerDropSchemaMigrationTests
 
 		SqlServerDropSchemaMigration dropSchema = new SqlServerDropSchemaMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.empty(),
+			null,
+			null,
 			"prd");
 
 		SqlServerDropSchemaMigrationPlugin dropSchemaRunner = new SqlServerDropSchemaMigrationPlugin();
@@ -107,15 +107,16 @@ public class SqlServerDropSchemaMigrationTests
 	public void performForNonExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 
 		SqlServerProperties p = SqlServerProperties.get();
 
 		SqlServerCreateDatabaseMigration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
@@ -137,8 +138,8 @@ public class SqlServerDropSchemaMigrationTests
 
 		SqlServerDropSchemaMigration dropSchema = new SqlServerDropSchemaMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.empty(),
+			null,
+			null,
 			"prd");
 
 		SqlServerDropSchemaMigrationPlugin dropSchemaRunner = new SqlServerDropSchemaMigrationPlugin();

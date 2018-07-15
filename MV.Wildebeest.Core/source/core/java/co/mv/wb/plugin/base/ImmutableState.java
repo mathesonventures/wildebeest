@@ -23,7 +23,6 @@ import co.mv.wb.framework.ArgumentNullException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -35,10 +34,10 @@ public class ImmutableState implements State
 {
 
 	private final UUID stateId;
-	private final Optional<String> name;
+	private final String name;
 
 	private final List<Assertion> assertions;
-	private final Optional<String> description;
+	private final String description;
 
 	/**
 	 * Creates a new ImmutableState with the supplied ID.
@@ -51,9 +50,9 @@ public class ImmutableState implements State
 		if (stateId == null) throw new ArgumentNullException("stateId");
 
 		this.stateId = stateId;
-		this.name = Optional.empty();
+		this.name = null;
 		this.assertions = new ArrayList<>();
-		this.description = Optional.empty();
+		this.description = null;
 	}
 
 	/**
@@ -64,15 +63,14 @@ public class ImmutableState implements State
 	 */
 	public ImmutableState(
 		UUID stateId,
-		Optional<String> name)
+		String name)
 	{
 		if (stateId == null) throw new ArgumentNullException("stateId");
-		if (name == null) throw new ArgumentNullException("name");
 
 		this.stateId = stateId;
 		this.name = name;
 		this.assertions = new ArrayList<>();
-		this.description = Optional.empty();
+		this.description = null;
 	}
 
 	/**
@@ -89,9 +87,9 @@ public class ImmutableState implements State
 		if (assertions == null) throw new ArgumentNullException("assertions");
 
 		this.stateId = stateId;
-		this.name = Optional.empty();
+		this.name = null;
 		this.assertions = assertions;
-		this.description = Optional.empty();
+		this.description = null;
 	}
 
 	/**
@@ -103,15 +101,16 @@ public class ImmutableState implements State
 	 */
 	public ImmutableState(
 		UUID stateId,
-		Optional<String> name,
+		String name,
 		List<Assertion> assertions)
 	{
 		if (stateId == null) throw new ArgumentNullException("stateId");
+		if (assertions == null) throw new ArgumentNullException("assertions");
 
 		this.stateId = stateId;
-		this.name = Optional.empty();
-		this.assertions = new ArrayList<>();
-		this.description = Optional.empty();
+		this.name = name;
+		this.assertions = assertions;
+		this.description = null;
 	}
 
 	/**
@@ -123,12 +122,10 @@ public class ImmutableState implements State
 	 */
 	public ImmutableState(
 		UUID stateId,
-		Optional<String> name,
-		Optional<String> description)
+		String name,
+		String description)
 	{
 		if (stateId == null) throw new ArgumentNullException("stateId");
-		if (name == null) throw new ArgumentNullException("name");
-		if (description == null) throw new ArgumentNullException("description");
 
 		this.stateId = stateId;
 		this.name = name;
@@ -146,14 +143,12 @@ public class ImmutableState implements State
 	 */
 	public ImmutableState(
 		UUID stateId,
-		Optional<String> name,
+		String name,
 		List<Assertion> assertions,
-		Optional<String> description)
+		String description)
 	{
 		if (stateId == null) throw new ArgumentNullException("stateId");
-		if (name == null) throw new ArgumentNullException("name");
 		if (assertions == null) throw new ArgumentNullException("assertions");
-		if (description == null) throw new ArgumentNullException("description");
 
 		this.stateId = stateId;
 		this.name = name;
@@ -170,7 +165,7 @@ public class ImmutableState implements State
 	@Override
 	public Optional<String> getName()
 	{
-		return this.name;
+		return Optional.ofNullable(this.name);
 	}
 
 	@Override
@@ -182,13 +177,12 @@ public class ImmutableState implements State
 	@Override
 	public String getDisplayName()
 	{
-		return this.name.orElse(this.stateId.toString());
+		return this.name != null ? this.name : this.stateId.toString();
 	}
 
 	@Override
 	public Optional<String> getDescription()
 	{
-		return this.description;
+		return Optional.ofNullable(this.description);
 	}
-
 }

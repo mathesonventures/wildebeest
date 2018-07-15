@@ -23,9 +23,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -43,8 +41,8 @@ public class SqlServerCreateDatabaseMigrationTests
 
 		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		SqlServerCreateDatabaseMigrationPlugin migrationPlugin = new SqlServerCreateDatabaseMigrationPlugin();
 
@@ -60,7 +58,8 @@ public class SqlServerCreateDatabaseMigrationTests
 			null);
 
 		// Execute
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		try
 		{
@@ -79,7 +78,8 @@ public class SqlServerCreateDatabaseMigrationTests
 	@Test
 	public void performForExistantDatabaseFails() throws SQLException
 	{
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
@@ -95,8 +95,8 @@ public class SqlServerCreateDatabaseMigrationTests
 
 		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		SqlServerCreateDatabaseMigrationPlugin migrationPlugin = new SqlServerCreateDatabaseMigrationPlugin();
 

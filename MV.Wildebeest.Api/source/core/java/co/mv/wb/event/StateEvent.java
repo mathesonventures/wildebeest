@@ -16,8 +16,6 @@
 
 package co.mv.wb.event;
 
-import java.util.Optional;
-
 /**
  * Defines an event for State
  *
@@ -44,7 +42,7 @@ public class StateEvent extends Event
 	 */
 	public StateEvent(
 		String name,
-		Optional<String> message)
+		String message)
 	{
 		super(name, message);
 	}
@@ -58,7 +56,7 @@ public class StateEvent extends Event
 	 */
 	public static StateEvent preAssert(String message)
 	{
-		return new StateEvent(StateEvent.Name.PreAssert.name(), Optional.of(message));
+		return new StateEvent(StateEvent.Name.PreAssert.name(), message);
 	}
 
 	/**
@@ -68,7 +66,7 @@ public class StateEvent extends Event
 	 * @return the StateEvent created for PreAssert Event
 	 * @since 4.0
 	 */
-	public static StateEvent postAssert(Optional<String> message)
+	public static StateEvent postAssert(String message)
 	{
 		return new StateEvent(StateEvent.Name.PostAssert.name(), message);
 	}
@@ -79,7 +77,7 @@ public class StateEvent extends Event
 	 * @return the StateEvent created for AssertionStart Event
 	 * @since 4.0
 	 */
-	public static Event assertionStart(Optional<String> message)
+	public static Event assertionStart(String message)
 	{
 		return new StateEvent(Name.AssertionStart.name(), message);
 	}
@@ -90,7 +88,7 @@ public class StateEvent extends Event
 	 * @return the StateEvent created for AssertionComplete Event
 	 * @since 4.0
 	 */
-	public static Event assertionComplete(Optional<String> message)
+	public static Event assertionComplete(String message)
 	{
 		return new StateEvent(Name.AssertionComplete.name(), message);
 	}
@@ -101,7 +99,7 @@ public class StateEvent extends Event
 	 * @return the StateEvent created for ChangeSuccess Event
 	 * @since 4.0
 	 */
-	public static Event changeSuccess(Optional<String> message)
+	public static Event changeSuccess(String message)
 	{
 		return new StateEvent(Name.ChangeSuccess.name(), message);
 	}
@@ -114,6 +112,6 @@ public class StateEvent extends Event
 	 */
 	public static Event changeFailed(String message)
 	{
-		return new StateEvent(Name.ChangeFailed.name(), Optional.of(message));
+		return new StateEvent(Name.ChangeFailed.name(), message);
 	}
 }

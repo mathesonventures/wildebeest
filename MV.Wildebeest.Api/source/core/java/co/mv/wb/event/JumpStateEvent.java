@@ -1,7 +1,5 @@
 package co.mv.wb.event;
 
-import java.util.Optional;
-
 public class JumpStateEvent extends Event
 {
 	/**
@@ -23,7 +21,7 @@ public class JumpStateEvent extends Event
 	 */
 	public JumpStateEvent(
 		String name,
-		Optional<String> message)
+		String message)
 	{
 		super(name, message);
 	}
@@ -34,7 +32,7 @@ public class JumpStateEvent extends Event
 	 * @return the JumpStateEvent created for Start Event
 	 * @since 4.0
 	 */
-	public static JumpStateEvent start(Optional<String> message)
+	public static JumpStateEvent start(String message)
 	{
 		return new JumpStateEvent(Name.Start.name(), message);
 	}
@@ -45,7 +43,7 @@ public class JumpStateEvent extends Event
 	 * @return the JumpStateEvent created for Complete Event
 	 * @since 4.0
 	 */
-	public static JumpStateEvent complete(Optional<String> message)
+	public static JumpStateEvent complete(String message)
 	{
 		return new JumpStateEvent(Name.Complete.name(), message);
 	}
@@ -59,6 +57,6 @@ public class JumpStateEvent extends Event
 	 */
 	public static JumpStateEvent failed(String message)
 	{
-		return new JumpStateEvent(Name.Failed.name(), Optional.of(message));
+		return new JumpStateEvent(Name.Failed.name(), message);
 	}
 }

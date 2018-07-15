@@ -42,8 +42,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
-import java.util.Optional;
 import java.util.UUID;
 
 import static co.mv.wb.Asserts.assertFakeInstance;
@@ -57,6 +55,7 @@ import static org.junit.Assert.assertEquals;
 public class WildebeestApiImplMigrateUnitTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplMigrateUnitTests.class);
+
 	/**
 	 * A call to migrate specified a target and the resource does not have a default.  WildebeestApiImpl correctly
 	 * resolves the specified target and passes it to ResourceHelperImpl.
@@ -75,7 +74,8 @@ public class WildebeestApiImplMigrateUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -92,7 +92,7 @@ public class WildebeestApiImplMigrateUnitTests
 		wildebeestApi.migrate(
 			context.resource,
 			context.instance,
-			Optional.of("foo"));
+			"foo");
 
 		// Verify
 		assertFakeInstance(
@@ -124,7 +124,8 @@ public class WildebeestApiImplMigrateUnitTests
 			.withDefaultTarget("bar")
 			.getResourceWithNonExistantInitialState();
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
@@ -136,7 +137,7 @@ public class WildebeestApiImplMigrateUnitTests
 		wildebeestApi.migrate(
 			context.resource,
 			context.instance,
-			Optional.of("foo"));
+			"foo");
 
 		// Verify
 		assertFakeInstance(
@@ -155,7 +156,8 @@ public class WildebeestApiImplMigrateUnitTests
 	public void migrate_targetNotSpecifiedNoDefault_throws()
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
@@ -174,7 +176,7 @@ public class WildebeestApiImplMigrateUnitTests
 				wildebeestApi.migrate(
 					context.resource,
 					context.instance,
-					Optional.empty());
+					null);
 			}
 
 			@Override public void verify(Exception e)
@@ -202,7 +204,8 @@ public class WildebeestApiImplMigrateUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -219,7 +222,7 @@ public class WildebeestApiImplMigrateUnitTests
 		wildebeestApi.migrate(
 			context.resource,
 			context.instance,
-			Optional.empty());
+			null);
 
 		// Verify
 		assertFakeInstance(
@@ -245,7 +248,8 @@ public class WildebeestApiImplMigrateUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -262,7 +266,7 @@ public class WildebeestApiImplMigrateUnitTests
 		wildebeestApi.migrate(
 			context.resource,
 			context.instance,
-			Optional.empty());
+			null);
 
 		// Verify
 		assertFakeInstance(
@@ -288,7 +292,8 @@ public class WildebeestApiImplMigrateUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -312,7 +317,7 @@ public class WildebeestApiImplMigrateUnitTests
 		wildebeestApi.migrate(
 			context.resource,
 			context.instance,
-			Optional.empty());
+			null);
 
 		TagAssertion initialStateAssertionResult =
 			(TagAssertion)context.resource.getStates().get(1).getAssertions().get(0);
@@ -341,7 +346,8 @@ public class WildebeestApiImplMigrateUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -367,7 +373,7 @@ public class WildebeestApiImplMigrateUnitTests
 			wildebeestApi.migrate(
 				context.resource,
 				context.instance,
-				Optional.empty());
+				null);
 			Assert.fail("The migration should not be successful. It is expected to throw an assertion failed exception.");
 		}
 		catch (AssertionFailedException asrFailedEx)

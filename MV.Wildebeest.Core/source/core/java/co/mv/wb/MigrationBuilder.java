@@ -17,7 +17,6 @@
 package co.mv.wb;
 
 import java.io.File;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -49,8 +48,8 @@ public interface MigrationBuilder
 	 */
 	Migration build(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState,
+		String fromState,
+		String toState,
 		File baseDir) throws
 		PluginBuildException;
 

@@ -59,12 +59,10 @@ public class SqlServerTableDoesNotExistDomAssertionBuilder extends BaseDomAssert
 			throw new PluginBuildException(messages);
 		}
 
-		Assertion result = new SqlServerTableDoesNotExistAssertion(
+		return new SqlServerTableDoesNotExistAssertion(
 			assertionId,
 			seqNum,
 			schemaName.get(),
 			tableName.get());
-
-		return result;
 	}
 }

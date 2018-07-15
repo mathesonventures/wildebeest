@@ -19,9 +19,7 @@ package co.mv.wb.plugin.base;
 import co.mv.wb.Migration;
 import co.mv.wb.framework.ArgumentNullException;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -32,8 +30,8 @@ import java.util.UUID;
 public abstract class BaseMigration implements Migration
 {
 	private final UUID migrationId;
-	private final Optional<String> fromState;
-	private final Optional<String> toState;
+	private final String fromState;
+	private final String toState;
 
 	/**
 	 * Creates a new BaseMigration instance.
@@ -44,12 +42,10 @@ public abstract class BaseMigration implements Migration
 	 */
 	protected BaseMigration(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState)
+		String fromState,
+		String toState)
 	{
 		if (migrationId == null) throw new ArgumentNullException("migrationId");
-		if (fromState == null) throw new ArgumentNullException("fromState");
-		if (toState == null) throw new ArgumentNullException("toState");
 
 		this.migrationId = migrationId;
 		this.fromState = fromState;
@@ -65,20 +61,20 @@ public abstract class BaseMigration implements Migration
 	@Override
 	public Optional<String> getFromState()
 	{
-		return this.fromState;
+		return Optional.ofNullable(this.fromState);
 	}
 
 	@Override
 	public Optional<String> getToState()
 	{
-		return this.toState;
+		return Optional.ofNullable(this.toState);
 	}
 
 	@Override
 	public String toString()
 	{
-		String fromState = this.fromState.orElse("_");
-		String toState = this.toState.orElse("_");
+		String fromState = this.fromState != null ? this.fromState : "_";
+		String toState = this.toState != null ? this.toState : "_";
 		return String.format("%s->%s", fromState, toState);
 	}
 }

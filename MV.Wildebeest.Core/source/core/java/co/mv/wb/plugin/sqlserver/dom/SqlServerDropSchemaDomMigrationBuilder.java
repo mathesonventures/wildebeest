@@ -38,8 +38,8 @@ public class SqlServerDropSchemaDomMigrationBuilder extends BaseDomMigrationBuil
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState,
+		String fromState,
+		String toState,
 		File baseDir) throws
 		PluginBuildException
 	{

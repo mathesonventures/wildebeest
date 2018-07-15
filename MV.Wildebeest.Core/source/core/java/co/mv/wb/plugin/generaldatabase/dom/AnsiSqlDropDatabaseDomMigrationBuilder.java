@@ -23,7 +23,6 @@ import co.mv.wb.plugin.base.dom.BaseDomMigrationBuilder;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigration;
 
 import java.io.File;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -37,8 +36,8 @@ public class AnsiSqlDropDatabaseDomMigrationBuilder extends BaseDomMigrationBuil
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState,
+		String fromState,
+		String toState,
 		File baseDir) throws
 		PluginBuildException
 	{

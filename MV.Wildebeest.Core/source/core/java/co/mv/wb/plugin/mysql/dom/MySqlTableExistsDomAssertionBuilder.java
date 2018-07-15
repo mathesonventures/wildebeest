@@ -53,11 +53,9 @@ public class MySqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 			throw new PluginBuildException(messages);
 		}
 
-		Assertion result = new MySqlTableExistsAssertion(
+		return new MySqlTableExistsAssertion(
 			assertionId,
 			seqNum,
 			tableName.get());
-
-		return result;
 	}
 }

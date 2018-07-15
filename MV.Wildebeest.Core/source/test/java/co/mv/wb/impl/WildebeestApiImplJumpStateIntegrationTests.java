@@ -38,8 +38,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -62,7 +60,8 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -70,7 +69,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
@@ -84,7 +83,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
-			.withFactoryResourcePlugins()
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		//
@@ -123,7 +122,8 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -131,7 +131,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// Instance
 		final FakeInstance instance = new FakeInstance();
@@ -141,7 +141,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
-			.withFactoryResourcePlugins()
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		//
@@ -184,14 +184,15 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		//Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// Resource
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
@@ -205,7 +206,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
-			.withFactoryResourcePlugins()
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		//

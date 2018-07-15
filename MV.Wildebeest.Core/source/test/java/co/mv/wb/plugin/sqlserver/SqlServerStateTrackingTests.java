@@ -1,8 +1,6 @@
 package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.AssertionFailedException;
-import co.mv.wb.AssertionResponse;
-import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
@@ -28,14 +26,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
-
-import static org.junit.Assert.assertNotNull;
 
 public class SqlServerStateTrackingTests
 {
@@ -57,7 +51,8 @@ public class SqlServerStateTrackingTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = (event) ->
+		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
 			.withFactoryPluginGroups()
@@ -71,7 +66,7 @@ public class SqlServerStateTrackingTests
 			UUID.randomUUID(),
 			Wildebeest.SqlServerDatabase,
 			"Database",
-			Optional.empty());
+			null);
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -84,8 +79,8 @@ public class SqlServerStateTrackingTests
 		// Migrate -> created
 		Migration migration1 = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(created.getStateId().toString()));
+			null,
+			created.getStateId().toString());
 		resource.getMigrations().add(migration1);
 
 
@@ -107,7 +102,7 @@ public class SqlServerStateTrackingTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(created.getStateId().toString()));
+			created.getStateId().toString());
 
 		//
 		// Execute and Verify
@@ -115,8 +110,10 @@ public class SqlServerStateTrackingTests
 
 		try
 		{
-			DatabaseHelper.execute(instance.getAppDataSource(),
-				String.format("SELECT LastMigrationInstant from %s",
+			DatabaseHelper.execute(
+				instance.getAppDataSource(),
+				String.format(
+					"SELECT LastMigrationInstant from %s",
 					instance.getStateTableName()));
 
 		}

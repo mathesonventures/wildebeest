@@ -59,12 +59,10 @@ public class SqlServerTableExistsDomAssertionBuilder extends BaseDomAssertionBui
 			throw new PluginBuildException(messages);
 		}
 
-		Assertion result = new SqlServerTableExistsAssertion(
+		return new SqlServerTableExistsAssertion(
 			assertionId,
 			seqNum,
 			schemaName.get(),
 			tableName.get());
-
-		return result;
 	}
 }

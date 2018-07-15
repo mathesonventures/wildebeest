@@ -59,12 +59,10 @@ public class AnsiSqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuild
 			throw new PluginBuildException(messages);
 		}
 
-		Assertion result = new AnsiSqlTableExistsAssertion(
+		return new AnsiSqlTableExistsAssertion(
 			assertionId,
 			seqNum,
 			schemaName.get(),
 			tableName.get());
-
-		return result;
 	}
 }

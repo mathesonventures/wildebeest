@@ -1,7 +1,7 @@
 <instance type="co.mv.wb.MySqlDatabase">
 	<hostName>127.0.0.1</hostName>
-	<port>3306</port>
+	<port>13306</port>
 	<adminUsername>root</adminUsername>
-	<adminPassword>password</adminPassword>
+	<adminPassword>Password123!</adminPassword>
 	<databaseName>ProductCatalogueStaging</databaseName>
 </instance>
