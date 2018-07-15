@@ -25,7 +25,6 @@ import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -78,8 +77,8 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 	 */
 	public SqlScriptMigration(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState,
+		String fromState,
+		String toState,
 		String sql)
 	{
 		super(migrationId, fromState, toState);

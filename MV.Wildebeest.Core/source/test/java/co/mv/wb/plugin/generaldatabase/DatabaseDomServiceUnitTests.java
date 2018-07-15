@@ -18,8 +18,8 @@ package co.mv.wb.plugin.generaldatabase;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionBuilder;
-import co.mv.wb.LoaderFault;
 import co.mv.wb.InvalidReferenceException;
+import co.mv.wb.LoaderFault;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
@@ -50,7 +50,7 @@ public class DatabaseDomServiceUnitTests
 	public void databaseExistsAssertionLoadFromValidDocumentSucceeds() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
@@ -94,7 +94,7 @@ public class DatabaseDomServiceUnitTests
 	public void databaseDoesNotExistAssertionLoadFromValidDocumentSucceeds() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();

@@ -31,7 +31,7 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.fixture.TestContext_WildebeestCommandUnit;
 import co.mv.wb.framework.PredicateMatcher;
@@ -42,7 +42,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
-import java.util.Optional;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -130,10 +129,8 @@ public class WildebeestCommandUnitTests
 					FakeConstants.Fake,
 					context.fakeResource.getName(),
 					resource))),
-			Matchers.argThat(new PredicateMatcher<>(
-				instance -> Asserts.verifyFakeInstance(
-					instance))),
-			eq(Optional.of("Core Schema Loaded")));
+			Matchers.argThat(new PredicateMatcher<>(Asserts::verifyFakeInstance)),
+			eq("Core Schema Loaded"));
 
 		verifyNoMoreInteractions(context.wildebeestApi);
 	}
@@ -192,10 +189,9 @@ public class WildebeestCommandUnitTests
 	{
 		// Setup
 		PrintStream output = System.out;
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.get();
 

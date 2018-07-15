@@ -19,21 +19,15 @@ package co.mv.wb.fixture;
 import co.mv.wb.Assertion;
 import co.mv.wb.Instance;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourcePlugin;
-import co.mv.wb.ResourceType;
 import co.mv.wb.State;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
-import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.SetTagMigration;
 import co.mv.wb.plugin.fake.TagAssertion;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 public class TestContext_SimpleFakeResource_Builder
@@ -66,34 +60,34 @@ public class TestContext_SimpleFakeResource_Builder
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"MyResource",
-			Optional.ofNullable(defaultTarget));
+			defaultTarget);
 
 		// Foo State
 		UUID fooStateId = UUID.randomUUID();
 		State fooState = new ImmutableState(
 			fooStateId,
-			Optional.of("foo"));
+			"foo");
 		resource.getStates().add(fooState);
 
 		// Bar State
 		UUID barStateId = UUID.randomUUID();
 		State barState = new ImmutableState(
 			barStateId,
-			Optional.of("bar"));
+			"bar");
 		resource.getStates().add(barState);
 
 		// Migrate non-existant to Foo
 		resource.getMigrations().add(new SetTagMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(fooStateId.toString()),
+			null,
+			fooStateId.toString(),
 			"Foo"));
 
 		// Migrate non-existant to Foo
 		resource.getMigrations().add(new SetTagMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(barStateId.toString()),
+			null,
+			barStateId.toString(),
 			"Bar"));
 
 		Instance instance = new FakeInstance();
@@ -113,12 +107,12 @@ public class TestContext_SimpleFakeResource_Builder
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"MyResource",
-			Optional.ofNullable(defaultTarget));
+			defaultTarget);
 
 		UUID finalStateId = UUID.randomUUID();
 		State finalState = new ImmutableState(
 			finalStateId,
-			Optional.of("finalState"));
+			"finalState");
 		resource.getStates().add(finalState);
 		Assertion finalAssertion1 = new TagAssertion(
 			UUID.randomUUID(),
@@ -129,13 +123,13 @@ public class TestContext_SimpleFakeResource_Builder
 		UUID initialStateId = UUID.randomUUID();
 		State initialState = new ImmutableState(
 			initialStateId,
-			Optional.of("initialState"));
+			"initialState");
 		resource.getStates().add(initialState);
 
 		resource.getMigrations().add(new SetTagMigration(
 			UUID.randomUUID(),
-			Optional.of(initialStateId.toString()),
-			Optional.of(finalStateId.toString()),
+			initialStateId.toString(),
+			finalStateId.toString(),
 			"finalState"));
 
 		Instance instance = new FakeInstance(initialStateId);
@@ -149,21 +143,22 @@ public class TestContext_SimpleFakeResource_Builder
 			instance);
 	}
 
-	public TestContext_SimpleFakeResource getResourceAndInstanceOnly(){
+	public TestContext_SimpleFakeResource getResourceAndInstanceOnly()
+	{
 		Resource resource = new ResourceImpl(
-				UUID.randomUUID(),
-				FakeConstants.Fake,
-				"MyResource",
-				Optional.ofNullable(defaultTarget));
+			UUID.randomUUID(),
+			FakeConstants.Fake,
+			"MyResource",
+			defaultTarget);
 
 		Instance instance = new FakeInstance();
 
 		return new TestContext_SimpleFakeResource(
-				resource,
-				null,
-				null,
-				null,
-				null,
-				instance);
+			resource,
+			null,
+			null,
+			null,
+			null,
+			instance);
 	}
 }

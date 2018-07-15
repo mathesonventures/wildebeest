@@ -27,8 +27,7 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
-import co.mv.wb.event.Event;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.FixtureBuilder;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
@@ -60,6 +59,7 @@ import static org.junit.Assert.assertNotNull;
 public class DomResourceLoaderTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(DomResourceLoaderTests.class);
+
 	@Test
 	public void loadResource() throws
 		LoaderFault,
@@ -942,8 +942,9 @@ public class DomResourceLoaderTests
 		XmlValidationException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(eventSink).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "MySqlDatabase/database.wbresources.uses.assertionGroup.xml";
 
 		// Execute
@@ -983,8 +984,9 @@ public class DomResourceLoaderTests
 		XmlValidationException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(eventSink).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "PostgreSqlDatabase/database.wbresources.uses.assertionGroup.xml";
 
 		// Execute
@@ -1028,8 +1030,9 @@ public class DomResourceLoaderTests
 		XmlValidationException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(eventSink).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "SqlServerDatabase/database.wbresources.uses.assertionGroup.xml";
 
 		// Execute
@@ -1065,8 +1068,9 @@ public class DomResourceLoaderTests
 	public void loadResourceXml_assertionGroup_withInvalidXML_fails()
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(eventSink).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml";
 
 		new ExpectException(XmlValidationException.class)
@@ -1089,8 +1093,9 @@ public class DomResourceLoaderTests
 	public void loadResourceXml_assertionGroup_withInvalidRef_fails()
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(eventSink).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "InvalidXml/InvalidReferenceSampleResourceUsesAssertionGroup.xml";
 
 		new ExpectException(InvalidReferenceException.class)
@@ -1221,8 +1226,9 @@ public class DomResourceLoaderTests
 	public void loadResourceXml_withInvalidXML_singleAssertion_fails()
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(eventSink).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "InvalidXml/InvalidSampleResourceUsesSingleAssertRef.xml";
 
 		new ExpectException(XmlValidationException.class)
@@ -1245,8 +1251,9 @@ public class DomResourceLoaderTests
 	public void loadResourceXml_withInvalidRef_singleAssertion_fails()
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(eventSink).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "InvalidXml/InvalidSampleResourceSingleAssertMissingRef.xml";
 
 		new ExpectException(InvalidReferenceException.class)
@@ -1266,33 +1273,14 @@ public class DomResourceLoaderTests
 		}.perform();
 	}
 
-	private Resource loadResource(
-		String resourceFilePath)
-	{
-		if (resourceFilePath == null) throw new ArgumentNullException("resourceFilePath");
-
-		try
-		{
-			// Setup
-			EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-			WildebeestApi wildebeestApi = WildebeestApiBuilder.create(eventSink).get();
-			// Execute
-			return wildebeestApi.loadResource(new File(resourceFilePath));
-		}
-		catch (LoaderFault | PluginBuildException | InvalidReferenceException | FileLoadException
-			| XmlValidationException loaderFault)
-		{
-			loaderFault.printStackTrace();
-		}
-		return null;
-	}
-
 	@Test
 	public void loadResource_withMissingAssertionGroup_throwsXmlValidationException()
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(eventSink).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
+
 		String resourceFilePath = "InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml";
 
 		// Execute and Verify
@@ -1310,5 +1298,28 @@ public class DomResourceLoaderTests
 					e.getMessage().contains("Attribute 'ref' must appear on element 'assertionRef'"));
 			}
 		}.perform();
+	}
+
+	private Resource loadResource(
+		String resourceFilePath)
+	{
+		if (resourceFilePath == null) throw new ArgumentNullException("resourceFilePath");
+
+		final Resource result;
+
+		final WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
+
+		try
+		{
+			result = wildebeestApi.loadResource(new File(resourceFilePath));
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		return result;
 	}
 }

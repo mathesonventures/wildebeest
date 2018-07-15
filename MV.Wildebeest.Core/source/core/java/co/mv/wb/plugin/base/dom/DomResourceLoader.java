@@ -49,7 +49,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -160,7 +159,7 @@ public class DomResourceLoader implements ResourceLoader
 			String typeUri = resourceXe.getAttribute(XA_RESOURCE_TYPE);
 			ResourceType type = this.resourceTypeService.forUri(typeUri);
 			String name = resourceXe.getAttribute(XA_RESOURCE_NAME);
-			Optional<String> defaultTarget = Optional.ofNullable(resourceXe.getAttribute(XA_RESOURCE_DEFAULT_TARGET));
+			String defaultTarget = resourceXe.getAttribute(XA_RESOURCE_DEFAULT_TARGET);
 
 			resource = new ResourceImpl(
 				id,
@@ -443,10 +442,10 @@ public class DomResourceLoader implements ResourceLoader
 		switch (condition)
 		{
 			case 1:
-				result = new ImmutableState(id, Optional.of(name));
+				result = new ImmutableState(id, name);
 				break;
 			case 2:
-				result = new ImmutableState(id, Optional.of(name), Optional.of(description));
+				result = new ImmutableState(id, name, description);
 				break;
 			default:
 				result = new ImmutableState(id);
@@ -499,13 +498,13 @@ public class DomResourceLoader implements ResourceLoader
 
 		String type = element.getAttribute(XA_MIGRATION_TYPE);
 		UUID id = UUID.fromString(element.getAttribute(XA_MIGRATION_ID));
-		Optional<String> fromState = element.hasAttribute(XA_MIGRATION_FROM_STATE)
-			? Optional.of(element.getAttribute(XA_MIGRATION_FROM_STATE))
-			: Optional.empty();
+		String fromState = element.hasAttribute(XA_MIGRATION_FROM_STATE)
+			? element.getAttribute(XA_MIGRATION_FROM_STATE)
+			: null;
 
-		Optional<String> toState = element.hasAttribute(XA_MIGRATION_TO_STATE)
-			? Optional.of(element.getAttribute(XA_MIGRATION_TO_STATE))
-			: Optional.empty();
+		String toState = element.hasAttribute(XA_MIGRATION_TO_STATE)
+			? element.getAttribute(XA_MIGRATION_TO_STATE)
+			: null;
 
 		MigrationBuilder builder = migrationBuilders.get(type);
 

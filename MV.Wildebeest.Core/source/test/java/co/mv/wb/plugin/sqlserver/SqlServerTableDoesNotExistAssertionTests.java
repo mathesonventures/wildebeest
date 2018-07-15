@@ -32,22 +32,19 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
-import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -62,6 +59,7 @@ import static org.junit.Assert.fail;
 public class SqlServerTableDoesNotExistAssertionTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(SqlServerPluginUnitTests.class);
+
 	@Test
 	public void applyForExistingTableFails() throws
 		AssertionFailedException,
@@ -77,11 +75,10 @@ public class SqlServerTableDoesNotExistAssertionTests
 		//
 		// Setup
 		//
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -90,7 +87,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 			UUID.randomUUID(),
 			Wildebeest.SqlServerDatabase,
 			"Database",
-			Optional.empty());
+			null);
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -103,21 +100,17 @@ public class SqlServerTableDoesNotExistAssertionTests
 		// Migrate -> created
 		Migration tran1 = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(created.getStateId().toString()));
+			null,
+			created.getStateId().toString());
 		resource.getMigrations().add(tran1);
 
 		// Migrate created -> schemaLoaded
 		Migration tran2 = new SqlScriptMigration(
 			UUID.randomUUID(),
-			Optional.of(created.getStateId().toString()),
-			Optional.of(schemaLoaded.getStateId().toString()),
+			created.getStateId().toString(),
+			schemaLoaded.getStateId().toString(),
 			SqlServerElementFixtures.productCatalogueDatabase());
 		resource.getMigrations().add(tran2);
-
-		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
-		migrationPlugins.put(SqlServerCreateDatabaseMigration.class, new SqlServerCreateDatabaseMigrationPlugin());
-		migrationPlugins.put(SqlScriptMigration.class, new SqlScriptMigrationPlugin());
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 
@@ -133,7 +126,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(schemaLoaded.getStateId().toString()));
+			schemaLoaded.getStateId().toString());
 
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),
@@ -181,10 +174,8 @@ public class SqlServerTableDoesNotExistAssertionTests
 		// Setup
 		//
 
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
 			.get();
@@ -195,7 +186,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 			UUID.randomUUID(),
 			Wildebeest.SqlServerDatabase,
 			"Database",
-			Optional.empty());
+			null);
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -204,8 +195,8 @@ public class SqlServerTableDoesNotExistAssertionTests
 		// Migrate -> created
 		Migration tran1 = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(created.getStateId().toString()));
+			null,
+			created.getStateId().toString());
 		resource.getMigrations().add(tran1);
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
@@ -225,7 +216,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(created.getStateId().toString()));
+			created.getStateId().toString());
 
 		SqlServerTableDoesNotExistAssertion assertion = new SqlServerTableDoesNotExistAssertion(
 			UUID.randomUUID(),

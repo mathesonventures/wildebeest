@@ -71,7 +71,7 @@ public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			throw new PluginBuildException(messages);
 		}
 
-		Instance result = new PostgreSqlDatabaseInstance(
+		return new PostgreSqlDatabaseInstance(
 			hostName.get(),
 			port.get(),
 			adminUsername.get(),
@@ -79,7 +79,5 @@ public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			databaseName.get(),
 			metaSchemaName.orElse(null),
 			stateTableName.orElse(null));
-
-		return result;
 	}
 }

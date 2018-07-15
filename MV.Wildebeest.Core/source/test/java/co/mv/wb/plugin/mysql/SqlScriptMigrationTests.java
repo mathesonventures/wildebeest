@@ -20,19 +20,19 @@ import co.mv.wb.Instance;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
 import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class SqlScriptMigrationTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(SqlScriptMigrationTests.class);
+
 	public SqlScriptMigrationTests()
 	{
 	}
@@ -40,15 +40,14 @@ public class SqlScriptMigrationTests
 	@Test
 	public void performSuccessfully() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm_test", "");
 
 		Migration migration = new SqlScriptMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()),
+			null,
+			UUID.randomUUID().toString(),
 			MySqlElementFixtures.productCatalogueDatabase());
 
 		MigrationPlugin migrationPlugin = new SqlScriptMigrationPlugin();
@@ -65,7 +64,7 @@ public class SqlScriptMigrationTests
 		try
 		{
 			migrationPlugin.perform(
-				eventSink,
+				new LoggingEventSink(LOG),
 				migration,
 				instance);
 		}

@@ -17,55 +17,26 @@
 package co.mv.wb.event;
 
 import co.mv.wb.framework.ArgumentNullException;
-
-import java.util.Optional;
+import org.slf4j.Logger;
 
 /**
- * Defines an Event
+ * An {@link EventSink} that sends the output to the logger at INFO level.
  *
  * @since 4.0
  */
-public class Event
+public class LoggingEventSink implements EventSink
 {
-	private final String name;
-	private final String message;
+	private final Logger logger;
 
-	/**
-	 * Constructs a new Event with the supplied details.
-	 *
-	 * @param name    the name of the event, this should be supplied from Event
-	 * @param message a message of the event
-	 * @since 4.0
-	 */
-	public Event(
-		String name,
-		String message)
+	public LoggingEventSink(Logger logger)
 	{
-		if (name == null) throw new ArgumentNullException("name");
+		if (logger == null) throw new ArgumentNullException("logger");
 
-		this.name = name;
-		this.message = message;
+		this.logger = logger;
 	}
 
-	/**
-	 * Gets the name of the event
-	 *
-	 * @return the name of the event
-	 * @since 4.0
-	 */
-	public String getName()
+	@Override public void onEvent(Event event)
 	{
-		return this.name;
-	}
-
-	/**
-	 * Gets the message of the event
-	 *
-	 * @return the name of the event
-	 * @since 4.0
-	 */
-	public Optional<String> getMessage()
-	{
-		return Optional.ofNullable(this.message);
+		this.logger.info(event.getMessage().get());
 	}
 }

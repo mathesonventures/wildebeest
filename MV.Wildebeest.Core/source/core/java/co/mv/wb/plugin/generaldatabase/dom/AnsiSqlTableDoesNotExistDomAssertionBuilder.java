@@ -59,12 +59,10 @@ public class AnsiSqlTableDoesNotExistDomAssertionBuilder extends BaseDomAssertio
 			throw new PluginBuildException(messages);
 		}
 
-		Assertion result = new AnsiSqlTableDoesNotExistAssertion(
+		return new AnsiSqlTableDoesNotExistAssertion(
 			assertionId,
 			seqNum,
 			schemaName.get(),
 			tableName.get());
-
-		return result;
 	}
 }

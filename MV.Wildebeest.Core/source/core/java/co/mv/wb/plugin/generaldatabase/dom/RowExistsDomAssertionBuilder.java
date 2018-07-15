@@ -61,6 +61,8 @@ public class RowExistsDomAssertionBuilder extends BaseDomAssertionBuilder implem
 			throw new PluginBuildException(messages);
 		}
 
-		return new RowExistsAssertion(assertionId, coalesceWhitespace(description.get()), seqNum, sql.get());
+		return new RowExistsAssertion(
+			assertionId,
+			coalesceWhitespace(description.get()), seqNum, sql.get());
 	}
 }

@@ -54,11 +54,9 @@ public class SqlServerSchemaExistsDomAssertionBuilder extends BaseDomAssertionBu
 			throw new PluginBuildException(messages);
 		}
 
-		Assertion result = new SqlServerSchemaExistsAssertion(
+		return new SqlServerSchemaExistsAssertion(
 			assertionId,
 			seqNum,
 			schemaName.get());
-
-		return result;
 	}
 }

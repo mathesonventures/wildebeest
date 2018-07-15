@@ -18,11 +18,8 @@ package co.mv.wb.fixture;
 
 import co.mv.wb.Instance;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourcePlugin;
-import co.mv.wb.ResourceType;
 import co.mv.wb.State;
 
-import java.util.Map;
 import java.util.UUID;
 
 public class TestContext_SimpleFakeResource

@@ -18,8 +18,8 @@ package co.mv.wb.fixture;
 
 import co.mv.wb.FileLoadException;
 import co.mv.wb.Instance;
-import co.mv.wb.LoaderFault;
 import co.mv.wb.InvalidReferenceException;
+import co.mv.wb.LoaderFault;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.WildebeestApi;

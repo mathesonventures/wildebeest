@@ -39,5 +39,5 @@ public interface ResourceLoader
 	Resource load(File baseDir) throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException;
+		InvalidReferenceException;
 }

@@ -1,4 +1,4 @@
-<instance type="SqlServerDatabase">
+<instance type="co.mv.wb.SqlServerDatabase">
 	<hostName>127.0.0.1</hostName>
 	<port>1433</port>
 	<adminUsername>wb</adminUsername>

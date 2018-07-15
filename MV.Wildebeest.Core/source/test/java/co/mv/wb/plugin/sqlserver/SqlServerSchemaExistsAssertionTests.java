@@ -22,14 +22,13 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -44,14 +43,13 @@ import static org.junit.Assert.fail;
 public class SqlServerSchemaExistsAssertionTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(SqlServerSchemaExistsAssertionTests.class);
+
 	@Test
 	public void applyForExistingSchemaSucceeds() throws
 		MigrationFailedException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
-
+		EventSink eventSink = new LoggingEventSink(LOG);
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -66,8 +64,8 @@ public class SqlServerSchemaExistsAssertionTests
 
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
@@ -78,8 +76,8 @@ public class SqlServerSchemaExistsAssertionTests
 
 		Migration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.empty(),
+			null,
+			null,
 			"prd");
 
 		MigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
@@ -94,7 +92,7 @@ public class SqlServerSchemaExistsAssertionTests
 			0,
 			"prd");
 
-		AssertionResponse response = null;
+		final AssertionResponse response;
 
 		try
 		{
@@ -121,9 +119,6 @@ public class SqlServerSchemaExistsAssertionTests
 		MigrationFailedException
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
-
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -139,13 +134,13 @@ public class SqlServerSchemaExistsAssertionTests
 
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
 		createDatabaseRunner.perform(
-			eventSink,
+			new LoggingEventSink(LOG),
 			createDatabase,
 			instance);
 
@@ -154,7 +149,7 @@ public class SqlServerSchemaExistsAssertionTests
 			0,
 			"prd");
 
-		AssertionResponse response = null;
+		final AssertionResponse response;
 
 		try
 		{

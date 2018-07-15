@@ -54,11 +54,9 @@ public class SqlServerSchemaDoesNotExistDomAssertionBuilder extends BaseDomAsser
 			throw new PluginBuildException(messages);
 		}
 
-		Assertion result = new SqlServerSchemaDoesNotExistAssertion(
+		return new SqlServerSchemaDoesNotExistAssertion(
 			assertionId,
 			seqNum,
 			schemaName.get());
-
-		return result;
 	}
 }

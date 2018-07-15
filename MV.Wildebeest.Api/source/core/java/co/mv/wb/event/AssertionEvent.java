@@ -16,8 +16,6 @@
 
 package co.mv.wb.event;
 
-import java.util.Optional;
-
 /**
  * Defines an event for Assertion
  *
@@ -44,7 +42,7 @@ public class AssertionEvent extends Event
 	 */
 	public AssertionEvent(
 		String name,
-		Optional<String> message)
+		String message)
 	{
 		super(name, message);
 	}
@@ -56,7 +54,7 @@ public class AssertionEvent extends Event
 	 * @return the AssertionEvent created for Start Event
 	 * @since 4.0
 	 */
-	public static AssertionEvent start(Optional<String> message)
+	public static AssertionEvent start(String message)
 	{
 		return new AssertionEvent(Name.Start.name(), message);
 	}
@@ -68,7 +66,7 @@ public class AssertionEvent extends Event
 	 * @return the AssertionEvent created for Complete Event
 	 * @since 4.0
 	 */
-	public static AssertionEvent complete(Optional<String> message)
+	public static AssertionEvent complete(String message)
 	{
 		return new AssertionEvent(Name.Complete.name(), message);
 	}
@@ -82,6 +80,6 @@ public class AssertionEvent extends Event
 	 */
 	public static AssertionEvent failed(String message)
 	{
-		return new AssertionEvent(Name.Failed.name(), Optional.of(message));
+		return new AssertionEvent(Name.Failed.name(), message);
 	}
 }
