@@ -30,7 +30,12 @@ public class StateEvent extends Event
 	 */
 	public enum Name
 	{
-		PreAssert, PostAssert, AssertionStart, AssertionComplete, ChangeSuccess, ChangeFailed;
+		PRE_ASSERT,
+		POST_ASSERT,
+		ASSERTION_START,
+		ASSERTION_COMPLETE,
+		CHANGE_SUCCESS,
+		CHANGE_FAILED;
 	}
 
 	/**
@@ -56,7 +61,7 @@ public class StateEvent extends Event
 	 */
 	public static StateEvent preAssert(String message)
 	{
-		return new StateEvent(StateEvent.Name.PreAssert.name(), message);
+		return new StateEvent(Name.PRE_ASSERT.name(), message);
 	}
 
 	/**
@@ -68,7 +73,7 @@ public class StateEvent extends Event
 	 */
 	public static StateEvent postAssert(String message)
 	{
-		return new StateEvent(StateEvent.Name.PostAssert.name(), message);
+		return new StateEvent(Name.POST_ASSERT.name(), message);
 	}
 
 	/**
@@ -79,7 +84,7 @@ public class StateEvent extends Event
 	 */
 	public static Event assertionStart(String message)
 	{
-		return new StateEvent(Name.AssertionStart.name(), message);
+		return new StateEvent(Name.ASSERTION_START.name(), message);
 	}
 
 	/**
@@ -90,7 +95,7 @@ public class StateEvent extends Event
 	 */
 	public static Event assertionComplete(String message)
 	{
-		return new StateEvent(Name.AssertionComplete.name(), message);
+		return new StateEvent(Name.ASSERTION_COMPLETE.name(), message);
 	}
 
 	/**
@@ -101,7 +106,7 @@ public class StateEvent extends Event
 	 */
 	public static Event changeSuccess(String message)
 	{
-		return new StateEvent(Name.ChangeSuccess.name(), message);
+		return new StateEvent(Name.CHANGE_SUCCESS.name(), message);
 	}
 
 	/**
@@ -112,6 +117,6 @@ public class StateEvent extends Event
 	 */
 	public static Event changeFailed(String message)
 	{
-		return new StateEvent(Name.ChangeFailed.name(), message);
+		return new StateEvent(Name.CHANGE_FAILED.name(), message);
 	}
 }

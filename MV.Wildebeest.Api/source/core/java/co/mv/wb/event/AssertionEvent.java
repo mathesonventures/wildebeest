@@ -30,7 +30,9 @@ public class AssertionEvent extends Event
 	 */
 	public enum Name
 	{
-		Start, Complete, Failed;
+		START,
+		COMPLETE,
+		FAILED;
 	}
 
 	/**
@@ -56,7 +58,7 @@ public class AssertionEvent extends Event
 	 */
 	public static AssertionEvent start(String message)
 	{
-		return new AssertionEvent(Name.Start.name(), message);
+		return new AssertionEvent(Name.START.name(), message);
 	}
 
 	/**
@@ -68,7 +70,7 @@ public class AssertionEvent extends Event
 	 */
 	public static AssertionEvent complete(String message)
 	{
-		return new AssertionEvent(Name.Complete.name(), message);
+		return new AssertionEvent(Name.COMPLETE.name(), message);
 	}
 
 	/**
@@ -80,6 +82,6 @@ public class AssertionEvent extends Event
 	 */
 	public static AssertionEvent failed(String message)
 	{
-		return new AssertionEvent(Name.Failed.name(), message);
+		return new AssertionEvent(Name.FAILED.name(), message);
 	}
 }
