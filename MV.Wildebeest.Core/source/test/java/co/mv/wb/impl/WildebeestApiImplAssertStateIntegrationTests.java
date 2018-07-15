@@ -26,7 +26,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -60,8 +60,6 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		AssertionFailedException
 	{
 		// Setup
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -74,7 +72,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
@@ -94,8 +92,6 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		AssertionFailedException
 	{
 		// Setup
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -115,7 +111,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
@@ -141,8 +137,6 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		AssertionFailedException
 	{
 		// Setup
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -169,7 +163,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, resourcePlugin)
 			.get();
 

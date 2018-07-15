@@ -17,7 +17,7 @@
 package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.MigrationFailedException;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -58,13 +58,10 @@ public class SqlServerCreateDatabaseMigrationTests
 			null);
 
 		// Execute
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		try
 		{
 			migrationPlugin.perform(
-				eventSink,
+				new LoggingEventSink(LOG),
 				migration,
 				instance);
 		}
@@ -78,8 +75,6 @@ public class SqlServerCreateDatabaseMigrationTests
 	@Test
 	public void performForExistantDatabaseFails() throws SQLException
 	{
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
@@ -104,7 +99,7 @@ public class SqlServerCreateDatabaseMigrationTests
 		try
 		{
 			migrationPlugin.perform(
-				eventSink,
+				new LoggingEventSink(LOG),
 				migration,
 				instance);
 

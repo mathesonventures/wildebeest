@@ -31,7 +31,7 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.fixture.TestContext_WildebeestCommandUnit;
 import co.mv.wb.framework.PredicateMatcher;
@@ -189,11 +189,9 @@ public class WildebeestCommandUnitTests
 	{
 		// Setup
 		PrintStream output = System.out;
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.get();
 

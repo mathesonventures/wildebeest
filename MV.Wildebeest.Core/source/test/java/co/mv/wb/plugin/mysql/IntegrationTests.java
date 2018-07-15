@@ -33,7 +33,7 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.fixture.XmlBuilder;
 import co.mv.wb.framework.ArgumentNullException;
@@ -83,11 +83,8 @@ public class IntegrationTests
 		//
 		// Setup
 		//
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -228,10 +225,8 @@ public class IntegrationTests
 		UnknownStateSpecifiedException,
 		InvalidReferenceException
 	{
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.get();
 

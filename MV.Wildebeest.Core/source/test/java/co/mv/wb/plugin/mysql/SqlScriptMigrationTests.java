@@ -20,7 +20,7 @@ import co.mv.wb.Instance;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
 import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
 import org.junit.Test;
@@ -40,8 +40,6 @@ public class SqlScriptMigrationTests
 	@Test
 	public void performSuccessfully() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm_test", "");
@@ -66,7 +64,7 @@ public class SqlScriptMigrationTests
 		try
 		{
 			migrationPlugin.perform(
-				eventSink,
+				new LoggingEventSink(LOG),
 				migration,
 				instance);
 		}

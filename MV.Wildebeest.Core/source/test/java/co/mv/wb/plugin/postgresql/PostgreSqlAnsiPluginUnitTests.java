@@ -19,7 +19,7 @@ package co.mv.wb.plugin.postgresql;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigration;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigration;
@@ -46,8 +46,6 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 	@Test
 	public void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
@@ -72,7 +70,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 
 		this.ansiSqlCreateDatabaseMigrationSucceeds(
-			eventSink,
+			new LoggingEventSink(LOG),
 			instance,
 			create,
 			createRunner,
@@ -84,9 +82,6 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 	@Test
 	public void tableExistsForExistentTable() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
@@ -119,7 +114,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 		MigrationPlugin dropDatabaseRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 
 		this.tableExistsForExistentTable(
-			eventSink,
+			new LoggingEventSink(LOG),
 			instance,
 			createDatabase,
 			createDatabaseRunner,
@@ -133,9 +128,6 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 	@Test
 	public void tableExistsForNonExistentTable() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
 			5432,
@@ -160,7 +152,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 		MigrationPlugin dropRunner = new AnsiSqlDropDatabaseMigrationPlugin();
 
 		this.tableExistsForNonExistentTable(
-			eventSink,
+			new LoggingEventSink(LOG),
 			instance,
 			create,
 			createRunner,

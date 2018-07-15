@@ -22,6 +22,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.impl.WildebeestApiImplJumpStateIntegrationTests;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
@@ -49,6 +50,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 		MigrationFailedException
 	{
 		// Setup
+		EventSink eventSink = new LoggingEventSink(LOG);
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -67,8 +69,6 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			UUID.randomUUID().toString());
 
 		MigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		createDatabaseRunner.perform(
 			eventSink,
 			createDatabase,
@@ -92,7 +92,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			0,
 			"prd");
 
-		AssertionResponse response = null;
+		final AssertionResponse response;
 
 		try
 		{
@@ -114,8 +114,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 	public void applyForNonExistentSchemaSucceeds() throws
 		MigrationFailedException
 	{
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = new LoggingEventSink(LOG);
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -146,7 +145,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			0,
 			"prd");
 
-		AssertionResponse response = null;
+		final AssertionResponse response;
 
 		try
 		{

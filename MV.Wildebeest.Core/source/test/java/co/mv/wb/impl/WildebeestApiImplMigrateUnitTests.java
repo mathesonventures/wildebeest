@@ -29,7 +29,7 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
-import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -74,16 +74,13 @@ public class WildebeestApiImplMigrateUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withDefaultTarget("bar")
 			.getResourceWithNonExistantInitialState();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
@@ -124,11 +121,8 @@ public class WildebeestApiImplMigrateUnitTests
 			.withDefaultTarget("bar")
 			.getResourceWithNonExistantInitialState();
 
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
@@ -156,11 +150,8 @@ public class WildebeestApiImplMigrateUnitTests
 	public void migrate_targetNotSpecifiedNoDefault_throws()
 	{
 		// Setup
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
@@ -204,16 +195,13 @@ public class WildebeestApiImplMigrateUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withDefaultTarget("bar")
 			.getResourceWithNonExistantInitialState();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
@@ -248,16 +236,13 @@ public class WildebeestApiImplMigrateUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withDefaultTarget("bar")
 			.getResourceWithNonExistantInitialState();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
@@ -292,9 +277,6 @@ public class WildebeestApiImplMigrateUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withDefaultTarget("finalState")
@@ -308,7 +290,7 @@ public class WildebeestApiImplMigrateUnitTests
 		initialState.getAssertions().add(initialStateAssertion1);
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
@@ -346,9 +328,6 @@ public class WildebeestApiImplMigrateUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withDefaultTarget("finalState")
@@ -362,7 +341,7 @@ public class WildebeestApiImplMigrateUnitTests
 		initialState.getAssertions().add(initialStateAssertion1);
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();

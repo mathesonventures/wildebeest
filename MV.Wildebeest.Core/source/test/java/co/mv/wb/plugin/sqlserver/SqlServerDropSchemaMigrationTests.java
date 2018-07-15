@@ -18,6 +18,7 @@ package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -38,9 +39,7 @@ public class SqlServerDropSchemaMigrationTests
 		MigrationFailedException
 	{
 		// Setup
-
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		EventSink eventSink = new LoggingEventSink(LOG);
 
 		SqlServerProperties p = SqlServerProperties.get();
 
@@ -107,9 +106,7 @@ public class SqlServerDropSchemaMigrationTests
 	public void performForNonExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
 		// Setup
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
-
+		EventSink eventSink = new LoggingEventSink(LOG);
 
 		SqlServerProperties p = SqlServerProperties.get();
 

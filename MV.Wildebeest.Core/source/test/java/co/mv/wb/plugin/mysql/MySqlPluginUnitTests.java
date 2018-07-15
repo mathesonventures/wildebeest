@@ -20,6 +20,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.generaldatabase.BaseDatabasePluginUnitTests;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
@@ -41,8 +42,6 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 	@Test
 	public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance instance = MySqlProperties.get().toInstance(databaseName);
 
@@ -61,7 +60,7 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 		MigrationPlugin dropRunner = new MySqlDropDatabaseMigrationPlugin();
 
 		this.databaseExistsAssertionForExistentDatabase(
-			eventSink,
+			new LoggingEventSink(LOG),
 			instance,
 			create,
 			createRunner,
@@ -84,7 +83,9 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
 		EventSink eventSink = (event) ->
-		{if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		{
+			if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());
+		};
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance instance = MySqlProperties.get().toInstance(databaseName);
