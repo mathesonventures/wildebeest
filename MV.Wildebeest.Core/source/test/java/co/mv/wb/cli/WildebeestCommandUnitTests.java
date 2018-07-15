@@ -57,7 +57,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
  */
 public class WildebeestCommandUnitTests
 {
-	private static final Logger LOG = LoggerFactory.getLogger("wildebeestCommandLogger");
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestCommandUnitTests.class);
 
 	@Test public void noCommand_noOperationsCalled()
 	{
@@ -141,14 +141,14 @@ public class WildebeestCommandUnitTests
 	@Test public void migrate_missingInstanceArg_fails()
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		PrintStream output = System.out;
 
 		WildebeestApi wildebeestApi = Fixtures
 			.wildebeestApi()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		// Execute
@@ -166,14 +166,14 @@ public class WildebeestCommandUnitTests
 	@Test public void migrate_missingResourceArg_fails()
 	{
 		// Setup
-		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+		PrintStream output = System.out;
 
 		WildebeestApi wildebeestApi = Fixtures
 			.wildebeestApi()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		// Execute
@@ -191,6 +191,7 @@ public class WildebeestCommandUnitTests
 	@Test public void plugins_succeeds()
 	{
 		// Setup
+		PrintStream output = System.out;
 		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -199,7 +200,7 @@ public class WildebeestCommandUnitTests
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		// Execute

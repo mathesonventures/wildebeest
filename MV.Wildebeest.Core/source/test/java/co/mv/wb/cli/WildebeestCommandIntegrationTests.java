@@ -45,7 +45,7 @@ import java.sql.SQLException;
  */
 public class WildebeestCommandIntegrationTests
 {
-	private static final Logger LOG = LoggerFactory.getLogger("wildebeestCommandLogger");
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestCommandIntegrationTests.class);
 	//
 	// MySql
 	//
@@ -58,6 +58,7 @@ public class WildebeestCommandIntegrationTests
 		XmlValidationException
 	{
 		// Setup
+		PrintStream output = System.out;
 		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
@@ -65,7 +66,7 @@ public class WildebeestCommandIntegrationTests
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		String[] args = new String[]
@@ -104,6 +105,7 @@ public class WildebeestCommandIntegrationTests
 		XmlValidationException
 	{
 		// Setup
+		PrintStream output = System.out;
 		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -112,7 +114,7 @@ public class WildebeestCommandIntegrationTests
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		MySqlDatabaseInstance instanceT = null;
@@ -163,6 +165,7 @@ public class WildebeestCommandIntegrationTests
 		XmlValidationException
 	{
 		// Setup
+		PrintStream output = System.out;
 		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
@@ -170,7 +173,7 @@ public class WildebeestCommandIntegrationTests
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		Instance instance = null;
@@ -208,6 +211,7 @@ public class WildebeestCommandIntegrationTests
 	@Test public void mySqlDatabaseMigrateToInvalidStateName()
 	{
 		// Setup
+		PrintStream output = System.out;
 		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -216,7 +220,7 @@ public class WildebeestCommandIntegrationTests
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		// Execute
@@ -241,6 +245,7 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		//
 
+		PrintStream output = System.out;
 		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -249,7 +254,7 @@ public class WildebeestCommandIntegrationTests
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		//
@@ -286,6 +291,7 @@ public class WildebeestCommandIntegrationTests
 		XmlValidationException
 	{
 		// Setup
+		PrintStream output = System.out;
 		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(eventSink)
@@ -293,7 +299,7 @@ public class WildebeestCommandIntegrationTests
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		String[] args = new String[]
@@ -334,6 +340,7 @@ public class WildebeestCommandIntegrationTests
 		XmlValidationException
 	{
 		// Setup
+		PrintStream output = System.out;
 		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -342,7 +349,7 @@ public class WildebeestCommandIntegrationTests
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		String[] args = new String[]

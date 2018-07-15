@@ -35,13 +35,13 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
-import co.mv.wb.event.CommandLineEvent;
 import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Optional;
 
 /**
@@ -52,9 +52,9 @@ import java.util.Optional;
  */
 public class WildebeestCommand
 {
+	private final PrintStream output;
 	private final WildebeestApi wildebeestApi;
-	private static final Logger LOG = LoggerFactory.getLogger("wildebeestCommandLogger");
-	private final EventSink eventSink;
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestCommand.class);
 
 	/**
 	 * The main entry point for the command-line interface.
@@ -64,6 +64,7 @@ public class WildebeestCommand
 	 */
 	public static void main(String[] args)
 	{
+		PrintStream output = System.out;
 		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -74,7 +75,7 @@ public class WildebeestCommand
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			eventSink,
+			output,
 			wildebeestApi);
 
 		wb.run(args);
@@ -86,13 +87,13 @@ public class WildebeestCommand
 	 * @since 1.0
 	 */
 	public WildebeestCommand(
-		EventSink eventSink,
+		PrintStream output,
 		WildebeestApi wildebeestApi)
 	{
-		if (eventSink == null) throw new ArgumentNullException("eventSink");
+		if (output == null) throw new ArgumentNullException("output");
 		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
 
-		this.eventSink = eventSink;
+		this.output = output;
 		this.wildebeestApi = wildebeestApi;
 	}
 
@@ -108,7 +109,9 @@ public class WildebeestCommand
 
 		if (args.length == 0)
 		{
-			eventSink.onEvent(CommandLineEvent.invalidArgument(getBanner()));
+			WildebeestCommand.printBanner(this.output);
+
+			WildebeestCommand.printUsage(this.output);
 		}
 
 		else
@@ -117,13 +120,9 @@ public class WildebeestCommand
 
 			if ("about".equals(command))
 			{
-				eventSink.onEvent(CommandLineEvent.aboutStart(Optional.empty()));
-
 				About about = new About();
-				String aboutMsg = about.getProjectName() + " " + about.getVersionFullDotted() + "\n" +
-				about.getCopyrightAssertion();
-
-				eventSink.onEvent(CommandLineEvent.aboutFinish(aboutMsg));
+				this.output.println(about.getProjectName() + " " + about.getVersionFullDotted());
+				this.output.println(about.getCopyrightAssertion());
 			}
 
 			else if ("state".equals(command))
@@ -133,19 +132,21 @@ public class WildebeestCommand
 
 				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
 				{
-					eventSink.onEvent(CommandLineEvent.invalidArgument(getBanner()));
+					WildebeestCommand.printBanner(this.output);
+
+					WildebeestCommand.printUsage(this.output);
 				}
 				else
 				{
 					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
 						this.wildebeestApi,
 						resourceFilename,
-						this.eventSink);
+						this.output);
 
 					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
 						this.wildebeestApi,
 						instanceFilename,
-						this.eventSink);
+						this.output);
 
 					if (resource.isPresent() && instance.isPresent())
 					{
@@ -157,7 +158,7 @@ public class WildebeestCommand
 						}
 						catch (IndeterminateStateException | AssertionFailedException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.stateCheckingFailed(e.getMessage()));
+							this.output.println(e.getMessage());
 						}
 					}
 				}
@@ -171,19 +172,21 @@ public class WildebeestCommand
 
 				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
 				{
-					eventSink.onEvent(CommandLineEvent.invalidArgument(getBanner()));
+					WildebeestCommand.printBanner(this.output);
+
+					WildebeestCommand.printUsage(System.out);
 				}
 				else
 				{
 					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
 						this.wildebeestApi,
 						resourceFilename,
-						this.eventSink);
+						this.output);
 
 					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
 						this.wildebeestApi,
 						instanceFilename,
-						this.eventSink);
+						this.output);
 
 					if (resource.isPresent() && instance.isPresent())
 					{
@@ -196,35 +199,35 @@ public class WildebeestCommand
 						}
 						catch (TargetNotSpecifiedException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.migrateFailed(OutputFormatter.targetNotSpecified(e)));
+							this.output.println(OutputFormatter.targetNotSpecified(e));
 						}
 						catch (UnknownStateSpecifiedException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.migrateFailed(OutputFormatter.unknownStateSpecified(e)));
+							this.output.println(OutputFormatter.unknownStateSpecified(e));
 						}
 						catch (InvalidStateSpecifiedException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.migrateFailed(OutputFormatter.invalidStateSpecified(e)));
+							this.output.println(OutputFormatter.invalidStateSpecified(e));
 						}
 						catch (MigrationNotPossibleException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.migrateFailed(OutputFormatter.migrationNotPossible(e)));
+							this.output.println(OutputFormatter.migrationNotPossible(e));
 						}
 						catch (IndeterminateStateException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.migrateFailed(OutputFormatter.indeterminateState(e)));
+							this.output.println(OutputFormatter.indeterminateState(e));
 						}
 						catch (MigrationFailedException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.migrateFailed(OutputFormatter.migrationFailed(e)));
+							this.output.print(OutputFormatter.migrationFailed(e));
 						}
 						catch (AssertionFailedException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.migrateFailed(OutputFormatter.assertionFailed(e)));
+							this.output.println(OutputFormatter.assertionFailed(e));
 						}
 						catch (InvalidReferenceException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.migrateFailed(OutputFormatter.invalidReferenceException(e)));
+							this.output.print(OutputFormatter.invalidReferenceException(e));
 						}
 					}
 				}
@@ -239,19 +242,21 @@ public class WildebeestCommand
 				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename) ||
 					isNull(targetState))
 				{
-					eventSink.onEvent(CommandLineEvent.invalidArgument(getBanner()));
+					WildebeestCommand.printBanner(this.output);
+
+					WildebeestCommand.printUsage(System.out);
 				}
 				else
 				{
 					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
 						this.wildebeestApi,
 						resourceFilename,
-						this.eventSink);
+						this.output);
 
 					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
 						this.wildebeestApi,
 						instanceFilename,
-						this.eventSink);
+						this.output);
 
 					if (resource.isPresent() && instance.isPresent())
 					{
@@ -264,23 +269,23 @@ public class WildebeestCommand
 						}
 						catch (UnknownStateSpecifiedException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.jumpStateFailed(OutputFormatter.unknownStateSpecified(e)));
+							this.output.println(OutputFormatter.unknownStateSpecified(e));
 						}
 						catch (IndeterminateStateException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.jumpStateFailed(OutputFormatter.indeterminateState(e)));
+							this.output.println(OutputFormatter.indeterminateState(e));
 						}
 						catch (InvalidStateSpecifiedException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.jumpStateFailed(OutputFormatter.invalidStateSpecified(e)));
+							this.output.println(OutputFormatter.invalidStateSpecified(e));
 						}
 						catch (AssertionFailedException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.jumpStateFailed(OutputFormatter.assertionFailed(e)));
+							this.output.println(OutputFormatter.assertionFailed(e));
 						}
 						catch (JumpStateFailedException e)
 						{
-							this.eventSink.onEvent(CommandLineEvent.jumpStateFailed(OutputFormatter.jumpStateFailed(e)));
+							this.output.println(OutputFormatter.jumpStateFailed(e));
 						}
 					}
 				}
@@ -288,14 +293,16 @@ public class WildebeestCommand
 
 			else if ("plugins".equals(command))
 			{
-				eventSink.onEvent(CommandLineEvent.pluginsStart(Optional.empty()));
 				String xml = this.wildebeestApi.describePlugins();
-				this.eventSink.onEvent(CommandLineEvent.pluginsFinish(xml));
+
+				this.output.println(xml);
 			}
 
 			else
 			{
-				eventSink.onEvent(CommandLineEvent.invalidArgument(getBanner()));
+				WildebeestCommand.printBanner(this.output);
+
+				WildebeestCommand.printUsage(System.out);
 			}
 		}
 	}
@@ -303,11 +310,11 @@ public class WildebeestCommand
 	private static Optional<Resource> tryLoadResource(
 		WildebeestApi wildebeestApi,
 		String resourceFilename,
-		EventSink eventSink)
+		PrintStream out)
 	{
 		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
 		if (resourceFilename == null) throw new ArgumentNullException("resourceFilename");
-		if (eventSink == null) throw new ArgumentNullException("eventSink");
+		if (out == null) throw new ArgumentNullException("out");
 
 		File resourceFile = new File(resourceFilename);
 
@@ -319,23 +326,23 @@ public class WildebeestCommand
 		}
 		catch (FileLoadException e)
 		{
-			eventSink.onEvent(CommandLineEvent.loadResourceFailed(OutputFormatter.fileLoad(e, "resource")));
+			out.println(OutputFormatter.fileLoad(e, "resource"));
 		}
 		catch (LoaderFault e)
 		{
-			eventSink.onEvent(CommandLineEvent.loadResourceFailed(OutputFormatter.loaderFault(e, "resource")));
+			out.println(OutputFormatter.loaderFault(e, "resource"));
 		}
 		catch (PluginBuildException e)
 		{
-			eventSink.onEvent(CommandLineEvent.loadResourceFailed(OutputFormatter.pluginBuild(e)));
+			out.println(OutputFormatter.pluginBuild(e));
 		}
 		catch (XmlValidationException e)
 		{
-			eventSink.onEvent(CommandLineEvent.loadResourceFailed(OutputFormatter.resourceValidation(e, "resource")));
+			out.println(OutputFormatter.resourceValidation(e, "resource"));
 		}
 		catch (InvalidReferenceException e)
 		{
-			eventSink.onEvent(CommandLineEvent.loadResourceFailed(OutputFormatter.missingReference(e)));
+			out.println(OutputFormatter.missingReference(e));
 		}
 
 		return Optional.ofNullable(resource);
@@ -344,11 +351,11 @@ public class WildebeestCommand
 	private static Optional<Instance> tryLoadInstance(
 		WildebeestApi wildebeestApi,
 		String instanceFilename,
-		EventSink eventSink)
+		PrintStream out)
 	{
 		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
 		if (instanceFilename == null) throw new ArgumentNullException("instanceFilename");
-		if (eventSink == null) throw new ArgumentNullException("eventSink");
+		if (out == null) throw new ArgumentNullException("out");
 
 		File instanceFile = new File(instanceFilename);
 
@@ -360,19 +367,19 @@ public class WildebeestCommand
 		}
 		catch (FileLoadException e)
 		{
-			eventSink.onEvent(CommandLineEvent.loadInstanceFailed(OutputFormatter.fileLoad(e, "instance")));
+			out.println(OutputFormatter.fileLoad(e, "instance"));
 		}
 		catch (LoaderFault e)
 		{
-			eventSink.onEvent(CommandLineEvent.loadInstanceFailed(OutputFormatter.loaderFault(e, "instance")));
+			out.println(OutputFormatter.loaderFault(e, "instance"));
 		}
 		catch (PluginBuildException e)
 		{
-			eventSink.onEvent(CommandLineEvent.loadInstanceFailed(OutputFormatter.pluginBuild(e)));
+			out.println(OutputFormatter.pluginBuild(e));
 		}
 		catch (XmlValidationException e)
 		{
-			eventSink.onEvent(CommandLineEvent.loadInstanceFailed(OutputFormatter.resourceValidation(e, "instance")));
+			out.println(OutputFormatter.resourceValidation(e, "instance"));
 		}
 
 		return Optional.ofNullable(instance);
@@ -454,26 +461,30 @@ public class WildebeestCommand
 		return value == null || "".equals(value.trim());
 	}
 
-	private static String getBanner()
+	private static void printBanner(PrintStream out)
 	{
-		String banner =
-		"            _  _     _       _\n" +
-		"           |_|| |   | |     | |                      _\n"+
-		" __      __ _ | | __| | ___ | |__   ___   ___  ___ _| |_\n"+
-		" \\ \\ /\\ / /| || |/ _` |/ _ \\| '_ \\ / _ \\ / _ \\/ __|_   _|\n"+
-		"  \\ v  v / | || | (_| |  __/| |_) |  __/|  __/\\__ \\ | |\n"+
-		"   \\_/\\_/  |_||_|\\__,_|\\___||_.__/ \\___| \\___||___/ |_|\n"+
-		"\n";
+		if (out == null) throw new ArgumentNullException("out");
+
+		out.println("            _  _     _       _");
+		out.println("           |_|| |   | |     | |                      _");
+		out.println(" __      __ _ | | __| | ___ | |__   ___   ___  ___ _| |_");
+		out.println(" \\ \\ /\\ / /| || |/ _` |/ _ \\| '_ \\ / _ \\ / _ \\/ __|_   _|");
+		out.println("  \\ v  v / | || | (_| |  __/| |_) |  __/|  __/\\__ \\ | |");
+		out.println("   \\_/\\_/  |_||_|\\__,_|\\___||_.__/ \\___| \\___||___/ |_|");
+		out.println("");
 
 		About about = new About();
-		banner += "Version " + about.getVersionFullDotted() + ", " + about.getCopyrightAssertion() + "\n"+
-		"\n";
+		out.println("Version " + about.getVersionFullDotted() + ", " + about.getCopyrightAssertion());
+		out.println("");
+	}
 
-		banner += "Usage: wb command [options]\n"+
-			"\n"+
-			"Valid commands: state; migrate; jumpstate;\n"+
-			"\n";
+	private static void printUsage(PrintStream out)
+	{
+		if (out == null) throw new ArgumentNullException("out");
 
-		return banner;
+		out.println("Usage: wb command [options]");
+		out.println("");
+		out.println("Valid commands: state; migrate; jumpstate;");
+		out.println("");
 	}
 }

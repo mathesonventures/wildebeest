@@ -13,14 +13,6 @@
 			<param name="AcceptOnMatch" value="true"/>
 		</filter>
 	</appender>
-
-	<appender name="wildebeest-command-log" class="org.apache.log4j.ConsoleAppender">
-		<param name="Target" value="System.out" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%m%n" />
-		</layout>
-	</appender>
-
 	<!-- Error Log File Appender -->
 	<appender name="wildebeest-log" class="org.apache.log4j.FileAppender">
 		<param name="Append" value="true"/>
@@ -34,12 +26,6 @@
 			<param name="AcceptOnMatch" value="true"/>
 		</filter>
 	</appender>
-
-	<logger name="wildebeestCommandLogger">
-		<level value="info"/>
-		<appender-ref ref="wildebeest-command-log" />
-	</logger>
-
 	<root>
 		<appender-ref ref="console"/>
 		<appender-ref ref="wildebeest-log"/>
