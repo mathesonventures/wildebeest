@@ -27,7 +27,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/mysql-connector-java-5.1.22.jar!/" />
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/postgresql-9.3-1100-jdbc41.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -36,7 +36,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/postgresql-9.3-1100-jdbc41.jar!/" />
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/slf4j-api-1.7.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -164,7 +164,16 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/slf4j-api-1.7.7.jar!/" />
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/mysql-connector-java-8.0.11.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/joda-time-2.10.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

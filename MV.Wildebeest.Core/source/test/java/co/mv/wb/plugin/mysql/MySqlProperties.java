@@ -56,7 +56,7 @@ public class MySqlProperties
 		String portRaw = System.getProperty("mySql.port");
 		if (portRaw == null)
 		{
-			result.port = 3306;
+			result.port = 13306;
 		}
 		else
 		{
@@ -80,7 +80,7 @@ public class MySqlProperties
 		String password = System.getProperty("mySql.password");
 		if (password == null)
 		{
-			result.password = "password";
+			result.password = "Password123!";
 		}
 		else
 		{

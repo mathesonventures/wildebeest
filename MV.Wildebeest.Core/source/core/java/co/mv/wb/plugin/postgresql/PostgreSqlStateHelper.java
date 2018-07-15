@@ -79,11 +79,12 @@ public class PostgreSqlStateHelper
 		DatabaseHelper.execute(
 			appDataSource,
 			String.format(
-				"INSERT INTO %s.%s(ResourceId, StateId) VALUES('%s', '%s');",
+				"INSERT INTO %s.%s(ResourceId, StateId, LastMigrationInstant) VALUES('%s', '%s', '%s');",
 				metaSchemaName,
 				stateTableName,
 				resourceId,
-				stateId));
+				stateId,
+				DatabaseHelper.getInstant()));
 	}
 
 	/**
@@ -203,6 +204,7 @@ public class PostgreSqlStateHelper
 				.append(stateTableName).append("(")
 				.append("ResourceId UUID NOT NULL, ")
 				.append("StateId UUID NOT NULL, ")
+				.append("LastMigrationInstant timestamp NOT NULL, ")
 				.append("CONSTRAINT PK_").append(stateTableName).append(" PRIMARY KEY (ResourceId)")
 				.append(");").toString());
 		}
@@ -246,10 +248,10 @@ public class PostgreSqlStateHelper
 		{
 			conn = appDataSource.getConnection();
 			ps = conn.prepareStatement(String.format(
-				"SELECT StateId FROM %s.%s WHERE ResourceId = ?;",
+				"SELECT StateId FROM %s.%s WHERE ResourceId = ?::uuid;",
 				metaSchemaName,
 				stateTableName));
-			ps.setObject(1, resourceId);
+			ps.setObject(1, resourceId.toString());
 			rs = ps.executeQuery();
 
 			if (rs.next())
