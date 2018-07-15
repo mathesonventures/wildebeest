@@ -17,12 +17,14 @@
 package co.mv.wb.framework;
 
 import co.mv.wb.FaultException;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeFieldType;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Provides a set of convenience methods for working with JDBC-accessed databases.
@@ -41,8 +43,8 @@ public class DatabaseHelper
 	 * @since 1.0
 	 */
 	public static void execute(
-		DataSource dataSource,
-		String sql) throws SQLException
+		  DataSource dataSource,
+		  String sql) throws SQLException
 	{
 		if (dataSource == null) throw new ArgumentNullException("dataSource");
 		if (sql == null) throw new ArgumentNullException("sql");
@@ -55,6 +57,60 @@ public class DatabaseHelper
 		{
 			conn = dataSource.getConnection();
 			ps = conn.prepareStatement(sql);
+			ps.execute();
+		}
+		finally
+		{
+			DatabaseHelper.release(ps);
+			DatabaseHelper.release(conn);
+		}
+	}
+
+	/**
+	 * Executes a SQL statement against the database represented by the supplied DataSource.
+	 *
+	 * @param dataSource the DataSource that represents the database to work with
+	 * @param sql        the SQL statement to execute against the target database.
+	 * @param params     the SQL query parameters
+	 * @throws SQLException may be thrown due to a mal-formed SQL statement, connectivity problem,
+	 *                      or some other issue.
+	 * @since 1.0
+	 */
+	public static void execute(
+		DataSource dataSource,
+		String sql,
+		List<SqlParameters> params) throws SQLException
+	{
+		if (dataSource == null) throw new ArgumentNullException("dataSource");
+		if (sql == null) throw new ArgumentNullException("sql");
+		if ("".equals(sql)) throw new IllegalArgumentException("sql cannot be empty");
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try
+		{
+			conn = dataSource.getConnection();
+			ps = conn.prepareStatement(sql);
+
+			for (int i = 0; i < params.size(); i++)
+			{
+				SqlParameters p = params.get(i);
+
+				if (p.getValue() instanceof String)
+				{
+					ps.setString(i+1, (String)p.getValue());
+				}
+				else if (p.getValue() instanceof DateTime)
+				{
+					ps.setTimestamp(i+1, new java.sql.Timestamp(( ((DateTime) p.getValue()).getMillis())));
+				}
+				else if (p.getValue() instanceof Object)
+				{
+					ps.setObject(i+1,p.getValue().toString());
+				}
+			}
+
 			ps.execute();
 		}
 		finally
@@ -203,4 +259,16 @@ public class DatabaseHelper
 			rs.close();
 		}
 	}
+
+	/**
+	 * Gets DateTimeOffset to log time, it is timezone aware
+	 *
+	 * @return time as String
+	 * @since 4.0
+	 */
+	public static DateTime getInstant()
+	{
+		return new DateTime();
+	}
+
 }
