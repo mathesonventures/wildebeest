@@ -17,6 +17,7 @@
 package co.mv.wb.impl;
 
 import co.mv.wb.Assertion;
+import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResult;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
@@ -25,6 +26,8 @@ import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.event.Event;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -33,6 +36,8 @@ import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -50,12 +55,15 @@ import static org.junit.Assert.assertNotNull;
  */
 public class WildebeestApiImplAssertStateIntegrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplAssertStateIntegrationTests.class);
+
 	@Test
-	public void assertState_noAssertions_succeeds() throws IndeterminateStateException
+	public void assertState_noAssertions_succeeds() throws
+		IndeterminateStateException,
+		AssertionFailedException
 	{
 		// Setup
-		PrintStream output = System.out;
-
+		EventSink eventSink = (event) -> {if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -68,7 +76,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
@@ -83,9 +91,12 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	}
 
 	@Test
-	public void assertState_oneAssertion_succeeds() throws IndeterminateStateException
+	public void assertState_oneAssertion_succeeds() throws
+		IndeterminateStateException,
+		AssertionFailedException
 	{
 		// Setup
+		EventSink eventSink = (event) -> {if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -105,7 +116,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(System.out)
+			.wildebeestApi(eventSink)
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
@@ -126,10 +137,12 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	}
 
 	@Test
-	public void assertState_multipleAssertions_succeeds() throws IndeterminateStateException
+	public void assertState_multipleAssertions_succeeds() throws
+		IndeterminateStateException,
+		AssertionFailedException
 	{
 		// Setup
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
@@ -156,7 +169,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withResourcePlugin(FakeConstants.Fake, resourcePlugin)
 			.get();
 

@@ -23,6 +23,7 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlUtil;
@@ -30,6 +31,8 @@ import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import co.mv.wb.plugin.sqlserver.SqlServerDatabaseInstance;
 import co.mv.wb.plugin.sqlserver.SqlServerUtil;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -42,7 +45,7 @@ import java.sql.SQLException;
  */
 public class WildebeestCommandIntegrationTests
 {
-
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestCommandIntegrationTests.class);
 	//
 	// MySql
 	//
@@ -56,9 +59,9 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
-
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -103,9 +106,10 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -162,9 +166,9 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
-
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -208,9 +212,10 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -241,9 +246,10 @@ public class WildebeestCommandIntegrationTests
 		//
 
 		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -286,9 +292,9 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
-
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -335,9 +341,10 @@ public class WildebeestCommandIntegrationTests
 	{
 		// Setup
 		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 

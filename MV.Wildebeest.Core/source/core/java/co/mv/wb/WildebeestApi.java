@@ -71,12 +71,14 @@ public interface WildebeestApi
 	 * that were generated for the Assertions for this Resource's current
 	 * state.
 	 * @throws IndeterminateStateException when the current state of the resource cannot be determined clearly.
+	 * @throws AssertionFailedException    if one or more assertions of the current state fails
 	 * @since 1.0
 	 */
 	List<AssertionResult> assertState(
 		Resource resource,
 		Instance instance) throws
-		IndeterminateStateException;
+		IndeterminateStateException,
+		AssertionFailedException;
 
 	/**
 	 * Checks the state of an instance of a resource.
@@ -84,12 +86,14 @@ public interface WildebeestApi
 	 * @param resource the descriptor file for the resource.
 	 * @param instance the descriptor file for the instance.
 	 * @throws IndeterminateStateException if the current state of the resource cannot be determined.
+	 * @throws AssertionFailedException    if one or more assertions of the current state fails
 	 * @since 1.0
 	 */
 	void state(
 		Resource resource,
 		Instance instance) throws
-		IndeterminateStateException;
+		IndeterminateStateException,
+		AssertionFailedException;
 
 	/**
 	 * Migrates an instance of a resource to a particular state.
