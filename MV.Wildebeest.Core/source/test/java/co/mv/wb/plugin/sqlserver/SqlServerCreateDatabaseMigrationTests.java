@@ -17,8 +17,11 @@
 package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 import java.sql.SQLException;
@@ -30,13 +33,12 @@ import static org.junit.Assert.fail;
 
 public class SqlServerCreateDatabaseMigrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(SqlServerCreateDatabaseMigrationTests.class);
+
 	@Test
 	public void performForNonExistantDatabaseSucceeds() throws
 		MigrationFailedException
 	{
-		// Setup
-		PrintStream output = System.out;
-
 		SqlServerProperties p = SqlServerProperties.get();
 
 		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
@@ -58,10 +60,12 @@ public class SqlServerCreateDatabaseMigrationTests
 			null);
 
 		// Execute
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+
 		try
 		{
 			migrationPlugin.perform(
-				output,
+				eventSink,
 				migration,
 				instance);
 		}
@@ -75,9 +79,7 @@ public class SqlServerCreateDatabaseMigrationTests
 	@Test
 	public void performForExistantDatabaseFails() throws SQLException
 	{
-		// Setup
-		PrintStream output = System.out;
-
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
@@ -102,7 +104,7 @@ public class SqlServerCreateDatabaseMigrationTests
 		try
 		{
 			migrationPlugin.perform(
-				output,
+				eventSink,
 				migration,
 				instance);
 

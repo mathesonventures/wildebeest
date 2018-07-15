@@ -20,6 +20,7 @@ import co.mv.wb.AssertionResponse;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.PrintStream;
@@ -35,14 +36,14 @@ public abstract class BaseDatabasePluginUnitTests
 	public abstract void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException;
 
 	protected void databaseExistsAssertionForExistentDatabase(
-		PrintStream output,
+		EventSink eventSink,
 		DatabaseInstance instance,
 		Migration create,
 		MigrationPlugin createRunner,
 		Migration drop,
 		MigrationPlugin dropRunner) throws MigrationFailedException
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (instance == null) throw new ArgumentNullException("instance");
 		if (create == null) throw new ArgumentNullException("create");
 		if (createRunner == null) throw new ArgumentNullException("createRunner");
@@ -61,7 +62,7 @@ public abstract class BaseDatabasePluginUnitTests
 		{
 			// Use the migration to create the database
 			createRunner.perform(
-				output,
+				eventSink,
 				create,
 				instance);
 
@@ -86,7 +87,7 @@ public abstract class BaseDatabasePluginUnitTests
 		finally
 		{
 			dropRunner.perform(
-				output,
+				eventSink,
 				drop,
 				instance);
 		}
@@ -119,14 +120,14 @@ public abstract class BaseDatabasePluginUnitTests
 	public abstract void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException;
 
 	protected void databaseDoesNotExistAssertionForExistentDatabase(
-		PrintStream output,
+		EventSink eventSink,
 		DatabaseInstance instance,
 		Migration create,
 		MigrationPlugin createRunner,
 		Migration drop,
 		MigrationPlugin dropRunner) throws MigrationFailedException
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (instance == null) throw new ArgumentNullException("instance");
 		if (create == null) throw new ArgumentNullException("create");
 		if (createRunner == null) throw new ArgumentNullException("createRunner");
@@ -141,7 +142,7 @@ public abstract class BaseDatabasePluginUnitTests
 		try
 		{
 			createRunner.perform(
-				output,
+				eventSink,
 				create,
 				instance);
 
@@ -159,7 +160,7 @@ public abstract class BaseDatabasePluginUnitTests
 		finally
 		{
 			dropRunner.perform(
-				output,
+				eventSink,
 				drop,
 				instance);
 		}

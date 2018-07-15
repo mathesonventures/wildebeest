@@ -31,12 +31,15 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.fixture.TestContext_WildebeestCommandUnit;
 import co.mv.wb.framework.PredicateMatcher;
 import co.mv.wb.plugin.fake.FakeConstants;
 import org.junit.Test;
 import org.mockito.Matchers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 import java.util.Optional;
@@ -54,6 +57,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
  */
 public class WildebeestCommandUnitTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger("wildebeestCommandLogger");
+
 	@Test public void noCommand_noOperationsCalled()
 	{
 		// Setup
@@ -136,14 +141,14 @@ public class WildebeestCommandUnitTests
 	@Test public void migrate_missingInstanceArg_fails()
 	{
 		// Setup
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Fixtures
 			.wildebeestApi()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			output,
+			eventSink,
 			wildebeestApi);
 
 		// Execute
@@ -161,14 +166,14 @@ public class WildebeestCommandUnitTests
 	@Test public void migrate_missingResourceArg_fails()
 	{
 		// Setup
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Fixtures
 			.wildebeestApi()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			output,
+			eventSink,
 			wildebeestApi);
 
 		// Execute
@@ -186,15 +191,15 @@ public class WildebeestCommandUnitTests
 	@Test public void plugins_succeeds()
 	{
 		// Setup
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			output,
+			eventSink,
 			wildebeestApi);
 
 		// Execute

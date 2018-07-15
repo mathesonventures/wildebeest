@@ -30,6 +30,8 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.event.Event;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
@@ -37,6 +39,8 @@ import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlProperties;
 import co.mv.wb.plugin.mysql.MySqlUtil;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -48,6 +52,8 @@ import static org.junit.Assert.assertNotNull;
 
 public class ResourceLoaderIntegrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(ResourceLoaderIntegrationTests.class);
+
 	@Test
 	public void loadAndMigrateMySqlResourceFromXml() throws
 		AssertionFailedException,
@@ -67,7 +73,7 @@ public class ResourceLoaderIntegrationTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		ProductCatalogueMySqlDatabaseResource productCatalogueResource = new ProductCatalogueMySqlDatabaseResource();
 
@@ -89,7 +95,7 @@ public class ResourceLoaderIntegrationTests
 			null);
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 

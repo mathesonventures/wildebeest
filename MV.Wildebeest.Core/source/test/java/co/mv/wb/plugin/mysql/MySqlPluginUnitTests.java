@@ -19,9 +19,12 @@ package co.mv.wb.plugin.mysql;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.plugin.generaldatabase.BaseDatabasePluginUnitTests;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 import java.util.Optional;
@@ -34,12 +37,13 @@ import java.util.UUID;
  */
 public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(MySqlPluginUnitTests.class);
+
 	@Override
 	@Test
 	public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		PrintStream output = System.out;
-
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance instance = MySqlProperties.get().toInstance(databaseName);
 
@@ -58,7 +62,7 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 		MigrationPlugin dropRunner = new MySqlDropDatabaseMigrationPlugin();
 
 		this.databaseExistsAssertionForExistentDatabase(
-			output,
+			eventSink,
 			instance,
 			create,
 			createRunner,
@@ -80,7 +84,7 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 	@Test
 	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance instance = MySqlProperties.get().toInstance(databaseName);
@@ -100,7 +104,7 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 		MigrationPlugin dropRunner = new MySqlDropDatabaseMigrationPlugin();
 
 		this.databaseDoesNotExistAssertionForExistentDatabase(
-			output,
+			eventSink,
 			instance,
 			create,
 			createRunner,

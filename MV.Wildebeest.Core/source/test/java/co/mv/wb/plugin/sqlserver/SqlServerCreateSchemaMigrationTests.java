@@ -17,8 +17,11 @@
 package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 import java.sql.SQLException;
@@ -30,12 +33,13 @@ import static org.junit.Assert.fail;
 
 public class SqlServerCreateSchemaMigrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(SqlServerCreateSchemaMigrationTests.class);
 	@Test
 	public void performForNonExistantSchemaSucceeds() throws
 		MigrationFailedException
 	{
 		// Setup
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
@@ -49,7 +53,7 @@ public class SqlServerCreateSchemaMigrationTests
 		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
 		createDatabaseRunner.perform(
-			output,
+			eventSink,
 			createDatabase,
 			instance);
 
@@ -66,7 +70,7 @@ public class SqlServerCreateSchemaMigrationTests
 		{
 			// Execute
 			createSchemaRunner.perform(
-				output,
+				eventSink,
 				createSchema,
 				instance);
 		}
@@ -81,7 +85,7 @@ public class SqlServerCreateSchemaMigrationTests
 	public void performForExistantSchemaFails() throws SQLException, MigrationFailedException
 	{
 		// Setup
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		SqlServerDatabaseInstance instance = SqlServerProperties.get().toInstance(databaseName);
@@ -95,7 +99,7 @@ public class SqlServerCreateSchemaMigrationTests
 		SqlServerCreateDatabaseMigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
 		createDatabaseRunner.perform(
-			output,
+			eventSink,
 			createDatabase,
 			instance);
 
@@ -109,7 +113,7 @@ public class SqlServerCreateSchemaMigrationTests
 		SqlServerCreateSchemaMigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
 
 		createSchemaRunner.perform(
-			output,
+			eventSink,
 			createSchema,
 			instance);
 
@@ -119,7 +123,7 @@ public class SqlServerCreateSchemaMigrationTests
 		try
 		{
 			createSchemaRunner.perform(
-				output,
+				eventSink,
 				createSchema,
 				instance);
 

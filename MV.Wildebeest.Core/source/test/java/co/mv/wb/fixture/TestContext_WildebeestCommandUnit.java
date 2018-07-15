@@ -4,6 +4,9 @@ import co.mv.wb.Instance;
 import co.mv.wb.Resource;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.cli.WildebeestCommand;
+import co.mv.wb.event.EventSink;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 
@@ -15,11 +18,12 @@ import java.io.PrintStream;
  */
 public class TestContext_WildebeestCommandUnit
 {
-	public final PrintStream output;
+	public final EventSink eventSink;
 	public final Resource fakeResource;
 	public final Instance fakeInstance;
 	public final WildebeestApi wildebeestApi;
 	public final WildebeestCommand wildebeestCommand;
+	private static final Logger LOG = LoggerFactory.getLogger("wildebeestCommandLogger");
 
 	public static TestContext_WildebeestCommandUnit get()
 	{
@@ -28,7 +32,7 @@ public class TestContext_WildebeestCommandUnit
 
 	private TestContext_WildebeestCommandUnit()
 	{
-		this.output = System.out;
+		this.eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		this.fakeResource = Fixtures.fakeResource();
 		this.fakeInstance = Fixtures.fakeInstance();
@@ -40,7 +44,7 @@ public class TestContext_WildebeestCommandUnit
 			.get();
 
 		this.wildebeestCommand = new WildebeestCommand(
-			output,
+			eventSink,
 			wildebeestApi);
 	}
 }

@@ -23,11 +23,11 @@ import co.mv.wb.MigrationFaultException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationPluginType;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
 
 /**
@@ -39,12 +39,12 @@ import java.sql.SQLException;
 public class SqlServerCreateSchemaMigrationPlugin implements MigrationPlugin
 {
 	@Override public void perform(
-		PrintStream output,
+		EventSink eventSink,
 		Migration migration,
 		Instance instance) throws
 		MigrationFailedException
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 

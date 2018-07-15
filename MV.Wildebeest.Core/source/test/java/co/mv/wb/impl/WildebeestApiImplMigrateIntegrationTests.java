@@ -31,6 +31,7 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -41,6 +42,8 @@ import co.mv.wb.plugin.fake.SetTagMigrationPlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -58,6 +61,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class WildebeestApiImplMigrateIntegrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplMigrateUnitTests.class);
+
 	@Test
 	public void migrate_nonExistentToFirstState_succeeds() throws
 		AssertionFailedException,
@@ -70,7 +75,8 @@ public class WildebeestApiImplMigrateIntegrationTests
 		InvalidReferenceException
 	{
 		// Setup
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
+
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -92,7 +98,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -123,7 +129,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// The resource
 		Resource resource = new ResourceImpl(
@@ -179,7 +185,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -216,7 +222,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -308,7 +314,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -359,7 +365,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -391,7 +397,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -433,7 +439,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -465,7 +471,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -508,7 +514,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
+		EventSink eventSink = (event) -> {if(event.getMessage().isPresent()) LOG.info(event.getMessage().get());};
 
 		// The resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
@@ -540,7 +546,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		FakeInstance instance = new FakeInstance();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(eventSink)
 			.withFactoryResourcePlugins()
 			.get();
 

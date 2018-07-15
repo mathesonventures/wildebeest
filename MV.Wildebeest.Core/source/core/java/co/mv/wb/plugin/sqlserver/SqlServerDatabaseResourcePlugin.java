@@ -24,10 +24,10 @@ import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.generaldatabase.Extensions;
 
-import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -94,12 +94,12 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 
 	@Override
 	public void setStateId(
-		PrintStream output,
+		EventSink eventSink,
 		Resource resource,
 		Instance instance,
 		UUID stateId)
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 

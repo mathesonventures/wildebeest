@@ -16,6 +16,7 @@
 
 package co.mv.wb;
 
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.Util;
 import co.mv.wb.impl.WildebeestApiBuilder;
@@ -34,7 +35,6 @@ import co.mv.wb.plugin.sqlserver.SqlServerDropDatabaseMigrationPlugin;
 import co.mv.wb.plugin.sqlserver.SqlServerDropSchemaMigrationPlugin;
 import org.reflections.Reflections;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -165,11 +165,11 @@ public class Wildebeest
 	//
 
 	public static WildebeestApiBuilder wildebeestApi(
-		PrintStream output)
+		EventSink eventSink)
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 
-		return WildebeestApiBuilder.create(output);
+		return WildebeestApiBuilder.create(eventSink);
 	}
 
 	//
