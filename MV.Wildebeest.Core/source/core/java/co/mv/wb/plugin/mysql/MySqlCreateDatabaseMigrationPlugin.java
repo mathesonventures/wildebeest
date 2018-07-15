@@ -34,7 +34,7 @@ import java.sql.SQLException;
  *
  * @since 4.0
  */
-@MigrationPluginType(uri = "co.mv.wb.mysql:MySqlCreateDatabaseMigration")
+@MigrationPluginType(uri = "co.mv.wb.mysql:MySqlCreateDatabase")
 public class MySqlCreateDatabaseMigrationPlugin implements MigrationPlugin
 {
 	@Override public void perform(
