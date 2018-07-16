@@ -166,9 +166,6 @@
         <CLASSES>
           <root url="jar://$MODULE_DIR$/target/core/libcompile/mysql-connector-java-8.0.11.jar!/" />
         </CLASSES>
-		 <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/picocli-3.2.0.jar!/" />
-        </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
@@ -177,7 +174,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/target/core/libcompile/joda-time-2.10.jar!/" />
->>>>>>> master
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/picocli-3.3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

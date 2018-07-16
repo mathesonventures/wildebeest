@@ -36,6 +36,7 @@ import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.framework.ArgumentNullException;
+import picocli.CommandLine;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -100,206 +101,210 @@ public class WildebeestCommand
 	 */
 	public void run(String[] args)
 	{
-		if (args == null) throw new ArgumentNullException("args");
 
-		if (args.length == 0)
-		{
-			WildebeestCommand.printBanner(this.output);
+		WildeebestCommandDefintion wbd = CommandLine.populateCommand(new WildeebestCommandDefintion(), args);
+		wbd.parseArguments();
 
-			WildebeestCommand.printUsage(this.output);
-		}
-
-		else
-		{
-			String command = args[0];
-
-			if ("about".equals(command))
-			{
-				About about = new About();
-				this.output.println(about.getProjectName() + " " + about.getVersionFullDotted());
-				this.output.println(about.getCopyrightAssertion());
-			}
-
-			else if ("state".equals(command))
-			{
-				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
-				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
-
-				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
-				{
-					WildebeestCommand.printBanner(this.output);
-
-					WildebeestCommand.printUsage(this.output);
-				}
-				else
-				{
-					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
-						this.wildebeestApi,
-						resourceFilename,
-						this.output);
-
-					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
-						this.wildebeestApi,
-						instanceFilename,
-						this.output);
-
-					if (resource.isPresent() && instance.isPresent())
-					{
-						try
-						{
-							this.wildebeestApi.state(
-								resource.get(),
-								instance.get());
-						}
-						catch (IndeterminateStateException e)
-						{
-							this.output.println(e.getMessage());
-						}
-					}
-				}
-			}
-
-			else if ("migrate".equals(command))
-			{
-				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
-				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
-				Optional<String> targetState = WildebeestCommand.getOptionalArg(args, "t", "targetState");
-
-				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
-				{
-					WildebeestCommand.printBanner(this.output);
-
-					WildebeestCommand.printUsage(System.out);
-				}
-				else
-				{
-					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
-						this.wildebeestApi,
-						resourceFilename,
-						this.output);
-
-					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
-						this.wildebeestApi,
-						instanceFilename,
-						this.output);
-
-					if (resource.isPresent() && instance.isPresent())
-					{
-						try
-						{
-							this.wildebeestApi.migrate(
-								resource.get(),
-								instance.get(),
-								targetState);
-						}
-						catch (TargetNotSpecifiedException e)
-						{
-							this.output.println(OutputFormatter.targetNotSpecified(e));
-						}
-						catch (UnknownStateSpecifiedException e)
-						{
-							this.output.println(OutputFormatter.unknownStateSpecified(e));
-						}
-						catch (InvalidStateSpecifiedException e)
-						{
-							this.output.println(OutputFormatter.invalidStateSpecified(e));
-						}
-						catch (MigrationNotPossibleException e)
-						{
-							this.output.println(OutputFormatter.migrationNotPossible(e));
-						}
-						catch (IndeterminateStateException e)
-						{
-							this.output.println(OutputFormatter.indeterminateState(e));
-						}
-						catch (MigrationFailedException e)
-						{
-							this.output.print(OutputFormatter.migrationFailed(e));
-						}
-						catch (AssertionFailedException e)
-						{
-							this.output.println(OutputFormatter.assertionFailed(e));
-						}
-						catch (InvalidReferenceException e)
-						{
-							this.output.print(OutputFormatter.invalidReferenceException(e));
-						}
-					}
-				}
-			}
-
-			else if ("jumpstate".equals(command))
-			{
-				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
-				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
-				String targetState = WildebeestCommand.getArg(args, "t", "targetState");
-
-				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename) ||
-					isNull(targetState))
-				{
-					WildebeestCommand.printBanner(this.output);
-
-					WildebeestCommand.printUsage(System.out);
-				}
-				else
-				{
-					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
-						this.wildebeestApi,
-						resourceFilename,
-						this.output);
-
-					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
-						this.wildebeestApi,
-						instanceFilename,
-						this.output);
-
-					if (resource.isPresent() && instance.isPresent())
-					{
-						try
-						{
-							this.wildebeestApi.jumpstate(
-								resource.get(),
-								instance.get(),
-								targetState);
-						}
-						catch (UnknownStateSpecifiedException e)
-						{
-							this.output.println(OutputFormatter.unknownStateSpecified(e));
-						}
-						catch (IndeterminateStateException e)
-						{
-							this.output.println(OutputFormatter.indeterminateState(e));
-						}
-						catch (InvalidStateSpecifiedException e)
-						{
-							this.output.println(OutputFormatter.invalidStateSpecified(e));
-						}
-						catch (AssertionFailedException e)
-						{
-							this.output.println(OutputFormatter.assertionFailed(e));
-						}
-						catch (JumpStateFailedException e)
-						{
-							this.output.println(OutputFormatter.jumpStateFailed(e));
-						}
-					}
-				}
-			}
-
-			else if ("plugins".equals(command))
-			{
-				String xml = this.wildebeestApi.describePlugins();
-
-				this.output.println(xml);
-			}
-
-			else
-			{
-				WildebeestCommand.printBanner(this.output);
-
-				WildebeestCommand.printUsage(System.out);
-			}
-		}
+//		if (args == null) throw new ArgumentNullException("args");
+//
+//		if (args.length == 0)
+//		{
+//			WildebeestCommand.printBanner(this.output);
+//
+//			WildebeestCommand.printUsage(this.output);
+//		}
+//
+//		else
+//		{
+//			String command = args[0];
+//
+//			if ("about".equals(command))
+//			{
+//				About about = new About();
+//				this.output.println(about.getProjectName() + " " + about.getVersionFullDotted());
+//				this.output.println(about.getCopyrightAssertion());
+//			}
+//
+//			else if ("state".equals(command))
+//			{
+//				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
+//				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
+//
+//				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
+//				{
+//					WildebeestCommand.printBanner(this.output);
+//
+//					WildebeestCommand.printUsage(this.output);
+//				}
+//				else
+//				{
+//					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
+//						this.wildebeestApi,
+//						resourceFilename,
+//						this.output);
+//
+//					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
+//						this.wildebeestApi,
+//						instanceFilename,
+//						this.output);
+//
+//					if (resource.isPresent() && instance.isPresent())
+//					{
+//						try
+//						{
+//							this.wildebeestApi.state(
+//								resource.get(),
+//								instance.get());
+//						}
+//						catch (IndeterminateStateException e)
+//						{
+//							this.output.println(e.getMessage());
+//						}
+//					}
+//				}
+//			}
+//
+//			else if ("migrate".equals(command))
+//			{
+//				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
+//				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
+//				Optional<String> targetState = WildebeestCommand.getOptionalArg(args, "t", "targetState");
+//
+//				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
+//				{
+//					WildebeestCommand.printBanner(this.output);
+//
+//					WildebeestCommand.printUsage(System.out);
+//				}
+//				else
+//				{
+//					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
+//						this.wildebeestApi,
+//						resourceFilename,
+//						this.output);
+//
+//					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
+//						this.wildebeestApi,
+//						instanceFilename,
+//						this.output);
+//
+//					if (resource.isPresent() && instance.isPresent())
+//					{
+//						try
+//						{
+//							this.wildebeestApi.migrate(
+//								resource.get(),
+//								instance.get(),
+//								targetState);
+//						}
+//						catch (TargetNotSpecifiedException e)
+//						{
+//							this.output.println(OutputFormatter.targetNotSpecified(e));
+//						}
+//						catch (UnknownStateSpecifiedException e)
+//						{
+//							this.output.println(OutputFormatter.unknownStateSpecified(e));
+//						}
+//						catch (InvalidStateSpecifiedException e)
+//						{
+//							this.output.println(OutputFormatter.invalidStateSpecified(e));
+//						}
+//						catch (MigrationNotPossibleException e)
+//						{
+//							this.output.println(OutputFormatter.migrationNotPossible(e));
+//						}
+//						catch (IndeterminateStateException e)
+//						{
+//							this.output.println(OutputFormatter.indeterminateState(e));
+//						}
+//						catch (MigrationFailedException e)
+//						{
+//							this.output.print(OutputFormatter.migrationFailed(e));
+//						}
+//						catch (AssertionFailedException e)
+//						{
+//							this.output.println(OutputFormatter.assertionFailed(e));
+//						}
+//						catch (InvalidReferenceException e)
+//						{
+//							this.output.print(OutputFormatter.invalidReferenceException(e));
+//						}
+//					}
+//				}
+//			}
+//
+//			else if ("jumpstate".equals(command))
+//			{
+//				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
+//				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
+//				String targetState = WildebeestCommand.getArg(args, "t", "targetState");
+//
+//				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename) ||
+//					isNull(targetState))
+//				{
+//					WildebeestCommand.printBanner(this.output);
+//
+//					WildebeestCommand.printUsage(System.out);
+//				}
+//				else
+//				{
+//					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
+//						this.wildebeestApi,
+//						resourceFilename,
+//						this.output);
+//
+//					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
+//						this.wildebeestApi,
+//						instanceFilename,
+//						this.output);
+//
+//					if (resource.isPresent() && instance.isPresent())
+//					{
+//						try
+//						{
+//							this.wildebeestApi.jumpstate(
+//								resource.get(),
+//								instance.get(),
+//								targetState);
+//						}
+//						catch (UnknownStateSpecifiedException e)
+//						{
+//							this.output.println(OutputFormatter.unknownStateSpecified(e));
+//						}
+//						catch (IndeterminateStateException e)
+//						{
+//							this.output.println(OutputFormatter.indeterminateState(e));
+//						}
+//						catch (InvalidStateSpecifiedException e)
+//						{
+//							this.output.println(OutputFormatter.invalidStateSpecified(e));
+//						}
+//						catch (AssertionFailedException e)
+//						{
+//							this.output.println(OutputFormatter.assertionFailed(e));
+//						}
+//						catch (JumpStateFailedException e)
+//						{
+//							this.output.println(OutputFormatter.jumpStateFailed(e));
+//						}
+//					}
+//				}
+//			}
+//
+//			else if ("plugins".equals(command))
+//			{
+//				String xml = this.wildebeestApi.describePlugins();
+//
+//				this.output.println(xml);
+//			}
+//
+//			else
+//			{
+//				WildebeestCommand.printBanner(this.output);
+//
+//				WildebeestCommand.printUsage(System.out);
+//			}
+//		}
 	}
 
 	private static Optional<Resource> tryLoadResource(
