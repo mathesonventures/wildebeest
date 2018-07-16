@@ -2,7 +2,7 @@ package co.mv.wb.cli;
 
 import picocli.CommandLine;
 
-@CommandLine.Command(name = "state")
+@CommandLine.Command(name = "state",  description = "state description")
 public class StateCommand
 {
 	@CommandLine.Option(names = {"-r", "--resource"}, description = "Resource file")

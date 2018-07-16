@@ -9,6 +9,9 @@ import picocli.CommandLine;
 	  commandListHeading = "%nCommands:%n%n")
 public class SharedCommands
 {
+	@CommandLine.Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help message")
+	boolean usageHelpRequested;
+
 	@CommandLine.Option(names = {"-r", "--resource"}, description = "Resource file")
 	String resource;
 
