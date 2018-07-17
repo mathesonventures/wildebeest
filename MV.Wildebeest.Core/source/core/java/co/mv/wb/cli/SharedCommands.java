@@ -12,13 +12,13 @@ public class SharedCommands
 	@CommandLine.Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help message")
 	boolean usageHelpRequested;
 
-	@CommandLine.Option(names = {"-r", "--resource"}, description = "Resource file")
+	@CommandLine.Option(names = {"-r", "--resource"}, description = "Resource file", required = true)
 	String resource;
 
-	@CommandLine.Option(names = {"-i", "--instance"}, description = "Instance file")
+	@CommandLine.Option(names = {"-i", "--instance"}, description = "Instance file", required = true)
 	String instance;
 
-	@CommandLine.Option(names = {"--targetState"}, description = "Target state")
+	@CommandLine.Option(names = {"--target-state"}, description = "Target state", required = true)
 	String targetState;
 }
 

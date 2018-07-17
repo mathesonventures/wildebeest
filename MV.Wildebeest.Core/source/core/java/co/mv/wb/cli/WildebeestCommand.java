@@ -40,6 +40,7 @@ import picocli.CommandLine;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -48,10 +49,21 @@ import java.util.Optional;
  *
  * @since 1.0
  */
+@CommandLine.Command(subcommands = {
+	  MigrateCommand.class,
+	  JumpStateCommand.class,
+	  StateCommand.class
+})
 public class WildebeestCommand
 {
 	private final PrintStream output;
 	private final WildebeestApi wildebeestApi;
+
+	@CommandLine.Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help message")
+	boolean usageHelpRequested;
+
+	@CommandLine.Option(names = {"-p", "--plugins"}, description = "lists all wildebeest plugins")
+	boolean usagePlugins;
 
 	/**
 	 * The main entry point for the command-line interface.
@@ -64,15 +76,15 @@ public class WildebeestCommand
 		PrintStream output = System.out;
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryPluginGroups()
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
-			.get();
+			  .wildebeestApi(output)
+			  .withFactoryPluginGroups()
+			  .withFactoryResourcePlugins()
+			  .withFactoryMigrationPlugins()
+			  .get();
 
 		WildebeestCommand wb = new WildebeestCommand(
-			output,
-			wildebeestApi);
+			  output,
+			  wildebeestApi);
 
 		wb.run(args);
 	}
@@ -83,8 +95,8 @@ public class WildebeestCommand
 	 * @since 1.0
 	 */
 	public WildebeestCommand(
-		PrintStream output,
-		WildebeestApi wildebeestApi)
+		  PrintStream output,
+		  WildebeestApi wildebeestApi)
 	{
 		if (output == null) throw new ArgumentNullException("output");
 		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
@@ -101,70 +113,215 @@ public class WildebeestCommand
 	 */
 	public void run(String[] args)
 	{
+		if (args == null) throw new ArgumentNullException("args");
 
-		WildeebestCommandDefintion wbd = CommandLine.populateCommand(new WildeebestCommandDefintion(), args);
-		wbd.parseArguments();
+		if (args.length == 0)
+		{
+			WildebeestCommand.printBanner(this.output);
+			CommandLine.usage(this, this.output);
+		} else
+		{
+			CommandLine commandLine = new CommandLine(this);
+			List<CommandLine> parsed = commandLine.parse(args);
 
-//		if (args == null) throw new ArgumentNullException("args");
-//
-//		if (args.length == 0)
-//		{
-//			WildebeestCommand.printBanner(this.output);
-//
-//			WildebeestCommand.printUsage(this.output);
-//		}
-//
-//		else
-//		{
-//			String command = args[0];
-//
-//			if ("about".equals(command))
-//			{
-//				About about = new About();
-//				this.output.println(about.getProjectName() + " " + about.getVersionFullDotted());
-//				this.output.println(about.getCopyrightAssertion());
-//			}
-//
-//			else if ("state".equals(command))
-//			{
-//				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
-//				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
-//
-//				if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
-//				{
-//					WildebeestCommand.printBanner(this.output);
-//
-//					WildebeestCommand.printUsage(this.output);
-//				}
-//				else
-//				{
-//					Optional<Resource> resource = WildebeestCommand.tryLoadResource(
-//						this.wildebeestApi,
-//						resourceFilename,
-//						this.output);
-//
-//					Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
-//						this.wildebeestApi,
-//						instanceFilename,
-//						this.output);
-//
-//					if (resource.isPresent() && instance.isPresent())
-//					{
-//						try
-//						{
-//							this.wildebeestApi.state(
-//								resource.get(),
-//								instance.get());
-//						}
-//						catch (IndeterminateStateException e)
-//						{
-//							this.output.println(e.getMessage());
-//						}
-//					}
-//				}
-//			}
-//
-//			else if ("migrate".equals(command))
+			parseArguments(parsed);
+		}
+
+	}
+
+	private void parseArguments(List<CommandLine> parsed)
+	{
+		if (this.usageHelpRequested)
+		{
+			CommandLine.usage(this, this.output);
+			return;
+		} else if (this.usagePlugins == true)
+		{
+			{
+				String xml = this.wildebeestApi.describePlugins();
+				this.output.println(xml);
+			}
+		} else if (parsed.get(1).getCommand().getClass() == MigrateCommand.class)
+		{
+			migrateCommand();
+		} else if (parsed.get(1).getCommand().getClass() == JumpStateCommand.class)
+		{
+			jumpstateCommand();
+		} else if (parsed.get(1).getCommand().getClass() == StateCommand.class)
+		{
+			stateCommand();
+		} else
+		{
+			WildebeestCommand.printBanner(this.output);
+			CommandLine.usage(this, this.output);
+		}
+
+	}
+
+	private static Optional<Resource> tryLoadResource(
+		  WildebeestApi wildebeestApi,
+		  String resourceFilename,
+		  PrintStream out)
+	{
+		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
+		if (resourceFilename == null) throw new ArgumentNullException("resourceFilename");
+		if (out == null) throw new ArgumentNullException("out");
+
+		File resourceFile = new File(resourceFilename);
+
+		Resource resource = null;
+
+		try
+		{
+			resource = wildebeestApi.loadResource(resourceFile);
+		} catch (FileLoadException e)
+		{
+			out.println(OutputFormatter.fileLoad(e, "resource"));
+		} catch (LoaderFault e)
+		{
+			out.println(OutputFormatter.loaderFault(e, "resource"));
+		} catch (PluginBuildException e)
+		{
+			out.println(OutputFormatter.pluginBuild(e));
+		} catch (XmlValidationException e)
+		{
+			out.println(OutputFormatter.resourceValidation(e, "resource"));
+		} catch (InvalidReferenceException e)
+		{
+			out.println(OutputFormatter.missingReference(e));
+		}
+
+		return Optional.ofNullable(resource);
+	}
+
+	private static Optional<Instance> tryLoadInstance(
+		  WildebeestApi wildebeestApi,
+		  String instanceFilename,
+		  PrintStream out)
+	{
+		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
+		if (instanceFilename == null) throw new ArgumentNullException("instanceFilename");
+		if (out == null) throw new ArgumentNullException("out");
+
+		File instanceFile = new File(instanceFilename);
+
+		Instance instance = null;
+
+		try
+		{
+			instance = wildebeestApi.loadInstance(instanceFile);
+		} catch (FileLoadException e)
+		{
+			out.println(OutputFormatter.fileLoad(e, "instance"));
+		} catch (LoaderFault e)
+		{
+			out.println(OutputFormatter.loaderFault(e, "instance"));
+		} catch (PluginBuildException e)
+		{
+			out.println(OutputFormatter.pluginBuild(e));
+		} catch (XmlValidationException e)
+		{
+			out.println(OutputFormatter.resourceValidation(e, "instance"));
+		}
+
+		return Optional.ofNullable(instance);
+	}
+
+	private static String getArg(
+		  String[] args,
+		  String shortName,
+		  String longName)
+	{
+		if (args == null) throw new ArgumentNullException("args");
+		if (shortName == null) throw new ArgumentNullException("shortName");
+		if ("".equals(shortName)) throw new IllegalArgumentException("shortName cannot be empty");
+		if (longName == null) throw new ArgumentNullException("longName");
+		if ("".equals(longName)) throw new IllegalArgumentException("longName cannot be empty");
+
+		shortName = "-" + shortName + ":";
+		longName = "--" + longName + ":";
+
+		String result = null;
+
+		for (String arg : args)
+		{
+			if (arg.startsWith(shortName))
+			{
+				result = arg.substring(shortName.length());
+				break;
+			}
+			if (arg.startsWith(longName))
+			{
+				result = arg.substring(longName.length());
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	private static Optional<String> getOptionalArg(
+		  String[] args,
+		  String shortName,
+		  String longName)
+	{
+		if (args == null) throw new ArgumentNullException("args");
+		if (shortName == null) throw new ArgumentNullException("shortName");
+		if ("".equals(shortName)) throw new IllegalArgumentException("shortName cannot be empty");
+		if (longName == null) throw new ArgumentNullException("longName");
+		if ("".equals(longName)) throw new IllegalArgumentException("longName cannot be empty");
+
+		shortName = "-" + shortName + ":";
+		longName = "--" + longName + ":";
+
+		Optional<String> result = Optional.empty();
+
+		for (String arg : args)
+		{
+			if (arg.startsWith(shortName))
+			{
+				result = Optional.of(arg.substring(shortName.length()));
+				break;
+			}
+			if (arg.startsWith(longName))
+			{
+				result = Optional.of(arg.substring(longName.length()));
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	private static boolean isNull(String value)
+	{
+		return value == null;
+	}
+
+	private static boolean isNullOrWhiteSpace(String value)
+	{
+		return value == null || "".equals(value.trim());
+	}
+
+	private static void printBanner(PrintStream out)
+	{
+		if (out == null) throw new ArgumentNullException("out");
+
+		out.println("            _  _     _       _");
+		out.println("           |_|| |   | |     | |                      _");
+		out.println(" __      __ _ | | __| | ___ | |__   ___   ___  ___ _| |_");
+		out.println(" \\ \\ /\\ / /| || |/ _` |/ _ \\| '_ \\ / _ \\ / _ \\/ __|_   _|");
+		out.println("  \\ v  v / | || | (_| |  __/| |_) |  __/|  __/\\__ \\ | |");
+		out.println("   \\_/\\_/  |_||_|\\__,_|\\___||_.__/ \\___| \\___||___/ |_|");
+		out.println("");
+
+		About about = new About();
+		out.println("Version " + about.getVersionFullDotted() + ", " + about.getCopyrightAssertion());
+		out.println("");
+	}
+
+	private void migrateCommand()
+	{
 //			{
 //				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
 //				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
@@ -231,11 +388,11 @@ public class WildebeestCommand
 //						}
 //					}
 //				}
-//			}
-//
-//			else if ("jumpstate".equals(command))
-//			{
-//				String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
+	}
+
+	private void jumpstateCommand()
+	{
+//		String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
 //				String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
 //				String targetState = WildebeestCommand.getArg(args, "t", "targetState");
 //
@@ -289,202 +446,43 @@ public class WildebeestCommand
 //						}
 //					}
 //				}
-//			}
+	}
+
+	private void stateCommand()
+	{
+//		String resourceFilename = WildebeestCommand.getArg(args, "r", "resource");
+//		String instanceFilename = WildebeestCommand.getArg(args, "i", "instance");
 //
-//			else if ("plugins".equals(command))
+//		if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
+//		{
+//			WildebeestCommand.printBanner(this.output);
+//
+//			WildebeestCommand.printUsage(this.output);
+//		} else
+//		{
+//			Optional<Resource> resource = WildebeestCommand.tryLoadResource(
+//				  this.wildebeestApi,
+//				  resourceFilename,
+//				  this.output);
+//
+//			Optional<Instance> instance = WildebeestCommand.tryLoadInstance(
+//				  this.wildebeestApi,
+//				  instanceFilename,
+//				  this.output);
+//
+//			if (resource.isPresent() && instance.isPresent())
 //			{
-//				String xml = this.wildebeestApi.describePlugins();
-//
-//				this.output.println(xml);
-//			}
-//
-//			else
-//			{
-//				WildebeestCommand.printBanner(this.output);
-//
-//				WildebeestCommand.printUsage(System.out);
+//				try
+//				{
+//					this.wildebeestApi.state(
+//						  resource.get(),
+//						  instance.get());
+//				} catch (IndeterminateStateException e)
+//				{
+//					this.output.println(e.getMessage());
+//				}
 //			}
 //		}
 	}
 
-	private static Optional<Resource> tryLoadResource(
-		WildebeestApi wildebeestApi,
-		String resourceFilename,
-		PrintStream out)
-	{
-		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
-		if (resourceFilename == null) throw new ArgumentNullException("resourceFilename");
-		if (out == null) throw new ArgumentNullException("out");
-
-		File resourceFile = new File(resourceFilename);
-
-		Resource resource = null;
-
-		try
-		{
-			resource = wildebeestApi.loadResource(resourceFile);
-		}
-		catch (FileLoadException e)
-		{
-			out.println(OutputFormatter.fileLoad(e, "resource"));
-		}
-		catch (LoaderFault e)
-		{
-			out.println(OutputFormatter.loaderFault(e, "resource"));
-		}
-		catch (PluginBuildException e)
-		{
-			out.println(OutputFormatter.pluginBuild(e));
-		}
-		catch (XmlValidationException e)
-		{
-			out.println(OutputFormatter.resourceValidation(e, "resource"));
-		}
-		catch (InvalidReferenceException e)
-		{
-			out.println(OutputFormatter.missingReference(e));
-		}
-
-		return Optional.ofNullable(resource);
-	}
-
-	private static Optional<Instance> tryLoadInstance(
-		WildebeestApi wildebeestApi,
-		String instanceFilename,
-		PrintStream out)
-	{
-		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
-		if (instanceFilename == null) throw new ArgumentNullException("instanceFilename");
-		if (out == null) throw new ArgumentNullException("out");
-
-		File instanceFile = new File(instanceFilename);
-
-		Instance instance = null;
-
-		try
-		{
-			instance = wildebeestApi.loadInstance(instanceFile);
-		}
-		catch (FileLoadException e)
-		{
-			out.println(OutputFormatter.fileLoad(e, "instance"));
-		}
-		catch (LoaderFault e)
-		{
-			out.println(OutputFormatter.loaderFault(e, "instance"));
-		}
-		catch (PluginBuildException e)
-		{
-			out.println(OutputFormatter.pluginBuild(e));
-		}
-		catch (XmlValidationException e)
-		{
-			out.println(OutputFormatter.resourceValidation(e, "instance"));
-		}
-
-		return Optional.ofNullable(instance);
-	}
-
-	private static String getArg(
-		String[] args,
-		String shortName,
-		String longName)
-	{
-		if (args == null) throw new ArgumentNullException("args");
-		if (shortName == null) throw new ArgumentNullException("shortName");
-		if ("".equals(shortName)) throw new IllegalArgumentException("shortName cannot be empty");
-		if (longName == null) throw new ArgumentNullException("longName");
-		if ("".equals(longName)) throw new IllegalArgumentException("longName cannot be empty");
-
-		shortName = "-" + shortName + ":";
-		longName = "--" + longName + ":";
-
-		String result = null;
-
-		for (String arg : args)
-		{
-			if (arg.startsWith(shortName))
-			{
-				result = arg.substring(shortName.length());
-				break;
-			}
-			if (arg.startsWith(longName))
-			{
-				result = arg.substring(longName.length());
-				break;
-			}
-		}
-
-		return result;
-	}
-
-	private static Optional<String> getOptionalArg(
-		String[] args,
-		String shortName,
-		String longName)
-	{
-		if (args == null) throw new ArgumentNullException("args");
-		if (shortName == null) throw new ArgumentNullException("shortName");
-		if ("".equals(shortName)) throw new IllegalArgumentException("shortName cannot be empty");
-		if (longName == null) throw new ArgumentNullException("longName");
-		if ("".equals(longName)) throw new IllegalArgumentException("longName cannot be empty");
-
-		shortName = "-" + shortName + ":";
-		longName = "--" + longName + ":";
-
-		Optional<String> result = Optional.empty();
-
-		for (String arg : args)
-		{
-			if (arg.startsWith(shortName))
-			{
-				result = Optional.of(arg.substring(shortName.length()));
-				break;
-			}
-			if (arg.startsWith(longName))
-			{
-				result = Optional.of(arg.substring(longName.length()));
-				break;
-			}
-		}
-
-		return result;
-	}
-
-	private static boolean isNull(String value)
-	{
-		return value == null;
-	}
-
-	private static boolean isNullOrWhiteSpace(String value)
-	{
-		return value == null || "".equals(value.trim());
-	}
-
-	private static void printBanner(PrintStream out)
-	{
-		if (out == null) throw new ArgumentNullException("out");
-
-		out.println("            _  _     _       _");
-		out.println("           |_|| |   | |     | |                      _");
-		out.println(" __      __ _ | | __| | ___ | |__   ___   ___  ___ _| |_");
-		out.println(" \\ \\ /\\ / /| || |/ _` |/ _ \\| '_ \\ / _ \\ / _ \\/ __|_   _|");
-		out.println("  \\ v  v / | || | (_| |  __/| |_) |  __/|  __/\\__ \\ | |");
-		out.println("   \\_/\\_/  |_||_|\\__,_|\\___||_.__/ \\___| \\___||___/ |_|");
-		out.println("");
-
-		About about = new About();
-		out.println("Version " + about.getVersionFullDotted() + ", " + about.getCopyrightAssertion());
-		out.println("");
-	}
-
-	private static void printUsage(PrintStream out)
-	{
-		if (out == null) throw new ArgumentNullException("out");
-
-		out.println("Usage: wb command [options]");
-		out.println("");
-		out.println("Valid commands: state; migrate; jumpstate;");
-		out.println("");
-	}
 }
