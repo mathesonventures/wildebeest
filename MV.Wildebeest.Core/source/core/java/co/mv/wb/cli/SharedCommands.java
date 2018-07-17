@@ -6,7 +6,8 @@ import picocli.CommandLine;
 	  descriptionHeading = "%nDescription:%n%n",
 	  parameterListHeading = "%nParameters:%n%n",
 	  optionListHeading = "%nOptions:%n%n",
-	  commandListHeading = "%nCommands:%n%n")
+	  commandListHeading = "%nCommands:%n%n",
+	  separator = " ")
 public class SharedCommands
 {
 	@CommandLine.Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help message")
@@ -18,7 +19,7 @@ public class SharedCommands
 	@CommandLine.Option(names = {"-i", "--instance"}, description = "Instance file", required = true)
 	String instance;
 
-	@CommandLine.Option(names = {"--target-state"}, description = "Target state", required = true)
+	@CommandLine.Option(names = {"-ts","--target-state"}, description = "Target state", required = true)
 	String targetState;
 }
 
