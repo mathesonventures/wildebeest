@@ -68,15 +68,32 @@ public class WildebeestCommandUnitTests
 		verifyZeroInteractions(context.wildebeestApi);
 	}
 
-	@Test public void about_validRequest_noOperationsCalled()
+	@Test public void helpDoubleDash_validRequest_noOperationsCalled()
 	{
 		// Setup
 		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
 
 		String[] args = new String[]
 			{
-				"about"
+				"--help"
 			};
+
+		// Execute
+		context.wildebeestCommand.run(args);
+
+		// Verify
+		verifyZeroInteractions(context.wildebeestApi);
+	}
+
+	@Test public void helpSingleDash_validRequest_noOperationsCalled()
+	{
+		// Setup
+		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
+
+		String[] args = new String[]
+			  {
+					"-h"
+			  };
 
 		// Execute
 		context.wildebeestCommand.run(args);
