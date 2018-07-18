@@ -122,9 +122,9 @@ public class WildebeestCommandUnitTests
 		String[] args = new String[]
 			{
 				"migrate",
-				"--resource:MySqlDatabase/database.wbresource.xml",
-				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-				"--targetState:Core Schema Loaded"
+				"--resource MySqlDatabase/database.wbresource.xml",
+				"--instance MySqlDatabase/staging_db.wbinstance.xml",
+				"--target-state Core Schema Loaded"
 			};
 
 		// Execute
