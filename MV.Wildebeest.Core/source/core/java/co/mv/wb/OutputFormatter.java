@@ -20,6 +20,9 @@ import co.mv.wb.framework.ArgumentNullException;
 
 public class OutputFormatter
 {
+	private OutputFormatter()
+	{
+	}
 
 	//
 	// Loader
@@ -36,7 +39,6 @@ public class OutputFormatter
 	}
 
 	public static String loaderFault(
-		LoaderFault e,
 		String loadType)
 	{
 		return String.format("Unable to load %s", loadType);
@@ -59,7 +61,7 @@ public class OutputFormatter
 		String loadType)
 	{
 		return String.format(
-			"XML validation failed on %s with the following message:\n \"%s\"",
+			"XML validation failed on %s with the following message:%n \"%s\"",
 			loadType,
 			e.getMessage());
 	}
@@ -90,10 +92,9 @@ public class OutputFormatter
 			e.getSpecifiedState());
 	}
 
-	public static String targetNotSpecified(TargetNotSpecifiedException e)
+	public static String targetNotSpecified()
 	{
-		return String.format(
-			"No target was specified and the resource does not have a default target set");
+		return "No target was specified and the resource does not have a default target set";
 	}
 
 	public static String indeterminateState(IndeterminateStateException e)

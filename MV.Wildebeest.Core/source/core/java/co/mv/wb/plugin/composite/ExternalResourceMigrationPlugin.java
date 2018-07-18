@@ -77,7 +77,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		ExternalResourceMigration migrationT = ModelExtensions.As(migration, ExternalResourceMigration.class);
+		ExternalResourceMigration migrationT = ModelExtensions.as(migration, ExternalResourceMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
@@ -109,7 +109,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 				migration.getMigrationId(),
 				String.format(
 					ExternalResourceMigrationPlugin.ExceptionFormatString,
-					OutputFormatter.targetNotSpecified(e)));
+					OutputFormatter.targetNotSpecified()));
 		}
 		catch (UnknownStateSpecifiedException e)
 		{

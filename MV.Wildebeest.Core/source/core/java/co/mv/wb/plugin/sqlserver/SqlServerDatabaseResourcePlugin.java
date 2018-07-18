@@ -54,7 +54,7 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		SqlServerDatabaseInstance db = ModelExtensions.as(instance, SqlServerDatabaseInstance.class);
 		if (db == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
@@ -103,7 +103,7 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		SqlServerDatabaseInstance db = ModelExtensions.as(instance, SqlServerDatabaseInstance.class);
 		if (db == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");

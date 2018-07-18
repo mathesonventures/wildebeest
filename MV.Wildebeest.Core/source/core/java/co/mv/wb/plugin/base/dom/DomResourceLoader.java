@@ -21,7 +21,7 @@ import co.mv.wb.AssertionBuilder;
 import co.mv.wb.EntityType;
 import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.LoaderFault;
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
 import co.mv.wb.ModelExtensions;
@@ -171,12 +171,12 @@ public class DomResourceLoader implements ResourceLoader
 			HashMap<String, List<Assertion>> assertionGroupsMap = new HashMap<>();
 			for (int i = 0; i < resourceXe.getChildNodes().getLength(); i++)
 			{
-				Element childXe = ModelExtensions.As(resourceXe.getChildNodes().item(i), Element.class);
+				Element childXe = ModelExtensions.as(resourceXe.getChildNodes().item(i), Element.class);
 				if (childXe != null && XE_ASSERTIONS.equals(childXe.getTagName()))
 				{
 					for (int asrsIndex = 0; asrsIndex < childXe.getChildNodes().getLength(); asrsIndex++)
 					{
-						Element asrsXe = ModelExtensions.As(childXe.getChildNodes().item(asrsIndex), Element.class);
+						Element asrsXe = ModelExtensions.as(childXe.getChildNodes().item(asrsIndex), Element.class);
 
 						if (asrsXe != null)
 						{
@@ -194,14 +194,14 @@ public class DomResourceLoader implements ResourceLoader
 				{
 					for (int asrGrpIndex = 0; asrGrpIndex < childXe.getChildNodes().getLength(); asrGrpIndex++)
 					{
-						Element asrGrpXe = ModelExtensions.As(childXe.getChildNodes().item(asrGrpIndex), Element.class);
+						Element asrGrpXe = ModelExtensions.as(childXe.getChildNodes().item(asrGrpIndex), Element.class);
 
 						if (asrGrpXe != null)
 						{
 							List<Assertion> assertions = new ArrayList<>();
 							for (int asrIndex = 0; asrIndex < asrGrpXe.getChildNodes().getLength(); asrIndex++)
 							{
-								Element asrXe = ModelExtensions.As(
+								Element asrXe = ModelExtensions.as(
 									asrGrpXe.getChildNodes().item(asrIndex),
 									Element.class);
 
@@ -238,7 +238,7 @@ public class DomResourceLoader implements ResourceLoader
 				{
 					for (int stateIndex = 0; stateIndex < childXe.getChildNodes().getLength(); stateIndex++)
 					{
-						Element stateXe = ModelExtensions.As(childXe.getChildNodes().item(stateIndex), Element.class);
+						Element stateXe = ModelExtensions.as(childXe.getChildNodes().item(stateIndex), Element.class);
 
 						if (stateXe != null)
 						{
@@ -248,7 +248,7 @@ public class DomResourceLoader implements ResourceLoader
 							for (int stChildIndex = 0;
 								 stChildIndex < stateXe.getChildNodes().getLength(); stChildIndex++)
 							{
-								Element stChildXe = ModelExtensions.As(
+								Element stChildXe = ModelExtensions.as(
 									stateXe.getChildNodes().item(stChildIndex),
 									Element.class);
 
@@ -256,7 +256,7 @@ public class DomResourceLoader implements ResourceLoader
 								{
 									for (int asrIndex = 0; asrIndex < stChildXe.getChildNodes().getLength(); asrIndex++)
 									{
-										Element asrXe = ModelExtensions.As(
+										Element asrXe = ModelExtensions.as(
 											stChildXe.getChildNodes().item(asrIndex),
 											Element.class);
 
@@ -314,7 +314,7 @@ public class DomResourceLoader implements ResourceLoader
 				{
 					for (int tranIndex = 0; tranIndex < childXe.getChildNodes().getLength(); tranIndex++)
 					{
-						Element migrationXe = ModelExtensions.As(
+						Element migrationXe = ModelExtensions.as(
 							childXe.getChildNodes().item(tranIndex),
 							Element.class);
 
@@ -330,7 +330,7 @@ public class DomResourceLoader implements ResourceLoader
 								migration.getApplicableTypes(),
 								resource.getType()))
 							{
-								Messages messages = new Messages();
+								MessageList messages = new MessageList();
 								messages.addMessage(
 									"%s migrations cannot be applied to %s resources",
 									migration.getClass().getName(),
@@ -396,7 +396,7 @@ public class DomResourceLoader implements ResourceLoader
 			assertion.getApplicableTypes(),
 			resource.getType()))
 		{
-			Messages messages = new Messages();
+			MessageList messages = new MessageList();
 			messages.addMessage(
 				"%s assertions cannot be applied to %s resources",
 				assertion.getClass().getName(),
@@ -472,7 +472,7 @@ public class DomResourceLoader implements ResourceLoader
 
 		if (builder == null)
 		{
-			Messages messages = new Messages();
+			MessageList messages = new MessageList();
 			messages.addMessage(String.format(
 				"assertion builder of type %s not found",
 				type));
@@ -510,7 +510,7 @@ public class DomResourceLoader implements ResourceLoader
 
 		if (builder == null)
 		{
-			Messages messages = new Messages();
+			MessageList messages = new MessageList();
 			messages.addMessage(String.format(
 				"migration builder of type %s not found",
 				type));

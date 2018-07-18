@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @since 2.0
  */
-public class Messages
+public class MessageList
 {
 	private final List<String> messages;
 
@@ -35,7 +35,7 @@ public class Messages
 	 *
 	 * @since 2.0
 	 */
-	public Messages()
+	public MessageList()
 	{
 		this.messages = new ArrayList<>();
 	}

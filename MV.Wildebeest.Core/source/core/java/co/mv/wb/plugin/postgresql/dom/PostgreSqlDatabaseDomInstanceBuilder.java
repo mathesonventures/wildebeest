@@ -18,7 +18,7 @@ package co.mv.wb.plugin.postgresql.dom;
 
 import co.mv.wb.Instance;
 import co.mv.wb.InstanceBuilder;
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.V;
 import co.mv.wb.plugin.base.dom.BaseDomInstanceBuilder;
@@ -44,7 +44,7 @@ public class PostgreSqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		Optional<String> metaSchemaName = this.tryGetString("metaSchemaName");
 		Optional<String> stateTableName = this.tryGetString("stateTableName");
 
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!hostName.isPresent())
 		{
 			V.elementMissing(messages, null, "hostName", PostgreSqlDatabaseInstance.class);

@@ -84,7 +84,7 @@ public class DatabaseDomServiceUnitTests
 			1,
 			resource.getStates().get(0).getAssertions().size());
 		Assertion assertion = resource.getStates().get(0).getAssertions().get(0);
-		DatabaseExistsAssertion assertionT = ModelExtensions.As(assertion, DatabaseExistsAssertion.class);
+		DatabaseExistsAssertion assertionT = ModelExtensions.as(assertion, DatabaseExistsAssertion.class);
 		assertNotNull("expected to be DatabaseExistsAssertion", assertionT);
 
 		assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());
@@ -128,7 +128,7 @@ public class DatabaseDomServiceUnitTests
 			1,
 			resource.getStates().get(0).getAssertions().size());
 		Assertion assertion = resource.getStates().get(0).getAssertions().get(0);
-		DatabaseDoesNotExistAssertion assertionT = ModelExtensions.As(assertion, DatabaseDoesNotExistAssertion.class);
+		DatabaseDoesNotExistAssertion assertionT = ModelExtensions.as(assertion, DatabaseDoesNotExistAssertion.class);
 		assertNotNull("expected to be DatabaseDoesNotExistAssertion", assertionT);
 
 		assertEquals("assertion.assertionId", assertionId, assertion.getAssertionId());

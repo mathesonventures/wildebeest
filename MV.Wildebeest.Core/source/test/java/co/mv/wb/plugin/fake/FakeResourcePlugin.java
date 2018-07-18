@@ -41,7 +41,7 @@ public class FakeResourcePlugin implements ResourcePlugin
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		FakeInstance fake = ModelExtensions.As(instance, FakeInstance.class);
+		FakeInstance fake = ModelExtensions.as(instance, FakeInstance.class);
 		if (fake == null)
 		{
 			throw new IllegalArgumentException("instance must be of type FakeInstance");
@@ -64,7 +64,7 @@ public class FakeResourcePlugin implements ResourcePlugin
 		if (instance == null) throw new ArgumentNullException("instance");
 		if (stateId == null) throw new ArgumentNullException("stateId");
 
-		FakeInstance instanceT = ModelExtensions.As(instance, FakeInstance.class);
+		FakeInstance instanceT = ModelExtensions.as(instance, FakeInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("stateId must be of type FakeInstance");

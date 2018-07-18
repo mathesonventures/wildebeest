@@ -94,7 +94,7 @@ public class PostgreSqlDomServiceUnitTests
 
 		// Verify
 		Assert.assertNotNull("instance", instance);
-		PostgreSqlDatabaseInstance instanceT = ModelExtensions.As(instance, PostgreSqlDatabaseInstance.class);
+		PostgreSqlDatabaseInstance instanceT = ModelExtensions.as(instance, PostgreSqlDatabaseInstance.class);
 		Assert.assertNotNull("instance must be of type PostgreSqlDatabaseInstance", instanceT);
 		assertPostgreSqlDatabaseInstance(
 			"127.0.0.1",

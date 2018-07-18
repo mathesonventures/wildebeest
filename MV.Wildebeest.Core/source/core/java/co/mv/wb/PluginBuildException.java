@@ -25,10 +25,10 @@ import co.mv.wb.framework.ArgumentNullException;
  */
 public class PluginBuildException extends Exception
 {
-	private final Messages messages;
+	private final MessageList messages;
 
 	public PluginBuildException(
-		Messages messages)
+		MessageList messages)
 	{
 		super(PluginBuildException.buildMessage(messages));
 
@@ -37,7 +37,7 @@ public class PluginBuildException extends Exception
 		this.messages = messages;
 	}
 
-	private static String buildMessage(Messages messages)
+	private static String buildMessage(MessageList messages)
 	{
 		if (messages == null) throw new ArgumentNullException("messages");
 
@@ -51,7 +51,7 @@ public class PluginBuildException extends Exception
 		return m.toString();
 	}
 
-	public Messages getMessages()
+	public MessageList getMessages()
 	{
 		return messages;
 	}

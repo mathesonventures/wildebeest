@@ -55,7 +55,7 @@ public class SetTagMigrationPlugin implements MigrationPlugin
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SetTagMigration migrationT = ModelExtensions.As(migration, SetTagMigration.class);
+		SetTagMigration migrationT = ModelExtensions.as(migration, SetTagMigration.class);
 		if (migrationT == null)
 		{
 			String msg = "migration must be a SetTagMigration";
@@ -63,7 +63,7 @@ public class SetTagMigrationPlugin implements MigrationPlugin
 			throw new IllegalArgumentException(msg);
 		}
 
-		FakeInstance instanceT = ModelExtensions.As(instance, FakeInstance.class);
+		FakeInstance instanceT = ModelExtensions.as(instance, FakeInstance.class);
 		if (instanceT == null)
 		{
 			String msg = "instance must be a FakeInstance";

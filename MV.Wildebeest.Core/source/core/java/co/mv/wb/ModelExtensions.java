@@ -25,6 +25,10 @@ import co.mv.wb.framework.ArgumentNullException;
  */
 public class ModelExtensions
 {
+	private ModelExtensions()
+	{
+	}
+
 	/**
 	 * Attempts to cast the supplied value to the specified type, and returns the result.  If the cast cannot be
 	 * performed because of a type mismatch, then null is returned.
@@ -36,7 +40,7 @@ public class ModelExtensions
 	 * be performed
 	 * @since 1.0
 	 */
-	public static <T> T As(
+	public static <T> T as(
 		Object value,
 		Class<T> type)
 	{

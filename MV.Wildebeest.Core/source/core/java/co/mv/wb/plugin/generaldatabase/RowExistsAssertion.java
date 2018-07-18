@@ -102,7 +102,7 @@ public class RowExistsAssertion extends BaseAssertion implements Assertion
 	{
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		DatabaseInstance db = ModelExtensions.As(instance, DatabaseInstance.class);
+		DatabaseInstance db = ModelExtensions.as(instance, DatabaseInstance.class);
 		if (db == null)
 		{
 			throw new IllegalArgumentException("instance must be a DatabaseInstance");

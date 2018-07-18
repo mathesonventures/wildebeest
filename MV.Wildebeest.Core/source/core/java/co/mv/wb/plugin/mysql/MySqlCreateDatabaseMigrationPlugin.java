@@ -47,13 +47,13 @@ public class MySqlCreateDatabaseMigrationPlugin implements MigrationPlugin
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		MySqlCreateDatabaseMigration migrationT = ModelExtensions.As(migration, MySqlCreateDatabaseMigration.class);
+		MySqlCreateDatabaseMigration migrationT = ModelExtensions.as(migration, MySqlCreateDatabaseMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		MySqlDatabaseInstance instanceT = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
+		MySqlDatabaseInstance instanceT = ModelExtensions.as(instance, MySqlDatabaseInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");

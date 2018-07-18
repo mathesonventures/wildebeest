@@ -52,7 +52,7 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		PostgreSqlDatabaseInstance db = ModelExtensions.As(instance, PostgreSqlDatabaseInstance.class);
+		PostgreSqlDatabaseInstance db = ModelExtensions.as(instance, PostgreSqlDatabaseInstance.class);
 		if (db == null)
 		{
 			throw new IllegalArgumentException("instance must be a PostgreSqlDatabaseInstance");
@@ -102,7 +102,7 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		AnsiSqlDatabaseInstance db = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
+		AnsiSqlDatabaseInstance db = ModelExtensions.as(instance, AnsiSqlDatabaseInstance.class);
 		if (db == null)
 		{
 			throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance");

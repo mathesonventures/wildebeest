@@ -48,13 +48,13 @@ public class SqlServerDropDatabaseMigrationPlugin implements MigrationPlugin
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlServerDropDatabaseMigration migrationT = ModelExtensions.As(migration, SqlServerDropDatabaseMigration.class);
+		SqlServerDropDatabaseMigration migrationT = ModelExtensions.as(migration, SqlServerDropDatabaseMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		SqlServerDatabaseInstance instanceT = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		SqlServerDatabaseInstance instanceT = ModelExtensions.as(instance, SqlServerDatabaseInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");

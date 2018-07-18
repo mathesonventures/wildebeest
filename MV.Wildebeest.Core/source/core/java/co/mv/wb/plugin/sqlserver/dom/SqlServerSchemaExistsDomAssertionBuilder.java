@@ -18,7 +18,7 @@ package co.mv.wb.plugin.sqlserver.dom;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionBuilder;
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.V;
 import co.mv.wb.plugin.base.dom.BaseDomAssertionBuilder;
@@ -43,7 +43,7 @@ public class SqlServerSchemaExistsDomAssertionBuilder extends BaseDomAssertionBu
 		Optional<String> schemaName = this.tryGetString("schemaName");
 
 		// Validation
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!schemaName.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "schemaName", SqlServerSchemaExistsAssertion.class);

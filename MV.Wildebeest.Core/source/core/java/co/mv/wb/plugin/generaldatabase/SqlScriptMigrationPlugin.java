@@ -47,13 +47,13 @@ public class SqlScriptMigrationPlugin implements MigrationPlugin
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlScriptMigration migrationT = ModelExtensions.As(migration, SqlScriptMigration.class);
+		SqlScriptMigration migrationT = ModelExtensions.as(migration, SqlScriptMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		DatabaseInstance instanceT = ModelExtensions.As(instance, DatabaseInstance.class);
+		DatabaseInstance instanceT = ModelExtensions.as(instance, DatabaseInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");

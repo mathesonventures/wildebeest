@@ -47,13 +47,13 @@ public class AnsiSqlDropDatabaseMigrationPlugin implements MigrationPlugin
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		AnsiSqlDropDatabaseMigration migrationT = ModelExtensions.As(migration, AnsiSqlDropDatabaseMigration.class);
+		AnsiSqlDropDatabaseMigration migrationT = ModelExtensions.as(migration, AnsiSqlDropDatabaseMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		AnsiSqlDatabaseInstance instanceT = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
+		AnsiSqlDatabaseInstance instanceT = ModelExtensions.as(instance, AnsiSqlDatabaseInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");

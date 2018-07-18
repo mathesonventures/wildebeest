@@ -113,7 +113,7 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 	{
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		AnsiSqlDatabaseInstance db = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
+		AnsiSqlDatabaseInstance db = ModelExtensions.as(instance, AnsiSqlDatabaseInstance.class);
 		if (db == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");

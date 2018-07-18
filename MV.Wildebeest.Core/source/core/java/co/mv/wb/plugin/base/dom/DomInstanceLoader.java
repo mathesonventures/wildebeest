@@ -20,7 +20,7 @@ import co.mv.wb.Instance;
 import co.mv.wb.InstanceBuilder;
 import co.mv.wb.InstanceLoader;
 import co.mv.wb.LoaderFault;
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.framework.ArgumentNullException;
 import org.w3c.dom.Document;
@@ -128,7 +128,7 @@ public class DomInstanceLoader implements InstanceLoader
 
 		if (builder == null)
 		{
-			Messages messages = new Messages();
+			MessageList messages = new MessageList();
 			messages.addMessage(String.format(
 				"instance builder of type %s not found",
 				type));
