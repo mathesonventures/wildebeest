@@ -18,9 +18,6 @@ public class SharedCommands
 	@CommandLine.Option(names = {"-i", "--instance"}, description = "Instance file", required = true)
 	String instance;
 
-	@CommandLine.Option(names = {"-t","--target-state"}, description = "Target state", required = true)
-	String targetState;
-
 	@CommandLine.Parameters
 	String help;
 

@@ -50,7 +50,6 @@ import java.util.Optional;
  * @since 1.0
  */
 @CommandLine.Command(name = "wb",
-	  mixinStandardHelpOptions = true,
 	  subcommands = {
 			MigrateCommand.class,
 			JumpStateCommand.class,
@@ -121,10 +120,16 @@ public class WildebeestCommand
 			CommandLine.usage(this, this.output);
 		} else
 		{
-			CommandLine commandLine = new CommandLine(this);
-			List<CommandLine> parsed = commandLine.parse(args);
+			try
+			{
+				CommandLine commandLine = new CommandLine(this);
+				List<CommandLine> parsed = commandLine.parse(args);
 
-			parseArguments(parsed);
+				parseArguments(parsed);
+			} catch (CommandLine.UnmatchedArgumentException e)
+			{
+				CommandLine.usage(this, this.output);
+			}
 		}
 
 	}
@@ -133,7 +138,7 @@ public class WildebeestCommand
 	{
 		if (parsed.get(1).getCommand().getClass() == CommandLine.HelpCommand.class)
 		{
-			helpMessage(parsed.get(1));
+			CommandLine.usage(this, this.output);
 			return;
 		} else if (this.usagePlugins == true)
 		{
@@ -142,13 +147,13 @@ public class WildebeestCommand
 
 		} else if (parsed.get(1).getCommand().getClass() == MigrateCommand.class)
 		{
-			migrateCommand(parsed.get(1));
+			migrateCommand(parsed);
 		} else if (parsed.get(1).getCommand().getClass() == JumpStateCommand.class)
 		{
-			jumpstateCommand(parsed.get(1));
+			jumpstateCommand(parsed);
 		} else if (parsed.get(1).getCommand().getClass() == StateCommand.class)
 		{
-			stateCommand(parsed.get(1));
+			stateCommand(parsed);
 		} else
 		{
 			WildebeestCommand.printBanner(this.output);
@@ -319,13 +324,22 @@ public class WildebeestCommand
 		out.println("");
 	}
 
-	private void migrateCommand(CommandLine parsed)
+	private void migrateCommand(List<CommandLine> parsed)
 	{
+		//check is help requested
+		for (CommandLine c: parsed
+			 )
+		{
+			if(c.getCommand().getClass() == CommandLine.HelpCommand.class)
+			{
+				CommandLine.usage(new MigrateCommand(), this.output);
+				return;
+			}
+		}
 
-
-		String resourceFilename = parsed.getParseResult().matchedOption("--resource").getValue();
-		String instanceFilename = parsed.getParseResult().matchedOption("--instance").getValue();
-		Optional<String> targetState = Optional.of(parsed.getParseResult().matchedOption("--target-state").getValue());
+		String resourceFilename = parsed.get(1).getParseResult().matchedOption("--resource").getValue();
+		String instanceFilename = parsed.get(1).getParseResult().matchedOption("--instance").getValue();
+		Optional<String> targetState = Optional.of(parsed.get(1).getParseResult().matchedOption("--target-state").getValue());
 
 		if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
 		{
@@ -380,11 +394,22 @@ public class WildebeestCommand
 		}
 	}
 
-	private void jumpstateCommand(CommandLine parsed)
+	private void jumpstateCommand(List<CommandLine> parsed)
 	{
-		String resourceFilename = parsed.getParseResult().matchedOption("--resource").getValue();
-		String instanceFilename = parsed.getParseResult().matchedOption("--instance").getValue();
-		String targetState = parsed.getParseResult().matchedOption("--target-state").getValue();
+		//check is help requested
+		for (CommandLine c: parsed
+			  )
+		{
+			if(c.getCommand().getClass() == CommandLine.HelpCommand.class)
+			{
+				CommandLine.usage(new MigrateCommand(), this.output);
+				return;
+			}
+		}
+
+		String resourceFilename =  parsed.get(1).getParseResult().matchedOption("--resource").getValue();
+		String instanceFilename =  parsed.get(1).getParseResult().matchedOption("--instance").getValue();
+		String targetState =  parsed.get(1).getParseResult().matchedOption("--target-state").getValue();
 
 		if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename) ||
 			  isNull(targetState))
@@ -431,10 +456,21 @@ public class WildebeestCommand
 		}
 	}
 
-	private void stateCommand(CommandLine parsed)
+	private void stateCommand(List<CommandLine> parsed)
 	{
-		String resourceFilename = parsed.getParseResult().matchedOption("--resource").getValue();
-		String instanceFilename = parsed.getParseResult().matchedOption("--instance").getValue();
+		//check is help requested
+		for (CommandLine c: parsed
+			  )
+		{
+			if(c.getCommand().getClass() == CommandLine.HelpCommand.class)
+			{
+				CommandLine.usage(new MigrateCommand(), this.output);
+				return;
+			}
+		}
+
+		String resourceFilename =  parsed.get(1).getParseResult().matchedOption("--resource").getValue();
+		String instanceFilename =  parsed.get(1).getParseResult().matchedOption("--instance").getValue();
 
 		if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
 		{
@@ -465,29 +501,6 @@ public class WildebeestCommand
 				}
 			}
 		}
-	}
-
-	private void helpMessage(CommandLine parsed)
-	{
-		if(parsed.getParseResult().originalArgs().size() > 1 )
-		{
-			if (parsed.getParseResult().originalArgs().get(1).equals("migrate"))
-			{
-				CommandLine.usage(new MigrateCommand(), output);
-				return;
-			}
-			else if (parsed.getParseResult().originalArgs().get(1).equals("jumpstate"))
-			{
-				CommandLine.usage(new MigrateCommand(), output);
-				return;
-			}
-			if (parsed.getParseResult().originalArgs().get(1).equals("state"))
-			{
-				CommandLine.usage(new MigrateCommand(), output);
-				return;
-			}
-		}
-		CommandLine.usage(this,this.output);
 	}
 
 }
