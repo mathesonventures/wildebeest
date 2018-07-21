@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.composite.dom;
 
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
 import co.mv.wb.PluginBuildException;
@@ -62,7 +62,7 @@ public class ExternalResourceDomMigrationBuilder extends BaseDomMigrationBuilder
 		Optional<String> target = this.tryGetString("target");
 
 		// Validation
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!filename.isPresent())
 		{
 			messages.addMessage(V.elementMissing(migrationId, "filename", ExternalResourceMigration.class));

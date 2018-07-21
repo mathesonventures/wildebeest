@@ -1110,7 +1110,7 @@ public class DomResourceLoaderTests
 				Assert.assertTrue(
 					"e.message",
 					e.getMessage().contains("State:363568f1-aaed-4a50-bea0-9ddee713cc11 has invalid references to: " +
-						"[ Assertion Group:group1 ]"));
+						"[ Assertion Group: group1 ]"));
 			}
 		}.perform();
 	}
@@ -1268,7 +1268,7 @@ public class DomResourceLoaderTests
 				Assert.assertTrue(
 					"e.message",
 					e.getMessage().contains("State:199b7cc1-3cc6-48ca-b012-a70d05d5b5e7 has invalid references to:" +
-						" [ Assertion:DatabaseExisting2 ]"));
+						" [ Assertion: DatabaseExisting2 ]"));
 			}
 		}.perform();
 	}

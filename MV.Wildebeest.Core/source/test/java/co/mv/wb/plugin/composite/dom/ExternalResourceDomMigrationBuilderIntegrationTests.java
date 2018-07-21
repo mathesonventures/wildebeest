@@ -86,6 +86,6 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 
 		ExternalResourceMigration migrationT = (ExternalResourceMigration)migration;
 		assertEquals("migration.filename", "foo.wbr", migrationT.getFileName());
-		assertEquals("migration.target", Optional.of("bar"), migrationT.getTarget());
+		assertEquals("migration.target", "bar", migrationT.getTarget());
 	}
 }

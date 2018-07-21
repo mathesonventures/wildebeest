@@ -51,13 +51,13 @@ public class AnsiSqlCreateDatabaseMigrationPlugin implements MigrationPlugin
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		AnsiSqlCreateDatabaseMigration migrationT = ModelExtensions.As(migration, AnsiSqlCreateDatabaseMigration.class);
+		AnsiSqlCreateDatabaseMigration migrationT = ModelExtensions.as(migration, AnsiSqlCreateDatabaseMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		AnsiSqlDatabaseInstance instanceT = ModelExtensions.As(instance, AnsiSqlDatabaseInstance.class);
+		AnsiSqlDatabaseInstance instanceT = ModelExtensions.as(instance, AnsiSqlDatabaseInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
@@ -69,7 +69,8 @@ public class AnsiSqlCreateDatabaseMigrationPlugin implements MigrationPlugin
 			{
 				DatabaseHelper.execute(
 					instanceT.getAdminDataSource(),
-					String.format("CREATE DATABASE \"%s\";", instanceT.getDatabaseName()));
+					String.format("CREATE DATABASE \"%s\";", instanceT.getDatabaseName().toLowerCase()),
+					false);
 			}
 			catch (SQLException e)
 			{

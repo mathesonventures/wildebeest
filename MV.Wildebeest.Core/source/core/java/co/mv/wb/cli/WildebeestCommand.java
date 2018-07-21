@@ -175,7 +175,7 @@ public class WildebeestCommand
 				{
 					WildebeestCommand.printBanner(this.output);
 
-					WildebeestCommand.printUsage(System.out);
+					WildebeestCommand.printUsage(this.output);
 				}
 				else
 				{
@@ -200,7 +200,7 @@ public class WildebeestCommand
 						}
 						catch (TargetNotSpecifiedException e)
 						{
-							this.output.println(OutputFormatter.targetNotSpecified(e));
+							this.output.println(OutputFormatter.targetNotSpecified());
 						}
 						catch (UnknownStateSpecifiedException e)
 						{
@@ -245,7 +245,7 @@ public class WildebeestCommand
 				{
 					WildebeestCommand.printBanner(this.output);
 
-					WildebeestCommand.printUsage(System.out);
+					WildebeestCommand.printUsage(this.output);
 				}
 				else
 				{
@@ -303,7 +303,7 @@ public class WildebeestCommand
 			{
 				WildebeestCommand.printBanner(this.output);
 
-				WildebeestCommand.printUsage(System.out);
+				WildebeestCommand.printUsage(this.output);
 			}
 		}
 	}
@@ -331,7 +331,7 @@ public class WildebeestCommand
 		}
 		catch (LoaderFault e)
 		{
-			out.println(OutputFormatter.loaderFault(e, "resource"));
+			out.println(OutputFormatter.loaderFault("resource"));
 		}
 		catch (PluginBuildException e)
 		{
@@ -372,7 +372,7 @@ public class WildebeestCommand
 		}
 		catch (LoaderFault e)
 		{
-			out.println(OutputFormatter.loaderFault(e, "instance"));
+			out.println(OutputFormatter.loaderFault("instance"));
 		}
 		catch (PluginBuildException e)
 		{
@@ -407,11 +407,13 @@ public class WildebeestCommand
 			if (arg.startsWith(shortName))
 			{
 				result = arg.substring(shortName.length());
-				break;
 			}
 			if (arg.startsWith(longName))
 			{
 				result = arg.substring(longName.length());
+			}
+			if (result != null)
+			{
 				break;
 			}
 		}
@@ -440,11 +442,13 @@ public class WildebeestCommand
 			if (arg.startsWith(shortName))
 			{
 				result = Optional.of(arg.substring(shortName.length()));
-				break;
 			}
 			if (arg.startsWith(longName))
 			{
 				result = Optional.of(arg.substring(longName.length()));
+			}
+			if (result.isPresent())
+			{
 				break;
 			}
 		}

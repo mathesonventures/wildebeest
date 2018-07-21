@@ -48,13 +48,13 @@ public class SqlServerCreateSchemaMigrationPlugin implements MigrationPlugin
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlServerCreateSchemaMigration migrationT = ModelExtensions.As(migration, SqlServerCreateSchemaMigration.class);
+		SqlServerCreateSchemaMigration migrationT = ModelExtensions.as(migration, SqlServerCreateSchemaMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		SqlServerDatabaseInstance instanceT = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		SqlServerDatabaseInstance instanceT = ModelExtensions.as(instance, SqlServerDatabaseInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
@@ -65,7 +65,8 @@ public class SqlServerCreateSchemaMigrationPlugin implements MigrationPlugin
 			DatabaseHelper.execute(instanceT.getAppDataSource(), new StringBuilder()
 				.append("CREATE SCHEMA [")
 				.append(migrationT.getSchemaName())
-				.append("] AUTHORIZATION [dbo];").toString());
+				.append("] AUTHORIZATION [dbo];").toString(),
+				false);
 		}
 		catch (SQLServerException e)
 		{

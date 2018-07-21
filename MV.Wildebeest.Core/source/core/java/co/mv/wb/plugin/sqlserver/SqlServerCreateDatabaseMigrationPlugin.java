@@ -49,13 +49,13 @@ public class SqlServerCreateDatabaseMigrationPlugin implements MigrationPlugin
 		if (instance == null) throw new ArgumentNullException("instance");
 
 		SqlServerCreateDatabaseMigration migrationT =
-			ModelExtensions.As(migration, SqlServerCreateDatabaseMigration.class);
+			ModelExtensions.as(migration, SqlServerCreateDatabaseMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		SqlServerDatabaseInstance instanceT = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		SqlServerDatabaseInstance instanceT = ModelExtensions.as(instance, SqlServerDatabaseInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
@@ -63,8 +63,13 @@ public class SqlServerCreateDatabaseMigrationPlugin implements MigrationPlugin
 
 		try
 		{
-			DatabaseHelper.execute(instanceT.getAdminDataSource(), new StringBuilder()
-				.append("CREATE DATABASE [").append(instanceT.getDatabaseName()).append("];").toString());
+			DatabaseHelper.execute(
+				instanceT.getAdminDataSource(),
+				new StringBuilder()
+					.append("CREATE DATABASE [")
+					.append(instanceT.getDatabaseName())
+					.append("];").toString(),
+				false);
 		}
 		catch (SQLServerException e)
 		{

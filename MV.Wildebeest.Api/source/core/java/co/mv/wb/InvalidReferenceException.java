@@ -19,6 +19,7 @@ package co.mv.wb;
 import co.mv.wb.framework.ArgumentNullException;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * Indicates that a referred resource is missing in the XML
@@ -29,6 +30,30 @@ public class InvalidReferenceException extends Exception
 {
 	private final Reference[] refs;
 	private final Reference referrer;
+
+	/**
+	 * Creates an InvalidReferenceException for a single referenced entity where the reference was not from another
+	 * entity defined within Wildebeest.  For example if an API request for a non-existant state is received, this is a
+	 * reference without a referring entity.
+	 *
+	 * @param refType the type of the entity referenced.
+	 * @param refValue the reference value that does not exist.
+	 * @return a new InvalidReferenceException with a single referenced entity and no referrer.
+	 */
+	public static InvalidReferenceException oneReference(
+		EntityType refType,
+		String refValue)
+	{
+		if (refType == null) throw new ArgumentNullException("refType");
+		if (refValue == null) throw new ArgumentNullException("refValue");
+
+		return new InvalidReferenceException(
+			new Reference[]
+				{
+					new Reference(refType, refValue)
+				},
+			null);
+	}
 
 	public static InvalidReferenceException oneReference(
 		EntityType refType,
@@ -73,14 +98,20 @@ public class InvalidReferenceException extends Exception
 			new Reference(referrerType, referrerValue));
 	}
 
-	public InvalidReferenceException(
+	/**
+	 * Constructs a new InvalidReferenceException.  This constructor is private as we push all constructions through the
+	 * static factory methods in order to manage the permutations that are valid,
+	 *
+	 * @param refs the invalid references to entities.
+	 * @param referrer the optional referrer that made the invalid references.
+	 */
+	private InvalidReferenceException(
 		Reference[] refs,
 		Reference referrer)
 	{
 		super(buildMessage(refs, referrer));
 
 		if (refs == null) throw new ArgumentNullException("refs");
-		if (referrer == null) throw new ArgumentNullException("referrer");
 
 		if (Arrays.asList(refs).contains(null))
 		{
@@ -96,13 +127,19 @@ public class InvalidReferenceException extends Exception
 		Reference referrer)
 	{
 		if (refs == null) throw new ArgumentNullException("refs");
-		if (referrer == null) throw new ArgumentNullException("referrer");
 
 		StringBuilder message = new StringBuilder();
 
-		message
-			.append(referrer.getType().getName()).append(":").append(referrer.getRef())
-			.append(" has invalid references to: [ ");
+		if (referrer == null)
+		{
+			message.append("Invalid references found to: [ ");
+		}
+		else
+		{
+			message
+				.append(referrer.getType().getName()).append(":").append(referrer.getRef())
+				.append(" has invalid references to: [ ");
+		}
 
 		for (int i = 0; i < refs.length; i++)
 		{
@@ -113,7 +150,7 @@ public class InvalidReferenceException extends Exception
 				message.append(", ");
 			}
 
-			message.append(ref.getType().getName()).append(":").append(ref.getRef());
+			message.append(ref.getType().getName()).append(": ").append(ref.getRef());
 		}
 
 		message.append(" ]");
@@ -126,8 +163,8 @@ public class InvalidReferenceException extends Exception
 		return this.refs;
 	}
 
-	public Reference getReferrer()
+	public Optional<Reference> getReferrer()
 	{
-		return this.referrer;
+		return Optional.ofNullable(this.referrer);
 	}
 }

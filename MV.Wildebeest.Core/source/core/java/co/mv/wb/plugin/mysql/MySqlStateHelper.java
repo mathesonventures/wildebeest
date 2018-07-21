@@ -183,6 +183,7 @@ public class MySqlStateHelper
 			.append("`StateId` char(36) NOT NULL, ")
 			.append("`LastMigrationInstant` datetime NOT NULL, ")
 			.append("PRIMARY KEY (`ResourceId`)")
-			.append(");").toString());
+			.append(");").toString(),
+			false);
 	}
 }

@@ -24,7 +24,7 @@ package co.mv.wb.event;
 public interface EventSink
 {
 	/**
-	 *
+	 * Receives events sent by event sources.
 	 *
 	 * @param event Event to be processed
 	 * @since 4.0

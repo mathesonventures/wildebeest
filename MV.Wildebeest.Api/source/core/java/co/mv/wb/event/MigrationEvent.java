@@ -30,7 +30,9 @@ public class MigrationEvent extends Event
 	 */
 	public enum Name
 	{
-		Start, Complete, Failed;
+		START,
+		COMPLETE,
+		FAILED;
 	}
 
 	/**
@@ -56,7 +58,7 @@ public class MigrationEvent extends Event
 	 */
 	public static MigrationEvent start(String message)
 	{
-		return new MigrationEvent(MigrationEvent.Name.Start.name(), message);
+		return new MigrationEvent(MigrationEvent.Name.START.name(), message);
 	}
 
 	/**
@@ -68,7 +70,7 @@ public class MigrationEvent extends Event
 	 */
 	public static MigrationEvent complete(String message)
 	{
-		return new MigrationEvent(MigrationEvent.Name.Complete.name(), message);
+		return new MigrationEvent(MigrationEvent.Name.COMPLETE.name(), message);
 	}
 
 	/**
@@ -80,6 +82,6 @@ public class MigrationEvent extends Event
 	 */
 	public static MigrationEvent failed(String message)
 	{
-		return new MigrationEvent(MigrationEvent.Name.Failed.name(), message);
+		return new MigrationEvent(MigrationEvent.Name.FAILED.name(), message);
 	}
 }

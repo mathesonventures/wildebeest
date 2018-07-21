@@ -37,6 +37,6 @@ public class LoggingEventSink implements EventSink
 
 	@Override public void onEvent(Event event)
 	{
-		this.logger.info(event.getMessage().get());
+		this.logger.info(event.getMessage().orElse(event.getName()));
 	}
 }

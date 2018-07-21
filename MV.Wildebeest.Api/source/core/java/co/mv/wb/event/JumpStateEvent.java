@@ -1,3 +1,19 @@
+// Wildebeest Migration Framework
+// Copyright © 2013 - 2018, Matheson Ventures Pte Ltd
+//
+// This file is part of Wildebeest
+//
+// Wildebeest is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License v2 as published by the Free
+// Software Foundation.
+//
+// Wildebeest is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+// A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
+
 package co.mv.wb.event;
 
 public class JumpStateEvent extends Event
@@ -9,7 +25,9 @@ public class JumpStateEvent extends Event
 	 */
 	public enum Name
 	{
-		Start, Complete, Failed;
+		START,
+		COMPLETE,
+		FAILED;
 	}
 
 	/**
@@ -34,7 +52,7 @@ public class JumpStateEvent extends Event
 	 */
 	public static JumpStateEvent start(String message)
 	{
-		return new JumpStateEvent(Name.Start.name(), message);
+		return new JumpStateEvent(Name.START.name(), message);
 	}
 
 	/**
@@ -45,7 +63,7 @@ public class JumpStateEvent extends Event
 	 */
 	public static JumpStateEvent complete(String message)
 	{
-		return new JumpStateEvent(Name.Complete.name(), message);
+		return new JumpStateEvent(Name.COMPLETE.name(), message);
 	}
 
 	/**
@@ -57,6 +75,6 @@ public class JumpStateEvent extends Event
 	 */
 	public static JumpStateEvent failed(String message)
 	{
-		return new JumpStateEvent(Name.Failed.name(), message);
+		return new JumpStateEvent(Name.FAILED.name(), message);
 	}
 }

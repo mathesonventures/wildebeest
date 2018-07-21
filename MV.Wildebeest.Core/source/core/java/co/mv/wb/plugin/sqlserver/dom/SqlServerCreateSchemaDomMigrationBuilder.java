@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.sqlserver.dom;
 
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
 import co.mv.wb.PluginBuildException;
@@ -46,7 +46,7 @@ public class SqlServerCreateSchemaDomMigrationBuilder extends BaseDomMigrationBu
 	{
 		Optional<String> schemaName = this.tryGetString("schemaName");
 
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!schemaName.isPresent())
 		{
 			V.elementMissing(messages, migrationId, "schemaName", SqlServerCreateSchemaMigration.class);

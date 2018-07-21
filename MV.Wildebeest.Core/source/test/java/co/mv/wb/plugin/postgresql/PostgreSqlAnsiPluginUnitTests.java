@@ -48,9 +48,9 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 	{
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
-			5432,
+			15432,
 			"postgres",
-			"password",
+			"Password123!",
 			"WildebeestTest",
 			null,
 			null);
@@ -84,9 +84,9 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 	{
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
-			5432,
+			15432,
 			"postgres",
-			"password",
+			"Password123!",
 			"WildebeestTest",
 			null,
 			null);
@@ -130,9 +130,9 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 	{
 		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
 			"127.0.0.1",
-			5432,
+			15432,
 			"postgres",
-			"password",
+			"Password123!",
 			"WildebeestTest",
 			null,
 			null);

@@ -91,7 +91,8 @@ public class PostgreSqlStateTrackingTests
 				String.format(
 					"SELECT LastMigrationInstant FROM %s.%s ",
 					instance.getMetaSchemaName(),
-					instance.getStateTableName()));
+					instance.getStateTableName()),
+				false);
 
 		}
 		catch (SQLException e)

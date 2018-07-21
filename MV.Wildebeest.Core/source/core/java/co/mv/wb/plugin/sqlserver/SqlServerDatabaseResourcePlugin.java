@@ -19,6 +19,7 @@ package co.mv.wb.plugin.sqlserver;
 import co.mv.wb.FaultException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
@@ -54,7 +55,7 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		SqlServerDatabaseInstance db = ModelExtensions.as(instance, SqlServerDatabaseInstance.class);
 		if (db == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
@@ -78,10 +79,13 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 		State result = null;
 		if (declaredStateId != null)
 		{
-			result = Wildebeest.findState(resource, declaredStateId.toString());
+			try
+			{
+				result = Wildebeest.findState(resource, declaredStateId.toString());
+			}
 
 			// If the declared state ID is not known, throw
-			if (result == null)
+			catch (InvalidReferenceException e)
 			{
 				throw new IndeterminateStateException(String.format(
 					"The resource is declared to be in state %s, but this state is not defined for this resource",
@@ -103,7 +107,7 @@ public class SqlServerDatabaseResourcePlugin implements ResourcePlugin
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlServerDatabaseInstance db = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		SqlServerDatabaseInstance db = ModelExtensions.as(instance, SqlServerDatabaseInstance.class);
 		if (db == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");

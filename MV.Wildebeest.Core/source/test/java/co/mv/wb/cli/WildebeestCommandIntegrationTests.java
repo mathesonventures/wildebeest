@@ -111,6 +111,7 @@ public class WildebeestCommandIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -137,7 +138,7 @@ public class WildebeestCommandIntegrationTests
 				});
 
 			// Drop the wb_state table, so the database resource is now no longer tracked by Wildebeest
-			DatabaseHelper.execute(instanceT.getAppDataSource(), "DROP TABLE wb_state;");
+			DatabaseHelper.execute(instanceT.getAppDataSource(), "DROP TABLE wb_state;", false);
 
 			// Execute
 			wb.run(new String[]
@@ -346,6 +347,7 @@ public class WildebeestCommandIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -380,11 +382,12 @@ public class WildebeestCommandIntegrationTests
 				{
 					DatabaseHelper.execute(
 						instanceT.getAdminDataSource(),
-						String.format("DROP DATABASE %s", instanceT.getDatabaseName()));
+						String.format("DROP DATABASE %s", instanceT.getDatabaseName().toLowerCase()),
+						false);
 				}
 				catch (SQLException e)
 				{
-					throw new RuntimeException(e);
+					LOG.warn("Exception when dropping test database", e);
 				}
 			}
 		}

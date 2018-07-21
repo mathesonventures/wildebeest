@@ -18,7 +18,7 @@ package co.mv.wb.plugin.mysql.dom;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionBuilder;
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.V;
 import co.mv.wb.plugin.base.dom.BaseDomAssertionBuilder;
@@ -42,7 +42,7 @@ public class MySqlTableExistsDomAssertionBuilder extends BaseDomAssertionBuilder
 	{
 		Optional<String> tableName = this.tryGetString("tableName");
 
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!tableName.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "tableName", MySqlTableExistsAssertion.class);

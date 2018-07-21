@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -176,35 +177,32 @@ public class Wildebeest
 	// Global Functions
 	//
 
+	/**
+	 * Attempts to find the {@link State} matching the supplied stateRef reference in the supplied {@link Resource}.
+	 *
+	 * @param resource the Resource in which to search for the State
+	 * @param stateRef the reference to the State to search for.  May be the ID or the name of the State.
+	 * @return the State that matches the supplied stateRef reference.
+	 */
 	public static State findState(
 		Resource resource,
-		String state)
+		String stateRef) throws InvalidReferenceException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
-		if (state == null) throw new ArgumentNullException("state");
+		if (stateRef == null) throw new ArgumentNullException("stateRef");
 
-		State result;
+		Optional<State> result = resource
+			.getStates().stream()
+			.filter(s -> s.matchesStateRef(stateRef))
+			.findFirst();
 
-		if (Util.isUUID(state))
+		if (!result.isPresent())
 		{
-			UUID stateId = UUID.fromString(state);
-
-			result = resource
-				.getStates().stream()
-				.filter(s -> s.getStateId().equals(stateId))
-				.findFirst()
-				.orElse(null);
-		}
-		else
-		{
-			result = resource
-				.getStates().stream()
-				.filter(s -> state.equals(s.getName().get()))
-				.findFirst()
-				.orElse(null);
+			throw InvalidReferenceException.oneReference(
+				EntityType.State,
+				stateRef);
 		}
 
-		return result;
+		return result.get();
 	}
-
 }

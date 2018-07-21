@@ -451,6 +451,7 @@ public class WildebeestApiImplMigrateIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withMigrationPlugin(new SetTagMigrationPlugin(resource))
 			.get();
 
 		wildebeestApi.migrate(

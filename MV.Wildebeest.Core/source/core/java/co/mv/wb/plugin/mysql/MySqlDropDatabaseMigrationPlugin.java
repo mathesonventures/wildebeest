@@ -47,13 +47,13 @@ public class MySqlDropDatabaseMigrationPlugin implements MigrationPlugin
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		MySqlDropDatabaseMigration migrationT = ModelExtensions.As(migration, MySqlDropDatabaseMigration.class);
+		MySqlDropDatabaseMigration migrationT = ModelExtensions.as(migration, MySqlDropDatabaseMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		MySqlDatabaseInstance instanceT = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
+		MySqlDatabaseInstance instanceT = ModelExtensions.as(instance, MySqlDatabaseInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
@@ -68,8 +68,11 @@ public class MySqlDropDatabaseMigrationPlugin implements MigrationPlugin
 
 		try
 		{
-			DatabaseHelper.execute(instanceT.getAdminDataSource(), new StringBuilder()
-				.append("DROP DATABASE `").append(instanceT.getDatabaseName()).append("`;").toString());
+			DatabaseHelper.execute(
+				instanceT.getAdminDataSource(),
+				new StringBuilder()
+					.append("DROP DATABASE `").append(instanceT.getDatabaseName()).append("`;").toString(),
+				false);
 		}
 		catch (SQLException e)
 		{
