@@ -8,6 +8,6 @@ import picocli.CommandLine;
 public class MigrateCommand extends SharedCommands
 {
 
-	@CommandLine.Option(names = {"-t","--target-state"}, description = "Target state", required = true)
+	@CommandLine.Option(names = {"-t","--target-state"}, description = "Target state")
 	String targetState;
 }

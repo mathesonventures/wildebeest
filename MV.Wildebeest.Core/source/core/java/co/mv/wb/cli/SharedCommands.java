@@ -18,8 +18,6 @@ public class SharedCommands
 	@CommandLine.Option(names = {"-i", "--instance"}, description = "Instance file", required = true)
 	String instance;
 
-	@CommandLine.Parameters
-	String help;
 
 }
 

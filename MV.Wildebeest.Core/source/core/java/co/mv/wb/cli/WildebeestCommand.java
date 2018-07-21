@@ -56,8 +56,7 @@ import java.util.Optional;
 	  subcommands = {
 			MigrateCommand.class,
 			JumpStateCommand.class,
-			StateCommand.class,
-			CommandLine.HelpCommand.class
+			StateCommand.class
 	  })
 public class WildebeestCommand
 {
@@ -336,6 +335,7 @@ public class WildebeestCommand
 
 	private void migrateCommand(List<CommandLine> parsed)
 	{
+
 		//check is help requested
 		for (CommandLine c: parsed
 			 )
@@ -349,7 +349,10 @@ public class WildebeestCommand
 
 		String resourceFilename = parsed.get(1).getParseResult().matchedOption("--resource").getValue();
 		String instanceFilename = parsed.get(1).getParseResult().matchedOption("--instance").getValue();
-		String targetState = parsed.get(1).getParseResult().matchedOption("--target-state").getValue();
+		String targetState = "";
+		if(parsed.get(1).getParseResult().hasMatchedOption("--target-state")){
+			 targetState = parsed.get(1).getParseResult().matchedOption("--target-state").getValue();
+		}
 
 		if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
 		{
@@ -374,7 +377,7 @@ public class WildebeestCommand
 					this.wildebeestApi.migrate(
 						  resource.get(),
 						  instance.get(),
-						  targetState);
+						  targetState.toString());
 				} catch (TargetNotSpecifiedException e)
 				{
 					this.output.println(OutputFormatter.targetNotSpecified());
@@ -417,9 +420,13 @@ public class WildebeestCommand
 			}
 		}
 
-		String resourceFilename =  parsed.get(1).getParseResult().matchedOption("--resource").getValue();
-		String instanceFilename =  parsed.get(1).getParseResult().matchedOption("--instance").getValue();
-		String targetState =  parsed.get(1).getParseResult().matchedOption("--target-state").getValue();
+
+		String resourceFilename = parsed.get(1).getParseResult().matchedOption("--resource").getValue();
+		String instanceFilename = parsed.get(1).getParseResult().matchedOption("--instance").getValue();
+		String targetState = "";
+		if(parsed.get(1).getParseResult().hasMatchedOption("--target-state")){
+			targetState = parsed.get(1).getParseResult().matchedOption("--target-state").getValue();
+		}
 
 		if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename) ||
 			  isNull(targetState))
