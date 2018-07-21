@@ -223,8 +223,8 @@ public class WildebeestApiImplFindPathsUnitTests
 			.withMigration(2, 3)
 			.build();
 
-		UUID currentStateId = context.resource.getStates().get(0).getStateId();
-		UUID targetStateId = context.resource.getStates().get(2).getStateId();
+		UUID currentStateId = context.getStateId(0);
+		UUID targetStateId = context.getStateId(2);
 
 		// Execute
 		List<List<Migration>> paths = WildebeestApiImpl.findPaths(
@@ -258,8 +258,8 @@ public class WildebeestApiImplFindPathsUnitTests
 		Migration m2to3 = context.resource.getMigrations().get(1);
 		Migration m3to5 = context.resource.getMigrations().get(4);
 
-		UUID fromStateId = context.resource.getStates().get(0).getStateId();
-		UUID targetStateId = context.resource.getStates().get(4).getStateId();
+		UUID fromStateId = context.getStateId(0);
+		UUID targetStateId = context.getStateId(4);
 
 		// Execute
 		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);

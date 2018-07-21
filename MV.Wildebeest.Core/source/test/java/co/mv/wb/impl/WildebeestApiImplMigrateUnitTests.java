@@ -40,8 +40,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
-
 import static co.mv.wb.Asserts.assertFakeInstance;
 import static org.junit.Assert.assertEquals;
 
@@ -239,11 +237,8 @@ public class WildebeestApiImplMigrateUnitTests
 		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withFooBarStatesAndMigrations()
+			.withAssertion(1, "Bar")
 			.build();
-
-		// Add an assertion to the Bar state
-		context.resource.getStates().get(1).getAssertions().add(
-			new TagAssertion(UUID.randomUUID(), 0, "Bar"));
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
@@ -284,11 +279,8 @@ public class WildebeestApiImplMigrateUnitTests
 		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withFooBarStatesAndMigrations()
+			.withAssertion(1, "Bar")
 			.build();
-
-		// Add an assertion to the Bar state
-		context.resource.getStates().get(1).getAssertions().add(
-			new TagAssertion(UUID.randomUUID(), 0, "Bar"));
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
@@ -325,16 +317,9 @@ public class WildebeestApiImplMigrateUnitTests
 		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withFooBarStatesAndMigrations()
+			.withAssertion(0, "Bup")
+			.withInitialState(0, "Foo")
 			.build();
-
-		// Manually migrate
-		FakeInstance instanceT = (FakeInstance)context.instance;
-		instanceT.setStateId(context.resource.getStates().get(0).getStateId());
-		instanceT.setTag("Foo");
-
-		// Add an assertion that will fail to the Foo state
-		context.resource.getStates().get(0).getAssertions().add(
-			new TagAssertion(UUID.randomUUID(), 0, "Bup"));
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))

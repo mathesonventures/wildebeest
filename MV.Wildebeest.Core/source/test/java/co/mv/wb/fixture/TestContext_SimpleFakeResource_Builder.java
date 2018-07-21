@@ -16,7 +16,6 @@
 
 package co.mv.wb.fixture;
 
-import co.mv.wb.Instance;
 import co.mv.wb.Migration;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
@@ -45,11 +44,17 @@ public class TestContext_SimpleFakeResource_Builder
 	private List<Migration> migrations;
 	private String defaultTarget;
 
+	private UUID initialStateId;
+	private String initialTag;
+
 	private TestContext_SimpleFakeResource_Builder()
 	{
 		this.defaultTarget = null;
 		this.states = Arrays.asList();
 		this.migrations = Arrays.asList();
+
+		this.initialStateId = null;
+		this.initialTag = null;
 	}
 
 	public static TestContext_SimpleFakeResource_Builder create()
@@ -156,6 +161,29 @@ public class TestContext_SimpleFakeResource_Builder
 		return this;
 	}
 
+	public TestContext_SimpleFakeResource_Builder withInitialState(
+		int stateIndex,
+		String tag)
+	{
+		if (tag == null) throw new ArgumentNullException("tag");
+
+		State state = this.states.get(stateIndex);
+		this.initialStateId = state.getStateId();
+		this.initialTag = tag;
+
+		return this;
+	}
+
+	public TestContext_SimpleFakeResource_Builder withInitialTag(
+		String tag)
+	{
+		if (tag == null) throw new ArgumentNullException("tag");
+
+		this.initialTag = tag;
+
+		return this;
+	}
+
 	public TestContext_ResourceAndInstance build()
 	{
 		Resource resource = new ResourceImpl(
@@ -174,7 +202,17 @@ public class TestContext_SimpleFakeResource_Builder
 			resource.getMigrations().add(migration);
 		}
 
-		Instance instance = new FakeInstance();
+		FakeInstance instance = new FakeInstance();
+
+		if (this.initialStateId != null)
+		{
+			instance.setStateId(this.initialStateId);
+		}
+
+		if (this.initialTag != null)
+		{
+			instance.setTag(this.initialTag);
+		}
 
 		return new TestContext_ResourceAndInstance(
 			resource,

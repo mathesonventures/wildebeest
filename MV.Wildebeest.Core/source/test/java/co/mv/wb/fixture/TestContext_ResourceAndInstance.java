@@ -16,8 +16,11 @@
 
 package co.mv.wb.fixture;
 
-import co.mv.wb.Instance;
 import co.mv.wb.Resource;
+import co.mv.wb.State;
+import co.mv.wb.plugin.fake.FakeInstance;
+
+import java.util.UUID;
 
 /**
  * A test context that carries a resource and an instance.
@@ -27,13 +30,23 @@ import co.mv.wb.Resource;
 public class TestContext_ResourceAndInstance
 {
 	public final Resource resource;
-	public final Instance instance;
+	public final FakeInstance instance;
 
 	TestContext_ResourceAndInstance(
 		Resource resource,
-		Instance instance)
+		FakeInstance instance)
 	{
 		this.resource = resource;
 		this.instance = instance;
+	}
+
+	public State getState(int stateIndex)
+	{
+		return this.resource.getStates().get(stateIndex);
+	}
+
+	public UUID getStateId(int stateIndex)
+	{
+		return this.getState(stateIndex).getStateId();
 	}
 }

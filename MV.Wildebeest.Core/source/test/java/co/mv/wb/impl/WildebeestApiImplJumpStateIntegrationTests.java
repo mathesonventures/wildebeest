@@ -23,18 +23,14 @@ import co.mv.wb.Instance;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.Resource;
-import co.mv.wb.State;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.LoggingEventSink;
-import co.mv.wb.plugin.base.ImmutableState;
-import co.mv.wb.plugin.base.ResourceImpl;
+import co.mv.wb.fixture.TestContext_ResourceAndInstance;
+import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import co.mv.wb.plugin.fake.FakeConstants;
-import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
-import co.mv.wb.plugin.fake.SetTagMigrationPlugin;
-import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,45 +52,28 @@ public class WildebeestApiImplJumpStateIntegrationTests
 	@Test
 	public void jumpstate_assertionFail_throws()
 	{
-
-		//
 		// Setup
-		//
-
-		// Resource
-		final Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"Resource",
-			null);
-
-		// State 1
-		final UUID state1Id = UUID.randomUUID();
-		State state = new ImmutableState(state1Id);
-		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "Foo"));
-		resource.getStates().add(state);
-
-		// Instance
-		final FakeInstance instance = new FakeInstance();
-		instance.setTag("Bar");
+		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+			.create()
+			.withFooBarStatesAndMigrations()
+			.withAssertion(0, "Foo")
+			.withInitialTag("Bar")
+			.build();
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
-		//
 		// Execute and Verify
-		//
-
 		new ExpectException(AssertionFailedException.class)
 		{
 			@Override public void invoke() throws Exception
 			{
 				wildebeestApi.jumpstate(
-					resource,
-					instance,
-					state1Id.toString());
+					context.resource,
+					context.instance,
+					context.getStateId(0).toString());
 			}
 
 			@Override public void verify(Exception e)
@@ -108,29 +87,16 @@ public class WildebeestApiImplJumpStateIntegrationTests
 					te.getAssertionResults().get(0).getMessage());
 			}
 		}.perform();
-
 	}
 
 	@Test
 	public void jumpstate_nonExistentState_throws()
 	{
-
-		//
 		// Setup
-		//
+		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+			.create()
+			.build();
 
-		// Resource
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
-		final Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"Resource",
-			null);
-
-		// Instance
-		final FakeInstance instance = new FakeInstance();
-
-		// Target State ID
 		final UUID targetStateId = UUID.randomUUID();
 
 		WildebeestApi wildebeestApi = Wildebeest
@@ -138,17 +104,14 @@ public class WildebeestApiImplJumpStateIntegrationTests
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
-		//
 		// Execute and Verify
-		//
-
 		new ExpectException(UnknownStateSpecifiedException.class)
 		{
 			@Override public void invoke() throws Exception
 			{
 				wildebeestApi.jumpstate(
-					resource,
-					instance,
+					context.resource,
+					context.instance,
 					targetStateId.toString());
 			}
 
@@ -159,7 +122,6 @@ public class WildebeestApiImplJumpStateIntegrationTests
 				assertEquals("e.specifiedState", targetStateId.toString(), te.getSpecifiedState());
 			}
 		}.perform();
-
 	}
 
 	@Test
@@ -170,48 +132,28 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		JumpStateFailedException,
 		UnknownStateSpecifiedException
 	{
+		// Setup
 
-		//
-		//Setup
-		//
-
-		// Resource
-		Resource resource = new ResourceImpl(
-			UUID.randomUUID(),
-			FakeConstants.Fake,
-			"Resource",
-			null);
-
-		// State 1
-		final UUID state1Id = UUID.randomUUID();
-		State state = new ImmutableState(state1Id);
-		state.getAssertions().add(new TagAssertion(UUID.randomUUID(), 0, "Foo"));
-		resource.getStates().add(state);
-
-		// Instance
-		final FakeInstance instance = new FakeInstance();
-		instance.setTag("Foo");
+		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+			.create()
+			.withFooBarStatesAndMigrations()
+			.withAssertion(0, "Foo")
+			.withInitialTag("Foo")
+			.build();
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
-		//
 		// Execute
-		//
-
 		wildebeestApi.jumpstate(
-			resource,
-			instance,
-			state1Id.toString());
+			context.resource,
+			context.instance,
+			context.getStateId(0).toString());
 
-		//
 		// Verify
-		//
-
-		assertEquals("instance.tag", "Foo", instance.getTag());
-
+		assertEquals("instance.tag", "Foo", context.instance.getTag());
 	}
 }
 

@@ -35,7 +35,6 @@ import co.mv.wb.fixture.TestContext_ResourceAndInstance;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.fake.FakeConstants;
-import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -67,11 +66,8 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withFooBarStatesAndMigrations()
+			.withInitialState(0, "Foo")
 			.build();
-
-		FakeInstance instanceT = (FakeInstance)context.instance;
-		instanceT.setStateId(context.resource.getStates().get(0).getStateId());
-		instanceT.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
@@ -101,11 +97,8 @@ public class WildebeestApiImplAssertStateIntegrationTests
 			.create()
 			.withFooBarStatesAndMigrations()
 			.withAssertion(0, "Foo")
+			.withInitialState(0, "Foo")
 			.build();
-
-		FakeInstance instanceT = (FakeInstance)context.instance;
-		instanceT.setStateId(context.resource.getStates().get(0).getStateId());
-		instanceT.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
@@ -121,7 +114,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		assertNotNull("results", results);
 		assertEquals("results.size", 1, results.size());
 
-		Assertion assertion1 = context.resource.getStates().get(0).getAssertions().get(0);
+		Assertion assertion1 = context.getState(0).getAssertions().get(0);
 		Asserts.assertAssertionResult(
 			assertion1.getAssertionId(),
 			true,
@@ -144,11 +137,8 @@ public class WildebeestApiImplAssertStateIntegrationTests
 			.withFooBarStatesAndMigrations()
 			.withAssertion(0, "Foo")
 			.withAssertion(0, "Bar")
+			.withInitialState(0, "Foo")
 			.build();
-
-		FakeInstance instanceT = (FakeInstance)context.instance;
-		instanceT.setStateId(context.resource.getStates().get(0).getStateId());
-		instanceT.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
@@ -164,12 +154,12 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		assertNotNull("results", results);
 		assertEquals("results.size", 2, results.size());
 
-		UUID assertion0Id = context.resource.getStates().get(0).getAssertions().get(0).getAssertionId();
+		UUID assertion0Id = context.getState(0).getAssertions().get(0).getAssertionId();
 		Asserts.assertAssertionResult(
 			assertion0Id, true, "Tag is \"Foo\" as expected",
 			results.get(0), "results[0]");
 
-		UUID assertion1Id = context.resource.getStates().get(0).getAssertions().get(1).getAssertionId();
+		UUID assertion1Id = context.getState(0).getAssertions().get(1).getAssertionId();
 		Asserts.assertAssertionResult(
 			assertion1Id, false, "Tag expected to be \"Bar\" but was \"Foo\"",
 			results.get(1), "results[1]");
@@ -189,8 +179,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 			.build();
 
 		UUID nonExistantStateId = UUID.randomUUID();
-		FakeInstance instanceT = (FakeInstance)context.instance;
-		instanceT.setStateId(nonExistantStateId);
+		context.instance.setStateId(nonExistantStateId);
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
@@ -230,6 +219,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
 			.withFooBarStatesAndMigrations()
+			.withInitialState(0, "Foo")
 			.build();
 
 		UUID assertionId = UUID.randomUUID();
@@ -266,10 +256,6 @@ public class WildebeestApiImplAssertStateIntegrationTests
 
 		State state = context.resource.getStates().get(0);
 		state.getAssertions().add(faultingAssertion);
-
-		FakeInstance instanceT = (FakeInstance)context.instance;
-		instanceT.setStateId(context.resource.getStates().get(0).getStateId());
-		instanceT.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
