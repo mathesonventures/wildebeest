@@ -18,12 +18,12 @@ package co.mv.wb.framework;
 
 import co.mv.wb.FaultException;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeFieldType;
 
 import javax.sql.DataSource;
-import java.sql.*;
-
-import java.util.Date;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -43,8 +43,9 @@ public class DatabaseHelper
 	 * @since 1.0
 	 */
 	public static void execute(
-		  DataSource dataSource,
-		  String sql) throws SQLException
+		DataSource dataSource,
+		String sql,
+		boolean splitStatements) throws SQLException
 	{
 		if (dataSource == null) throw new ArgumentNullException("dataSource");
 		if (sql == null) throw new ArgumentNullException("sql");
@@ -56,12 +57,41 @@ public class DatabaseHelper
 		try
 		{
 			conn = dataSource.getConnection();
-			ps = conn.prepareStatement(sql);
-			ps.execute();
+
+			if (splitStatements)
+			{
+				String[] statements = sql.split("\\;");
+
+				for (String statement : statements)
+				{
+					if (!"".equals(statement.trim()))
+					try
+					{
+						ps = conn.prepareStatement(statement);
+						ps.execute();
+					}
+					finally
+					{
+						DatabaseHelper.release(ps);
+					}
+				}
+			}
+
+			else
+			{
+				try
+				{
+					ps = conn.prepareStatement(sql);
+					ps.execute();
+				}
+				finally
+				{
+					DatabaseHelper.release(ps);
+				}
+			}
 		}
 		finally
 		{
-			DatabaseHelper.release(ps);
 			DatabaseHelper.release(conn);
 		}
 	}
@@ -99,15 +129,15 @@ public class DatabaseHelper
 
 				if (p.getValue() instanceof String)
 				{
-					ps.setString(i+1, (String)p.getValue());
+					ps.setString(i + 1, (String)p.getValue());
 				}
 				else if (p.getValue() instanceof DateTime)
 				{
-					ps.setTimestamp(i+1, new java.sql.Timestamp(( ((DateTime) p.getValue()).getMillis())));
+					ps.setTimestamp(i + 1, new java.sql.Timestamp((((DateTime)p.getValue()).getMillis())));
 				}
 				else if (p.getValue() instanceof Object)
 				{
-					ps.setObject(i+1,p.getValue().toString());
+					ps.setObject(i + 1, p.getValue().toString());
 				}
 			}
 

@@ -27,16 +27,18 @@ import co.mv.wb.State;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
+import co.mv.wb.plugin.fake.SetTagMigrationPlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -49,6 +51,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class WildebeestApiImplJumpStateIntegrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplJumpStateIntegrationTests.class);
+
 	@Test
 	public void jumpstate_assertionFail_throws()
 	{
@@ -57,15 +61,12 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
-
 		// Resource
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		final Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
@@ -78,8 +79,8 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		instance.setTag("Bar");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
+			.wildebeestApi(new LoggingEventSink(LOG))
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		//
@@ -100,10 +101,10 @@ public class WildebeestApiImplJumpStateIntegrationTests
 			{
 				AssertionFailedException te = (AssertionFailedException)e;
 
-				assertEquals("te.assertionResults.size", 1, te.getAssertionResults().size());
+				assertEquals("e.assertionResults.size", 1, te.getAssertionResults().size());
 				assertEquals(
-					"te.assertionResults[0].message",
-					"Tag not as expected",
+					"e.assertionResults[0].message",
+					"Tag expected to be \"Foo\" but was \"Bar\"",
 					te.getAssertionResults().get(0).getMessage());
 			}
 		}.perform();
@@ -118,15 +119,13 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
-
 		// Resource
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		final Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// Instance
 		final FakeInstance instance = new FakeInstance();
@@ -135,15 +134,15 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		final UUID targetStateId = UUID.randomUUID();
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
+			.wildebeestApi(new LoggingEventSink(LOG))
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		//
 		// Execute and Verify
 		//
 
-		new ExpectException(JumpStateFailedException.class)
+		new ExpectException(UnknownStateSpecifiedException.class)
 		{
 			@Override public void invoke() throws Exception
 			{
@@ -155,12 +154,9 @@ public class WildebeestApiImplJumpStateIntegrationTests
 
 			@Override public void verify(Exception e)
 			{
-				JumpStateFailedException te = (JumpStateFailedException)e;
+				UnknownStateSpecifiedException te = (UnknownStateSpecifiedException)e;
 
-				assertEquals(
-					"e.message",
-					"This resource does not have a state with ID " + targetStateId.toString(),
-					te.getMessage());
+				assertEquals("e.specifiedState", targetStateId.toString(), te.getSpecifiedState());
 			}
 		}.perform();
 
@@ -176,17 +172,15 @@ public class WildebeestApiImplJumpStateIntegrationTests
 	{
 
 		//
-		// Setup
+		//Setup
 		//
-
-		PrintStream output = System.out;
 
 		// Resource
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		// State 1
 		final UUID state1Id = UUID.randomUUID();
@@ -199,8 +193,8 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
-			.withFactoryResourcePlugins()
+			.wildebeestApi(new LoggingEventSink(LOG))
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
 		//

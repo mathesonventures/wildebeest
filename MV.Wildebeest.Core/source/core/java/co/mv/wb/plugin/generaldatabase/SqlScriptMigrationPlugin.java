@@ -23,10 +23,10 @@ import co.mv.wb.MigrationFaultException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationPluginType;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
 
 /**
@@ -34,26 +34,26 @@ import java.sql.SQLException;
  *
  * @since 4.0
  */
-@MigrationPluginType(uri = "co.mv.wb.generaldatabase:SqlScriptMigration")
+@MigrationPluginType(uri = "co.mv.wb.generaldatabase:SqlScript")
 public class SqlScriptMigrationPlugin implements MigrationPlugin
 {
 	@Override public void perform(
-		PrintStream output,
+		EventSink eventSink,
 		Migration migration,
 		Instance instance) throws
 		MigrationFailedException
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlScriptMigration migrationT = ModelExtensions.As(migration, SqlScriptMigration.class);
+		SqlScriptMigration migrationT = ModelExtensions.as(migration, SqlScriptMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		DatabaseInstance instanceT = ModelExtensions.As(instance, DatabaseInstance.class);
+		DatabaseInstance instanceT = ModelExtensions.as(instance, DatabaseInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
@@ -62,7 +62,10 @@ public class SqlScriptMigrationPlugin implements MigrationPlugin
 		try
 		{
 			// Strip out any comments, and split the block of SQL into individual statements
-			DatabaseHelper.execute(instanceT.getAppDataSource(), migrationT.getSql());
+			DatabaseHelper.execute(
+				instanceT.getAppDataSource(),
+				migrationT.getSql(),
+				true);
 		}
 		catch (SQLException e)
 		{

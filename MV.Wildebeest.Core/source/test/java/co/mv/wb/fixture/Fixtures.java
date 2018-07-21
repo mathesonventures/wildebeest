@@ -22,7 +22,6 @@ import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -43,7 +42,7 @@ public class Fixtures
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Fake",
-			Optional.empty());
+			null);
 	}
 
 	public static Instance fakeInstance()

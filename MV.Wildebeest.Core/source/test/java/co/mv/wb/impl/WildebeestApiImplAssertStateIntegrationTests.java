@@ -17,6 +17,7 @@
 package co.mv.wb.impl;
 
 import co.mv.wb.Assertion;
+import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResult;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
@@ -25,6 +26,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -33,10 +35,10 @@ import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -50,17 +52,19 @@ import static org.junit.Assert.assertNotNull;
  */
 public class WildebeestApiImplAssertStateIntegrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplAssertStateIntegrationTests.class);
+
 	@Test
-	public void assertState_noAssertions_succeeds() throws IndeterminateStateException
+	public void assertState_noAssertions_succeeds() throws
+		IndeterminateStateException,
+		AssertionFailedException
 	{
 		// Setup
-		PrintStream output = System.out;
-
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -68,7 +72,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		FakeInstance instance = new FakeInstance(state.getStateId());
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
@@ -83,14 +87,16 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	}
 
 	@Test
-	public void assertState_oneAssertion_succeeds() throws IndeterminateStateException
+	public void assertState_oneAssertion_succeeds() throws
+		IndeterminateStateException,
+		AssertionFailedException
 	{
 		// Setup
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -105,7 +111,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(System.out)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
@@ -126,16 +132,17 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	}
 
 	@Test
-	public void assertState_multipleAssertions_succeeds() throws IndeterminateStateException
+	public void assertState_multipleAssertions_succeeds() throws
+		IndeterminateStateException,
+		AssertionFailedException
 	{
 		// Setup
-		PrintStream output = System.out;
 		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
 			"Resource",
-			Optional.empty());
+			null);
 
 		State state = new ImmutableState(UUID.randomUUID());
 		resource.getStates().add(state);
@@ -156,7 +163,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		instance.setTag("Foo");
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, resourcePlugin)
 			.get();
 

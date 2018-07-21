@@ -39,7 +39,7 @@ public final class ResourceImpl implements Resource
 	private final String name;
 	private final List<State> states;
 	private final List<Migration> migrations;
-	private final Optional<String> defaultTarget;
+	private final String defaultTarget;
 
 	/**
 	 * Creates a new concrete Resource instance.
@@ -54,12 +54,11 @@ public final class ResourceImpl implements Resource
 		UUID resourceId,
 		ResourceType type,
 		String name,
-		Optional<String> defaultTarget)
+		String defaultTarget)
 	{
 		if (resourceId == null) throw new ArgumentNullException("resourceId");
 		if (type == null) throw new ArgumentNullException("type");
 		if (name == null) throw new ArgumentNullException("name");
-		if (defaultTarget == null) throw new ArgumentNullException("defaultTarget");
 
 		this.resourceId = resourceId;
 		this.type = type;
@@ -98,6 +97,6 @@ public final class ResourceImpl implements Resource
 	@Override
 	public Optional<String> getDefaultTarget()
 	{
-		return this.defaultTarget;
+		return Optional.ofNullable(this.defaultTarget);
 	}
 }

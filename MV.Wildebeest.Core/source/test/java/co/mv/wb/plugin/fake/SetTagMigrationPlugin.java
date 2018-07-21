@@ -24,9 +24,9 @@ import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.event.EventSink;
+import co.mv.wb.event.MigrationEvent;
 import co.mv.wb.framework.ArgumentNullException;
-
-import java.io.PrintStream;
 
 /**
  * {@link MigrationPlugin} for the Fake plugin implementation.
@@ -47,29 +47,29 @@ public class SetTagMigrationPlugin implements MigrationPlugin
 
 	@Override
 	public void perform(
-		PrintStream output,
+		EventSink eventSink,
 		Migration migration,
 		Instance instance)
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SetTagMigration migrationT = ModelExtensions.As(migration, SetTagMigration.class);
+		SetTagMigration migrationT = ModelExtensions.as(migration, SetTagMigration.class);
 		if (migrationT == null)
 		{
-			throw new IllegalArgumentException("migration must be a SetTagMigration");
+			String msg = "migration must be a SetTagMigration";
+			eventSink.onEvent(MigrationEvent.failed(msg));
+			throw new IllegalArgumentException(msg);
 		}
 
-		FakeInstance instanceT = ModelExtensions.As(instance, FakeInstance.class);
+		FakeInstance instanceT = ModelExtensions.as(instance, FakeInstance.class);
 		if (instanceT == null)
 		{
-			throw new IllegalArgumentException("instance must be a FakeInstance");
+			String msg = "instance must be a FakeInstance";
+			eventSink.onEvent(MigrationEvent.failed(msg));
+			throw new IllegalArgumentException(msg);
 		}
-
-		// TODO: These two lines should not be here because it should not be the resposibility of the migration plugin to update the tracked state of the instance.  Once MVWB-65 is done these can be removed and this class's private Resource field can be removed.
-		State toState = Wildebeest.findState(this.resource, migration.getToState().get());
-		instanceT.setStateId(toState.getStateId());
 
 		instanceT.setTag(migrationT.getTag());
 	}

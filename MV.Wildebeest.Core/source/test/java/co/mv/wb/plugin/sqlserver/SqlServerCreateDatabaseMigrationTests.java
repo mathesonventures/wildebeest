@@ -17,12 +17,13 @@
 package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -30,19 +31,18 @@ import static org.junit.Assert.fail;
 
 public class SqlServerCreateDatabaseMigrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(SqlServerCreateDatabaseMigrationTests.class);
+
 	@Test
 	public void performForNonExistantDatabaseSucceeds() throws
 		MigrationFailedException
 	{
-		// Setup
-		PrintStream output = System.out;
-
 		SqlServerProperties p = SqlServerProperties.get();
 
 		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		SqlServerCreateDatabaseMigrationPlugin migrationPlugin = new SqlServerCreateDatabaseMigrationPlugin();
 
@@ -61,7 +61,7 @@ public class SqlServerCreateDatabaseMigrationTests
 		try
 		{
 			migrationPlugin.perform(
-				output,
+				new LoggingEventSink(LOG),
 				migration,
 				instance);
 		}
@@ -75,9 +75,6 @@ public class SqlServerCreateDatabaseMigrationTests
 	@Test
 	public void performForExistantDatabaseFails() throws SQLException
 	{
-		// Setup
-		PrintStream output = System.out;
-
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		SqlServerDatabaseInstance instance = new SqlServerDatabaseInstance(
@@ -93,8 +90,8 @@ public class SqlServerCreateDatabaseMigrationTests
 
 		SqlServerCreateDatabaseMigration migration = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		SqlServerCreateDatabaseMigrationPlugin migrationPlugin = new SqlServerCreateDatabaseMigrationPlugin();
 
@@ -102,7 +99,7 @@ public class SqlServerCreateDatabaseMigrationTests
 		try
 		{
 			migrationPlugin.perform(
-				output,
+				new LoggingEventSink(LOG),
 				migration,
 				instance);
 

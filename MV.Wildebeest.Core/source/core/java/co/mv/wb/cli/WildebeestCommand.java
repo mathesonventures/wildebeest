@@ -35,9 +35,12 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
+import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.framework.ArgumentNullException;
 import picocli.CommandLine;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
@@ -60,6 +63,7 @@ public class WildebeestCommand
 {
 	private final PrintStream output;
 	private final WildebeestApi wildebeestApi;
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestCommand.class);
 
 	@CommandLine.Option(names = {"-p", "--plugins"}, description = "lists all wildebeest plugins")
 	boolean usagePlugins;
@@ -73,13 +77,14 @@ public class WildebeestCommand
 	public static void main(String[] args)
 	{
 		PrintStream output = System.out;
+		EventSink eventSink = new LoggingEventSink(LOG);
 
 		WildebeestApi wildebeestApi = Wildebeest
-			  .wildebeestApi(output)
-			  .withFactoryPluginGroups()
-			  .withFactoryResourcePlugins()
-			  .withFactoryMigrationPlugins()
-			  .get();
+			.wildebeestApi(eventSink)
+			.withFactoryPluginGroups()
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
 			  output,
@@ -144,7 +149,6 @@ public class WildebeestCommand
 		{
 			String xml = this.wildebeestApi.describePlugins();
 			this.output.println(xml);
-
 		} else if (parsed.get(1).getCommand().getClass() == MigrateCommand.class)
 		{
 			migrateCommand(parsed);
@@ -158,8 +162,8 @@ public class WildebeestCommand
 		{
 			WildebeestCommand.printBanner(this.output);
 			CommandLine.usage(this, this.output);
-		}
 
+		}
 	}
 
 	private static Optional<Resource> tryLoadResource(
@@ -183,8 +187,9 @@ public class WildebeestCommand
 			out.println(OutputFormatter.fileLoad(e, "resource"));
 		} catch (LoaderFault e)
 		{
-			out.println(OutputFormatter.loaderFault(e, "resource"));
-		} catch (PluginBuildException e)
+			out.println(OutputFormatter.loaderFault("resource"));
+		}
+		catch (PluginBuildException e)
 		{
 			out.println(OutputFormatter.pluginBuild(e));
 		} catch (XmlValidationException e)
@@ -219,8 +224,9 @@ public class WildebeestCommand
 			out.println(OutputFormatter.fileLoad(e, "instance"));
 		} catch (LoaderFault e)
 		{
-			out.println(OutputFormatter.loaderFault(e, "instance"));
-		} catch (PluginBuildException e)
+			out.println(OutputFormatter.loaderFault("instance"));
+		}
+		catch (PluginBuildException e)
 		{
 			out.println(OutputFormatter.pluginBuild(e));
 		} catch (XmlValidationException e)
@@ -252,11 +258,13 @@ public class WildebeestCommand
 			if (arg.startsWith(shortName))
 			{
 				result = arg.substring(shortName.length());
-				break;
 			}
 			if (arg.startsWith(longName))
 			{
 				result = arg.substring(longName.length());
+			}
+			if (result != null)
+			{
 				break;
 			}
 		}
@@ -285,11 +293,13 @@ public class WildebeestCommand
 			if (arg.startsWith(shortName))
 			{
 				result = Optional.of(arg.substring(shortName.length()));
-				break;
 			}
 			if (arg.startsWith(longName))
 			{
 				result = Optional.of(arg.substring(longName.length()));
+			}
+			if (result.isPresent())
+			{
 				break;
 			}
 		}
@@ -339,7 +349,7 @@ public class WildebeestCommand
 
 		String resourceFilename = parsed.get(1).getParseResult().matchedOption("--resource").getValue();
 		String instanceFilename = parsed.get(1).getParseResult().matchedOption("--instance").getValue();
-		Optional<String> targetState = Optional.of(parsed.get(1).getParseResult().matchedOption("--target-state").getValue());
+		String targetState = parsed.get(1).getParseResult().matchedOption("--target-state").getValue();
 
 		if (isNullOrWhiteSpace(resourceFilename) || isNullOrWhiteSpace(instanceFilename))
 		{
@@ -367,7 +377,7 @@ public class WildebeestCommand
 						  targetState);
 				} catch (TargetNotSpecifiedException e)
 				{
-					this.output.println(OutputFormatter.targetNotSpecified(e));
+					this.output.println(OutputFormatter.targetNotSpecified());
 				} catch (UnknownStateSpecifiedException e)
 				{
 					this.output.println(OutputFormatter.unknownStateSpecified(e));
@@ -495,7 +505,7 @@ public class WildebeestCommand
 					this.wildebeestApi.state(
 						  resource.get(),
 						  instance.get());
-				} catch (IndeterminateStateException e)
+				} catch (AssertionFailedException | IndeterminateStateException e)
 				{
 					this.output.println(e.getMessage());
 				}

@@ -19,6 +19,7 @@ package co.mv.wb.plugin.composite;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.io.File;
@@ -53,14 +54,14 @@ public class ExternalResourceMigration extends BaseMigration
 {
 	private final File baseDir;
 	private final String fileName;
-	private final Optional<String> target;
+	private final String target;
 
 	/**
 	 * Constructs a new ExternalResourceMigration.
 	 *
 	 * @param migrationId the ID of the migration.
-	 * @param fromStateId the from state for the migration, if any.
-	 * @param toStateId   the to state for the migration, if any.
+	 * @param fromState   the from state for the migration, if any.
+	 * @param toState     the to state for the migration, if any.
 	 * @param baseDir     the base directory for resolving external resources for this migration.
 	 * @param fileName    the filename of the external resource.
 	 * @param target      the target in the external resource that we will migrate to.
@@ -68,13 +69,15 @@ public class ExternalResourceMigration extends BaseMigration
 	 */
 	public ExternalResourceMigration(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState,
+		String fromState,
+		String toState,
 		File baseDir,
 		String fileName,
-		Optional<String> target)
+		String target)
 	{
 		super(migrationId, fromState, toState);
+
+		if (target == null) throw new ArgumentNullException("target");
 
 		this.baseDir = baseDir;
 		this.fileName = fileName;
@@ -109,7 +112,7 @@ public class ExternalResourceMigration extends BaseMigration
 	 * @return the target in the external resource that we will migrate to.
 	 * @since 4.0
 	 */
-	public Optional<String> getTarget()
+	public String getTarget()
 	{
 		return this.target;
 	}

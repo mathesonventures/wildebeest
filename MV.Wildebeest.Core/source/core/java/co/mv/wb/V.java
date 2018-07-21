@@ -37,7 +37,7 @@ public class V
 	 * @since 2.0
 	 */
 	public static void elementMissing(
-		Messages messages,
+		MessageList messages,
 		UUID itemId,
 		String elementName,
 		Class itemType)
@@ -66,7 +66,7 @@ public class V
 	}
 
 	public static void elementInvalidValue(
-		Messages messages,
+		MessageList messages,
 		UUID itemId,
 		String elementName,
 		Class itemType)

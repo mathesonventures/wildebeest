@@ -27,7 +27,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.UUID;
 
 public class MySqlDatabaseResourceTests
@@ -52,7 +51,7 @@ public class MySqlDatabaseResourceTests
 			UUID.randomUUID(),
 			Wildebeest.MySqlDatabase,
 			"Database",
-			Optional.empty());
+			null);
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),
@@ -83,7 +82,7 @@ public class MySqlDatabaseResourceTests
 		String databaseName = MySqlUtil.createDatabase(
 			mySqlProperties,
 			"stm",
-			"");
+			null);
 
 		try
 		{
@@ -99,7 +98,7 @@ public class MySqlDatabaseResourceTests
 				resourceId,
 				Wildebeest.MySqlDatabase,
 				"Database",
-				Optional.empty());
+				null);
 
 			resource.getStates().add(new ImmutableState(knownStateId));
 
@@ -133,7 +132,7 @@ public class MySqlDatabaseResourceTests
 		UUID resourceId = UUID.randomUUID();
 		UUID knownStateId = UUID.randomUUID();
 
-		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm", "");
+		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm", null);
 
 		MySqlStateHelper.setStateId(
 			resourceId,
@@ -147,7 +146,7 @@ public class MySqlDatabaseResourceTests
 			resourceId,
 			Wildebeest.MySqlDatabase,
 			"Database",
-			Optional.empty());
+			null);
 
 		MySqlDatabaseInstance instance = new MySqlDatabaseInstance(
 			mySqlProperties.getHostName(),

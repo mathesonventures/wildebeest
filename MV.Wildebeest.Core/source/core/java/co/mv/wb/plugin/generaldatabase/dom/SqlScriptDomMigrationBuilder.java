@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.generaldatabase.dom;
 
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
 import co.mv.wb.PluginBuildException;
@@ -38,8 +38,8 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState,
+		String fromState,
+		String toState,
 		File baseDir) throws
 		PluginBuildException
 	{
@@ -48,7 +48,7 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 		Optional<String> sql = this.tryGetString("sql");
 
 		// Validation
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!sql.isPresent())
 		{
 			V.elementMissing(messages, migrationId, "sql", SqlScriptMigration.class);
@@ -59,7 +59,11 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 			throw new PluginBuildException(messages);
 		}
 
-		result = new SqlScriptMigration(migrationId, fromState, toState, sql.get());
+		result = new SqlScriptMigration(
+			migrationId,
+			fromState,
+			toState,
+			sql.get());
 
 		return result;
 	}

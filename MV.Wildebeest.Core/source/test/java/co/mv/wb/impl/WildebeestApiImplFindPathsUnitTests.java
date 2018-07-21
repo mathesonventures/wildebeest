@@ -16,6 +16,7 @@
 
 package co.mv.wb.impl;
 
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.Migration;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
@@ -47,7 +48,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/single_path.png
 	 */
 	@Test
-	public void findPathWithSinglePathFromSourceToTarget()
+	public void findPathWithSinglePathFromSourceToTarget() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -62,18 +63,18 @@ public class WildebeestApiImplFindPathsUnitTests
 		State s4 = context.resource.getStates().get(3);
 		State s5 = context.resource.getStates().get(4);
 
-		SetTagMigration m12 = createMigration(Optional.of(s1), Optional.of(s2), "state 1 -> state 2");
-		SetTagMigration m15 = createMigration(Optional.of(s1), Optional.of(s5), "state 1 -> state 5");
-		SetTagMigration m23 = createMigration(Optional.of(s2), Optional.of(s3), "state 2 -> state 3");
-		SetTagMigration m34 = createMigration(Optional.of(s3), Optional.of(s4), "state 3 -> state 4");
+		SetTagMigration m12 = createMigration(s1, s2, "state 1 -> state 2");
+		SetTagMigration m15 = createMigration(s1, s5, "state 1 -> state 5");
+		SetTagMigration m23 = createMigration(s2, s3, "state 2 -> state 3");
+		SetTagMigration m34 = createMigration(s3, s4, "state 3 -> state 4");
 
 		context.resource.getMigrations().add(m12);
 		context.resource.getMigrations().add(m15);
 		context.resource.getMigrations().add(m23);
 		context.resource.getMigrations().add(m34);
 
-		Optional<UUID> fromStateId = Optional.of(s1.getStateId());
-		Optional<UUID> targetStateId = Optional.of(s4.getStateId());
+		UUID fromStateId = s1.getStateId();
+		UUID targetStateId = s4.getStateId();
 
 		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);
 		assertTrue(paths.size() == 1);
@@ -86,7 +87,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/basic_multiple_paths.png
 	 */
 	@Test
-	public void findPathWithMultiplePathsFromSourceToTarget()
+	public void findPathWithMultiplePathsFromSourceToTarget() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -101,11 +102,11 @@ public class WildebeestApiImplFindPathsUnitTests
 		State s5 = context.resource.getStates().get(4);
 
 		//migrations
-		SetTagMigration m12 = createMigration(Optional.of(s1), Optional.of(s2), "state 1 -> state 2");
-		SetTagMigration m23 = createMigration(Optional.of(s2), Optional.of(s3), "state 2 -> state 3");
-		SetTagMigration m24 = createMigration(Optional.of(s2), Optional.of(s4), "state 2 -> state 4");
-		SetTagMigration m35 = createMigration(Optional.of(s3), Optional.of(s5), "state 3 -> state 5");
-		SetTagMigration m45 = createMigration(Optional.of(s4), Optional.of(s5), "state 4 -> state 5");
+		SetTagMigration m12 = createMigration(s1, s2, "state 1 -> state 2");
+		SetTagMigration m23 = createMigration(s2, s3, "state 2 -> state 3");
+		SetTagMigration m24 = createMigration(s2, s4, "state 2 -> state 4");
+		SetTagMigration m35 = createMigration(s3, s5, "state 3 -> state 5");
+		SetTagMigration m45 = createMigration(s4, s5, "state 4 -> state 5");
 
 		context.resource.getMigrations().add(m12);
 		context.resource.getMigrations().add(m23);
@@ -113,8 +114,8 @@ public class WildebeestApiImplFindPathsUnitTests
 		context.resource.getMigrations().add(m35);
 		context.resource.getMigrations().add(m45);
 
-		Optional<UUID> fromStateId = Optional.of(s1.getStateId());
-		Optional<UUID> targetStateId = Optional.of(s5.getStateId());
+		UUID fromStateId = s1.getStateId();
+		UUID targetStateId = s5.getStateId();
 
 		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);
 
@@ -131,7 +132,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/non_existent_multiple_paths.png
 	 */
 	@Test
-	public void findPathWithMultiplePathsFromNonExistentSourceToExistingTarget()
+	public void findPathWithMultiplePathsFromNonExistentSourceToExistingTarget() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -145,11 +146,11 @@ public class WildebeestApiImplFindPathsUnitTests
 		State s4 = context.resource.getStates().get(3);
 
 		//migrations
-		SetTagMigration m_1 = createMigration(Optional.empty(), Optional.of(s1), "state_ -> state 1");
-		SetTagMigration m13 = createMigration(Optional.of(s1), Optional.of(s3), "state 1 -> state 3");
-		SetTagMigration m34 = createMigration(Optional.of(s3), Optional.of(s4), "state 3 -> state 4");
-		SetTagMigration m_2 = createMigration(Optional.empty(), Optional.of(s2), "state_ -> state 2");
-		SetTagMigration m23 = createMigration(Optional.of(s2), Optional.of(s3), "state 2 -> state 3");
+		SetTagMigration m_1 = createMigration(null, s1, "state_ -> state 1");
+		SetTagMigration m13 = createMigration(s1, s3, "state 1 -> state 3");
+		SetTagMigration m34 = createMigration(s3, s4, "state 3 -> state 4");
+		SetTagMigration m_2 = createMigration(null, s2, "state_ -> state 2");
+		SetTagMigration m23 = createMigration(s2, s3, "state 2 -> state 3");
 
 		context.resource.getMigrations().add(m_1);
 		context.resource.getMigrations().add(m13);
@@ -157,8 +158,8 @@ public class WildebeestApiImplFindPathsUnitTests
 		context.resource.getMigrations().add(m_2);
 		context.resource.getMigrations().add(m23);
 
-		Optional<UUID> fromStateId = Optional.empty();
-		Optional<UUID> targetStateId = Optional.of(s4.getStateId());
+		UUID fromStateId = null;
+		UUID targetStateId = s4.getStateId();
 
 		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);
 
@@ -174,7 +175,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/state_to_non_existent_state.png
 	 */
 	@Test
-	public void findPathWithMultiplePathsFromSourceStateToNonExistentState()
+	public void findPathWithMultiplePathsFromSourceStateToNonExistentState() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -189,11 +190,11 @@ public class WildebeestApiImplFindPathsUnitTests
 		State s4 = context.resource.getStates().get(3);
 
 		//migrations
-		SetTagMigration m12 = createMigration(Optional.of(s1), Optional.of(s2), "state 1 -> state 2");
-		SetTagMigration m23 = createMigration(Optional.of(s2), Optional.of(s3), "state 2 -> state 3");
-		SetTagMigration m3_ = createMigration(Optional.of(s3), Optional.empty(), "state 3 -> state_");
-		SetTagMigration m24 = createMigration(Optional.of(s2), Optional.of(s4), "state 2 -> state 4");
-		SetTagMigration m4_ = createMigration(Optional.of(s4), Optional.empty(), "state 4 -> state_");
+		SetTagMigration m12 = createMigration(s1, s2, "state 1 -> state 2");
+		SetTagMigration m23 = createMigration(s2, s3, "state 2 -> state 3");
+		SetTagMigration m3_ = createMigration(s3, null, "state 3 -> state_");
+		SetTagMigration m24 = createMigration(s2, s4, "state 2 -> state 4");
+		SetTagMigration m4_ = createMigration(s4, null, "state 4 -> state_");
 
 		context.resource.getMigrations().add(m12);
 		context.resource.getMigrations().add(m23);
@@ -201,8 +202,8 @@ public class WildebeestApiImplFindPathsUnitTests
 		context.resource.getMigrations().add(m24);
 		context.resource.getMigrations().add(m4_);
 
-		Optional<UUID> fromStateId = Optional.of(s1.getStateId());
-		Optional<UUID> targetStateId = Optional.empty();
+		UUID fromStateId = s1.getStateId();
+		UUID targetStateId = null;
 
 		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);
 		assertTrue(paths.size() == 2);
@@ -217,7 +218,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/no_path_found.png
 	 */
 	@Test
-	public void findPathWithNoPathFromSourceToTarget()
+	public void findPathWithNoPathFromSourceToTarget() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -231,11 +232,11 @@ public class WildebeestApiImplFindPathsUnitTests
 		State s3 = context.resource.getStates().get(2);
 		State s4 = context.resource.getStates().get(3);
 
-		SetTagMigration m_1 = createMigration(Optional.empty(), Optional.of(s1), "state_ -> state 1");
-		SetTagMigration m12 = createMigration(Optional.of(s1), Optional.of(s2), "state 1 -> state 2");
-		SetTagMigration m24 = createMigration(Optional.of(s2), Optional.of(s4), "state 2 -> state 4");
-		SetTagMigration m_3 = createMigration(Optional.empty(), Optional.of(s3), "state_ -> state 3");
-		SetTagMigration m34 = createMigration(Optional.of(s3), Optional.of(s4), "state 3 -> state 4");
+		SetTagMigration m_1 = createMigration(null, s1, "state_ -> state 1");
+		SetTagMigration m12 = createMigration(s1, s2, "state 1 -> state 2");
+		SetTagMigration m24 = createMigration(s2, s4, "state 2 -> state 4");
+		SetTagMigration m_3 = createMigration(null, s3, "state_ -> state 3");
+		SetTagMigration m34 = createMigration(s3, s4, "state 3 -> state 4");
 
 		context.resource.getMigrations().add(m_1);
 		context.resource.getMigrations().add(m12);
@@ -243,8 +244,8 @@ public class WildebeestApiImplFindPathsUnitTests
 		context.resource.getMigrations().add(m_3);
 		context.resource.getMigrations().add(m34);
 
-		Optional<UUID> currentStateId = Optional.of(s1.getStateId());
-		Optional<UUID> targetStateId = Optional.of(s3.getStateId());
+		UUID currentStateId = s1.getStateId();
+		UUID targetStateId = s3.getStateId();
 
 		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, currentStateId, targetStateId);
 
@@ -255,7 +256,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/circular_example.png
 	 */
 	@Test
-	public void findPathCircular()
+	public void findPathCircular() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -269,11 +270,11 @@ public class WildebeestApiImplFindPathsUnitTests
 		State s4 = context.resource.getStates().get(3);
 		State s5 = context.resource.getStates().get(4);
 
-		SetTagMigration m12 = createMigration(Optional.of(s1), Optional.of(s2), "state 1 -> state 2");
-		SetTagMigration m23 = createMigration(Optional.of(s2), Optional.of(s3), "state 2 -> state 3");
-		SetTagMigration m34 = createMigration(Optional.of(s3), Optional.of(s4), "state 3 -> state 4");
-		SetTagMigration m42 = createMigration(Optional.of(s4), Optional.of(s2), "state 4 -> state 2");
-		SetTagMigration m35 = createMigration(Optional.of(s3), Optional.of(s5), "state 3 -> state 5");
+		SetTagMigration m12 = createMigration(s1, s2, "state 1 -> state 2");
+		SetTagMigration m23 = createMigration(s2, s3, "state 2 -> state 3");
+		SetTagMigration m34 = createMigration(s3, s4, "state 3 -> state 4");
+		SetTagMigration m42 = createMigration(s4, s2, "state 4 -> state 2");
+		SetTagMigration m35 = createMigration(s3, s5, "state 3 -> state 5");
 
 		context.resource.getMigrations().add(m12);
 		context.resource.getMigrations().add(m23);
@@ -281,8 +282,8 @@ public class WildebeestApiImplFindPathsUnitTests
 		context.resource.getMigrations().add(m42);
 		context.resource.getMigrations().add(m35);
 
-		Optional<UUID> fromStateId = Optional.of(s1.getStateId());
-		Optional<UUID> targetStateId = Optional.of(s5.getStateId());
+		UUID fromStateId = s1.getStateId();
+		UUID targetStateId = s5.getStateId();
 
 		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);
 		assertTrue(paths.size() == 1);
@@ -298,35 +299,37 @@ public class WildebeestApiImplFindPathsUnitTests
 		{
 			states.add(new ImmutableState(
 				UUID.randomUUID(),
-				Optional.of("state" + i)));
+				"state" + i));
 		}
 
 		return states;
 	}
 
 	private SetTagMigration createMigration(
-		Optional<State> fromState,
-		Optional<State> toState,
+		State fromState,
+		State toState,
 		String tag)
 	{
-		Optional<String> fromStateUUID;
-		if (fromState.isPresent())
+		String fromStateUUID;
+
+		if (fromState != null)
 		{
-			fromStateUUID = Optional.of(fromState.get().getStateId().toString());
+			fromStateUUID = fromState.getStateId().toString();
 		}
 		else
 		{
-			fromStateUUID = Optional.empty();
+			fromStateUUID = null;
 		}
 
-		Optional<String> toStateUUID;
-		if (toState.isPresent())
+		String toStateUUID;
+
+		if (toState != null)
 		{
-			toStateUUID = Optional.of(toState.get().getStateId().toString());
+			toStateUUID = toState.getStateId().toString();
 		}
 		else
 		{
-			toStateUUID = Optional.empty();
+			toStateUUID = null;
 		}
 
 		return new SetTagMigration(UUID.randomUUID(), fromStateUUID, toStateUUID, tag);

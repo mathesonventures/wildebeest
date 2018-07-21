@@ -17,29 +17,30 @@
 package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.MigrationFailedException;
+import co.mv.wb.event.LoggingEventSink;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
-import java.util.Optional;
 import java.util.UUID;
 
 public class MySqlCreateDatabaseMigrationTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(AnsiSqlCreateDatabaseMigrationPlugin.class);
+
 	@Test
 	public void performForNonExistantDatabaseSucceeds() throws
 		MigrationFailedException
 	{
-		// Setup
-		PrintStream output = System.out;
-
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		MySqlCreateDatabaseMigration migration = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MySqlCreateDatabaseMigrationPlugin migrationPlugin = new MySqlCreateDatabaseMigrationPlugin();
 
@@ -55,7 +56,7 @@ public class MySqlCreateDatabaseMigrationTests
 
 		// Execute
 		migrationPlugin.perform(
-			output,
+			new LoggingEventSink(LOG),
 			migration,
 			instance);
 
@@ -67,23 +68,26 @@ public class MySqlCreateDatabaseMigrationTests
 		MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 	}
 
+	/**
+	 * Create database migrations in Wildebeest are treated as idempotent - you can apply many different create database
+	 * migrations for the same database and Wildebeest will execute only the first one, but will track the state of the
+	 * latest one applied.  This is to support the Composite Resource behavior of Wildebeest where different resource
+	 * definitions may be applied to the same physical database.
+	 */
 	@Test
-	public void performForExistantDatabaseFails()
+	public void perform_existantDatabase_succeeds() throws MigrationFailedException
 	{
-		// Setup
-		PrintStream output = System.out;
-
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		String databaseName = MySqlUtil.createDatabase(
 			mySqlProperties,
 			"stm_test",
-			"");
+			null);
 
 		MySqlCreateDatabaseMigration migration = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MySqlCreateDatabaseMigrationPlugin migrationPlugin = new MySqlCreateDatabaseMigrationPlugin();
 
@@ -96,30 +100,15 @@ public class MySqlCreateDatabaseMigrationTests
 			null);
 
 		// Execute
-		MigrationFailedException caught = null;
-
-		try
-		{
-			migrationPlugin.perform(
-				output,
-				migration,
-				instance);
-
-			Assert.fail("MigrationFailedException expected");
-		}
-		catch (MigrationFailedException e)
-		{
-			caught = e;
-		}
-		finally
-		{
-			MySqlUtil.dropDatabase(mySqlProperties, databaseName);
-		}
+		migrationPlugin.perform(
+			new LoggingEventSink(LOG),
+			migration,
+			instance);
 
 		// Verify
-		Assert.assertEquals(
-			"caught.message",
-			String.format("database \"%s\" already exists", databaseName),
-			caught.getMessage());
+		// The test is considered passed if no MigrationFailedException was thrown
+
+		// Tear-Down
+		MySqlUtil.dropDatabase(mySqlProperties, databaseName);
 	}
 }

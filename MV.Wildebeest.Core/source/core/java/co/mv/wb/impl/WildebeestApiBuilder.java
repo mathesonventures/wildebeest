@@ -23,9 +23,9 @@ import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,17 +47,17 @@ public class WildebeestApiBuilder
 	/**
 	 * Creates a new WildebeestApiBuilder with the specified PrintStream for Wildebeest to output to.
 	 *
-	 * @param output the PrintStream that Wildebeest should output to.
+	 * @param eventSink the EventSink that Wildebeest should output to.
 	 * @return a new WildebeestApiBuilder.
 	 * @since 4.0
 	 */
 	public static WildebeestApiBuilder create(
-		PrintStream output)
+		EventSink eventSink)
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 
 		return new WildebeestApiBuilder(
-			new WildebeestApiImpl(output),
+			new WildebeestApiImpl(eventSink),
 			new ArrayList<>(),
 			new HashMap<>(),
 			new HashMap<>());

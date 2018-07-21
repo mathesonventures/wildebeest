@@ -20,6 +20,7 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
@@ -27,7 +28,6 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationPluginType;
-import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
@@ -36,10 +36,10 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.File;
-import java.io.PrintStream;
 
 /**
  * The {@link MigrationPlugin} for {@link ExternalResourceMigration}'s.
@@ -68,16 +68,16 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 	}
 
 	@Override public void perform(
-		PrintStream output,
+		EventSink eventSink,
 		Migration migration,
 		Instance instance) throws
 		MigrationFailedException
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		ExternalResourceMigration migrationT = ModelExtensions.As(migration, ExternalResourceMigration.class);
+		ExternalResourceMigration migrationT = ModelExtensions.as(migration, ExternalResourceMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
@@ -109,7 +109,7 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 				migration.getMigrationId(),
 				String.format(
 					ExternalResourceMigrationPlugin.ExceptionFormatString,
-					OutputFormatter.targetNotSpecified(e)));
+					OutputFormatter.targetNotSpecified()));
 		}
 		catch (UnknownStateSpecifiedException e)
 		{

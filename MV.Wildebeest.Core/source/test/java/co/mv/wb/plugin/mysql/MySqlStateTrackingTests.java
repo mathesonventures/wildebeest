@@ -1,8 +1,6 @@
 package co.mv.wb.plugin.mysql;
 
 import co.mv.wb.AssertionFailedException;
-import co.mv.wb.AssertionResponse;
-import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
@@ -16,26 +14,25 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
-import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
-import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertNotNull;
-
-public class MysqlStateTrackingTests
+public class MySqlStateTrackingTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(MySqlStateTrackingTests.class);
+
 	@Test
 	public void checkIsStateInstantTracked() throws
 		AssertionFailedException,
@@ -43,7 +40,6 @@ public class MysqlStateTrackingTests
 		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
-		SQLException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
 		InvalidReferenceException
@@ -53,10 +49,8 @@ public class MysqlStateTrackingTests
 		// Setup
 		//
 
-		PrintStream output = System.out;
-
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryPluginGroups()
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -68,7 +62,7 @@ public class MysqlStateTrackingTests
 			UUID.randomUUID(),
 			Wildebeest.MySqlDatabase,
 			"Database",
-			Optional.empty());
+			null);
 
 		// Created
 		State created = new ImmutableState(UUID.randomUUID());
@@ -77,8 +71,8 @@ public class MysqlStateTrackingTests
 		// Migrate -> created
 		Migration migration1 = new MySqlCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(created.getStateId().toString()));
+			null,
+			created.getStateId().toString());
 		resource.getMigrations().add(migration1);
 
 
@@ -98,14 +92,17 @@ public class MysqlStateTrackingTests
 		wildebeestApi.migrate(
 			resource,
 			instance,
-			Optional.of(created.getStateId().toString()));
+			created.getStateId().toString());
 
 
 		try
 		{
-			DatabaseHelper.execute(instance.getAppDataSource(),
-				String.format("SELECT LastMigrationInstant from %s",
-					instance.getStateTableName()));
+			DatabaseHelper.execute(
+				instance.getAppDataSource(),
+				String.format(
+					"SELECT LastMigrationInstant from %s",
+					instance.getStateTableName()),
+				false);
 
 		}
 		catch (SQLException e)
@@ -115,7 +112,7 @@ public class MysqlStateTrackingTests
 		}
 		finally
 		{
-		//	MySqlUtil.dropDatabase(instance, instance.getDatabaseName());
+			//	MySqlUtil.dropDatabase(instance, instance.getDatabaseName());
 		}
 	}
 }

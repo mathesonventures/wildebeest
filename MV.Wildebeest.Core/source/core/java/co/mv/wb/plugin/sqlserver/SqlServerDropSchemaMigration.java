@@ -25,7 +25,6 @@ import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -61,8 +60,8 @@ public class SqlServerDropSchemaMigration extends BaseMigration
 	 */
 	public SqlServerDropSchemaMigration(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState,
+		String fromState,
+		String toState,
 		String schemaName)
 	{
 		super(migrationId, fromState, toState);

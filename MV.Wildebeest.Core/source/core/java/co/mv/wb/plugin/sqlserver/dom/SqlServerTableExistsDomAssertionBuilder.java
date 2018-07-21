@@ -18,7 +18,7 @@ package co.mv.wb.plugin.sqlserver.dom;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionBuilder;
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.V;
 import co.mv.wb.plugin.base.dom.BaseDomAssertionBuilder;
@@ -44,7 +44,7 @@ public class SqlServerTableExistsDomAssertionBuilder extends BaseDomAssertionBui
 		Optional<String> tableName = this.tryGetString("tableName");
 
 		// Validation
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!schemaName.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "schemaName", SqlServerTableExistsAssertion.class);
@@ -59,12 +59,10 @@ public class SqlServerTableExistsDomAssertionBuilder extends BaseDomAssertionBui
 			throw new PluginBuildException(messages);
 		}
 
-		Assertion result = new SqlServerTableExistsAssertion(
+		return new SqlServerTableExistsAssertion(
 			assertionId,
 			seqNum,
 			schemaName.get(),
 			tableName.get());
-
-		return result;
 	}
 }

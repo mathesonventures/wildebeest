@@ -96,7 +96,7 @@ public abstract class BaseDomBuilder implements DomBuilder
 			node = (Node)this.xpath.compile(xpath).evaluate(this.getElement(), XPathConstants.NODE);
 			if (node != null)
 			{
-				Element element = ModelExtensions.As(node, Element.class);
+				Element element = ModelExtensions.as(node, Element.class);
 
 				if (element != null)
 				{

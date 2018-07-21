@@ -16,7 +16,7 @@
 
 package co.mv.wb;
 
-import java.io.PrintStream;
+import co.mv.wb.event.EventSink;
 
 /**
  * MigrationPlugins actually perform {@link Migration}'s.  Runner plugins are separated from {@link Migration}'s so that
@@ -27,14 +27,14 @@ public interface MigrationPlugin
 	/**
 	 * Performs the migration, transitioning the supplied Instance from the Migration's from state to it's to state.
 	 *
-	 * @param output    the PrintStream for user output.
+	 * @param eventSink    the event sink that will process all events for user output
 	 * @param migration the Migration to apply to the supplied instance.
 	 * @param instance  the instance to be migrated
 	 * @throws MigrationFailedException if the migration fails
 	 * @since 1.0
 	 */
 	void perform(
-		PrintStream output,
+		EventSink eventSink,
 		Migration migration,
 		Instance instance) throws
 		MigrationFailedException;

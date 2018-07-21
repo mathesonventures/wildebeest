@@ -18,7 +18,7 @@ package co.mv.wb.plugin.sqlserver.dom;
 
 import co.mv.wb.Instance;
 import co.mv.wb.InstanceBuilder;
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.V;
 import co.mv.wb.plugin.base.dom.BaseDomInstanceBuilder;
@@ -45,7 +45,7 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		Optional<String> stateTableName = this.tryGetString("stateTableName");
 
 		// Validation
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!hostName.isPresent())
 		{
 			V.elementMissing(messages, null, "hostName", SqlServerDatabaseInstance.class);
@@ -72,7 +72,7 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			throw new PluginBuildException(messages);
 		}
 
-		Instance result = new SqlServerDatabaseInstance(
+		return new SqlServerDatabaseInstance(
 			hostName.get(),
 			instanceName.orElse(null),
 			port.get(),
@@ -80,7 +80,5 @@ public class SqlServerDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			adminPassword.get(),
 			databaseName.get(),
 			stateTableName.orElse(null));
-
-		return result;
 	}
 }

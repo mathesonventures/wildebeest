@@ -46,12 +46,19 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
+import co.mv.wb.event.AssertionEvent;
+import co.mv.wb.event.EventSink;
+import co.mv.wb.event.JumpStateEvent;
+import co.mv.wb.event.MigrationEvent;
+import co.mv.wb.event.StateEvent;
+import co.mv.wb.framework.ArgumentException;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.Util;
 import co.mv.wb.plugin.base.ImmutableAssertionResult;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
+import com.sun.org.apache.bcel.internal.classfile.Unknown;
 import org.reflections.Reflections;
 import org.xml.sax.SAXException;
 
@@ -64,7 +71,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -85,7 +91,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	private static final String RESOURCE_XSD = "resource.xsd";
 	private static final String INSTANCE_XSD = "instance.xsd";
 
-	private final PrintStream output;
+	private final EventSink eventSink;
 
 	private List<PluginGroup> pluginGroups;
 	private Map<ResourceType, ResourcePlugin> resourcePlugins;
@@ -93,17 +99,17 @@ public class WildebeestApiImpl implements WildebeestApi
 
 
 	/**
-	 * Creates a new WildebeestApiImpl using the supplied {@link PrintStream} for user output and the supplied
+	 * Creates a new WildebeestApiImpl using the supplied {@link EventSink} for user output and the supplied
 	 * ResourceHelper.
 	 *
-	 * @param output the PrintStream that should be used for output to the user.
+	 * @param eventSink the event sink that should be used to output all events to the user.
 	 * @since 1.0
 	 */
-	public WildebeestApiImpl(PrintStream output)
+	public WildebeestApiImpl(EventSink eventSink)
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 
-		this.output = output;
+		this.eventSink = eventSink;
 		this.pluginGroups = null;
 		this.resourcePlugins = null;
 		this.migrationPlugins = null;
@@ -270,6 +276,48 @@ public class WildebeestApiImpl implements WildebeestApi
 		WildebeestApiImpl.validateXml(instanceXml, WildebeestApiImpl.INSTANCE_XSD);
 	}
 
+	public void assertStateAndThrowIfFailed(
+		Resource resource,
+		Instance instance) throws
+		AssertionFailedException,
+		IndeterminateStateException
+	{
+		if (instance == null) throw new ArgumentNullException("instance");
+
+		eventSink.onEvent(StateEvent.assertionStart(null));
+		List<AssertionResult> assertionResults = assertState(resource, instance);
+
+		State state = fetchState(resource, instance);
+		try
+		{
+			WildebeestApiImpl.throwIfFailed(state.getStateId(), assertionResults);
+		}
+		catch (AssertionFailedException asrFailedEx)
+		{
+			eventSink.onEvent(AssertionEvent.failed("Assertion Failed"));
+			throw asrFailedEx;
+		}
+		catch (Exception ex)
+		{
+			eventSink.onEvent(AssertionEvent.failed(ex.getMessage()));
+			throw ex;
+		}
+
+		eventSink.onEvent(StateEvent.assertionComplete(null));
+	}
+
+	private State fetchState(
+		Resource resource,
+		Instance instance) throws IndeterminateStateException
+	{
+		ResourcePlugin resourcePlugin = this.getResourcePlugin(
+			resource.getType());
+
+		return resourcePlugin.currentState(
+			resource,
+			instance);
+	}
+
 	public List<AssertionResult> assertState(
 		Resource resource,
 		Instance instance) throws
@@ -278,30 +326,32 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		ResourcePlugin resourcePlugin = this.getResourcePlugin(
-			resource.getType());
-
-		State state = resourcePlugin.currentState(
-			resource,
-			instance);
+		State state = fetchState(resource, instance);
 
 		List<AssertionResult> result = new ArrayList<>();
 
 		state.getAssertions().forEach(
 			assertion ->
 			{
-				output.println(OutputFormatter.assertionStart(assertion));
+				eventSink.onEvent(AssertionEvent.start(OutputFormatter.assertionStart(assertion)));
+				try
+				{
+					AssertionResponse response = assertion.perform(instance);
 
-				AssertionResponse response = assertion.perform(instance);
+					eventSink.onEvent(AssertionEvent.complete(OutputFormatter.assertionComplete(
+						assertion,
+						response)));
 
-				output.println(OutputFormatter.assertionComplete(
-					assertion,
-					response));
-
-				result.add(new ImmutableAssertionResult(
-					assertion.getAssertionId(),
-					response.getResult(),
-					response.getMessage()));
+					result.add(new ImmutableAssertionResult(
+						assertion.getAssertionId(),
+						response.getResult(),
+						response.getMessage()));
+				}
+				catch (Exception ex)
+				{
+					eventSink.onEvent(AssertionEvent.failed(ex.getMessage()));
+					throw ex;
+				}
 			});
 
 		return result;
@@ -310,138 +360,176 @@ public class WildebeestApiImpl implements WildebeestApi
 	public void state(
 		Resource resource,
 		Instance instance) throws
-		IndeterminateStateException
+		IndeterminateStateException,
+		AssertionFailedException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		ResourcePlugin resourcePlugin = this.getResourcePlugin(
-			resource.getType());
-
-		State state = resourcePlugin.currentState(
-			resource,
-			instance);
+		State state = fetchState(resource, instance);
 
 		if (state == null)
 		{
-			output.println("Current state: non-existent");
+			eventSink.onEvent(StateEvent.preAssert("Current state: non-existent"));
 		}
 		else
 		{
 			if (state.getName().isPresent())
 			{
-				output.println(String.format("Current state: %s", state.getName()));
+				eventSink.onEvent(StateEvent.preAssert(String.format(
+					"Current state: %s",
+					state.getName())));
 			}
 			else
 			{
-				output.println(String.format("Current state: %s", state.getStateId().toString()));
+				eventSink.onEvent(StateEvent.preAssert(String.format(
+					"Current state: %s",
+					state.getStateId().toString())));
 			}
-
-			this.assertState(
+			this.assertStateAndThrowIfFailed(
 				resource,
 				instance);
 		}
+
+		eventSink.onEvent(StateEvent.postAssert(null));
 	}
 
 	public void migrate(
 		Resource resource,
 		Instance instance,
-		Optional<String> targetState) throws
+		String targetState) throws
 		AssertionFailedException,
-		TargetNotSpecifiedException,
-		IndeterminateStateException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
+		IndeterminateStateException,
+		InvalidStateSpecifiedException,
+		TargetNotSpecifiedException,
+		UnknownStateSpecifiedException,
 		InvalidReferenceException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
-		if (targetState == null) throw new ArgumentNullException("targetState");
 
 		ResourcePlugin resourcePlugin = this.getResourcePlugin(
 			resource.getType());
 
 		// Resolve the target state
-		Optional<String> ts = targetState.isPresent()
+		String ts = targetState != null
 			? targetState
-			: resource.getDefaultTarget();
+			: resource.getDefaultTarget().orElse(null);
 
-		// Perform migration
-		if (!ts.isPresent())
+		if (ts == null)
 		{
 			throw new TargetNotSpecifiedException();
 		}
 
+		UUID targetStateId = null;
+		try
+		{
+			targetStateId = ts == null
+				? null
+				: Wildebeest.findState(resource, ts).getStateId();
+		}
+		catch (InvalidReferenceException e)
+		{
+			throw new UnknownStateSpecifiedException(ts);
+		}
+
+		// Resolve the current state
 		State currentState = resourcePlugin.currentState(
 			resource,
 			instance);
 
-		Optional<UUID> currentStateId = currentState == null ?
-			Optional.empty() : Optional.ofNullable(currentState.getStateId());
+		UUID currentStateId = currentState == null
+			? null
+			: currentState.getStateId();
 
-		Optional<UUID> targetStateId = Optional.ofNullable(Wildebeest.findState(resource, ts.get()).getStateId());
-
-		List<List<Migration>> paths = WildebeestApiImpl.findPaths(resource, currentStateId, targetStateId);
-
-		if (paths.size() != 1)
+		// Are we already at the target state?
+		if ((currentState == null && targetStateId == null) ||
+			(currentStateId != null && targetStateId != null && currentStateId.equals(targetStateId)))
 		{
-			throw new RuntimeException("multiple possible paths found");
+			// Nothing to do
 		}
 
-		List<Migration> path = paths.get(0);
-
-		validateMigrationStates(resource);
-
-		if (currentState != null)
+		else
 		{
-			List<AssertionResult> initialAssertionResults = this.assertState(
-				resource,
-				instance);
+			List<List<Migration>> paths = WildebeestApiImpl.findPaths(resource, currentStateId, targetStateId);
 
-			WildebeestApiImpl.throwIfFailed(currentState.getStateId(), initialAssertionResults);
-		}
+			if (paths.size() != 1)
+			{
+				throw new RuntimeException("multiple possible paths found");
+			}
 
-		for (Migration migration : path)
-		{
-			String migrationTypeUri = migration.getClass().getAnnotation(MigrationType.class).uri();
-			MigrationPlugin migrationPlugin = this.getMigrationPlugin(migrationTypeUri);
+			List<Migration> path = paths.get(0);
 
-			Optional<State> fromState = migration.getFromState().map(stateId -> Wildebeest.findState(
-				resource,
-				stateId));
-			Optional<State> toState = migration.getToState().map(stateId -> Wildebeest.findState(
-				resource,
-				stateId));
+			validateMigrationStates(resource);
 
-			// Migrate to the next state
-			output.println(OutputFormatter.migrationStart(
-				resource,
-				migration,
-				fromState,
-				toState));
+			if (currentState != null)
+			{
+				this.assertStateAndThrowIfFailed(
+					resource,
+					instance);
+			}
 
-			migrationPlugin.perform(
-				output,
-				migration,
-				instance);
+			for (Migration migration : path)
+			{
+				String migrationTypeUri = migration.getClass().getAnnotation(MigrationType.class).uri();
+				MigrationPlugin migrationPlugin = this.getMigrationPlugin(migrationTypeUri);
 
-			output.println(OutputFormatter.migrationComplete(
-				resource,
-				migration));
+				State fromState = migration.getFromState().isPresent()
+					? Wildebeest.findState(resource, migration.getFromState().get())
+					: null;
+				State toState = migration.getToState().isPresent()
+					? Wildebeest.findState(resource, migration.getToState().get())
+					: null;
 
-			// Update the state
-			resourcePlugin.setStateId(
-				output,
-				resource,
-				instance,
-				toState.get().getStateId());
+				// Migrate to the next state
+				eventSink.onEvent(MigrationEvent.start(OutputFormatter.migrationStart(
+					resource,
+					migration,
+					fromState,
+					toState)));
 
-			// Assert the new state
-			List<AssertionResult> assertionResults = this.assertState(
-				resource,
-				instance);
+				try
+				{
+					migrationPlugin.perform(
+						eventSink,
+						migration,
+						instance);
+				}
+				catch (Exception ex)
+				{
+					eventSink.onEvent(MigrationEvent.failed(ex.getMessage()));
+					throw ex;
+				}
 
-			WildebeestApiImpl.throwIfFailed(toState.get().getStateId(), assertionResults);
+				eventSink.onEvent(MigrationEvent.complete(OutputFormatter.migrationComplete(
+					resource,
+					migration)));
+
+				// Update the state
+				try
+				{
+					// TODO: This will fail if toState is null (i.e. non-existant).  In this case the state-tracking record should be removed
+					resourcePlugin.setStateId(
+						eventSink,
+						resource,
+						instance,
+						toState.getStateId());
+
+					// Assert the new state
+					this.assertStateAndThrowIfFailed(
+						resource,
+						instance);
+
+					eventSink.onEvent(StateEvent.changeSuccess(null));
+				}
+				catch (Exception ex)
+				{
+					eventSink.onEvent(StateEvent.changeFailed(ex.getMessage()));
+					throw ex;
+				}
+			}
 		}
 	}
 
@@ -458,35 +546,36 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 		if (targetState != null && "".equals(targetState.trim()))
-			throw new IllegalArgumentException("targetState cannot be empty");
+			throw new ArgumentException("targetState", "targetState cannot be empty");
 
 		ResourcePlugin resourcePlugin = this.getResourcePlugin(
 			resource.getType());
 
-		UUID targetStateId = Wildebeest.findState(resource, targetState).getStateId();
+		UUID targetStateId = null;
 
-		State state = Wildebeest.findState(
-			resource,
-			targetStateId.toString());
-
-		if (targetState == null)
+		try
 		{
-			throw new JumpStateFailedException("This resource does not have a state with ID " +
-				targetStateId.toString());
+			targetStateId = Wildebeest.findState(resource, targetState).getStateId();
+		}
+		catch(InvalidReferenceException e)
+		{
+			throw new UnknownStateSpecifiedException(targetState);
 		}
 
-		// Assert the new state
-		List<AssertionResult> assertionResults = this.assertState(
-			resource,
-			instance);
-
-		WildebeestApiImpl.throwIfFailed(state.getStateId(), assertionResults);
+		eventSink.onEvent(JumpStateEvent.start(null));
 
 		resourcePlugin.setStateId(
-			output,
+			eventSink,
 			resource,
 			instance,
 			targetStateId);
+
+		// Assert the new state
+		this.assertStateAndThrowIfFailed(
+			resource,
+			instance);
+
+		eventSink.onEvent(JumpStateEvent.complete(null));
 	}
 
 	@Override
@@ -740,76 +829,93 @@ public class WildebeestApiImpl implements WildebeestApi
 
 	public static List<List<Migration>> findPaths(
 		Resource resource,
-		Optional<UUID> fromState,
-		Optional<UUID> targetState)
+		UUID fromState,
+		UUID targetState) throws InvalidReferenceException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
-		if (fromState == null) throw new ArgumentNullException("fromState");
-		if (targetState == null) throw new ArgumentNullException("targetState");
 
 		return findPaths(resource, fromState, targetState, new ArrayList<>());
 	}
 
+	/**
+	 * @param resource      the resource that we are looking for a migration path through.
+	 * @param fromStateId   the optional starting point for this recursive iteration of the path finding algorithm.  If
+	 *                      this is null it indicates we are migrating from the non-existent state.
+	 * @param targetStateId the optional target state for the migration.  If this is null it means we're migrating to
+	 *                      the non-existent state.
+	 * @param currPath      the path that we've built up so far on the current recursive search.
+	 * @return
+	 */
 	private static List<List<Migration>> findPaths(
 		Resource resource,
-		Optional<UUID> fromState,
-		Optional<UUID> targetState,
-		List<Migration> currPath)
+		UUID fromStateId,
+		UUID targetStateId,
+		List<Migration> currPath) throws InvalidReferenceException
 	{
-		List<List<Migration>> paths = new ArrayList<>();
-		List<Migration> possibleMigrations = findPossibleMigrations(fromState, resource.getMigrations());
+		if (resource == null) throw new ArgumentNullException("resource");
+		if (currPath == null) throw new ArgumentNullException("currPath");
 
-		possibleMigrations.forEach(migration ->
+		List<List<Migration>> paths = new ArrayList<>();
+		List<Migration> possibleMigrations = findPossibleMigrations(fromStateId, resource.getMigrations());
+
+		for (Migration migration : possibleMigrations)
 		{
-			List<Migration> pathSplit = new ArrayList<>(currPath);
-			if (migration.getToState().isPresent() && pathSplit.toString().contains(migration.getToState().get()))
+			List<Migration> newPath = new ArrayList<>(currPath);
+
+			// TODO: the toString() approach is not an optimal nor robust way to do this - find a better way
+			if (migration.getToState().isPresent() && newPath.toString().contains(migration.getToState().get()))
 			{
-				//Circular path detected
-				return;
+				// Circular path detected
+				break;
 			}
 
-			pathSplit.add(migration);
+			newPath.add(migration);
 
-			Optional<String> toState = migration.getToState();
-			if (toState.isPresent())
+			if (migration.getToState().isPresent())
 			{
-				if (targetState.isPresent() && toState.get().equals(targetState.get().toString()))
+				UUID toStateId = Wildebeest.findState(resource, migration.getToState().get()).getStateId();
+
+				// If we've arrived at the target, then this is a complete path
+				if (targetStateId != null && targetStateId.equals(toStateId))
 				{
-					//A complete path found
-					paths.add(pathSplit);
+					// Register the complete path
+					paths.add(newPath);
 				}
+
+				// Otherwise recurse to look for more paths
 				else
 				{
-					//Add all complete path found to paths
+					// Add all complete path found to paths
 					paths.addAll(findPaths(
 						resource,
-						Optional.of(UUID.fromString(toState.get())),
-						targetState,
-						pathSplit
+						toStateId,
+						targetStateId,
+						newPath
 					));
 				}
 			}
 			else
 			{
-				if (!targetState.isPresent())
+				if (targetStateId == null)
 				{
-					//A complete path found
-					paths.add(pathSplit);
+					// A complete path found
+					paths.add(newPath);
 				}
 			}
-		});
+		};
+
 		return paths;
 	}
 
 	private static List<Migration> findPossibleMigrations(
-		Optional<UUID> fromState,
+		UUID fromState,
 		List<Migration> migrations)
 	{
 		return migrations.parallelStream().filter(m ->
 		{
-			if (fromState.isPresent())
+			if (fromState != null)
 			{
-				return m.getFromState().isPresent() && m.getFromState().get().equals(fromState.get().toString());
+				return m.getFromState().isPresent() && m.getFromState().get().equals(fromState.toString());
 			}
 			else
 			{
@@ -883,8 +989,8 @@ public class WildebeestApiImpl implements WildebeestApi
 			// Search the states for those that match the non-empty references on the migration.
 			for (State s : states)
 			{
-				fromIsValid |= WildebeestApiImpl.stateEquals(m.getFromState(), s);
-				toIsValid |= WildebeestApiImpl.stateEquals(m.getToState(), s);
+				fromIsValid |= s.matchesStateRef(m.getFromState().orElse(null));
+				toIsValid |= s.matchesStateRef(m.getToState().orElse(null));
 
 				if (fromIsValid && toIsValid)
 				{
@@ -926,17 +1032,6 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 	}
 
-	private static boolean stateEquals(
-		Optional<String> stateRef,
-		State state)
-	{
-		if (stateRef == null) throw new ArgumentNullException("stateRef");
-		if (state == null) throw new ArgumentNullException("state");
-
-		return stateRef.isPresent() &&
-			(stateRef.get().equals(state.getStateId().toString()) || stateRef.get().equals(state.getName()));
-	}
-
 	private static List<MigrationTypeInfo> getMigrationTypeInfos()
 	{
 		Reflections reflections = new Reflections(Wildebeest.class.getPackage().getName());
@@ -970,4 +1065,6 @@ public class WildebeestApiImpl implements WildebeestApi
 			.map(assertionClass -> assertionClass.getAnnotation(AssertionType.class))
 			.collect(Collectors.toList());
 	}
+
+
 }

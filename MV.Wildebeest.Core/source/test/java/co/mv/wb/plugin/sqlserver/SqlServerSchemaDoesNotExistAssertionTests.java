@@ -21,12 +21,15 @@ import co.mv.wb.Asserts;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.event.EventSink;
+import co.mv.wb.event.LoggingEventSink;
+import co.mv.wb.impl.WildebeestApiImplJumpStateIntegrationTests;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.PrintStream;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -40,13 +43,14 @@ import static org.junit.Assert.fail;
  */
 public class SqlServerSchemaDoesNotExistAssertionTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplJumpStateIntegrationTests.class);
+
 	@Test
 	public void applyForExistingSchemaFails() throws
 		MigrationFailedException
 	{
 		// Setup
-		PrintStream output = System.out;
-
+		EventSink eventSink = new LoggingEventSink(LOG);
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -61,26 +65,25 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
-
 		createDatabaseRunner.perform(
-			output,
+			eventSink,
 			createDatabase,
 			instance);
 
 		Migration createSchema = new SqlServerCreateSchemaMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.empty(),
+			null,
+			null,
 			"prd");
 
 		MigrationPlugin createSchemaRunner = new SqlServerCreateSchemaMigrationPlugin();
 
 		createSchemaRunner.perform(
-			output,
+			eventSink,
 			createSchema,
 			instance);
 
@@ -89,7 +92,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			0,
 			"prd");
 
-		AssertionResponse response = null;
+		final AssertionResponse response;
 
 		try
 		{
@@ -111,9 +114,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 	public void applyForNonExistentSchemaSucceeds() throws
 		MigrationFailedException
 	{
-		// Setup
-		PrintStream output = System.out;
-
+		EventSink eventSink = new LoggingEventSink(LOG);
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName();
@@ -129,13 +130,13 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 
 		Migration createDatabase = new SqlServerCreateDatabaseMigration(
 			UUID.randomUUID(),
-			Optional.empty(),
-			Optional.of(UUID.randomUUID().toString()));
+			null,
+			UUID.randomUUID().toString());
 
 		MigrationPlugin createDatabaseRunner = new SqlServerCreateDatabaseMigrationPlugin();
 
 		createDatabaseRunner.perform(
-			output,
+			eventSink,
 			createDatabase,
 			instance);
 
@@ -144,7 +145,7 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			0,
 			"prd");
 
-		AssertionResponse response = null;
+		final AssertionResponse response;
 
 		try
 		{

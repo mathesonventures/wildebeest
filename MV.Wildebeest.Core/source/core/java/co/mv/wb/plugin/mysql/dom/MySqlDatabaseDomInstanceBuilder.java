@@ -18,7 +18,7 @@ package co.mv.wb.plugin.mysql.dom;
 
 import co.mv.wb.Instance;
 import co.mv.wb.InstanceBuilder;
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.V;
 import co.mv.wb.plugin.base.dom.BaseDomInstanceBuilder;
@@ -43,7 +43,7 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 		Optional<String> databaseName = this.tryGetString("databaseName");
 		Optional<String> stateTableName = this.tryGetString("stateTableName");
 
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!hostName.isPresent())
 		{
 			V.elementMissing(messages, null, "hostName", MySqlDatabaseInstance.class);
@@ -70,14 +70,12 @@ public class MySqlDatabaseDomInstanceBuilder extends BaseDomInstanceBuilder
 			throw new PluginBuildException(messages);
 		}
 
-		Instance result = new MySqlDatabaseInstance(
+		return new MySqlDatabaseInstance(
 			hostName.get(),
 			port.get(),
 			adminUsername.get(),
 			adminPassword.get(),
 			databaseName.get(),
 			stateTableName.orElse(null));
-
-		return result;
 	}
 }

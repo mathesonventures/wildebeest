@@ -20,6 +20,7 @@ import co.mv.wb.AssertionResponse;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 
 import java.io.PrintStream;
@@ -35,14 +36,14 @@ public abstract class BaseAnsiPluginUnitTests
 	public abstract void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException;
 
 	protected void ansiSqlCreateDatabaseMigrationSucceeds(
-		PrintStream output,
+		EventSink eventSink,
 		AnsiSqlDatabaseInstance instance,
 		Migration create,
 		MigrationPlugin createRunner,
 		Migration drop,
 		MigrationPlugin dropRunner) throws MigrationFailedException
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (instance == null) throw new ArgumentNullException("instance");
 		if (create == null) throw new ArgumentNullException("create");
 		if (createRunner == null) throw new ArgumentNullException("createRunner");
@@ -53,7 +54,7 @@ public abstract class BaseAnsiPluginUnitTests
 		{
 			// Execute
 			createRunner.perform(
-				output,
+				eventSink,
 				create,
 				instance);
 
@@ -63,7 +64,7 @@ public abstract class BaseAnsiPluginUnitTests
 		finally
 		{
 			dropRunner.perform(
-				output,
+				eventSink,
 				drop,
 				instance);
 		}
@@ -72,7 +73,7 @@ public abstract class BaseAnsiPluginUnitTests
 	public abstract void tableExistsForExistentTable() throws MigrationFailedException;
 
 	protected void tableExistsForExistentTable(
-		PrintStream output,
+		EventSink eventSink,
 		DatabaseInstance instance,
 		Migration createDatabase,
 		MigrationPlugin createDatabaseRunner,
@@ -82,7 +83,7 @@ public abstract class BaseAnsiPluginUnitTests
 		MigrationPlugin dropDatabaseRunner) throws
 		MigrationFailedException
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (instance == null) throw new ArgumentNullException("instance");
 		if (createDatabase == null) throw new ArgumentNullException("createDatabase");
 		if (createDatabaseRunner == null) throw new ArgumentNullException("createDatabaseRunner");
@@ -101,12 +102,12 @@ public abstract class BaseAnsiPluginUnitTests
 		try
 		{
 			createDatabaseRunner.perform(
-				output,
+				eventSink,
 				createDatabase,
 				instance);
 
 			createTableRunner.perform(
-				output,
+				eventSink,
 				createTable,
 				instance);
 
@@ -121,7 +122,7 @@ public abstract class BaseAnsiPluginUnitTests
 		finally
 		{
 			dropDatabaseRunner.perform(
-				output,
+				eventSink,
 				dropDatabase,
 				instance);
 		}
@@ -130,7 +131,7 @@ public abstract class BaseAnsiPluginUnitTests
 	public abstract void tableExistsForNonExistentTable() throws MigrationFailedException;
 
 	protected void tableExistsForNonExistentTable(
-		PrintStream output,
+		EventSink eventSink,
 		DatabaseInstance instance,
 		Migration createDatabase,
 		MigrationPlugin createDatabaseRunner,
@@ -138,7 +139,7 @@ public abstract class BaseAnsiPluginUnitTests
 		MigrationPlugin dropDatabaseRunner) throws
 		MigrationFailedException
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (instance == null) throw new ArgumentNullException("instance");
 		if (createDatabase == null) throw new ArgumentNullException("createDatabase");
 		if (createDatabaseRunner == null) throw new ArgumentNullException("createDatabaseRunner");
@@ -155,7 +156,7 @@ public abstract class BaseAnsiPluginUnitTests
 		try
 		{
 			createDatabaseRunner.perform(
-				output,
+				eventSink,
 				createDatabase,
 				instance);
 
@@ -170,7 +171,7 @@ public abstract class BaseAnsiPluginUnitTests
 		finally
 		{
 			dropDatabaseRunner.perform(
-				output,
+				eventSink,
 				dropDatabase,
 				instance);
 		}

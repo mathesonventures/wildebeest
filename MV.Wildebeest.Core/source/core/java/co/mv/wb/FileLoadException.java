@@ -27,18 +27,18 @@ import java.io.File;
  */
 public class FileLoadException extends Exception
 {
-	private File _file;
+	private final File file;
 
 	public FileLoadException(
 		File file)
 	{
 		if (file == null) throw new ArgumentNullException("file");
 
-		_file = file;
+		this.file = file;
 	}
 
 	public File getFile()
 	{
-		return _file;
+		return file;
 	}
 }

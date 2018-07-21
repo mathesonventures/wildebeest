@@ -18,7 +18,7 @@ package co.mv.wb.plugin.sqlserver.dom;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionBuilder;
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.V;
 import co.mv.wb.plugin.base.dom.BaseDomAssertionBuilder;
@@ -43,7 +43,7 @@ public class SqlServerSchemaDoesNotExistDomAssertionBuilder extends BaseDomAsser
 		Optional<String> schemaName = this.tryGetString("schemaName");
 
 		// Validation
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!schemaName.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "schemaName", SqlServerSchemaDoesNotExistAssertion.class);
@@ -54,11 +54,9 @@ public class SqlServerSchemaDoesNotExistDomAssertionBuilder extends BaseDomAsser
 			throw new PluginBuildException(messages);
 		}
 
-		Assertion result = new SqlServerSchemaDoesNotExistAssertion(
+		return new SqlServerSchemaDoesNotExistAssertion(
 			assertionId,
 			seqNum,
 			schemaName.get());
-
-		return result;
 	}
 }

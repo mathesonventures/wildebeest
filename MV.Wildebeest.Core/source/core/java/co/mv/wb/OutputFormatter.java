@@ -18,10 +18,11 @@ package co.mv.wb;
 
 import co.mv.wb.framework.ArgumentNullException;
 
-import java.util.Optional;
-
 public class OutputFormatter
 {
+	private OutputFormatter()
+	{
+	}
 
 	//
 	// Loader
@@ -38,7 +39,6 @@ public class OutputFormatter
 	}
 
 	public static String loaderFault(
-		LoaderFault e,
 		String loadType)
 	{
 		return String.format("Unable to load %s", loadType);
@@ -61,7 +61,7 @@ public class OutputFormatter
 		String loadType)
 	{
 		return String.format(
-			"XML validation failed on %s with the following message:\n \"%s\"",
+			"XML validation failed on %s with the following message:%n \"%s\"",
 			loadType,
 			e.getMessage());
 	}
@@ -92,10 +92,9 @@ public class OutputFormatter
 			e.getSpecifiedState());
 	}
 
-	public static String targetNotSpecified(TargetNotSpecifiedException e)
+	public static String targetNotSpecified()
 	{
-		return String.format(
-			"No target was specified and the resource does not have a default target set");
+		return "No target was specified and the resource does not have a default target set";
 	}
 
 	public static String indeterminateState(IndeterminateStateException e)
@@ -110,43 +109,40 @@ public class OutputFormatter
 	public static String migrationStart(
 		Resource resource,
 		Migration migration,
-		Optional<State> fromState,
-		Optional<State> toState)
+		State fromState,
+		State toState)
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (migration == null) throw new ArgumentNullException("migration");
-		if (fromState == null) throw new ArgumentNullException("fromState");
-		if (toState == null) throw new ArgumentNullException("toState");
 
 		StringBuilder result = new StringBuilder();
 
-		if (fromState.isPresent())
+		if (fromState != null)
 		{
-			if (toState.isPresent())
+			if (toState != null)
 			{
 				result.append(String.format(
 					"Migrating from state \"%s\" to \"%s\"",
-					fromState.get().getDisplayName(),
-					toState.get().getDisplayName()));
+					fromState.getDisplayName(),
+					toState.getDisplayName()));
 			}
 			else
 			{
 				result.append(String.format(
 					"Migrating from state \"%s\" to non-existent",
-					fromState.get().getDisplayName()));
+					fromState.getDisplayName()));
 			}
 		}
+		else if (toState != null)
+		{
+			result.append(String.format(
+				"Migrating from non-existent to \"%s\"",
+				toState.getDisplayName()));
+		}
 		else
-			if (toState.isPresent())
-			{
-				result.append(String.format(
-					"Migrating from non-existent to \"%s\"",
-					toState.get().getDisplayName()));
-			}
-			else
-			{
-				// Exception?
-			}
+		{
+			// Exception?
+		}
 
 		return result.toString();
 	}

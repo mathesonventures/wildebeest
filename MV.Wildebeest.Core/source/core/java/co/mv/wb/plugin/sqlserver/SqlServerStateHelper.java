@@ -68,7 +68,8 @@ public class SqlServerStateHelper
 			String.format(
 				"DELETE FROM %s WHERE ResourceId = '%s';",
 				stateTableName,
-				resourceId));
+				resourceId),
+			false);
 
 		DatabaseHelper.execute(
 			appDataSource,
@@ -77,7 +78,8 @@ public class SqlServerStateHelper
 				stateTableName,
 				resourceId,
 				stateId,
-				DatabaseHelper.getInstant()));
+				DatabaseHelper.getInstant()),
+			false);
 	}
 
 
@@ -181,6 +183,7 @@ public class SqlServerStateHelper
 			.append("StateId uniqueidentifier NOT NULL, ")
 			.append("LastMigrationInstant datetimeoffset NOT NULL, ")
 			.append("PRIMARY KEY (ResourceId)")
-			.append(");").toString());
+			.append(");").toString(),
+			false);
 	}
 }

@@ -21,7 +21,6 @@ import co.mv.wb.plugin.base.dom.BaseDomMigrationBuilder;
 import co.mv.wb.plugin.fake.SetTagMigration;
 
 import java.io.File;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -34,8 +33,8 @@ public class DomSetTagMigrationBuilder extends BaseDomMigrationBuilder
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState,
+		String fromState,
+		String toState,
 		File baseDir)
 	{
 		String tag = this.getElement().getChildNodes().item(0).getTextContent();

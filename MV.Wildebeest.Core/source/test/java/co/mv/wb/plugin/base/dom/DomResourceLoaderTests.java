@@ -27,6 +27,7 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.FixtureBuilder;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
@@ -38,6 +39,8 @@ import co.mv.wb.plugin.fake.dom.DomSetTagMigrationBuilder;
 import co.mv.wb.plugin.fake.dom.DomTagAssertionBuilder;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.HashMap;
@@ -55,6 +58,8 @@ import static org.junit.Assert.assertNotNull;
  */
 public class DomResourceLoaderTests
 {
+	private static final Logger LOG = LoggerFactory.getLogger(DomResourceLoaderTests.class);
+
 	@Test
 	public void loadResource() throws
 		LoaderFault,
@@ -937,7 +942,9 @@ public class DomResourceLoaderTests
 		XmlValidationException
 	{
 		// Setup
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "MySqlDatabase/database.wbresources.uses.assertionGroup.xml";
 
 		// Execute
@@ -977,7 +984,9 @@ public class DomResourceLoaderTests
 		XmlValidationException
 	{
 		// Setup
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "PostgreSqlDatabase/database.wbresources.uses.assertionGroup.xml";
 
 		// Execute
@@ -1021,7 +1030,9 @@ public class DomResourceLoaderTests
 		XmlValidationException
 	{
 		// Setup
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "SqlServerDatabase/database.wbresources.uses.assertionGroup.xml";
 
 		// Execute
@@ -1057,7 +1068,9 @@ public class DomResourceLoaderTests
 	public void loadResourceXml_assertionGroup_withInvalidXML_fails()
 	{
 		// Setup
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml";
 
 		new ExpectException(XmlValidationException.class)
@@ -1080,7 +1093,9 @@ public class DomResourceLoaderTests
 	public void loadResourceXml_assertionGroup_withInvalidRef_fails()
 	{
 		// Setup
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "InvalidXml/InvalidReferenceSampleResourceUsesAssertionGroup.xml";
 
 		new ExpectException(InvalidReferenceException.class)
@@ -1095,7 +1110,7 @@ public class DomResourceLoaderTests
 				Assert.assertTrue(
 					"e.message",
 					e.getMessage().contains("State:363568f1-aaed-4a50-bea0-9ddee713cc11 has invalid references to: " +
-						"[ Assertion Group:group1 ]"));
+						"[ Assertion Group: group1 ]"));
 			}
 		}.perform();
 	}
@@ -1211,7 +1226,9 @@ public class DomResourceLoaderTests
 	public void loadResourceXml_withInvalidXML_singleAssertion_fails()
 	{
 		// Setup
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "InvalidXml/InvalidSampleResourceUsesSingleAssertRef.xml";
 
 		new ExpectException(XmlValidationException.class)
@@ -1234,7 +1251,9 @@ public class DomResourceLoaderTests
 	public void loadResourceXml_withInvalidRef_singleAssertion_fails()
 	{
 		// Setup
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
 		String resourceFilePath = "InvalidXml/InvalidSampleResourceSingleAssertMissingRef.xml";
 
 		new ExpectException(InvalidReferenceException.class)
@@ -1249,36 +1268,19 @@ public class DomResourceLoaderTests
 				Assert.assertTrue(
 					"e.message",
 					e.getMessage().contains("State:199b7cc1-3cc6-48ca-b012-a70d05d5b5e7 has invalid references to:" +
-						" [ Assertion:DatabaseExisting2 ]"));
+						" [ Assertion: DatabaseExisting2 ]"));
 			}
 		}.perform();
-	}
-
-	private Resource loadResource(
-		String resourceFilePath)
-	{
-		if (resourceFilePath == null) throw new ArgumentNullException("resourceFilePath");
-
-		try
-		{
-			// Setup
-			WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
-			// Execute
-			return wildebeestApi.loadResource(new File(resourceFilePath));
-		}
-		catch (LoaderFault | PluginBuildException | InvalidReferenceException | FileLoadException
-			| XmlValidationException loaderFault)
-		{
-			loaderFault.printStackTrace();
-		}
-		return null;
 	}
 
 	@Test
 	public void loadResource_withMissingAssertionGroup_throwsXmlValidationException()
 	{
 		// Setup
-		WildebeestApi wildebeestApi = WildebeestApiBuilder.create(System.out).get();
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
+
 		String resourceFilePath = "InvalidXml/InvalidSampleResourcesUsesAssertionGroup.xml";
 
 		// Execute and Verify
@@ -1296,5 +1298,28 @@ public class DomResourceLoaderTests
 					e.getMessage().contains("Attribute 'ref' must appear on element 'assertionRef'"));
 			}
 		}.perform();
+	}
+
+	private Resource loadResource(
+		String resourceFilePath)
+	{
+		if (resourceFilePath == null) throw new ArgumentNullException("resourceFilePath");
+
+		final Resource result;
+
+		final WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.get();
+
+		try
+		{
+			result = wildebeestApi.loadResource(new File(resourceFilePath));
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		return result;
 	}
 }

@@ -17,10 +17,13 @@
 package co.mv.wb;
 
 /**
+ * <p>
  * The response from an {@link Assertion}'s {@link Assertion#apply()} method.
+ * </p>
  * <p>
  * Note: this is not to be confused with an AssertionResult, which is created from an AssertionResponse but is returned
  * by aggregate functions such as {@link Resource#assertState()}
+ * </p>
  *
  * @since 1.0
  */

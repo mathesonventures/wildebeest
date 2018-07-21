@@ -16,7 +16,7 @@
 
 package co.mv.wb.plugin.sqlserver.dom;
 
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationBuilder;
 import co.mv.wb.PluginBuildException;
@@ -38,15 +38,15 @@ public class SqlServerDropSchemaDomMigrationBuilder extends BaseDomMigrationBuil
 	@Override
 	public Migration build(
 		UUID migrationId,
-		Optional<String> fromState,
-		Optional<String> toState,
+		String fromState,
+		String toState,
 		File baseDir) throws
 		PluginBuildException
 	{
 		Optional<String> schemaName = this.tryGetString("schemaName");
 
 		// Validation
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!schemaName.isPresent())
 		{
 			messages.addMessage(V.elementMissing(

@@ -16,6 +16,7 @@
 
 package co.mv.wb.plugin.mysql;
 
+import co.mv.wb.framework.ArgumentException;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 import com.mysql.cj.jdbc.MysqlDataSource;
@@ -36,7 +37,9 @@ public class MySqlUtil
 	{
 		if (properties == null) throw new ArgumentNullException("properties");
 		if (databaseName == null) throw new ArgumentNullException("databaseName");
-		if (setupScript == null) throw new ArgumentNullException("setupScript");
+		if (setupScript != null && setupScript.trim().equals("")) throw new ArgumentException(
+			"setupScript",
+			"setupScript cannot be empty");
 
 		return MySqlUtil.createDatabase(
 			properties.getHostName(),
@@ -96,7 +99,9 @@ public class MySqlUtil
 		if (username == null) throw new ArgumentNullException("username");
 		if (passwordClear == null) throw new ArgumentNullException("passwordClear");
 		if (databaseName == null) throw new ArgumentNullException("databaseName");
-		if (setupScript == null) throw new ArgumentNullException("setupScript");
+		if (setupScript != null && setupScript.trim().equals("")) throw new ArgumentException(
+			"setupScript",
+			"setupScript cannot be empty");
 
 		LOG.info(String.format(
 			"Setting up test database { name: %s: hostName: %s; username: %s; password: %s; }",
@@ -118,7 +123,7 @@ public class MySqlUtil
 
 		try
 		{
-			DatabaseHelper.execute(rootDs, String.format("CREATE DATABASE `%s`;", databaseName));
+			DatabaseHelper.execute(rootDs, String.format("CREATE DATABASE `%s`;", databaseName), false);
 		}
 		catch (SQLException e)
 		{
@@ -136,13 +141,16 @@ public class MySqlUtil
 			passwordClear,
 			databaseName);
 
-		try
+		if (setupScript != null)
 		{
-			DatabaseHelper.execute(testDs, setupScript);
-		}
-		catch (SQLException e)
-		{
-			throw new RuntimeException(e);
+			try
+			{
+				DatabaseHelper.execute(testDs, setupScript, true);
+			}
+			catch (SQLException e)
+			{
+				throw new RuntimeException(e);
+			}
 		}
 
 		return databaseName;
@@ -184,7 +192,7 @@ public class MySqlUtil
 
 		try
 		{
-			DatabaseHelper.execute(rootDs, String.format("DROP DATABASE `%s`;", databaseName));
+			DatabaseHelper.execute(rootDs, String.format("DROP DATABASE `%s`;", databaseName), false);
 		}
 		catch (SQLException e)
 		{
@@ -199,6 +207,6 @@ public class MySqlUtil
 		if (instance == null) throw new ArgumentNullException("instance");
 		if ("".equals(databaseName)) throw new IllegalArgumentException("databaseName cannot be empty");
 
-		DatabaseHelper.execute(instance.getAdminDataSource(), "DROP DATABASE `" + databaseName + "`;");
+		DatabaseHelper.execute(instance.getAdminDataSource(), "DROP DATABASE `" + databaseName + "`;", false);
 	}
 }

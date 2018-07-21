@@ -98,7 +98,7 @@ public class MySqlTableDoesNotExistAssertion extends BaseAssertion
 	{
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		MySqlDatabaseInstance db = ModelExtensions.As(instance, MySqlDatabaseInstance.class);
+		MySqlDatabaseInstance db = ModelExtensions.as(instance, MySqlDatabaseInstance.class);
 		if (db == null)
 		{
 			throw new IllegalArgumentException("instance must be a MySqlDatabaseInstance");

@@ -23,11 +23,11 @@ import co.mv.wb.MigrationFaultException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationPluginType;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
 
 /**
@@ -39,22 +39,22 @@ import java.sql.SQLException;
 public class SqlServerDropDatabaseMigrationPlugin implements MigrationPlugin
 {
 	@Override public void perform(
-		PrintStream output,
+		EventSink eventSink,
 		Migration migration,
 		Instance instance) throws
 		MigrationFailedException
 	{
-		if (output == null) throw new ArgumentNullException("output");
+		if (eventSink == null) throw new ArgumentNullException("eventSink");
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlServerDropDatabaseMigration migrationT = ModelExtensions.As(migration, SqlServerDropDatabaseMigration.class);
+		SqlServerDropDatabaseMigration migrationT = ModelExtensions.as(migration, SqlServerDropDatabaseMigration.class);
 		if (migrationT == null)
 		{
 			throw new IllegalArgumentException("migration must be a SqlServerCreateSchemaMigration");
 		}
 
-		SqlServerDatabaseInstance instanceT = ModelExtensions.As(instance, SqlServerDatabaseInstance.class);
+		SqlServerDatabaseInstance instanceT = ModelExtensions.as(instance, SqlServerDatabaseInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
@@ -62,8 +62,13 @@ public class SqlServerDropDatabaseMigrationPlugin implements MigrationPlugin
 
 		try
 		{
-			DatabaseHelper.execute(instanceT.getAdminDataSource(), new StringBuilder()
-				.append("DROP DATABASE [").append(instanceT.getDatabaseName()).append("];").toString());
+			DatabaseHelper.execute(
+				instanceT.getAdminDataSource(),
+				new StringBuilder()
+					.append("DROP DATABASE [")
+					.append(instanceT.getDatabaseName())
+					.append("];").toString(),
+				false);
 		}
 		catch (SQLServerException e)
 		{

@@ -18,7 +18,7 @@ package co.mv.wb.plugin.generaldatabase.dom;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionBuilder;
-import co.mv.wb.Messages;
+import co.mv.wb.MessageList;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.V;
 import co.mv.wb.plugin.base.dom.BaseDomAssertionBuilder;
@@ -46,7 +46,7 @@ public class RowDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 		Optional<String> description = this.tryGetString("description");
 
 		// Validate
-		Messages messages = new Messages();
+		MessageList messages = new MessageList();
 		if (!sql.isPresent())
 		{
 			V.elementMissing(messages, assertionId, "sql", RowExistsAssertion.class);
@@ -62,7 +62,8 @@ public class RowDoesNotExistDomAssertionBuilder extends BaseDomAssertionBuilder
 			throw new PluginBuildException(messages);
 		}
 
-
-		return new RowDoesNotExistAssertion(assertionId, coalesceWhitespace(description.get()), seqNum, sql.get());
+		return new RowDoesNotExistAssertion(
+			assertionId,
+			coalesceWhitespace(description.get()), seqNum, sql.get());
 	}
 }

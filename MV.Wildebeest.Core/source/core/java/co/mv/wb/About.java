@@ -23,6 +23,19 @@ package co.mv.wb;
  */
 public class About
 {
+	private final String projectName;
+	private final String projectTitle;
+	private final String versionFullDotted;
+	private final String copyrightAssertion;
+
+	public About()
+	{
+		this.projectName = "@meta.project.identity.name@";
+		this.projectTitle = "@meta.project.identity.title@";
+		this.versionFullDotted = "@meta.project.version.full.dotted@";
+		this.copyrightAssertion = "Copyright (c) @meta.project.copyright.years@, @meta.project.copyright.owner@";
+	}
+
 	/**
 	 * Gets the project name.
 	 *
@@ -31,7 +44,7 @@ public class About
 	 */
 	public String getProjectName()
 	{
-		return "@meta.project.identity.name@";
+		return this.projectName;
 	}
 
 	/**
@@ -42,7 +55,7 @@ public class About
 	 */
 	public String getProjectTitle()
 	{
-		return "@meta.project.identity.title@";
+		return this.projectTitle;
 	}
 
 	/**
@@ -53,7 +66,7 @@ public class About
 	 */
 	public String getVersionFullDotted()
 	{
-		return "@meta.project.version.full.dotted@";
+		return this.versionFullDotted;
 	}
 
 	/**
@@ -64,6 +77,6 @@ public class About
 	 */
 	public String getCopyrightAssertion()
 	{
-		return "Copyright (c) @meta.project.copyright.years@, @meta.project.copyright.owner@";
+		return this.copyrightAssertion;
 	}
 }

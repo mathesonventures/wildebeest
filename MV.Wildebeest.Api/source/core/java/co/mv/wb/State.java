@@ -16,6 +16,9 @@
 
 package co.mv.wb;
 
+import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.framework.Util;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,4 +69,31 @@ public interface State
 	 * @since 1.0
 	 */
 	Optional<String> getDescription();
+
+	/**
+	 * Indicates if the supplied state reference matches either the state's ID or it's name (if set).
+	 *
+	 * @param stateRef the state reference to check for a match on.
+	 * @return boolean value indicating if the reference matches this state.
+	 */
+	default boolean matchesStateRef(String stateRef)
+	{
+		boolean result = stateRef == null;
+
+		if (stateRef != null)
+		{
+			if (Util.isUUID(stateRef))
+			{
+				UUID stateId = UUID.fromString(stateRef);
+
+				result = this.getStateId().equals(stateId);
+			}
+			else
+			{
+				result = this.getName().isPresent() && this.getName().get().equals(stateRef);
+			}
+		}
+
+		return result;
+	}
 }

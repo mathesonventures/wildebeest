@@ -21,7 +21,7 @@ package co.mv.wb.framework;
  *
  * @since 4.0
  */
-public class ArgumentNullException extends RuntimeException
+public class ArgumentNullException extends ArgumentException
 {
 	/**
 	 * Constructs a new ArgumentNullException for the specified parameter.
@@ -32,6 +32,8 @@ public class ArgumentNullException extends RuntimeException
 	public ArgumentNullException(
 		String paramName)
 	{
-		super(String.format("%s cannot be null", paramName));
+		super(
+			paramName,
+			String.format("%s cannot be null", paramName));
 	}
 }

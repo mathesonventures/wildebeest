@@ -45,7 +45,9 @@ import static org.junit.Assert.assertNotNull;
  */
 public class ExternalResourceDomMigrationBuilderIntegrationTests
 {
-	private static final Logger LOG = LoggerFactory.getLogger(ExternalResourceDomMigrationBuilderIntegrationTests.class);
+	private static final Logger LOG =
+		LoggerFactory.getLogger(ExternalResourceDomMigrationBuilderIntegrationTests.class);
+
 	@Test
 	public void load_forValidDocument_succeeds() throws
 		LoaderFault,
@@ -84,6 +86,6 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 
 		ExternalResourceMigration migrationT = (ExternalResourceMigration)migration;
 		assertEquals("migration.filename", "foo.wbr", migrationT.getFileName());
-		assertEquals("migration.target", Optional.of("bar"), migrationT.getTarget());
+		assertEquals("migration.target", "bar", migrationT.getTarget());
 	}
 }

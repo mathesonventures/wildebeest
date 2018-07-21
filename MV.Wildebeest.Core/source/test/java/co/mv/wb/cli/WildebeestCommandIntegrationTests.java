@@ -23,6 +23,7 @@ import co.mv.wb.PluginBuildException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
+import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import co.mv.wb.plugin.mysql.MySqlUtil;
@@ -30,6 +31,8 @@ import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseInstance;
 import co.mv.wb.plugin.sqlserver.SqlServerDatabaseInstance;
 import co.mv.wb.plugin.sqlserver.SqlServerUtil;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -42,7 +45,7 @@ import java.sql.SQLException;
  */
 public class WildebeestCommandIntegrationTests
 {
-
+	private static final Logger LOG = LoggerFactory.getLogger(WildebeestCommandIntegrationTests.class);
 	//
 	// MySql
 	//
@@ -58,8 +61,9 @@ public class WildebeestCommandIntegrationTests
 		PrintStream output = System.out;
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -105,8 +109,9 @@ public class WildebeestCommandIntegrationTests
 		PrintStream output = System.out;
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -133,7 +138,7 @@ public class WildebeestCommandIntegrationTests
 				});
 
 			// Drop the wb_state table, so the database resource is now no longer tracked by Wildebeest
-			DatabaseHelper.execute(instanceT.getAppDataSource(), "DROP TABLE wb_state;");
+			DatabaseHelper.execute(instanceT.getAppDataSource(), "DROP TABLE wb_state;", false);
 
 			// Execute
 			wb.run(new String[]
@@ -164,8 +169,9 @@ public class WildebeestCommandIntegrationTests
 		PrintStream output = System.out;
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -210,7 +216,7 @@ public class WildebeestCommandIntegrationTests
 		PrintStream output = System.out;
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.get();
 
@@ -243,8 +249,9 @@ public class WildebeestCommandIntegrationTests
 		PrintStream output = System.out;
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -264,7 +271,7 @@ public class WildebeestCommandIntegrationTests
 				"migrate",
 				"--resource:MySqlDatabase/database.wbresource.xml",
 				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-				"--targetState:Foo"
+				"--targetState:Core Schema Loaded"
 			});
 
 		//
@@ -288,8 +295,9 @@ public class WildebeestCommandIntegrationTests
 		PrintStream output = System.out;
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -337,8 +345,9 @@ public class WildebeestCommandIntegrationTests
 		PrintStream output = System.out;
 
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(output)
+			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -373,11 +382,12 @@ public class WildebeestCommandIntegrationTests
 				{
 					DatabaseHelper.execute(
 						instanceT.getAdminDataSource(),
-						String.format("DROP DATABASE %s", instanceT.getDatabaseName()));
+						String.format("DROP DATABASE %s", instanceT.getDatabaseName().toLowerCase()),
+						false);
 				}
 				catch (SQLException e)
 				{
-					throw new RuntimeException(e);
+					LOG.warn("Exception when dropping test database", e);
 				}
 			}
 		}

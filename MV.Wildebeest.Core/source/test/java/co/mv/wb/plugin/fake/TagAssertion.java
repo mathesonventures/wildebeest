@@ -85,7 +85,7 @@ public class TagAssertion extends BaseAssertion
 	{
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		FakeInstance instanceT = ModelExtensions.As(instance, FakeInstance.class);
+		FakeInstance instanceT = ModelExtensions.as(instance, FakeInstance.class);
 		if (instanceT == null)
 		{
 			throw new IllegalArgumentException("instance must be a FakeInstance");

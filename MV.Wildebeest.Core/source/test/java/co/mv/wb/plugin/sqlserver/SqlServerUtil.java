@@ -30,7 +30,8 @@ public class SqlServerUtil
 
 		DatabaseHelper.execute(
 			instance.getAdminDataSource(),
-			"CREATE DATABASE [" + instance.getDatabaseName() + "]");
+			"CREATE DATABASE [" + instance.getDatabaseName() + "]",
+			false);
 	}
 
 	public static void tryDropDatabase(
@@ -40,7 +41,8 @@ public class SqlServerUtil
 		{
 			DatabaseHelper.execute(
 				instance.getAdminDataSource(),
-				"DROP DATABASE [" + instance.getDatabaseName() + "];");
+				"DROP DATABASE [" + instance.getDatabaseName() + "];",
+				false);
 		}
 		catch (SQLException ex)
 		{

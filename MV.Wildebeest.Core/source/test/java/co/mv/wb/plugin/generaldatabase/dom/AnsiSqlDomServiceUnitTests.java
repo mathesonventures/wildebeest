@@ -17,8 +17,8 @@
 package co.mv.wb.plugin.generaldatabase.dom;
 
 import co.mv.wb.Asserts;
-import co.mv.wb.LoaderFault;
 import co.mv.wb.InvalidReferenceException;
+import co.mv.wb.LoaderFault;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
@@ -49,7 +49,7 @@ public class AnsiSqlDomServiceUnitTests
 	public void ansiSqlCreateDatabaseMigrationLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
@@ -73,7 +73,7 @@ public class AnsiSqlDomServiceUnitTests
 		// Verify
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
-		AnsiSqlCreateDatabaseMigration mT = ModelExtensions.As(
+		AnsiSqlCreateDatabaseMigration mT = ModelExtensions.as(
 			resource.getMigrations().get(0),
 			AnsiSqlCreateDatabaseMigration.class);
 		Assert.assertNotNull(
@@ -97,7 +97,7 @@ public class AnsiSqlDomServiceUnitTests
 	public void ansiSqlDropDatabaseMigrationLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		UUID migrationId = UUID.randomUUID();
@@ -121,7 +121,7 @@ public class AnsiSqlDomServiceUnitTests
 		// Verify
 		Assert.assertNotNull("resource", resource);
 		Assert.assertEquals("resource.migrations.size", 1, resource.getMigrations().size());
-		AnsiSqlDropDatabaseMigration mT = ModelExtensions.As(
+		AnsiSqlDropDatabaseMigration mT = ModelExtensions.as(
 			resource.getMigrations().get(0),
 			AnsiSqlDropDatabaseMigration.class);
 		Assert.assertNotNull("resource.migrations[0] expected to be of type AnsiSqlDropDatabaseMigration", mT);
@@ -143,7 +143,7 @@ public class AnsiSqlDomServiceUnitTests
 	public void ansiSqlTableExistsAssertionLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
@@ -173,7 +173,7 @@ public class AnsiSqlDomServiceUnitTests
 			"resource.states[0].assertions.size",
 			1,
 			resource.getStates().get(0).getAssertions().size());
-		AnsiSqlTableExistsAssertion assertionT = ModelExtensions.As(
+		AnsiSqlTableExistsAssertion assertionT = ModelExtensions.as(
 			resource.getStates().get(0).getAssertions().get(0),
 			AnsiSqlTableExistsAssertion.class);
 		Assert.assertNotNull("Expected to be an AnsiSqlTableExistsAssertion", assertionT);
@@ -189,7 +189,7 @@ public class AnsiSqlDomServiceUnitTests
 	public void ansiSqlTableDoesNotExistAssertionLoadFromValidDocument() throws
 		LoaderFault,
 		PluginBuildException,
-            InvalidReferenceException
+		InvalidReferenceException
 	{
 		// Setup
 		UUID assertionId = UUID.randomUUID();
@@ -219,7 +219,7 @@ public class AnsiSqlDomServiceUnitTests
 			"resource.states[0].assertions.size",
 			1,
 			resource.getStates().get(0).getAssertions().size());
-		AnsiSqlTableDoesNotExistAssertion assertionT = ModelExtensions.As(
+		AnsiSqlTableDoesNotExistAssertion assertionT = ModelExtensions.as(
 			resource.getStates().get(0).getAssertions().get(0),
 			AnsiSqlTableDoesNotExistAssertion.class);
 		Assert.assertNotNull("Expected to be an AnsiSqlTableDoesNotExistAssertion", assertionT);
