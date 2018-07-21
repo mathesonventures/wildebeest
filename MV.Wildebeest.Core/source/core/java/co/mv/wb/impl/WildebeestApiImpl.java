@@ -58,7 +58,6 @@ import co.mv.wb.plugin.base.ImmutableAssertionResult;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
-import com.sun.org.apache.bcel.internal.classfile.Unknown;
 import org.reflections.Reflections;
 import org.xml.sax.SAXException;
 
@@ -76,7 +75,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -334,6 +332,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			assertion ->
 			{
 				eventSink.onEvent(AssertionEvent.start(OutputFormatter.assertionStart(assertion)));
+
 				try
 				{
 					AssertionResponse response = assertion.perform(instance);
@@ -557,7 +556,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		{
 			targetStateId = Wildebeest.findState(resource, targetState).getStateId();
 		}
-		catch(InvalidReferenceException e)
+		catch (InvalidReferenceException e)
 		{
 			throw new UnknownStateSpecifiedException(targetState);
 		}
@@ -902,7 +901,7 @@ public class WildebeestApiImpl implements WildebeestApi
 					paths.add(newPath);
 				}
 			}
-		};
+		}
 
 		return paths;
 	}

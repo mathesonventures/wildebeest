@@ -18,26 +18,31 @@ package co.mv.wb.impl;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionFaultException;
+import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
 import co.mv.wb.Asserts;
+import co.mv.wb.ExpectException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.Resource;
+import co.mv.wb.ResourceType;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.LoggingEventSink;
+import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,6 +91,9 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		assertEquals("results.size", 0, results.size());
 	}
 
+	/**
+	 * A resource that has been migrated to a certain state which has one assertion defined passes its assertions.
+	 */
 	@Test
 	public void assertState_oneAssertion_succeeds() throws
 		IndeterminateStateException,
@@ -131,6 +139,9 @@ public class WildebeestApiImplAssertStateIntegrationTests
 			"results[0]");
 	}
 
+	/**
+	 * A resource that has been migrated to a certain state which has multiple assertion defined passes all assertions.
+	 */
 	@Test
 	public void assertState_multipleAssertions_succeeds() throws
 		IndeterminateStateException,
@@ -184,20 +195,125 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	}
 
 	/**
-	 * Verifies that when the internal call to currentState() results in an IndeterminateStateException, assertState
-	 * handles that properly.
+	 * A resource is declared to be in a state that is not defined, and calling assertState triggers an
+	 * IndeterminateStateException.
 	 */
-	@Ignore
 	@Test
 	public void assertState_resourceIndeterminateState_throws()
 	{
-		throw new UnsupportedOperationException();
+		// Setup
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			FakeConstants.Fake,
+			"Resource",
+			null);
+
+		State state = new ImmutableState(UUID.randomUUID());
+		resource.getStates().add(state);
+
+		UUID nonExistantStateId = UUID.randomUUID();
+		FakeInstance instance = new FakeInstance(nonExistantStateId);
+
+		WildebeestApi wildebeestApi = Wildebeest
+			.wildebeestApi(new LoggingEventSink(LOG))
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.get();
+
+		// Execute and Verify
+		new ExpectException(IndeterminateStateException.class)
+		{
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.assertState(
+					resource,
+					instance);
+			}
+
+			@Override public void verify(Exception e)
+			{
+				assertEquals(
+					"e.message",
+					e.getMessage(),
+					String.format(
+						"The resource is declared to be in state %s, but this state is not defined for this resource",
+						nonExistantStateId));
+			}
+		}.perform();
 	}
 
-	@Ignore
+	/**
+	 * A resource that has been migrated to a certain state which has one assertion encounters an
+	 * AssertionFaultException when applying the assertion.
+	 */
 	@Test
 	public void assertState_faultingAssertion_throws()
 	{
-		throw new UnsupportedOperationException();
+		// Setup
+		Resource resource = new ResourceImpl(
+			UUID.randomUUID(),
+			FakeConstants.Fake,
+			"Resource",
+			null);
+
+		State state = new ImmutableState(UUID.randomUUID());
+		resource.getStates().add(state);
+
+		UUID assertionId = UUID.randomUUID();
+
+		Assertion faultingAssertion = new Assertion()
+		{
+			@Override public UUID getAssertionId()
+			{
+				return assertionId;
+			}
+
+			@Override public String getDescription()
+			{
+				return "Faulting Assertion";
+			}
+
+			@Override public int getSeqNum()
+			{
+				return 0;
+			}
+
+			@Override public List<ResourceType> getApplicableTypes()
+			{
+				return Arrays.asList();
+			}
+
+			@Override public AssertionResponse perform(Instance instance)
+			{
+				if (instance == null) throw new ArgumentNullException("instance");
+
+				throw new AssertionFaultException(assertionId, new Exception("root cause"));
+			}
+		};
+
+		state.getAssertions().add(faultingAssertion);
+
+		FakeInstance instance = new FakeInstance(state.getStateId());
+		instance.setTag("Foo");
+
+		WildebeestApi wildebeestApi = Wildebeest
+			.wildebeestApi(new LoggingEventSink(LOG))
+			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.get();
+
+		// Execute and Verify
+		new ExpectException(AssertionFaultException.class)
+		{
+			@Override public void invoke() throws Exception
+			{
+				wildebeestApi.assertState(
+					resource,
+					instance);
+			}
+
+			@Override public void verify(Exception e)
+			{
+				assertEquals("e.cause.message", "root cause", e.getCause().getMessage());
+			}
+		}.perform();
 	}
 }
