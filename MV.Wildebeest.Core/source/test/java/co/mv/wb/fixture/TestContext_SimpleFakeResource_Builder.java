@@ -27,6 +27,7 @@ import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.SetTagMigration;
+import co.mv.wb.plugin.fake.TagAssertion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,6 +86,20 @@ public class TestContext_SimpleFakeResource_Builder
 				"Bar")
 
 		);
+
+		return this;
+	}
+
+	public TestContext_SimpleFakeResource_Builder withAssertion(
+		int stateIndex,
+		String tag)
+	{
+		if (tag == null) throw new ArgumentNullException("tag");
+
+		State state = this.states.get(stateIndex);
+
+		state.getAssertions().add(
+			new TagAssertion(UUID.randomUUID(), 0, tag));
 
 		return this;
 	}

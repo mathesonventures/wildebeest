@@ -16,6 +16,7 @@
 
 package co.mv.wb.impl;
 
+import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
@@ -328,30 +329,29 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		List<AssertionResult> result = new ArrayList<>();
 
-		state.getAssertions().forEach(
-			assertion ->
+		for (Assertion assertion : state.getAssertions())
+		{
+			eventSink.onEvent(AssertionEvent.start(OutputFormatter.assertionStart(assertion)));
+
+			try
 			{
-				eventSink.onEvent(AssertionEvent.start(OutputFormatter.assertionStart(assertion)));
+				AssertionResponse response = assertion.perform(instance);
 
-				try
-				{
-					AssertionResponse response = assertion.perform(instance);
+				eventSink.onEvent(AssertionEvent.complete(OutputFormatter.assertionComplete(
+					assertion,
+					response)));
 
-					eventSink.onEvent(AssertionEvent.complete(OutputFormatter.assertionComplete(
-						assertion,
-						response)));
-
-					result.add(new ImmutableAssertionResult(
-						assertion.getAssertionId(),
-						response.getResult(),
-						response.getMessage()));
-				}
-				catch (Exception ex)
-				{
-					eventSink.onEvent(AssertionEvent.failed(ex.getMessage()));
-					throw ex;
-				}
-			});
+				result.add(new ImmutableAssertionResult(
+					assertion.getAssertionId(),
+					response.getResult(),
+					response.getMessage()));
+			}
+			catch (Exception ex)
+			{
+				eventSink.onEvent(AssertionEvent.failed(ex.getMessage()));
+				throw ex;
+			}
+		}
 
 		return result;
 	}
