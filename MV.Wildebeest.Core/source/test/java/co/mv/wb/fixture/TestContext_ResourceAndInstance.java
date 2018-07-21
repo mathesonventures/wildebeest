@@ -18,32 +18,22 @@ package co.mv.wb.fixture;
 
 import co.mv.wb.Instance;
 import co.mv.wb.Resource;
-import co.mv.wb.State;
 
-import java.util.UUID;
-
-public class TestContext_SimpleFakeResource
+/**
+ * A test context that carries a resource and an instance.
+ *
+ * @since 4.0
+ */
+public class TestContext_ResourceAndInstance
 {
 	public final Resource resource;
-	public final UUID fooStateId;
-	public final State fooState;
-	public final UUID barStateId;
-	public final State barState;
 	public final Instance instance;
 
-	TestContext_SimpleFakeResource(
+	TestContext_ResourceAndInstance(
 		Resource resource,
-		UUID fooStateId,
-		State fooState,
-		UUID barStateId,
-		State barState,
 		Instance instance)
 	{
 		this.resource = resource;
-		this.fooStateId = fooStateId;
-		this.fooState = fooState;
-		this.barStateId = barStateId;
-		this.barState = barState;
 		this.instance = instance;
 	}
 }

@@ -19,25 +19,19 @@ package co.mv.wb.impl;
 import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.Migration;
 import co.mv.wb.Resource;
-import co.mv.wb.State;
-import co.mv.wb.fixture.TestContext_SimpleFakeResource;
+import co.mv.wb.fixture.TestContext_ResourceAndInstance;
 import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
-import co.mv.wb.plugin.base.ImmutableState;
-import co.mv.wb.plugin.fake.SetTagMigration;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests to verify the {@link WildebeestApiImpl#findPaths(Resource, Optional, Optional)}} and
- * {@link WildebeestApiImpl#findPaths(Resource, Optional, Optional)} methods.
+ * Unit tests to verify the {@link WildebeestApiImpl#findPaths(Resource, UUID, UUID)}} method.
  *
  * @since 4.0
  */
@@ -48,38 +42,37 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/single_path.png
 	 */
 	@Test
-	public void findPathWithSinglePathFromSourceToTarget() throws InvalidReferenceException
+	public void findPaths_singlePathFromSourceToTarget_succeeds() throws InvalidReferenceException
 	{
-		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
+		// Setup
+		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
+			.withDummyStates(5)
 			.withDefaultTarget("state4")
-			.getResourceAndInstanceOnly();
+			.withMigration(0, 1)
+			.withMigration(0, 4)
+			.withMigration(1, 2)
+			.withMigration(2, 3)
+			.build();
 
-		context.resource.getStates().addAll(createDummyStates(5));
+		UUID fromStateId = context.resource.getStates().get(0).getStateId();
+		UUID targetStateId = context.resource.getStates().get(3).getStateId();
 
-		State s1 = context.resource.getStates().get(0);
-		State s2 = context.resource.getStates().get(1);
-		State s3 = context.resource.getStates().get(2);
-		State s4 = context.resource.getStates().get(3);
-		State s5 = context.resource.getStates().get(4);
+		// Execute
+		List<List<Migration>> paths = WildebeestApiImpl.findPaths(
+			context.resource,
+			fromStateId,
+			targetStateId);
 
-		SetTagMigration m12 = createMigration(s1, s2, "state 1 -> state 2");
-		SetTagMigration m15 = createMigration(s1, s5, "state 1 -> state 5");
-		SetTagMigration m23 = createMigration(s2, s3, "state 2 -> state 3");
-		SetTagMigration m34 = createMigration(s3, s4, "state 3 -> state 4");
-
-		context.resource.getMigrations().add(m12);
-		context.resource.getMigrations().add(m15);
-		context.resource.getMigrations().add(m23);
-		context.resource.getMigrations().add(m34);
-
-		UUID fromStateId = s1.getStateId();
-		UUID targetStateId = s4.getStateId();
-
-		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);
+		// Verify
 		assertTrue(paths.size() == 1);
 
-		List<Migration> expectedMigrations = Arrays.asList(m12, m23, m34);
+		Migration m0to1 = context.resource.getMigrations().get(0);
+		Migration m1to2 = context.resource.getMigrations().get(2);
+		Migration m2to3 = context.resource.getMigrations().get(3);
+
+		List<Migration> expectedMigrations = Arrays.asList(m0to1, m1to2, m2to3);
+
 		assertEquals(paths.get(0), expectedMigrations);
 	}
 
@@ -87,87 +80,85 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/basic_multiple_paths.png
 	 */
 	@Test
-	public void findPathWithMultiplePathsFromSourceToTarget() throws InvalidReferenceException
+	public void findPaths_multiplePathsFromSourceToTarget_succeeds() throws InvalidReferenceException
 	{
-		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
+		// Setup
+		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
+			.withDummyStates(5)
 			.withDefaultTarget("state5")
-			.getResourceAndInstanceOnly();
+			.withMigration(0, 1)
+			.withMigration(1, 2)
+			.withMigration(1, 3)
+			.withMigration(2, 4)
+			.withMigration(3, 4)
+			.build();
 
-		context.resource.getStates().addAll(createDummyStates(5));
-		State s1 = context.resource.getStates().get(0);
-		State s2 = context.resource.getStates().get(1);
-		State s3 = context.resource.getStates().get(2);
-		State s4 = context.resource.getStates().get(3);
-		State s5 = context.resource.getStates().get(4);
+		UUID fromStateId = context.resource.getStates().get(0).getStateId();
+		UUID targetStateId = context.resource.getStates().get(4).getStateId();
 
-		//migrations
-		SetTagMigration m12 = createMigration(s1, s2, "state 1 -> state 2");
-		SetTagMigration m23 = createMigration(s2, s3, "state 2 -> state 3");
-		SetTagMigration m24 = createMigration(s2, s4, "state 2 -> state 4");
-		SetTagMigration m35 = createMigration(s3, s5, "state 3 -> state 5");
-		SetTagMigration m45 = createMigration(s4, s5, "state 4 -> state 5");
+		// Execute
+		List<List<Migration>> paths = WildebeestApiImpl.findPaths(
+			context.resource,
+			fromStateId,
+			targetStateId);
 
-		context.resource.getMigrations().add(m12);
-		context.resource.getMigrations().add(m23);
-		context.resource.getMigrations().add(m24);
-		context.resource.getMigrations().add(m35);
-		context.resource.getMigrations().add(m45);
-
-		UUID fromStateId = s1.getStateId();
-		UUID targetStateId = s5.getStateId();
-
-		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);
-
+		// Verify
 		assertTrue(paths.size() == 2);
 
-		List<Migration> expectedMigrationSet1 = Arrays.asList(m12, m23, m35);
-		List<Migration> expectedMigrationSet2 = Arrays.asList(m12, m24, m45);
-		assertEquals(paths.get(0), expectedMigrationSet1);
-		assertEquals(paths.get(1), expectedMigrationSet2);
-	}
+		Migration m0to1 = context.resource.getMigrations().get(0);
+		Migration m1to2 = context.resource.getMigrations().get(1);
+		Migration m1to3 = context.resource.getMigrations().get(2);
+		Migration m2to4 = context.resource.getMigrations().get(3);
+		Migration m3to4 = context.resource.getMigrations().get(4);
 
+		List<Migration> expectedPath0 = Arrays.asList(m0to1, m1to2, m2to4);
+		assertEquals(paths.get(0), expectedPath0);
+
+		List<Migration> expectedPath1 = Arrays.asList(m0to1, m1to3, m3to4);
+		assertEquals(paths.get(1), expectedPath1);
+	}
 
 	/**
 	 * Refer to image FindPathsTestReferences/non_existent_multiple_paths.png
 	 */
 	@Test
-	public void findPathWithMultiplePathsFromNonExistentSourceToExistingTarget() throws InvalidReferenceException
+	public void findPaths_multiplePathsFromNonExistentSourceToExistingTarget_succeeds() throws InvalidReferenceException
 	{
-		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
+		// Setup
+		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
+			.withDummyStates(4)
 			.withDefaultTarget("state3")
-			.getResourceAndInstanceOnly();
-
-		context.resource.getStates().addAll(createDummyStates(4));
-		State s1 = context.resource.getStates().get(0);
-		State s2 = context.resource.getStates().get(1);
-		State s3 = context.resource.getStates().get(2);
-		State s4 = context.resource.getStates().get(3);
-
-		//migrations
-		SetTagMigration m_1 = createMigration(null, s1, "state_ -> state 1");
-		SetTagMigration m13 = createMigration(s1, s3, "state 1 -> state 3");
-		SetTagMigration m34 = createMigration(s3, s4, "state 3 -> state 4");
-		SetTagMigration m_2 = createMigration(null, s2, "state_ -> state 2");
-		SetTagMigration m23 = createMigration(s2, s3, "state 2 -> state 3");
-
-		context.resource.getMigrations().add(m_1);
-		context.resource.getMigrations().add(m13);
-		context.resource.getMigrations().add(m34);
-		context.resource.getMigrations().add(m_2);
-		context.resource.getMigrations().add(m23);
+			.withMigration(null, 0)
+			.withMigration(0, 2)
+			.withMigration(2, 3)
+			.withMigration(null, 1)
+			.withMigration(1, 2)
+			.build();
 
 		UUID fromStateId = null;
-		UUID targetStateId = s4.getStateId();
+		UUID targetStateId = context.resource.getStates().get(3).getStateId();
 
-		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);
+		// Execute
+		List<List<Migration>> paths = WildebeestApiImpl.findPaths(
+			context.resource,
+			fromStateId,
+			targetStateId);
 
+		// Verify
 		assertTrue(paths.size() == 2);
 
-		List<Migration> expectedMigrationSet1 = Arrays.asList(m_1, m13, m34);
-		List<Migration> expectedMigrationSet2 = Arrays.asList(m_2, m23, m34);
+		Migration m_to0 = context.resource.getMigrations().get(0);
+		Migration m0to2 = context.resource.getMigrations().get(1);
+		Migration m2to3 = context.resource.getMigrations().get(2);
+		Migration m_to1 = context.resource.getMigrations().get(3);
+		Migration m1to2 = context.resource.getMigrations().get(4);
+
+		List<Migration> expectedMigrationSet1 = Arrays.asList(m_to0, m0to2, m2to3);
 		assertEquals(paths.get(0), expectedMigrationSet1);
+
+		List<Migration> expectedMigrationSet2 = Arrays.asList(m_to1, m1to2, m2to3);
 		assertEquals(paths.get(1), expectedMigrationSet2);
 	}
 
@@ -175,42 +166,42 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/state_to_non_existent_state.png
 	 */
 	@Test
-	public void findPathWithMultiplePathsFromSourceStateToNonExistentState() throws InvalidReferenceException
+	public void findPaths_multiplePathsFromSourceStateToNonExistentState_succeeds() throws InvalidReferenceException
 	{
-		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
+		// Setup
+		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
+			.withDummyStates(4)
 			.withDefaultTarget("state_")
-			.getResourceAndInstanceOnly();
+			.withMigration(0, 1)
+			.withMigration(1, 2)
+			.withMigration(2, null)
+			.withMigration(1, 3)
+			.withMigration(3, null)
+			.build();
 
-		context.resource.getStates().addAll(createDummyStates(4));
-
-		State s1 = context.resource.getStates().get(0);
-		State s2 = context.resource.getStates().get(1);
-		State s3 = context.resource.getStates().get(2);
-		State s4 = context.resource.getStates().get(3);
-
-		//migrations
-		SetTagMigration m12 = createMigration(s1, s2, "state 1 -> state 2");
-		SetTagMigration m23 = createMigration(s2, s3, "state 2 -> state 3");
-		SetTagMigration m3_ = createMigration(s3, null, "state 3 -> state_");
-		SetTagMigration m24 = createMigration(s2, s4, "state 2 -> state 4");
-		SetTagMigration m4_ = createMigration(s4, null, "state 4 -> state_");
-
-		context.resource.getMigrations().add(m12);
-		context.resource.getMigrations().add(m23);
-		context.resource.getMigrations().add(m3_);
-		context.resource.getMigrations().add(m24);
-		context.resource.getMigrations().add(m4_);
-
-		UUID fromStateId = s1.getStateId();
+		UUID fromStateId = context.resource.getStates().get(0).getStateId();
 		UUID targetStateId = null;
 
-		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);
+		// Execute
+		List<List<Migration>> paths = WildebeestApiImpl.findPaths(
+			context.resource,
+			fromStateId,
+			targetStateId);
+
+		// Verify
 		assertTrue(paths.size() == 2);
 
-		List<Migration> expectedMigrationsSet1 = Arrays.asList(m12, m23, m3_);
-		List<Migration> expectedMigrationsSet2 = Arrays.asList(m12, m24, m4_);
+		Migration m1to2 = context.resource.getMigrations().get(0);
+		Migration m2to3 = context.resource.getMigrations().get(1);
+		Migration m3to_ = context.resource.getMigrations().get(2);
+		Migration m2to4 = context.resource.getMigrations().get(3);
+		Migration m4to_ = context.resource.getMigrations().get(4);
+
+		List<Migration> expectedMigrationsSet1 = Arrays.asList(m1to2, m2to3, m3to_);
 		assertEquals(paths.get(0), expectedMigrationsSet1);
+
+		List<Migration> expectedMigrationsSet2 = Arrays.asList(m1to2, m2to4, m4to_);
 		assertEquals(paths.get(1), expectedMigrationsSet2);
 	}
 
@@ -218,37 +209,30 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/no_path_found.png
 	 */
 	@Test
-	public void findPathWithNoPathFromSourceToTarget() throws InvalidReferenceException
+	public void findPaths_noPathFromSourceToTarget_succeeds() throws InvalidReferenceException
 	{
-		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
+		// Execute
+		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
+			.withDummyStates(4)
 			.withDefaultTarget("state3")
-			.getResourceAndInstanceOnly();
+			.withMigration(null, 0)
+			.withMigration(0, 1)
+			.withMigration(1, 3)
+			.withMigration(null, 2)
+			.withMigration(2, 3)
+			.build();
 
-		context.resource.getStates().addAll(createDummyStates(4));
+		UUID currentStateId = context.resource.getStates().get(0).getStateId();
+		UUID targetStateId = context.resource.getStates().get(2).getStateId();
 
-		State s1 = context.resource.getStates().get(0);
-		State s2 = context.resource.getStates().get(1);
-		State s3 = context.resource.getStates().get(2);
-		State s4 = context.resource.getStates().get(3);
+		// Execute
+		List<List<Migration>> paths = WildebeestApiImpl.findPaths(
+			context.resource,
+			currentStateId,
+			targetStateId);
 
-		SetTagMigration m_1 = createMigration(null, s1, "state_ -> state 1");
-		SetTagMigration m12 = createMigration(s1, s2, "state 1 -> state 2");
-		SetTagMigration m24 = createMigration(s2, s4, "state 2 -> state 4");
-		SetTagMigration m_3 = createMigration(null, s3, "state_ -> state 3");
-		SetTagMigration m34 = createMigration(s3, s4, "state 3 -> state 4");
-
-		context.resource.getMigrations().add(m_1);
-		context.resource.getMigrations().add(m12);
-		context.resource.getMigrations().add(m24);
-		context.resource.getMigrations().add(m_3);
-		context.resource.getMigrations().add(m34);
-
-		UUID currentStateId = s1.getStateId();
-		UUID targetStateId = s3.getStateId();
-
-		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, currentStateId, targetStateId);
-
+		// Verify
 		assertTrue(paths.size() == 0);
 	}
 
@@ -256,82 +240,34 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/circular_example.png
 	 */
 	@Test
-	public void findPathCircular() throws InvalidReferenceException
+	public void findPaths_circular_succeeds() throws InvalidReferenceException
 	{
-		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
+		// Setup
+		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
 			.create()
+			.withDummyStates(5)
 			.withDefaultTarget("state5")
-			.getResourceAndInstanceOnly();
+			.withMigration(0, 1)
+			.withMigration(1, 2)
+			.withMigration(2, 3)
+			.withMigration(3, 1)
+			.withMigration(2, 4)
+			.build();
 
-		context.resource.getStates().addAll(createDummyStates(5));
-		State s1 = context.resource.getStates().get(0);
-		State s2 = context.resource.getStates().get(1);
-		State s3 = context.resource.getStates().get(2);
-		State s4 = context.resource.getStates().get(3);
-		State s5 = context.resource.getStates().get(4);
+		Migration m1to2 = context.resource.getMigrations().get(0);
+		Migration m2to3 = context.resource.getMigrations().get(1);
+		Migration m3to5 = context.resource.getMigrations().get(4);
 
-		SetTagMigration m12 = createMigration(s1, s2, "state 1 -> state 2");
-		SetTagMigration m23 = createMigration(s2, s3, "state 2 -> state 3");
-		SetTagMigration m34 = createMigration(s3, s4, "state 3 -> state 4");
-		SetTagMigration m42 = createMigration(s4, s2, "state 4 -> state 2");
-		SetTagMigration m35 = createMigration(s3, s5, "state 3 -> state 5");
+		UUID fromStateId = context.resource.getStates().get(0).getStateId();
+		UUID targetStateId = context.resource.getStates().get(4).getStateId();
 
-		context.resource.getMigrations().add(m12);
-		context.resource.getMigrations().add(m23);
-		context.resource.getMigrations().add(m34);
-		context.resource.getMigrations().add(m42);
-		context.resource.getMigrations().add(m35);
-
-		UUID fromStateId = s1.getStateId();
-		UUID targetStateId = s5.getStateId();
-
+		// Execute
 		List<List<Migration>> paths = WildebeestApiImpl.findPaths(context.resource, fromStateId, targetStateId);
+
+		// Verify
 		assertTrue(paths.size() == 1);
 
-		List<Migration> expectedMigrationsSet1 = Arrays.asList(m12, m23, m35);
+		List<Migration> expectedMigrationsSet1 = Arrays.asList(m1to2, m2to3, m3to5);
 		assertEquals(paths.get(0), expectedMigrationsSet1);
-	}
-
-	private List<State> createDummyStates(int nStates)
-	{
-		List<State> states = new ArrayList<>();
-		for (int i = 1; i <= nStates; i++)
-		{
-			states.add(new ImmutableState(
-				UUID.randomUUID(),
-				"state" + i));
-		}
-
-		return states;
-	}
-
-	private SetTagMigration createMigration(
-		State fromState,
-		State toState,
-		String tag)
-	{
-		String fromStateUUID;
-
-		if (fromState != null)
-		{
-			fromStateUUID = fromState.getStateId().toString();
-		}
-		else
-		{
-			fromStateUUID = null;
-		}
-
-		String toStateUUID;
-
-		if (toState != null)
-		{
-			toStateUUID = toState.getStateId().toString();
-		}
-		else
-		{
-			toStateUUID = null;
-		}
-
-		return new SetTagMigration(UUID.randomUUID(), fromStateUUID, toStateUUID, tag);
 	}
 }
