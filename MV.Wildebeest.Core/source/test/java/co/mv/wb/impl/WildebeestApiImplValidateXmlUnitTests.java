@@ -34,20 +34,6 @@ import java.nio.file.Files;
 public class WildebeestApiImplValidateXmlUnitTests
 {
 	@Test
-	public void validateResourceXml_invalidMySqlResource_fails()
-	{
-		// Execute and Verify
-		this.validateResourceXml_fails("MySqlDatabase/database.wbresource.xml");
-	}
-
-	@Test
-	public void validateResourceXml_invalidSqlServerResource_fails()
-	{
-		// Execute and Verify
-		this.validateResourceXml_fails("SqlServerDatabase/database.wbresource.xml");
-	}
-
-	@Test
 	public void validateResourceXml_validPostgreSqlResource_succeeds()
 	{
 		// Execute and Verify
@@ -66,13 +52,6 @@ public class WildebeestApiImplValidateXmlUnitTests
 	{
 		// Execute and Verify
 		this.validateInstanceXml_succeeds("MySqlDatabase/staging_db.wbinstance.xml");
-	}
-
-	@Test
-	public void validateInstanceXml_invalidSqlServerInstance_fails()
-	{
-		// Execute and Verify
-		this.validateInstanceXml_fails("SqlServerDatabase/staging_db.wbinstance.xml");
 	}
 
 	@Test

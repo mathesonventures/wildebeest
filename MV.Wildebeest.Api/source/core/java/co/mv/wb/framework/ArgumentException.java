@@ -17,23 +17,22 @@
 package co.mv.wb.framework;
 
 /**
- * Indicates that a null value was passed in for a parameter where a non-null value is required.
+ * Indicates that an invalid value was passed in for a parameter.
  *
  * @since 4.0
  */
-public class ArgumentNullException extends ArgumentException
+public class ArgumentException extends RuntimeException
 {
 	/**
-	 * Constructs a new ArgumentNullException for the specified parameter.
+	 * Constructs a new ArgumentException for the specified parameter.
 	 *
 	 * @param paramName the parameter for which a null value was supplied.
 	 * @since 4.0
 	 */
-	public ArgumentNullException(
-		String paramName)
+	public ArgumentException(
+		String paramName,
+		String message)
 	{
-		super(
-			paramName,
-			String.format("%s cannot be null", paramName));
+		super(String.format("paramName: %s; %s", paramName, message));
 	}
 }

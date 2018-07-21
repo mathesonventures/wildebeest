@@ -1,7 +1,7 @@
 <instance type="co.mv.wb.PostgreSqlDatabase">
 	<hostName>127.0.0.1</hostName>
-	<port>5432</port>
+	<port>15432</port>
 	<adminUsername>postgres</adminUsername>
-	<adminPassword>password</adminPassword>
+	<adminPassword>Password123!</adminPassword>
 	<databaseName>ProductCatalogueStaging</databaseName>
 </instance>

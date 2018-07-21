@@ -112,7 +112,8 @@ public class SqlServerStateTrackingTests
 				instance.getAppDataSource(),
 				String.format(
 					"SELECT LastMigrationInstant from %s",
-					instance.getStateTableName()));
+					instance.getStateTableName()),
+				false);
 
 		}
 		catch (SQLException e)

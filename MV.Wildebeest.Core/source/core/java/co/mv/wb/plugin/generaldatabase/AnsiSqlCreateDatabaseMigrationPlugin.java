@@ -69,7 +69,8 @@ public class AnsiSqlCreateDatabaseMigrationPlugin implements MigrationPlugin
 			{
 				DatabaseHelper.execute(
 					instanceT.getAdminDataSource(),
-					String.format("CREATE DATABASE \"%s\";", instanceT.getDatabaseName().toLowerCase()));
+					String.format("CREATE DATABASE \"%s\";", instanceT.getDatabaseName().toLowerCase()),
+					false);
 			}
 			catch (SQLException e)
 			{

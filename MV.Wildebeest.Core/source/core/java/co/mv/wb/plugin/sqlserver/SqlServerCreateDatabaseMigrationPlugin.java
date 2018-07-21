@@ -63,8 +63,13 @@ public class SqlServerCreateDatabaseMigrationPlugin implements MigrationPlugin
 
 		try
 		{
-			DatabaseHelper.execute(instanceT.getAdminDataSource(), new StringBuilder()
-				.append("CREATE DATABASE [").append(instanceT.getDatabaseName()).append("];").toString());
+			DatabaseHelper.execute(
+				instanceT.getAdminDataSource(),
+				new StringBuilder()
+					.append("CREATE DATABASE [")
+					.append(instanceT.getDatabaseName())
+					.append("];").toString(),
+				false);
 		}
 		catch (SQLServerException e)
 		{

@@ -68,8 +68,11 @@ public class MySqlDropDatabaseMigrationPlugin implements MigrationPlugin
 
 		try
 		{
-			DatabaseHelper.execute(instanceT.getAdminDataSource(), new StringBuilder()
-				.append("DROP DATABASE `").append(instanceT.getDatabaseName()).append("`;").toString());
+			DatabaseHelper.execute(
+				instanceT.getAdminDataSource(),
+				new StringBuilder()
+					.append("DROP DATABASE `").append(instanceT.getDatabaseName()).append("`;").toString(),
+				false);
 		}
 		catch (SQLException e)
 		{

@@ -16,6 +16,7 @@
 
 package co.mv.wb.impl;
 
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.Migration;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
@@ -47,7 +48,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/single_path.png
 	 */
 	@Test
-	public void findPathWithSinglePathFromSourceToTarget()
+	public void findPathWithSinglePathFromSourceToTarget() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -86,7 +87,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/basic_multiple_paths.png
 	 */
 	@Test
-	public void findPathWithMultiplePathsFromSourceToTarget()
+	public void findPathWithMultiplePathsFromSourceToTarget() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -131,7 +132,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/non_existent_multiple_paths.png
 	 */
 	@Test
-	public void findPathWithMultiplePathsFromNonExistentSourceToExistingTarget()
+	public void findPathWithMultiplePathsFromNonExistentSourceToExistingTarget() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -174,7 +175,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/state_to_non_existent_state.png
 	 */
 	@Test
-	public void findPathWithMultiplePathsFromSourceStateToNonExistentState()
+	public void findPathWithMultiplePathsFromSourceStateToNonExistentState() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -217,7 +218,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/no_path_found.png
 	 */
 	@Test
-	public void findPathWithNoPathFromSourceToTarget()
+	public void findPathWithNoPathFromSourceToTarget() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()
@@ -255,7 +256,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	 * Refer to image FindPathsTestReferences/circular_example.png
 	 */
 	@Test
-	public void findPathCircular()
+	public void findPathCircular() throws InvalidReferenceException
 	{
 		TestContext_SimpleFakeResource context = TestContext_SimpleFakeResource_Builder
 			.create()

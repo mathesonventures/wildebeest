@@ -62,7 +62,10 @@ public class SqlScriptMigrationPlugin implements MigrationPlugin
 		try
 		{
 			// Strip out any comments, and split the block of SQL into individual statements
-			DatabaseHelper.execute(instanceT.getAppDataSource(), migrationT.getSql());
+			DatabaseHelper.execute(
+				instanceT.getAppDataSource(),
+				migrationT.getSql(),
+				true);
 		}
 		catch (SQLException e)
 		{

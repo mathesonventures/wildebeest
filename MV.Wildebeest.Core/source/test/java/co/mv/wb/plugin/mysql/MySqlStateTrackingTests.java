@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MysqlStateTrackingTests
+public class MySqlStateTrackingTests
 {
-	private static final Logger LOG = LoggerFactory.getLogger(MysqlStateTrackingTests.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MySqlStateTrackingTests.class);
 
 	@Test
 	public void checkIsStateInstantTracked() throws
@@ -101,7 +101,8 @@ public class MysqlStateTrackingTests
 				instance.getAppDataSource(),
 				String.format(
 					"SELECT LastMigrationInstant from %s",
-					instance.getStateTableName()));
+					instance.getStateTableName()),
+				false);
 
 		}
 		catch (SQLException e)

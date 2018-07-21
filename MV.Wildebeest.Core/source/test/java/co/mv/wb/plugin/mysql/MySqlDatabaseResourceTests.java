@@ -82,7 +82,7 @@ public class MySqlDatabaseResourceTests
 		String databaseName = MySqlUtil.createDatabase(
 			mySqlProperties,
 			"stm",
-			"");
+			null);
 
 		try
 		{
@@ -132,7 +132,7 @@ public class MySqlDatabaseResourceTests
 		UUID resourceId = UUID.randomUUID();
 		UUID knownStateId = UUID.randomUUID();
 
-		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm", "");
+		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm", null);
 
 		MySqlStateHelper.setStateId(
 			resourceId,

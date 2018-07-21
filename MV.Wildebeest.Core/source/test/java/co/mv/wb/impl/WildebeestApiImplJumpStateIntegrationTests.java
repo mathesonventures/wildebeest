@@ -33,6 +33,7 @@ import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
+import co.mv.wb.plugin.fake.SetTagMigrationPlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -61,7 +62,6 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		//
 
 		// Resource
-		FakeResourcePlugin resourcePlugin = new FakeResourcePlugin();
 		final Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
 			FakeConstants.Fake,
@@ -101,10 +101,10 @@ public class WildebeestApiImplJumpStateIntegrationTests
 			{
 				AssertionFailedException te = (AssertionFailedException)e;
 
-				assertEquals("te.assertionResults.size", 1, te.getAssertionResults().size());
+				assertEquals("e.assertionResults.size", 1, te.getAssertionResults().size());
 				assertEquals(
-					"te.assertionResults[0].message",
-					"Tag not as expected",
+					"e.assertionResults[0].message",
+					"Tag expected to be \"Foo\" but was \"Bar\"",
 					te.getAssertionResults().get(0).getMessage());
 			}
 		}.perform();
@@ -142,7 +142,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 		// Execute and Verify
 		//
 
-		new ExpectException(JumpStateFailedException.class)
+		new ExpectException(UnknownStateSpecifiedException.class)
 		{
 			@Override public void invoke() throws Exception
 			{
@@ -154,12 +154,9 @@ public class WildebeestApiImplJumpStateIntegrationTests
 
 			@Override public void verify(Exception e)
 			{
-				JumpStateFailedException te = (JumpStateFailedException)e;
+				UnknownStateSpecifiedException te = (UnknownStateSpecifiedException)e;
 
-				assertEquals(
-					"e.message",
-					"This resource does not have a state with ID " + targetStateId.toString(),
-					te.getMessage());
+				assertEquals("e.specifiedState", targetStateId.toString(), te.getSpecifiedState());
 			}
 		}.perform();
 

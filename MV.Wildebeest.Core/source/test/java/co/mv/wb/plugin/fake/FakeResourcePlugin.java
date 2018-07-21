@@ -16,7 +16,9 @@
 
 package co.mv.wb.plugin.fake;
 
+import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
@@ -36,7 +38,7 @@ public class FakeResourcePlugin implements ResourcePlugin
 {
 	@Override public State currentState(
 		Resource resource,
-		Instance instance)
+		Instance instance) throws IndeterminateStateException
 	{
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
@@ -47,9 +49,22 @@ public class FakeResourcePlugin implements ResourcePlugin
 			throw new IllegalArgumentException("instance must be of type FakeInstance");
 		}
 
-		return fake.hasStateId()
-			? Wildebeest.findState(resource, fake.getStateId().toString())
-			: null;
+		State result = null;
+
+		try
+		{
+			result = fake.hasStateId()
+				? Wildebeest.findState(resource, fake.getStateId().toString())
+				: null;
+		}
+		catch (InvalidReferenceException e)
+		{
+			throw new IndeterminateStateException(String.format(
+				"The resource is declared to be in state %s, but this state is not defined for this resource",
+				fake.getStateId()));
+		}
+
+		return result;
 	}
 
 	@Override

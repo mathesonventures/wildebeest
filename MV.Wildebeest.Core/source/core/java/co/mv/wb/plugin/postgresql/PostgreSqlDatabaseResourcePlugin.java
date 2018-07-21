@@ -19,6 +19,7 @@ package co.mv.wb.plugin.postgresql;
 import co.mv.wb.FaultException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
+import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
@@ -75,12 +76,16 @@ public class PostgreSqlDatabaseResourcePlugin implements ResourcePlugin
 
 		// If we found a declared state, check that the state is actually defined
 		State result = null;
+
 		if (declaredStateId != null)
 		{
-			result = Wildebeest.findState(resource, declaredStateId.toString());
+			try
+			{
+				result = Wildebeest.findState(resource, declaredStateId.toString());
+			}
 
 			// If the declared state ID is not known, throw
-			if (result == null)
+			catch (InvalidReferenceException e)
 			{
 				throw new IndeterminateStateException(String.format(
 					"The resource is declared to be in state %s, but this state is not defined for this resource",

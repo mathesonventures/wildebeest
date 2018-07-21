@@ -62,8 +62,13 @@ public class SqlServerDropSchemaMigrationPlugin implements MigrationPlugin
 
 		try
 		{
-			DatabaseHelper.execute(instanceT.getAppDataSource(), new StringBuilder()
-				.append("DROP SCHEMA [").append(migrationT.getSchemaName()).append("];").toString());
+			DatabaseHelper.execute(
+				instanceT.getAppDataSource(),
+				new StringBuilder()
+					.append("DROP SCHEMA [")
+					.append(migrationT.getSchemaName())
+					.append("];").toString(),
+				false);
 		}
 		catch (SQLServerException e)
 		{

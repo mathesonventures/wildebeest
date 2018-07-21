@@ -74,7 +74,8 @@ public class PostgreSqlStateHelper
 				"DELETE FROM %s.%s WHERE ResourceId = '%s';",
 				metaSchemaName,
 				stateTableName,
-				resourceId));
+				resourceId),
+			false);
 
 		DatabaseHelper.execute(
 			appDataSource,
@@ -84,7 +85,8 @@ public class PostgreSqlStateHelper
 				stateTableName,
 				resourceId,
 				stateId,
-				DatabaseHelper.getInstant()));
+				DatabaseHelper.getInstant()),
+			false);
 	}
 
 	/**
@@ -196,7 +198,8 @@ public class PostgreSqlStateHelper
 		{
 			DatabaseHelper.execute(
 				appDataSource,
-				String.format("CREATE SCHEMA IF NOT EXISTS %s;", metaSchemaName));
+				String.format("CREATE SCHEMA IF NOT EXISTS %s;", metaSchemaName),
+				false);
 
 			DatabaseHelper.execute(appDataSource, new StringBuilder()
 				.append("CREATE TABLE IF NOT EXISTS ")
@@ -206,7 +209,8 @@ public class PostgreSqlStateHelper
 				.append("StateId UUID NOT NULL, ")
 				.append("LastMigrationInstant timestamp NOT NULL, ")
 				.append("CONSTRAINT PK_").append(stateTableName).append(" PRIMARY KEY (ResourceId)")
-				.append(");").toString());
+				.append(");").toString(),
+				false);
 		}
 		catch (SQLException e)
 		{

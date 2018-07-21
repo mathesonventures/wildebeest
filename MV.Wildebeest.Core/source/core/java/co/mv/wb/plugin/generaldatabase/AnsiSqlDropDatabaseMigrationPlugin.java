@@ -70,7 +70,8 @@ public class AnsiSqlDropDatabaseMigrationPlugin implements MigrationPlugin
 		{
 			DatabaseHelper.execute(
 				instanceT.getAdminDataSource(),
-				String.format("DROP DATABASE %s;", instanceT.getDatabaseName()));
+				String.format("DROP DATABASE %s;", instanceT.getDatabaseName()),
+				false);
 		}
 		catch (SQLException e)
 		{

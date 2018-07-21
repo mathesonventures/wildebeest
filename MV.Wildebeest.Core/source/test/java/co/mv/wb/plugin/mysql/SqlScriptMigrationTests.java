@@ -42,7 +42,7 @@ public class SqlScriptMigrationTests
 	{
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
-		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm_test", "");
+		String databaseName = MySqlUtil.createDatabase(mySqlProperties, "stm_test", null);
 
 		Migration migration = new SqlScriptMigration(
 			UUID.randomUUID(),
