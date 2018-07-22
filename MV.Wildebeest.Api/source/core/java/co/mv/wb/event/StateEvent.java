@@ -16,12 +16,14 @@
 
 package co.mv.wb.event;
 
+import co.mv.wb.State;
+
 /**
  * Defines an event for State
  *
  * @since 4.0
  */
-public class StateEvent extends Event
+public class StateEvent extends ResourceEvent<State>
 {
 	/**
 	 * Provides all events associated with State.
@@ -35,7 +37,7 @@ public class StateEvent extends Event
 		ASSERTION_START,
 		ASSERTION_COMPLETE,
 		CHANGE_SUCCESS,
-		CHANGE_FAILED;
+		CHANGE_FAILED
 	}
 
 	/**
@@ -43,80 +45,101 @@ public class StateEvent extends Event
 	 *
 	 * @param name    the name of the event
 	 * @param message the message of the event
+	 * @param state   the source {@link State} of the event
 	 * @since 4.0
 	 */
 	public StateEvent(
 		String name,
-		String message)
+		String message,
+		State state)
 	{
-		super(name, message);
+		super(name, message, state);
 	}
 
 	/**
-	 * Creates an StateEvent for PreAssert Event.
+	 * Creates an StateEvent for PreAssert ResourceEvent.
 	 *
 	 * @param message the message of the event
-	 * @return the StateEvent created for PreAssert Event
+	 * @param state   the source {@link State} of the event
+	 * @return the StateEvent created for PreAssert ResourceEvent
 	 * @since 4.0
 	 */
-	public static StateEvent preAssert(String message)
+	public static StateEvent preAssert(
+		String message,
+		State state)
 	{
-		return new StateEvent(Name.PRE_ASSERT.name(), message);
+		return new StateEvent(Name.PRE_ASSERT.name(), message, state);
 	}
 
 	/**
-	 * Creates an StateEvent for PostAssert Event.
+	 * Creates an StateEvent for PostAssert ResourceEvent.
 	 *
 	 * @param message the message of the event
-	 * @return the StateEvent created for PreAssert Event
+	 * @param state   the source {@link State} of the event
+	 * @return the StateEvent created for PreAssert ResourceEvent
 	 * @since 4.0
 	 */
-	public static StateEvent postAssert(String message)
+	public static StateEvent postAssert(
+		String message,
+		State state)
 	{
-		return new StateEvent(Name.POST_ASSERT.name(), message);
+		return new StateEvent(Name.POST_ASSERT.name(), message, state);
 	}
 
 	/**
-	 * Creates an StateEvent for AssertionStart Event.
+	 * Creates an StateEvent for AssertionStart ResourceEvent.
 	 *
-	 * @return the StateEvent created for AssertionStart Event
+	 * @param message the message of the event
+	 * @return the StateEvent created for AssertionStart ResourceEvent
 	 * @since 4.0
 	 */
-	public static Event assertionStart(String message)
+	public static StateEvent assertionStart(String message)
 	{
-		return new StateEvent(Name.ASSERTION_START.name(), message);
+		return new StateEvent(Name.ASSERTION_START.name(), message, null);
 	}
 
 	/**
-	 * Creates an StateEvent for AssertionComplete Event.
+	 * Creates an StateEvent for AssertionComplete ResourceEvent.
 	 *
-	 * @return the StateEvent created for AssertionComplete Event
+	 * @param message the message of the event
+	 * @param state   the source {@link State} of the event
+	 * @return the StateEvent created for AssertionComplete ResourceEvent
 	 * @since 4.0
 	 */
-	public static Event assertionComplete(String message)
+	public static StateEvent assertionComplete(
+		String message,
+		State state)
 	{
-		return new StateEvent(Name.ASSERTION_COMPLETE.name(), message);
+		return new StateEvent(Name.ASSERTION_COMPLETE.name(), message, state);
 	}
 
 	/**
-	 * Creates an StateEvent for ChangeSuccess Event.
+	 * Creates an StateEvent for ChangeSuccess ResourceEvent.
 	 *
-	 * @return the StateEvent created for ChangeSuccess Event
+	 * @param message the message of the event
+	 * @param state   the source {@link State} of the event
+	 * @return the StateEvent created for ChangeSuccess ResourceEvent
 	 * @since 4.0
 	 */
-	public static Event changeSuccess(String message)
+	public static StateEvent changeSuccess(
+		String message,
+		State state)
 	{
-		return new StateEvent(Name.CHANGE_SUCCESS.name(), message);
+		return new StateEvent(Name.CHANGE_SUCCESS.name(), message, state);
 	}
 
 	/**
-	 * Creates an StateEvent for ChangeFailed Event.
+	 * Creates an StateEvent for ChangeFailed ResourceEvent.
 	 *
-	 * @return the StateEvent created for ChangeFailed Event
+	 * @param message the message of the event
+	 * @param state   the source {@link State} of the event
+	 * @return the StateEvent created for ChangeFailed ResourceEvent
 	 * @since 4.0
 	 */
-	public static Event changeFailed(String message)
+	public static StateEvent changeFailed(
+		String message,
+		State state)
 	{
-		return new StateEvent(Name.CHANGE_FAILED.name(), message);
+		return new StateEvent(Name.CHANGE_FAILED.name(), message, state);
 	}
 }

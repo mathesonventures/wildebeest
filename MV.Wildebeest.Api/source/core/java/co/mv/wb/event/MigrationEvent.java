@@ -16,12 +16,14 @@
 
 package co.mv.wb.event;
 
+import co.mv.wb.Migration;
+
 /**
  * Defines an event for Migration
  *
  * @since 4.0
  */
-public class MigrationEvent extends Event
+public class MigrationEvent extends ResourceEvent<Migration>
 {
 	/**
 	 * Provides all events associated with Migration.
@@ -32,56 +34,67 @@ public class MigrationEvent extends Event
 	{
 		START,
 		COMPLETE,
-		FAILED;
+		FAILED
 	}
 
 	/**
 	 * Constructs a new MigrationEvent with the supplied details.
 	 *
-	 * @param name    the name of the event
-	 * @param message the message of the event
+	 * @param name      the name of the event
+	 * @param message   the message of the event
+	 * @param migration the source {@link Migration} of the event
 	 * @since 4.0
 	 */
 	public MigrationEvent(
 		String name,
-		String message)
+		String message,
+		Migration migration)
 	{
-		super(name, message);
+		super(name, message, migration);
 	}
 
 	/**
-	 * Creates an MigrationEvent for Start Event.
+	 * Creates an MigrationEvent for Start ResourceEvent.
 	 *
-	 * @param message the message of the event
-	 * @return the MigrationEvent created for Start Event
+	 * @param message   the message of the event
+	 * @param migration the source {@link Migration} of the event
+	 * @return the MigrationEvent created for Start ResourceEvent
 	 * @since 4.0
 	 */
-	public static MigrationEvent start(String message)
+	public static MigrationEvent start(
+		String message,
+		Migration migration)
 	{
-		return new MigrationEvent(MigrationEvent.Name.START.name(), message);
+		return new MigrationEvent(Name.START.name(), message, migration);
 	}
 
 	/**
-	 * Creates an MigrationEvent for Complete Event.
+	 * Creates an MigrationEvent for Complete ResourceEvent.
 	 *
-	 * @param message the message of the event
-	 * @return the MigrationEvent created for Complete Event
+	 * @param message   the message of the event
+	 * @param migration the source {@link Migration} of the event
+	 * @return the MigrationEvent created for Complete ResourceEvent
 	 * @since 4.0
 	 */
-	public static MigrationEvent complete(String message)
+	public static MigrationEvent complete(
+		String message,
+		Migration migration)
 	{
-		return new MigrationEvent(MigrationEvent.Name.COMPLETE.name(), message);
+		return new MigrationEvent(Name.COMPLETE.name(), message, migration);
 	}
 
 	/**
-	 * Creates an MigrationEvent for Failed Event.
+	 * Creates an MigrationEvent for Failed ResourceEvent.
 	 *
-	 * @param message the message of the event
-	 * @return the MigrationEvent created for Failed Event
+	 * @param message   the message of the event
+	 * @param migration the source {@link Migration} of the event
+	 * @return the MigrationEvent created for Failed ResourceEvent
 	 * @since 4.0
 	 */
-	public static MigrationEvent failed(String message)
+	public static MigrationEvent failed(
+		String message,
+		Migration migration)
 	{
-		return new MigrationEvent(MigrationEvent.Name.FAILED.name(), message);
+		return new MigrationEvent(Name.FAILED.name(), message, migration);
 	}
 }

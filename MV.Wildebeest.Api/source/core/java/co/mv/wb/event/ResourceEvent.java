@@ -16,28 +16,36 @@
 
 package co.mv.wb.event;
 
-import co.mv.wb.framework.ArgumentNullException;
-import org.slf4j.Logger;
 
 /**
- * An {@link EventSink} that sends the output to the logger at INFO level.
+ * Defines an ResourceEvent
  *
  * @since 4.0
  */
-public class LoggingEventSink implements EventSink
+public class ResourceEvent<T> extends Event
 {
-	private final Logger logger;
+	private final T elementResource;
 
-	public LoggingEventSink(Logger logger)
+	/**
+	 * Constructs a new ResourceEvent with the supplied details.
+	 *
+	 * @param name            the name of the event, this should be supplied from ResourceEvent
+	 * @param message         a message of the event
+	 * @param elementResource the element resource considered during the event
+	 * @since 4.0
+	 */
+	public ResourceEvent(
+		String name,
+		String message,
+		T elementResource)
 	{
-		if (logger == null) throw new ArgumentNullException("logger");
+		super(name, message);
 
-		this.logger = logger;
+		this.elementResource = elementResource;
 	}
 
-	@Override
-	public void onEvent(Event event)
+	public T getElementResource()
 	{
-		this.logger.info(event.getMessage().orElse(event.getName()));
+		return elementResource;
 	}
 }

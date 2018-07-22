@@ -16,10 +16,12 @@
 
 package co.mv.wb.event;
 
-public class JumpStateEvent extends Event
+import co.mv.wb.State;
+
+public class JumpStateEvent extends ResourceEvent<State>
 {
 	/**
-	 * Provides all events associated with JumpState Event.
+	 * Provides all events associated with JumpState ResourceEvent.
 	 *
 	 * @since 4.0
 	 */
@@ -27,54 +29,67 @@ public class JumpStateEvent extends Event
 	{
 		START,
 		COMPLETE,
-		FAILED;
+		FAILED
 	}
 
 	/**
-	 * Constructs a new Event with the supplied details.
+	 * Constructs a new ResourceEvent with the supplied details.
 	 *
-	 * @param name    the name of the event, this should be supplied from Event
+	 * @param name    the name of the event, this should be supplied from ResourceEvent
 	 * @param message a message of the event
+	 * @param state   the source {@link State} of the event
 	 * @since 4.0
 	 */
 	public JumpStateEvent(
 		String name,
-		String message)
+		String message,
+		State state)
 	{
-		super(name, message);
+		super(name, message, state);
 	}
 
 	/**
-	 * Creates an JumpStateEvent for Start Event.
-	 *
-	 * @return the JumpStateEvent created for Start Event
-	 * @since 4.0
-	 */
-	public static JumpStateEvent start(String message)
-	{
-		return new JumpStateEvent(Name.START.name(), message);
-	}
-
-	/**
-	 * Creates an JumpStateEvent for Complete Event.
-	 *
-	 * @return the JumpStateEvent created for Complete Event
-	 * @since 4.0
-	 */
-	public static JumpStateEvent complete(String message)
-	{
-		return new JumpStateEvent(Name.COMPLETE.name(), message);
-	}
-
-	/**
-	 * Creates an JumpStateEvent for Failed Event.
+	 * Creates an JumpStateEvent for Start ResourceEvent.
 	 *
 	 * @param message the message of the event
-	 * @return the JumpStateEvent created for Failed Event
+	 * @param state   the source {@link State} of the event
+	 * @return the JumpStateEvent created for Start ResourceEvent
 	 * @since 4.0
 	 */
-	public static JumpStateEvent failed(String message)
+	public static JumpStateEvent start(
+		String message,
+		State state)
 	{
-		return new JumpStateEvent(Name.FAILED.name(), message);
+		return new JumpStateEvent(Name.START.name(), message, state);
+	}
+
+	/**
+	 * Creates an JumpStateEvent for Complete ResourceEvent.
+	 *
+	 * @param message the message of the event
+	 * @param state   the source {@link State} of the event
+	 * @return the JumpStateEvent created for Complete ResourceEvent
+	 * @since 4.0
+	 */
+	public static JumpStateEvent complete(
+		String message,
+		State state)
+	{
+		return new JumpStateEvent(Name.COMPLETE.name(), message, state);
+	}
+
+	/**
+	 * Creates an JumpStateEvent for Failed ResourceEvent.
+	 *
+	 * @param message the message of the event
+	 * @param state   the source {@link State} of the event
+	 * @return the JumpStateEvent created for Failed ResourceEvent
+	 * @since 4.0
+	 */
+	public static JumpStateEvent failed(
+		String message,
+		State state)
+	{
+		return new JumpStateEvent(Name.FAILED.name(), message, state);
 	}
 }
