@@ -5,10 +5,10 @@ import picocli.CommandLine;
 import java.util.List;
 
 @CommandLine.Command(synopsisHeading = "%nUsage:%n%n",
-	  descriptionHeading = "%nDescription:%n%n",
-	  parameterListHeading = "%nParameters:%n%n",
-	  optionListHeading = "%nOptions:%n%n",
-	  separator = " ")
+	descriptionHeading = "%nDescription:%n%n",
+	parameterListHeading = "%nParameters:%n%n",
+	optionListHeading = "%nOptions:%n%n",
+	separator = " ")
 public class SharedCommands
 {
 

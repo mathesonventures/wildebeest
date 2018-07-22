@@ -140,7 +140,7 @@ public class WildebeestCommand
 			}
 			catch (CommandLine.UnmatchedArgumentException | CommandLine.MissingParameterException e)
 			{
-				this.output.println(String.format("ERROR in command line \"%s\"",e.getMessage()));
+				this.output.println(String.format("ERROR in command line \"%s\"", e.getMessage()));
 				CommandLine.usage(this, this.output);
 			}
 		}
@@ -292,41 +292,6 @@ public class WildebeestCommand
 				result = arg.substring(longName.length());
 			}
 			if (result != null)
-			{
-				break;
-			}
-		}
-
-		return result;
-	}
-
-	private static Optional<String> getOptionalArg(
-		String[] args,
-		String shortName,
-		String longName)
-	{
-		if (args == null) throw new ArgumentNullException("args");
-		if (shortName == null) throw new ArgumentNullException("shortName");
-		if ("".equals(shortName)) throw new IllegalArgumentException("shortName cannot be empty");
-		if (longName == null) throw new ArgumentNullException("longName");
-		if ("".equals(longName)) throw new IllegalArgumentException("longName cannot be empty");
-
-		shortName = "-" + shortName + ":";
-		longName = "--" + longName + ":";
-
-		Optional<String> result = Optional.empty();
-
-		for (String arg : args)
-		{
-			if (arg.startsWith(shortName))
-			{
-				result = Optional.of(arg.substring(shortName.length()));
-			}
-			if (arg.startsWith(longName))
-			{
-				result = Optional.of(arg.substring(longName.length()));
-			}
-			if (result.isPresent())
 			{
 				break;
 			}
