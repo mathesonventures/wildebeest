@@ -933,46 +933,46 @@
 		</echo>
 	</target>
 
-    <!--  UNZIP  ====================================================================================================-->
+	<!--  UNZIP  ====================================================================================================-->
 	<target name="check-windowsUNZIP">
 		<available file="OpenJDK/WindowsJDK" type="dir" property="windowsUnpacked.present"/>
 	</target>
 
-	<target name="check-linuxUNZIP" >
-		<available  file="OpenJDK/LinuxJDK" type="dir" property="linuxUnpacked.present"/>
+	<target name="check-linuxUNZIP">
+		<available file="OpenJDK/LinuxJDK" type="dir" property="linuxUnpacked.present"/>
 	</target>
 
 	<target name="check-macosUNZIP">
 		<available file="OpenJDK/MacosJDK" type="dir" property="macosUnpacked.present"/>
 	</target>
 
-	<target name="unpackWindows" unless="windowsUnpacked.present"  depends="check-windowsUNZIP">
+	<target name="unpackWindows" unless="windowsUnpacked.present" depends="check-windowsUNZIP">
 		<echo>
 			unziping windows jdk
 		</echo>
 		<untar src="OpenJDK/WindowsJDK.tar.gz" dest="OpenJDK/windowsJDK" compression="gzip"/>
 	</target>
 
-	<target name="unpackLinux" unless="linuxUnpacked.present"  depends="check-linuxUNZIP">
+	<target name="unpackLinux" unless="linuxUnpacked.present" depends="check-linuxUNZIP">
 		<echo>
 			unziping linux jdk
 		</echo>
 		<untar src="OpenJDK/LinuxJDK.tar.gz" dest="OpenJDK/linuxJDK" compression="gzip"/>
 	</target>
 
-	<target name="unpackMacos" unless="macosUnpacked.present"  depends="check-macosUNZIP">
+	<target name="unpackMacos" unless="macosUnpacked.present" depends="check-macosUNZIP">
 		<echo>
 			unziping macos jdk
 		</echo>
-	<untar src="OpenJDK/MacOSJDK.tar.gz" dest="OpenJDK/macosJDK" compression="gzip"/>
+		<untar src="OpenJDK/MacOSJDK.tar.gz" dest="OpenJDK/macosJDK" compression="gzip"/>
 	</target>
 
 
 	<!-- CREATE BUNDLED JAR ========================================================================================-->
-	<target name= "windows-jar-with-jdk">
+	<target name="windows-jar-with-jdk">
 		<jar destfile="jar/wildebeest.jar"
 				basedir="target/core/classtree/">
-			<fileset dir="target/core/libcompile" />
+			<fileset dir="target/core/libcompile"/>
 			<fileset dir="../MV.Wildebeest.Api/target/core/classtree"/>
 			<manifest>
 				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
@@ -982,7 +982,7 @@
 	</target>
 
 
-	<target name= "windows-jar-without-jdk">
+	<target name="windows-jar-without-jdk">
 
 	</target>
 
