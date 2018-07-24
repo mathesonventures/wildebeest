@@ -32,7 +32,6 @@ import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.TestContext_ResourceAndInstance;
-import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
@@ -63,7 +62,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		AssertionFailedException
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withFooBarStatesAndMigrations()
 			.withInitialState(0, "Foo")
@@ -93,7 +92,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		AssertionFailedException
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withFooBarStatesAndMigrations()
 			.withAssertion(0, "Foo")
@@ -132,7 +131,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		AssertionFailedException
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withFooBarStatesAndMigrations()
 			.withAssertion(0, "Foo")
@@ -173,7 +172,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	public void assertState_resourceIndeterminateState_throws()
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withFooBarStatesAndMigrations()
 			.build();
@@ -216,7 +215,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	public void assertState_faultingAssertion_throws()
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withFooBarStatesAndMigrations()
 			.withInitialState(0, "Foo")

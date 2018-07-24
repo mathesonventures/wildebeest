@@ -61,7 +61,7 @@ public class WildebeestCommandUnitTests
 	@Test public void noCommand_noOperationsCalled()
 	{
 		// Setup
-		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
+		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.create();
 
 		String[] args = new String[]{};
 
@@ -75,7 +75,7 @@ public class WildebeestCommandUnitTests
 	@Test public void about_validRequest_noOperationsCalled()
 	{
 		// Setup
-		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
+		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.create();
 
 		String[] args = new String[]
 			{
@@ -104,7 +104,7 @@ public class WildebeestCommandUnitTests
 		InvalidReferenceException
 	{
 		// Setup
-		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
+		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.create();
 
 		String[] args = new String[]
 			{

@@ -28,7 +28,6 @@ import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.TestContext_ResourceAndInstance;
-import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import org.junit.Test;
@@ -53,7 +52,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 	public void jumpstate_assertionFail_throws()
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withFooBarStatesAndMigrations()
 			.withAssertion(0, "Foo")
@@ -93,7 +92,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 	public void jumpstate_nonExistentState_throws()
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.build();
 
@@ -134,7 +133,7 @@ public class WildebeestApiImplJumpStateIntegrationTests
 	{
 		// Setup
 
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withFooBarStatesAndMigrations()
 			.withAssertion(0, "Foo")

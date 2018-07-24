@@ -28,7 +28,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.event.LoggingEventSink;
-import co.mv.wb.fixture.FixtureBuilder;
+import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.impl.WildebeestApiBuilder;
@@ -73,7 +73,8 @@ public class DomResourceLoaderTests
 
 		UUID resourceId = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.build();
 
@@ -135,7 +136,8 @@ public class DomResourceLoaderTests
 		UUID resourceId = UUID.randomUUID();
 		UUID stateId = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(stateId, "Foo")
 			.render();
@@ -203,7 +205,8 @@ public class DomResourceLoaderTests
 		UUID resourceId = UUID.randomUUID();
 		UUID stateId = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(stateId, null)
 			.render();
@@ -272,7 +275,8 @@ public class DomResourceLoaderTests
 		UUID resourceId = UUID.randomUUID();
 		UUID stateId = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(stateId, "Some random name", "Some random test description")
 			.render();
@@ -343,7 +347,8 @@ public class DomResourceLoaderTests
 		UUID state1Id = UUID.randomUUID();
 		UUID state2Id = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(state1Id, "Foo")
 			.state(state2Id, "Bar")
@@ -418,7 +423,8 @@ public class DomResourceLoaderTests
 		UUID stateId = UUID.randomUUID();
 		UUID assertion1Id = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(stateId, "Foo")
 			.assertion(FakeConstants.Fake.getUri(), assertion1Id).withInnerXml("<tag>Foo</tag>")
@@ -490,7 +496,8 @@ public class DomResourceLoaderTests
 		UUID assertion1Id = UUID.randomUUID();
 		UUID assertion2Id = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(stateId, "Foo")
 			.assertion(FakeConstants.Fake.getUri(), assertion1Id).withInnerXml("<tag>Foo</tag>")
@@ -562,8 +569,8 @@ public class DomResourceLoaderTests
 		UUID state1Id = UUID.randomUUID();
 		UUID migrationId = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder
-			.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(state1Id, "Foo")
 			.migration(FakeConstants.Fake.getUri(), migrationId, state1Id.toString(), null)
@@ -627,7 +634,8 @@ public class DomResourceLoaderTests
 		UUID state1Id = UUID.randomUUID();
 		UUID migrationId = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(state1Id, "Foo")
 			.migration(FakeConstants.Fake.getUri(), migrationId, "Foo", null).withInnerXml("<tag>Blah</tag>")
@@ -689,8 +697,8 @@ public class DomResourceLoaderTests
 		UUID state1Id = UUID.randomUUID();
 		UUID migrationId = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder
-			.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(state1Id, "Foo")
 			.migration(FakeConstants.Fake.getUri(), migrationId, null, state1Id.toString())
@@ -754,7 +762,8 @@ public class DomResourceLoaderTests
 		UUID state1Id = UUID.randomUUID();
 		UUID migrationId = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(state1Id, "Foo")
 			.migration(FakeConstants.Fake.getUri(), migrationId, null, "Foo").withInnerXml("<tag>Blah</tag>")
@@ -817,8 +826,8 @@ public class DomResourceLoaderTests
 		UUID state2Id = UUID.randomUUID();
 		UUID migrationId = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder
-			.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(state1Id, "Foo")
 			.state(state2Id, "Bar")
@@ -884,7 +893,8 @@ public class DomResourceLoaderTests
 		UUID state2Id = UUID.randomUUID();
 		UUID migrationId = UUID.randomUUID();
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(FakeConstants.Fake.getUri(), resourceId, "Product Catalogue Database")
 			.state(state1Id, "Foo")
 			.state(state2Id, "Bar")

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.fixture;
+package co.mv.wb.fixture.xmlbuilder;
 
 import co.mv.wb.framework.ArgumentNullException;
 
@@ -34,10 +34,10 @@ public class ResourceBuilder
 	private final String name;
 	private final List<StateBuilder> states;
 	private final List<MigrationBuilder> migrations;
-	private final FixtureBuilder builder;
+	private final ResourceXmlBuilder builder;
 
 	public ResourceBuilder(
-		FixtureBuilder builder,
+		ResourceXmlBuilder builder,
 		String type,
 		UUID resourceId,
 		String name)
@@ -119,7 +119,7 @@ public class ResourceBuilder
 		return migration;
 	}
 
-	public FixtureBuilder builder()
+	public ResourceXmlBuilder builder()
 	{
 		return this.builder;
 	}

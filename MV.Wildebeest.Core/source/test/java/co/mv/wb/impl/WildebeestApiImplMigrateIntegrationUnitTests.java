@@ -47,18 +47,17 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * Integration tests for the {@link WildebeestApi#migrate(Resource, Instance, Optional)} implementation on
+ * Integration tests for the {@link WildebeestApi#migrate(Resource, Instance, String)} implementation on
  * {@link WildebeestApiImpl}.
  *
  * @since 4.0
  */
-public class WildebeestApiImplMigrateIntegrationTests
+public class WildebeestApiImplMigrateIntegrationUnitTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplMigrateUnitTests.class);
 

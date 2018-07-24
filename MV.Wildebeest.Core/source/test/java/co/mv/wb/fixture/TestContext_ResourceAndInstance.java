@@ -16,10 +16,21 @@
 
 package co.mv.wb.fixture;
 
+import co.mv.wb.Migration;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
+import co.mv.wb.framework.ArgumentException;
+import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.plugin.base.ImmutableState;
+import co.mv.wb.plugin.base.ResourceImpl;
+import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
+import co.mv.wb.plugin.fake.SetTagMigration;
+import co.mv.wb.plugin.fake.TagAssertion;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -32,7 +43,7 @@ public class TestContext_ResourceAndInstance
 	public final Resource resource;
 	public final FakeInstance instance;
 
-	TestContext_ResourceAndInstance(
+	private TestContext_ResourceAndInstance(
 		Resource resource,
 		FakeInstance instance)
 	{
@@ -48,5 +59,192 @@ public class TestContext_ResourceAndInstance
 	public UUID getStateId(int stateIndex)
 	{
 		return this.getState(stateIndex).getStateId();
+	}
+
+	/**
+	 * A test context builder that builds a FakeResource and FakeInstance with the desired configuration.
+	 *
+	 * @since 4.0
+	 */
+	public static class Builder
+	{
+		private List<State> states;
+		private List<Migration> migrations;
+		private String defaultTarget;
+
+		private UUID initialStateId;
+		private String initialTag;
+
+		private Builder()
+		{
+			this.defaultTarget = null;
+			this.states = Arrays.asList();
+			this.migrations = Arrays.asList();
+
+			this.initialStateId = null;
+			this.initialTag = null;
+		}
+
+		public static Builder create()
+		{
+			return new Builder();
+		}
+
+		public Builder withFooBarStatesAndMigrations()
+		{
+			State fooState = new ImmutableState(
+				UUID.randomUUID(),
+				"foo");
+
+			State barState = new ImmutableState(
+				UUID.randomUUID(),
+				"bar");
+
+			this.states = Arrays.asList(fooState, barState);
+
+			this.migrations = Arrays.asList(
+
+				// Migrate non-existant to Foo
+				new SetTagMigration(
+					UUID.randomUUID(),
+					null,
+					fooState.getStateId().toString(),
+					"Foo"),
+
+				// Migrate Foo to Bar
+				new SetTagMigration(
+					UUID.randomUUID(),
+					fooState.getStateId().toString(),
+					barState.getStateId().toString(),
+					"Bar")
+
+			);
+
+			return this;
+		}
+
+		public Builder withAssertion(
+			int stateIndex,
+			String tag)
+		{
+			if (tag == null) throw new ArgumentNullException("tag");
+
+			State state = this.states.get(stateIndex);
+
+			state.getAssertions().add(
+				new TagAssertion(UUID.randomUUID(), 0, tag));
+
+			return this;
+		}
+
+		public Builder withDummyStates(int count)
+		{
+			if (count < 1) throw new ArgumentException("count", "count must be 1 or greater");
+
+			List<State> states = new ArrayList<>();
+
+			for (int i = 1; i <= count; i++)
+			{
+				states.add(new ImmutableState(
+					UUID.randomUUID(),
+					"state" + i));
+			}
+
+			this.states = states;
+
+			return this;
+		}
+
+		public Builder withMigration(
+			Integer fromStateIndex,
+			Integer toStateIndex)
+		{
+			String fromStateRef = fromStateIndex == null
+				? null
+				: this.states.get(fromStateIndex).getStateId().toString();
+			String toStateRef = toStateIndex == null
+				? null
+				: this.states.get(toStateIndex).getStateId().toString();
+
+			List<Migration> newMigrations = new ArrayList<>(this.migrations);
+
+			newMigrations.add(new SetTagMigration(
+				UUID.randomUUID(),
+				fromStateRef,
+				toStateRef,
+				String.format("state %d -> state %d", fromStateIndex, toStateIndex)));
+
+			this.migrations = newMigrations;
+
+			return this;
+		}
+
+		public Builder withDefaultTarget(
+			String defaultTarget)
+		{
+			if (defaultTarget == null) throw new ArgumentNullException("defaultTarget");
+
+			this.defaultTarget = defaultTarget;
+
+			return this;
+		}
+
+		public Builder withInitialState(
+			int stateIndex,
+			String tag)
+		{
+			if (tag == null) throw new ArgumentNullException("tag");
+
+			State state = this.states.get(stateIndex);
+			this.initialStateId = state.getStateId();
+			this.initialTag = tag;
+
+			return this;
+		}
+
+		public Builder withInitialTag(
+			String tag)
+		{
+			if (tag == null) throw new ArgumentNullException("tag");
+
+			this.initialTag = tag;
+
+			return this;
+		}
+
+		public TestContext_ResourceAndInstance build()
+		{
+			Resource resource = new ResourceImpl(
+				UUID.randomUUID(),
+				FakeConstants.Fake,
+				"MyResource",
+				defaultTarget);
+
+			for (State state : this.states)
+			{
+				resource.getStates().add(state);
+			}
+
+			for (Migration migration : this.migrations)
+			{
+				resource.getMigrations().add(migration);
+			}
+
+			FakeInstance instance = new FakeInstance();
+
+			if (this.initialStateId != null)
+			{
+				instance.setStateId(this.initialStateId);
+			}
+
+			if (this.initialTag != null)
+			{
+				instance.setTag(this.initialTag);
+			}
+
+			return new TestContext_ResourceAndInstance(
+				resource,
+				instance);
+		}
 	}
 }

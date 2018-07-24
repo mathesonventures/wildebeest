@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.fixture;
+package co.mv.wb.fixture.xmlbuilder;
 
 import co.mv.wb.framework.ArgumentNullException;
 
@@ -39,7 +39,7 @@ public class XmlBuilder
 		return this.stringBuilder;
 	}
 
-	public XmlBuilder processingInstruction()
+	public XmlBuilder create()
 	{
 		this.getStringBuilder().append("<?xml version=\"1.0\"?>");
 

@@ -21,7 +21,7 @@ public class TestContext_WildebeestCommandUnit
 	public final WildebeestApi wildebeestApi;
 	public final WildebeestCommand wildebeestCommand;
 
-	public static TestContext_WildebeestCommandUnit get()
+	public static TestContext_WildebeestCommandUnit create()
 	{
 		return new TestContext_WildebeestCommandUnit();
 	}

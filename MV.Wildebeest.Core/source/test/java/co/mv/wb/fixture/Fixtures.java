@@ -18,6 +18,7 @@ package co.mv.wb.fixture;
 
 import co.mv.wb.Instance;
 import co.mv.wb.Resource;
+import co.mv.wb.fixture.xmlbuilder.ResourceXmlBuilder;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
@@ -34,6 +35,11 @@ public class Fixtures
 	public static WildebeestApiMockBuilder wildebeestApi()
 	{
 		return new WildebeestApiMockBuilder();
+	}
+
+	public static ResourceXmlBuilder resourceXmlBuilder()
+	{
+		return ResourceXmlBuilder.create();
 	}
 
 	public static Resource fakeResource()

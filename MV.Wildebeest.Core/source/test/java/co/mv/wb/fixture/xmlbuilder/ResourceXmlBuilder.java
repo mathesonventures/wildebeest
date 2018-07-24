@@ -14,9 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.fixture;
-
-import co.mv.wb.framework.ArgumentNullException;
+package co.mv.wb.fixture.xmlbuilder;
 
 import java.util.UUID;
 
@@ -25,17 +23,17 @@ import java.util.UUID;
  *
  * @since 4.0
  */
-public class FixtureBuilder
+public class ResourceXmlBuilder
 {
 	private boolean built;
 	private ResourceBuilder resourceBuilder;
 
-	public static FixtureBuilder create()
+	public static ResourceXmlBuilder create()
 	{
-		return new FixtureBuilder();
+		return new ResourceXmlBuilder();
 	}
 
-	private FixtureBuilder()
+	private ResourceXmlBuilder()
 	{
 		this.built = false;
 		this.resourceBuilder = null;
@@ -63,7 +61,7 @@ public class FixtureBuilder
 			throw new RuntimeException("already rendered");
 		}
 
-		XmlBuilder xml = new XmlBuilder().processingInstruction();
+		XmlBuilder xml = new XmlBuilder().create();
 
 		// Resource
 		xml.openElement(
@@ -141,76 +139,5 @@ public class FixtureBuilder
 		xml.closeElement("resource");
 
 		return xml.toString();
-	}
-
-	private String openElement(String name)
-	{
-		if (name == null) throw new ArgumentNullException("name");
-		if ("".equals(name)) throw new IllegalArgumentException("name cannot be empty");
-
-		return openElement(name, new String[]{}, new String[]{});
-	}
-
-	private String openElement(
-		String name,
-		String attrName1,
-		String attrValue1,
-		String attrName2,
-		String attrValue2,
-		String attrName3,
-		String attrValue3)
-	{
-		if (name == null) throw new ArgumentNullException("name");
-		if ("".equals(name)) throw new IllegalArgumentException("name cannot be empty");
-		if (attrName1 == null) throw new ArgumentNullException("attrName1");
-		if ("".equals(attrName1)) throw new IllegalArgumentException("attrName1 cannot be empty");
-		if (attrValue1 == null) throw new ArgumentNullException("attrValue1");
-		if (attrName2 == null) throw new ArgumentNullException("attrName2");
-		if ("".equals(attrName2)) throw new IllegalArgumentException("attrName2 cannot be empty");
-		if (attrValue2 == null) throw new ArgumentNullException("attrValue2");
-		if (attrName3 == null) throw new ArgumentNullException("attrName3");
-		if ("".equals(attrName3)) throw new IllegalArgumentException("attrName3 cannot be empty");
-		if (attrValue3 == null) throw new ArgumentNullException("attrValue3 ");
-
-		return openElement(
-			name,
-			new String[]{attrName1, attrName2, attrName3},
-			new String[]{attrValue1, attrValue2, attrValue3});
-	}
-
-	private String openElement(
-		String name,
-		String[] attrNames,
-		String[] attrValues)
-	{
-		if (name == null) throw new ArgumentNullException("name");
-		if ("".equals(name)) throw new IllegalArgumentException("name cannot be empty");
-		if (attrNames == null) throw new ArgumentNullException("attrNames");
-		if (attrValues == null) throw new ArgumentNullException("attrValues");
-		if (attrNames.length != attrValues.length)
-		{
-			throw new IllegalArgumentException("attrNames and attrValues must be the same length");
-		}
-
-		StringBuilder result = new StringBuilder();
-		result.append("<").append(name);
-
-		for (int i = 0; i < attrNames.length; i++)
-		{
-			result.append(" ").append(attrNames[i]).append("=\"").append(attrValues[i]).append("\"");
-		}
-
-		result.append(">\n");
-
-		return result.toString();
-	}
-
-	private String closeElement(
-		String name)
-	{
-		if (name == null) throw new ArgumentNullException("name");
-		if ("".equals(name)) throw new IllegalArgumentException("name cannot be empty");
-
-		return String.format("</%s>", name);
 	}
 }

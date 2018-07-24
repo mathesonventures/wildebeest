@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.fixture;
+package co.mv.wb.fixture.xmlbuilder;
 
 import co.mv.wb.framework.ArgumentNullException;
 
@@ -29,7 +29,7 @@ import java.util.UUID;
  */
 public class StateBuilder
 {
-	private final FixtureBuilder builder;
+	private final ResourceXmlBuilder builder;
 	private final ResourceBuilder resourceBuilder;
 	private final UUID stateId;
 	private final String name;
@@ -37,7 +37,7 @@ public class StateBuilder
 	private final List<AssertionBuilder> assertions;
 
 	public StateBuilder(
-		FixtureBuilder builder,
+		ResourceXmlBuilder builder,
 		ResourceBuilder resourceBuilder,
 		UUID stateId,
 		String name,

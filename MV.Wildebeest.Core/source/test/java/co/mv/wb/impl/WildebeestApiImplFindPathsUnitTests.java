@@ -20,7 +20,6 @@ import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.Migration;
 import co.mv.wb.Resource;
 import co.mv.wb.fixture.TestContext_ResourceAndInstance;
-import co.mv.wb.fixture.TestContext_SimpleFakeResource_Builder;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -45,7 +44,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	public void findPaths_singlePathFromSourceToTarget_succeeds() throws InvalidReferenceException
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withDummyStates(5)
 			.withDefaultTarget("state4")
@@ -83,7 +82,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	public void findPaths_multiplePathsFromSourceToTarget_succeeds() throws InvalidReferenceException
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withDummyStates(5)
 			.withDefaultTarget("state5")
@@ -126,7 +125,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	public void findPaths_multiplePathsFromNonExistentSourceToExistingTarget_succeeds() throws InvalidReferenceException
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withDummyStates(4)
 			.withDefaultTarget("state3")
@@ -169,7 +168,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	public void findPaths_multiplePathsFromSourceStateToNonExistentState_succeeds() throws InvalidReferenceException
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withDummyStates(4)
 			.withDefaultTarget("state_")
@@ -212,7 +211,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	public void findPaths_noPathFromSourceToTarget_succeeds() throws InvalidReferenceException
 	{
 		// Execute
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withDummyStates(4)
 			.withDefaultTarget("state3")
@@ -243,7 +242,7 @@ public class WildebeestApiImplFindPathsUnitTests
 	public void findPaths_circular_succeeds() throws InvalidReferenceException
 	{
 		// Setup
-		TestContext_ResourceAndInstance context = TestContext_SimpleFakeResource_Builder
+		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
 			.create()
 			.withDummyStates(5)
 			.withDefaultTarget("state5")
