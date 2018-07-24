@@ -880,6 +880,8 @@
 		<antcall target="unpackMacos"></antcall>
 
 		<antcall target="copy-dependencies"></antcall>
+		<antcall target="create-jar"></antcall>
+
 		<antcall target="windows-jar-with-jdk"></antcall>
 		<antcall target="windows-jar-without-jdk"></antcall>
 
@@ -987,8 +989,7 @@
 		</jar>
 	</target>
 
-	<!-- Windows -->
-	<target name="windows-jar-with-jdk">
+	<target name="create-jar">
 		<jar destfile="jar/wildebeest.jar"
 				basedir="target/core/classtree/">
 			<manifest>
@@ -997,6 +998,10 @@
 			<zipfileset src="jar/dependencies-all.jar"
 					excludes="META-INF/*.SF" />
 		</jar>
+	</target>
+
+	<!-- Windows -->
+	<target name="windows-jar-with-jdk">
 		<mkdir dir="installers/windows"></mkdir>
 		<zip destfile="installers/windows/windows-with-jdk.zip">
 			<zipfileset dir="OpenJDK/windowsJDK" />
@@ -1005,28 +1010,12 @@
 	</target>
 
 	<target name="windows-jar-without-jdk">
-		<jar destfile="jar/wildebeest.jar"
-				basedir="target/core/classtree/">
-			<manifest>
-				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
-			</manifest>
-			<zipfileset src="jar/dependencies-all.jar"
-					excludes="META-INF/*.SF" />
-		</jar>
 		<mkdir dir="installers/windows"></mkdir>
 		<copy file="jar/wildebeest.jar" todir="installers/windows/"/>
 	</target>
 
 	<!-- Linux -->
 	<target name="linux-jar-with-jdk">
-		<jar destfile="jar/wildebeest.jar"
-				basedir="target/core/classtree/">
-			<manifest>
-				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
-			</manifest>
-			<zipfileset src="jar/dependencies-all.jar"
-					excludes="META-INF/*.SF" />
-		</jar>
 		<mkdir dir="installers/linux"></mkdir>
 		<zip destfile="installers/linux/linux-with-jdk.zip">
 			<zipfileset dir="OpenJDK/linuxJDK" />
@@ -1035,28 +1024,12 @@
 	</target>
 
 	<target name="linux-jar-without-jdk">
-		<jar destfile="jar/wildebeest.jar"
-				basedir="target/core/classtree/">
-			<manifest>
-				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
-			</manifest>
-			<zipfileset src="jar/dependencies-all.jar"
-					excludes="META-INF/*.SF" />
-		</jar>
 		<mkdir dir="installers/linux"></mkdir>
 		<copy file="jar/wildebeest.jar" todir="installers/linux/"/>
 	</target>
 
 	<!-- MacOS -->
 	<target name="mac-jar-with-jdk">
-		<jar destfile="jar/wildebeest.jar"
-				basedir="target/core/classtree/">
-			<manifest>
-				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
-			</manifest>
-			<zipfileset src="jar/dependencies-all.jar"
-					excludes="META-INF/*.SF" />
-		</jar>
 		<mkdir dir="installers/mac"></mkdir>
 		<zip destfile="installers/mac/mac-wit-jdk.zip">
 			<zipfileset dir="OpenJDK/macosJDK" />
@@ -1065,14 +1038,6 @@
 	</target>
 
 	<target name="mac-jar-without-jdk">
-		<jar destfile="jar/wildebeest.jar"
-				basedir="target/core/classtree/">
-			<manifest>
-				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
-			</manifest>
-			<zipfileset src="jar/dependencies-all.jar"
-					excludes="META-INF/*.SF" />
-		</jar>
 		<mkdir dir="installers/mac"></mkdir>
 		<copy file="jar/wildebeest.jar" todir="installers/mac/"/>
 	</target>
