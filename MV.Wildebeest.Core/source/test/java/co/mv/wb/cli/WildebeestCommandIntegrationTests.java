@@ -182,22 +182,22 @@ public class WildebeestCommandIntegrationTests
 
 		try
 		{
-			instance = wildebeestApi.loadInstance(new File("source/core/etc/samples/MySQL Database/staging.wbi"));
+			instance = wildebeestApi.loadInstance(new File("MySqlDatabase/staging_db.wbinstance.xml"));
 
 			wb.run(new String[]
 				{
 					"migrate",
-					"--resource source/core/etc/samples/MySQL Database/database.wbr",
-					"--instance source/core/etc/samples/MySQL Database/staging.wbi",
-					"--target-state Database Created"
+					"--resource:MySqlDatabase/database.wbresource.xml",
+					"--instance:MySqlDatabase/staging_db.wbinstance.xml",
+					"--targetState:Database Created"
 				});
 
 			// Execute
 			wb.run(new String[]
 				{
 					"state",
-					"--resource source/core/etc/samples/MySQL Database/database.wbr",
-					"--instance  source/core/etc/samples/MySQL Database/staging.wbi"
+					"--resource:MySqlDatabase/database.wbresource.xml",
+					"--instance:MySqlDatabase/staging_db.wbinstance.xml"
 				});
 		}
 		finally
@@ -307,9 +307,9 @@ public class WildebeestCommandIntegrationTests
 		String[] args = new String[]
 			{
 				"migrate",
-				"--resource source/core/etc/samples/SQL Server Database/database.wbresource.xml",
-				"--instance source/core/etc/samples/SQL Server Database/staging_db.wbinstance.xml",
-				"--target-state Core Schema Loaded"
+				"--resource:SqlServerDatabase/database.wbresource.xml",
+				"--instance:SqlServerDatabase/staging_db.wbinstance.xml",
+				"--targetState:Core Schema Loaded"
 			};
 
 		// Execute and Verify
@@ -317,7 +317,7 @@ public class WildebeestCommandIntegrationTests
 
 		try
 		{
-			instance = wildebeestApi.loadInstance(new File("source/core/etc/samples/SQL Server Database/staging_db.wbinstance.xml"));
+			instance = wildebeestApi.loadInstance(new File("SqlServerDatabase/staging_db.wbinstance.xml"));
 
 			wb.run(args);
 		}
