@@ -878,6 +878,16 @@
 		<antcall target="unpackWindows"></antcall>
 		<antcall target="unpackLinux"></antcall>
 		<antcall target="unpackMacos"></antcall>
+
+		<antcall target="copy-dependencies"></antcall>
+		<antcall target="windows-jar-with-jdk"></antcall>
+		<antcall target="windows-jar-without-jdk"></antcall>
+
+		<antcall target="linux-jar-with-jdk"></antcall>
+		<antcall target="linux-jar-without-jdk"></antcall>
+
+		<antcall target="mac-jar-with-jdk"></antcall>
+		<antcall target="mac-jar-without-jdk"></antcall>
 	</target>
 
 
@@ -969,21 +979,102 @@
 
 
 	<!-- CREATE BUNDLED JAR ========================================================================================-->
-	<target name="windows-jar-with-jdk">
-		<jar destfile="jar/wildebeest.jar"
-				basedir="target/core/classtree/">
-			<fileset dir="target/core/libcompile"/>
-			<fileset dir="../MV.Wildebeest.Api/target/core/classtree"/>
-			<manifest>
-				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
-				<attribute name="Class-Path" value="/"/>
-			</manifest>
+	<target name="copy-dependencies">
+		<jar destfile="jar/dependencies-all.jar">
+			<zipgroupfileset dir="target/core/libcompile">
+				<include name="/*.jar" />
+			</zipgroupfileset>
 		</jar>
 	</target>
 
+	<!-- Windows -->
+	<target name="windows-jar-with-jdk">
+		<jar destfile="jar/wildebeest.jar"
+				basedir="target/core/classtree/">
+			<manifest>
+				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
+			</manifest>
+			<zipfileset src="jar/dependencies-all.jar"
+					excludes="META-INF/*.SF" />
+		</jar>
+		<mkdir dir="installers/windows"></mkdir>
+		<zip destfile="installers/windows/windows-with-jdk.zip">
+			<zipfileset dir="OpenJDK/windowsJDK" />
+			<zipfileset dir="jar" excludes="dependencies-all.jar" />
+		</zip>
+	</target>
 
 	<target name="windows-jar-without-jdk">
+		<jar destfile="jar/wildebeest.jar"
+				basedir="target/core/classtree/">
+			<manifest>
+				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
+			</manifest>
+			<zipfileset src="jar/dependencies-all.jar"
+					excludes="META-INF/*.SF" />
+		</jar>
+		<mkdir dir="installers/windows"></mkdir>
+		<copy file="jar/wildebeest.jar" todir="installers/windows/"/>
+	</target>
 
+	<!-- Linux -->
+	<target name="linux-jar-with-jdk">
+		<jar destfile="jar/wildebeest.jar"
+				basedir="target/core/classtree/">
+			<manifest>
+				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
+			</manifest>
+			<zipfileset src="jar/dependencies-all.jar"
+					excludes="META-INF/*.SF" />
+		</jar>
+		<mkdir dir="installers/linux"></mkdir>
+		<zip destfile="installers/linux/linux-with-jdk.zip">
+			<zipfileset dir="OpenJDK/linuxJDK" />
+			<zipfileset dir="jar" excludes="dependencies-all.jar" />
+		</zip>
+	</target>
+
+	<target name="linux-jar-without-jdk">
+		<jar destfile="jar/wildebeest.jar"
+				basedir="target/core/classtree/">
+			<manifest>
+				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
+			</manifest>
+			<zipfileset src="jar/dependencies-all.jar"
+					excludes="META-INF/*.SF" />
+		</jar>
+		<mkdir dir="installers/linux"></mkdir>
+		<copy file="jar/wildebeest.jar" todir="installers/linux/"/>
+	</target>
+
+	<!-- MacOS -->
+	<target name="mac-jar-with-jdk">
+		<jar destfile="jar/wildebeest.jar"
+				basedir="target/core/classtree/">
+			<manifest>
+				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
+			</manifest>
+			<zipfileset src="jar/dependencies-all.jar"
+					excludes="META-INF/*.SF" />
+		</jar>
+		<mkdir dir="installers/mac"></mkdir>
+		<zip destfile="installers/mac/mac-wit-jdk.zip">
+			<zipfileset dir="OpenJDK/macosJDK" />
+			<zipfileset dir="jar" excludes="dependencies-all.jar" />
+		</zip>
+	</target>
+
+	<target name="mac-jar-without-jdk">
+		<jar destfile="jar/wildebeest.jar"
+				basedir="target/core/classtree/">
+			<manifest>
+				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
+			</manifest>
+			<zipfileset src="jar/dependencies-all.jar"
+					excludes="META-INF/*.SF" />
+		</jar>
+		<mkdir dir="installers/mac"></mkdir>
+		<copy file="jar/wildebeest.jar" todir="installers/mac/"/>
 	</target>
 
 </project>
