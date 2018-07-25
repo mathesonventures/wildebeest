@@ -867,29 +867,29 @@
 		Installers
 
 	==================================================================================================================== -->
-	<target name="make-installer">
+	<target name="build-for-release">
 
 		<mkdir dir="OpenJDK"/>
 
-		<antcall target="downloadWindowsJDK"></antcall>
-		<antcall target="downloadLinuxJDK"></antcall>
-		<antcall target="downloadMacJDK"></antcall>
+		<antcall target="downloadWindowsJDK"/>
+		<antcall target="downloadLinuxJDK"/>
+		<antcall target="downloadMacJDK"/>
 
-		<antcall target="unpackWindows"></antcall>
-		<antcall target="unpackLinux"></antcall>
-		<antcall target="unpackMacos"></antcall>
+		<antcall target="unpackWindows"/>
+		<antcall target="unpackLinux"/>
+		<antcall target="unpackMacos"/>
 
-		<antcall target="copy-dependencies"></antcall>
-		<antcall target="create-jar"></antcall>
+		<antcall target="copy-dependencies"/>
+		<antcall target="create-jar"/>
 
-		<antcall target="windows-jar-with-jdk"></antcall>
-		<antcall target="windows-jar-without-jdk"></antcall>
+		<antcall target="windows-jar-with-jdk"/>
+		<antcall target="windows-jar-without-jdk"/>
 
-		<antcall target="linux-jar-with-jdk"></antcall>
-		<antcall target="linux-jar-without-jdk"></antcall>
+		<antcall target="linux-jar-with-jdk"/>
+		<antcall target="linux-jar-without-jdk"/>
 
-		<antcall target="mac-jar-with-jdk"></antcall>
-		<antcall target="mac-jar-without-jdk"></antcall>
+		<antcall target="mac-jar-with-jdk"/>
+		<antcall target="mac-jar-without-jdk"/>
 	</target>
 
 
