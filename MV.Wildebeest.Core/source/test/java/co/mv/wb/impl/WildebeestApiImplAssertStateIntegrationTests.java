@@ -19,27 +19,24 @@ package co.mv.wb.impl;
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionFaultException;
-import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
 import co.mv.wb.Asserts;
-import co.mv.wb.ExpectException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.Resource;
-import co.mv.wb.ResourceType;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.TestContext_ResourceAndInstance;
-import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.framework.ExpectException;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
+import co.mv.wb.plugin.fake.FaultingAssertion;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,6 +53,12 @@ public class WildebeestApiImplAssertStateIntegrationTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplAssertStateIntegrationTests.class);
 
+	/**
+	 * Tests the integration of {@link WildebeestApi#assertState(Resource, Instance)} with a resource that has no
+	 * applicable assertions.
+	 *
+	 * @since 4.0
+	 */
 	@Test
 	public void assertState_noAssertions_succeeds() throws
 		IndeterminateStateException,
@@ -84,7 +87,10 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	}
 
 	/**
-	 * A resource that has been migrated to a certain state which has one assertion defined passes its assertions.
+	 * Tests the integration of {@link WildebeestApi#assertState(Resource, Instance)} with a resource tht has one
+	 * applicable {@link Assertion} that passes.
+	 *
+	 * @since 4.0
 	 */
 	@Test
 	public void assertState_oneAssertion_succeeds() throws
@@ -123,7 +129,10 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	}
 
 	/**
-	 * A resource that has been migrated to a certain state which has multiple assertion defined passes all assertions.
+	 * Tests the integration of {@link WildebeestApi#assertState(Resource, Instance)} with a {@link Resource} that has
+	 * multiple {@link Assertion}s, one which passes and one which fails.
+	 *
+	 * @since 4.0
 	 */
 	@Test
 	public void assertState_multipleAssertions_succeeds() throws
@@ -165,8 +174,10 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	}
 
 	/**
-	 * A resource is declared to be in a state that is not defined, and calling assertState triggers an
-	 * IndeterminateStateException.
+	 * Tests the integration of {@link WildebeestApi#assertState(Resource, Instance)} with an {@link Instance} that is
+	 * in a state that is not defined by the {@link Resource}.
+	 *
+	 * @since 4.0
 	 */
 	@Test
 	public void assertState_resourceIndeterminateState_throws()
@@ -208,8 +219,10 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	}
 
 	/**
-	 * A resource that has been migrated to a certain state which has one assertion encounters an
-	 * AssertionFaultException when applying the assertion.
+	 * Tests the integration of {@link WildebeestApi#assertState(Resource, Instance)} with an {@link Assertion} that
+	 * throws an {@link AssertionFaultException}.
+	 *
+	 * @since 4.0
 	 */
 	@Test
 	public void assertState_faultingAssertion_throws()
@@ -223,35 +236,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 
 		UUID assertionId = UUID.randomUUID();
 
-		Assertion faultingAssertion = new Assertion()
-		{
-			@Override public UUID getAssertionId()
-			{
-				return assertionId;
-			}
-
-			@Override public String getDescription()
-			{
-				return "Faulting Assertion";
-			}
-
-			@Override public int getSeqNum()
-			{
-				return 0;
-			}
-
-			@Override public List<ResourceType> getApplicableTypes()
-			{
-				return Arrays.asList();
-			}
-
-			@Override public AssertionResponse perform(Instance instance)
-			{
-				if (instance == null) throw new ArgumentNullException("instance");
-
-				throw new AssertionFaultException(assertionId, new Exception("root cause"));
-			}
-		};
+		Assertion faultingAssertion = new FaultingAssertion(assertionId);
 
 		State state = context.resource.getStates().get(0);
 		state.getAssertions().add(faultingAssertion);

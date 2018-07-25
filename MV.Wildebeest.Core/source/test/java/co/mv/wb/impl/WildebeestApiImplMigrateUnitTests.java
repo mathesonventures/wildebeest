@@ -17,7 +17,6 @@
 package co.mv.wb.impl;
 
 import co.mv.wb.AssertionFailedException;
-import co.mv.wb.ExpectException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
@@ -29,6 +28,7 @@ import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.TestContext_ResourceAndInstance;
+import co.mv.wb.framework.ExpectException;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;

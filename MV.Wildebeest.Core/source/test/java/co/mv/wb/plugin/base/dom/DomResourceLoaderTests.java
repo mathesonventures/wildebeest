@@ -18,7 +18,6 @@ package co.mv.wb.plugin.base.dom;
 
 import co.mv.wb.AssertionBuilder;
 import co.mv.wb.Asserts;
-import co.mv.wb.ExpectException;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.LoaderFault;
@@ -30,6 +29,7 @@ import co.mv.wb.XmlValidationException;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.framework.ExpectException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.impl.WildebeestApiBuilder;
 import co.mv.wb.plugin.fake.FakeConstants;
