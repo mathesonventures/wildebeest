@@ -61,6 +61,7 @@
 		<dependency org="joda-time" name="joda-time" rev="2.10" conf="clc,clr,tlr->default"/>
 		<dependency org="javassist" name="javassist" rev="3.12.1.GA" conf="clc,clr,tlr->default"/>
         <dependency org="com.google.guava" name="guava" rev="r05" conf="clc,clr,tlr->default"/>
+		<dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.9.13" conf="clc,clr,tlc,tlr->default" />
 
 
 	</dependencies>

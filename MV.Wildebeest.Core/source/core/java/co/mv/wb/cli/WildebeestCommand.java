@@ -37,6 +37,8 @@ import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.event.EventSink;
 import co.mv.wb.event.LoggingEventSink;
+import co.mv.wb.event.MigrationEventSink;
+import co.mv.wb.event.TeeEventSink;
 import co.mv.wb.framework.ArgumentNullException;
 import picocli.CommandLine;
 import org.slf4j.Logger;
@@ -82,10 +84,12 @@ public class WildebeestCommand
 	public static void main(String[] args)
 	{
 		PrintStream output = System.out;
-		EventSink eventSink = new LoggingEventSink(LOG);
-
+		TeeEventSink teeEventSink = new TeeEventSink(
+				new LoggingEventSink(LOG),
+				new MigrationEventSink(LOG)
+		);
 		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(eventSink)
+			.wildebeestApi(teeEventSink)
 			.withFactoryPluginGroups()
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
