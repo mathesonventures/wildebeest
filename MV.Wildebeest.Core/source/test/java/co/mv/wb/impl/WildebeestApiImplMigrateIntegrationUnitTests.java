@@ -32,6 +32,8 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.LoggingEventSink;
+import co.mv.wb.event.MigrationEventSink;
+import co.mv.wb.event.TeeEventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -52,7 +54,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Integration tests for the {@link WildebeestApi#migrate(Resource, Instance, String)} implementation on
+ * Integration tests for the {@link WildebeestApi#(Resource, Instance, String)} implementation on
  * {@link WildebeestApiImpl}.
  *
  * @since 4.0

@@ -59,7 +59,6 @@ public class SetTagMigrationPlugin implements MigrationPlugin
 		if (migrationT == null)
 		{
 			String msg = "migration must be a SetTagMigration";
-			eventSink.onEvent(MigrationEvent.failed(msg));
 			throw new IllegalArgumentException(msg);
 		}
 
@@ -67,7 +66,6 @@ public class SetTagMigrationPlugin implements MigrationPlugin
 		if (instanceT == null)
 		{
 			String msg = "instance must be a FakeInstance";
-			eventSink.onEvent(MigrationEvent.failed(msg));
 			throw new IllegalArgumentException(msg);
 		}
 

@@ -16,28 +16,30 @@
 
 package co.mv.wb.event;
 
-import co.mv.wb.framework.ArgumentNullException;
-import org.slf4j.Logger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * An {@link EventSink} that sends the output to the logger at INFO level.
+ * An {@link EventSink} that distributes the event to different EventSinks.
  *
  * @since 4.0
  */
-public class LoggingEventSink implements EventSink
+public class TeeEventSink implements EventSink
 {
-	private final Logger logger;
+	private final List<EventSink> eventSinks;
 
-	public LoggingEventSink(Logger logger)
+	public TeeEventSink(
+		EventSink eventSink,
+		EventSink... moreEventSink)
 	{
-		if (logger == null) throw new ArgumentNullException("logger");
-
-		this.logger = logger;
+		eventSinks = new ArrayList<>();
+		eventSinks.add(eventSink);
+		eventSinks.addAll(Arrays.asList(moreEventSink));
 	}
 
-	@Override
-	public void onEvent(Event event)
+	@Override public void onEvent(Event event)
 	{
-		this.logger.info(event.getMessage().orElse(event.getName()));
+		eventSinks.forEach(eventSink -> eventSink.onEvent(event));
 	}
 }

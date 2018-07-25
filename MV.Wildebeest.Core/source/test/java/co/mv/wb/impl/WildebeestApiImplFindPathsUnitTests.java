@@ -30,7 +30,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Unit tests to verify the {@link WildebeestApiImpl#findPaths(Resource, UUID, UUID)}} method.
+ * Tests to verify the {@link WildebeestApiImpl#findPaths(Resource, UUID, UUID)}} and
+ * {@link WildebeestApiImpl#findPaths(Resource, UUID, UUID)} methods.
  *
  * @since 4.0
  */
