@@ -1004,8 +1004,9 @@
 	<target name="windows-jar-with-jdk">
 		<mkdir dir="installers/windows"></mkdir>
 		<zip destfile="installers/windows/windows-with-jdk.zip">
-			<zipfileset dir="OpenJDK/windowsJDK" />
+			<zipfileset dir="OpenJDK/windowsJDK/jdk-10.0.2/" />
 			<zipfileset dir="jar" excludes="dependencies-all.jar" />
+			<zipfileset file="target/core/app/startscripts/start.bat"/>
 		</zip>
 	</target>
 
@@ -1017,10 +1018,11 @@
 	<!-- Linux -->
 	<target name="linux-jar-with-jdk">
 		<mkdir dir="installers/linux"></mkdir>
-		<zip destfile="installers/linux/linux-with-jdk.zip">
-			<zipfileset dir="OpenJDK/linuxJDK" />
+		<tar compression="gzip" destfile="installers/linux/linux-with-jdk.tar.gz">
+			<zipfileset dir="OpenJDK/linuxJDK/jdk-10.0.2/" />
 			<zipfileset dir="jar" excludes="dependencies-all.jar" />
-		</zip>
+			<zipfileset file="target/core/app/startscripts/start.sh"/>
+		</tar>
 	</target>
 
 	<target name="linux-jar-without-jdk">
@@ -1031,10 +1033,11 @@
 	<!-- MacOS -->
 	<target name="mac-jar-with-jdk">
 		<mkdir dir="installers/mac"></mkdir>
-		<zip destfile="installers/mac/mac-wit-jdk.zip">
-			<zipfileset dir="OpenJDK/macosJDK" />
+		<tar compression="gzip" destfile="installers/mac/mac-wit-jdk.tar.gz">
+			<zipfileset dir="OpenJDK/macosJDK/jdk-10.0.2.jdk/Contents/Home/" />
 			<zipfileset dir="jar" excludes="dependencies-all.jar" />
-		</zip>
+			<zipfileset file="target/core/app/startscripts/start.sh"/>
+		</tar>
 	</target>
 
 	<target name="mac-jar-without-jdk">

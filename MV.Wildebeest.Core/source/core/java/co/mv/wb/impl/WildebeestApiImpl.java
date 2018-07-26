@@ -58,7 +58,6 @@ import co.mv.wb.plugin.base.ImmutableAssertionResult;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
-import com.sun.org.apache.bcel.internal.classfile.Unknown;
 import org.reflections.Reflections;
 import org.xml.sax.SAXException;
 

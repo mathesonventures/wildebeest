@@ -1,6 +1,5 @@
 package co.mv.wb.cli;
 
-import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "jumpstate",
