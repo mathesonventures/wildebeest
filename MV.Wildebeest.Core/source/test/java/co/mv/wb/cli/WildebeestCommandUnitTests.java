@@ -72,14 +72,14 @@ public class WildebeestCommandUnitTests
 		verifyZeroInteractions(context.wildebeestApi);
 	}
 
-	@Test public void about_validRequest_noOperationsCalled()
+	@Test public void helpDoubleDash_validRequest_noOperationsCalled()
 	{
 		// Setup
 		TestContext_WildebeestCommandUnit context = TestContext_WildebeestCommandUnit.get();
 
 		String[] args = new String[]
 			{
-				"about"
+				"help"
 			};
 
 		// Execute
@@ -88,6 +88,7 @@ public class WildebeestCommandUnitTests
 		// Verify
 		verifyZeroInteractions(context.wildebeestApi);
 	}
+
 
 	@Test public void migrate_validRequest_migrateOperationCalled() throws
 		AssertionFailedException,
@@ -109,9 +110,9 @@ public class WildebeestCommandUnitTests
 		String[] args = new String[]
 			{
 				"migrate",
-				"--resource:MySqlDatabase/database.wbresource.xml",
-				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-				"--targetState:Core Schema Loaded"
+				"--resource MySqlDatabase/database.wbresource.xml",
+				"--instance MySqlDatabase/staging_db.wbinstance.xml",
+				"--target-state Core Schema Loaded"
 			};
 
 		// Execute
@@ -152,8 +153,8 @@ public class WildebeestCommandUnitTests
 		wb.run(new String[]
 			{
 				"migrate",
-				"--resource:MySqlDatabase/database.wbresource.xml",
-				"--targetState:Core Schema Loaded"
+				"--resource MySqlDatabase/database.wbresource.xml",
+				"--targetState Core Schema Loaded"
 			});
 
 		// Verify
@@ -177,8 +178,8 @@ public class WildebeestCommandUnitTests
 		wb.run(new String[]
 			{
 				"migrate",
-				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-				"--targetState:Core Schema Loaded"
+				"--instance MySqlDatabase/staging_db.wbinstance.xml",
+				"--targetState Core Schema Loaded"
 			});
 
 		// Verify
@@ -202,7 +203,7 @@ public class WildebeestCommandUnitTests
 		// Execute
 		wb.run(new String[]
 			{
-				"plugins"
+				"--plugins"
 			});
 
 		// Verify

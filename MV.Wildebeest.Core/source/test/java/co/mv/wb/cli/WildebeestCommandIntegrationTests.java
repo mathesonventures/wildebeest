@@ -73,9 +73,9 @@ public class WildebeestCommandIntegrationTests
 		String[] args = new String[]
 			{
 				"migrate",
-				"--resource:MySqlDatabase/database.wbresource.xml",
-				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-				"--targetState:Core Schema Loaded"
+				"--resource MySqlDatabase/database.wbresource.xml",
+				"--instance MySqlDatabase/staging_db.wbinstance.xml",
+				"--target-state Core Schema Loaded"
 			};
 
 		Instance instance = null;
@@ -132,9 +132,9 @@ public class WildebeestCommandIntegrationTests
 			wb.run(new String[]
 				{
 					"migrate",
-					"--resource:MySqlDatabase/database.wbresource.xml",
-					"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-					"--targetState:Core Schema Loaded"
+					"--resource MySqlDatabase/database.wbresource.xml",
+					"--instance MySqlDatabase/staging_db.wbinstance.xml",
+					"--target-state Core Schema Loaded"
 				});
 
 			// Drop the wb_state table, so the database resource is now no longer tracked by Wildebeest
@@ -144,9 +144,9 @@ public class WildebeestCommandIntegrationTests
 			wb.run(new String[]
 				{
 					"jumpstate",
-					"--resource:MySqlDatabase/database.wbresource.xml",
-					"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-					"--targetState:Core Schema Loaded"
+					"--resource MySqlDatabase/database.wbresource.xml",
+					"--instance MySqlDatabase/staging_db.wbinstance.xml",
+					"--target-state Core Schema Loaded"
 				});
 		}
 		finally
@@ -187,17 +187,17 @@ public class WildebeestCommandIntegrationTests
 			wb.run(new String[]
 				{
 					"migrate",
-					"--resource:MySqlDatabase/database.wbresource.xml",
-					"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-					"--targetState:Database Created"
+					"--resource MySqlDatabase/database.wbresource.xml",
+					"--instance MySqlDatabase/staging_db.wbinstance.xml",
+					"--target-state Database Created"
 				});
 
 			// Execute
 			wb.run(new String[]
 				{
 					"state",
-					"--resource:MySqlDatabase/database.wbresource.xml",
-					"--instance:MySqlDatabase/staging_db.wbinstance.xml"
+					"--resource MySqlDatabase/database.wbresource.xml",
+					"--instance MySqlDatabase/staging_db.wbinstance.xml"
 				});
 		}
 		finally
@@ -228,9 +228,9 @@ public class WildebeestCommandIntegrationTests
 		wb.run(new String[]
 			{
 				"migrate",
-				"--resource:MySqlDatabase/database.wbresource.xml",
-				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-				"--targetState:   "
+				"--resource MySqlDatabase/database.wbresource.xml",
+				"--instance MySqlDatabase/staging_db.wbinstance.xml",
+				"--target-state    "
 			});
 
 		// Verify
@@ -269,9 +269,9 @@ public class WildebeestCommandIntegrationTests
 		wb.run(new String[]
 			{
 				"migrate",
-				"--resource:MySqlDatabase/database.wbresource.xml",
-				"--instance:MySqlDatabase/staging_db.wbinstance.xml",
-				"--targetState:Core Schema Loaded"
+				"--resource MySqlDatabase/database.wbresource.xml",
+				"--instance MySqlDatabase/staging_db.wbinstance.xml",
+				"--target-state Core Schema Loaded"
 			});
 
 		//
@@ -307,9 +307,9 @@ public class WildebeestCommandIntegrationTests
 		String[] args = new String[]
 			{
 				"migrate",
-				"--resource:SqlServerDatabase/database.wbresource.xml",
-				"--instance:SqlServerDatabase/staging_db.wbinstance.xml",
-				"--targetState:Core Schema Loaded"
+				"--resource SqlServerDatabase/database.wbresource.xml",
+				"--instance SqlServerDatabase/staging_db.wbinstance.xml",
+				"--target-state Core Schema Loaded"
 			};
 
 		// Execute and Verify
@@ -357,9 +357,9 @@ public class WildebeestCommandIntegrationTests
 		String[] args = new String[]
 			{
 				"migrate",
-				"--resource:PostgreSqlDatabase/database.wbresource.xml",
-				"--instance:PostgreSqlDatabase/staging.wbinstance.xml",
-				"--targetState:434fb1fd-e903-4b0f-a2b3-b1014360f799"
+				"--resource PostgreSqlDatabase/database.wbresource.xml",
+				"--instance PostgreSqlDatabase/staging.wbinstance.xml",
+				"--target-state 434fb1fd-e903-4b0f-a2b3-b1014360f799"
 			};
 
 		// Execute and Verify
