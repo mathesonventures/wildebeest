@@ -80,7 +80,7 @@ public class MySqlDatabaseResourcePlugin implements ResourcePlugin
 			}
 
 			// If the declared state ID is not known, throw
-			catch(InvalidReferenceException e)
+			catch (InvalidReferenceException e)
 			{
 				throw new IndeterminateStateException(String.format(
 					"The resource is declared to be in state %s, but this state is not defined for this resource",

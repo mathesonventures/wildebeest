@@ -54,12 +54,14 @@ public class MigrationEventSink implements EventSink
 
 	@Override public void onEvent(Event event)
 	{
-		if (!(event instanceof MigrationEvent)){
+		if (!(event instanceof MigrationEvent))
+		{
 			return;
 		}
 
 		MigrationEvent migrationEvent = (MigrationEvent)event;
-		if (migrationEvent.getName().equals(MigrationEvent.Name.START.name())){
+		if (migrationEvent.getName().equals(MigrationEvent.Name.START.name()))
+		{
 			return;
 		}
 

@@ -36,7 +36,7 @@ public class InvalidReferenceException extends Exception
 	 * entity defined within Wildebeest.  For example if an API request for a non-existant state is received, this is a
 	 * reference without a referring entity.
 	 *
-	 * @param refType the type of the entity referenced.
+	 * @param refType  the type of the entity referenced.
 	 * @param refValue the reference value that does not exist.
 	 * @return a new InvalidReferenceException with a single referenced entity and no referrer.
 	 */
@@ -102,7 +102,7 @@ public class InvalidReferenceException extends Exception
 	 * Constructs a new InvalidReferenceException.  This constructor is private as we push all constructions through the
 	 * static factory methods in order to manage the permutations that are valid,
 	 *
-	 * @param refs the invalid references to entities.
+	 * @param refs     the invalid references to entities.
 	 * @param referrer the optional referrer that made the invalid references.
 	 */
 	private InvalidReferenceException(

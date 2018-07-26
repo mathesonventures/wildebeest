@@ -1,14 +1,6 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
     <option name="HTML_ALIGN_ATTRIBUTES" value="false" />
-    <HTMLCodeStyleSettings>
-      <option name="HTML_ALIGN_ATTRIBUTES" value="false" />
-    </HTMLCodeStyleSettings>
-    <JavaCodeStyleSettings>
-      <option name="ANNOTATION_PARAMETER_WRAP" value="1" />
-      <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="9999" />
-      <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="9999" />
-    </JavaCodeStyleSettings>
     <DBN-PSQL>
       <case-options enabled="false">
         <option name="KEYWORD_CASE" value="lower" />
@@ -33,6 +25,14 @@
         <option name="ITERATION_ELEMENTS_WRAPPING" value="chop_down_if_not_single" />
       </formatting-settings>
     </DBN-SQL>
+    <HTMLCodeStyleSettings>
+      <option name="HTML_ALIGN_ATTRIBUTES" value="false" />
+    </HTMLCodeStyleSettings>
+    <JavaCodeStyleSettings>
+      <option name="ANNOTATION_PARAMETER_WRAP" value="1" />
+      <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="9999" />
+      <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="9999" />
+    </JavaCodeStyleSettings>
     <ScalaCodeStyleSettings>
       <option name="classCountToUseImportOnDemand" value="99" />
       <option name="NOT_CONTINUATION_INDENT_FOR_PARAMS" value="true" />

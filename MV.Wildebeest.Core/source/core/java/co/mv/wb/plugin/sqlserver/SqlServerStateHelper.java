@@ -175,15 +175,17 @@ public class SqlServerStateHelper
 		if (stateTableName == null) throw new ArgumentNullException("stateTableName");
 		if ("".equals(stateTableName)) throw new IllegalArgumentException("stateTableName cannot be empty");
 
-		DatabaseHelper.execute(appDataSource, new StringBuilder()
-			.append("IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = '").append(stateTableName).append
+		DatabaseHelper.execute(
+			appDataSource,
+			new StringBuilder()
+				.append("IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = '").append(stateTableName).append
 				("' AND xtype='U')")
-			.append("CREATE TABLE ").append(stateTableName).append("(")
-			.append("ResourceId uniqueidentifier NOT NULL, ")
-			.append("StateId uniqueidentifier NOT NULL, ")
-			.append("LastMigrationInstant datetimeoffset NOT NULL, ")
-			.append("PRIMARY KEY (ResourceId)")
-			.append(");").toString(),
+				.append("CREATE TABLE ").append(stateTableName).append("(")
+				.append("ResourceId uniqueidentifier NOT NULL, ")
+				.append("StateId uniqueidentifier NOT NULL, ")
+				.append("LastMigrationInstant datetimeoffset NOT NULL, ")
+				.append("PRIMARY KEY (ResourceId)")
+				.append(");").toString(),
 			false);
 	}
 }

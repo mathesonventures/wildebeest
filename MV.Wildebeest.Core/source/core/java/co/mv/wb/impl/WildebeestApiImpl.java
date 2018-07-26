@@ -322,22 +322,22 @@ public class WildebeestApiImpl implements WildebeestApi
 			try
 			{
 				AssertionResponse response = assertion.perform(instance);
-					if (response.getResult())
-					{
-						eventSink.onEvent(
-							AssertionEvent.complete(
-								OutputFormatter.assertionComplete(
-						assertion,
-									response
-								),
-								assertion
-							)
-						);
-					}
-					else
-					{
-						eventSink.onEvent(AssertionEvent.failed(response.getMessage(), assertion));
-					}
+				if (response.getResult())
+				{
+					eventSink.onEvent(
+						AssertionEvent.complete(
+							OutputFormatter.assertionComplete(
+								assertion,
+								response
+							),
+							assertion
+						)
+					);
+				}
+				else
+				{
+					eventSink.onEvent(AssertionEvent.failed(response.getMessage(), assertion));
+				}
 
 				result.add(new ImmutableAssertionResult(
 					assertion.getAssertionId(),

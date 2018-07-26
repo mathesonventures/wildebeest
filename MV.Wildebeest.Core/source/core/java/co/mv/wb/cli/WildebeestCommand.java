@@ -35,14 +35,13 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
-import co.mv.wb.event.EventSink;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.event.MigrationEventSink;
 import co.mv.wb.event.TeeEventSink;
 import co.mv.wb.framework.ArgumentNullException;
-import picocli.CommandLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import picocli.CommandLine;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -85,8 +84,8 @@ public class WildebeestCommand
 	{
 		PrintStream output = System.out;
 		TeeEventSink teeEventSink = new TeeEventSink(
-				new LoggingEventSink(LOG),
-				new MigrationEventSink(LOG)
+			new LoggingEventSink(LOG),
+			new MigrationEventSink(LOG)
 		);
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(teeEventSink)
