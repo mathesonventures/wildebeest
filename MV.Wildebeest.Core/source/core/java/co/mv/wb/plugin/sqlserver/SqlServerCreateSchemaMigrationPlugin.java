@@ -62,10 +62,12 @@ public class SqlServerCreateSchemaMigrationPlugin implements MigrationPlugin
 
 		try
 		{
-			DatabaseHelper.execute(instanceT.getAppDataSource(), new StringBuilder()
-				.append("CREATE SCHEMA [")
-				.append(migrationT.getSchemaName())
-				.append("] AUTHORIZATION [dbo];").toString(),
+			DatabaseHelper.execute(
+				instanceT.getAppDataSource(),
+				new StringBuilder()
+					.append("CREATE SCHEMA [")
+					.append(migrationT.getSchemaName())
+					.append("] AUTHORIZATION [dbo];").toString(),
 				false);
 		}
 		catch (SQLServerException e)

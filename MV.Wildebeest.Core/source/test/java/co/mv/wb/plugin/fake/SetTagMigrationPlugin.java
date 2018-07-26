@@ -22,10 +22,7 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationPluginType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.Resource;
-import co.mv.wb.State;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.event.EventSink;
-import co.mv.wb.event.MigrationEvent;
 import co.mv.wb.framework.ArgumentNullException;
 
 /**

@@ -201,15 +201,17 @@ public class PostgreSqlStateHelper
 				String.format("CREATE SCHEMA IF NOT EXISTS %s;", metaSchemaName),
 				false);
 
-			DatabaseHelper.execute(appDataSource, new StringBuilder()
-				.append("CREATE TABLE IF NOT EXISTS ")
-				.append(metaSchemaName).append(".")
-				.append(stateTableName).append("(")
-				.append("ResourceId UUID NOT NULL, ")
-				.append("StateId UUID NOT NULL, ")
-				.append("LastMigrationInstant timestamp NOT NULL, ")
-				.append("CONSTRAINT PK_").append(stateTableName).append(" PRIMARY KEY (ResourceId)")
-				.append(");").toString(),
+			DatabaseHelper.execute(
+				appDataSource,
+				new StringBuilder()
+					.append("CREATE TABLE IF NOT EXISTS ")
+					.append(metaSchemaName).append(".")
+					.append(stateTableName).append("(")
+					.append("ResourceId UUID NOT NULL, ")
+					.append("StateId UUID NOT NULL, ")
+					.append("LastMigrationInstant timestamp NOT NULL, ")
+					.append("CONSTRAINT PK_").append(stateTableName).append(" PRIMARY KEY (ResourceId)")
+					.append(");").toString(),
 				false);
 		}
 		catch (SQLException e)

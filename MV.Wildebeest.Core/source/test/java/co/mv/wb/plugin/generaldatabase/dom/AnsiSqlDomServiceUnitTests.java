@@ -23,7 +23,7 @@ import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
-import co.mv.wb.fixture.FixtureBuilder;
+import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
@@ -55,7 +55,8 @@ public class AnsiSqlDomServiceUnitTests
 		UUID migrationId = UUID.randomUUID();
 		UUID toStateId = UUID.randomUUID();
 
-		String xml = FixtureBuilder.create()
+		String xml = Fixtures
+			.resourceXmlBuilder()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 			.migration("AnsiSqlCreateDatabase", migrationId, null, toStateId.toString())
 			.render();
@@ -103,7 +104,8 @@ public class AnsiSqlDomServiceUnitTests
 		UUID migrationId = UUID.randomUUID();
 		String toState = UUID.randomUUID().toString();
 
-		String xml = FixtureBuilder.create()
+		String xml = Fixtures
+			.resourceXmlBuilder()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 			.migration("AnsiSqlDropDatabase", migrationId, null, toState.toString())
 			.render();
@@ -148,7 +150,8 @@ public class AnsiSqlDomServiceUnitTests
 		// Setup
 		UUID assertionId = UUID.randomUUID();
 
-		String xml = FixtureBuilder.create()
+		String xml = Fixtures
+			.resourceXmlBuilder()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 			.state(UUID.randomUUID(), null)
 			.assertion("AnsiSqlTableExists", assertionId)
@@ -194,7 +197,8 @@ public class AnsiSqlDomServiceUnitTests
 		// Setup
 		UUID assertionId = UUID.randomUUID();
 
-		String xml = FixtureBuilder.create()
+		String xml = Fixtures
+			.resourceXmlBuilder()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 			.state(UUID.randomUUID(), null)
 			.assertion("AnsiSqlTableDoesNotExist", assertionId)

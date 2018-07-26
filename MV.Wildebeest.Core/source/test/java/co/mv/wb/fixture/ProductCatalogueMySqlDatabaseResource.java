@@ -113,7 +113,8 @@ public class ProductCatalogueMySqlDatabaseResource
 		if (migrationIdLoadSchema == null) throw new ArgumentNullException("migrationIdLoadSchema");
 		if (migrationIdLoadReferenceData == null) throw new ArgumentNullException("migrationIdLoadReferenceData");
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(Wildebeest.MySqlDatabase.getUri(), resourceId, "Product Catalogue Database")
 			.state(stateIdDatabaseCreated, "Database created")
 			.assertion("DatabaseExists", assertionIdDatabaseExists)

@@ -65,14 +65,16 @@ public class DatabaseHelper
 				for (String statement : statements)
 				{
 					if (!"".equals(statement.trim()))
-					try
 					{
-						ps = conn.prepareStatement(statement);
-						ps.execute();
-					}
-					finally
-					{
-						DatabaseHelper.release(ps);
+						try
+						{
+							ps = conn.prepareStatement(statement);
+							ps.execute();
+						}
+						finally
+						{
+							DatabaseHelper.release(ps);
+						}
 					}
 				}
 			}
@@ -300,5 +302,4 @@ public class DatabaseHelper
 	{
 		return new DateTime();
 	}
-
 }

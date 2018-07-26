@@ -20,7 +20,6 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.generaldatabase.DatabaseFixtureHelper;
-import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

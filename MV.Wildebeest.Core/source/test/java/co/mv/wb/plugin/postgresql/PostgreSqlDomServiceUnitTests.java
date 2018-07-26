@@ -23,7 +23,7 @@ import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
 import co.mv.wb.Wildebeest;
-import co.mv.wb.fixture.FixtureBuilder;
+import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomInstanceLoader;
@@ -52,7 +52,8 @@ public class PostgreSqlDomServiceUnitTests
 		UUID resourceId = UUID.randomUUID();
 		String resourceName = "Foo";
 
-		String resourceXml = FixtureBuilder.create()
+		String resourceXml = Fixtures
+			.resourceXmlBuilder()
 			.resource(Wildebeest.PostgreSqlDatabase.getUri(), resourceId, resourceName)
 			.build();
 

@@ -14,9 +14,8 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb;
+package co.mv.wb.framework;
 
-import co.mv.wb.framework.ArgumentNullException;
 import org.junit.Assert;
 
 public abstract class ExpectException

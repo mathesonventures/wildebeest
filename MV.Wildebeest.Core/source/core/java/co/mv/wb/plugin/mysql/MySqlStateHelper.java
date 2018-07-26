@@ -65,18 +65,19 @@ public class MySqlStateHelper
 			stateTableName);
 
 		DatabaseHelper.execute(
-			  appDataSource,
-			  String.format(
-					"DELETE FROM %s WHERE ResourceId = ?;",
-					stateTableName),
-			  Arrays.asList(
-					new SqlParameters("resourceId", resourceId)
-			  ));
+			appDataSource,
+			String.format(
+				"DELETE FROM %s WHERE ResourceId = ?;",
+				stateTableName),
+			Arrays.asList(
+				new SqlParameters("resourceId", resourceId)
+			));
 
 		DatabaseHelper.execute(
 			appDataSource,
 			String.format(
-				"INSERT INTO %s(ResourceId, StateId, LastMigrationInstant) VALUES(?, ?, ?);",  // TODO: What is the correct syntax for indexed parameters?  Also note we'll still need to String.format to get the table name in place - not ideal but we can improve that later.
+				"INSERT INTO %s(ResourceId, StateId, LastMigrationInstant) VALUES(?, ?, ?);",
+				// TODO: What is the correct syntax for indexed parameters?  Also note we'll still need to String.format to get the table name in place - not ideal but we can improve that later.
 				stateTableName),
 			Arrays.asList(
 				new SqlParameters("resourceId", resourceId),
@@ -178,12 +179,12 @@ public class MySqlStateHelper
 		if ("".equals(stateTableName)) throw new IllegalArgumentException("stateTableName cannot be empty");
 
 		DatabaseHelper.execute(appDataSource, new StringBuilder()
-			.append("CREATE TABLE IF NOT EXISTS `").append(stateTableName).append("`(")
-			.append("`ResourceId` char(36) NOT NULL, ")
-			.append("`StateId` char(36) NOT NULL, ")
-			.append("`LastMigrationInstant` datetime NOT NULL, ")
-			.append("PRIMARY KEY (`ResourceId`)")
-			.append(");").toString(),
+				.append("CREATE TABLE IF NOT EXISTS `").append(stateTableName).append("`(")
+				.append("`ResourceId` char(36) NOT NULL, ")
+				.append("`StateId` char(36) NOT NULL, ")
+				.append("`LastMigrationInstant` datetime NOT NULL, ")
+				.append("PRIMARY KEY (`ResourceId`)")
+				.append(");").toString(),
 			false);
 	}
 }

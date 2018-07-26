@@ -32,8 +32,6 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.LoggingEventSink;
-import co.mv.wb.event.MigrationEventSink;
-import co.mv.wb.event.TeeEventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeConstants;
@@ -49,7 +47,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -60,7 +57,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @since 4.0
  */
-public class WildebeestApiImplMigrateIntegrationTests
+public class WildebeestApiImplMigrateIntegrationUnitTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplMigrateUnitTests.class);
 

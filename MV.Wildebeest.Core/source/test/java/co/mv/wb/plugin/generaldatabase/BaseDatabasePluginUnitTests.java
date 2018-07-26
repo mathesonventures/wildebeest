@@ -23,7 +23,6 @@ import co.mv.wb.MigrationPlugin;
 import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 
-import java.io.PrintStream;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;

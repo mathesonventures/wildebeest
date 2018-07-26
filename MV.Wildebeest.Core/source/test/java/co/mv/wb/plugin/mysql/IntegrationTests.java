@@ -35,7 +35,7 @@ import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
-import co.mv.wb.fixture.XmlBuilder;
+import co.mv.wb.fixture.xmlbuilder.XmlBuilder;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.ImmutableState;
@@ -306,7 +306,7 @@ public class IntegrationTests
 
 		XmlBuilder instanceXml = new XmlBuilder();
 		instanceXml
-			.processingInstruction()
+			.create()
 			.openElement("instance type=\"co.mv.wb.MySqlDatabase\" id=\"" + UUID.randomUUID() + "\"")
 			.openElement("hostName").append("127.0.0.1").closeElement("hostName")
 			.openElement("port").append("13306").closeElement("port")
