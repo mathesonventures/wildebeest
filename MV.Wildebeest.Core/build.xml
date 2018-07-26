@@ -192,6 +192,7 @@
 		<property name="target.core.jar" value="${target.core}/jar"/>
 		<property name="target.core.app" value="${target.core}/app"/>
 		<property name="target.core.javadoc" value="${target.core}/javadoc"/>
+		<property name="target.core.app.startscripts" value="${target.core.app}/startscripts"/>
 
 		<!-- Test Targets -->
 		<property name="target.test" value="${target}/test"/>
@@ -214,7 +215,25 @@
 
 	</target>
 
+	<target name="release.properties">
+		<!--
+		  Properties for installers
+		-->
+		<property name="output" value="output"/>
+		<property name="output.jar" value="${output}/jar" />
+		<property name="output.openjdk" value="${output}/openjdk"/>
+		<property name="output.openjdk.windows" value="${output.openjdk}/windows"/>
+		<property name="output.openjdk.linux" value="${output.openjdk}/linux"/>
+		<property name="output.openjdk.mac" value="${output.openjdk}/mac"/>
+		<property name="output.openjdk.windows.unziped" value="${output.openjdk.windows}/windows-jdk"/>
+		<property name="output.openjdk.linux.unziped" value="${output.openjdk.linux}/linux-jdk"/>
+		<property name="output.openjdk.mac.unziped" value="${output.openjdk.mac}/mac-jdk"/>
+		<property name="output.release" value="${output}/release"/>
+		<property name="output.release.windows" value="${output.release}/windows"/>
+		<property name="output.release.linux" value="${output.release}/linux"/>
+		<property name="output.release.mac" value="${output.release}/mac"/>
 
+	</target>
 	<!-- ===================================================================================================================
 
 		Core Targets
@@ -867,9 +886,11 @@
 		Installers
 
 	==================================================================================================================== -->
-	<target name="build-for-release">
+	<target name="build-for-release" depends="release.properties, meta.properties, structure.properties">
 
-		<mkdir dir="OpenJDK"/>
+		<mkdir dir="${output.openjdk}"/>
+		<mkdir dir="${output.jar}"/>
+		<mkdir dir="${output.release}"/>
 
 		<antcall target="downloadWindowsJDK"/>
 		<antcall target="downloadLinuxJDK"/>
@@ -895,23 +916,24 @@
 
 	<!--  DOWNLOAD   ================================================================================================-->
 	<target name="check-windowsJDK">
-		<available file="OpenJDK/WindowsJDK.tar.gz" property="windows.present"/>
+		<available file="${output.release.windows}/WindowsJDK.tar.gz" property="windows.present"/>
 	</target>
 
 	<target name="check-linuxJDK">
-		<available file="LinuxJDK.tar.gz" property="linux.present"/>
+		<available file="${output.release.linux}/LinuxJDK.tar.gz" property="linux.present"/>
 	</target>
 
 	<target name="check-macosJDK">
-		<available file="MacOSJDK.tar.gz" property="mac.present"/>
+		<available file="${output.release.mac}/MacOSJDK.tar.gz" property="mac.present"/>
 	</target>
 
 	<target name="downloadWindowsJDK" depends="check-windowsJDK" unless="windows.present">
 		<echo>
 			Downloading OpenJDK for Windows
 		</echo>
+		<mkdir dir="${output.openjdk.windows}"/>
 		<get src="https://download.java.net/java/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_windows-x64_bin.tar.gz"
-				dest="OpenJDK/WindowsJDK.tar.gz"
+				dest="${output.openjdk.windows}/WindowsJDK.tar.gz"
 				verbose="true"
 				usetimestamp="true"/>
 		<echo>
@@ -923,8 +945,9 @@
 		<echo>
 			Downloading OpenJDK for Linux
 		</echo>
+		<mkdir dir="${output.openjdk.linux}"/>
 		<get src="https://download.java.net/java/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_linux-x64_bin.tar.gz"
-				dest="OpenJDK/LinuxJDK.tar.gz"
+				dest="${output.openjdk.linux}/LinuxJDK.tar.gz"
 				verbose="true"
 				usetimestamp="true"/>
 		<echo>
@@ -936,8 +959,9 @@
 		<echo>
 			Downloading OpenJDK for Mac
 		</echo>
+		<mkdir dir="${output.openjdk.mac}"/>
 		<get src="https://download.java.net/java/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_osx-x64_bin.tar.gz"
-				dest="OpenJDK/MacOSJDK.tar.gz"
+				dest="${output.openjdk.mac}/MacOSJDK.tar.gz"
 				verbose="true"
 				usetimestamp="true"/>
 		<echo>
@@ -947,102 +971,102 @@
 
 	<!--  UNZIP  ====================================================================================================-->
 	<target name="check-windowsUNZIP">
-		<available file="OpenJDK/WindowsJDK" type="dir" property="windowsUnpacked.present"/>
+		<available file="${output.openjdk.windows.unziped}" type="dir" property="windowsUnpacked.present"/>
 	</target>
 
 	<target name="check-linuxUNZIP">
-		<available file="OpenJDK/LinuxJDK" type="dir" property="linuxUnpacked.present"/>
+		<available file="${output.openjdk.linux.unziped}" type="dir" property="linuxUnpacked.present"/>
 	</target>
 
 	<target name="check-macosUNZIP">
-		<available file="OpenJDK/MacosJDK" type="dir" property="macosUnpacked.present"/>
+		<available file="${output.openjdk.mac.unziped}" type="dir" property="macosUnpacked.present"/>
 	</target>
 
 	<target name="unpackWindows" unless="windowsUnpacked.present" depends="check-windowsUNZIP">
 		<echo>
 			unziping windows jdk
 		</echo>
-		<untar src="OpenJDK/WindowsJDK.tar.gz" dest="OpenJDK/windowsJDK" compression="gzip"/>
+		<untar src="${output.openjdk.windows}/WindowsJDK.tar.gz" dest="${output.openjdk.windows.unziped}/" compression="gzip"/>
 	</target>
 
 	<target name="unpackLinux" unless="linuxUnpacked.present" depends="check-linuxUNZIP">
 		<echo>
 			unziping linux jdk
 		</echo>
-		<untar src="OpenJDK/LinuxJDK.tar.gz" dest="OpenJDK/linuxJDK" compression="gzip"/>
+		<untar src="${output.openjdk.linux}/LinuxJDK.tar.gz" dest="${output.openjdk.linux.unziped}/" compression="gzip"/>
 	</target>
 
 	<target name="unpackMacos" unless="macosUnpacked.present" depends="check-macosUNZIP">
 		<echo>
 			unziping macos jdk
 		</echo>
-		<untar src="OpenJDK/MacOSJDK.tar.gz" dest="OpenJDK/macosJDK" compression="gzip"/>
+		<untar src="${output.openjdk.mac}/MacOSJDK.tar.gz" dest="${output.openjdk.mac.unziped}/" compression="gzip"/>
 	</target>
 
 
 	<!-- CREATE BUNDLED JAR ========================================================================================-->
 	<target name="copy-dependencies">
-		<jar destfile="jar/dependencies-all.jar">
-			<zipgroupfileset dir="target/core/libcompile">
+		<jar destfile="${output.jar}/dependencies-all.jar">
+			<zipgroupfileset dir="${target.core.libcompile}">
 				<include name="/*.jar" />
 			</zipgroupfileset>
 		</jar>
 	</target>
 
 	<target name="create-jar">
-		<jar destfile="jar/wildebeest.jar"
-				basedir="target/core/classtree/">
+		<jar destfile="${output.jar}/wildebeest.jar"
+				basedir="${target.core.classtree}">
 			<manifest>
 				<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>
 			</manifest>
-			<zipfileset src="jar/dependencies-all.jar"
+			<zipfileset src="${output.jar}/dependencies-all.jar"
 					excludes="META-INF/*.SF" />
 		</jar>
 	</target>
 
 	<!-- Windows -->
 	<target name="windows-jar-with-jdk">
-		<mkdir dir="installers/windows"></mkdir>
-		<zip destfile="installers/windows/windows-with-jdk.zip">
-			<zipfileset dir="OpenJDK/windowsJDK/jdk-10.0.2/" />
-			<zipfileset dir="jar" excludes="dependencies-all.jar" />
-			<zipfileset file="target/core/app/startscripts/start.bat"/>
+		<mkdir dir="${output.release.windows}"></mkdir>
+		<zip destfile="${output.release.windows}/windows-with-jdk.zip">
+			<zipfileset dir="${output.openjdk.windows.unziped}/jdk-10.0.2/" />
+			<zipfileset file="${output.jar}/wildebeest.jar" />
+			<zipfileset file="${target.core.app.startscripts}/start.bat"/>
 		</zip>
 	</target>
 
 	<target name="windows-jar-without-jdk">
-		<mkdir dir="installers/windows"></mkdir>
-		<copy file="jar/wildebeest.jar" todir="installers/windows/"/>
+		<mkdir dir="${output.release.windows}"></mkdir>
+		<copy file="${output.jar}/wildebeest.jar" todir="${output.release.windows}"/>
 	</target>
 
 	<!-- Linux -->
 	<target name="linux-jar-with-jdk">
-		<mkdir dir="installers/linux"></mkdir>
-		<tar compression="gzip" destfile="installers/linux/linux-with-jdk.tar.gz">
-			<zipfileset dir="OpenJDK/linuxJDK/jdk-10.0.2/" />
-			<zipfileset dir="jar" excludes="dependencies-all.jar" />
-			<zipfileset file="target/core/app/startscripts/start.sh"/>
+		<mkdir dir="${output.release.linux}"></mkdir>
+		<tar compression="gzip" destfile="${output.release.linux}/linux-with-jdk.tar.gz">
+			<zipfileset dir="${output.openjdk.linux.unziped}/jdk-10.0.2/" />
+			<zipfileset file="${output.jar}/wildebeest.jar" />
+			<zipfileset file="${target.core.app.startscripts}start.sh"/>
 		</tar>
 	</target>
 
 	<target name="linux-jar-without-jdk">
-		<mkdir dir="installers/linux"></mkdir>
-		<copy file="jar/wildebeest.jar" todir="installers/linux/"/>
+		<mkdir dir="${output.release.linux}/linux"></mkdir>
+		<copy file="${output.jar}}/wildebeest.jar" todir="${output.release.linux}"/>
 	</target>
 
 	<!-- MacOS -->
 	<target name="mac-jar-with-jdk">
-		<mkdir dir="installers/mac"></mkdir>
-		<tar compression="gzip" destfile="installers/mac/mac-wit-jdk.tar.gz">
-			<zipfileset dir="OpenJDK/macosJDK/jdk-10.0.2.jdk/Contents/Home/" />
-			<zipfileset dir="jar" excludes="dependencies-all.jar" />
-			<zipfileset file="target/core/app/startscripts/start.sh"/>
+		<mkdir dir="${output.release.mac}"></mkdir>
+		<tar compression="gzip" destfile="${output.release.mac}/mac-wit-jdk.tar.gz">
+			<zipfileset dir="${output.openjdk.mac.unziped}/jdk-10.0.2.jdk/Contents/Home/" />
+			<zipfileset file="${output.jar}/wildebeest.jar" />
+			<zipfileset file="${target.core.app.startscripts}/start.sh"/>
 		</tar>
 	</target>
 
 	<target name="mac-jar-without-jdk">
-		<mkdir dir="installers/mac"></mkdir>
-		<copy file="jar/wildebeest.jar" todir="installers/mac/"/>
+		<mkdir dir="${output.release.mac}"></mkdir>
+		<copy file="${output.jar}/wildebeest.jar" todir="${output.release.mac}"/>
 	</target>
-
+	
 </project>
