@@ -36,7 +36,7 @@ import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.event.LoggingEventSink;
-import co.mv.wb.event.MigrationEventSink;
+import co.mv.wb.event.MigrationLogEventSink;
 import co.mv.wb.event.TeeEventSink;
 import co.mv.wb.framework.ArgumentNullException;
 import org.slf4j.Logger;
@@ -85,7 +85,7 @@ public class WildebeestCommand
 		PrintStream output = System.out;
 		TeeEventSink teeEventSink = new TeeEventSink(
 			new LoggingEventSink(LOG),
-			new MigrationEventSink(LOG)
+			new MigrationLogEventSink(LOG)
 		);
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(teeEventSink)

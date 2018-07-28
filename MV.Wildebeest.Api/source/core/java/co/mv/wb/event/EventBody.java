@@ -16,36 +16,11 @@
 
 package co.mv.wb.event;
 
-
 /**
- * Defines an ResourceEvent
+ * Marker interface to identify body payloads for {@link Event}'s.
  *
  * @since 4.0
  */
-public class ResourceEvent<T> extends Event
+public interface EventBody
 {
-	private final T elementResource;
-
-	/**
-	 * Constructs a new ResourceEvent with the supplied details.
-	 *
-	 * @param name            the name of the event, this should be supplied from ResourceEvent
-	 * @param message         a message of the event
-	 * @param elementResource the element resource considered during the event
-	 * @since 4.0
-	 */
-	public ResourceEvent(
-		String name,
-		String message,
-		T elementResource)
-	{
-		super(name, message);
-
-		this.elementResource = elementResource;
-	}
-
-	public T getElementResource()
-	{
-		return elementResource;
-	}
 }

@@ -17,55 +17,72 @@
 package co.mv.wb.event;
 
 import co.mv.wb.framework.ArgumentNullException;
-
-import java.util.Optional;
+import org.joda.time.DateTime;
 
 /**
- * Defines an Event
+ * Defines an event that is fired from Wildebeest to notify activity to external consumers.
  *
  * @since 4.0
  */
-public class Event
+public final class Event
 {
-	private final String name;
-	private final String message;
+	private final String eventUri;
+	private final DateTime raisedInstant;
+	private final EventBody eventBody;
 
 	/**
 	 * Constructs a new Event with the supplied details.
 	 *
-	 * @param name    the name of the event, this should be supplied from Event
-	 * @param message a message of the event
+	 * @param eventUri      the identifying URI of the event which can be used by consumers to route or process events
+	 *                      correctly
+	 * @param raisedInstant the instant when the event was raised
+	 * @param eventBody     the body of hte event conveying type-specific details
 	 * @since 4.0
 	 */
 	public Event(
-		String name,
-		String message)
+		String eventUri,
+		DateTime raisedInstant,
+		EventBody eventBody)
 	{
-		if (name == null) throw new ArgumentNullException("name");
+		if (eventUri == null) throw new ArgumentNullException("name");
+		if (raisedInstant == null) throw new ArgumentNullException("raisedInstant");
+		if (eventBody == null) throw new ArgumentNullException("eventBody");
 
-		this.name = name;
-		this.message = message;
+		this.eventUri = eventUri;
+		this.raisedInstant = raisedInstant;
+		this.eventBody = eventBody;
 	}
 
 	/**
-	 * Gets the name of the event
+	 * Gets the identifying URI of the which can be used by consumers to route or process events.
 	 *
-	 * @return the name of the event
+	 * @return the identifying URI of the event
 	 * @since 4.0
 	 */
-	public String getName()
+	public String getEventUri()
 	{
-		return this.name;
+		return this.eventUri;
 	}
 
 	/**
-	 * Gets the message of the event
+	 * The instant when the event was first raised.
 	 *
-	 * @return the name of the event
+	 * @return the instant when the event was first raised.
 	 * @since 4.0
 	 */
-	public Optional<String> getMessage()
+	public DateTime getRaisedInstant()
 	{
-		return Optional.ofNullable(this.message);
+		return this.raisedInstant;
+	}
+
+	/**
+	 * The body for this event which conveys specific information related to the event.
+	 *
+	 * @return the body for this event
+	 * @since 4.0
+	 */
+	public EventBody getEventBody()
+	{
+		return this.eventBody;
 	}
 }
