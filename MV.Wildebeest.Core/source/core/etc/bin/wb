@@ -21,11 +21,11 @@ WB_CLASSPATH=$WB_HOME/lib/MV.Wildebeest.Api-@meta.project.version.full.dotted@.j
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/MV.Wildebeest.Core-@meta.project.version.full.dotted@.jar
 
 # Logging
-WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/slf4j-api-1.7.5.jar
-WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/slf4j-nop-1.7.5.jar
-
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/slf4j-api-1.7.7.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/slf4j-log4j12-1.7.7.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/log4j-1.2.17.jar
 # Plugin Support
-WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/mysql-connector-java-5.1.22.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/mysql-connector-java-8.0.11.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/postgresql-9.3-1100-jdbc41.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/sqljdbc4.jar
 
@@ -33,6 +33,13 @@ WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/sqljdbc4.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/guava-20.0.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/javassist-3.21.0-GA.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/reflections-0.9.11.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/org.eclipse.wst.xml.xpath2.processor-1.1.5-738bb7b85d.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/joda-time-2.10.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/picocli-3.3.0.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/protobuf-java-2.6.0.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/java-cup-10k.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/xercesImpl-xsd11-2.12-beta-r1667115.jar
+WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/xml-apis-1.4.01.jar
 
 if [ `which java` ]; then
     java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand "$@"
