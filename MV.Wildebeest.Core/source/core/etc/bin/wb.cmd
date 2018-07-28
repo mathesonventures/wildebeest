@@ -36,7 +36,20 @@ SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\guava-20.0.jar
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\javassist-3.21.0-GA.jar
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\reflections-0.9.11.jar
 
-java -classpath "%WB_CLASSPATH%" co.mv.wb.cli.WildebeestCommand %1 %2 %3 %4
+if defined %JAVA_HOME% (
+  java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand $*
+)
+
+if not defined %JAVA_HOME% (
+  if exist %cd%\bin\java.exe (
+  set %JAVA_HOME%="%cd%"
+  java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand $*
+  )
+  if not exist %cd%\bin\java.exe (
+  echo Please install Java before using this tool
+  )
+)
+
 
 goto exit
 

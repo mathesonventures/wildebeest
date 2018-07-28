@@ -34,5 +34,10 @@ WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/guava-20.0.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/javassist-3.21.0-GA.jar
 WB_CLASSPATH=$WB_CLASSPATH:$WB_HOME/lib/reflections-0.9.11.jar
 
-java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand $*
-
+if [ `which java` ]; then
+    java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand "$@"
+elif [ -f /bin/java ]; then
+    bin/java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand  "$@"
+else
+    echo "Please install Java before using this tool"
+fi
