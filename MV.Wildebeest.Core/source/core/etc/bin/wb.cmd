@@ -41,9 +41,9 @@ if defined %JAVA_HOME% (
 )
 
 if not defined %JAVA_HOME% (
-  if exist %cd%\bin\java.exe (
-  set %JAVA_HOME%="%cd%"
-  java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand $*
+  if exist %cd%\openjdk-10.0.2\bin\java.exe (
+    set %JAVA_HOME%="%cd%"
+    java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand $*
   )
   if not exist %cd%\bin\java.exe (
   echo Please install Java before using this tool
