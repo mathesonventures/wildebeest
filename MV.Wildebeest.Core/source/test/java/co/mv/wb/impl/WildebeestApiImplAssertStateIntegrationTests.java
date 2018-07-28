@@ -236,10 +236,8 @@ public class WildebeestApiImplAssertStateIntegrationTests
 
 		UUID assertionId = UUID.randomUUID();
 
-		Assertion faultingAssertion = new FaultingAssertion(assertionId);
-
 		State state = context.resource.getStates().get(0);
-		state.getAssertions().add(faultingAssertion);
+		state.getAssertions().add(new FaultingAssertion(assertionId));
 
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))

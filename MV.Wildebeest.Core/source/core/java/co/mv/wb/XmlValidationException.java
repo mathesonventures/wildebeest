@@ -19,7 +19,9 @@ package co.mv.wb;
 /**
  * Indicates the resource is not valid based on resource schema definition.
  *
- * @since 1.0
+ * TODO: Can this exception be rolled into another one?  Or is there a better way to convey this fault.
+ *
+ * @since 4.0
  */
 public class XmlValidationException extends Exception
 {

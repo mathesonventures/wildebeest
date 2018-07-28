@@ -137,6 +137,12 @@ public class WildebeestApiImpl implements WildebeestApi
 		return this.resourcePlugins;
 	}
 
+	/**
+	 * Sets the set of {@link ResourcePlugin}'s that the WildebeestApiImpl will use.
+	 *
+	 * @param resourcePlugins the set of ResourcePlugins that the WildebeestApiImpl will use.
+	 * @since 4.0
+	 */
 	public void setResourcePlugins(Map<ResourceType, ResourcePlugin> resourcePlugins)
 	{
 		if (resourcePlugins == null) throw new ArgumentNullException("resourcePlugins");
@@ -154,6 +160,12 @@ public class WildebeestApiImpl implements WildebeestApi
 		return this.migrationPlugins;
 	}
 
+	/**
+	 * Sets the set of {@link MigrationPlugin}'s that the WildebeestApiImpl will use.
+	 *
+	 * @param migrationPlugins the set of MigrationPlugins that the WildebeestApi will use.
+	 * @since 4.0
+	 */
 	public void setMigrationPlugins(Map<String, MigrationPlugin> migrationPlugins)
 	{
 		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
@@ -161,6 +173,18 @@ public class WildebeestApiImpl implements WildebeestApi
 		this.migrationPlugins = migrationPlugins;
 	}
 
+	/**
+	 * Loads the {@link Resource} from the supplied File.
+	 *
+	 * @param resourceFile the descriptor file from which the Resource should be deserialized.
+	 * @return the loaded Resource.
+	 * @throws FileLoadException if the specified file cannot be loaded.
+	 * @throws LoaderFault if an unhandled exception occurs while loading the Resource.
+	 * @throws PluginBuildException if an unhandled exception occurs while building a required plugin.
+	 * @throws XmlValidationException if the resource XML file does not pass schema validation.
+	 * @throws InvalidReferenceException if there is an invalid reference within the Resource definition.
+	 * @since 4,0
+	 */
 	public Resource loadResource(
 		File resourceFile) throws
 		FileLoadException,
@@ -271,7 +295,8 @@ public class WildebeestApiImpl implements WildebeestApi
 		WildebeestApiImpl.validateXml(instanceXml, WildebeestApiImpl.INSTANCE_XSD);
 	}
 
-	public void assertStateAndThrowIfFailed(
+	// TODO: Make assertState return a failed response object rather than throwing an exception
+	private void assertStateAndThrowIfFailed(
 		Resource resource,
 		Instance instance) throws
 		AssertionFailedException,
@@ -354,6 +379,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		return result;
 	}
 
+	// TODO: Should be a response
 	public void state(
 		Resource resource,
 		Instance instance) throws
@@ -373,6 +399,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 	}
 
+	// TODO: Should be a response
 	public void migrate(
 		Resource resource,
 		Instance instance,

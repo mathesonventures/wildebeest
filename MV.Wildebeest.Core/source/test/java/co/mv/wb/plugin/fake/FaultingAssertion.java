@@ -17,7 +17,6 @@
 package co.mv.wb.plugin.fake;
 
 import co.mv.wb.Assertion;
-import co.mv.wb.AssertionFaultException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Instance;
 import co.mv.wb.ResourceType;
@@ -27,10 +26,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * An {@link Assertion} that always throws a RuntimeException with the message "root cause" - for automated tests.
+ *
+ * @since 4.0
+ */
 public class FaultingAssertion implements Assertion
 {
 	private final UUID assertionId;
 
+	/**
+	 * Creates a new FaultingAssertion with the supplied assertion ID.
+	 *
+	 * @param assertionId the ID for this {@link Assertion}.
+	 */
 	public FaultingAssertion(
 		UUID assertionId)
 	{
@@ -39,30 +48,35 @@ public class FaultingAssertion implements Assertion
 		this.assertionId = assertionId;
 	}
 
-	@Override public UUID getAssertionId()
+	@Override
+	public UUID getAssertionId()
 	{
 		return this.assertionId;
 	}
 
-	@Override public String getDescription()
+	@Override
+	public String getDescription()
 	{
 		return "Faulting Assertion";
 	}
 
-	@Override public int getSeqNum()
+	@Override
+	public int getSeqNum()
 	{
 		return 0;
 	}
 
-	@Override public List<ResourceType> getApplicableTypes()
+	@Override
+	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList();
 	}
 
-	@Override public AssertionResponse perform(Instance instance)
+	@Override
+	public AssertionResponse perform(Instance instance)
 	{
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		throw new AssertionFaultException(assertionId, new Exception("root cause"));
+		throw new RuntimeException("root cause");
 	}
 }
