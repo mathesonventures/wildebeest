@@ -888,8 +888,9 @@
 		Installers
 
 	==================================================================================================================== -->
-	<target name="core:release" depends="download.jdk, unzip.windows, unzip.linux, unzip.osx">
-
+	<target name="core:release"
+			depends="download.jdk, unzip.windows, unzip.linux, unzip.osx"
+			description="Create release for windows, linux and osx">
 
 		<copy todir="${target.core.app.jre.windows}">
 			<fileset dir="${target.core.app}/"/>
@@ -902,18 +903,6 @@
 		<copy todir="${target.core.app.jre.osx}">
 			<fileset dir="${target.core.app}/"/>
 		</copy>
-
-		<!--<antcall target="copy-dependencies"/>-->
-		<!--<antcall target="create-jar"/>-->
-
-		<!--<antcall target="windows-jar-with-jdk"/>-->
-		<!--<antcall target="windows-jar-without-jdk"/>-->
-
-		<!--<antcall target="linux-jar-with-jdk"/>-->
-		<!--<antcall target="linux-jar-without-jdk"/>-->
-
-		<!--<antcall target="mac-jar-with-jdk"/>-->
-		<!--<antcall target="mac-jar-without-jdk"/>-->
 	</target>
 
 
@@ -995,76 +984,9 @@
 	</target>
 
 
-	<target name="clean:release" depends="release.properties" description="clean">
+	<target name="clean:release" depends="release.properties" description="Clean directories created by core:release">
 		<delete dir="${target.core.app.jre.windows}" failonerror="false"/>
 		<delete dir="${target.core.app.jre.linux}" failonerror="false"/>
 		<delete dir="${target.core.app.jre.osx}" failonerror="false"/>
 	</target>
-
-
-	<!-- CREATE BUNDLED JAR ========================================================================================-->
-	<!--<target name="copy-dependencies">-->
-		<!--<jar destfile="${output.jar}/dependencies-all.jar">-->
-			<!--<zipgroupfileset dir="${target.core.libcompile}">-->
-				<!--<include name="/*.jar" />-->
-			<!--</zipgroupfileset>-->
-		<!--</jar>-->
-	<!--</target>-->
-
-	<!--<target name="create-jar">-->
-		<!--<jar destfile="${output.jar}/wildebeest.jar"-->
-				<!--basedir="${target.core.classtree}">-->
-			<!--<manifest>-->
-				<!--<attribute name="Main-Class" value="co.mv.wb.cli.WildebeestCommand"/>-->
-			<!--</manifest>-->
-			<!--<zipfileset src="${output.jar}/dependencies-all.jar"-->
-					<!--excludes="META-INF/*.SF" />-->
-		<!--</jar>-->
-	<!--</target>-->
-
-	<!--&lt;!&ndash; Windows &ndash;&gt;-->
-	<!--<target name="windows-jar-with-jdk">-->
-		<!--<mkdir dir="${output.release.windows}"></mkdir>-->
-		<!--<zip destfile="${output.release.windows}/windows-with-jdk.zip">-->
-			<!--<zipfileset dir="${output.openjdk.windows.unziped}/jdk-10.0.2/" />-->
-			<!--<zipfileset file="${output.jar}/wildebeest.jar" />-->
-			<!--<zipfileset file="${target.core.app.startscripts}/start.bat"/>-->
-		<!--</zip>-->
-	<!--</target>-->
-
-	<!--<target name="windows-jar-without-jdk">-->
-		<!--<mkdir dir="${output.release.windows}"></mkdir>-->
-		<!--<copy file="${output.jar}/wildebeest.jar" todir="${output.release.windows}"/>-->
-	<!--</target>-->
-
-	<!--&lt;!&ndash; Linux &ndash;&gt;-->
-	<!--<target name="linux-jar-with-jdk">-->
-		<!--<mkdir dir="${output.release.linux}"></mkdir>-->
-		<!--<tar compression="gzip" destfile="${output.release.linux}/linux-with-jdk.tar.gz">-->
-			<!--<zipfileset dir="${output.openjdk.linux.unziped}/jdk-10.0.2/" />-->
-			<!--<zipfileset file="${output.jar}/wildebeest.jar" />-->
-			<!--<zipfileset file="${target.core.app.startscripts}start.sh"/>-->
-		<!--</tar>-->
-	<!--</target>-->
-
-	<!--<target name="linux-jar-without-jdk">-->
-		<!--<mkdir dir="${output.release.linux}/linux"></mkdir>-->
-		<!--<copy file="${output.jar}/wildebeest.jar" todir="${output.release.linux}"/>-->
-	<!--</target>-->
-
-	<!--&lt;!&ndash; MacOS &ndash;&gt;-->
-	<!--<target name="mac-jar-with-jdk">-->
-		<!--<mkdir dir="${output.release.mac}"></mkdir>-->
-		<!--<tar compression="gzip" destfile="${output.release.mac}/mac-wit-jdk.tar.gz">-->
-			<!--<zipfileset dir="${output.openjdk.mac.unziped}/jdk-10.0.2.jdk/Contents/Home/" />-->
-			<!--<zipfileset file="${output.jar}/wildebeest.jar" />-->
-			<!--<zipfileset file="${target.core.app.startscripts}/start.sh"/>-->
-		<!--</tar>-->
-	<!--</target>-->
-
-	<!--<target name="mac-jar-without-jdk">-->
-		<!--<mkdir dir="${output.release.mac}"></mkdir>-->
-		<!--<copy file="${output.jar}/wildebeest.jar" todir="${output.release.mac}"/>-->
-	<!--</target>-->
-	
 </project>
