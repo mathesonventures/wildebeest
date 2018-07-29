@@ -51,7 +51,8 @@
 		<dependency org="org.mockito" name="mockito-all" rev="1.10.19" conf="tlc,tlr->default" />
 		<dependency org="org.postgresql" name="postgresql" rev="9.3-1100-jdbc41" conf="clc,clr,tlr->default" />
 		<dependency org="org.reflections" name="reflections" rev="0.9.11" conf="clc,clr,tlc,tlr->default" />
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" conf="clc,clr,tlc,tlr->default" />
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" conf="clc,clr,tlc,tlr->default" />
+		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.7" conf="clc,clr,tlc,tlr->default" />
 		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.7" conf="clc,clr,tlc,tlr->default" />
 		<dependency org="log4j" name="log4j" rev="1.2.17" conf="clc,clr,tlc,tlr->default" />
 		<dependency org="org.opengis.cite.xerces" name="xercesImpl-xsd11" rev="2.12-beta-r1667115" conf="clc,clr,tlr->default" />
