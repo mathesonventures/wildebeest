@@ -45,17 +45,20 @@ SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\xercesImpl-xsd11-2.12-beta-r166711
 SET WB_CLASSPATH=%WB_CLASSPATH%;%WB_HOME%\lib\xml-apis-1.4.01.jar
 
 
-if defined %JAVA_HOME% (
-  java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand $*
+if defined JAVA_HOME (
+  java -classpath %WB_CLASSPATH% co.mv.wb.cli.WildebeestCommand %*
+  goto exit
 )
 
-if not defined %JAVA_HOME% (
-  if exist %cd%\openjdk-10.0.2\bin\java.exe (
-    set %JAVA_HOME%="%cd%"
-    java -classpath $WB_CLASSPATH co.mv.wb.cli.WildebeestCommand $*
+if not defined JAVA_HOME (
+  if exist "%WB_HOME%\jdk-10.0.2\bin\java.exe" (
+    set JAVA_HOME="%WB_HOME%\jdk-10.0.2\"
+    %WB_HOME%\jdk-10.0.2\bin\java.exe -classpath %WB_CLASSPATH% co.mv.wb.cli.WildebeestCommand %*
+    goto exit
   )
-  if not exist %cd%\bin\java.exe (
+  if not exist %WB_HOME%\openjdk-10.0.2\bin\java.exe (
   echo Please install Java before using this tool
+  goto exit
   )
 )
 

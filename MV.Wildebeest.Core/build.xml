@@ -889,7 +889,7 @@
 
 	==================================================================================================================== -->
 	<target name="core:release"
-			depends="download.jdk, unzip.windows, unzip.linux, unzip.osx"
+			depends="core.app, download.jdk, unzip.windows, unzip.linux, unzip.osx"
 			description="Create release for windows, linux and osx">
 
 		<copy todir="${target.core.app.jre.windows}">
