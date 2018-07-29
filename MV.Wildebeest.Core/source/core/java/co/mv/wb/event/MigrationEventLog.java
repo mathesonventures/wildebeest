@@ -16,17 +16,26 @@
 
 package co.mv.wb.event;
 
+import co.mv.wb.Migration;
 import co.mv.wb.framework.ArgumentNullException;
+import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Defines an {@link EventBody} representing a Migration.
+ * Wire format object for serializing migration log lines to JSON via Jackson.
  *
  * @since 4.0
  */
-public class MigrationEventBody implements EventBody
+@JsonPropertyOrder(
+	{
+		"migrationId",
+		"fromStateId",
+		"fromStateName",
+		"toStateId",
+		"toStateName"
+	})
+public class MigrationEventLog
 {
 	private final UUID migrationId;
 	private final UUID fromStateId;
@@ -34,17 +43,28 @@ public class MigrationEventBody implements EventBody
 	private final UUID toStateId;
 	private final String toStateName;
 
+	public static MigrationEventLog from(MigrationEventBody eventBody)
+	{
+		if (eventBody == null) throw new ArgumentNullException("eventBody");
+
+		return new MigrationEventLog(
+			eventBody.getMigrationId(),
+			eventBody.getFromStateId().orElse(null),
+			eventBody.getFromStateName().orElse(null),
+			eventBody.getToStateId().orElse(null),
+			eventBody.getToStateName().orElse(null));
+	}
+
 	/**
-	 * Constructs a new MigrationEventBody with the supplied properties.
+	 * Constructs a new MigrationEventLog with the supplied properties.
 	 *
-	 * @param migrationId   the ID of the Migration.
+	 * @param migrationId   the ID of the {@link Migration}.
 	 * @param fromStateId   the ID of the optional from-state of the Migration.
-	 * @param fromStateName the name of the optional from-stsate of the Migration.
+	 * @param fromStateName the name of the optional from-state of the Migration.
 	 * @param toStateId     the ID of the optional to-state of the Migration.
 	 * @param toStateName   the name of the optional to-state of the Migration.
-	 * @since 4.0
 	 */
-	public MigrationEventBody(
+	private MigrationEventLog(
 		UUID migrationId,
 		UUID fromStateId,
 		String fromStateName,
@@ -61,9 +81,9 @@ public class MigrationEventBody implements EventBody
 	}
 
 	/**
-	 * Gets the ID of the Migration that this event relates to.
+	 * Gets the ID of the {@link Migration}.
 	 *
-	 * @return the ID of the Migration that this event relates to.
+	 * @return the ID of the Migration.
 	 * @since 4.0
 	 */
 	public UUID getMigrationId()
@@ -72,46 +92,46 @@ public class MigrationEventBody implements EventBody
 	}
 
 	/**
-	 * Gets the ID of the optional from-state of the Migration that this event relates to.
+	 * Gets the ID of the optional from-state of the Migration.
 	 *
-	 * @return the ID of the optional from-state of the Migration that this event relates to.
+	 * @return the ID of the optional from-state of the Migration.
 	 * @since 4.0
 	 */
-	public Optional<UUID> getFromStateId()
+	public UUID getFromStateId()
 	{
-		return Optional.ofNullable(this.fromStateId);
+		return this.fromStateId;
 	}
 
 	/**
-	 * Gets the name of hte optional from-state of tjhe Migration that this event relates to.
+	 * Gets the name of the optional from-state of the Migration.
 	 *
-	 * @return the name of the optional from-state of the Migration that this event relates to.
+	 * @return the name of the optional from-state of the Migration.
 	 * @since 4.0
 	 */
-	public Optional<String> getFromStateName()
+	public String getFromStateName()
 	{
-		return Optional.ofNullable(this.fromStateName);
+		return this.fromStateName;
 	}
 
 	/**
-	 * Gets the ID of the optional to-state of the Migration that this event relates to.
+	 * Gets the ID of the optional to-state of the Migration.
 	 *
-	 * @return the ID of the optional to-state of the Migration that this event relates to.
+	 * @return the ID of the optional to-state of the Migration.
 	 * @since 4.0
 	 */
-	public Optional<UUID> getToStateId()
+	public UUID getToStateId()
 	{
-		return Optional.ofNullable(this.toStateId);
+		return this.toStateId;
 	}
 
 	/**
-	 * Gets the name of the optional to-state of the Migration that this event relates to.
+	 * Gets the name of the optional to-state of the Migration.
 	 *
-	 * @return the name of the optional to-state of the Migration that this event relates to.
+	 * @return the name of the optional to-state of the Migration.
 	 * @since 4.0
 	 */
-	public Optional<String> getToStateName()
+	public String getToStateName()
 	{
-		return Optional.ofNullable(this.toStateName);
+		return this.toStateName;
 	}
 }

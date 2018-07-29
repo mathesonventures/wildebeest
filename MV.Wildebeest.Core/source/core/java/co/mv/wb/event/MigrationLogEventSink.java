@@ -17,13 +17,11 @@
 package co.mv.wb.event;
 
 import co.mv.wb.framework.ArgumentNullException;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * An {@link EventSink} that sends the output to the migration-logger (migration.log).
@@ -60,14 +58,16 @@ public class MigrationLogEventSink implements EventSink
 			event.getEventUri().equals(Events.EVENT_URI_MIGRATION_COMPLETE) ||
 			event.getEventUri().equals(Events.EVENT_URI_MIGRATION_FAILED))
 		{
-			MigrationEventBody migrationEventBody = (MigrationEventBody)event.getEventBody();
-			MigrationLog migrationLog = new MigrationLog(migrationEventBody);
+			EventLog eventLog = EventLog.from(
+				event,
+				EventHelper.toEventLog(event.getEventBody()));
+
 			String logLine;
 
 			// Attempt to format the migration log entry as JSON
 			try
 			{
-				logLine = this.mapper.writeValueAsString(migrationLog);
+				logLine = this.mapper.writeValueAsString(eventLog);
 			}
 			// If we weren't able to format the full event as JSON, use the fallback formatter.
 			catch (IOException e)
@@ -79,33 +79,4 @@ public class MigrationLogEventSink implements EventSink
 		}
 	}
 
-	@JsonPropertyOrder({"datetime", "migration", "fromState", "toState", "successful"})
-	private static class MigrationLog
-	{
-		private final UUID migrationId;
-		private final String fromState;
-		private final String toState;
-
-		public MigrationLog(MigrationEventBody event)
-		{
-			this.migrationId = event.getMigrationId();
-			this.fromState = event.getFromState().orElse("(non-existent)");
-			this.toState = event.getToState().orElse("(non-existent");
-		}
-
-		public UUID getMigrationId()
-		{
-			return migrationId;
-		}
-
-		public String getFromState()
-		{
-			return fromState;
-		}
-
-		public String getToState()
-		{
-			return toState;
-		}
-	}
 }

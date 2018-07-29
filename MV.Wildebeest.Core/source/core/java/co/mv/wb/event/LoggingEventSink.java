@@ -53,10 +53,14 @@ public class LoggingEventSink implements EventSink
 
 		String logLine;
 
+		EventLog eventLog = EventLog.from(
+			event,
+			EventHelper.toEventLog(event.getEventBody()));
+
 		// Attempt to format the event with its body as JSON
 		try
 		{
-			logLine = this.mapper.writeValueAsString(event);
+			logLine = this.mapper.writeValueAsString(eventLog);
 		}
 		// If we weren't able to format the full event as JSON, use the fallback formatter.
 		catch (IOException e)

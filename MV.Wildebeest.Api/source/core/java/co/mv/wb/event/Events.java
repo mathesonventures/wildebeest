@@ -22,12 +22,14 @@ import co.mv.wb.State;
 import co.mv.wb.framework.ArgumentNullException;
 import org.joda.time.DateTime;
 
+import java.util.UUID;
+
 /**
  * Convenience factory for creating Wildebeest events.
  *
  * @since 4.0
  */
-public class Events
+public final class Events
 {
 	private static final String BASE_EVENT_URI = "co.mv.wildebeest:event:";
 
@@ -86,6 +88,15 @@ public class Events
 	 * @since 4.0
 	 */
 	public static final String EVENT_URI_MIGRATION_FAILED = BASE_EVENT_URI + "MigrationFailed";
+
+	/**
+	 * Private constructor to block instantiation of this static code.
+	 *
+	 * @since 4.0
+	 */
+	private Events()
+	{
+	}
 
 	/**
 	 * Builds an {@link Event} instance for the {@link Events#EVENT_URI_JUMPSTATE_START} event with a
@@ -205,14 +216,19 @@ public class Events
 	 * @return an Event instance for the MigrationStart event.
 	 * @since 4.0
 	 */
-	public static Event migrationStart(Migration migration)
+	public static Event migrationStart(
+		Migration migration,
+		State fromState,
+		State toState)
 	{
 		if (migration == null) throw new ArgumentNullException("migration");
 
 		return Events.toMigrationEvent(
 			Events.EVENT_URI_MIGRATION_START,
 			DateTime.now(),
-			migration);
+			migration,
+			fromState,
+			toState);
 	}
 
 	/**
@@ -223,14 +239,19 @@ public class Events
 	 * @return an Event instance for the MigrationComplete event.
 	 * @since 4.0
 	 */
-	public static Event migrationComplete(Migration migration)
+	public static Event migrationComplete(
+		Migration migration,
+		State fromState,
+		State toState)
 	{
 		if (migration == null) throw new ArgumentNullException("migration");
 
 		return Events.toMigrationEvent(
 			Events.EVENT_URI_MIGRATION_COMPLETE,
 			DateTime.now(),
-			migration);
+			migration,
+			fromState,
+			toState);
 	}
 
 	/**
@@ -243,18 +264,36 @@ public class Events
 	 */
 	public static Event migrationFailed(
 		Migration migration,
+		State fromState,
+		State toState,
 		String message)
 	{
 		if (migration == null) throw new ArgumentNullException("migration");
 		if (message == null) throw new ArgumentNullException("message");
+
+		UUID fromStateId = fromState == null
+			? null
+			: fromState.getStateId();
+		String fromStateName = fromState == null
+			? null
+			: fromState.getName().orElse(null);
+
+		UUID toStateId = toState == null
+			? null
+			: toState.getStateId();
+		String toStateName = toState == null
+			? null
+			: toState.getName().orElse(null);
 
 		return new Event(
 			Events.EVENT_URI_MIGRATION_FAILED,
 			DateTime.now(),
 			new MigrationWithMessageEventBody(
 				migration.getMigrationId(),
-				migration.getFromState().orElse(null),
-				migration.getToState().orElse(null),
+				fromStateId,
+				fromStateName,
+				toStateId,
+				toStateName,
 				message));
 	}
 
@@ -279,7 +318,8 @@ public class Events
 			eventUri,
 			raisedInstant,
 			new StateEventBody(
-				state.getStateId()));
+				state.getStateId(),
+				state.getName().orElse(null)));
 	}
 
 	/**
@@ -323,18 +363,36 @@ public class Events
 	private static Event toMigrationEvent(
 		String eventUri,
 		DateTime raisedInstant,
-		Migration migration)
+		Migration migration,
+		State fromState,
+		State toState)
 	{
 		if (eventUri == null) throw new ArgumentNullException("eventUri");
 		if (raisedInstant == null) throw new ArgumentNullException("raisedInstant");
 		if (migration == null) throw new ArgumentNullException("migration");
+
+		UUID fromStateId = fromState == null
+			? null
+			: fromState.getStateId();
+		String fromStateName = fromState == null
+			? null
+			: fromState.getName().orElse(null);
+
+		UUID toStateId = toState == null
+			? null
+			: toState.getStateId();
+		String toStateName = toState == null
+			? null
+			: toState.getName().orElse(null);
 
 		return new Event(
 			eventUri,
 			raisedInstant,
 			new MigrationEventBody(
 				migration.getMigrationId(),
-				migration.getFromState().orElse(null),
-				migration.getToState().orElse(null)));
+				fromStateId,
+				fromStateName,
+				toStateId,
+				toStateName));
 	}
 }

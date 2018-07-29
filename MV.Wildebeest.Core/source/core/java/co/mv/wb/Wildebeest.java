@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -202,5 +203,30 @@ public class Wildebeest
 		}
 
 		return result.get();
+	}
+
+	public static String stateDisplayName(
+		UUID stateId,
+		String name)
+	{
+		String result;
+
+		if (stateId == null)
+		{
+			result = "(non-existent)";
+		}
+		else
+		{
+			if (name == null)
+			{
+				result = stateId.toString();
+			}
+			else
+			{
+				result = String.format("%s:%s", stateId, name);
+			}
+		}
+
+		return result;
 	}
 }

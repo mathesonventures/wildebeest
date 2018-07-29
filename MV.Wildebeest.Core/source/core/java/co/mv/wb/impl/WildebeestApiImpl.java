@@ -92,7 +92,6 @@ public class WildebeestApiImpl implements WildebeestApi
 	private Map<ResourceType, ResourcePlugin> resourcePlugins;
 	private Map<String, MigrationPlugin> migrationPlugins;
 
-
 	/**
 	 * Creates a new WildebeestApiImpl using the supplied {@link EventSink} for user output and the supplied
 	 * ResourceHelper.
@@ -178,12 +177,12 @@ public class WildebeestApiImpl implements WildebeestApi
 	 *
 	 * @param resourceFile the descriptor file from which the Resource should be deserialized.
 	 * @return the loaded Resource.
-	 * @throws FileLoadException if the specified file cannot be loaded.
-	 * @throws LoaderFault if an unhandled exception occurs while loading the Resource.
-	 * @throws PluginBuildException if an unhandled exception occurs while building a required plugin.
-	 * @throws XmlValidationException if the resource XML file does not pass schema validation.
+	 * @throws FileLoadException         if the specified file cannot be loaded.
+	 * @throws LoaderFault               if an unhandled exception occurs while loading the Resource.
+	 * @throws PluginBuildException      if an unhandled exception occurs while building a required plugin.
+	 * @throws XmlValidationException    if the resource XML file does not pass schema validation.
 	 * @throws InvalidReferenceException if there is an invalid reference within the Resource definition.
-	 * @since 4,0
+	 * @since 4, 0
 	 */
 	public Resource loadResource(
 		File resourceFile) throws
@@ -488,7 +487,10 @@ public class WildebeestApiImpl implements WildebeestApi
 					: null;
 
 				// Migrate to the next state
-				eventSink.onEvent(Events.migrationStart(migration));
+				eventSink.onEvent(Events.migrationStart(
+					migration,
+					fromState,
+					toState));
 
 				try
 				{
@@ -497,35 +499,33 @@ public class WildebeestApiImpl implements WildebeestApi
 						migration,
 						instance);
 				}
-				catch (Exception ex)
+				catch (Exception e)
 				{
 					eventSink.onEvent(Events.migrationFailed(
 						migration,
-						ex.getMessage()));
-					throw ex;
+						fromState,
+						toState,
+						e.getMessage()));
+					throw e;
 				}
 
-				eventSink.onEvent(Events.migrationComplete(migration));
+				eventSink.onEvent(Events.migrationComplete(
+					migration,
+					fromState,
+					toState));
 
 				// Update the state
-				try
-				{
-					// TODO: This will fail if toState is null (i.e. non-existant).  In this case the state-tracking record should be removed
-					resourcePlugin.setStateId(
-						eventSink,
-						resource,
-						instance,
-						toState.getStateId());
+				// TODO: This will fail if toState is null (i.e. non-existant).  In this case the state-tracking record should be removed
+				resourcePlugin.setStateId(
+					eventSink,
+					resource,
+					instance,
+					toState.getStateId());
 
-					// Assert the new state
-					this.assertStateAndThrowIfFailed(
-						resource,
-						instance);
-				}
-				catch (Exception ex)
-				{
-					throw ex;
-				}
+				// Assert the new state
+				this.assertStateAndThrowIfFailed(
+					resource,
+					instance);
 			}
 		}
 	}

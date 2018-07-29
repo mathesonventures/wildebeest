@@ -30,6 +30,42 @@ import java.util.TimeZone;
  */
 public final class EventHelper
 {
+	public static Object toEventLog(EventBody eventBody)
+	{
+		if (eventBody == null) throw new ArgumentNullException("eventBody");
+
+		Object result;
+
+		if (eventBody.getClass().equals(MigrationEventBody.class))
+		{
+			result = MigrationEventLog.from((MigrationEventBody)eventBody);
+		}
+		else if (eventBody.getClass().equals(MigrationWithMessageEventBody.class))
+		{
+			result = MigrationWithMessageEventLog
+				.from((MigrationWithMessageEventBody)eventBody);
+		}
+		else if (eventBody.getClass().equals(AssertionEventBody.class))
+		{
+			result = AssertionEventLog.from((AssertionEventBody)eventBody);
+		}
+		else if (eventBody.getClass().equals((AssertionWithMessageEventBody.class)))
+		{
+			result = AssertionWithMessageEventLog
+				.from((AssertionWithMessageEventBody)eventBody);
+		}
+		else if (eventBody.getClass().equals(StateEventBody.class))
+		{
+			result = StateEventLog.from((StateEventBody)eventBody);
+		}
+		else
+		{
+			throw new RuntimeException("unhandled case");
+		}
+
+		return result;
+	}
+
 	/**
 	 * Creates a {@link DateFormat} to format dates according to ISO-8601.
 	 *

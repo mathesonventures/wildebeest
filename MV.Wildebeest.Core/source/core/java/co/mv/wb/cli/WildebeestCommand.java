@@ -85,8 +85,8 @@ public class WildebeestCommand
 		PrintStream output = System.out;
 		TeeEventSink teeEventSink = new TeeEventSink(
 			new LoggingEventSink(LOG),
-			new MigrationLogEventSink(LOG)
-		);
+			new MigrationLogEventSink(LOG),
+			new PrintStreamEventSink(output));
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(teeEventSink)
 			.withFactoryPluginGroups()
@@ -266,41 +266,6 @@ public class WildebeestCommand
 		}
 
 		return Optional.ofNullable(instance);
-	}
-
-	private static String getArg(
-		String[] args,
-		String shortName,
-		String longName)
-	{
-		if (args == null) throw new ArgumentNullException("args");
-		if (shortName == null) throw new ArgumentNullException("shortName");
-		if ("".equals(shortName)) throw new IllegalArgumentException("shortName cannot be empty");
-		if (longName == null) throw new ArgumentNullException("longName");
-		if ("".equals(longName)) throw new IllegalArgumentException("longName cannot be empty");
-
-		shortName = "-" + shortName + ":";
-		longName = "--" + longName + ":";
-
-		String result = null;
-
-		for (String arg : args)
-		{
-			if (arg.startsWith(shortName))
-			{
-				result = arg.substring(shortName.length());
-			}
-			if (arg.startsWith(longName))
-			{
-				result = arg.substring(longName.length());
-			}
-			if (result != null)
-			{
-				break;
-			}
-		}
-
-		return result;
 	}
 
 	private static boolean isNull(String value)

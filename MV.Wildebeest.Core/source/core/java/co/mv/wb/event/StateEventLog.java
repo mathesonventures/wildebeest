@@ -16,30 +16,49 @@
 
 package co.mv.wb.event;
 
-import co.mv.wb.State;
 import co.mv.wb.framework.ArgumentNullException;
+import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
- * An {@link EventBody} representing a event on a {@link State}.
+ * Wire format object for serializing state log lines to JSON via Jackson.
  *
  * @since 4.0
  */
-public class StateEventBody implements EventBody
+@JsonPropertyOrder(
+	{
+		"stateId",
+		"name"
+	})
+public class StateEventLog
 {
 	private final UUID stateId;
 	private final String name;
 
 	/**
-	 * Creates a new StateEventBody with the supplied properties.
+	 * Creates a new StateEventLog to match the supplied StateEventBody.
 	 *
-	 * @param stateId the ID of the {@link State} that the event relates to.
-	 * @param name    the optional name of the State.
+	 * @param eventBody the StateEventBody to copy into a new StateEventLog.
+	 * @return a new StateEventLog matching the supplied StateEventBody.
 	 * @since 4.0
 	 */
-	public StateEventBody(
+	public static StateEventLog from(StateEventBody eventBody)
+	{
+		if (eventBody == null) throw new ArgumentNullException("eventBody");
+
+		return new StateEventLog(
+			eventBody.getStateId(),
+			eventBody.getName().orElse(null));
+	}
+
+	/**
+	 * Creates a new StateEventLog with the supplied properties.
+	 *
+	 * @param stateId the ID of the State.
+	 * @param name    the optional name of the State.
+	 */
+	private StateEventLog(
 		UUID stateId,
 		String name)
 	{
@@ -50,9 +69,9 @@ public class StateEventBody implements EventBody
 	}
 
 	/**
-	 * Gets the ID of the {@link State} that the event relates to.
+	 * Gets the ID of the State.
 	 *
-	 * @return the ID of the State that the event relates to
+	 * @return the ID of the State.
 	 * @since 4.0
 	 */
 	public UUID getStateId()
@@ -66,8 +85,8 @@ public class StateEventBody implements EventBody
 	 * @return the optional name of the State.
 	 * @since 4.0
 	 */
-	public Optional<String> getName()
+	public String getName()
 	{
-		return Optional.ofNullable(this.name);
+		return this.name;
 	}
 }

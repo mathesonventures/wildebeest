@@ -33,21 +33,27 @@ public class MigrationWithMessageEventBody extends MigrationEventBody
 	/**
 	 * Creates a new MigrationWithMessageEventBody with the supplied properties.
 	 *
-	 * @param migrationId the ID of the Migration.
-	 * @param fromState   the optional from-state of the Migration
-	 * @param toState     the optional to-state of the Migration
-	 * @param message     the message to be provided with this event.
+	 * @param migrationId   the ID of the Migration.
+	 * @param fromStateId   the ID of the optional from-state of the Migration.
+	 * @param fromStateName the name of the optional from-stsate of the Migration.
+	 * @param toStateId     the ID of the optional to-state of the Migration.
+	 * @param toStateName   the name of the optional to-state of the Migration.
+	 * @param message       the message to be provided with this event.
 	 */
 	public MigrationWithMessageEventBody(
 		UUID migrationId,
-		String fromState,
-		String toState,
+		UUID fromStateId,
+		String fromStateName,
+		UUID toStateId,
+		String toStateName,
 		String message)
 	{
 		super(
 			migrationId,
-			fromState,
-			toState);
+			fromStateId,
+			fromStateName,
+			toStateId,
+			toStateName);
 
 		if (message == null) throw new ArgumentNullException("message");
 
