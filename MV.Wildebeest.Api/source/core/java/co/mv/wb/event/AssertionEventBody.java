@@ -14,69 +14,59 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.plugin.fake;
+package co.mv.wb.event;
 
 import co.mv.wb.Assertion;
-import co.mv.wb.AssertionResponse;
-import co.mv.wb.Instance;
-import co.mv.wb.ResourceType;
+import co.mv.wb.State;
 import co.mv.wb.framework.ArgumentNullException;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 /**
- * An {@link Assertion} that always throws a RuntimeException with the message "root cause" - for automated tests.
+ * Defines an {@link EventBody} representing an Assertion.
  *
  * @since 4.0
  */
-public class FaultingAssertion implements Assertion
+public class AssertionEventBody implements EventBody
 {
+	private final UUID stateId;
 	private final UUID assertionId;
 
 	/**
-	 * Creates a new FaultingAssertion with the supplied assertion ID.
+	 * Constructs a new AssertionEventBody with the supplied details.
 	 *
-	 * @param assertionId the ID for this {@link Assertion}.
+	 * @since 4.0
 	 */
-	public FaultingAssertion(
+	public AssertionEventBody(
+		UUID stateId,
 		UUID assertionId)
 	{
+		if (stateId == null) throw new ArgumentNullException("stateId");
 		if (assertionId == null) throw new ArgumentNullException("assertionId");
 
+		this.stateId = stateId;
 		this.assertionId = assertionId;
 	}
 
-	@Override
+	/**
+	 * Gets the ID of the {@link State} that the event was relates to.
+	 *
+	 * @return the ID of the State that the event relates to.
+	 * @since 4.0
+	 */
+	public UUID getStateId()
+	{
+		return this.stateId;
+	}
+
+	/**
+	 * Gets the ID of the {@link Assertion} that the event relates to.
+	 *
+	 * @return the ID of the Assertion that hte event relates to.
+	 * @since 4.0
+	 */
 	public UUID getAssertionId()
 	{
 		return this.assertionId;
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Faulting Assertion";
-	}
-
-	@Override
-	public int getSeqNum()
-	{
-		return 0;
-	}
-
-	@Override
-	public List<ResourceType> getApplicableTypes()
-	{
-		return Arrays.asList();
-	}
-
-	@Override
-	public AssertionResponse perform(Instance instance)
-	{
-		if (instance == null) throw new ArgumentNullException("instance");
-
-		throw new RuntimeException("root cause");
 	}
 }

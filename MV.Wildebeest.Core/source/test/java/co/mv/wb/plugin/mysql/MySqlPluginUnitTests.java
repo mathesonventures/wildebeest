@@ -82,11 +82,7 @@ public class MySqlPluginUnitTests extends BaseDatabasePluginUnitTests
 	@Test
 	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		EventSink eventSink = (event) ->
-		{
-			if (event.getMessage().isPresent()) LOG.info(event.getMessage().get());
-		};
-
+		EventSink eventSink = new LoggingEventSink(LOG);
 		String databaseName = DatabaseFixtureHelper.databaseName();
 		MySqlDatabaseInstance instance = MySqlProperties.get().toInstance(databaseName);
 

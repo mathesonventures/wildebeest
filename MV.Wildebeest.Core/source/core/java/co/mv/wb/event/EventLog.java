@@ -17,34 +17,52 @@
 package co.mv.wb.event;
 
 import co.mv.wb.framework.ArgumentNullException;
+import org.codehaus.jackson.annotate.JsonPropertyOrder;
 import org.joda.time.DateTime;
 
 /**
- * Defines an event that is fired from Wildebeest to notify activity to external consumers.
+ * Wire format object for serializing events to JSON via Jackson.
  *
  * @since 4.0
  */
-public final class Event
+@JsonPropertyOrder(
+	{
+		"eventUri",
+		"raisedInstant",
+		"eventBody"
+	})
+public class EventLog
 {
 	private final String eventUri;
 	private final DateTime raisedInstant;
-	private final EventBody eventBody;
+	private final Object eventBody;
+
+	public static EventLog from(
+		Event event,
+		Object eventBody)
+	{
+		if (event == null) throw new ArgumentNullException("event");
+		if (eventBody == null) throw new ArgumentNullException("eventBody");
+
+		return new EventLog(
+			event.getEventUri(),
+			event.getRaisedInstant(),
+			eventBody);
+	}
 
 	/**
-	 * Constructs a new Event with the supplied details.
+	 * Creates a new EventLog with the supplied properties.
 	 *
-	 * @param eventUri      the identifying URI of the event which can be used by consumers to route or process events
-	 *                      correctly
-	 * @param raisedInstant the instant when the event was raised
-	 * @param eventBody     the body of hte event conveying type-specific details
-	 * @since 4.0
+	 * @param eventUri      the identifying URI for the event.
+	 * @param raisedInstant the instant that the event was raised.
+	 * @param eventBody     the body of the event.
 	 */
-	public Event(
+	private EventLog(
 		String eventUri,
 		DateTime raisedInstant,
-		EventBody eventBody)
+		Object eventBody)
 	{
-		if (eventUri == null) throw new ArgumentNullException("name");
+		if (eventUri == null) throw new ArgumentNullException("eventUri");
 		if (raisedInstant == null) throw new ArgumentNullException("raisedInstant");
 		if (eventBody == null) throw new ArgumentNullException("eventBody");
 
@@ -54,9 +72,9 @@ public final class Event
 	}
 
 	/**
-	 * Gets the identifying URI of the which can be used by consumers to route or process events.
+	 * Gets the identifying URI of the event.
 	 *
-	 * @return the identifying URI of the event
+	 * @return the identifying URI of the event.
 	 * @since 4.0
 	 */
 	public String getEventUri()
@@ -65,9 +83,9 @@ public final class Event
 	}
 
 	/**
-	 * The instant when the event was first raised.
+	 * Gets the raised instant of the event.
 	 *
-	 * @return the instant when the event was first raised.
+	 * @return the raised instant of the event.
 	 * @since 4.0
 	 */
 	public DateTime getRaisedInstant()
@@ -76,12 +94,12 @@ public final class Event
 	}
 
 	/**
-	 * The body for this event which conveys specific information related to the event.
+	 * Gets the body of the event
 	 *
-	 * @return the body for this event
+	 * @return the body of the event.
 	 * @since 4.0
 	 */
-	public EventBody getEventBody()
+	public Object getEventBody()
 	{
 		return this.eventBody;
 	}

@@ -19,30 +19,33 @@ package co.mv.wb.event;
 import co.mv.wb.framework.ArgumentNullException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 /**
- * An {@link EventSink} that sends the output to the logger at INFO level.
+ * An {@link EventSink} that sends the output to the migration-logger (migration.log).
  *
  * @since 4.0
  */
-public class LoggingEventSink implements EventSink
+public class MigrationLogEventSink implements EventSink
 {
+	private final Logger migrationLogger = LoggerFactory.getLogger("migration-logger");
 	private final Logger logger;
 	private final ObjectMapper mapper;
 
 	/**
-	 * Creates a new LoggingEventSink that will log to the supplied {@link Logger}.
+	 * Creates a new MigrationEventSink that will log to the supplied Logger.
 	 *
-	 * @param logger the Logger that this event sink should log to.
+	 * @param logger the Logger that this event sink should log to
 	 * @since 4.0
 	 */
-	public LoggingEventSink(Logger logger)
+	public MigrationLogEventSink(Logger logger)
 	{
 		if (logger == null) throw new ArgumentNullException("logger");
 
 		this.logger = logger;
+
 		this.mapper = EventHelper.createMapper();
 	}
 
@@ -51,23 +54,29 @@ public class LoggingEventSink implements EventSink
 	{
 		if (event == null) throw new ArgumentNullException("event");
 
-		String logLine;
-
-		EventLog eventLog = EventLog.from(
-			event,
-			EventHelper.toEventLog(event.getEventBody()));
-
-		// Attempt to format the event with its body as JSON
-		try
+		if (event.getEventUri().equals(Events.EVENT_URI_MIGRATION_START) ||
+			event.getEventUri().equals(Events.EVENT_URI_MIGRATION_COMPLETE) ||
+			event.getEventUri().equals(Events.EVENT_URI_MIGRATION_FAILED))
 		{
-			logLine = this.mapper.writeValueAsString(eventLog);
-		}
-		// If we weren't able to format the full event as JSON, use the fallback formatter.
-		catch (IOException e)
-		{
-			logLine = EventHelper.fallbackEventJson(event);
-		}
+			EventLog eventLog = EventLog.from(
+				event,
+				EventHelper.toEventLog(event.getEventBody()));
 
-		this.logger.info(logLine);
+			String logLine;
+
+			// Attempt to format the migration log entry as JSON
+			try
+			{
+				logLine = this.mapper.writeValueAsString(eventLog);
+			}
+			// If we weren't able to format the full event as JSON, use the fallback formatter.
+			catch (IOException e)
+			{
+				logLine = EventHelper.fallbackEventJson(event);
+			}
+
+			migrationLogger.info(logLine);
+		}
 	}
+
 }

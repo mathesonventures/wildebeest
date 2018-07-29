@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/source/test/importclasses" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/source/core/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source/core/classtree" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/source/test/classtree" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -37,15 +38,6 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/target/core/libcompile/reflections-0.9.11.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/sqljdbc4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -137,24 +129,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/slf4j-log4j12-1.7.7.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/log4j-1.2.17.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/target/core/libcompile/mysql-connector-java-8.0.11.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -165,15 +139,6 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/target/core/libcompile/joda-time-2.10.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/log4j-1.2.17.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -219,6 +184,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/target/core/libcompile/jackson-core-asl-1.9.13.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/target/test/librun/slf4j-simple-1.7.7.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

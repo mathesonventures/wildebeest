@@ -18,6 +18,7 @@ package co.mv.wb.impl;
 
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
+import co.mv.wb.AssertionFaultException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
 import co.mv.wb.AssertionType;
@@ -34,7 +35,6 @@ import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationType;
 import co.mv.wb.MigrationTypeInfo;
-import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.PluginGroup;
 import co.mv.wb.Resource;
@@ -46,11 +46,8 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.XmlValidationException;
-import co.mv.wb.event.AssertionEvent;
 import co.mv.wb.event.EventSink;
-import co.mv.wb.event.JumpStateEvent;
-import co.mv.wb.event.MigrationEvent;
-import co.mv.wb.event.StateEvent;
+import co.mv.wb.event.Events;
 import co.mv.wb.framework.ArgumentException;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.Util;
@@ -94,7 +91,6 @@ public class WildebeestApiImpl implements WildebeestApi
 	private List<PluginGroup> pluginGroups;
 	private Map<ResourceType, ResourcePlugin> resourcePlugins;
 	private Map<String, MigrationPlugin> migrationPlugins;
-
 
 	/**
 	 * Creates a new WildebeestApiImpl using the supplied {@link EventSink} for user output and the supplied
@@ -140,6 +136,12 @@ public class WildebeestApiImpl implements WildebeestApi
 		return this.resourcePlugins;
 	}
 
+	/**
+	 * Sets the set of {@link ResourcePlugin}'s that the WildebeestApiImpl will use.
+	 *
+	 * @param resourcePlugins the set of ResourcePlugins that the WildebeestApiImpl will use.
+	 * @since 4.0
+	 */
 	public void setResourcePlugins(Map<ResourceType, ResourcePlugin> resourcePlugins)
 	{
 		if (resourcePlugins == null) throw new ArgumentNullException("resourcePlugins");
@@ -157,6 +159,12 @@ public class WildebeestApiImpl implements WildebeestApi
 		return this.migrationPlugins;
 	}
 
+	/**
+	 * Sets the set of {@link MigrationPlugin}'s that the WildebeestApiImpl will use.
+	 *
+	 * @param migrationPlugins the set of MigrationPlugins that the WildebeestApi will use.
+	 * @since 4.0
+	 */
 	public void setMigrationPlugins(Map<String, MigrationPlugin> migrationPlugins)
 	{
 		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
@@ -164,6 +172,18 @@ public class WildebeestApiImpl implements WildebeestApi
 		this.migrationPlugins = migrationPlugins;
 	}
 
+	/**
+	 * Loads the {@link Resource} from the supplied File.
+	 *
+	 * @param resourceFile the descriptor file from which the Resource should be deserialized.
+	 * @return the loaded Resource.
+	 * @throws FileLoadException         if the specified file cannot be loaded.
+	 * @throws LoaderFault               if an unhandled exception occurs while loading the Resource.
+	 * @throws PluginBuildException      if an unhandled exception occurs while building a required plugin.
+	 * @throws XmlValidationException    if the resource XML file does not pass schema validation.
+	 * @throws InvalidReferenceException if there is an invalid reference within the Resource definition.
+	 * @since 4, 0
+	 */
 	public Resource loadResource(
 		File resourceFile) throws
 		FileLoadException,
@@ -274,7 +294,8 @@ public class WildebeestApiImpl implements WildebeestApi
 		WildebeestApiImpl.validateXml(instanceXml, WildebeestApiImpl.INSTANCE_XSD);
 	}
 
-	public void assertStateAndThrowIfFailed(
+	// TODO: Make assertState return a failed response object rather than throwing an exception
+	private void assertStateAndThrowIfFailed(
 		Resource resource,
 		Instance instance) throws
 		AssertionFailedException,
@@ -282,13 +303,15 @@ public class WildebeestApiImpl implements WildebeestApi
 	{
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		eventSink.onEvent(StateEvent.assertionStart(null));
+		State state = fetchState(resource, instance);
 
 		List<AssertionResult> assertionResults = assertState(resource, instance);
-		State state = fetchState(resource, instance);
-		WildebeestApiImpl.throwIfFailed(state.getStateId(), assertionResults);
 
-		eventSink.onEvent(StateEvent.assertionComplete(null, state));
+		// If any assertions failed, throw
+		if (assertionResults.stream().anyMatch(x -> !x.getResult()))
+		{
+			throw new AssertionFailedException(state.getStateId(), assertionResults);
+		}
 	}
 
 	private State fetchState(
@@ -317,26 +340,26 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		for (Assertion assertion : state.getAssertions())
 		{
-			eventSink.onEvent(AssertionEvent.start(OutputFormatter.assertionStart(assertion), assertion));
+			eventSink.onEvent(Events.assertionStart(
+				state,
+				assertion));
 
 			try
 			{
 				AssertionResponse response = assertion.perform(instance);
+
 				if (response.getResult())
 				{
-					eventSink.onEvent(
-						AssertionEvent.complete(
-							OutputFormatter.assertionComplete(
-								assertion,
-								response
-							),
-							assertion
-						)
-					);
+					eventSink.onEvent(Events.assertionComplete(
+						state,
+						assertion));
 				}
 				else
 				{
-					eventSink.onEvent(AssertionEvent.failed(response.getMessage(), assertion));
+					eventSink.onEvent(Events.assertionFailed(
+						state,
+						assertion,
+						response.getMessage()));
 				}
 
 				result.add(new ImmutableAssertionResult(
@@ -344,16 +367,18 @@ public class WildebeestApiImpl implements WildebeestApi
 					response.getResult(),
 					response.getMessage()));
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				eventSink.onEvent(AssertionEvent.failed(ex.getMessage(), assertion));
-				throw ex;
+				throw new AssertionFaultException(
+					assertion.getAssertionId(),
+					e);
 			}
 		}
 
 		return result;
 	}
 
+	// TODO: Should be a response
 	public void state(
 		Resource resource,
 		Instance instance) throws
@@ -365,43 +390,15 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		State state = fetchState(resource, instance);
 
-		if (state == null)
+		if (state != null)
 		{
-			eventSink.onEvent(StateEvent.preAssert("Current state: non-existent", state));
-		}
-		else
-		{
-			if (state.getName().isPresent())
-			{
-				eventSink.onEvent(
-					StateEvent.preAssert(
-						String.format(
-							"Current state: %s",
-							state.getName()
-						),
-						state)
-				);
-			}
-			else
-			{
-				eventSink.onEvent(
-					StateEvent.preAssert(
-						String.format(
-							"Current state: %s",
-							state.getStateId().toString()
-						),
-						state
-					)
-				);
-			}
 			this.assertStateAndThrowIfFailed(
 				resource,
 				instance);
 		}
-
-		eventSink.onEvent(StateEvent.postAssert(null, state));
 	}
 
+	// TODO: Should be a response
 	public void migrate(
 		Resource resource,
 		Instance instance,
@@ -490,17 +487,10 @@ public class WildebeestApiImpl implements WildebeestApi
 					: null;
 
 				// Migrate to the next state
-				eventSink.onEvent(
-					MigrationEvent.start(
-						OutputFormatter.migrationStart(
-							resource,
-							migration,
-							fromState,
-							toState
-						),
-						migration
-					)
-				);
+				eventSink.onEvent(Events.migrationStart(
+					migration,
+					fromState,
+					toState));
 
 				try
 				{
@@ -509,44 +499,33 @@ public class WildebeestApiImpl implements WildebeestApi
 						migration,
 						instance);
 				}
-				catch (Exception ex)
+				catch (Exception e)
 				{
-					eventSink.onEvent(MigrationEvent.failed(ex.getMessage(), migration));
-					throw ex;
+					eventSink.onEvent(Events.migrationFailed(
+						migration,
+						fromState,
+						toState,
+						e.getMessage()));
+					throw e;
 				}
 
-				eventSink.onEvent(
-					MigrationEvent.complete(
-						OutputFormatter.migrationComplete(
-							resource,
-							migration
-						),
-						migration
-					)
-				);
+				eventSink.onEvent(Events.migrationComplete(
+					migration,
+					fromState,
+					toState));
 
 				// Update the state
-				try
-				{
-					// TODO: This will fail if toState is null (i.e. non-existant).  In this case the state-tracking record should be removed
-					resourcePlugin.setStateId(
-						eventSink,
-						resource,
-						instance,
-						toState.getStateId());
+				// TODO: This will fail if toState is null (i.e. non-existant).  In this case the state-tracking record should be removed
+				resourcePlugin.setStateId(
+					eventSink,
+					resource,
+					instance,
+					toState.getStateId());
 
-					// Assert the new state
-					this.assertStateAndThrowIfFailed(
-						resource,
-						instance);
-
-					eventSink.onEvent(StateEvent.changeSuccess(null, toState));
-				}
-				catch (Exception ex)
-				{
-					eventSink.onEvent(StateEvent.changeFailed(ex.getMessage(), toState));
-					throw ex;
-				}
+				// Assert the new state
+				this.assertStateAndThrowIfFailed(
+					resource,
+					instance);
 			}
 		}
 	}
@@ -577,7 +556,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			throw new UnknownStateSpecifiedException(targetState);
 		}
 
-		eventSink.onEvent(JumpStateEvent.start(null, state));
+		eventSink.onEvent(Events.jumpStateStart(state));
 
 		resourcePlugin.setStateId(
 			eventSink,
@@ -591,7 +570,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource,
 			instance);
 
-		eventSink.onEvent(JumpStateEvent.complete(null, state));
+		eventSink.onEvent(Events.jumpStateComplete(state));
 	}
 
 	@Override
@@ -824,23 +803,6 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		return this.getMigrationPlugins().get(uri);
-	}
-
-	private static void throwIfFailed(
-		UUID stateId,
-		List<AssertionResult> assertionResults) throws AssertionFailedException
-	{
-		if (stateId == null) throw new ArgumentNullException("stateId");
-		if (assertionResults == null) throw new ArgumentNullException("assertionResults");
-
-		// If any assertions failed, throw
-		for (AssertionResult assertionResult : assertionResults)
-		{
-			if (!assertionResult.getResult())
-			{
-				throw new AssertionFailedException(stateId, assertionResults);
-			}
-		}
 	}
 
 	public static List<List<Migration>> findPaths(
@@ -1081,6 +1043,4 @@ public class WildebeestApiImpl implements WildebeestApi
 			.map(assertionClass -> assertionClass.getAnnotation(AssertionType.class))
 			.collect(Collectors.toList());
 	}
-
-
 }
