@@ -27,7 +27,6 @@ import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
@@ -63,9 +62,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URISyntaxException;
@@ -201,7 +198,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		String resourceXml;
 		try
 		{
-			resourceXml = readAllText(resourceFile);
+			resourceXml = Util.readAllText(resourceFile);
 		}
 		catch (IOException ex)
 		{
@@ -256,7 +253,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		String instanceXml;
 		try
 		{
-			instanceXml = readAllText(instanceFile);
+			instanceXml = Util.readAllText(instanceFile);
 		}
 		catch (IOException ex)
 		{
@@ -294,26 +291,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		WildebeestApiImpl.validateXml(instanceXml, WildebeestApiImpl.INSTANCE_XSD);
 	}
 
-	// TODO: Make assertState return a failed response object rather than throwing an exception
-	private void assertStateAndThrowIfFailed(
-		Resource resource,
-		Instance instance) throws
-		AssertionFailedException,
-		IndeterminateStateException
-	{
-		if (instance == null) throw new ArgumentNullException("instance");
-
-		State state = this.currentState(resource, instance);
-
-		List<AssertionResult> assertionResults = assertState(resource, instance);
-
-		// If any assertions failed, throw
-		if (assertionResults.stream().anyMatch(x -> !x.getResult()))
-		{
-			throw new AssertionFailedException(state.getStateId(), assertionResults);
-		}
-	}
-
+	/// TODO: Return a response object
 	public List<AssertionResult> assertState(
 		Resource resource,
 		Instance instance) throws
@@ -518,6 +496,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 	}
 
+	// TODO: Response object
 	public void jumpstate(
 		Resource resource,
 		Instance instance,
@@ -535,6 +514,7 @@ public class WildebeestApiImpl implements WildebeestApi
 			resource.getType());
 
 		State state;
+
 		try
 		{
 			state = Wildebeest.findState(resource, targetState);
@@ -546,12 +526,13 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		eventSink.onEvent(Events.jumpStateStart(state));
 
+		// TODO: Apply the assertions for the target state BEFORE we set it - this will let us check if it will actually pass once we jump state.
+
 		resourcePlugin.setStateId(
 			eventSink,
 			resource,
 			instance,
-			state.getStateId()
-		);
+			state.getStateId());
 
 		// Assert the new state
 		this.assertStateAndThrowIfFailed(
@@ -673,6 +654,27 @@ public class WildebeestApiImpl implements WildebeestApi
 			instance);
 	}
 
+
+	// TODO: Make assertState return a failed response object rather than throwing an exception
+	private void assertStateAndThrowIfFailed(
+		Resource resource,
+		Instance instance) throws
+		AssertionFailedException,
+		IndeterminateStateException
+	{
+		if (instance == null) throw new ArgumentNullException("instance");
+
+		State state = this.currentState(resource, instance);
+
+		List<AssertionResult> assertionResults = assertState(resource, instance);
+
+		// If any assertions failed, throw
+		if (assertionResults.stream().anyMatch(x -> !x.getResult()))
+		{
+			throw new AssertionFailedException(state.getStateId(), assertionResults);
+		}
+	}
+
 	private static UUID stateIdForName(
 		Resource resource,
 		String name)
@@ -692,83 +694,6 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		return result == null ? null : result.getStateId();
-	}
-
-	private static UUID getTargetStateId(
-		Resource resource,
-		String targetState) throws
-		InvalidStateSpecifiedException,
-		UnknownStateSpecifiedException
-	{
-		if (resource == null) throw new ArgumentNullException("resource");
-
-		final String stateSpecificationRegex = "[a-zA-Z0-9][a-zA-Z0-9\\-\\_ ]+[a-zA-Z0-9]";
-		if (targetState != null && !targetState.matches(stateSpecificationRegex))
-		{
-			throw new InvalidStateSpecifiedException(targetState);
-		}
-
-		UUID targetStateId = null;
-		if (targetState != null)
-		{
-			try
-			{
-				targetStateId = UUID.fromString(targetState);
-			}
-			catch (IllegalArgumentException e)
-			{
-				targetStateId = WildebeestApiImpl.stateIdForName(
-					resource,
-					targetState);
-			}
-
-			// If we still could not find the specified state, then throw
-			if (targetStateId == null)
-			{
-				throw new UnknownStateSpecifiedException(targetState);
-			}
-		}
-
-		return targetStateId;
-	}
-
-	private static String readAllText(File file) throws
-		IOException
-	{
-		if (file == null) throw new ArgumentNullException("file");
-
-		if (!file.isFile())
-		{
-			throw new IllegalArgumentException(String.format(
-				"%s is not a plain file",
-				file.getAbsolutePath()));
-		}
-
-		String result;
-
-		BufferedReader br = null;
-		try
-		{
-			StringBuilder sb = new StringBuilder();
-			br = new BufferedReader(new FileReader(file));
-			String line = br.readLine();
-			while (line != null)
-			{
-				sb.append(line);
-				sb.append("\n");
-				line = br.readLine();
-			}
-			result = sb.toString();
-		}
-		finally
-		{
-			if (br != null)
-			{
-				br.close();
-			}
-		}
-
-		return result;
 	}
 
 	/**
