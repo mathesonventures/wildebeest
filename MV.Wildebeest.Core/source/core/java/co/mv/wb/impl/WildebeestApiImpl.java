@@ -303,7 +303,7 @@ public class WildebeestApiImpl implements WildebeestApi
 	{
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		State state = fetchState(resource, instance);
+		State state = this.currentState(resource, instance);
 
 		List<AssertionResult> assertionResults = assertState(resource, instance);
 
@@ -314,18 +314,6 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 	}
 
-	private State fetchState(
-		Resource resource,
-		Instance instance) throws IndeterminateStateException
-	{
-		ResourcePlugin resourcePlugin = this.getResourcePlugin(
-			resource.getType());
-
-		return resourcePlugin.currentState(
-			resource,
-			instance);
-	}
-
 	public List<AssertionResult> assertState(
 		Resource resource,
 		Instance instance) throws
@@ -334,7 +322,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		State state = fetchState(resource, instance);
+		State state = this.currentState(resource, instance);
 
 		List<AssertionResult> result = new ArrayList<>();
 
@@ -388,7 +376,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		if (resource == null) throw new ArgumentNullException("resource");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		State state = fetchState(resource, instance);
+		State state = this.currentState(resource, instance);
 
 		if (state != null)
 		{
@@ -661,6 +649,28 @@ public class WildebeestApiImpl implements WildebeestApi
 			.append("</description>")
 			.append("<example>").append(exampleEsc).append("</example>")
 			.append("</plugin>");
+	}
+
+	/**
+	 * Helper function to find the applicable ResourcePlugin and query it for the current {@link State}} of an instance
+	 * in a single hit.
+	 *
+	 * @param resource the resource definition.
+	 * @param instance the instance definition.
+	 * @return the current State of the supplied Instance as defined by the supplied Resource.
+	 * @throws IndeterminateStateException
+	 * @since 4.0
+	 */
+	private State currentState(
+		Resource resource,
+		Instance instance) throws IndeterminateStateException
+	{
+		ResourcePlugin resourcePlugin = this.getResourcePlugin(
+			resource.getType());
+
+		return resourcePlugin.currentState(
+			resource,
+			instance);
 	}
 
 	private static UUID stateIdForName(
