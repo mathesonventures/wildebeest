@@ -989,4 +989,9 @@
 		<delete dir="${target.core.app.jre.linux}" failonerror="false"/>
 		<delete dir="${target.core.app.jre.osx}" failonerror="false"/>
 	</target>
+
+
+	<target name="ivy.clean.cache" description="Cleans whole Ivy cache folder">
+		<delete dir="${user.home}/.ivy/cache"/>
+	</target>
 </project>
