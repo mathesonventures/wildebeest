@@ -16,56 +16,57 @@
 
 package co.mv.wb.plugin.fake;
 
+import co.mv.wb.Assertion;
+import co.mv.wb.AssertionPlugin;
+import co.mv.wb.AssertionResponse;
 import co.mv.wb.Instance;
-import co.mv.wb.Migration;
-import co.mv.wb.MigrationPlugin;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginHandler;
-import co.mv.wb.Resource;
-import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
 /**
- * {@link MigrationPlugin} for the Fake plugin implementation.
+ * Handler for {@link TagAssertion}.
  *
- * @since 1.0
+ * @since 4.0
  */
-@PluginHandler(uri = "co.mv.wb.fake:SetTag")
-public class SetTagMigrationPlugin implements MigrationPlugin
+@PluginHandler(
+	uri = "co.mv.wb.fake:TagAssertion"
+)
+public class TagAssertionPlugin implements AssertionPlugin
 {
-	private final Resource resource;
-
-	public SetTagMigrationPlugin(Resource resource)
-	{
-		if (resource == null) throw new ArgumentNullException("resource");
-
-		this.resource = resource;
-	}
-
 	@Override
-	public void perform(
-		EventSink eventSink,
-		Migration migration,
+	public AssertionResponse perform(
+		Assertion assertion,
 		Instance instance)
 	{
-		if (eventSink == null) throw new ArgumentNullException("eventSink");
-		if (migration == null) throw new ArgumentNullException("migration");
+		if (assertion == null) throw new ArgumentNullException("assertion");
 		if (instance == null) throw new ArgumentNullException("instance");
 
-		SetTagMigration migrationT = ModelExtensions.as(migration, SetTagMigration.class);
-		if (migrationT == null)
-		{
-			String msg = "migration must be a SetTagMigration";
-			throw new IllegalArgumentException(msg);
-		}
+		TagAssertion assertionT = (TagAssertion)assertion;
 
 		FakeInstance instanceT = ModelExtensions.as(instance, FakeInstance.class);
 		if (instanceT == null)
 		{
-			String msg = "instance must be a FakeInstance";
-			throw new IllegalArgumentException(msg);
+			throw new IllegalArgumentException("instance must be a FakeInstance");
 		}
 
-		instanceT.setTag(migrationT.getTag());
+		assertionT.incrementCalledNTimes();
+		AssertionResponse response;
+
+		if (assertionT.getTag().equals(instanceT.getTag()))
+		{
+			response = new ImmutableAssertionResponse(
+				true,
+				String.format("Tag is \"%s\" as expected", assertionT.getTag()));
+		}
+		else
+		{
+			response = new ImmutableAssertionResponse(
+				false,
+				String.format("Tag expected to be \"%s\" but was \"%s\"", assertionT.getTag(), instanceT.getTag()));
+		}
+
+		return response;
 	}
 }

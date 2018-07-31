@@ -14,20 +14,21 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.cli;
+package co.mv.wb;
 
-import picocli.CommandLine;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Command definition for JumpState.
+ * Links a MigrationPlugin to it's applicable type via a URI reference.
  *
  * @since 4.0
  */
-@CommandLine.Command(name = "jumpstate",
-	description = "jumpstate description",
-	subcommands = CommandLine.HelpCommand.class)
-public class JumpStateCommand extends SharedCommands
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PluginHandler
 {
-	@CommandLine.Option(names = {"-t", "--target-state"}, description = "Target state")
-	String targetState;
+	String uri();
 }

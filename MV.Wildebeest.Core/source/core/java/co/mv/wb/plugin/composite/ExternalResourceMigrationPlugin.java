@@ -27,10 +27,10 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.MigrationPluginType;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
+import co.mv.wb.PluginHandler;
 import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
@@ -46,7 +46,7 @@ import java.io.File;
  *
  * @since 4.0
  */
-@MigrationPluginType(uri = "co.mv.wb.composite:ExternalResourceMigration")
+@PluginHandler(uri = "co.mv.wb.composite:ExternalResourceMigration")
 public class ExternalResourceMigrationPlugin implements MigrationPlugin
 {
 	private static String ExceptionFormatString = "Migration of external resource failed: %s";

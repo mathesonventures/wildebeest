@@ -17,14 +17,9 @@
 package co.mv.wb.plugin.fake;
 
 import co.mv.wb.Assertion;
-import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionType;
-import co.mv.wb.Instance;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
-import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
-import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,40 +68,15 @@ public class TagAssertion extends BaseAssertion
 		return this.calledNTimes;
 	}
 
+	public void incrementCalledNTimes()
+	{
+		this.calledNTimes++;
+	}
+
 	@Override
 	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
 			FakeConstants.Fake);
-	}
-
-	@Override
-	public AssertionResponse perform(Instance instance)
-	{
-		if (instance == null) throw new ArgumentNullException("instance");
-
-		FakeInstance instanceT = ModelExtensions.as(instance, FakeInstance.class);
-		if (instanceT == null)
-		{
-			throw new IllegalArgumentException("instance must be a FakeInstance");
-		}
-
-		this.calledNTimes += 1;
-		AssertionResponse response;
-
-		if (this.getTag().equals(instanceT.getTag()))
-		{
-			response = new ImmutableAssertionResponse(
-				true,
-				String.format("Tag is \"%s\" as expected", this.getTag()));
-		}
-		else
-		{
-			response = new ImmutableAssertionResponse(
-				false,
-				String.format("Tag expected to be \"%s\" but was \"%s\"", this.getTag(), instanceT.getTag()));
-		}
-
-		return response;
 	}
 }

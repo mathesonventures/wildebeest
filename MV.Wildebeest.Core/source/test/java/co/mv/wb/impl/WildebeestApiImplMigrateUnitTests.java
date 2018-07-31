@@ -34,6 +34,7 @@ import co.mv.wb.plugin.fake.FakeInstance;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.SetTagMigrationPlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
+import co.mv.wb.plugin.fake.TagAssertionPlugin;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -242,6 +243,7 @@ public class WildebeestApiImplMigrateUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
 
@@ -284,6 +286,7 @@ public class WildebeestApiImplMigrateUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
 
@@ -323,6 +326,7 @@ public class WildebeestApiImplMigrateUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
 

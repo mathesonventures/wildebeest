@@ -92,11 +92,13 @@ public abstract class BaseAnsiPluginUnitTests
 		if (dropDatabaseRunner == null) throw new ArgumentNullException("dropDatabaseRunner");
 
 		// Setup
-		AnsiSqlTableExistsAssertion tableExists = new AnsiSqlTableExistsAssertion(
+		AnsiSqlTableExistsAssertion assertion = new AnsiSqlTableExistsAssertion(
 			UUID.randomUUID(),
 			0,
 			"sch",
 			"tbl");
+
+		AnsiSqlTableExistsAssertionPlugin plugin = new AnsiSqlTableExistsAssertionPlugin();
 
 		try
 		{
@@ -111,7 +113,9 @@ public abstract class BaseAnsiPluginUnitTests
 				instance);
 
 			// Execute
-			AssertionResponse response = tableExists.perform(instance);
+			AssertionResponse response = plugin.perform(
+				assertion,
+				instance);
 
 			// Verify
 			assertNotNull("response", response);
@@ -146,11 +150,13 @@ public abstract class BaseAnsiPluginUnitTests
 		if (dropDatabaseRunner == null) throw new ArgumentNullException("dropDatabaseRunner");
 
 		// Setup
-		AnsiSqlTableExistsAssertion tableExists = new AnsiSqlTableExistsAssertion(
+		AnsiSqlTableExistsAssertion assertion = new AnsiSqlTableExistsAssertion(
 			UUID.randomUUID(),
 			0,
 			"sch",
 			"tbl");
+
+		AnsiSqlTableExistsAssertionPlugin plugin = new AnsiSqlTableExistsAssertionPlugin();
 
 		try
 		{
@@ -160,7 +166,9 @@ public abstract class BaseAnsiPluginUnitTests
 				instance);
 
 			// Execute
-			AssertionResponse response = tableExists.perform(instance);
+			AssertionResponse response = plugin.perform(
+				assertion,
+				instance);
 
 			// Verify
 			assertNotNull("response", response);

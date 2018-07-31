@@ -33,6 +33,8 @@ import co.mv.wb.framework.ExpectException;
 import co.mv.wb.plugin.fake.FakeConstants;
 import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.FaultingAssertion;
+import co.mv.wb.plugin.fake.FaultingAssertionPlugin;
+import co.mv.wb.plugin.fake.TagAssertionPlugin;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,6 +110,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new TagAssertionPlugin())
 			.get();
 
 		// Execute
@@ -151,6 +154,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new TagAssertionPlugin())
 			.get();
 
 		// Execute
@@ -242,6 +246,7 @@ public class WildebeestApiImplAssertStateIntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new FaultingAssertionPlugin())
 			.get();
 
 		// Execute and Verify

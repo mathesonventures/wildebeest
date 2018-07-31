@@ -33,6 +33,7 @@ import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.LoggingEventSink;
+import co.mv.wb.framework.ExpectException;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
 import co.mv.wb.plugin.fake.FakeInstance;
@@ -48,7 +49,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 /**
  * Unit tests for {@link SqlServerTableExistsAssertion}.
@@ -133,6 +133,8 @@ public class SqlServerTableExistsAssertionTests
 			"dbo",
 			"ProductType");
 
+		SqlServerTableExistsAssertionPlugin plugin = new SqlServerTableExistsAssertionPlugin();
+
 		//
 		// Execute
 		//
@@ -141,7 +143,7 @@ public class SqlServerTableExistsAssertionTests
 
 		try
 		{
-			response = assertion.perform(instance);
+			response = plugin.perform(assertion, instance);
 		}
 		finally
 		{
@@ -224,6 +226,8 @@ public class SqlServerTableExistsAssertionTests
 			"dbo",
 			"ProductType");
 
+		SqlServerTableExistsAssertionPlugin plugin = new SqlServerTableExistsAssertionPlugin();
+
 		//
 		// Execute
 		//
@@ -232,7 +236,7 @@ public class SqlServerTableExistsAssertionTests
 
 		try
 		{
-			response = assertion.perform(instance);
+			response = plugin.perform(assertion, instance);
 		}
 		finally
 		{
@@ -270,8 +274,10 @@ public class SqlServerTableExistsAssertionTests
 			"dbo",
 			"ProductType");
 
+		SqlServerTableExistsAssertionPlugin plugin = new SqlServerTableExistsAssertionPlugin();
+
 		// Execute
-		AssertionResponse response = assertion.perform(instance);
+		AssertionResponse response = plugin.perform(assertion, instance);
 
 		// Verify
 		assertNotNull("response", response);
@@ -290,17 +296,22 @@ public class SqlServerTableExistsAssertionTests
 			"dbo",
 			"TableName");
 
+		SqlServerTableExistsAssertionPlugin plugin = new SqlServerTableExistsAssertionPlugin();
+
 		FakeInstance instance = new FakeInstance();
 
-		try
+		// Execute and Verify
+		new ExpectException(IllegalArgumentException.class)
 		{
-			AssertionResponse response = assertion.perform(instance);
+			@Override public void invoke() throws Exception
+			{
+				AssertionResponse response = plugin.perform(assertion, instance);
+			}
 
-			fail("IllegalArgumentException expected");
-		}
-		catch (IllegalArgumentException e)
-		{
-			assertEquals("e.message", "instance must be a SqlServerDatabaseInstance", e.getMessage());
-		}
+			@Override public void verify(Exception e)
+			{
+				assertEquals("e.message", "instance must be a SqlServerDatabaseInstance", e.getMessage());
+			}
+		}.perform();
 	}
 }

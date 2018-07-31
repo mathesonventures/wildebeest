@@ -17,15 +17,10 @@
 package co.mv.wb.plugin.generaldatabase;
 
 import co.mv.wb.Assertion;
-import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionType;
-import co.mv.wb.Instance;
-import co.mv.wb.ModelExtensions;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
-import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
-import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -74,29 +69,5 @@ public class DatabaseExistsAssertion extends BaseAssertion
 			Wildebeest.MySqlDatabase,
 			Wildebeest.PostgreSqlDatabase,
 			Wildebeest.SqlServerDatabase);
-	}
-
-	@Override public AssertionResponse perform(Instance instance)
-	{
-		if (instance == null) throw new ArgumentNullException("instance");
-
-		DatabaseInstance db = ModelExtensions.as(instance, DatabaseInstance.class);
-		if (db == null)
-		{
-			throw new IllegalArgumentException("instance must be a DatabaseInstance");
-		}
-
-		AssertionResponse result;
-
-		if (db.databaseExists())
-		{
-			result = new ImmutableAssertionResponse(true, "Database " + db.getDatabaseName() + " exists");
-		}
-		else
-		{
-			result = new ImmutableAssertionResponse(false, "Database " + db.getDatabaseName() + " does not exist");
-		}
-
-		return result;
 	}
 }

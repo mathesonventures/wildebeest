@@ -14,21 +14,35 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb;
+package co.mv.wb.plugin.fake;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import co.mv.wb.Assertion;
+import co.mv.wb.AssertionPlugin;
+import co.mv.wb.AssertionResponse;
+import co.mv.wb.Instance;
+import co.mv.wb.PluginHandler;
+import co.mv.wb.framework.ArgumentNullException;
 
 /**
- * Links a MigrationPlugin to it's applicable type via a URI reference.
+ * Handler for {@link FaultingAssertion}.
  *
  * @since 4.0
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface MigrationPluginType
+@PluginHandler(
+	uri = "co.mv.wb.fake:Faulting"
+)
+public class FaultingAssertionPlugin implements AssertionPlugin
 {
-	String uri();
+	@Override
+	public AssertionResponse perform(
+		Assertion assertion,
+		Instance instance)
+	{
+		if (assertion == null) throw new ArgumentNullException("assertion");
+		if (instance == null) throw new ArgumentNullException("instance");
+
+		FaultingAssertion assertionT = (FaultingAssertion)assertion;
+
+		throw new RuntimeException("root cause");
+	}
 }

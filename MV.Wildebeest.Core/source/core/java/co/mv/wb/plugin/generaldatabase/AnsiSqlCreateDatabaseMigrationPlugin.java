@@ -21,8 +21,8 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationFaultException;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.MigrationPluginType;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.PluginHandler;
 import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.framework.DatabaseHelper;
@@ -36,7 +36,7 @@ import java.sql.SQLException;
  *
  * @since 4.0
  */
-@MigrationPluginType(uri = "co.mv.wb.generaldatabase:AnsiSqlCreateDatabase")
+@PluginHandler(uri = "co.mv.wb.generaldatabase:AnsiSqlCreateDatabase")
 public class AnsiSqlCreateDatabaseMigrationPlugin implements MigrationPlugin
 {
 	private static final Logger LOG = LoggerFactory.getLogger(AnsiSqlCreateDatabaseMigrationPlugin.class);

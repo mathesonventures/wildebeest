@@ -229,6 +229,7 @@ public class IntegrationTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
+			.withFactoryAssertionPlugins()
 			.withFactoryMigrationPlugins()
 			.get();
 
