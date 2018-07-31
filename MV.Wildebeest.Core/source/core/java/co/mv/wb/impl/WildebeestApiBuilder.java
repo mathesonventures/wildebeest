@@ -16,9 +16,10 @@
 
 package co.mv.wb.impl;
 
+import co.mv.wb.AssertionPlugin;
 import co.mv.wb.MigrationPlugin;
-import co.mv.wb.MigrationPluginType;
 import co.mv.wb.PluginGroup;
+import co.mv.wb.PluginHandler;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
@@ -43,6 +44,7 @@ public class WildebeestApiBuilder
 	private final List<PluginGroup> pluginGroups;
 	private final Map<ResourceType, ResourcePlugin> resourcePlugins;
 	private final Map<String, MigrationPlugin> migrationPlugins;
+	private final List<AssertionPlugin> assertionPlugins;
 
 	/**
 	 * Creates a new WildebeestApiBuilder with the specified PrintStream for Wildebeest to output to.
@@ -60,24 +62,28 @@ public class WildebeestApiBuilder
 			new WildebeestApiImpl(eventSink),
 			new ArrayList<>(),
 			new HashMap<>(),
-			new HashMap<>());
+			new HashMap<>(),
+			new ArrayList<>());
 	}
 
 	private WildebeestApiBuilder(
 		WildebeestApiImpl wildebeestApi,
 		List<PluginGroup> pluginGroups,
 		Map<ResourceType, ResourcePlugin> resourcePlugins,
-		Map<String, MigrationPlugin> migrationPlugins)
+		Map<String, MigrationPlugin> migrationPlugins,
+		List<AssertionPlugin> assertionPlugins)
 	{
 		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
 		if (pluginGroups == null) throw new ArgumentNullException("pluginGroups");
 		if (resourcePlugins == null) throw new ArgumentNullException("resourcePlugins");
 		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
+		if (assertionPlugins == null) throw new ArgumentNullException("assertionPlugins");
 
 		this.wildebeestApi = wildebeestApi;
 		this.pluginGroups = pluginGroups;
 		this.resourcePlugins = resourcePlugins;
 		this.migrationPlugins = migrationPlugins;
+		this.assertionPlugins = assertionPlugins;
 	}
 
 	/**
@@ -95,7 +101,8 @@ public class WildebeestApiBuilder
 			this.wildebeestApi,
 			updated,
 			this.resourcePlugins,
-			this.migrationPlugins);
+			this.migrationPlugins,
+			this.assertionPlugins);
 	}
 
 	/**
@@ -114,7 +121,8 @@ public class WildebeestApiBuilder
 			this.wildebeestApi,
 			this.pluginGroups,
 			updated,
-			this.migrationPlugins);
+			this.migrationPlugins,
+			this.assertionPlugins);
 	}
 
 	/**
@@ -137,7 +145,53 @@ public class WildebeestApiBuilder
 			this.wildebeestApi,
 			this.pluginGroups,
 			updated,
-			this.migrationPlugins);
+			this.migrationPlugins,
+			this.assertionPlugins);
+	}
+
+	/**
+	 * Fluently adds the factory set of AssertionPlugins to the builder.  A new builder is returned and the original
+	 * builder is left unmutated.
+	 *
+	 * @returna new WildebeestApiBuilder with the state of the original plus the new state.
+	 * @since 4.0
+	 */
+	public WildebeestApiBuilder withFactoryAssertionPlugins()
+	{
+		List<AssertionPlugin> updated = new ArrayList<>(this.assertionPlugins);
+
+		updated.addAll(Wildebeest.getAssertionPlugins());
+
+		return new WildebeestApiBuilder(
+			this.wildebeestApi,
+			this.pluginGroups,
+			this.resourcePlugins,
+			this.migrationPlugins,
+			updated);
+	}
+
+	/**
+	 * Fluently adds the supplied {@link AssertionPlugin} to the builder.  A new builder is returned and the original
+	 * builder is left unmutated.
+	 *
+	 * @param assertionPlugin the AssertionPlugin to be added to the buidler
+	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
+	 * @since 4.0
+	 */
+	public WildebeestApiBuilder withAssertionPlugin(AssertionPlugin assertionPlugin)
+	{
+		if (assertionPlugin == null) throw new ArgumentNullException("assertionPlugin");
+
+		List<AssertionPlugin> updated = new ArrayList<>(this.assertionPlugins);
+
+		updated.add(assertionPlugin);
+
+		return new WildebeestApiBuilder(
+			this.wildebeestApi,
+			this.pluginGroups,
+			this.resourcePlugins,
+			this.migrationPlugins,
+			updated);
 	}
 
 	/**
@@ -157,16 +211,16 @@ public class WildebeestApiBuilder
 			.collect(Collectors.toMap(
 				x ->
 				{
-					MigrationPluginType migrationPluginType = x.getClass().getAnnotation(MigrationPluginType.class);
+					PluginHandler pluginHandler = x.getClass().getAnnotation(PluginHandler.class);
 
-					if (migrationPluginType == null)
+					if (pluginHandler == null)
 					{
 						throw new RuntimeException(String.format(
 							"MigrationPlugin %s doesn't have a MigrationPluginType",
 							x.getClass().getName()));
 					}
 
-					return migrationPluginType.uri();
+					return pluginHandler.uri();
 				},
 				x -> x));
 
@@ -176,7 +230,8 @@ public class WildebeestApiBuilder
 			this.wildebeestApi,
 			this.pluginGroups,
 			this.resourcePlugins,
-			updated);
+			updated,
+			this.assertionPlugins);
 	}
 
 	/**
@@ -201,21 +256,22 @@ public class WildebeestApiBuilder
 			this.wildebeestApi,
 			this.pluginGroups,
 			this.resourcePlugins,
-			updated);
+			updated,
+			this.assertionPlugins);
 	}
 
 	private static String getMigrationTypeUri(MigrationPlugin migrationPlugin)
 	{
-		MigrationPluginType migrationPluginType = migrationPlugin.getClass().getAnnotation(MigrationPluginType.class);
+		PluginHandler pluginHandler = migrationPlugin.getClass().getAnnotation(PluginHandler.class);
 
-		if (migrationPluginType == null)
+		if (pluginHandler == null)
 		{
 			throw new RuntimeException(String.format(
 				"MigrationPlugin %s doesn't have a MigrationPluginType",
 				migrationPlugin.getClass().getName()));
 		}
 
-		return migrationPluginType.uri();
+		return pluginHandler.uri();
 	}
 
 	/**
@@ -229,6 +285,7 @@ public class WildebeestApiBuilder
 		this.wildebeestApi.setPluginGroups(pluginGroups);
 		this.wildebeestApi.setResourcePlugins(this.resourcePlugins);
 		this.wildebeestApi.setMigrationPlugins(this.migrationPlugins);
+		this.wildebeestApi.setAssertionPlugins(this.assertionPlugins);
 
 		return this.wildebeestApi;
 	}

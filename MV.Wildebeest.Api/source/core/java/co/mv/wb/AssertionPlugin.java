@@ -14,20 +14,24 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.cli;
-
-import picocli.CommandLine;
+package co.mv.wb;
 
 /**
- * Command definition for JumpState.
+ * AssertionPlugins perform {@link Assertion}'s.
  *
  * @since 4.0
  */
-@CommandLine.Command(name = "jumpstate",
-	description = "jumpstate description",
-	subcommands = CommandLine.HelpCommand.class)
-public class JumpStateCommand extends SharedCommands
+public interface AssertionPlugin
 {
-	@CommandLine.Option(names = {"-t", "--target-state"}, description = "Target state")
-	String targetState;
+	/**
+	 * Evaluates the supplied {@link Assertion} against the supplied resource {@link Instance}.
+	 *
+	 * @param assertion the Assertion to apply.
+	 * @param instance  the Instance to apply the Assertion to.
+	 * @return an AssertionResponse indicating the outcome of applying the Assertion to the supplied Instance.
+	 * @since 1.0
+	 */
+	AssertionResponse perform(
+		Assertion assertion,
+		Instance instance);
 }

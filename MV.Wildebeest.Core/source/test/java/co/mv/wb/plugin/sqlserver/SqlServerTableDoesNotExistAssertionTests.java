@@ -134,6 +134,8 @@ public class SqlServerTableDoesNotExistAssertionTests
 			"dbo",
 			"ProductType");
 
+		SqlServerTableDoesNotExistAssertionPlugin plugin = new SqlServerTableDoesNotExistAssertionPlugin();
+
 		//
 		// Execute
 		//
@@ -142,7 +144,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 
 		try
 		{
-			response = assertion.perform(instance);
+			response = plugin.perform(assertion, instance);
 		}
 		finally
 		{
@@ -224,6 +226,8 @@ public class SqlServerTableDoesNotExistAssertionTests
 			"dbo",
 			"ProductType");
 
+		SqlServerTableDoesNotExistAssertionPlugin plugin = new SqlServerTableDoesNotExistAssertionPlugin();
+
 		//
 		// Execute
 		//
@@ -232,7 +236,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 
 		try
 		{
-			response = assertion.perform(instance);
+			response = plugin.perform(assertion, instance);
 		}
 		finally
 		{
@@ -271,8 +275,10 @@ public class SqlServerTableDoesNotExistAssertionTests
 			"dbo",
 			"ProductType");
 
+		SqlServerTableDoesNotExistAssertionPlugin plugin = new SqlServerTableDoesNotExistAssertionPlugin();
+
 		// Execute
-		AssertionResponse response = assertion.perform(instance);
+		AssertionResponse response = plugin.perform(assertion, instance);
 
 		// Verify
 		assertNotNull("response", response);
@@ -291,12 +297,14 @@ public class SqlServerTableDoesNotExistAssertionTests
 			"dbo",
 			"TableName");
 
+		SqlServerTableDoesNotExistAssertionPlugin plugin = new SqlServerTableDoesNotExistAssertionPlugin();
+
 		FakeInstance instance = new FakeInstance();
 
 		// Execute and Verify
 		try
 		{
-			AssertionResponse response = assertion.perform(instance);
+			AssertionResponse response = plugin.perform(assertion, instance);
 
 			fail("IllegalArgumentException expected");
 		}

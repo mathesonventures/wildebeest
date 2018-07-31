@@ -57,13 +57,4 @@ public interface Assertion
 	 * @since 2.0
 	 */
 	List<ResourceType> getApplicableTypes();
-
-	/**
-	 * Evaluates this Assertion against the supplied resource instance.
-	 *
-	 * @param instance the instance to apply this Assertion to.
-	 * @return an AssertionResponse indicating the outcome of applying this Assertion to the supplied Instance.
-	 * @since 1.0
-	 */
-	AssertionResponse perform(Instance instance);
 }

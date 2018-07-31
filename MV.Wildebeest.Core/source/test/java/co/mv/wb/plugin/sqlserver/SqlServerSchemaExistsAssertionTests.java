@@ -87,17 +87,19 @@ public class SqlServerSchemaExistsAssertionTests
 			createSchema,
 			instance);
 
-		SqlServerSchemaExistsAssertion schemaExists = new SqlServerSchemaExistsAssertion(
+		SqlServerSchemaExistsAssertion assertion = new SqlServerSchemaExistsAssertion(
 			UUID.randomUUID(),
 			0,
 			"prd");
+
+		SqlServerSchemaExistsAssertionPlugin plugin = new SqlServerSchemaExistsAssertionPlugin();
 
 		final AssertionResponse response;
 
 		try
 		{
 			// Execute
-			response = schemaExists.perform(instance);
+			response = plugin.perform(assertion, instance);
 		}
 		finally
 		{
@@ -144,17 +146,19 @@ public class SqlServerSchemaExistsAssertionTests
 			createDatabase,
 			instance);
 
-		SqlServerSchemaExistsAssertion schemaExists = new SqlServerSchemaExistsAssertion(
+		SqlServerSchemaExistsAssertion assertion = new SqlServerSchemaExistsAssertion(
 			UUID.randomUUID(),
 			0,
 			"prd");
+
+		SqlServerSchemaExistsAssertionPlugin plugin = new SqlServerSchemaExistsAssertionPlugin();
 
 		final AssertionResponse response;
 
 		try
 		{
 			// Execute
-			response = schemaExists.perform(instance);
+			response = plugin.perform(assertion, instance);
 		}
 		finally
 		{
@@ -193,8 +197,10 @@ public class SqlServerSchemaExistsAssertionTests
 			0,
 			"prd");
 
+		SqlServerSchemaExistsAssertionPlugin plugin = new SqlServerSchemaExistsAssertionPlugin();
+
 		// Execute
-		AssertionResponse response = assertion.perform(instance);
+		AssertionResponse response = plugin.perform(assertion, instance);
 
 		// Verify
 		assertNotNull("response", response);
@@ -215,12 +221,14 @@ public class SqlServerSchemaExistsAssertionTests
 			0,
 			"prd");
 
+		SqlServerSchemaExistsAssertionPlugin plugin = new SqlServerSchemaExistsAssertionPlugin();
+
 		FakeInstance instance = new FakeInstance();
 
 		// Execute and Verify
 		try
 		{
-			AssertionResponse response = assertion.perform(instance);
+			AssertionResponse response = plugin.perform(assertion, instance);
 
 			fail("IllegalArgumentException expected");
 		}

@@ -19,6 +19,7 @@ package co.mv.wb.impl;
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionFaultException;
+import co.mv.wb.AssertionPlugin;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.AssertionResult;
 import co.mv.wb.AssertionType;
@@ -33,9 +34,10 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.MigrationType;
-import co.mv.wb.MigrationTypeInfo;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.PluginGroup;
+import co.mv.wb.PluginHandler;
+import co.mv.wb.PluginTypeInfo;
 import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
@@ -69,6 +71,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -87,6 +90,7 @@ public class WildebeestApiImpl implements WildebeestApi
 
 	private List<PluginGroup> pluginGroups;
 	private Map<ResourceType, ResourcePlugin> resourcePlugins;
+	private List<AssertionPlugin> assertionPlugins;
 	private Map<String, MigrationPlugin> migrationPlugins;
 
 	/**
@@ -103,6 +107,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		this.eventSink = eventSink;
 		this.pluginGroups = null;
 		this.resourcePlugins = null;
+		this.assertionPlugins = null;
 		this.migrationPlugins = null;
 	}
 
@@ -146,6 +151,16 @@ public class WildebeestApiImpl implements WildebeestApi
 		this.resourcePlugins = resourcePlugins;
 	}
 
+	private List<AssertionPlugin> getAssertionPlugins()
+	{
+		if (this.assertionPlugins == null)
+		{
+			throw new IllegalStateException("assertionPlugins not set");
+		}
+
+		return this.assertionPlugins;
+	}
+
 	private Map<String, MigrationPlugin> getMigrationPlugins()
 	{
 		if (this.migrationPlugins == null)
@@ -154,6 +169,13 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		return this.migrationPlugins;
+	}
+
+	public void setAssertionPlugins(List<AssertionPlugin> assertionPlugins)
+	{
+		if (assertionPlugins == null) throw new ArgumentNullException("assertionPlugins");
+
+		this.assertionPlugins = assertionPlugins;
 	}
 
 	/**
@@ -306,13 +328,17 @@ public class WildebeestApiImpl implements WildebeestApi
 
 		for (Assertion assertion : state.getAssertions())
 		{
+			AssertionPlugin assertionPlugin = this.getAssertionPlugin(assertion);
+
 			eventSink.onEvent(Events.assertionStart(
 				state,
 				assertion));
 
 			try
 			{
-				AssertionResponse response = assertion.perform(instance);
+				AssertionResponse response = assertionPlugin.perform(
+					assertion,
+					instance);
 
 				if (response.getResult())
 				{
@@ -565,7 +591,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		output.append("<plugins>");
 
 		// Migrations
-		for (MigrationTypeInfo info : WildebeestApiImpl.getMigrationTypeInfos())
+		for (PluginTypeInfo info : WildebeestApiImpl.getMigrationTypeInfos())
 		{
 			WildebeestApiImpl.pluginElement(
 				output,
@@ -578,16 +604,16 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 
 		// Assertions
-		for (AssertionType info : WildebeestApiImpl.getAssertionTypes())
+		for (PluginTypeInfo info : WildebeestApiImpl.getAssertionTypeInfos())
 		{
 			WildebeestApiImpl.pluginElement(
 				output,
 				"assertion",
-				info.pluginGroupUri(),
-				info.uri(),
-				Util.nameFromUri(info.uri()),
-				info.description(),
-				info.example());
+				info.getPluginGroupUri(),
+				info.getUri(),
+				info.getName(),
+				info.getDescription(),
+				info.getExample());
 		}
 
 		output.append("</plugins>");
@@ -673,71 +699,6 @@ public class WildebeestApiImpl implements WildebeestApi
 		{
 			throw new AssertionFailedException(state.getStateId(), assertionResults);
 		}
-	}
-
-	private static UUID stateIdForName(
-		Resource resource,
-		String name)
-	{
-		if (resource == null) throw new ArgumentNullException("resource");
-		if (name == null) throw new ArgumentNullException("name");
-		if ("".equals(name)) throw new IllegalArgumentException("name cannot be empty");
-
-		State result = null;
-
-		for (State check : resource.getStates())
-		{
-			if (check.getName().map(name::equals).orElse(false))
-			{
-				result = check;
-			}
-		}
-
-		return result == null ? null : result.getStateId();
-	}
-
-	/**
-	 * Looks up the ResourcePlugin for the supplied ResourceType.
-	 *
-	 * @param resourceType the ResourceType for which a plugin should be retrieved.
-	 * @return the ResourcePlugin that corresponds to the supplied ResourceType.
-	 * @since 4.0
-	 */
-	private ResourcePlugin getResourcePlugin(
-		ResourceType resourceType)
-	{
-		if (resourceType == null) throw new ArgumentNullException("resourceType");
-
-		ResourcePlugin resourcePlugin = this.getResourcePlugins().get(resourceType);
-
-		if (resourcePlugin == null)
-		{
-			throw new RuntimeException(String.format(
-				"resource plugin for resource type %s not found",
-				resourceType.getUri()));
-		}
-
-		return resourcePlugin;
-	}
-
-	/**
-	 * Looks up the MigrationPlugin for the supplied MigrationType URI.
-	 *
-	 * @param uri the URI identifying the MigrationType of interest.
-	 * @return the MigrationPlugin for the supplied MigrationType URI.
-	 * @since 4.0
-	 */
-	private MigrationPlugin getMigrationPlugin(
-		String uri)
-	{
-		if (uri == null) throw new ArgumentNullException("uri");
-
-		if (!this.getMigrationPlugins().containsKey(uri))
-		{
-			throw new RuntimeException(String.format("no MigrationPlugin found for uri: %s", uri));
-		}
-
-		return this.getMigrationPlugins().get(uri);
 	}
 
 	public static List<List<Migration>> findPaths(
@@ -945,7 +906,122 @@ public class WildebeestApiImpl implements WildebeestApi
 		}
 	}
 
-	private static List<MigrationTypeInfo> getMigrationTypeInfos()
+	/**
+	 * Looks up the ResourcePlugin for the supplied ResourceType.
+	 *
+	 * @param resourceType the ResourceType for which a plugin should be retrieved.
+	 * @return the ResourcePlugin that corresponds to the supplied ResourceType.
+	 * @since 4.0
+	 */
+	private ResourcePlugin getResourcePlugin(
+		ResourceType resourceType)
+	{
+		if (resourceType == null) throw new ArgumentNullException("resourceType");
+
+		ResourcePlugin resourcePlugin = this.getResourcePlugins().get(resourceType);
+
+		if (resourcePlugin == null)
+		{
+			throw new RuntimeException(String.format(
+				"resource plugin for resource type %s not found",
+				resourceType.getUri()));
+		}
+
+		return resourcePlugin;
+	}
+
+	/**
+	 * Locates the {@link AssertionPlugin} that supports the supplied {@link Assertion}.
+	 *
+	 * @param assertion the Assertion to find a plugin for.
+	 * @return an AssertionPlugin that can handle the supplied Assertion.
+	 * @since 4.0
+	 */
+	private AssertionPlugin getAssertionPlugin(
+		Assertion assertion)
+	{
+		if (assertion == null) throw new ArgumentNullException("assertion");
+
+		// Get the URI of the supplied assertion
+		AssertionType assertionType = assertion.getClass().getAnnotation(AssertionType.class);
+		if (assertionType == null)
+		{
+			throw new RuntimeException(String.format(
+				"Assertion %s does not have an AssertionType annotation",
+				assertion.getClass().getName()));
+		}
+
+		// Find the single plugin, if any, that declares support for Assertion identified by the supplied URI
+		Optional<AssertionPlugin> plugin = this.getAssertionPlugins()
+			.stream()
+			.filter(x ->
+			{
+				PluginHandler info = x.getClass().getAnnotation(PluginHandler.class);
+
+				return info != null && info.uri().equals(assertionType.uri());
+			})
+			.findFirst();
+
+		if (!plugin.isPresent())
+		{
+			throw new RuntimeException(String.format(
+				"Unhandled plugin URI \"%s\"",
+				assertionType.uri()));
+		}
+
+		return plugin.get();
+	}
+
+	/**
+	 * Enumerates the PluginTypeInfo for all available {@link AssertionPlugin}'s.
+	 *
+	 * @return a list of PluginTypeInfo's for each available Assertion type.
+	 * @since 4.0
+	 */
+	private static List<PluginTypeInfo> getAssertionTypeInfos()
+	{
+		Reflections reflections = new Reflections(Wildebeest.class.getPackage().getName());
+
+		return reflections
+			.getTypesAnnotatedWith(AssertionType.class)
+			.stream()
+			.map(
+				assertionClass ->
+				{
+					AssertionType assertionType = assertionClass.getAnnotation(AssertionType.class);
+
+					return new PluginTypeInfo(
+						assertionType.pluginGroupUri(),
+						assertionType.uri(),
+						Util.nameFromUri(assertionType.uri()),
+						assertionType.description(),
+						assertionType.example(),
+						assertionClass);
+				})
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * Looks up the MigrationPlugin for the supplied MigrationType URI.
+	 *
+	 * @param uri the URI identifying the MigrationType of interest.
+	 * @return the MigrationPlugin for the supplied MigrationType URI.
+	 * @since 4.0
+	 */
+	private MigrationPlugin getMigrationPlugin(
+		String uri)
+	{
+		if (uri == null) throw new ArgumentNullException("uri");
+
+		if (!this.getMigrationPlugins().containsKey(uri))
+		{
+			throw new RuntimeException(String.format("no MigrationPlugin found for uri: %s", uri));
+		}
+
+		return this.getMigrationPlugins().get(uri);
+	}
+
+	private static List<PluginTypeInfo> getMigrationTypeInfos()
 	{
 		Reflections reflections = new Reflections(Wildebeest.class.getPackage().getName());
 
@@ -957,7 +1033,7 @@ public class WildebeestApiImpl implements WildebeestApi
 				{
 					MigrationType migrationType = migrationClass.getAnnotation(MigrationType.class);
 
-					return new MigrationTypeInfo(
+					return new PluginTypeInfo(
 						migrationType.pluginGroupUri(),
 						migrationType.uri(),
 						Util.nameFromUri(migrationType.uri()),
@@ -965,17 +1041,6 @@ public class WildebeestApiImpl implements WildebeestApi
 						migrationType.example(),
 						migrationClass);
 				})
-			.collect(Collectors.toList());
-	}
-
-	private static List<AssertionType> getAssertionTypes()
-	{
-		Reflections reflections = new Reflections(Wildebeest.class.getPackage().getName());
-
-		return reflections
-			.getTypesAnnotatedWith(AssertionType.class)
-			.stream()
-			.map(assertionClass -> assertionClass.getAnnotation(AssertionType.class))
 			.collect(Collectors.toList());
 	}
 }

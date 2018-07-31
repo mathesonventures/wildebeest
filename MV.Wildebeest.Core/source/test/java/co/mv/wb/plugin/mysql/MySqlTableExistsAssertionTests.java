@@ -132,11 +132,15 @@ public class MySqlTableExistsAssertionTests
 			0,
 			"ProductType");
 
+		MySqlTableExistsAssertionPlugin plugin = new MySqlTableExistsAssertionPlugin();
+
 		//
 		// Execute
 		//
 
-		AssertionResponse response = assertion.perform(instance);
+		AssertionResponse response = plugin.perform(
+			assertion,
+			instance);
 
 		MySqlUtil.dropDatabase(instance, databaseName);
 
@@ -211,11 +215,15 @@ public class MySqlTableExistsAssertionTests
 			0,
 			"ProductType");
 
+		MySqlTableExistsAssertionPlugin plugin = new MySqlTableExistsAssertionPlugin();
+
 		//
 		// Execute
 		//
 
-		AssertionResponse response = assertion.perform(instance);
+		AssertionResponse response = plugin.perform(
+			assertion,
+			instance);
 
 		MySqlUtil.dropDatabase(instance, databaseName);
 
@@ -253,11 +261,15 @@ public class MySqlTableExistsAssertionTests
 			0,
 			"ProductType");
 
+		MySqlTableExistsAssertionPlugin plugin = new MySqlTableExistsAssertionPlugin();
+
 		//
 		// Execute
 		//
 
-		AssertionResponse response = assertion.perform(instance);
+		AssertionResponse response = plugin.perform(
+			assertion,
+			instance);
 
 		//
 		// Verify
@@ -279,12 +291,16 @@ public class MySqlTableExistsAssertionTests
 			0,
 			"TableName");
 
+		MySqlTableExistsAssertionPlugin plugin = new MySqlTableExistsAssertionPlugin();
+
 		FakeInstance instance = new FakeInstance();
 
 		// Execute
 		try
 		{
-			AssertionResponse response = assertion.perform(instance);
+			AssertionResponse response = plugin.perform(
+				assertion,
+				instance);
 
 			fail("IllegalArgumentException expected");
 		}

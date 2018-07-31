@@ -17,8 +17,7 @@
 package co.mv.wb.plugin.fake;
 
 import co.mv.wb.Assertion;
-import co.mv.wb.AssertionResponse;
-import co.mv.wb.Instance;
+import co.mv.wb.AssertionType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.framework.ArgumentNullException;
 
@@ -31,6 +30,17 @@ import java.util.UUID;
  *
  * @since 4.0
  */
+@AssertionType(
+	pluginGroupUri = "co.mv.wb:Fake",
+	uri = "co.mv.wb.fake:Faulting",
+	description =
+		"Always faults out.",
+	example =
+		"<assertion\n" +
+			"    type=\"Faulting\"\n" +
+			"    id=\"5ad24640-3c2d-42a5-9bc2-1f49dbfced61\"\n" +
+			"</assertion>"
+)
 public class FaultingAssertion implements Assertion
 {
 	private final UUID assertionId;
@@ -72,11 +82,4 @@ public class FaultingAssertion implements Assertion
 		return Arrays.asList();
 	}
 
-	@Override
-	public AssertionResponse perform(Instance instance)
-	{
-		if (instance == null) throw new ArgumentNullException("instance");
-
-		throw new RuntimeException("root cause");
-	}
 }

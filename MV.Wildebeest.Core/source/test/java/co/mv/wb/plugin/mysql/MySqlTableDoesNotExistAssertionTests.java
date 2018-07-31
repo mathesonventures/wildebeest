@@ -128,6 +128,8 @@ public class MySqlTableDoesNotExistAssertionTests
 			0,
 			"ProductType");
 
+		MySqlTableDoesNotExistAssertionPlugin plugin = new MySqlTableDoesNotExistAssertionPlugin();
+
 		//
 		// Execute
 		//
@@ -136,7 +138,9 @@ public class MySqlTableDoesNotExistAssertionTests
 
 		try
 		{
-			response = assertion.perform(instance);
+			response = plugin.perform(
+				assertion,
+				instance);
 		}
 		finally
 		{
@@ -214,6 +218,8 @@ public class MySqlTableDoesNotExistAssertionTests
 			0,
 			"ProductType");
 
+		MySqlTableDoesNotExistAssertionPlugin plugin = new MySqlTableDoesNotExistAssertionPlugin();
+
 		//
 		// Execute
 		//
@@ -222,7 +228,9 @@ public class MySqlTableDoesNotExistAssertionTests
 
 		try
 		{
-			response = assertion.perform(instance);
+			response = plugin.perform(
+				assertion,
+				instance);
 		}
 		finally
 		{
@@ -258,8 +266,12 @@ public class MySqlTableDoesNotExistAssertionTests
 			0,
 			"ProductType");
 
+		MySqlTableDoesNotExistAssertionPlugin plugin = new MySqlTableDoesNotExistAssertionPlugin();
+
 		// Execute
-		AssertionResponse response = assertion.perform(instance);
+		AssertionResponse response = plugin.perform(
+			assertion,
+			instance);
 
 		// Verify
 		assertNotNull("response", response);
@@ -277,12 +289,16 @@ public class MySqlTableDoesNotExistAssertionTests
 			0,
 			"TableName");
 
+		MySqlTableDoesNotExistAssertionPlugin plugin = new MySqlTableDoesNotExistAssertionPlugin();
+
 		FakeInstance instance = new FakeInstance();
 
 		// Execute and Verify
 		try
 		{
-			AssertionResponse response = assertion.perform(instance);
+			AssertionResponse response = plugin.perform(
+				assertion,
+				instance);
 
 			fail("IllegalArgumentException expected");
 		}

@@ -40,6 +40,7 @@ import co.mv.wb.plugin.fake.FakeResourcePlugin;
 import co.mv.wb.plugin.fake.SetTagMigration;
 import co.mv.wb.plugin.fake.SetTagMigrationPlugin;
 import co.mv.wb.plugin.fake.TagAssertion;
+import co.mv.wb.plugin.fake.TagAssertionPlugin;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -93,6 +94,7 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(resource))
 			.get();
 
@@ -176,6 +178,7 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(resource))
 			.get();
 
@@ -300,6 +303,7 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(resource))
 			.get();
 
@@ -378,6 +382,7 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(resource))
 			.get();
 
@@ -450,6 +455,7 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 		WildebeestApi wildebeestApi = Wildebeest
 			.wildebeestApi(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
+			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(resource))
 			.get();
 

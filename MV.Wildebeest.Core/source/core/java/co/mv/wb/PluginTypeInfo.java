@@ -23,7 +23,7 @@ import co.mv.wb.framework.ArgumentNullException;
  *
  * @since 4.0
  */
-public class MigrationTypeInfo
+public class PluginTypeInfo
 {
 	private final String pluginGroupUri;
 	private final String uri;
@@ -32,7 +32,7 @@ public class MigrationTypeInfo
 	private final String example;
 	private final Class migrationClass;
 
-	public MigrationTypeInfo(
+	public PluginTypeInfo(
 		String pluginGroupUri,
 		String uri,
 		String name,

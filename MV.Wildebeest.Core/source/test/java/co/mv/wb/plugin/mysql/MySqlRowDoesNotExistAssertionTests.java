@@ -19,6 +19,7 @@ package co.mv.wb.plugin.mysql;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.plugin.generaldatabase.RowDoesNotExistAssertion;
+import co.mv.wb.plugin.generaldatabase.RowDoesNotExistAssertionPlugin;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -54,11 +55,15 @@ public class MySqlRowDoesNotExistAssertionTests
 			0,
 			"SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';");
 
+		RowDoesNotExistAssertionPlugin plugin = new RowDoesNotExistAssertionPlugin();
+
 		// Execute
 		AssertionResponse response = null;
 		try
 		{
-			response = assertion.perform(instance);
+			response = plugin.perform(
+				assertion,
+				instance);
 		}
 		finally
 		{
@@ -97,11 +102,15 @@ public class MySqlRowDoesNotExistAssertionTests
 			0,
 			"SELECT * FROM ProductType WHERE ProductTypeCode = 'HW';");
 
+		RowDoesNotExistAssertionPlugin plugin = new RowDoesNotExistAssertionPlugin();
+
 		// Execute
 		AssertionResponse response = null;
 		try
 		{
-			response = assertion.perform(instance);
+			response = plugin.perform(
+				assertion,
+				instance);
 		}
 		finally
 		{

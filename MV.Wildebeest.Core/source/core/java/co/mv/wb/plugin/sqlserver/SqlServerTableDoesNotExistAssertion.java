@@ -16,15 +16,11 @@
 
 package co.mv.wb.plugin.sqlserver;
 
-import co.mv.wb.AssertionResponse;
-import co.mv.wb.Instance;
-import co.mv.wb.MigrationType;
-import co.mv.wb.ModelExtensions;
+import co.mv.wb.AssertionType;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
-import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +31,7 @@ import java.util.UUID;
  *
  * @since 2.0
  */
-@MigrationType(
+@AssertionType(
 	pluginGroupUri = "co.mv.wb:SqlServerDatabase",
 	uri = "co.mv.wb.sqlserver:SqlServerTableDoesNotExist",
 	description =
@@ -112,38 +108,5 @@ public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 			Wildebeest.SqlServerDatabase);
 	}
 
-	@Override public AssertionResponse perform(Instance instance)
-	{
-		if (instance == null) throw new ArgumentNullException("instance");
 
-		SqlServerDatabaseInstance db = ModelExtensions.as(instance, SqlServerDatabaseInstance.class);
-		if (db == null)
-		{
-			throw new IllegalArgumentException("instance must be a SqlServerDatabaseInstance");
-		}
-
-		AssertionResponse result;
-
-		if (!db.databaseExists())
-		{
-			result = new ImmutableAssertionResponse(
-				false,
-				String.format("Database %s does not exist", db.getDatabaseName()));
-		}
-
-		else if (SqlServerDatabaseHelper.tableExists(
-			db,
-			this.getSchemaName(),
-			this.getTableName()))
-		{
-			result = new ImmutableAssertionResponse(false, "Table " + this.getTableName() + " exists");
-		}
-
-		else
-		{
-			result = new ImmutableAssertionResponse(true, "Table " + this.getTableName() + " does not exist");
-		}
-
-		return result;
-	}
 }

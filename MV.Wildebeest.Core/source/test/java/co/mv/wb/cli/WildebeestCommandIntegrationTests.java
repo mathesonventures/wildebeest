@@ -67,6 +67,7 @@ public class WildebeestCommandIntegrationTests
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
+			.withFactoryAssertionPlugins()
 			.withFactoryMigrationPlugins()
 			.get();
 
@@ -117,6 +118,7 @@ public class WildebeestCommandIntegrationTests
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
+			.withFactoryAssertionPlugins()
 			.withFactoryMigrationPlugins()
 			.get();
 
@@ -179,6 +181,7 @@ public class WildebeestCommandIntegrationTests
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
+			.withFactoryAssertionPlugins()
 			.withFactoryMigrationPlugins()
 			.get();
 
@@ -264,6 +267,7 @@ public class WildebeestCommandIntegrationTests
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
+			.withFactoryAssertionPlugins()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -311,6 +315,7 @@ public class WildebeestCommandIntegrationTests
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
+			.withFactoryAssertionPlugins()
 			.withFactoryMigrationPlugins()
 			.get();
 
@@ -363,6 +368,7 @@ public class WildebeestCommandIntegrationTests
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
+			.withFactoryAssertionPlugins()
 			.withFactoryMigrationPlugins()
 			.get();
 

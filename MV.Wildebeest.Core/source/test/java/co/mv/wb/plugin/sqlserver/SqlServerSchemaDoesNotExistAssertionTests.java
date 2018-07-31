@@ -87,17 +87,21 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			createSchema,
 			instance);
 
-		SqlServerSchemaDoesNotExistAssertion schemaDoesNotExist = new SqlServerSchemaDoesNotExistAssertion(
+		SqlServerSchemaDoesNotExistAssertion assertion = new SqlServerSchemaDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0,
 			"prd");
+
+		SqlServerSchemaDoesNotExistAssertionPlugin plugin = new SqlServerSchemaDoesNotExistAssertionPlugin();
 
 		final AssertionResponse response;
 
 		try
 		{
 			// Execute
-			response = schemaDoesNotExist.perform(instance);
+			response = plugin.perform(
+				assertion,
+				instance);
 		}
 		finally
 		{
@@ -140,17 +144,19 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			createDatabase,
 			instance);
 
-		SqlServerSchemaDoesNotExistAssertion schemaDoesNotExist = new SqlServerSchemaDoesNotExistAssertion(
+		SqlServerSchemaDoesNotExistAssertion assertion = new SqlServerSchemaDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0,
 			"prd");
+
+		SqlServerSchemaDoesNotExistAssertionPlugin plugin = new SqlServerSchemaDoesNotExistAssertionPlugin();
 
 		final AssertionResponse response;
 
 		try
 		{
 			// Execute
-			response = schemaDoesNotExist.perform(instance);
+			response = plugin.perform(assertion, instance);
 		}
 		finally
 		{
@@ -185,8 +191,10 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			0,
 			"prd");
 
+		SqlServerSchemaDoesNotExistAssertionPlugin plugin = new SqlServerSchemaDoesNotExistAssertionPlugin();
+
 		// Execute
-		AssertionResponse response = assertion.perform(instance);
+		AssertionResponse response = plugin.perform(assertion, instance);
 
 		// Verify
 		assertNotNull("response", response);
@@ -204,12 +212,14 @@ public class SqlServerSchemaDoesNotExistAssertionTests
 			0,
 			"prd");
 
+		SqlServerSchemaDoesNotExistAssertionPlugin plugin = new SqlServerSchemaDoesNotExistAssertionPlugin();
+
 		FakeInstance instance = new FakeInstance();
 
 		// Execute
 		try
 		{
-			AssertionResponse response = assertion.perform(instance);
+			AssertionResponse response = plugin.perform(assertion, instance);
 
 			fail("IllegalArgumentException expected");
 		}

@@ -22,17 +22,28 @@ import co.mv.wb.impl.WildebeestApiBuilder;
 import co.mv.wb.plugin.composite.ExternalResourceMigrationPlugin;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlTableDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlTableExistsAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.DatabaseDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.DatabaseExistsAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.RowDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.RowExistsAssertionPlugin;
 import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
 import co.mv.wb.plugin.mysql.MySqlCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
 import co.mv.wb.plugin.mysql.MySqlDropDatabaseMigrationPlugin;
+import co.mv.wb.plugin.mysql.MySqlTableDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.mysql.MySqlTableExistsAssertionPlugin;
 import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
 import co.mv.wb.plugin.sqlserver.SqlServerCreateDatabaseMigrationPlugin;
 import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigrationPlugin;
 import co.mv.wb.plugin.sqlserver.SqlServerDatabaseResourcePlugin;
 import co.mv.wb.plugin.sqlserver.SqlServerDropDatabaseMigrationPlugin;
 import co.mv.wb.plugin.sqlserver.SqlServerDropSchemaMigrationPlugin;
-import org.reflections.Reflections;
+import co.mv.wb.plugin.sqlserver.SqlServerSchemaDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerSchemaExistsAssertionPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerTableDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerTableExistsAssertionPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +52,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Global definitions and functions for Wildebeest.
@@ -129,7 +139,7 @@ public class Wildebeest
 		// composite
 		result.add(new ExternalResourceMigrationPlugin(wildebeestApi));
 
-		// database
+		// generaldatabase
 		result.add(new SqlScriptMigrationPlugin());
 
 		// mysql
@@ -149,15 +159,29 @@ public class Wildebeest
 	// Assertion
 	//
 
-	public static List<AssertionType> findAssertionTypes()
+	public static List<AssertionPlugin> getAssertionPlugins()
 	{
-		Reflections reflections = new Reflections("co.mv.wb");
+		List<AssertionPlugin> result = new ArrayList<>();
 
-		return reflections
-			.getTypesAnnotatedWith(AssertionType.class)
-			.stream()
-			.map(x -> x.getAnnotation(AssertionType.class))
-			.collect(Collectors.toList());
+		// generaldatabase
+		result.add(new AnsiSqlTableDoesNotExistAssertionPlugin());
+		result.add(new AnsiSqlTableExistsAssertionPlugin());
+		result.add(new DatabaseDoesNotExistAssertionPlugin());
+		result.add(new DatabaseExistsAssertionPlugin());
+		result.add(new RowDoesNotExistAssertionPlugin());
+		result.add(new RowExistsAssertionPlugin());
+
+		// mysql
+		result.add(new MySqlTableDoesNotExistAssertionPlugin());
+		result.add(new MySqlTableExistsAssertionPlugin());
+
+		// sqlserver
+		result.add(new SqlServerSchemaDoesNotExistAssertionPlugin());
+		result.add(new SqlServerSchemaExistsAssertionPlugin());
+		result.add(new SqlServerTableDoesNotExistAssertionPlugin());
+		result.add(new SqlServerTableExistsAssertionPlugin());
+
+		return result;
 	}
 
 	//

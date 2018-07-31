@@ -53,9 +53,11 @@ public abstract class BaseDatabasePluginUnitTests
 		// Setup
 		//
 
-		DatabaseExistsAssertion databaseExists = new DatabaseExistsAssertion(
+		DatabaseExistsAssertion assertion = new DatabaseExistsAssertion(
 			UUID.randomUUID(),
 			0);
+
+		DatabaseExistsAssertionPlugin plugin = new DatabaseExistsAssertionPlugin();
 
 		try
 		{
@@ -69,7 +71,9 @@ public abstract class BaseDatabasePluginUnitTests
 			// Execute
 			//
 
-			AssertionResponse response = databaseExists.perform(instance);
+			AssertionResponse response = plugin.perform(
+				assertion,
+				instance);
 
 			//
 			// Verify
@@ -95,23 +99,27 @@ public abstract class BaseDatabasePluginUnitTests
 	public abstract void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException;
 
 	protected void databaseExistsAssertionForNonExistentDatabase(
-		DatabaseInstance db) throws MigrationFailedException
+		DatabaseInstance instance) throws MigrationFailedException
 	{
-		if (db == null) throw new ArgumentNullException("db");
+		if (instance == null) throw new ArgumentNullException("instance");
 
 		// Setup
-		DatabaseExistsAssertion databaseExists = new DatabaseExistsAssertion(
+		DatabaseExistsAssertion assertion = new DatabaseExistsAssertion(
 			UUID.randomUUID(),
 			0);
 
+		DatabaseExistsAssertionPlugin plugin = new DatabaseExistsAssertionPlugin();
+
 		// Execute
-		AssertionResponse response = databaseExists.perform(db);
+		AssertionResponse response = plugin.perform(
+			assertion,
+			instance);
 
 		// Verify
 		assertNotNull("response", response);
 		assertEquals(
 			"response.message",
-			"Database " + db.getDatabaseName() + " does not exist",
+			"Database " + instance.getDatabaseName() + " does not exist",
 			response.getMessage());
 		assertFalse("respnse.result", response.getResult());
 	}
@@ -134,9 +142,11 @@ public abstract class BaseDatabasePluginUnitTests
 		if (dropRunner == null) throw new ArgumentNullException("dropRunner");
 
 		// Setup
-		DatabaseDoesNotExistAssertion databaseExists = new DatabaseDoesNotExistAssertion(
+		DatabaseDoesNotExistAssertion assertion = new DatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0);
+
+		DatabaseDoesNotExistAssertionPlugin plugin = new DatabaseDoesNotExistAssertionPlugin();
 
 		try
 		{
@@ -146,7 +156,9 @@ public abstract class BaseDatabasePluginUnitTests
 				instance);
 
 			// Execute
-			AssertionResponse response = databaseExists.perform(instance);
+			AssertionResponse response = plugin.perform(
+				assertion,
+				instance);
 
 			// Verify
 			assertNotNull("response", response);
@@ -168,23 +180,27 @@ public abstract class BaseDatabasePluginUnitTests
 	public abstract void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException;
 
 	protected void databaseDoesNotExistAssertionForNonExistentDatabase(
-		DatabaseInstance db) throws MigrationFailedException
+		DatabaseInstance instance) throws MigrationFailedException
 	{
-		if (db == null) throw new ArgumentNullException("db");
+		if (instance == null) throw new ArgumentNullException("instance");
 
 		// Setup
-		DatabaseDoesNotExistAssertion databaseExists = new DatabaseDoesNotExistAssertion(
+		DatabaseDoesNotExistAssertion assertion = new DatabaseDoesNotExistAssertion(
 			UUID.randomUUID(),
 			0);
 
+		DatabaseDoesNotExistAssertionPlugin plugin = new DatabaseDoesNotExistAssertionPlugin();
+
 		// Execute
-		AssertionResponse response = databaseExists.perform(db);
+		AssertionResponse response = plugin.perform(
+			assertion,
+			instance);
 
 		// Verify
 		assertNotNull("response", response);
 		assertEquals(
 			"response.message",
-			"Database " + db.getDatabaseName() + " does not exist",
+			"Database " + instance.getDatabaseName() + " does not exist",
 			response.getMessage());
 		assertTrue("respnse.result", response.getResult());
 	}
