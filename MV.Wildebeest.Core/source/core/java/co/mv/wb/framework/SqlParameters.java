@@ -11,8 +11,8 @@ public class SqlParameters
 	private Object value;
 
 	public SqlParameters(
-		  String name,
-		  Object value)
+		String name,
+		Object value)
 	{
 		if (name == null) throw new ArgumentNullException("name");
 		if (value == null) throw new ArgumentNullException("value");
