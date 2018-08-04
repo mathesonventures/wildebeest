@@ -24,8 +24,7 @@ if defined JAVA_HOME (
 )
 
 if exist "%WB_HOME%\jre\bin\java.exe" (
-  set JAVA_HOME="%WB_HOME%\jre\"
-  %JAVA_HOME%\bin\java.exe -classpath "%WB_HOME%\lib\*" co.mv.wb.cli.WildebeestCommand %*
+  "%WB_HOME%\jre\bin\java.exe" -classpath "%WB_HOME%\lib\*" co.mv.wb.cli.WildebeestCommand %*
   goto exit
 )
 
