@@ -21,16 +21,15 @@ if [ -z $WB_HOME ]; then
     exit
 fi
 
-LOCAL_JRE=$WB_HOME"jdk-10.0.2"
-LOCAL_JRE_MAC=$WB_HOME"jdk-10.0.2.jdk"
+LOCAL_JRE=$WB_HOME"jre"
 
 if [ `which java` ]; then
     java -classpath "$WB_HOME/lib/*" co.mv.wb.cli.WildebeestCommand "$@"
 elif [ -f "$LOCAL_JRE"/bin/java ]; then
        chmod +x $LOCAL_JRE/bin/java
        $LOCAL_JRE/bin/java -classpath "$WB_HOME/lib/*" co.mv.wb.cli.WildebeestCommand  "$@"
-elif  [ -f $LOCAL_JRE_MAC/Contents/Home/bin/java ]; then
-      $LOCAL_JRE_MAC/Contents/Home/bin/java -classpath "$WB_HOME/lib/*" co.mv.wb.cli.WildebeestCommand  "$@"
+elif  [ -f $LOCAL_JRE/Contents/Home/bin/java ]; then
+      $LOCAL_JRE/Contents/Home/bin/java -classpath "$WB_HOME/lib/*" co.mv.wb.cli.WildebeestCommand  "$@"
 else
     echo "Please install Java before using this tool"
 fi

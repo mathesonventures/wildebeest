@@ -102,7 +102,6 @@ public class WildebeestCommandIntegrationTests
 		}
 	}
 
-
 	@Test public void mySqlDatabaseJumpState() throws
 		FileLoadException,
 		LoaderFault,
