@@ -1,0 +1,1072 @@
+<?xml version="1.0"?>
+<!--
+
+  Project:     $Xmeta.project.identity.id$
+               $Xmeta.project.identity.title$
+               $Xmeta.project.identity.url$
+  Component:   $Xmeta.component.identity.name$
+               $Xmeta.component.identity.title$
+  Version:     $XName:  $
+
+  Template:    $Name:  $ / JavaComponent / Build Script 1.0.54.6
+
+  Copyright (c) $Xmeta.project.copyright.years$, $Xmeta.project.copyright.owner$, All rights reserved
+
+  Title:       Java Component Build Script
+  Description: This is the standardized build script for non-Krypton MV Java components.
+
+-->
+<project name="Wildebeest Assembly" default="help" basedir=".">
+
+
+<!-- ===================================================================================================================
+
+	Properties Targets
+
+==================================================================================================================== -->
+
+	<target name="environment.properties.0" unless="available.environment.properties">
+		<available property="available.environment.properties" file="environment.properties" />
+		<property file="environment.properties" />
+	</target>
+
+	<target name="environment.properties.1" unless="available.environment.properties"
+		depends="environment.properties.0">
+		<available property="available.environment.properties" file="../environment.properties" />
+		<property file="../environment.properties" />
+	</target>
+
+	<target name="environment.properties.2" unless="available.environment.properties"
+		depends="environment.properties.1">
+		<available property="available.environment.properties" file="../../environment.properties" />
+		<property file="../../environment.properties" />
+	</target>
+
+	<target name="environment.properties.3" unless="available.environment.properties"
+		depends="environment.properties.2">
+		<available property="available.environment.properties" file="../../../environment.properties" />
+		<property file="../../../environment.properties" />
+	</target>
+
+	<target
+		name="environment.properties"
+		description="Load the environment-specific properties"
+		depends="environment.properties.3">
+
+		<property environment="system" />
+
+	</target>
+
+	<target
+		name="environment.properties:echo"
+		depends="environment.properties">
+
+		<echo message="Environment Properties" />
+		<echo message="----------------------" />
+		<echo message="+ environment.repo.nuget: ${environment.repo.nuget}" />
+		<echo message="+ environment.java.home: ${environment.java.home}" />
+		<echo message="+ environment.ant.home: ${environment.ant.home}" />
+		<echo message="+ environment.tomcat.managerurl: ${environment.tomcat.managerurl}" />
+		<echo message="+ environment.tomcat.username: ${environment.tomcat.username}" />
+		<echo message="+ environment.tomcat.password: ${environment.tomcat.password}" />
+		<echo message="" />
+
+		<echo message="System Properties" />
+		<echo message="-----------------" />
+		<echoproperties prefix="system" />
+		<echo message="" />
+
+	</target>
+
+	<target name="buildres.properties">
+
+		<!--
+			Build Resource Targets
+		-->
+		<property name="target.buildres" value="target/buildres" />
+		<property name="target.buildres.bsf" value="${target.buildres}/bsf" />
+		<property name="target.buildres.jsch" value="${target.buildres}/jsch" />
+		<property name="target.buildres.mavenant" value="${target.buildres}/mavenant" />
+		<property name="target.buildres.rhino" value="${target.buildres}/rhino" />
+		<property name="target.buildres.commlog" value="${target.buildres}/commlog" />
+		<property name="target.buildres.protiumsystem" value="${target.buildres}/protiumsystem" />
+		<property name="target.buildres.jpk" value="${target.buildres}/jpk" />
+
+	</target>
+
+	<target name="buildres.properties:echo" depends="buildres.properties">
+
+		<!--
+			Build Resource Targets
+		-->
+		<echo message="target.buildres: ${target.buildres}" />
+		<echo message="target.buildres.bsf: ${target.buildres.bsf}" />
+		<echo message="target.buildres.jsch: ${target.buildres.jsch}" />
+		<echo message="target.buildres.mavenant: ${target.buildres.mavenant}" />
+		<echo message="target.buildres.rhino: ${target.buildres.rhino}" />
+		<echo message="target.buildres.commlog: ${target.buildres.commlog}" />
+		<echo message="target.buildres.protiumsystem: ${target.buildres.protiumsystem}" />
+		<echo message="target.buildres.jpk: ${target.buildres.jpk}" />
+
+	</target>
+
+	<target
+		name="meta.project.properties"
+		description="
+			Derives additional project meta information from that loaded from
+			project.xml"
+		depends="environment.properties">
+
+		<!--
+			Load Raw Properties
+		-->
+
+		<property file="project.override.properties" />
+		<property file="../project.override.properties" />
+		<property file="../../project.override.properties" />
+		<xmlproperty file="project.xml" prefix="meta" />
+		<xmlproperty file="../project.xml" prefix="meta" />
+		<xmlproperty file="../../project.xml" prefix="meta" />
+
+		<!--
+			Derive the project's id
+		-->
+
+		<property
+			name="meta.project.identity.id"
+			value="${meta.project.identity.organization.id}.${meta.project.identity.name}" />
+
+		<property
+			name="meta.project.version.full.dotted"
+			value="${meta.project.version.major}.${meta.project.version.minor}.${meta.project.version.revision}.${meta.project.version.build}" />
+		<property
+			name="meta.project.version.full.underscored"
+			value="${meta.project.version.major}_${meta.project.version.minor}_${meta.project.version.revision}_${meta.project.version.build}" />
+
+		<!--
+			Derive the projects version name
+		-->
+		<property name="meta.project.version.name" value="${meta.project.identity.id}-${meta.project.version.full.dotted}" />
+
+	</target>
+
+	<target name="meta.project.properties:echo" depends="meta.project.properties">
+
+		<echo message="" />
+
+		<echo message="Project Meta Information" />
+		<echo message="------------------------" />
+		<echo message="" />
+		<echo message="+ meta.project.type: ${meta.project.type}" />
+		<echo message="" />
+
+		<echo message="Identity:" />
+		<echo message="+ meta.project.identity.id: ${meta.project.identity.id}" />
+		<echo message="+ meta.project.identity.organization.id: ${meta.project.identity.organization.id}" />
+		<echo message="+ meta.project.identity.organization.name: ${meta.project.identity.organization.name}" />
+		<echo message="+ meta.project.identity.name: ${meta.project.identity.name}" />
+		<echo message="+ meta.project.identity.title: ${meta.project.identity.title}" />
+		<echo message="+ meta.project.identity.url: ${meta.project.identity.url}" />
+		<echo message="" />
+
+		<echo message="Copyright:" />
+		<echo message="+ meta.project.copyright.years: ${meta.project.copyright.years}" />
+		<echo message="+ meta.project.copyright.owner: ${meta.project.copyright.owner}" />
+		<echo message="" />
+
+		<echo message="Version:" />
+		<echo message="+ meta.project.version.major: ${meta.project.version.major}" />
+		<echo message="+ meta.project.version.minor: ${meta.project.version.minor}" />
+		<echo message="+ meta.project.version.revision: ${meta.project.version.revision}" />
+		<echo message="+ meta.project.version.full.dotted: ${meta.project.version.full.dotted}" />
+		<echo message="+ meta.project.version.full.underscored: ${meta.project.version.full.underscored}" />
+		<echo message="+ meta.project.version.name: ${meta.project.version.name}" />
+		<echo message="" />
+
+	</target>
+
+	<!--
+		Component Type Properties
+	-->
+	<target
+		name="properties"
+		depends="
+			environment.properties,
+			buildres.properties,
+			meta.project.properties"
+		description="Defines all source and target properties">
+
+		<!--
+			Special Properties
+		-->
+		<property name="special.project.repo" value="../repo" />
+		<property name="special.target.mavenantjar" value="${special.project.repo}/mavenantjar" />
+
+		<!--
+			Source Properties
+		-->
+		<property name="source" value="source" />
+
+		<!--
+			Target Properties
+		-->
+		<property name="target" value="target" />
+		<property name="target.nonbundled" value="${target}/nonbundled" />
+		<property name="target.nonbundled.zip" value="${target}/nonbundled.zip" />
+		<property name="target.jre.bundled.windows" value="${target}/jre.bundled.windows" />
+		<property name="target.jre.bundled.windows.zip" value="${target}/jre.bundled.windows.zip" />
+		<property name="target.jre.bundled.linux" value="${target}/jre.bundled.linux" />
+		<property name="target.jre.bundled.linux.zip" value="${target}/jre.bundled.linux.zip" />
+		<property name="target.jre.bundled.osx" value="${target}/jre.bundled.osx" />
+		<property name="target.jre.bundled.osx.zip" value="${target}/jre.bundled.osx.zip" />
+
+		<!-- Taskdef Targets -->
+		<property name="target.taskdef" value="${target}/taskdef" />
+		<property name="target.taskdef.antcontrib" value="${target.taskdef}/antcontrib" />
+
+		<!-- Meta Information Properties -->
+		<property name="meta.buildres.mavenant.jar.filename" value="maven-ant-tasks-2.1.3.jar" />
+		<property name="meta.buildres.jsch.jar.filename" value="jsch-0.1.50.jar" />
+		<property name="meta.nonbundled.zip.filename" value="${meta.project.version.name}.zip" />
+		<property name="meta.jre.bundled.windows.zip.filename" value="${meta.project.version.name}-windows.zip" />
+		<property name="meta.jre.bundled.linux.zip.filename" value="${meta.project.version.name}-linux.zip" />
+		<property name="meta.jre.bundled.osx.zip.filename" value="${meta.project.version.name}-osx.zip" />
+
+  </target>
+
+	<target name="properties:echo" depends="properties">
+
+		<echo message="" />
+
+		<!--
+			Source Properties
+		-->
+		<echo message="Source Properties" />
+		<echo message="-----------------" />
+		<echo message="source: ${source}" />
+
+		<!--
+			Target Properties
+		-->
+		<echo message="Target Properties" />
+		<echo message="-----------------" />
+		<echo message="target: ${target}" />
+		<echo message="target.nonbundled: ${target.nonbundled}" />
+		<echo message="target.nonbundled.zip: ${target.nonbundled.zip}" />
+		<echo message="target.jre.bundled.windows: ${target.jre.bundled.windows}" />
+		<echo message="target.jre.bundled.windows.zip: ${target.jre.bundled.windows.zip}" />
+		<echo message="target.jre.bundled.linux: ${target.jre.bundled.linux}" />
+		<echo message="target.jre.bundled.linux.zip: ${target.jre.bundled.linux.zip}" />
+		<echo message="target.jre.bundled.osx: ${target.jre.bundled.osx}" />
+		<echo message="target.jre.bundled.osx.zip: ${target.jre.bundled.osx.zip}" />
+
+		<!--
+			Meta Information Properties
+		-->
+		<echo message="Meta Information Properties" />
+		<echo message="---------------------------" />
+		<echo message="meta.nonbundled.zip.filename: ${meta.nonbundled.zip.filename}" />
+		<echo message="meta.jre.bundled.windows.zip.filename: ${meta.jre.bundled.windows.zip.filename}" />
+		<echo message="meta.jre.bundled.linux.zip.filename: ${meta.jre.bundled.linux.zip.filename}" />
+		<echo message="meta.jre.bundled.osx.zip.filename: ${meta.jre.bundled.osx.zip.filename}" />
+		<echo message="" />
+
+	</target>
+
+<!-- ===================================================================================================================
+
+	Utility Targets
+
+==================================================================================================================== -->
+
+	<target name="nonbundled" depends="properties">
+
+		<mkdir dir="${target.nonbundled}" />
+
+		<ant dir="../MV.Wildebeest.Core" inheritAll="false" target="core.app" />
+
+		<copy
+			todir="${target.nonbundled}"
+			preservelastmodified="true">
+			<fileset dir="../MV.Wildebeest.Core/target/core/app">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="nonbundled.zip" depends="properties,nonbundled">
+
+		<mkdir dir="${target.nonbundled.zip}" />
+
+		<zip destfile="${target.nonbundled.zip}/${meta.nonbundled.zip.filename}" basedir="${target.nonbundled}">
+		</zip>
+
+	</target>
+
+	<target name="jre.bundled.windows" depends="properties">
+
+		<mkdir dir="${target.jre.bundled.windows}" />
+
+		<ant dir="../MV.Wildebeest.Core" inheritAll="false" target="core.app.jre.windows" />
+
+		<copy
+			todir="${target.jre.bundled.windows}"
+			preservelastmodified="true">
+			<fileset dir="../MV.Wildebeest.Core/target/core/app.jre.windows">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="jre.bundled.windows.zip" depends="properties,jre.bundled.windows">
+
+		<mkdir dir="${target.jre.bundled.windows.zip}" />
+
+		<zip destfile="${target.jre.bundled.windows.zip}/${meta.jre.bundled.windows.zip.filename}" basedir="${target.jre.bundled.windows}">
+		</zip>
+
+	</target>
+
+	<target name="jre.bundled.linux" depends="properties">
+
+		<mkdir dir="${target.jre.bundled.linux}" />
+
+		<ant dir="../MV.Wildebeest.Core" inheritAll="false" target="core.app.jre.linux" />
+
+		<copy
+			todir="${target.jre.bundled.linux}"
+			preservelastmodified="true">
+			<fileset dir="../MV.Wildebeest.Core/target/core/app.jre.linux">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="jre.bundled.linux.zip" depends="properties,jre.bundled.linux">
+
+		<mkdir dir="${target.jre.bundled.linux.zip}" />
+
+		<zip destfile="${target.jre.bundled.linux.zip}/${meta.jre.bundled.linux.zip.filename}" basedir="${target.jre.bundled.linux}">
+		</zip>
+
+	</target>
+
+	<target name="jre.bundled.osx" depends="properties">
+
+		<mkdir dir="${target.jre.bundled.osx}" />
+
+		<ant dir="../MV.Wildebeest.Core" inheritAll="false" target="core.app.jre.osx" />
+
+		<copy
+			todir="${target.jre.bundled.osx}"
+			preservelastmodified="true">
+			<fileset dir="../MV.Wildebeest.Core/target/core/app.jre.osx">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="jre.bundled.osx.zip" depends="properties,jre.bundled.osx">
+
+		<mkdir dir="${target.jre.bundled.osx.zip}" />
+
+		<zip destfile="${target.jre.bundled.osx.zip}/${meta.jre.bundled.osx.zip.filename}" basedir="${target.jre.bundled.osx}">
+		</zip>
+
+	</target>
+
+<!-- ===================================================================================================================
+
+	Utility Targets
+
+==================================================================================================================== -->
+
+	<target
+		name="clean"
+		description="Blow away all targets, leaving only sources."
+		depends="properties">
+
+		<delete dir="${target}" />
+
+	</target>
+
+	<target name="cleanrepo" depends="properties">
+		<delete dir="${special.project.repo}" />
+	</target>
+
+
+<!-- ===================================================================================================================
+
+	Build Resource Targets
+
+==================================================================================================================== -->
+
+	<!--
+		Build Resource: BSF
+	-->
+	<target name="buildres.bsf" depends="properties,taskdef.mavenant"
+		xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+		<mkdir dir="${target.buildres.bsf}" />
+
+		<artifact:dependencies filesetId="mvnDepFileset">
+			<localRepository path="${special.project.repo}" />
+			<remoteRepository id="mv" url="${environment.repo.maven.remote.url}">
+				<authentication username="${environment.repo.maven.remote.username}" privateKey="${environment.repo.maven.remote.key}" />
+			</remoteRepository>
+			<dependency groupId="bsf" artifactId="bsf" version="2.4.0" />
+		</artifact:dependencies>
+
+		<copy todir="${target.buildres.bsf}">
+			<fileset refid="mvnDepFileset" />
+			<mapper type="flatten" />
+		</copy>
+
+	</target>
+
+	<!--
+		Build Resource: JSCH
+	-->
+	<target name="buildres.jsch" depends="properties,taskdef.mavenant"
+		xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+		<mkdir dir="${target.buildres.jsch}" />
+
+		<artifact:dependencies filesetId="mvnDepFileset">
+			<localRepository path="${special.project.repo}" />
+			<remoteRepository id="mv" url="${environment.repo.maven.remote.url}">
+				<authentication username="${environment.repo.maven.remote.username}" privateKey="${environment.repo.maven.remote.key}" />
+			</remoteRepository>
+			<dependency groupId="com.jcraft" artifactId="jsch" version="0.1.50" />
+		</artifact:dependencies>
+
+		<copy todir="${target.buildres.jsch}">
+			<fileset refid="mvnDepFileset" />
+			<mapper type="flatten" />
+		</copy>
+
+	</target>
+
+	<!--
+		Build Resource: Commons Loging
+	-->
+	<target name="buildres.commlog" depends="properties,taskdef.mavenant"
+		xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+		<mkdir dir="${target.buildres.commlog}" />
+
+		<artifact:dependencies filesetId="mvnDepFileset">
+			<localRepository path="${special.project.repo}" />
+			<remoteRepository id="mv" url="${environment.repo.maven.remote.url}">
+				<authentication username="${environment.repo.maven.remote.username}" privateKey="${environment.repo.maven.remote.key}" />
+			</remoteRepository>
+			<dependency groupId="commons-logging" artifactId="commons-logging" version="1.1.3" />
+		</artifact:dependencies>
+
+		<copy todir="${target.buildres.commlog}">
+			<fileset refid="mvnDepFileset" />
+			<mapper type="flatten" />
+		</copy>
+
+	</target>
+
+	<!--
+		Build Resource: Rhino
+	-->
+	<target name="buildres.rhino" depends="properties,taskdef.mavenant"
+		xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+		<mkdir dir="${target.buildres.rhino}" />
+
+		<artifact:dependencies filesetId="mvnDepFileset">
+			<localRepository path="${special.project.repo}" />
+			<remoteRepository id="mv" url="${environment.repo.maven.remote.url}">
+				<authentication username="${environment.repo.maven.remote.username}" privateKey="${environment.repo.maven.remote.key}" />
+			</remoteRepository>
+			<dependency groupId="rhino" artifactId="js" version="1.7R2" />
+		</artifact:dependencies>
+
+		<copy todir="${target.buildres.rhino}">
+			<fileset refid="mvnDepFileset" />
+			<mapper type="flatten" />
+		</copy>
+
+	</target>
+
+	<!--
+		Build Resource: ZD.Protium.System
+	-->
+	<target name="buildres.protiumsystem" depends="properties,taskdef.mavenant"
+		xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+		<mkdir dir="${target.buildres.protiumsystem}" />
+
+		<artifact:dependencies filesetId="mvnDepFileset">
+			<localRepository path="${special.project.repo}" />
+			<remoteRepository id="mv" url="${environment.repo.maven.remote.url}">
+				<authentication username="${environment.repo.maven.remote.username}" privateKey="${environment.repo.maven.remote.key}" />
+			</remoteRepository>
+			<dependency groupId="ZD" artifactId="ZD.Protium.System" version="0.0.0.30" />
+		</artifact:dependencies>
+
+		<copy todir="${target.buildres.protiumsystem}">
+			<fileset refid="mvnDepFileset" />
+			<mapper type="flatten" />
+		</copy>
+
+	</target>
+
+	<!--
+		Build Resource: JPK
+	-->
+	<target name="buildres.jpk" depends="properties,taskdef.mavenant"
+		xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+		<mkdir dir="${target.buildres.jpk}" />
+
+		<artifact:dependencies filesetId="mvnDepFileset">
+			<localRepository path="${special.project.repo}" />
+			<remoteRepository id="mv" url="${environment.repo.maven.remote.url}">
+				<authentication username="${environment.repo.maven.remote.username}" privateKey="${environment.repo.maven.remote.key}" />
+			</remoteRepository>
+			<dependency groupId="MV" artifactId="MV.JPK.Core" version="0.0.0.2" />
+		</artifact:dependencies>
+
+		<copy todir="${target.buildres.jpk}">
+			<fileset refid="mvnDepFileset" />
+			<mapper type="flatten" />
+		</copy>
+
+	</target>
+
+
+<!-- ===================================================================================================================
+
+	Def Targets
+
+==================================================================================================================== -->
+
+	<target name="taskdef.antcontrib" depends="properties,taskdef.mavenant"
+		xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+		<mkdir dir="${target.taskdef.antcontrib}" />
+
+		<artifact:dependencies filesetId="mvnDepFileset">
+			<localRepository path="${special.project.repo}" />
+			<remoteRepository id="mv" url="${environment.repo.maven.remote.url}">
+				<authentication username="${environment.repo.maven.remote.username}" privateKey="${environment.repo.maven.remote.key}" />
+			</remoteRepository>
+			<dependency groupId="ant-contrib" artifactId="ant-contrib" version="1.0b3" />
+		</artifact:dependencies>
+
+		<copy todir="${target.taskdef.antcontrib}">
+			<fileset refid="mvnDepFileset" />
+			<mapper type="flatten" />
+		</copy>
+
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+			<classpath>
+				<fileset dir="${target.taskdef.antcontrib}" includes="*.jar" />
+			</classpath>
+		</taskdef>
+
+	</target>
+
+	<!--
+		Build Resource: Mavent Ant Tasks
+	-->
+	<target name="mavenantjar.exists" depends="properties">
+		<available property="available.mavenantjar" file="${special.target.mavenantjar}/${meta.buildres.mavenant.jar.filename}" />
+	</target>
+
+	<target name="mavenantjar" depends="mavenantjar.exists,properties" unless="available.mavenantjar">
+
+		<mkdir dir="${special.target.mavenantjar}" />
+
+		<get src="http://artifacts.mathesonventures.co/ant_extras/${meta.buildres.mavenant.jar.filename}"
+			dest="${special.target.mavenantjar}" />
+
+		<!-- Check that Maven Ant Tasks is now available -->
+		<available property="available.mavenant" classname="org.apache.maven.model.Dependency">
+			<classpath>
+				<pathelement location="${special.target.mavenantjar}/${meta.buildres.mavenant.jar.filename}" />
+			</classpath>
+		</available>
+		<fail unless="available.mavenant" message="
+			Maven Ant Tasks does not appear to be available." />
+
+	</target>
+
+	<target name="taskdef.mavenant" depends="properties,mavenantjar"
+		xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+		<taskdef
+			resource="org/apache/maven/artifact/ant/antlib.xml"
+			uri="antlib:org.apache.maven.artifact.ant">
+			<classpath>
+				<pathelement location="${special.target.mavenantjar}/${meta.buildres.mavenant.jar.filename}" />
+			</classpath>
+		</taskdef>
+
+		<mkdir dir="${special.project.repo}" />
+
+		<artifact:install-provider artifactId="wagon-ssh" version="2.4" />
+
+	</target>
+
+	<target
+		name="taskdef.jpk"
+		depends="
+			properties,
+			meta.project.properties,
+			buildres.properties,
+			buildres.bsf,
+			buildres.rhino,
+			buildres.commlog,
+			buildres.protiumsystem,
+			buildres.jpk,
+			taskdef.mavenant"
+		xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+		<macrodef name="mvndep">
+
+			<attribute name="projectRepoPath" />
+
+			<attribute name="url" />
+			<attribute name="username" />
+			<attribute name="key" />
+
+			<attribute name="groupId" />
+			<attribute name="artifactId" />
+			<attribute name="version" />
+			<attribute name="targetDir" />
+
+			<sequential>
+
+				<artifact:dependencies filesetId="mvnDepFileset">
+					<localRepository path="@{projectRepoPath}" />
+					<remoteRepository id="mv" url="@{url}">
+						<authentication username="@{username}" privateKey="@{key}" />
+					</remoteRepository>
+					<dependency groupId="@{groupId}" artifactId="@{artifactId}" version="@{version}" />
+				</artifact:dependencies>
+
+				<copy todir="@{targetDir}">
+					<fileset refid="mvnDepFileset" />
+					<mapper type="flatten" />
+				</copy>
+
+			</sequential>
+
+		</macrodef>
+
+		<scriptdef name="jpkdep" language="javascript">
+
+			<attribute name="projectRepoPath" />
+			<attribute name="url" />
+			<attribute name="username" />
+			<attribute name="key" />
+			<attribute name="group" />
+			<attribute name="targetDir" />
+
+			<classpath>
+				<fileset dir="${target.buildres.jpk}" includes="*.jar" />
+				<fileset dir="${target.buildres.protiumsystem}" includes="*.jar" />
+				<fileset dir="${target.buildres.bsf}" includes="*.jar" />
+				<fileset dir="${target.buildres.rhino}" includes="*.jar" />
+				<fileset dir="${target.buildres.commlog}" includes="*.jar" />
+			</classpath>
+
+			<![CDATA[
+
+				importPackage(Packages.co.mv.jpk);
+
+				pkgs = MvnHelper.getPackages(
+					attributes.get("group"),
+					project.getProperties());
+
+				for (var i = 0; i < pkgs.size(); i ++)
+				{
+					pkg = pkgs.get(i);
+
+					project.log("Retrieving " + pkg.getGroupId() + ":" + pkg.getArtifactId() + ":" + pkg.getVersion());
+
+					task = project.createTask("mvndep");
+					task.setDynamicAttribute("projectrepopath", attributes.get("projectrepopath"));
+					task.setDynamicAttribute("url", attributes.get("url"));
+					task.setDynamicAttribute("username", attributes.get("username"));
+					task.setDynamicAttribute("key", attributes.get("key"));
+					task.setDynamicAttribute("groupid", pkg.getGroupId());
+					task.setDynamicAttribute("artifactid", pkg.getArtifactId());
+					task.setDynamicAttribute("version", pkg.getVersion());
+					task.setDynamicAttribute("targetdir", attributes.get("targetdir"));
+					task.perform();
+				}
+
+			]]>
+
+		</scriptdef>
+
+		<scriptdef name="jpkpublocal" language="javascript">
+
+			<attribute name="file" />
+			<attribute name="path" />
+
+			<classpath>
+				<fileset dir="${target.buildres.jpk}" includes="*.jar" />
+				<fileset dir="${target.buildres.protiumsystem}" includes="*.jar" />
+				<fileset dir="${target.buildres.bsf}" includes="*.jar" />
+				<fileset dir="${target.buildres.rhino}" includes="*.jar" />
+				<fileset dir="${target.buildres.commlog}" includes="*.jar" />
+			</classpath>
+
+			<![CDATA[
+
+				importPackage(Packages.co.mv.jpk);
+
+				task = project.createTask("mvnpublocal");
+				task.setDynamicAttribute("file", attributes.get("file"));
+				task.setDynamicAttribute("path", attributes.get("path"));
+				task.perform();
+
+			]]>
+
+		</scriptdef>
+
+		<scriptdef name="jpkpubremote" language="javascript">
+
+			<attribute name="url" />
+			<attribute name="username" />
+			<attribute name="key" />
+			<attribute name="file" />
+
+			<classpath>
+				<fileset dir="${target.buildres.jpk}" includes="*.jar" />
+				<fileset dir="${target.buildres.protiumsystem}" includes="*.jar" />
+				<fileset dir="${target.buildres.bsf}" includes="*.jar" />
+				<fileset dir="${target.buildres.rhino}" includes="*.jar" />
+				<fileset dir="${target.buildres.commlog}" includes="*.jar" />
+			</classpath>
+
+			<![CDATA[
+
+				importPackage(Packages.co.mv.jpk);
+
+				task = project.createTask("mvnpubremote");
+				task.setDynamicAttribute("url", attributes.get("url"));
+				task.setDynamicAttribute("username", attributes.get("username"));
+				task.setDynamicAttribute("key", attributes.get("key"));
+				task.setDynamicAttribute("file", attributes.get("file"));
+				task.perform();
+
+			]]>
+
+		</scriptdef>
+
+	</target>
+
+	<target
+		name="taskdef.libs"
+		depends="
+			properties,
+			taskdef.antcontrib,
+			taskdef.crosscomponentlist">
+
+		<macrodef name="libs">
+
+			<attribute name="setName" />
+
+			<sequential>
+
+				<mkdir dir="${target.@{setName}}" />
+
+				<!--
+					Copy JARs from the optional source directory
+				-->
+				<if>
+					<available
+						property="source.@{setName}.available"
+						file="${source.@{setName}}"
+						type="dir" />
+					<then>
+						<copy
+							todir="${target.@{setName}}"
+							preservelastmodified="true">
+							<fileset dir="${source.@{setName}}" includes="**/*.jar" />
+						</copy>
+					</then>
+				</if>
+
+			<!-- Resolve cross component dependencies -->
+			<crosscomponentlist
+				componentList="${dependency.crosscomponent.@{setName}}"
+				targetName="core.jar"
+				targetDirectory="target/core/jar"
+				localTargetDirectory="${target.@{setName}}" />
+
+			</sequential>
+
+		</macrodef>
+
+	</target>
+
+	<target
+		name="taskdef.crosscomponentlist"
+		depends="properties,buildres.properties,buildres.bsf,buildres.commlog,buildres.rhino,taskdef.crosscomponent">
+
+		<!--
+
+			Example usage:
+
+			<crosscomponentlist
+				componentList="foo; bar;"
+				targetDirectory="target/core/librun" />
+
+		-->
+		<scriptdef name="crosscomponentlist" language="javascript">
+
+			<classpath>
+				<fileset dir="${target.buildres.bsf}" includes="*.jar" />
+				<fileset dir="${target.buildres.commlog}" includes="*.jar" />
+				<fileset dir="${target.buildres.rhino}" includes="*.jar" />
+			</classpath>
+
+			<attribute name="componentlist" />
+			<attribute name="targetname" />
+			<attribute name="targetdirectory" />
+			<attribute name="localtargetdirectory" />
+
+			<![CDATA[
+
+				importClass(java.io.File);
+
+				componentList = attributes.get("componentlist");
+				targetName = attributes.get("targetname");
+				targetDirectoryPath = attributes.get("targetdirectory");
+				localTargetDirectoryPath = attributes.get("localtargetdirectory");
+
+// TODO: Validate parameters.  No nulls.
+
+/*
+project.log(
+	"\n" +
+	"\tcrosscomponentjar {\n" +
+	"\tcomponentList: " + componentList + ";\n" +
+	"\ttargetName: " + targetName + ";\n" +
+	"\ttargetDirectoryPath: " + targetDirectoryPath + ";\n" +
+	"\tlocalTargetDirectoryPath: " + localTargetDirectoryPath + ";\n" +
+	"}\n" +
+	"\n");
+*/
+
+				entries = componentList.split(";");
+
+				// For each entry in the list
+				for(i = 0; i < entries.length; i ++) {
+
+					componentName = new java.lang.String(entries[i]);
+					componentName = componentName.trim();
+
+					if(componentName.equals("")) {
+						continue;
+					}
+
+					xdepTask = project.createTask("crosscomponentdependency");
+					xdepTask.setDynamicAttribute("componentname", componentName);
+					xdepTask.setDynamicAttribute("targetname", targetName);
+					xdepTask.setDynamicAttribute("targetdirectory", targetDirectoryPath);
+					xdepTask.setDynamicAttribute("localtargetdirectory", localTargetDirectoryPath);
+					xdepTask.perform();
+
+				}
+
+			]]>
+
+		</scriptdef>
+
+	</target>
+
+	<target
+		name="taskdef.crosscomponent"
+		depends="properties,buildres.properties,buildres.bsf,buildres.commlog,buildres.rhino">
+
+		<scriptdef name="crosscomponentdependency" language="javascript">
+
+			<classpath>
+				<fileset dir="${target.buildres.bsf}" includes="*.jar" />
+				<fileset dir="${target.buildres.commlog}" includes="*.jar" />
+				<fileset dir="${target.buildres.rhino}" includes="*.jar" />
+			</classpath>
+
+			<attribute name="componentname" />
+			<attribute name="targetname" />
+			<attribute name="targetdirectory" />
+			<attribute name="localtargetdirectory" />
+
+			<![CDATA[
+
+					importClass(java.io.File);
+
+					componentName = attributes.get("componentname");
+					targetName = attributes.get("targetname");
+					targetDirectoryPath = attributes.get("targetdirectory");
+					localTargetDirectoryPath = attributes.get("localtargetdirectory");
+
+/*
+project.log(
+	"\n" +
+	"crosscomponentdependency {\n" +
+	"\tcomponentName: " + componentName + ";\n" +
+	"\ttargetName: " + targetName + ";\n" +
+	"\ttargetDirectoryPath: " + targetDirectoryPath + ";\n" +
+	"\tlocalTargetDirectoryPath: " + localTargetDirectoryPath + ";\n" +
+	"}\n");
+*/
+
+					xcTargetTask = project.createTask("crosscomponenttarget");
+					xcTargetTask.setDynamicAttribute("componentname", componentName);
+					xcTargetTask.setDynamicAttribute("targetname", targetName);
+					xcTargetTask.perform();
+
+					projectDirectory = project.getBaseDir().getParentFile();
+
+					source =
+						projectDirectory + "/" +
+						componentName + "/" +
+						targetDirectoryPath;
+
+					artifactFileset = project.createDataType("fileset");
+					artifactFileset.setDir(new File(source));
+					artifactFileset.setIncludes("**/*,**/*.*");
+
+					localTargetDirectory = new File(
+						project.getBaseDir(),
+						localTargetDirectoryPath);
+
+					copyTask = project.createTask("copy");
+					copyTask.setTodir(localTargetDirectory);
+					copyTask.setPreserveLastModified(true);
+					copyTask.addFileset(artifactFileset);
+					copyTask.perform();
+
+			]]>
+
+		</scriptdef>
+
+		<scriptdef name="crosscomponenttarget" language="javascript">
+
+			<classpath>
+				<fileset dir="${target.buildres.bsf}" includes="*.jar" />
+				<fileset dir="${target.buildres.commlog}" includes="*.jar" />
+				<fileset dir="${target.buildres.rhino}" includes="*.jar" />
+			</classpath>
+
+			<attribute name="componentname" />
+			<attribute name="targetname" />
+
+			<![CDATA[
+
+					importClass(java.io.File);
+
+					componentName = attributes.get("componentname");
+					targetName = attributes.get("targetname");
+
+					projectDirectory = project.getBaseDir().getParentFile();
+					componentDirectory = new File(projectDirectory, componentName);
+
+					echoTask = project.createTask("echo");
+					echoTask.setMessage("");
+					echoTask.perform();
+					echoTask.setMessage("============================================================");
+					echoTask.perform();
+					echoTask.setMessage("Invoking " + componentName + "'s build script for target " + targetName);
+					echoTask.perform();
+					echoTask.setMessage("============================================================");
+					echoTask.perform();
+
+					antTask = project.createTask("ant");
+					antTask.setAntfile("build.xml");
+					antTask.setDir(componentDirectory);
+					antTask.setTarget(targetName);
+					antTask.setInheritAll(false);
+					antTask.setInheritRefs(false);
+					antTask.perform();
+
+					echoTask.setMessage("");
+					echoTask.perform();
+					echoTask.setMessage("============================================================");
+					echoTask.perform();
+					echoTask.setMessage("Build script for " + componentName + " completed");
+					echoTask.perform();
+					echoTask.setMessage("============================================================");
+					echoTask.perform();
+					echoTask.setMessage("");
+					echoTask.perform();
+
+			]]>
+
+		</scriptdef>
+
+	</target>
+
+	<target
+		name="taskdef.cleansiblings"
+		depends="properties,buildres.properties,buildres.bsf,buildres.commlog,buildres.rhino,taskdef.crosscomponent">
+
+		<!--
+
+			Example usage:
+
+			<cleansiblings
+				componentList="foo; bar;" />
+
+		-->
+		<scriptdef name="cleansiblings" language="javascript">
+
+			<classpath>
+				<fileset dir="${target.buildres.bsf}" includes="*.jar" />
+				<fileset dir="${target.buildres.commlog}" includes="*.jar" />
+				<fileset dir="${target.buildres.rhino}" includes="*.jar" />
+			</classpath>
+
+			<attribute name="componentList" />
+
+			<![CDATA[
+
+				importClass(java.io.File);
+
+				componentList = attributes.get("componentlist");
+
+// TODO: Validate parameters.  No nulls.
+
+				entries = componentList.split(";");
+
+				// For each entry in the JAR list
+				for(i = 0; i < entries.length; i ++) {
+
+					componentName = new java.lang.String(entries[i]);
+					componentName = componentName.trim();
+
+					if(componentName.equals("")) {
+						continue;
+					}
+
+					xcTargetTask = project.createTask("crosscomponenttarget");
+					xcTargetTask.setDynamicAttribute("componentname", componentName);
+					xcTargetTask.setDynamicAttribute("targetname", "clean");
+					xcTargetTask.perform();
+
+				}
+
+			]]>
+
+		</scriptdef>
+
+	</target>
+
+
+</project>
