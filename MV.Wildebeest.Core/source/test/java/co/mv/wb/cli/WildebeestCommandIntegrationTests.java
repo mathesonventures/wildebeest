@@ -414,4 +414,50 @@ public class WildebeestCommandIntegrationTests
 			}
 		}
 	}
+
+
+	@Test public void PluginsCommandTest()
+	{
+		// Setup
+		PrintStream output = System.out;
+
+		WildebeestApi wildebeestApi = Wildebeest
+			.wildebeestApi(new LoggingEventSink(LOG))
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
+
+		WildebeestCommand wb = new WildebeestCommand(
+			output,
+			wildebeestApi);
+
+		// Execute and Verify
+		wb.run(new String[]
+			{
+				"plugins"
+			});
+	}
+
+	@Test public void NonExistingCommandTest()
+	{
+
+		// Setup
+		PrintStream output = System.out;
+
+		WildebeestApi wildebeestApi = Wildebeest
+			.wildebeestApi(new LoggingEventSink(LOG))
+			.withFactoryResourcePlugins()
+			.withFactoryMigrationPlugins()
+			.get();
+
+		WildebeestCommand wb = new WildebeestCommand(
+			output,
+			wildebeestApi);
+
+		// Execute and Verify
+		wb.run(new String[]
+			{
+				"nonExistingCommand"
+			});
+	}
 }

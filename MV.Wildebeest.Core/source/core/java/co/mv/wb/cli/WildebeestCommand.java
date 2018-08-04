@@ -63,6 +63,7 @@ import java.util.Optional;
 		MigrateCommand.class,
 		JumpStateCommand.class,
 		StateCommand.class,
+		PluginsCommand.class,
 		CommandLine.HelpCommand.class
 	})
 public class WildebeestCommand
@@ -70,9 +71,6 @@ public class WildebeestCommand
 	private final PrintStream output;
 	private final WildebeestApi wildebeestApi;
 	private static final Logger LOG = LoggerFactory.getLogger(WildebeestCommand.class);
-
-	@CommandLine.Option(names = {"-p", "--plugins"}, description = "lists all wildebeest plugins", hidden = true)
-	boolean usagePlugins;
 
 	/**
 	 * The main entry point for the command-line interface.
@@ -152,18 +150,16 @@ public class WildebeestCommand
 
 	private void parseArguments(List<CommandLine> parsed)
 	{
-		if (this.usagePlugins == true)
-		{
-			String xml = this.wildebeestApi.describePlugins();
-			this.output.println(xml);
-			return;
-		}
 		if (parsed.size() > 1)
 		{
 			if (parsed.get(1).getCommand().getClass() == CommandLine.HelpCommand.class)
 			{
 				CommandLine.usage(this, this.output);
 				return;
+			}
+			else if (parsed.get(1).getCommand().getClass() == PluginsCommand.class)
+			{
+				pluginsCommand();
 			}
 			else if (parsed.get(1).getCommand().getClass() == MigrateCommand.class)
 			{
@@ -183,11 +179,6 @@ public class WildebeestCommand
 				CommandLine.usage(this, this.output);
 			}
 		}
-		else
-		{
-			// inform user that he entered invalid command and show usage message
-		}
-
 	}
 
 	private static Optional<Resource> tryLoadResource(
@@ -499,6 +490,13 @@ public class WildebeestCommand
 				}
 			}
 		}
+	}
+
+	private void pluginsCommand()
+	{
+		String xml = this.wildebeestApi.describePlugins();
+		this.output.println(xml);
+		return;
 	}
 
 }
