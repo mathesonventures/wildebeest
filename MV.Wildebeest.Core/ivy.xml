@@ -41,7 +41,7 @@
 		<dependency
 			org="MV"
 			name="MV.Wildebeest.Api"
-			rev="0.0.0.0"
+			rev="${meta.project.version.full.dotted}"
 			conf="clc,clr,tlc,tlr->master" />
 
 		<!-- External Dependencies -->
