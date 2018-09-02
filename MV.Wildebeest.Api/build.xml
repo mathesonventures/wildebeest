@@ -21,6 +21,16 @@
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="MV.Wildebeest.Api" default="run">
 
 	<target
+		name="environment.properties"
+		description="Loads environment-specific properties">
+
+		<property file="environment.properties" />
+		<property file="../environment.properties" />
+		<property file="../../environment.properties" />
+
+	</target>
+
+	<target
 		name="meta.project.properties"
 		description="
 			Derives additional project meta information from that loaded from
@@ -221,12 +231,15 @@
 
 	==================================================================================================================== -->
 
-	<target name="core.libcompile" depends="structure.properties,taskdef.ivy">
+	<target name="core.libcompile" depends="meta.project.properties,structure.properties,taskdef.ivy">
 
 		<mkdir dir="${target.core.libcompile}" />
 
 		<!-- Retrieve Ivy-managed dependencies -->
-		<ivy:retrieve conf="clc" pattern="${target.core.libcompile}/[artifact]-[revision].[ext]" />
+		<ivy:retrieve
+			revision="${meta.project.version.full.dotted}"
+			conf="clc"
+			pattern="${target.core.libcompile}/[artifact]-[revision].[ext]" />
 
 		<!-- Retrieve VCS-committed Dependencies -->
 		<copy todir="${target.core.libcompile}">
@@ -358,6 +371,33 @@
 			status="release"
 			resolver="project"
 			overwrite="true">
+
+			<artifacts pattern="${target.core.jar}/[artifact]-[revision].[ext]" />
+
+		</ivy:publish>
+
+	</target>
+
+	<target
+		name="core.jar:pub-remote"
+		depends="environment.properties,structure.properties,meta.component.properties,core.jar">
+
+		<ivy:resolve revision="${meta.project.version.full.dotted}" />
+
+		<ivy:deliver
+			revision="${meta.project.version.full.dotted}"
+			pubrevision="${meta.project.version.full.dotted}"
+			deliverpattern="${target.core.jar}/ivy.xml"
+			status="release" />
+
+		<ivy:makepom ivyfile="${target.core.jar}/ivy.xml" pomfile="${target.core.jar}/pom.xml" />
+
+		<ivy:publish
+			revision="${meta.project.version.full.dotted}"
+			status="release"
+			resolver="nexus"
+			overwrite="true"
+			publishivy="false">
 
 			<artifacts pattern="${target.core.jar}/[artifact]-[revision].[ext]" />
 
@@ -777,6 +817,7 @@
 
 	<target name="cleanrepo" depends="structure.properties">
 
+		<delete dir=".ivy" />
 		<delete dir="${special.project.repo}" />
 
 	</target>
