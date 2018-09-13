@@ -4,6 +4,8 @@
 	Wildebeest Migration Framework
 	Copyright © 2013 - 2018, Matheson Ventures Pte Ltd
 
+	http://mathesonventures.com/
+
 	This file is part of Wildebeest
 
 	Wildebeest is free software: you can redistribute it and/or modify it under
@@ -18,15 +20,71 @@
 	Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
 -->
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="MV.Wildebeest.Api" default="run">
+<project name="com.x1seven.helium.javacomponent" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+
+<!-- ===================================================================================================================
+
+	Properties Targets
+
+==================================================================================================================== -->
+
+	<target name="environment.properties.0" unless="available.environment.properties">
+		<available property="available.environment.properties" file="environment.properties" />
+		<property file="environment.properties" />
+	</target>
+
+	<target name="environment.properties.1" unless="available.environment.properties"
+		depends="environment.properties.0">
+		<available property="available.environment.properties" file="../environment.properties" />
+		<property file="../environment.properties" />
+	</target>
+
+	<target name="environment.properties.2" unless="available.environment.properties"
+		depends="environment.properties.1">
+		<available property="available.environment.properties" file="../../environment.properties" />
+		<property file="../../environment.properties" />
+	</target>
+
+	<target name="environment.properties.3" unless="available.environment.properties"
+		depends="environment.properties.2">
+		<available property="available.environment.properties" file="../../../environment.properties" />
+		<property file="../../../environment.properties" />
+	</target>
 
 	<target
 		name="environment.properties"
-		description="Loads environment-specific properties">
+		description="Load the environment-specific properties"
+		depends="environment.properties.3">
 
-		<property file="environment.properties" />
-		<property file="../environment.properties" />
-		<property file="../../environment.properties" />
+		<property environment="system" />
+
+	</target>
+
+	<target
+		name="environment.properties:echo"
+		depends="environment.properties">
+
+		<echo message="Environment Properties" />
+		<echo message="----------------------" />
+		<echo message="+ environment.repo.nuget: ${environment.repo.nuget}" />
+		<echo message="+ environment.java.home: ${environment.java.home}" />
+		<echo message="+ environment.ant.home: ${environment.ant.home}" />
+		<echo message="+ environment.tomcat.managerurl: ${environment.tomcat.managerurl}" />
+		<echo message="+ environment.tomcat.username: ${environment.tomcat.username}" />
+		<echo message="+ environment.tomcat.password: ${environment.tomcat.password}" />
+		<echo message="" />
+		
+		<echo message="+ environment.repo.nexus.hostname: ${environment.repo.nexus.hostname}" />
+		<echo message="+ environment.repo.nexus.username: ${environment.repo.nexus.username}" />
+		<echo message="+ environment.repo.nexus.password: ${environment.repo.nexus.password}" />
+		<echo message="+ environment.repo.nexus.url.maven: ${environment.repo.nexus.url.maven}" />
+		<echo message="" />
+
+		<echo message="System Properties" />
+		<echo message="-----------------" />
+		<echoproperties prefix="system" />
+		<echo message="" />
 
 	</target>
 
@@ -43,6 +101,7 @@
 		<property file="project.override.properties" />
 		<property file="../project.override.properties" />
 		<property file="../../project.override.properties" />
+
 		<xmlproperty file="project.xml" prefix="meta" />
 		<xmlproperty file="../project.xml" prefix="meta" />
 		<xmlproperty file="../../project.xml" prefix="meta" />
@@ -65,8 +124,7 @@
 		<!--
 			Derive the projects version name
 		-->
-		<property name="meta.project.version.name"
-			value="${meta.project.identity.id}-${meta.project.version.full.dotted}" />
+		<property name="meta.project.version.name" value="${meta.project.identity.id}-${meta.project.version.full.dotted}" />
 
 	</target>
 
@@ -188,8 +246,8 @@
 		<property name="source.test.classtree" value="${source.test}/classtree" />
 
 		<!--
-				Target Properties
-			-->
+			Target Properties
+		-->
 		<property name="target" value="target" />
 
 		<!-- Core  Targets -->
@@ -225,13 +283,17 @@
 	</target>
 
 
-	<!-- ===================================================================================================================
+<!-- ===================================================================================================================
 
-		Core Targets
+	Core Targets
 
-	==================================================================================================================== -->
+==================================================================================================================== -->
 
-	<target name="core.libcompile" depends="meta.project.properties,structure.properties,taskdef.ivy">
+	<target name="core.libcompile" depends="
+		environment.properties,
+		meta.project.properties,
+		structure.properties,
+		taskdef.ivy">
 
 		<mkdir dir="${target.core.libcompile}" />
 
@@ -256,11 +318,18 @@
 
 	</target>
 
-	<target name="core.librun" depends="structure.properties,taskdef.ivy">
+	<target name="core.librun" depends="
+		environment.properties,
+		meta.project.properties,
+		structure.properties,
+		taskdef.ivy">
 
 		<mkdir dir="${target.core.librun}" />
 
-		<ivy:retrieve conf="clr" pattern="${target.core.librun}/[artifact]-[revision].[ext]" />
+		<ivy:retrieve
+			revision="${meta.project.version.full.dotted}"
+			conf="clr"
+			pattern="${target.core.librun}/[artifact]-[revision].[ext]" />
 
 		<!-- Retrieve VCS-committed Dependencies -->
 		<copy todir="${target.core.librun}">
@@ -281,7 +350,9 @@
 		name="core.java"
 		description="
 			Prepares the Java sources for compilation"
-		depends="structure.properties">
+		depends="
+			meta.project.properties,
+			structure.properties">
 
 		<mkdir dir="${target.core.java}" />
 
@@ -309,7 +380,11 @@
 		name="core.classtree"
 		description="
 			Create the target directory and compile the java code into classes."
-		depends="structure.properties,meta.component.properties,core.libcompile,core.java">
+		depends="
+			structure.properties,
+			meta.component.properties,
+			core.libcompile,
+			core.java">
 
 		<mkdir dir="${target.core.classtree}" />
 
@@ -353,18 +428,34 @@
 		name="core.jar"
 		description="
 			Builds a JAR file for the core.classtree artifact."
-		depends="structure.properties,meta.properties,core.classtree">
+		depends="
+			structure.properties,
+			meta.properties,
+			core.classtree">
 
 		<mkdir dir="${target.core.jar}" />
 
 		<jar destfile="${target.core.jar}/${meta.core.jar.filename}"
 			basedir="${target.core.classtree}" />
 
+		<ivy:resolve revision="${meta.project.version.full.dotted}" />
+
+		<ivy:deliver
+			revision="${meta.project.version.full.dotted}"
+			pubrevision="${meta.project.version.full.dotted}"
+			deliverpattern="${target.core.jar}/ivy.xml"
+			status="release" />
+
+		<ivy:makepom ivyfile="${target.core.jar}/ivy.xml" pomfile="${target.core.jar}/${meta.component.version.name}.pom" />
+
 	</target>
 
 	<target
 		name="core.jar:pub-project"
-		depends="structure.properties,meta.component.properties,core.jar">
+		depends="
+			structure.properties,
+			meta.component.properties,
+			core.jar">
 
 		<ivy:publish
 			pubrevision="${meta.project.version.full.dotted}"
@@ -380,17 +471,11 @@
 
 	<target
 		name="core.jar:pub-remote"
-		depends="environment.properties,structure.properties,meta.component.properties,core.jar">
-
-		<ivy:resolve revision="${meta.project.version.full.dotted}" />
-
-		<ivy:deliver
-			revision="${meta.project.version.full.dotted}"
-			pubrevision="${meta.project.version.full.dotted}"
-			deliverpattern="${target.core.jar}/ivy.xml"
-			status="release" />
-
-		<ivy:makepom ivyfile="${target.core.jar}/ivy.xml" pomfile="${target.core.jar}/pom.xml" />
+		depends="
+			environment.properties,
+			structure.properties,
+			meta.component.properties,
+			core.jar">
 
 		<ivy:publish
 			revision="${meta.project.version.full.dotted}"
@@ -409,7 +494,11 @@
 		name="core.app"
 		description="
 			Assemble the core application."
-		depends="structure.properties,meta.project.properties,core.jar,core.librun">
+		depends="
+			structure.properties,
+			meta.project.properties,
+			core.jar,
+			core.librun">
 
 		<mkdir dir="${target.core.app}" />
 		<mkdir dir="${target.core.app}/classes" />
@@ -431,7 +520,7 @@
 			<fileset dir="${source.core.etc}">
 				<include name="**/*.htm" />
 				<include name="**/*.jsp" />
-				<include name="bin/wb" />
+				<include name="**/*.sh" />
 				<include name="**/*.cmd" />
 			</fileset>
 		</copy>
@@ -446,7 +535,7 @@
 				<exclude name="**/*.swp" />
 				<exclude name="**/*.htm" />
 				<exclude name="**/*.jsp" />
-				<exclude name="bin/wb" />
+				<exclude name="**/*.sh" />
 				<exclude name="**/*.cmd" />
 			</fileset>
 		</copy>
@@ -484,7 +573,10 @@
 	<target
 		name="core.app:run"
 		description="Execute the application."
-		depends="structure.properties,meta.component.properties,core.app">
+		depends="
+			structure.properties,
+			meta.component.properties,
+			core.app">
 
 		<java
 			classname="${meta.component.type.java.mainclass}"
@@ -506,7 +598,9 @@
 	<target
 		name="core.javadoc"
 		description="Builds javadoc for the core system."
-		depends="structure.properties,meta.component.properties">
+		depends="
+			structure.properties,
+			meta.component.properties">
 
 		<mkdir dir="${target.core.javadoc}" />
 
@@ -522,17 +616,29 @@
 	</target>
 
 
-	<!-- ===================================================================================================================
+<!-- ===================================================================================================================
 
-		Test Targets
+	Test Targets
 
-	==================================================================================================================== -->
+==================================================================================================================== -->
 
-	<target name="test.libcompile" depends="structure.properties,taskdef.ivy">
+	<target
+		name="test.libcompile"
+		description="
+			Imports the JARs from the test.libcompile source, cross-component
+			dependencies and Maven repository dependencies."
+		depends="
+			environment.properties,
+			meta.project.properties,
+			structure.properties,
+			taskdef.ivy">
 
 		<mkdir dir="${target.test.libcompile}" />
 
-		<ivy:retrieve conf="tlc" pattern="${target.test.libcompile}/[artifact]-[revision].[ext]" />
+		<ivy:retrieve
+			revision="${meta.project.version.full.dotted}"
+			conf="tlc"
+			pattern="${target.test.libcompile}/[artifact]-[revision].[ext]" />
 
 		<!-- Retrieve VCS-committed Dependencies -->
 		<copy todir="${target.test.libcompile}">
@@ -549,11 +655,23 @@
 
 	</target>
 
-	<target name="test.librun" depends="structure.properties,taskdef.ivy">
+	<target
+		name="test.librun"
+		description="
+			Imports the JARs from the test.librun source, cross-component
+			dependencies and Maven repository dependencies."
+		depends="
+			environment.properties,
+			meta.project.properties,
+			structure.properties,
+			taskdef.ivy">
 
 		<mkdir dir="${target.test.librun}" />
 
-		<ivy:retrieve conf="tlc" pattern="${target.test.librun}/[artifact]-[revision].[ext]" />
+		<ivy:retrieve
+			revision="${meta.project.version.full.dotted}"
+			conf="tlc"
+			pattern="${target.test.librun}/[artifact]-[revision].[ext]" />
 
 		<!-- Retrieve VCS-committed Dependencies -->
 		<copy todir="${target.test.librun}">
@@ -574,7 +692,10 @@
 		name="test.classtree"
 		description="
 			Create the target directory and compile the java code into classes."
-		depends="structure.properties,test.libcompile,core.app">
+		depends="
+			structure.properties,
+			test.libcompile,
+			core.app">
 
 		<mkdir dir="${target.test.classtree}" />
 
@@ -619,7 +740,10 @@
 	<target
 		name="test.jar"
 		description="Builds the JAR containing the test classes."
-		depends="structure.properties,meta.properties,test.classtree">
+		depends="
+			structure.properties,
+			meta.properties,
+			test.classtree">
 
 		<mkdir dir="${target.test.jar}" />
 
@@ -631,7 +755,10 @@
 	<target
 		name="test.app"
 		description="Assemble the test application."
-		depends="structure.properties,test.jar,test.librun">
+		depends="
+			structure.properties,
+			test.jar,
+			test.librun">
 
 		<mkdir dir="${target.test.app}" />
 		<mkdir dir="${target.test.app}/classes" />
@@ -642,6 +769,17 @@
 			todir="${target.test.app}"
 			preservelastmodified="true">
 			<fileset dir="${source.test.etc}">
+				<include name="**/*" />
+				<include name="**/*.*" />
+				<exclude name="**/*.swp" />
+			</fileset>
+		</copy>
+
+		<!-- Import the core.etc source -->
+		<copy
+			todir="${target.test.app}"
+			preservelastmodified="true">
+			<fileset dir="${source.core.etc}">
 				<include name="**/*" />
 				<include name="**/*.*" />
 				<exclude name="**/*.swp" />
@@ -766,7 +904,6 @@
 			<fileset dir="${target.test.report}/data" includes="*.xml" />
 
 			<report
-				styledir="${ant.home}/x17_sft_helium_basic/junit"
 				format="noframes"
 				todir="${target.test.report}" />
 
@@ -777,7 +914,9 @@
 	<target
 		name="test.javadoc"
 		description="Builds javadoc for the test system."
-		depends="structure.properties,meta.component.properties">
+		depends="
+			structure.properties,
+			meta.component.properties">
 
 		<mkdir dir="${target.test.javadoc}" />
 
@@ -793,18 +932,11 @@
 	</target>
 
 
-	<!-- ===================================================================================================================
+<!-- ===================================================================================================================
 
-		Utility Targets
+	Utility Targets
 
-	==================================================================================================================== -->
-
-	<target
-		name="deps"
-		description="Retrieve all dependencies."
-		depends="core.libcompile,core.librun,test.libcompile,test.librun">
-
-	</target>
+==================================================================================================================== -->
 
 	<target
 		name="clean"
@@ -817,16 +949,23 @@
 
 	<target name="cleanrepo" depends="structure.properties">
 
-		<delete dir=".ivy" />
 		<delete dir="${special.project.repo}" />
 
 	</target>
 
-	<!-- ===================================================================================================================
+	<target
+		name="deps"
+		description="Retrieve all dependencies."
+		depends="core.libcompile,core.librun,test.libcompile,test.librun">
 
-		Build Resource Targets
+	</target>
 
-	==================================================================================================================== -->
+
+<!-- ===================================================================================================================
+
+	Build Resource Targets
+
+==================================================================================================================== -->
 
 	<!--
 	  Determine the home for ivy.  If an IVY_HOME has been explicity set, then use that.  Otherwise we'll use do a local
@@ -872,9 +1011,9 @@
 	-->
 	<target name="buildres.ivy"
 		depends="
-      structure.properties,
-      structure.properties.buildres.ivy.home,
-      buildres.ivy.exists"
+			structure.properties,
+			structure.properties.buildres.ivy.home,
+			buildres.ivy.exists"
 		if="buildres.ivy.local"
 		unless="buildres.ivy.exists">
 
@@ -885,6 +1024,13 @@
 			dest="${target.buildres.ivy}/lib/ivy-${buildres.ivy.version}.jar" usetimestamp="true" />
 
 	</target>
+
+
+<!-- ===================================================================================================================
+
+	Def Targets
+
+==================================================================================================================== -->
 
 	<!--
 	  Ensure the Ivy task is loaded, regardless of whether the JAR is from a global deployment or from our local
