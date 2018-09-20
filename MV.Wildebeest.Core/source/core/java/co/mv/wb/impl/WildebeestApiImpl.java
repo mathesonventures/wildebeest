@@ -66,8 +66,8 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -809,14 +809,18 @@ public class WildebeestApiImpl implements WildebeestApi
 		try
 		{
 			SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
-			File xsdLocation = new File(WildebeestApiImpl.class.getResource(xsdResourceName).toURI());
-			Schema schema = factory.newSchema(xsdLocation);
+
+			Schema schema;
+			try (InputStream schemaStream = WildebeestApiImpl.class.getResource(xsdResourceName).openStream())
+			{
+				schema = factory.newSchema(new StreamSource(schemaStream));
+			}
 
 			Validator validator = schema.newValidator();
 			Source source = new StreamSource(new StringReader(xml));
 			validator.validate(source);
 		}
-		catch (URISyntaxException | IOException e)
+		catch (IOException e)
 		{
 			throw new RuntimeException(e);
 		}
