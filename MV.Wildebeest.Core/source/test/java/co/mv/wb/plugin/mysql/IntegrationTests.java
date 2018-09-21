@@ -27,6 +27,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PluginBuildException;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -74,6 +75,7 @@ public class IntegrationTests
 		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
+		PluginNotFoundException,
 		SQLException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,
@@ -221,6 +223,7 @@ public class IntegrationTests
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		PluginBuildException,
+		PluginNotFoundException,
 		SQLException,
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException,

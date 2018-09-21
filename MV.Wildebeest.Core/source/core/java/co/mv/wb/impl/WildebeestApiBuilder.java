@@ -19,7 +19,6 @@ package co.mv.wb.impl;
 import co.mv.wb.AssertionPlugin;
 import co.mv.wb.MigrationPlugin;
 import co.mv.wb.PluginGroup;
-import co.mv.wb.PluginHandler;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
 import co.mv.wb.Wildebeest;
@@ -209,19 +208,7 @@ public class WildebeestApiBuilder
 			.getMigrationPlugins(this.wildebeestApi)
 			.stream()
 			.collect(Collectors.toMap(
-				x ->
-				{
-					PluginHandler pluginHandler = x.getClass().getAnnotation(PluginHandler.class);
-
-					if (pluginHandler == null)
-					{
-						throw new RuntimeException(String.format(
-							"MigrationPlugin %s doesn't have a MigrationPluginType",
-							x.getClass().getName()));
-					}
-
-					return pluginHandler.uri();
-				},
+				x -> Wildebeest.getPluginHandlerUri(x),
 				x -> x));
 
 		updated.putAll(factory);
@@ -249,7 +236,7 @@ public class WildebeestApiBuilder
 		Map<String, MigrationPlugin> updated = new HashMap<>(this.migrationPlugins);
 
 		updated.put(
-			WildebeestApiBuilder.getMigrationTypeUri(migrationPlugin),
+			Wildebeest.getPluginHandlerUri(migrationPlugin),
 			migrationPlugin);
 
 		return new WildebeestApiBuilder(
@@ -258,20 +245,6 @@ public class WildebeestApiBuilder
 			this.resourcePlugins,
 			updated,
 			this.assertionPlugins);
-	}
-
-	private static String getMigrationTypeUri(MigrationPlugin migrationPlugin)
-	{
-		PluginHandler pluginHandler = migrationPlugin.getClass().getAnnotation(PluginHandler.class);
-
-		if (pluginHandler == null)
-		{
-			throw new RuntimeException(String.format(
-				"MigrationPlugin %s doesn't have a MigrationPluginType",
-				migrationPlugin.getClass().getName()));
-		}
-
-		return pluginHandler.uri();
 	}
 
 	/**

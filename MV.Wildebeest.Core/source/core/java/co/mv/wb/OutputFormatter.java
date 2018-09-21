@@ -75,6 +75,19 @@ public class OutputFormatter
 	}
 
 	//
+	// System
+	//
+
+	public static String pluginNotFound(PluginNotFoundException e)
+	{
+		return String.format(
+			"Plugin of type \"%s\" to handle \"%s\" not found.  Known plugin URI's are: %s",
+			e.getPluginType().getName(),
+			e.getUri(),
+			String.join(", ", e.getKnownUris()));
+	}
+
+	//
 	// State
 	//
 

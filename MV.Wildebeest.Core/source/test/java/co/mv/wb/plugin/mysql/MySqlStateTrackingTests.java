@@ -8,6 +8,7 @@ import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -36,13 +37,14 @@ public class MySqlStateTrackingTests
 	@Test
 	public void checkIsStateInstantTracked() throws
 		AssertionFailedException,
+		InvalidReferenceException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 
 		//
@@ -74,7 +76,6 @@ public class MySqlStateTrackingTests
 			null,
 			created.getStateId().toString());
 		resource.getMigrations().add(migration1);
-
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
 		migrationPlugins.put(MySqlCreateDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());

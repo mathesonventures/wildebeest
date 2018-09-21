@@ -29,6 +29,7 @@ import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
@@ -202,6 +203,10 @@ public class WildebeestCommand
 		{
 			out.println(OutputFormatter.fileLoad(e, "resource"));
 		}
+		catch (InvalidReferenceException e)
+		{
+			out.println(OutputFormatter.missingReference(e));
+		}
 		catch (LoaderFault e)
 		{
 			out.println(OutputFormatter.loaderFault("resource"));
@@ -213,10 +218,6 @@ public class WildebeestCommand
 		catch (XmlValidationException e)
 		{
 			out.println(OutputFormatter.resourceValidation(e, "resource"));
-		}
-		catch (InvalidReferenceException e)
-		{
-			out.println(OutputFormatter.missingReference(e));
 		}
 
 		return Optional.ofNullable(resource);
@@ -303,6 +304,7 @@ public class WildebeestCommand
 		String resourceFilename = parsed.get(1).getParseResult().matchedOption("--resource").getValue();
 		String instanceFilename = parsed.get(1).getParseResult().matchedOption("--instance").getValue();
 		String targetState = "";
+
 		if (parsed.get(1).getParseResult().hasMatchedOption("--target-state"))
 		{
 			targetState = parsed.get(1).getParseResult().matchedOption("--target-state").getValue();
@@ -334,6 +336,34 @@ public class WildebeestCommand
 						instance.get(),
 						targetState);
 				}
+				catch (AssertionFailedException e)
+				{
+					this.output.println(OutputFormatter.assertionFailed(e));
+				}
+				catch (IndeterminateStateException e)
+				{
+					this.output.println(OutputFormatter.indeterminateState(e));
+				}
+				catch (InvalidReferenceException e)
+				{
+					this.output.print(OutputFormatter.invalidReferenceException(e));
+				}
+				catch (InvalidStateSpecifiedException e)
+				{
+					this.output.println(OutputFormatter.invalidStateSpecified(e));
+				}
+				catch (MigrationFailedException e)
+				{
+					this.output.print(OutputFormatter.migrationFailed(e));
+				}
+				catch (MigrationNotPossibleException e)
+				{
+					this.output.println(OutputFormatter.migrationNotPossible(e));
+				}
+				catch (PluginNotFoundException e)
+				{
+					this.output.println(OutputFormatter.pluginNotFound(e));
+				}
 				catch (TargetNotSpecifiedException e)
 				{
 					this.output.println(OutputFormatter.targetNotSpecified());
@@ -341,30 +371,6 @@ public class WildebeestCommand
 				catch (UnknownStateSpecifiedException e)
 				{
 					this.output.println(OutputFormatter.unknownStateSpecified(e));
-				}
-				catch (InvalidStateSpecifiedException e)
-				{
-					this.output.println(OutputFormatter.invalidStateSpecified(e));
-				}
-				catch (MigrationNotPossibleException e)
-				{
-					this.output.println(OutputFormatter.migrationNotPossible(e));
-				}
-				catch (IndeterminateStateException e)
-				{
-					this.output.println(OutputFormatter.indeterminateState(e));
-				}
-				catch (MigrationFailedException e)
-				{
-					this.output.print(OutputFormatter.migrationFailed(e));
-				}
-				catch (AssertionFailedException e)
-				{
-					this.output.println(OutputFormatter.assertionFailed(e));
-				}
-				catch (InvalidReferenceException e)
-				{
-					this.output.print(OutputFormatter.invalidReferenceException(e));
 				}
 			}
 		}
@@ -383,10 +389,10 @@ public class WildebeestCommand
 			}
 		}
 
-
 		String resourceFilename = parsed.get(1).getParseResult().matchedOption("--resource").getValue();
 		String instanceFilename = parsed.get(1).getParseResult().matchedOption("--instance").getValue();
 		String targetState = "";
+
 		if (parsed.get(1).getParseResult().hasMatchedOption("--target-state"))
 		{
 			targetState = parsed.get(1).getParseResult().matchedOption("--target-state").getValue();
@@ -419,9 +425,9 @@ public class WildebeestCommand
 						instance.get(),
 						targetState);
 				}
-				catch (UnknownStateSpecifiedException e)
+				catch (AssertionFailedException e)
 				{
-					this.output.println(OutputFormatter.unknownStateSpecified(e));
+					this.output.println(OutputFormatter.assertionFailed(e));
 				}
 				catch (IndeterminateStateException e)
 				{
@@ -431,13 +437,17 @@ public class WildebeestCommand
 				{
 					this.output.println(OutputFormatter.invalidStateSpecified(e));
 				}
-				catch (AssertionFailedException e)
-				{
-					this.output.println(OutputFormatter.assertionFailed(e));
-				}
 				catch (JumpStateFailedException e)
 				{
 					this.output.println(OutputFormatter.jumpStateFailed(e));
+				}
+				catch (PluginNotFoundException e)
+				{
+					this.output.println(OutputFormatter.pluginNotFound(e));
+				}
+				catch (UnknownStateSpecifiedException e)
+				{
+					this.output.println(OutputFormatter.unknownStateSpecified(e));
 				}
 			}
 		}
@@ -488,6 +498,10 @@ public class WildebeestCommand
 				{
 					this.output.println(e.getMessage());
 				}
+				catch (PluginNotFoundException e)
+				{
+					this.output.println(OutputFormatter.pluginNotFound(e));
+				}
 			}
 		}
 	}
@@ -498,5 +512,4 @@ public class WildebeestCommand
 		this.output.println(xml);
 		return;
 	}
-
 }

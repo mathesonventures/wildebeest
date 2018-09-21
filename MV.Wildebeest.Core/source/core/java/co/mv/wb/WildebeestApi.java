@@ -40,9 +40,9 @@ public interface WildebeestApi
 		File resourceFile) throws
 		FileLoadException,
 		LoaderFault,
+		InvalidReferenceException,
 		PluginBuildException,
-		XmlValidationException,
-		InvalidReferenceException;
+		XmlValidationException;
 
 	/**
 	 * Deserializes an {@link Instance} from the specified descriptor file.
@@ -76,8 +76,9 @@ public interface WildebeestApi
 	List<AssertionResult> assertState(
 		Resource resource,
 		Instance instance) throws
+		AssertionFailedException,
 		IndeterminateStateException,
-		AssertionFailedException;
+		PluginNotFoundException;
 
 	/**
 	 * Checks the state of an instance of a resource.
@@ -91,8 +92,9 @@ public interface WildebeestApi
 	void state(
 		Resource resource,
 		Instance instance) throws
+		AssertionFailedException,
 		IndeterminateStateException,
-		AssertionFailedException;
+		PluginNotFoundException;
 
 	/**
 	 * Migrates an instance of a resource to a particular state.
@@ -120,13 +122,14 @@ public interface WildebeestApi
 		Instance instance,
 		String targetState) throws
 		AssertionFailedException,
+		IndeterminateStateException,
+		InvalidReferenceException,
+		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
-		IndeterminateStateException,
-		InvalidStateSpecifiedException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException;
+		UnknownStateSpecifiedException;
 
 	/**
 	 * Jumps the recorded state of the specified instance to the supplied target state.  This can be useful when you are
@@ -150,6 +153,7 @@ public interface WildebeestApi
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
 		JumpStateFailedException,
+		PluginNotFoundException,
 		UnknownStateSpecifiedException;
 
 	/**

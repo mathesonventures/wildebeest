@@ -22,6 +22,7 @@ import co.mv.wb.InvalidReferenceException;
 import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
@@ -62,12 +63,13 @@ public class WildebeestApiImplMigrateUnitTests
 	public void migrate_targetSpecifiedNoDefault_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
+		InvalidReferenceException,
 		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 		// Setup
 		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
@@ -104,12 +106,13 @@ public class WildebeestApiImplMigrateUnitTests
 	public void migrate_targetSpecifiedWithDefault_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
+		InvalidReferenceException,
 		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 		// Setup
 		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
@@ -183,13 +186,14 @@ public class WildebeestApiImplMigrateUnitTests
 	@Test
 	public void migrate_targetNotSpecifiedWithDefault_succeeds() throws
 		AssertionFailedException,
+		InvalidReferenceException,
 		IndeterminateStateException,
 		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 		// Setup
 		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
@@ -226,12 +230,13 @@ public class WildebeestApiImplMigrateUnitTests
 	public void migrate_withAssertionsOnToStateStartingFromNonExistentState_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
+		InvalidReferenceException,
 		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 		// Setup
 		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
@@ -269,12 +274,13 @@ public class WildebeestApiImplMigrateUnitTests
 	public void migrate_withAssertionsOnToStateStartingFromExistantState_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
+		InvalidReferenceException,
 		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 		// Setup
 		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder

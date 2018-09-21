@@ -35,7 +35,9 @@ import java.sql.SQLException;
  *
  * @since 4.0
  */
-@PluginHandler(uri = "co.mv.wb.sqlserver:SqlServerDropDatabase")
+@PluginHandler(
+	uri = "co.mv.wb.sqlserver:SqlServerDropDatabase"
+)
 public class SqlServerDropDatabaseMigrationPlugin implements MigrationPlugin
 {
 	@Override public void perform(

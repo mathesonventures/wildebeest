@@ -21,6 +21,7 @@ import co.mv.wb.AssertionPlugin;
 import co.mv.wb.AssertionResponse;
 import co.mv.wb.Instance;
 import co.mv.wb.ModelExtensions;
+import co.mv.wb.PluginHandler;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.ImmutableAssertionResponse;
 
@@ -29,6 +30,9 @@ import co.mv.wb.plugin.base.ImmutableAssertionResponse;
  *
  * @since 4.0
  */
+@PluginHandler(
+	uri = "co.mv.wb.sqlserver:SqlServerSchemaExists"
+)
 public class SqlServerSchemaExistsAssertionPlugin implements AssertionPlugin
 {
 	@Override public AssertionResponse perform(
