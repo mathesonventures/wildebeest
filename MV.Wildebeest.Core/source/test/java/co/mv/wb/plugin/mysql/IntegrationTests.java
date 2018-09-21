@@ -21,7 +21,6 @@ import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
@@ -72,7 +71,6 @@ public class IntegrationTests
 	public void createDatabaseAddTableInsertRows() throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		PluginNotFoundException,
@@ -218,7 +216,6 @@ public class IntegrationTests
 	public void loadMySqlDatabaseResourceAndInstanceAndMigrate() throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		LoaderFault,
 		MigrationFailedException,
 		MigrationNotPossibleException,

@@ -3,7 +3,6 @@ package co.mv.wb.plugin.postgresql;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
@@ -37,7 +36,6 @@ public class PostgreSqlStateTrackingTests
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
 		PluginNotFoundException,

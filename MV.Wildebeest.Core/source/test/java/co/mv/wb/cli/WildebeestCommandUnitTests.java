@@ -21,7 +21,6 @@ import co.mv.wb.Asserts;
 import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
@@ -94,7 +93,6 @@ public class WildebeestCommandUnitTests
 		AssertionFailedException,
 		FileLoadException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		LoaderFault,
 		MigrationFailedException,
 		MigrationNotPossibleException,

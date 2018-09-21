@@ -19,7 +19,6 @@ package co.mv.wb.impl;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.PluginNotFoundException;
@@ -64,7 +63,6 @@ public class WildebeestApiImplMigrateUnitTests
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		PluginNotFoundException,
@@ -107,7 +105,6 @@ public class WildebeestApiImplMigrateUnitTests
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		PluginNotFoundException,
@@ -188,7 +185,6 @@ public class WildebeestApiImplMigrateUnitTests
 		AssertionFailedException,
 		InvalidReferenceException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		PluginNotFoundException,
@@ -231,7 +227,6 @@ public class WildebeestApiImplMigrateUnitTests
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		PluginNotFoundException,
@@ -275,7 +270,6 @@ public class WildebeestApiImplMigrateUnitTests
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		PluginNotFoundException,

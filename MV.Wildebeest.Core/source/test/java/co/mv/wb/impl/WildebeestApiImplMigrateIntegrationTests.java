@@ -20,7 +20,6 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
@@ -68,7 +67,6 @@ public class WildebeestApiImplMigrateIntegrationTests
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
 		PluginNotFoundException,
@@ -116,7 +114,6 @@ public class WildebeestApiImplMigrateIntegrationTests
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
 		PluginNotFoundException,
@@ -207,7 +204,6 @@ public class WildebeestApiImplMigrateIntegrationTests
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
 		PluginNotFoundException,
@@ -347,7 +343,6 @@ public class WildebeestApiImplMigrateIntegrationTests
 		AssertionFailedException,
 		InvalidReferenceException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
 		PluginNotFoundException,
@@ -418,7 +413,6 @@ public class WildebeestApiImplMigrateIntegrationTests
 		AssertionFailedException,
 		InvalidReferenceException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
 		PluginNotFoundException,
@@ -493,7 +487,6 @@ public class WildebeestApiImplMigrateIntegrationTests
 		AssertionFailedException,
 		InvalidReferenceException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
 		PluginNotFoundException,

@@ -91,13 +91,6 @@ public class OutputFormatter
 	// State
 	//
 
-	public static String invalidStateSpecified(InvalidStateSpecifiedException e)
-	{
-		return String.format(
-			"The state \"%s\" that was specified is not a valid Wildebeest state identifier",
-			e.getSpecifiedState());
-	}
-
 	public static String unknownStateSpecified(UnknownStateSpecifiedException e)
 	{
 		return String.format(

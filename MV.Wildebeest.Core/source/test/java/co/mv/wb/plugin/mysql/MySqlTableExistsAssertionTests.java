@@ -21,7 +21,6 @@ import co.mv.wb.AssertionResponse;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
@@ -64,7 +63,6 @@ public class MySqlTableExistsAssertionTests
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
 		PluginNotFoundException,
@@ -160,7 +158,6 @@ public class MySqlTableExistsAssertionTests
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
 		PluginNotFoundException,

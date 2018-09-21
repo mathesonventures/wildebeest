@@ -22,7 +22,6 @@ import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.JumpStateFailedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
@@ -348,10 +347,6 @@ public class WildebeestCommand
 				{
 					this.output.print(OutputFormatter.invalidReferenceException(e));
 				}
-				catch (InvalidStateSpecifiedException e)
-				{
-					this.output.println(OutputFormatter.invalidStateSpecified(e));
-				}
 				catch (MigrationFailedException e)
 				{
 					this.output.print(OutputFormatter.migrationFailed(e));
@@ -432,10 +427,6 @@ public class WildebeestCommand
 				catch (IndeterminateStateException e)
 				{
 					this.output.println(OutputFormatter.indeterminateState(e));
-				}
-				catch (InvalidStateSpecifiedException e)
-				{
-					this.output.println(OutputFormatter.invalidStateSpecified(e));
 				}
 				catch (JumpStateFailedException e)
 				{

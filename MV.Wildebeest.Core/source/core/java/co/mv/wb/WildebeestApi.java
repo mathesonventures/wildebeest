@@ -111,7 +111,6 @@ public interface WildebeestApi
 	 *                                        migration path
 	 * @throws IndeterminateStateException    if the current state of the resource cannot be determined prior to
 	 *                                        migrating.
-	 * @throws InvalidStateSpecifiedException if the specified state is not a valid state identifier.
 	 * @throws TargetNotSpecifiedException    if no target state is specified and the resource does not have a default
 	 *                                        target.
 	 * @throws UnknownStateSpecifiedException if the specified state does not exist in the resource.
@@ -124,7 +123,6 @@ public interface WildebeestApi
 		AssertionFailedException,
 		IndeterminateStateException,
 		InvalidReferenceException,
-		InvalidStateSpecifiedException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		PluginNotFoundException,
@@ -141,7 +139,6 @@ public interface WildebeestApi
 	 * @param targetState the state to jump to.
 	 * @throws AssertionFailedException       if one or more assertions of the target state fail after jumping state.
 	 * @throws IndeterminateStateException    if the current state of the instance cannot be determined.
-	 * @throws InvalidStateSpecifiedException if the specified state is not a valid state identifier.
 	 * @throws JumpStateFailedException       if the jumpstate operation fails for any reason.
 	 * @throws UnknownStateSpecifiedException if the specified state does not exist in the resource.
 	 */
@@ -151,7 +148,6 @@ public interface WildebeestApi
 		String targetState) throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		JumpStateFailedException,
 		PluginNotFoundException,
 		UnknownStateSpecifiedException;

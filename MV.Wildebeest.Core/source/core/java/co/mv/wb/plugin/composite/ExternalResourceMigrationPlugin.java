@@ -21,7 +21,6 @@ import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
@@ -127,14 +126,6 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 				String.format(
 					ExternalResourceMigrationPlugin.ExceptionFormatString,
 					OutputFormatter.invalidReferenceException(e)));
-		}
-		catch (InvalidStateSpecifiedException e)
-		{
-			throw new MigrationFailedException(
-				migration.getMigrationId(),
-				String.format(
-					ExternalResourceMigrationPlugin.ExceptionFormatString,
-					OutputFormatter.invalidStateSpecified(e)));
 		}
 		catch (MigrationNotPossibleException e)
 		{
