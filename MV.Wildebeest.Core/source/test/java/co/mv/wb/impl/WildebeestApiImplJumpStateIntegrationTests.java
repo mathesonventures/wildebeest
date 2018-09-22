@@ -19,8 +19,8 @@ package co.mv.wb.impl;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.JumpStateFailedException;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.Resource;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
@@ -129,8 +129,8 @@ public class WildebeestApiImplJumpStateIntegrationTests
 	public void jumpstate_existentState_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		JumpStateFailedException,
+		PluginNotFoundException,
 		UnknownStateSpecifiedException
 	{
 		// Setup

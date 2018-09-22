@@ -3,11 +3,11 @@ package co.mv.wb.plugin.sqlserver;
 import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -39,12 +39,12 @@ public class SqlServerStateTrackingTests
 	public void checkIsStateInstantTracked() throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
+		InvalidReferenceException,
 		MigrationFailedException,
 		MigrationNotPossibleException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 
 		//
@@ -127,5 +127,4 @@ public class SqlServerStateTrackingTests
 		}
 
 	}
-
 }

@@ -21,11 +21,11 @@ import co.mv.wb.AssertionResponse;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -42,7 +42,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -63,13 +62,13 @@ public class SqlServerTableDoesNotExistAssertionTests
 	@Test
 	public void applyForExistingTableFails() throws
 		AssertionFailedException,
+		InvalidReferenceException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 
 		//
@@ -164,12 +163,12 @@ public class SqlServerTableDoesNotExistAssertionTests
 	public void applyForNonExistentTableSucceeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
+		InvalidReferenceException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 
 		//
@@ -253,7 +252,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 	}
 
 	@Test
-	public void applyForNonExistentDatabaseFails() throws SQLException
+	public void applyForNonExistentDatabaseFails()
 	{
 		// Setup
 		SqlServerProperties properties = SqlServerProperties.get();

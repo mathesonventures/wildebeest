@@ -20,11 +20,11 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.MigrationPlugin;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
@@ -58,7 +58,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @since 4.0
  */
-public class WildebeestApiImplMigrateIntegrationUnitTests
+public class WildebeestApiImplMigrateIntegrationTests
 {
 	private static final Logger LOG = LoggerFactory.getLogger(WildebeestApiImplMigrateUnitTests.class);
 
@@ -66,12 +66,12 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 	public void migrate_nonExistentToFirstState_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
+		InvalidReferenceException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 		// Setup
 		Resource resource = new ResourceImpl(
@@ -113,12 +113,12 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 	public void migrate_nonExistentToDeepState_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
+		InvalidReferenceException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 
 		//
@@ -203,12 +203,12 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 	public void migrate_nonExistentToDeepStateWithMultipleBranches_succeeds() throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
+		InvalidReferenceException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 
 		//
@@ -341,13 +341,13 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 	@Test
 	public void migrate_toSameState_succeeds() throws
 		AssertionFailedException,
+		InvalidReferenceException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 
 		//
@@ -411,13 +411,13 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 	@Test
 	public void migrate_toSameStateUsingName_succeeds() throws
 		AssertionFailedException,
+		InvalidReferenceException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 
 		//
@@ -485,13 +485,13 @@ public class WildebeestApiImplMigrateIntegrationUnitTests
 	@Test
 	public void migrate_stateToNonExistent_succeeds() throws
 		AssertionFailedException,
+		InvalidReferenceException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
 		MigrationNotPossibleException,
 		MigrationFailedException,
+		PluginNotFoundException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 
 		//

@@ -23,6 +23,7 @@ import co.mv.wb.AssertionResult;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.Wildebeest;
@@ -63,8 +64,9 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	 */
 	@Test
 	public void assertState_noAssertions_succeeds() throws
+		AssertionFailedException,
 		IndeterminateStateException,
-		AssertionFailedException
+		PluginNotFoundException
 	{
 		// Setup
 		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
@@ -96,8 +98,9 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	 */
 	@Test
 	public void assertState_oneAssertion_succeeds() throws
+		AssertionFailedException,
 		IndeterminateStateException,
-		AssertionFailedException
+		PluginNotFoundException
 	{
 		// Setup
 		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder
@@ -139,8 +142,9 @@ public class WildebeestApiImplAssertStateIntegrationTests
 	 */
 	@Test
 	public void assertState_multipleAssertions_succeeds() throws
+		AssertionFailedException,
 		IndeterminateStateException,
-		AssertionFailedException
+		PluginNotFoundException
 	{
 		// Setup
 		TestContext_ResourceAndInstance context = TestContext_ResourceAndInstance.Builder

@@ -20,11 +20,11 @@ import co.mv.wb.AssertionFailedException;
 import co.mv.wb.Asserts;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.MigrationFailedException;
 import co.mv.wb.MigrationNotPossibleException;
 import co.mv.wb.PluginBuildException;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
@@ -56,15 +56,15 @@ public class ResourceLoaderIntegrationTests
 	public void loadAndMigrateMySqlResourceFromXml() throws
 		AssertionFailedException,
 		IndeterminateStateException,
-		InvalidStateSpecifiedException,
+		InvalidReferenceException,
 		LoaderFault,
 		MigrationFailedException,
 		MigrationNotPossibleException,
 		PluginBuildException,
+		PluginNotFoundException,
 		SQLException,
 		TargetNotSpecifiedException,
-		UnknownStateSpecifiedException,
-		InvalidReferenceException
+		UnknownStateSpecifiedException
 	{
 
 		//
@@ -161,6 +161,5 @@ public class ResourceLoaderIntegrationTests
 		{
 			MySqlUtil.dropDatabase(instance, databaseName);
 		}
-
 	}
 }

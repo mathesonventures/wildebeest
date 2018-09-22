@@ -35,7 +35,9 @@ import java.sql.SQLException;
  *
  * @since 4.0
  */
-@PluginHandler(uri = "co.mv.wb.sqlserver:SqlServerCreateSchema")
+@PluginHandler(
+	uri = "co.mv.wb.sqlserver:SqlServerCreateSchema"
+)
 public class SqlServerCreateSchemaMigrationPlugin implements MigrationPlugin
 {
 	@Override public void perform(

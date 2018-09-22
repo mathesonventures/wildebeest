@@ -253,4 +253,41 @@ public class Wildebeest
 
 		return result;
 	}
+
+	public static String getPluginHandlerUri(ResourcePlugin plugin)
+	{
+		if (plugin == null) throw new ArgumentNullException("plugin");
+
+		return Wildebeest.getPluginHandlerUriInner(plugin);
+	}
+
+	public static String getPluginHandlerUri(AssertionPlugin plugin)
+	{
+		if (plugin == null) throw new ArgumentNullException("plugin");
+
+		return Wildebeest.getPluginHandlerUriInner(plugin);
+	}
+
+	public static String getPluginHandlerUri(MigrationPlugin plugin)
+	{
+		if (plugin == null) throw new ArgumentNullException("plugin");
+
+		return Wildebeest.getPluginHandlerUriInner(plugin);
+	}
+
+	private static String getPluginHandlerUriInner(Object plugin)
+	{
+		if (plugin == null) throw new ArgumentNullException("plugin");
+
+		PluginHandler info = plugin.getClass().getAnnotation(PluginHandler.class);
+
+		if (info == null)
+		{
+			throw new RuntimeException(String.format(
+				"plugin class %s is not annotated with PluginHandler",
+				plugin.getClass().getName()));
+		}
+
+		return info.uri();
+	}
 }

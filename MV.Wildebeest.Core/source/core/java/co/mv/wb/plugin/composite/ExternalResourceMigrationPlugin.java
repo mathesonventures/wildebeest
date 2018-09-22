@@ -21,7 +21,6 @@ import co.mv.wb.FileLoadException;
 import co.mv.wb.IndeterminateStateException;
 import co.mv.wb.Instance;
 import co.mv.wb.InvalidReferenceException;
-import co.mv.wb.InvalidStateSpecifiedException;
 import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationFailedException;
@@ -31,6 +30,7 @@ import co.mv.wb.ModelExtensions;
 import co.mv.wb.OutputFormatter;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.PluginHandler;
+import co.mv.wb.PluginNotFoundException;
 import co.mv.wb.Resource;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
@@ -103,6 +103,46 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 				instance,
 				migrationT.getTarget());
 		}
+		catch (AssertionFailedException e)
+		{
+			throw new MigrationFailedException(
+				migration.getMigrationId(),
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.assertionFailed(e)));
+		}
+		catch (IndeterminateStateException e)
+		{
+			throw new MigrationFailedException(
+				migration.getMigrationId(),
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.indeterminateState(e)));
+		}
+		catch (InvalidReferenceException e)
+		{
+			throw new MigrationFailedException(
+				migration.getMigrationId(),
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.invalidReferenceException(e)));
+		}
+		catch (MigrationNotPossibleException e)
+		{
+			throw new MigrationFailedException(
+				migration.getMigrationId(),
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.migrationNotPossible(e)));
+		}
+		catch (PluginNotFoundException e)
+		{
+			throw new MigrationFailedException(
+				migration.getMigrationId(),
+				String.format(
+					ExternalResourceMigrationPlugin.ExceptionFormatString,
+					OutputFormatter.pluginNotFound(e)));
+		}
 		catch (TargetNotSpecifiedException e)
 		{
 			throw new MigrationFailedException(
@@ -118,46 +158,6 @@ public class ExternalResourceMigrationPlugin implements MigrationPlugin
 				String.format(
 					ExternalResourceMigrationPlugin.ExceptionFormatString,
 					OutputFormatter.unknownStateSpecified(e)));
-		}
-		catch (InvalidStateSpecifiedException e)
-		{
-			throw new MigrationFailedException(
-				migration.getMigrationId(),
-				String.format(
-					ExternalResourceMigrationPlugin.ExceptionFormatString,
-					OutputFormatter.invalidStateSpecified(e)));
-		}
-		catch (MigrationNotPossibleException e)
-		{
-			throw new MigrationFailedException(
-				migration.getMigrationId(),
-				String.format(
-					ExternalResourceMigrationPlugin.ExceptionFormatString,
-					OutputFormatter.migrationNotPossible(e)));
-		}
-		catch (IndeterminateStateException e)
-		{
-			throw new MigrationFailedException(
-				migration.getMigrationId(),
-				String.format(
-					ExternalResourceMigrationPlugin.ExceptionFormatString,
-					OutputFormatter.indeterminateState(e)));
-		}
-		catch (AssertionFailedException e)
-		{
-			throw new MigrationFailedException(
-				migration.getMigrationId(),
-				String.format(
-					ExternalResourceMigrationPlugin.ExceptionFormatString,
-					OutputFormatter.assertionFailed(e)));
-		}
-		catch (InvalidReferenceException e)
-		{
-			throw new MigrationFailedException(
-				migration.getMigrationId(),
-				String.format(
-					ExternalResourceMigrationPlugin.ExceptionFormatString,
-					OutputFormatter.invalidReferenceException(e)));
 		}
 	}
 }

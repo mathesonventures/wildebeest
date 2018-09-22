@@ -75,15 +75,21 @@ public class OutputFormatter
 	}
 
 	//
-	// State
+	// System
 	//
 
-	public static String invalidStateSpecified(InvalidStateSpecifiedException e)
+	public static String pluginNotFound(PluginNotFoundException e)
 	{
 		return String.format(
-			"The state \"%s\" that was specified is not a valid Wildebeest state identifier",
-			e.getSpecifiedState());
+			"Plugin of type \"%s\" to handle \"%s\" not found.  Known plugin URI's are: %s",
+			e.getPluginType().getName(),
+			e.getUri(),
+			String.join(", ", e.getKnownUris()));
 	}
+
+	//
+	// State
+	//
 
 	public static String unknownStateSpecified(UnknownStateSpecifiedException e)
 	{
