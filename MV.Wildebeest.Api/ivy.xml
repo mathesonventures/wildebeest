@@ -38,8 +38,8 @@
 	</publications>
 
 	<dependencies>
-		<dependency org="junit" name="junit" rev="4.11" conf="tlc->master" />
-		<dependency org="joda-time" name="joda-time" rev="2.10" conf="clc->master" />
+		<dependency org="junit" name="junit" rev="4.12" conf="tlc->master" />
+		<dependency org="joda-time" name="joda-time" rev="2.10.1" conf="clc->master" />
 	</dependencies>
 
 </ivy-module>
