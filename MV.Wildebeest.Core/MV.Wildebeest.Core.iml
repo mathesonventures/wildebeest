@@ -46,7 +46,7 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/test/libcompile/javaee-api-7.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/target/test/libcompile/javaee-api-8.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -79,15 +79,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/log4j-1.2.17.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
@@ -109,7 +100,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/mysql-connector-java-8.0.11.jar!/" />
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/mysql-connector-java-8.0.13.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -127,7 +118,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/picocli-3.3.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/picocli-3.8.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -136,7 +127,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/postgresql-9.3-1100-jdbc41.jar!/" />
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/postgresql-42.2.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -155,15 +146,6 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/target/core/libcompile/slf4j-api-1.7.25.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/slf4j-log4j12-1.7.25.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
