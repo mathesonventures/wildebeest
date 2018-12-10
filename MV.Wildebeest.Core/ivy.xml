@@ -39,33 +39,28 @@
 
 	<dependencies>
 		<!-- Intra-Project Dependencies -->
-		<dependency
-			org="MV"
-			name="MV.Wildebeest.Api"
-			rev="${meta.project.version.full.dotted}"
-			conf="clc,clr,tlc,tlr->master" />
+		<dependency org="${meta.project.identity.organization.id}" name="${meta.project.identity.id}.Api" rev="${meta.project.version.full.dotted}"
+			conf="clc,clr,tlc,tlr->master;" />
 
 		<!-- External Dependencies -->
-		<dependency org="javax" name="javaee-api" rev="7.0" conf="tlc,tlr->default" />
-		<dependency org="junit" name="junit" rev="4.11" conf="tlc,tlr->default" />
-		<dependency org="mysql" name="mysql-connector-java" rev="8.0.11" conf="clc,clr,tlr->default" />
-		<dependency org="org.mockito" name="mockito-all" rev="1.10.19" conf="tlc,tlr->default" />
-		<dependency org="org.postgresql" name="postgresql" rev="9.3-1100-jdbc41" conf="clc,clr,tlr->default" />
-		<dependency org="org.reflections" name="reflections" rev="0.9.11" conf="clc,clr,tlc,tlr->default" />
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" conf="clc,clr,tlc,tlr->default" />
-		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.7" conf="clc,clr,tlc,tlr->default" />
-		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.7" conf="clc,clr,tlc,tlr->default" />
-		<dependency org="log4j" name="log4j" rev="1.2.17" conf="clc,clr,tlc,tlr->default" />
-		<dependency org="org.opengis.cite.xerces" name="xercesImpl-xsd11" rev="2.12-beta-r1667115" conf="clc,clr,tlr->default" />
-		<dependency org="org.opengis.cite.eclipse.webtools.sse" name="org.eclipse.wst.xml.xpath2.processor" rev="1.1.5-738bb7b85d" conf="clr,tlr->default" />
-		<dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="tlc,tlr->default" />
-		<dependency org="info.picocli" name="picocli" rev="3.3.0" conf="clc,clr,tlr->default"/>
-		<dependency org="joda-time" name="joda-time" rev="2.10" conf="clc,clr,tlr->default"/>
-		<dependency org="javassist" name="javassist" rev="3.12.1.GA" conf="clc,clr,tlr->default"/>
-		<dependency org="com.google.guava" name="guava" rev="r05" conf="clc,clr,tlr->default"/>
-		<dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.9.13" conf="clc,clr,tlc,tlr->default" />
-
-
+		<dependency org="javax" name="javaee-api" rev="8.0" conf="tlc,tlr->master; tlr->runtime;" />
+		<dependency org="junit" name="junit" rev="4.12" conf="tlc,tlr->master; tlr->runtime;" />
+		<dependency org="mysql" name="mysql-connector-java" rev="8.0.13" conf="clc,clr,tlr->master; clr,tlr->runtime;" />
+		<dependency org="org.mockito" name="mockito-all" rev="1.10.19" conf="tlc,tlr->master; tlr->runtime;" />
+		<dependency org="org.postgresql" name="postgresql" rev="42.2.5" conf="clc,clr,tlr->master; clr,tlr->runtime;" />
+		<dependency org="org.reflections" name="reflections" rev="0.9.11" conf="clc,clr,tlc,tlr->master; clr,tlr->runtime;" />
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25" conf="clc,clr,tlc,tlr->master; clr,tlr->runtime;" />
+		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.25" conf="clc,clr,tlc,tlr->master; clr,tlr->runtime;" />
+		<dependency org="org.opengis.cite.xerces" name="xercesImpl-xsd11" rev="2.12-beta-r1667115" conf="clc,clr,tlr->master; clr,tlr->runtime;" />
+		<dependency org="org.opengis.cite.eclipse.webtools.sse" name="org.eclipse.wst.xml.xpath2.processor" rev="1.1.5-738bb7b85d" conf="clr,tlr->master; clr,tlr->runtime;" />
+		<dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="tlc,tlr->master; tlr->runtime;" />
+		<dependency org="info.picocli" name="picocli" rev="3.8.2" conf="clc,clr,tlr->master; clr,tlr->runtime;"/>
+		<dependency org="joda-time" name="joda-time" rev="2.10.1" conf="clc,clr,tlr->master; clr,tlr->runtime;"/>
+		<dependency org="javassist" name="javassist" rev="3.12.1.GA" conf="clc,clr,tlr->master; clr,tlr->runtime;"/>
+		<dependency org="com.google.guava" name="guava" rev="23.0" conf="clc,clr,tlr->master; clr,tlr->runtime;"/>
+		<dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.9.13" conf="clc,clr,tlr->master; clr,tlr->runtime;" />
+		<dependency org="org.codehaus.jackson" name="jackson-core-asl" rev="1.9.13"  conf="clc,clr,tlr->master; clr,tlr->runtime;" />
+		<dependency org="com.microsoft.sqlserver" name="mssql-jdbc" rev="7.0.0.jre8"  conf="clc,clr,tlr->master; clr,tlr->runtime;" />
 	</dependencies>
 
 </ivy-module>
