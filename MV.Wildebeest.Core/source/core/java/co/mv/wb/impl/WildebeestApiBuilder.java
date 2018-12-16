@@ -157,9 +157,16 @@ public class WildebeestApiBuilder
 	 */
 	public WildebeestApiBuilder withFactoryAssertionPlugins()
 	{
+		return this.withAssertionPlugins(Wildebeest.getAssertionPlugins());
+	}
+
+	public WildebeestApiBuilder withAssertionPlugins(List<AssertionPlugin> assertionPlugins)
+	{
+		if (assertionPlugins == null) throw new ArgumentNullException("assertionPlugins");
+
 		List<AssertionPlugin> updated = new ArrayList<>(this.assertionPlugins);
 
-		updated.addAll(Wildebeest.getAssertionPlugins());
+		updated.addAll(assertionPlugins);
 
 		return new WildebeestApiBuilder(
 			this.wildebeestApi,
@@ -202,10 +209,17 @@ public class WildebeestApiBuilder
 	 */
 	public WildebeestApiBuilder withFactoryMigrationPlugins()
 	{
+		return this.withMigrationPlugins(Wildebeest.getMigrationPlugins(
+			this.wildebeestApi));
+	}
+
+	public WildebeestApiBuilder withMigrationPlugins(List<MigrationPlugin> migrationPlugins)
+	{
+		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
+
 		Map<String, MigrationPlugin> updated = new HashMap<>(this.migrationPlugins);
 
-		Map<String, MigrationPlugin> factory = Wildebeest
-			.getMigrationPlugins(this.wildebeestApi)
+		Map<String, MigrationPlugin> factory = migrationPlugins
 			.stream()
 			.collect(Collectors.toMap(
 				x -> Wildebeest.getPluginHandlerUri(x),
@@ -220,6 +234,7 @@ public class WildebeestApiBuilder
 			updated,
 			this.assertionPlugins);
 	}
+
 
 	/**
 	 * Fluently adds the supplied {@link MigrationPlugin} to the builder.  A new builder is returned and the

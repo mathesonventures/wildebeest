@@ -125,6 +125,39 @@ public class Wildebeest
 	// Migration
 	//
 
+	public static List<MigrationPlugin> getMigrationPlugins_External(
+		WildebeestApi wildebeestApi)
+	{
+		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
+
+		return Arrays.asList(
+			new ExternalResourceMigrationPlugin(wildebeestApi));
+	}
+
+	public static List<MigrationPlugin> getMigrationPlugins_GeneralDatabase()
+	{
+		return Arrays.asList(
+			new AnsiSqlCreateDatabaseMigrationPlugin(),
+			new AnsiSqlDropDatabaseMigrationPlugin(),
+			new SqlScriptMigrationPlugin());
+	}
+
+	public static List<MigrationPlugin> getMigrationPlugins_MySql()
+	{
+		return Arrays.asList(
+			new MySqlCreateDatabaseMigrationPlugin(),
+			new MySqlDropDatabaseMigrationPlugin());
+	}
+
+	public static List<MigrationPlugin> getMigrationPlugins_SqlServer()
+	{
+		return Arrays.asList(
+			new SqlServerCreateDatabaseMigrationPlugin(),
+			new SqlServerCreateSchemaMigrationPlugin(),
+			new SqlServerDropDatabaseMigrationPlugin(),
+			new SqlServerDropSchemaMigrationPlugin());
+	}
+
 	public static List<MigrationPlugin> getMigrationPlugins(
 		WildebeestApi wildebeestApi)
 	{
@@ -132,25 +165,17 @@ public class Wildebeest
 
 		List<MigrationPlugin> result = new ArrayList<>();
 
-		// ansisql
-		result.add(new AnsiSqlCreateDatabaseMigrationPlugin());
-		result.add(new AnsiSqlDropDatabaseMigrationPlugin());
-
 		// composite
-		result.add(new ExternalResourceMigrationPlugin(wildebeestApi));
+		result.addAll(Wildebeest.getMigrationPlugins_External(wildebeestApi));
 
 		// generaldatabase
-		result.add(new SqlScriptMigrationPlugin());
+		result.addAll(Wildebeest.getMigrationPlugins_GeneralDatabase());
 
 		// mysql
-		result.add(new MySqlCreateDatabaseMigrationPlugin());
-		result.add(new MySqlDropDatabaseMigrationPlugin());
+		result.addAll(Wildebeest.getMigrationPlugins_MySql());
 
 		// sqlserver
-		result.add(new SqlServerCreateDatabaseMigrationPlugin());
-		result.add(new SqlServerCreateSchemaMigrationPlugin());
-		result.add(new SqlServerDropDatabaseMigrationPlugin());
-		result.add(new SqlServerDropSchemaMigrationPlugin());
+		result.addAll(Wildebeest.getMigrationPlugins_SqlServer());
 
 		return result;
 	}
@@ -159,27 +184,45 @@ public class Wildebeest
 	// Assertion
 	//
 
+	public static List<AssertionPlugin> getAssertionPlugins_GeneralDatabase()
+	{
+		return Arrays.asList(
+			new AnsiSqlTableDoesNotExistAssertionPlugin(),
+			new AnsiSqlTableExistsAssertionPlugin(),
+			new DatabaseDoesNotExistAssertionPlugin(),
+			new DatabaseExistsAssertionPlugin(),
+			new RowDoesNotExistAssertionPlugin(),
+			new RowExistsAssertionPlugin());
+	}
+
+	public static List<AssertionPlugin> getAssertionPlugins_MySql()
+	{
+		return Arrays.asList(
+			new MySqlTableDoesNotExistAssertionPlugin(),
+			new MySqlTableExistsAssertionPlugin());
+	}
+
+	public static List<AssertionPlugin> getAssertionPlugins_SqlServer()
+	{
+		return Arrays.asList(
+			new SqlServerSchemaDoesNotExistAssertionPlugin(),
+			new SqlServerSchemaExistsAssertionPlugin(),
+			new SqlServerTableDoesNotExistAssertionPlugin(),
+			new SqlServerTableExistsAssertionPlugin());
+	}
+
 	public static List<AssertionPlugin> getAssertionPlugins()
 	{
 		List<AssertionPlugin> result = new ArrayList<>();
 
 		// generaldatabase
-		result.add(new AnsiSqlTableDoesNotExistAssertionPlugin());
-		result.add(new AnsiSqlTableExistsAssertionPlugin());
-		result.add(new DatabaseDoesNotExistAssertionPlugin());
-		result.add(new DatabaseExistsAssertionPlugin());
-		result.add(new RowDoesNotExistAssertionPlugin());
-		result.add(new RowExistsAssertionPlugin());
+		result.addAll(Wildebeest.getAssertionPlugins_GeneralDatabase());
 
 		// mysql
-		result.add(new MySqlTableDoesNotExistAssertionPlugin());
-		result.add(new MySqlTableExistsAssertionPlugin());
+		result.addAll(Wildebeest.getAssertionPlugins_MySql());
 
 		// sqlserver
-		result.add(new SqlServerSchemaDoesNotExistAssertionPlugin());
-		result.add(new SqlServerSchemaExistsAssertionPlugin());
-		result.add(new SqlServerTableDoesNotExistAssertionPlugin());
-		result.add(new SqlServerTableExistsAssertionPlugin());
+		result.addAll(Wildebeest.getAssertionPlugins_SqlServer());
 
 		return result;
 	}
