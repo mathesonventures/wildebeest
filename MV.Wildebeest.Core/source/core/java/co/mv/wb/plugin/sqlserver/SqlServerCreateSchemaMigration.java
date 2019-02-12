@@ -18,7 +18,6 @@ package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.plugin.base.BaseMigration;
 
 import java.util.Arrays;
@@ -81,6 +80,6 @@ public class SqlServerCreateSchemaMigration extends BaseMigration
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			Wildebeest.SqlServerDatabase);
+			SqlServerConstants.SqlServerDatabase);
 	}
 }

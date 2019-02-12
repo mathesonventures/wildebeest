@@ -14,19 +14,44 @@
 // You should have received a copy of the GNU General Public License along with
 // Wildebeest.  If not, see http://www.gnu.org/licenses/gpl-2.0.html
 
-package co.mv.wb.impl;
+package co.mv.wb;
 
-import co.mv.wb.AssertionPlugin;
-import co.mv.wb.MigrationPlugin;
-import co.mv.wb.PluginGroup;
-import co.mv.wb.ResourcePlugin;
-import co.mv.wb.ResourceType;
-import co.mv.wb.Wildebeest;
-import co.mv.wb.WildebeestApi;
 import co.mv.wb.event.EventSink;
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.impl.WildebeestApiImpl;
+import co.mv.wb.plugin.composite.CompositeConstants;
+import co.mv.wb.plugin.composite.ExternalResourceMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigrationPlugin;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlTableDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.AnsiSqlTableExistsAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.DatabaseDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.DatabaseExistsAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.GeneralDatabaseConstants;
+import co.mv.wb.plugin.generaldatabase.RowDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.RowExistsAssertionPlugin;
+import co.mv.wb.plugin.generaldatabase.SqlScriptMigrationPlugin;
+import co.mv.wb.plugin.mysql.MySqlConstants;
+import co.mv.wb.plugin.mysql.MySqlCreateDatabaseMigrationPlugin;
+import co.mv.wb.plugin.mysql.MySqlDatabaseResourcePlugin;
+import co.mv.wb.plugin.mysql.MySqlDropDatabaseMigrationPlugin;
+import co.mv.wb.plugin.mysql.MySqlTableDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.mysql.MySqlTableExistsAssertionPlugin;
+import co.mv.wb.plugin.postgresql.PostgreSqlConstants;
+import co.mv.wb.plugin.postgresql.PostgreSqlDatabaseResourcePlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerConstants;
+import co.mv.wb.plugin.sqlserver.SqlServerCreateDatabaseMigrationPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerCreateSchemaMigrationPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerDatabaseResourcePlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerDropDatabaseMigrationPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerDropSchemaMigrationPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerSchemaDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerSchemaExistsAssertionPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerTableDoesNotExistAssertionPlugin;
+import co.mv.wb.plugin.sqlserver.SqlServerTableExistsAssertionPlugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +119,12 @@ public class WildebeestApiBuilder
 	public WildebeestApiBuilder withFactoryPluginGroups()
 	{
 		List<PluginGroup> updated = new ArrayList<>(this.pluginGroups);
-		updated.addAll(Wildebeest.getPluginGroups());
+		updated.addAll(Arrays.asList(
+			CompositeConstants.CompositeResourcePluginGroup,
+			GeneralDatabaseConstants.GeneralDatabasePluginGroup,
+			MySqlConstants.MySqlPluginGroup,
+			PostgreSqlConstants.PostgreSqlPluginGroup,
+			SqlServerConstants.SqlServerPluginGroup));
 
 		return new WildebeestApiBuilder(
 			this.wildebeestApi,
@@ -114,7 +144,15 @@ public class WildebeestApiBuilder
 	public WildebeestApiBuilder withFactoryResourcePlugins()
 	{
 		Map<ResourceType, ResourcePlugin> updated = new HashMap<>(this.resourcePlugins);
-		updated.putAll(Wildebeest.getResourcePlugins());
+
+		Map<ResourceType, ResourcePlugin> all = this.getFactoryResourcePlugins();
+		for (ResourceType key : all.keySet())
+		{
+			if (!updated.containsKey(key))
+			{
+				updated.put(key, all.get(key));
+			}
+		}
 
 		return new WildebeestApiBuilder(
 			this.wildebeestApi,
@@ -122,6 +160,17 @@ public class WildebeestApiBuilder
 			updated,
 			this.migrationPlugins,
 			this.assertionPlugins);
+	}
+
+	private Map<ResourceType, ResourcePlugin> getFactoryResourcePlugins()
+	{
+		Map<ResourceType, ResourcePlugin> result = new HashMap<>();
+
+		result.put(MySqlConstants.MySqlDatabase, new MySqlDatabaseResourcePlugin());
+		result.put(PostgreSqlConstants.PostgreSqlDatabase, new PostgreSqlDatabaseResourcePlugin());
+		result.put(SqlServerConstants.SqlServerDatabase, new SqlServerDatabaseResourcePlugin());
+
+		return result;
 	}
 
 	/**
@@ -157,7 +206,45 @@ public class WildebeestApiBuilder
 	 */
 	public WildebeestApiBuilder withFactoryAssertionPlugins()
 	{
-		return this.withAssertionPlugins(Wildebeest.getAssertionPlugins());
+		List<AssertionPlugin> result = new ArrayList<>();
+
+		// generaldatabase
+		result.addAll(WildebeestApiBuilder.getAssertionPlugins_GeneralDatabase());
+
+		// mysql
+		result.addAll(WildebeestApiBuilder.getAssertionPlugins_MySql());
+
+		// sqlserver
+		result.addAll(WildebeestApiBuilder.getAssertionPlugins_SqlServer());
+
+		return this.withAssertionPlugins(result);
+	}
+
+	private static List<AssertionPlugin> getAssertionPlugins_GeneralDatabase()
+	{
+		return Arrays.asList(
+			new AnsiSqlTableDoesNotExistAssertionPlugin(),
+			new AnsiSqlTableExistsAssertionPlugin(),
+			new DatabaseDoesNotExistAssertionPlugin(),
+			new DatabaseExistsAssertionPlugin(),
+			new RowDoesNotExistAssertionPlugin(),
+			new RowExistsAssertionPlugin());
+	}
+
+	private static List<AssertionPlugin> getAssertionPlugins_MySql()
+	{
+		return Arrays.asList(
+			new MySqlTableDoesNotExistAssertionPlugin(),
+			new MySqlTableExistsAssertionPlugin());
+	}
+
+	private static List<AssertionPlugin> getAssertionPlugins_SqlServer()
+	{
+		return Arrays.asList(
+			new SqlServerSchemaDoesNotExistAssertionPlugin(),
+			new SqlServerSchemaExistsAssertionPlugin(),
+			new SqlServerTableDoesNotExistAssertionPlugin(),
+			new SqlServerTableExistsAssertionPlugin());
 	}
 
 	public WildebeestApiBuilder withAssertionPlugins(List<AssertionPlugin> assertionPlugins)
@@ -209,8 +296,54 @@ public class WildebeestApiBuilder
 	 */
 	public WildebeestApiBuilder withFactoryMigrationPlugins()
 	{
-		return this.withMigrationPlugins(Wildebeest.getMigrationPlugins(
-			this.wildebeestApi));
+		List<MigrationPlugin> result = new ArrayList<>();
+
+		// composite
+		result.addAll(WildebeestApiBuilder.getMigrationPlugins_External(this.wildebeestApi));
+
+		// generaldatabase
+		result.addAll(WildebeestApiBuilder.getMigrationPlugins_GeneralDatabase());
+
+		// mysql
+		result.addAll(WildebeestApiBuilder.getMigrationPlugins_MySql());
+
+		// sqlserver
+		result.addAll(WildebeestApiBuilder.getMigrationPlugins_SqlServer());
+
+		return this.withMigrationPlugins(result);
+	}
+
+	private static List<MigrationPlugin> getMigrationPlugins_External(
+		WildebeestApi wildebeestApi)
+	{
+		if (wildebeestApi == null) throw new ArgumentNullException("wildebeestApi");
+
+		return Arrays.asList(
+			new ExternalResourceMigrationPlugin(wildebeestApi));
+	}
+
+	private static List<MigrationPlugin> getMigrationPlugins_GeneralDatabase()
+	{
+		return Arrays.asList(
+			new AnsiSqlCreateDatabaseMigrationPlugin(),
+			new AnsiSqlDropDatabaseMigrationPlugin(),
+			new SqlScriptMigrationPlugin());
+	}
+
+	private static List<MigrationPlugin> getMigrationPlugins_MySql()
+	{
+		return Arrays.asList(
+			new MySqlCreateDatabaseMigrationPlugin(),
+			new MySqlDropDatabaseMigrationPlugin());
+	}
+
+	private static List<MigrationPlugin> getMigrationPlugins_SqlServer()
+	{
+		return Arrays.asList(
+			new SqlServerCreateDatabaseMigrationPlugin(),
+			new SqlServerCreateSchemaMigrationPlugin(),
+			new SqlServerDropDatabaseMigrationPlugin(),
+			new SqlServerDropSchemaMigrationPlugin());
 	}
 
 	public WildebeestApiBuilder withMigrationPlugins(List<MigrationPlugin> migrationPlugins)

@@ -11,8 +11,8 @@ import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestApiBuilder;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.framework.DatabaseHelper;
 import co.mv.wb.plugin.base.ImmutableState;
@@ -42,8 +42,8 @@ public class PostgreSqlStateTrackingTests
 		TargetNotSpecifiedException,
 		UnknownStateSpecifiedException
 	{
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withFactoryPluginGroups()
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
@@ -62,7 +62,7 @@ public class PostgreSqlStateTrackingTests
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			Wildebeest.PostgreSqlDatabase,
+			PostgreSqlConstants.PostgreSqlDatabase,
 			"Database",
 			null);
 

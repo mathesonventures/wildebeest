@@ -18,8 +18,10 @@ package co.mv.wb.impl;
 
 import co.mv.wb.ResourceType;
 import co.mv.wb.ResourceTypeService;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.plugin.mysql.MySqlConstants;
+import co.mv.wb.plugin.postgresql.PostgreSqlConstants;
+import co.mv.wb.plugin.sqlserver.SqlServerConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +65,9 @@ public class ResourceTypeServiceBuilder
 	{
 		List<ResourceType> updatedResourceTypes = new ArrayList<>(this.resourceTypes);
 
-		updatedResourceTypes.add(Wildebeest.MySqlDatabase);
-		updatedResourceTypes.add(Wildebeest.PostgreSqlDatabase);
-		updatedResourceTypes.add(Wildebeest.SqlServerDatabase);
+		updatedResourceTypes.add(MySqlConstants.MySqlDatabase);
+		updatedResourceTypes.add(PostgreSqlConstants.PostgreSqlDatabase);
+		updatedResourceTypes.add(SqlServerConstants.SqlServerDatabase);
 
 		return new ResourceTypeServiceBuilder(updatedResourceTypes);
 	}

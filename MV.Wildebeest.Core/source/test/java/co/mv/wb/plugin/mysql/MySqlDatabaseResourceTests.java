@@ -49,7 +49,7 @@ public class MySqlDatabaseResourceTests
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			Wildebeest.MySqlDatabase,
+			MySqlConstants.MySqlDatabase,
 			"Database",
 			null);
 
@@ -96,7 +96,7 @@ public class MySqlDatabaseResourceTests
 
 			Resource resource = new ResourceImpl(
 				resourceId,
-				Wildebeest.MySqlDatabase,
+				MySqlConstants.MySqlDatabase,
 				"Database",
 				null);
 
@@ -144,7 +144,7 @@ public class MySqlDatabaseResourceTests
 
 		Resource resource = new ResourceImpl(
 			resourceId,
-			Wildebeest.MySqlDatabase,
+			MySqlConstants.MySqlDatabase,
 			"Database",
 			null);
 

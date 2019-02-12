@@ -30,6 +30,7 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestApiBuilder;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.Fixtures;
@@ -190,8 +191,8 @@ public class WildebeestCommandUnitTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.get();
 

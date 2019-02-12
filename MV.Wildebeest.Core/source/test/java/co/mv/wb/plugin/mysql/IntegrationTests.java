@@ -31,8 +31,8 @@ import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestApiBuilder;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.ProductCatalogueMySqlDatabaseResource;
 import co.mv.wb.fixture.xmlbuilder.XmlBuilder;
@@ -83,8 +83,8 @@ public class IntegrationTests
 		//
 		// Setup
 		//
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
 			.get();
@@ -96,7 +96,7 @@ public class IntegrationTests
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			Wildebeest.MySqlDatabase,
+			MySqlConstants.MySqlDatabase,
 			"Database",
 			null);
 
@@ -226,8 +226,8 @@ public class IntegrationTests
 		UnknownStateSpecifiedException,
 		InvalidReferenceException
 	{
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.withFactoryAssertionPlugins()
 			.withFactoryMigrationPlugins()

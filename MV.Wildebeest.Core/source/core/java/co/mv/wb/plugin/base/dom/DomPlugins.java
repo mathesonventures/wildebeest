@@ -20,7 +20,6 @@ import co.mv.wb.AssertionBuilder;
 import co.mv.wb.InstanceBuilder;
 import co.mv.wb.MigrationBuilder;
 import co.mv.wb.ResourceTypeService;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.plugin.composite.dom.ExternalResourceDomMigrationBuilder;
 import co.mv.wb.plugin.generaldatabase.dom.AnsiSqlCreateDatabaseDomMigrationBuilder;
 import co.mv.wb.plugin.generaldatabase.dom.AnsiSqlDropDatabaseDomMigrationBuilder;
@@ -31,11 +30,14 @@ import co.mv.wb.plugin.generaldatabase.dom.DatabaseExistsDomAssertionBuilder;
 import co.mv.wb.plugin.generaldatabase.dom.RowDoesNotExistDomAssertionBuilder;
 import co.mv.wb.plugin.generaldatabase.dom.RowExistsDomAssertionBuilder;
 import co.mv.wb.plugin.generaldatabase.dom.SqlScriptDomMigrationBuilder;
+import co.mv.wb.plugin.mysql.MySqlConstants;
 import co.mv.wb.plugin.mysql.dom.MySqlCreateDatabaseDomMigrationBuilder;
 import co.mv.wb.plugin.mysql.dom.MySqlDatabaseDomInstanceBuilder;
 import co.mv.wb.plugin.mysql.dom.MySqlTableDoesNotExistDomAssertionBuilder;
 import co.mv.wb.plugin.mysql.dom.MySqlTableExistsDomAssertionBuilder;
+import co.mv.wb.plugin.postgresql.PostgreSqlConstants;
 import co.mv.wb.plugin.postgresql.dom.PostgreSqlDatabaseDomInstanceBuilder;
+import co.mv.wb.plugin.sqlserver.SqlServerConstants;
 import co.mv.wb.plugin.sqlserver.dom.SqlServerCreateDatabaseDomMigrationBuilder;
 import co.mv.wb.plugin.sqlserver.dom.SqlServerCreateSchemaDomMigrationBuilder;
 import co.mv.wb.plugin.sqlserver.dom.SqlServerDatabaseDomInstanceBuilder;
@@ -129,9 +131,9 @@ public class DomPlugins
 	{
 		Map<String, InstanceBuilder> result = new HashMap<>();
 
-		result.put(Wildebeest.MySqlDatabase.getUri(), new MySqlDatabaseDomInstanceBuilder());
-		result.put(Wildebeest.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomInstanceBuilder());
-		result.put(Wildebeest.SqlServerDatabase.getUri(), new SqlServerDatabaseDomInstanceBuilder());
+		result.put(MySqlConstants.MySqlDatabase.getUri(), new MySqlDatabaseDomInstanceBuilder());
+		result.put(PostgreSqlConstants.PostgreSqlDatabase.getUri(), new PostgreSqlDatabaseDomInstanceBuilder());
+		result.put(SqlServerConstants.SqlServerDatabase.getUri(), new SqlServerDatabaseDomInstanceBuilder());
 
 		return result;
 	}

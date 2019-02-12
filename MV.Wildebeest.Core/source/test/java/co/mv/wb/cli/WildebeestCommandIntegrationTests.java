@@ -22,6 +22,7 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestApiBuilder;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.event.TeeEventSink;
@@ -62,8 +63,8 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new TeeEventSink(
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
@@ -112,8 +113,8 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new TeeEventSink(
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
@@ -175,8 +176,8 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new TeeEventSink(
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
@@ -225,8 +226,8 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new TeeEventSink(
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
@@ -260,8 +261,8 @@ public class WildebeestCommandIntegrationTests
 
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new TeeEventSink(
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
@@ -309,8 +310,8 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new TeeEventSink(
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
@@ -362,8 +363,8 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new TeeEventSink(
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
 			.withFactoryResourcePlugins()
@@ -420,8 +421,8 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
 			.get();
@@ -443,8 +444,8 @@ public class WildebeestCommandIntegrationTests
 		// Setup
 		PrintStream output = System.out;
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withFactoryResourcePlugins()
 			.withFactoryMigrationPlugins()
 			.get();
