@@ -18,7 +18,6 @@ package co.mv.wb.plugin.sqlserver;
 
 import co.mv.wb.AssertionType;
 import co.mv.wb.ResourceType;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
 
@@ -105,7 +104,7 @@ public class SqlServerTableDoesNotExistAssertion extends BaseAssertion
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			Wildebeest.SqlServerDatabase);
+			SqlServerConstants.SqlServerDatabase);
 	}
 
 

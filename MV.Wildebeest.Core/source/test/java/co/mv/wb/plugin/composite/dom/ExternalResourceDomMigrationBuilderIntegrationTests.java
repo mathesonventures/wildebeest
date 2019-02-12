@@ -21,12 +21,12 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.Migration;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
 import co.mv.wb.plugin.composite.ExternalResourceMigration;
+import co.mv.wb.plugin.postgresql.PostgreSqlConstants;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +61,7 @@ public class ExternalResourceDomMigrationBuilderIntegrationTests
 
 		String resourceXml = Fixtures
 			.resourceXmlBuilder()
-			.resource(Wildebeest.PostgreSqlDatabase.getUri(), resourceId, "Test")
+			.resource(PostgreSqlConstants.PostgreSqlDatabase.getUri(), resourceId, "Test")
 			.state(state1Id, "state1")
 			.state(state2Id, "state2")
 			.migration("External", migration1Id, state1Id.toString(), state2Id.toString())

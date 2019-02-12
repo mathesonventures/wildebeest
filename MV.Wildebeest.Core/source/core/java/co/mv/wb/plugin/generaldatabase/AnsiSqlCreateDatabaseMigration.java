@@ -19,8 +19,8 @@ package co.mv.wb.plugin.generaldatabase;
 import co.mv.wb.Migration;
 import co.mv.wb.MigrationType;
 import co.mv.wb.ResourceType;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.plugin.base.BaseMigration;
+import co.mv.wb.plugin.postgresql.PostgreSqlConstants;
 
 import java.util.Arrays;
 import java.util.List;
@@ -59,6 +59,6 @@ public class AnsiSqlCreateDatabaseMigration extends BaseMigration
 	public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			Wildebeest.PostgreSqlDatabase);
+			PostgreSqlConstants.PostgreSqlDatabase);
 	}
 }

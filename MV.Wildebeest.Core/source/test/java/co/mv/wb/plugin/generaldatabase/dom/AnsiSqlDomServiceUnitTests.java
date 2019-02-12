@@ -22,7 +22,6 @@ import co.mv.wb.LoaderFault;
 import co.mv.wb.ModelExtensions;
 import co.mv.wb.PluginBuildException;
 import co.mv.wb.Resource;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.fixture.Fixtures;
 import co.mv.wb.impl.ResourceTypeServiceBuilder;
 import co.mv.wb.plugin.base.dom.DomPlugins;
@@ -31,6 +30,7 @@ import co.mv.wb.plugin.generaldatabase.AnsiSqlCreateDatabaseMigration;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlDropDatabaseMigration;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlTableDoesNotExistAssertion;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlTableExistsAssertion;
+import co.mv.wb.plugin.postgresql.PostgreSqlConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -57,7 +57,7 @@ public class AnsiSqlDomServiceUnitTests
 
 		String xml = Fixtures
 			.resourceXmlBuilder()
-			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
+			.resource(PostgreSqlConstants.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 			.migration("AnsiSqlCreateDatabase", migrationId, null, toStateId.toString())
 			.render();
 
@@ -106,7 +106,7 @@ public class AnsiSqlDomServiceUnitTests
 
 		String xml = Fixtures
 			.resourceXmlBuilder()
-			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
+			.resource(PostgreSqlConstants.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 			.migration("AnsiSqlDropDatabase", migrationId, null, toState.toString())
 			.render();
 
@@ -152,7 +152,7 @@ public class AnsiSqlDomServiceUnitTests
 
 		String xml = Fixtures
 			.resourceXmlBuilder()
-			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
+			.resource(PostgreSqlConstants.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 			.state(UUID.randomUUID(), null)
 			.assertion("AnsiSqlTableExists", assertionId)
 			.appendInnerXml("<schemaName>sch</schemaName>")
@@ -199,7 +199,7 @@ public class AnsiSqlDomServiceUnitTests
 
 		String xml = Fixtures
 			.resourceXmlBuilder()
-			.resource(Wildebeest.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
+			.resource(PostgreSqlConstants.PostgreSqlDatabase.getUri(), UUID.randomUUID(), "Foo")
 			.state(UUID.randomUUID(), null)
 			.assertion("AnsiSqlTableDoesNotExist", assertionId)
 			.appendInnerXml("<schemaName>sch</schemaName>")

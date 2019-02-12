@@ -34,6 +34,7 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestApiBuilder;
 import co.mv.wb.XmlValidationException;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.event.MigrationLogEventSink;
@@ -85,11 +86,12 @@ public class WildebeestCommand
 			new LoggingEventSink(LOG),
 			new MigrationLogEventSink(LOG),
 			new PrintStreamEventSink(output));
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(teeEventSink)
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(teeEventSink)
 			.withFactoryPluginGroups()
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withPostgreSqlSupport()
+			.withMySqlSupport()
+			.withSqlServerSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(

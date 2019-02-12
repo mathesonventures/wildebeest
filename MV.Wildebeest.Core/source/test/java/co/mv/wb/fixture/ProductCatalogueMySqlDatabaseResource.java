@@ -16,8 +16,8 @@
 
 package co.mv.wb.fixture;
 
-import co.mv.wb.Wildebeest;
 import co.mv.wb.framework.ArgumentNullException;
+import co.mv.wb.plugin.mysql.MySqlConstants;
 import co.mv.wb.plugin.mysql.MySqlElementFixtures;
 
 import java.util.UUID;
@@ -115,7 +115,7 @@ public class ProductCatalogueMySqlDatabaseResource
 
 		String resourceXml = Fixtures
 			.resourceXmlBuilder()
-			.resource(Wildebeest.MySqlDatabase.getUri(), resourceId, "Product Catalogue Database")
+			.resource(MySqlConstants.MySqlDatabase.getUri(), resourceId, "Product Catalogue Database")
 			.state(stateIdDatabaseCreated, "Database created")
 			.assertion("DatabaseExists", assertionIdDatabaseExists)
 			.state(stateIdCoreSchemaLoadedId, "Core Schema Loaded")

@@ -19,8 +19,8 @@ package co.mv.wb.plugin.generaldatabase;
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionType;
 import co.mv.wb.ResourceType;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.plugin.base.BaseAssertion;
+import co.mv.wb.plugin.postgresql.PostgreSqlConstants;
 
 import java.util.Arrays;
 import java.util.List;
@@ -101,7 +101,7 @@ public class AnsiSqlTableDoesNotExistAssertion extends BaseAssertion
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			Wildebeest.PostgreSqlDatabase);
+			PostgreSqlConstants.PostgreSqlDatabase);
 	}
 
 }

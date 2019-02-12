@@ -19,9 +19,11 @@ package co.mv.wb.plugin.generaldatabase;
 import co.mv.wb.Assertion;
 import co.mv.wb.AssertionType;
 import co.mv.wb.ResourceType;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.framework.ArgumentNullException;
 import co.mv.wb.plugin.base.BaseAssertion;
+import co.mv.wb.plugin.mysql.MySqlConstants;
+import co.mv.wb.plugin.postgresql.PostgreSqlConstants;
+import co.mv.wb.plugin.sqlserver.SqlServerConstants;
 
 import java.util.Arrays;
 import java.util.List;
@@ -82,9 +84,9 @@ public class RowDoesNotExistAssertion extends BaseAssertion implements Assertion
 	@Override public List<ResourceType> getApplicableTypes()
 	{
 		return Arrays.asList(
-			Wildebeest.MySqlDatabase,
-			Wildebeest.PostgreSqlDatabase,
-			Wildebeest.SqlServerDatabase);
+			MySqlConstants.MySqlDatabase,
+			PostgreSqlConstants.PostgreSqlDatabase,
+			SqlServerConstants.SqlServerDatabase);
 	}
 
 	public String getSql()

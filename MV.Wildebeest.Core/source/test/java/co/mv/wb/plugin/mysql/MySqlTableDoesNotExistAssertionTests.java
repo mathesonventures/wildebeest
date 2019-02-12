@@ -29,8 +29,8 @@ import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestApiBuilder;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
@@ -74,17 +74,16 @@ public class MySqlTableDoesNotExistAssertionTests
 		// Setup
 		//
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.withMySqlSupport()
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			Wildebeest.MySqlDatabase,
+			MySqlConstants.MySqlDatabase,
 			"Database",
 			null);
 
@@ -176,17 +175,16 @@ public class MySqlTableDoesNotExistAssertionTests
 		// Setup
 		//
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withMigrationPlugin(new MySqlCreateDatabaseMigrationPlugin())
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.withMySqlSupport()
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			Wildebeest.MySqlDatabase,
+			MySqlConstants.MySqlDatabase,
 			"Database",
 			null);
 

@@ -25,6 +25,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestApiBuilder;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.TestContext_ResourceAndInstance;
 import co.mv.wb.framework.ExpectException;
@@ -60,8 +61,8 @@ public class WildebeestApiImplJumpStateIntegrationTests
 			.withInitialTag("Bar")
 			.build();
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withAssertionPlugin(new TagAssertionPlugin())
 			.get();
@@ -100,8 +101,8 @@ public class WildebeestApiImplJumpStateIntegrationTests
 
 		final UUID targetStateId = UUID.randomUUID();
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
@@ -142,8 +143,8 @@ public class WildebeestApiImplJumpStateIntegrationTests
 			.withInitialTag("Foo")
 			.build();
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withAssertionPlugin(new TagAssertionPlugin())
 			.get();

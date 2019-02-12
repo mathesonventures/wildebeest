@@ -30,8 +30,8 @@ import co.mv.wb.Resource;
 import co.mv.wb.State;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
-import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestApiBuilder;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.plugin.base.ImmutableState;
 import co.mv.wb.plugin.base.ResourceImpl;
@@ -74,17 +74,16 @@ public class SqlServerTableDoesNotExistAssertionTests
 		//
 		// Setup
 		//
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.withSqlServerSupport()
 			.get();
 
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			Wildebeest.SqlServerDatabase,
+			SqlServerConstants.SqlServerDatabase,
 			"Database",
 			null);
 
@@ -175,17 +174,16 @@ public class SqlServerTableDoesNotExistAssertionTests
 		// Setup
 		//
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
+			.withSqlServerSupport()
 			.get();
 
 		SqlServerProperties properties = SqlServerProperties.get();
 
 		Resource resource = new ResourceImpl(
 			UUID.randomUUID(),
-			Wildebeest.SqlServerDatabase,
+			SqlServerConstants.SqlServerDatabase,
 			"Database",
 			null);
 

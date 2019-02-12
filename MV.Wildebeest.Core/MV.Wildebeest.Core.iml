@@ -55,7 +55,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/core/libcompile/javassist-3.12.1.GA.jar!/" />
+          <root url="jar://$MODULE_DIR$/target/core/libcompile/javassist-3.24.1-GA.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

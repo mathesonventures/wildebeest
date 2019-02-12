@@ -59,7 +59,7 @@
 		<dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="tlc,tlr->master; tlr->runtime;" />
 		<dependency org="info.picocli" name="picocli" rev="3.8.2" conf="clc,clr,tlr->master; clr,tlr->runtime;"/>
 		<dependency org="joda-time" name="joda-time" rev="2.10.1" conf="clc,clr,tlr->master; clr,tlr->runtime;"/>
-		<dependency org="javassist" name="javassist" rev="3.12.1.GA" conf="clc,clr,tlr->master; clr,tlr->runtime;"/>
+		<dependency org="org.javassist" name="javassist" rev="3.24.1-GA" conf="clc,clr,tlr->master; clr,tlr->runtime;" />
 		<dependency org="com.google.guava" name="guava" rev="23.0" conf="clc,clr,tlr->master; clr,tlr->runtime;"/>
 		<dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.9.13" conf="clc,clr,tlr->master; clr,tlr->runtime;" />
 		<dependency org="org.codehaus.jackson" name="jackson-core-asl" rev="1.9.13"  conf="clc,clr,tlr->master; clr,tlr->runtime;" />

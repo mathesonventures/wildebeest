@@ -26,6 +26,7 @@ import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
 import co.mv.wb.WildebeestApi;
+import co.mv.wb.WildebeestApiBuilder;
 import co.mv.wb.event.LoggingEventSink;
 import co.mv.wb.fixture.TestContext_ResourceAndInstance;
 import co.mv.wb.framework.ExpectException;
@@ -75,8 +76,8 @@ public class WildebeestApiImplMigrateUnitTests
 			.withFooBarStatesAndMigrations()
 			.build();
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
@@ -118,8 +119,8 @@ public class WildebeestApiImplMigrateUnitTests
 			.withDefaultTarget("bar")
 			.build();
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
@@ -147,8 +148,8 @@ public class WildebeestApiImplMigrateUnitTests
 	public void migrate_targetNotSpecifiedNoDefault_throws()
 	{
 		// Setup
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.get();
 
@@ -198,8 +199,8 @@ public class WildebeestApiImplMigrateUnitTests
 			.withDefaultTarget("bar")
 			.build();
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
 			.get();
@@ -240,8 +241,8 @@ public class WildebeestApiImplMigrateUnitTests
 			.withAssertion(1, "Bar")
 			.build();
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
@@ -283,8 +284,8 @@ public class WildebeestApiImplMigrateUnitTests
 			.withAssertion(1, "Bar")
 			.build();
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))
@@ -323,8 +324,8 @@ public class WildebeestApiImplMigrateUnitTests
 			.withInitialState(0, "Foo")
 			.build();
 
-		WildebeestApi wildebeestApi = Wildebeest
-			.wildebeestApi(new LoggingEventSink(LOG))
+		WildebeestApi wildebeestApi = WildebeestApiBuilder
+			.create(new LoggingEventSink(LOG))
 			.withResourcePlugin(FakeConstants.Fake, new FakeResourcePlugin())
 			.withAssertionPlugin(new TagAssertionPlugin())
 			.withMigrationPlugin(new SetTagMigrationPlugin(context.resource))

@@ -58,6 +58,8 @@ import co.mv.wb.plugin.base.dom.DomInstanceLoader;
 import co.mv.wb.plugin.base.dom.DomPlugins;
 import co.mv.wb.plugin.base.dom.DomResourceLoader;
 import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import org.xml.sax.SAXException;
 
 import javax.xml.transform.Source;
@@ -1056,7 +1058,8 @@ public class WildebeestApiImpl implements WildebeestApi
 
 	private static List<PluginTypeInfo> getMigrationTypeInfos()
 	{
-		Reflections reflections = new Reflections(Wildebeest.class.getPackage().getName());
+		Reflections reflections = new Reflections(new ConfigurationBuilder()
+			.filterInputsBy(new FilterBuilder().includePackage(Wildebeest.class.getPackage().getName())));
 
 		return reflections
 			.getTypesAnnotatedWith(MigrationType.class)

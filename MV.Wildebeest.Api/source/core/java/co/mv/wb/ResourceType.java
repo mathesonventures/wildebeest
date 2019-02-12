@@ -26,7 +26,6 @@ import co.mv.wb.framework.ArgumentNullException;
  */
 public class ResourceType
 {
-
 	private final String uri;
 	private final String name;
 
