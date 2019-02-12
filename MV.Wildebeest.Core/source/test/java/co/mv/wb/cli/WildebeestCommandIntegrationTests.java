@@ -67,9 +67,7 @@ public class WildebeestCommandIntegrationTests
 			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
-			.withFactoryResourcePlugins()
-			.withFactoryAssertionPlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -117,9 +115,7 @@ public class WildebeestCommandIntegrationTests
 			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
-			.withFactoryResourcePlugins()
-			.withFactoryAssertionPlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -180,9 +176,7 @@ public class WildebeestCommandIntegrationTests
 			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
-			.withFactoryResourcePlugins()
-			.withFactoryAssertionPlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -230,7 +224,7 @@ public class WildebeestCommandIntegrationTests
 			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
-			.withFactoryResourcePlugins()
+			.withMySqlSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -265,9 +259,7 @@ public class WildebeestCommandIntegrationTests
 			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
-			.withFactoryAssertionPlugins()
+			.withMySqlSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -314,9 +306,7 @@ public class WildebeestCommandIntegrationTests
 			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
-			.withFactoryResourcePlugins()
-			.withFactoryAssertionPlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -367,9 +357,8 @@ public class WildebeestCommandIntegrationTests
 			.create(new TeeEventSink(
 				new LoggingEventSink(LOG),
 				new PrintStreamEventSink(output)))
-			.withFactoryResourcePlugins()
-			.withFactoryAssertionPlugins()
-			.withFactoryMigrationPlugins()
+			.withPostgreSqlSupport()
+			.withMySqlSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -423,8 +412,7 @@ public class WildebeestCommandIntegrationTests
 
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(
@@ -446,8 +434,7 @@ public class WildebeestCommandIntegrationTests
 
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(

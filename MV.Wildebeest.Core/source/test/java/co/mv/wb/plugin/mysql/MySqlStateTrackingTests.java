@@ -52,8 +52,7 @@ public class MySqlStateTrackingTests
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
 			.withFactoryPluginGroups()
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();

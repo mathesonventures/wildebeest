@@ -530,7 +530,6 @@ public class WildebeestApiImplMigrateIntegrationTests
 
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
 			.get();
 
 		wildebeestApi.migrate(

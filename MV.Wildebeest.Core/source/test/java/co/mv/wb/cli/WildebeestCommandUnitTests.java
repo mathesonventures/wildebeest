@@ -193,7 +193,9 @@ public class WildebeestCommandUnitTests
 
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
+			.withPostgreSqlSupport()
+			.withMySqlSupport()
+			.withSqlServerSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(

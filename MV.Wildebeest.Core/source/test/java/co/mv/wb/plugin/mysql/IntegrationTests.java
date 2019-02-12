@@ -85,8 +85,7 @@ public class IntegrationTests
 		//
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -228,9 +227,7 @@ public class IntegrationTests
 	{
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryAssertionPlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		//

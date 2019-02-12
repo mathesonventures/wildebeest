@@ -45,8 +45,7 @@ public class PostgreSqlStateTrackingTests
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
 			.withFactoryPluginGroups()
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withPostgreSqlSupport()
 			.get();
 
 		String databaseName = DatabaseFixtureHelper.databaseName().toLowerCase();

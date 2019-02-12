@@ -89,8 +89,9 @@ public class WildebeestCommand
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(teeEventSink)
 			.withFactoryPluginGroups()
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withPostgreSqlSupport()
+			.withMySqlSupport()
+			.withSqlServerSupport()
 			.get();
 
 		WildebeestCommand wb = new WildebeestCommand(

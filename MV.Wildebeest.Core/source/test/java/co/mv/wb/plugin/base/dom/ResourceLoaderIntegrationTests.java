@@ -93,9 +93,7 @@ public class ResourceLoaderIntegrationTests
 
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryAssertionPlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		//

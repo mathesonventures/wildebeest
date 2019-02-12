@@ -135,42 +135,55 @@ public class WildebeestApiBuilder
 	}
 
 	/**
-	 * Fluently adds the factory-preset {@link ResourcePlugin}'s to the builder.  A new builder is returned and the
-	 * original builder is left unmutated.
+	 * Fluently configures the API with the required plugins for working with PostgreSQL databases.  A new builder is
+	 * returned and the original builder is left unmutated.
 	 *
 	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
 	 * @since 4.0
 	 */
-	public WildebeestApiBuilder withFactoryResourcePlugins()
+	public WildebeestApiBuilder withPostgreSqlSupport()
 	{
-		Map<ResourceType, ResourcePlugin> updated = new HashMap<>(this.resourcePlugins);
-
-		Map<ResourceType, ResourcePlugin> all = this.getFactoryResourcePlugins();
-		for (ResourceType key : all.keySet())
-		{
-			if (!updated.containsKey(key))
-			{
-				updated.put(key, all.get(key));
-			}
-		}
-
-		return new WildebeestApiBuilder(
-			this.wildebeestApi,
-			this.pluginGroups,
-			updated,
-			this.migrationPlugins,
-			this.assertionPlugins);
+		return this
+			.withResourcePlugin(PostgreSqlConstants.PostgreSqlDatabase, new PostgreSqlDatabaseResourcePlugin())
+			.withAssertionPlugins(WildebeestApiBuilder.getAssertionPlugins_GeneralDatabase())
+			.withMigrationPlugins(WildebeestApiBuilder.getMigrationPlugins_GeneralDatabase())
+			.withMigrationPlugins(WildebeestApiBuilder.getMigrationPlugins_External(this.wildebeestApi));
 	}
 
-	private Map<ResourceType, ResourcePlugin> getFactoryResourcePlugins()
+	/**
+	 * Fluently configures the API with the required plugins for working with MySQL databases.  A new builder is
+	 * returned and the original builder is left unmutated.
+	 *
+	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
+	 * @since 4.0
+	 */
+	public WildebeestApiBuilder withMySqlSupport()
 	{
-		Map<ResourceType, ResourcePlugin> result = new HashMap<>();
+		return this
+			.withResourcePlugin(MySqlConstants.MySqlDatabase, new MySqlDatabaseResourcePlugin())
+			.withAssertionPlugins(WildebeestApiBuilder.getAssertionPlugins_GeneralDatabase())
+			.withAssertionPlugins(WildebeestApiBuilder.getAssertionPlugins_MySql())
+			.withMigrationPlugins(WildebeestApiBuilder.getMigrationPlugins_GeneralDatabase())
+			.withMigrationPlugins(WildebeestApiBuilder.getMigrationPlugins_MySql())
+			.withMigrationPlugins(WildebeestApiBuilder.getMigrationPlugins_External(this.wildebeestApi));
+	}
 
-		result.put(MySqlConstants.MySqlDatabase, new MySqlDatabaseResourcePlugin());
-		result.put(PostgreSqlConstants.PostgreSqlDatabase, new PostgreSqlDatabaseResourcePlugin());
-		result.put(SqlServerConstants.SqlServerDatabase, new SqlServerDatabaseResourcePlugin());
-
-		return result;
+	/**
+	 * Fluently configures the API with the required plugins for working with SQL Server databases.  A new builder is
+	 * returned and the original builder is left unmutated.
+	 *
+	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
+	 * @since 4.0
+	 */
+	public WildebeestApiBuilder withSqlServerSupport()
+	{
+		return this
+			.withResourcePlugin(SqlServerConstants.SqlServerDatabase, new SqlServerDatabaseResourcePlugin())
+			.withAssertionPlugins(WildebeestApiBuilder.getAssertionPlugins_GeneralDatabase())
+			.withAssertionPlugins(WildebeestApiBuilder.getAssertionPlugins_SqlServer())
+			.withMigrationPlugins(WildebeestApiBuilder.getMigrationPlugins_GeneralDatabase())
+			.withMigrationPlugins(WildebeestApiBuilder.getMigrationPlugins_SqlServer())
+			.withMigrationPlugins(WildebeestApiBuilder.getMigrationPlugins_External(this.wildebeestApi));
 	}
 
 	/**
@@ -187,7 +200,11 @@ public class WildebeestApiBuilder
 		ResourcePlugin resourcePlugin)
 	{
 		Map<ResourceType, ResourcePlugin> updated = new HashMap<>(this.resourcePlugins);
-		updated.put(resourceType, resourcePlugin);
+
+		if (!updated.containsKey(resourceType))
+		{
+			updated.put(resourceType, resourcePlugin);
+		}
 
 		return new WildebeestApiBuilder(
 			this.wildebeestApi,
@@ -197,63 +214,20 @@ public class WildebeestApiBuilder
 			this.assertionPlugins);
 	}
 
-	/**
-	 * Fluently adds the factory set of AssertionPlugins to the builder.  A new builder is returned and the original
-	 * builder is left unmutated.
-	 *
-	 * @returna new WildebeestApiBuilder with the state of the original plus the new state.
-	 * @since 4.0
-	 */
-	public WildebeestApiBuilder withFactoryAssertionPlugins()
-	{
-		List<AssertionPlugin> result = new ArrayList<>();
-
-		// generaldatabase
-		result.addAll(WildebeestApiBuilder.getAssertionPlugins_GeneralDatabase());
-
-		// mysql
-		result.addAll(WildebeestApiBuilder.getAssertionPlugins_MySql());
-
-		// sqlserver
-		result.addAll(WildebeestApiBuilder.getAssertionPlugins_SqlServer());
-
-		return this.withAssertionPlugins(result);
-	}
-
-	private static List<AssertionPlugin> getAssertionPlugins_GeneralDatabase()
-	{
-		return Arrays.asList(
-			new AnsiSqlTableDoesNotExistAssertionPlugin(),
-			new AnsiSqlTableExistsAssertionPlugin(),
-			new DatabaseDoesNotExistAssertionPlugin(),
-			new DatabaseExistsAssertionPlugin(),
-			new RowDoesNotExistAssertionPlugin(),
-			new RowExistsAssertionPlugin());
-	}
-
-	private static List<AssertionPlugin> getAssertionPlugins_MySql()
-	{
-		return Arrays.asList(
-			new MySqlTableDoesNotExistAssertionPlugin(),
-			new MySqlTableExistsAssertionPlugin());
-	}
-
-	private static List<AssertionPlugin> getAssertionPlugins_SqlServer()
-	{
-		return Arrays.asList(
-			new SqlServerSchemaDoesNotExistAssertionPlugin(),
-			new SqlServerSchemaExistsAssertionPlugin(),
-			new SqlServerTableDoesNotExistAssertionPlugin(),
-			new SqlServerTableExistsAssertionPlugin());
-	}
-
 	public WildebeestApiBuilder withAssertionPlugins(List<AssertionPlugin> assertionPlugins)
 	{
 		if (assertionPlugins == null) throw new ArgumentNullException("assertionPlugins");
 
 		List<AssertionPlugin> updated = new ArrayList<>(this.assertionPlugins);
 
-		updated.addAll(assertionPlugins);
+		// Add any plugins that we don't already know about
+		for (AssertionPlugin assertionPlugin : assertionPlugins)
+		{
+			if (!updated.stream().anyMatch(x -> x.getClass().equals(assertionPlugin.getClass())))
+			{
+				updated.add(assertionPlugin);
+			}
+		}
 
 		return new WildebeestApiBuilder(
 			this.wildebeestApi,
@@ -287,30 +261,106 @@ public class WildebeestApiBuilder
 			updated);
 	}
 
+	public WildebeestApiBuilder withMigrationPlugins(List<MigrationPlugin> migrationPlugins)
+	{
+		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
+
+		Map<String, MigrationPlugin> updated = new HashMap<>(this.migrationPlugins);
+
+		Map<String, MigrationPlugin> factory = migrationPlugins
+			.stream()
+			.collect(Collectors.toMap(
+				x -> Wildebeest.getPluginHandlerUri(x),
+				x -> x));
+
+		for (String key : factory.keySet())
+		{
+			if (!updated.containsKey(key))
+			{
+				updated.put(key, factory.get(key));
+			}
+		}
+
+		return new WildebeestApiBuilder(
+			this.wildebeestApi,
+			this.pluginGroups,
+			this.resourcePlugins,
+			updated,
+			this.assertionPlugins);
+	}
+
 	/**
-	 * Fluently adds the factory set of MigrationPlugins to the builder.  A new builder is returned and the original
-	 * builder is left unmutated.
+	 * Fluently adds the supplied {@link MigrationPlugin} to the builder.  A new builder is returned and the
+	 * original builder is left unmutated.
 	 *
+	 * @param migrationPlugin the MigrationPlugin to be added to the builder
 	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
 	 * @since 4.0
 	 */
-	public WildebeestApiBuilder withFactoryMigrationPlugins()
+	public WildebeestApiBuilder withMigrationPlugin(MigrationPlugin migrationPlugin)
 	{
-		List<MigrationPlugin> result = new ArrayList<>();
+		if (migrationPlugin == null) throw new ArgumentNullException("migrationPlugin");
 
-		// composite
-		result.addAll(WildebeestApiBuilder.getMigrationPlugins_External(this.wildebeestApi));
+		Map<String, MigrationPlugin> updated = new HashMap<>(this.migrationPlugins);
 
-		// generaldatabase
-		result.addAll(WildebeestApiBuilder.getMigrationPlugins_GeneralDatabase());
+		String key = Wildebeest.getPluginHandlerUri(migrationPlugin);
 
-		// mysql
-		result.addAll(WildebeestApiBuilder.getMigrationPlugins_MySql());
+		if (!updated.containsKey(key))
+		{
+			updated.put(
+				key,
+				migrationPlugin);
+		}
 
-		// sqlserver
-		result.addAll(WildebeestApiBuilder.getMigrationPlugins_SqlServer());
+		return new WildebeestApiBuilder(
+			this.wildebeestApi,
+			this.pluginGroups,
+			this.resourcePlugins,
+			updated,
+			this.assertionPlugins);
+	}
 
-		return this.withMigrationPlugins(result);
+	/**
+	 * Builds a new {@link WildebeestApi} with the plugins that were registered to this builder.
+	 *
+	 * @return a new WildebeestApi instance with the plugins that were registered to
+	 * this builder.
+	 */
+	public WildebeestApi get()
+	{
+		this.wildebeestApi.setPluginGroups(pluginGroups);
+		this.wildebeestApi.setResourcePlugins(this.resourcePlugins);
+		this.wildebeestApi.setMigrationPlugins(this.migrationPlugins);
+		this.wildebeestApi.setAssertionPlugins(this.assertionPlugins);
+
+		return this.wildebeestApi;
+	}
+
+	private static List<AssertionPlugin> getAssertionPlugins_GeneralDatabase()
+	{
+		return Arrays.asList(
+			new AnsiSqlTableDoesNotExistAssertionPlugin(),
+			new AnsiSqlTableExistsAssertionPlugin(),
+			new DatabaseDoesNotExistAssertionPlugin(),
+			new DatabaseExistsAssertionPlugin(),
+			new RowDoesNotExistAssertionPlugin(),
+			new RowExistsAssertionPlugin());
+	}
+
+	private static List<AssertionPlugin> getAssertionPlugins_MySql()
+	{
+		return Arrays.asList(
+			new MySqlTableDoesNotExistAssertionPlugin(),
+			new MySqlTableExistsAssertionPlugin());
+	}
+
+	private static List<AssertionPlugin> getAssertionPlugins_SqlServer()
+	{
+		return Arrays.asList(
+			new SqlServerSchemaDoesNotExistAssertionPlugin(),
+			new SqlServerSchemaExistsAssertionPlugin(),
+			new SqlServerTableDoesNotExistAssertionPlugin(),
+			new SqlServerTableExistsAssertionPlugin());
 	}
 
 	private static List<MigrationPlugin> getMigrationPlugins_External(
@@ -344,70 +394,5 @@ public class WildebeestApiBuilder
 			new SqlServerCreateSchemaMigrationPlugin(),
 			new SqlServerDropDatabaseMigrationPlugin(),
 			new SqlServerDropSchemaMigrationPlugin());
-	}
-
-	public WildebeestApiBuilder withMigrationPlugins(List<MigrationPlugin> migrationPlugins)
-	{
-		if (migrationPlugins == null) throw new ArgumentNullException("migrationPlugins");
-
-		Map<String, MigrationPlugin> updated = new HashMap<>(this.migrationPlugins);
-
-		Map<String, MigrationPlugin> factory = migrationPlugins
-			.stream()
-			.collect(Collectors.toMap(
-				x -> Wildebeest.getPluginHandlerUri(x),
-				x -> x));
-
-		updated.putAll(factory);
-
-		return new WildebeestApiBuilder(
-			this.wildebeestApi,
-			this.pluginGroups,
-			this.resourcePlugins,
-			updated,
-			this.assertionPlugins);
-	}
-
-
-	/**
-	 * Fluently adds the supplied {@link MigrationPlugin} to the builder.  A new builder is returned and the
-	 * original builder is left unmutated.
-	 *
-	 * @param migrationPlugin the MigrationPlugin to be added to the builder
-	 * @return a new WildebeestApiBuilder with the state of the original plus the new state
-	 * @since 4.0
-	 */
-	public WildebeestApiBuilder withMigrationPlugin(MigrationPlugin migrationPlugin)
-	{
-		if (migrationPlugin == null) throw new ArgumentNullException("migrationPlugin");
-
-		Map<String, MigrationPlugin> updated = new HashMap<>(this.migrationPlugins);
-
-		updated.put(
-			Wildebeest.getPluginHandlerUri(migrationPlugin),
-			migrationPlugin);
-
-		return new WildebeestApiBuilder(
-			this.wildebeestApi,
-			this.pluginGroups,
-			this.resourcePlugins,
-			updated,
-			this.assertionPlugins);
-	}
-
-	/**
-	 * Builds a new {@link WildebeestApi} with the plugins that were registered to this builder.
-	 *
-	 * @return a new WildebeestApi instance with the plugins that were registered to
-	 * this builder.
-	 */
-	public WildebeestApi get()
-	{
-		this.wildebeestApi.setPluginGroups(pluginGroups);
-		this.wildebeestApi.setResourcePlugins(this.resourcePlugins);
-		this.wildebeestApi.setMigrationPlugins(this.migrationPlugins);
-		this.wildebeestApi.setAssertionPlugins(this.assertionPlugins);
-
-		return this.wildebeestApi;
 	}
 }

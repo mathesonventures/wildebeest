@@ -76,8 +76,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 		//
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withSqlServerSupport()
 			.get();
 
 		SqlServerProperties properties = SqlServerProperties.get();
@@ -177,8 +176,7 @@ public class SqlServerTableDoesNotExistAssertionTests
 
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withSqlServerSupport()
 			.get();
 
 		SqlServerProperties properties = SqlServerProperties.get();

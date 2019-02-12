@@ -77,8 +77,7 @@ public class MySqlTableExistsAssertionTests
 
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();
@@ -172,8 +171,7 @@ public class MySqlTableExistsAssertionTests
 
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withMySqlSupport()
 			.get();
 
 		MySqlProperties mySqlProperties = MySqlProperties.get();

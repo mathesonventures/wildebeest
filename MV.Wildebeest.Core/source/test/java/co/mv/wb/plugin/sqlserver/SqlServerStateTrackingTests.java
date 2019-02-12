@@ -54,8 +54,7 @@ public class SqlServerStateTrackingTests
 		WildebeestApi wildebeestApi = WildebeestApiBuilder
 			.create(new LoggingEventSink(LOG))
 			.withFactoryPluginGroups()
-			.withFactoryResourcePlugins()
-			.withFactoryMigrationPlugins()
+			.withSqlServerSupport()
 			.get();
 
 		SqlServerProperties properties = SqlServerProperties.get();
