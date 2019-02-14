@@ -89,7 +89,7 @@ public interface WildebeestApi
 	 * @throws AssertionFailedException    if one or more assertions of the current state fails
 	 * @since 1.0
 	 */
-	void state(
+	StateResponse state(
 		Resource resource,
 		Instance instance) throws
 		AssertionFailedException,
