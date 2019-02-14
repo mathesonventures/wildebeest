@@ -43,6 +43,7 @@ import co.mv.wb.Resource;
 import co.mv.wb.ResourcePlugin;
 import co.mv.wb.ResourceType;
 import co.mv.wb.State;
+import co.mv.wb.StateResponse;
 import co.mv.wb.TargetNotSpecifiedException;
 import co.mv.wb.UnknownStateSpecifiedException;
 import co.mv.wb.Wildebeest;
@@ -374,8 +375,7 @@ public class WildebeestApiImpl implements WildebeestApi
 		return result;
 	}
 
-	// TODO: Should be a response
-	public void state(
+	public StateResponse state(
 		Resource resource,
 		Instance instance) throws
 		AssertionFailedException,
@@ -393,6 +393,8 @@ public class WildebeestApiImpl implements WildebeestApi
 				resource,
 				instance);
 		}
+
+		return new StateResponse(state);
 	}
 
 	// TODO: Should be a response

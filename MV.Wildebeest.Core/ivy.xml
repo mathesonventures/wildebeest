@@ -56,7 +56,7 @@
 		<dependency org="org.slf4j" name="slf4j-simple" rev="1.7.25" conf="clc,clr,tlc,tlr->master; clr,tlr->runtime;" />
 		<dependency org="org.opengis.cite.xerces" name="xercesImpl-xsd11" rev="2.12-beta-r1667115" conf="clc,clr,tlr->master; clr,tlr->runtime;" />
 		<dependency org="org.opengis.cite.eclipse.webtools.sse" name="org.eclipse.wst.xml.xpath2.processor" rev="1.1.5-738bb7b85d" conf="clr,tlr->master; clr,tlr->runtime;" />
-		<dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="tlc,tlr->master; tlr->runtime;" />
+		<dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="clr,tlc,tlr->master; tlr->runtime;" />
 		<dependency org="info.picocli" name="picocli" rev="3.8.2" conf="clc,clr,tlr->master; clr,tlr->runtime;"/>
 		<dependency org="joda-time" name="joda-time" rev="2.10.1" conf="clc,clr,tlr->master; clr,tlr->runtime;"/>
 		<dependency org="org.javassist" name="javassist" rev="3.24.1-GA" conf="clc,clr,tlr->master; clr,tlr->runtime;" />
