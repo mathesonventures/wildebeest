@@ -476,10 +476,19 @@ public class WildebeestCommand
 						resource.get(),
 						instance.get());
 
-					this.output.println(String.format(
-						"Resource %s is at state %s",
-						resource.get().getResourceId(),
-						response.getState().getDisplayName()));
+					if (response.getState().isPresent())
+					{
+						this.output.println(String.format(
+							"Resource %s is at state %s",
+							resource.get().getResourceId(),
+							response.getState().get().getDisplayName()));
+					}
+					else
+					{
+						this.output.println((String.format(
+							"Resource %s is non-existant",
+							resource.get().getResourceId())));
+					}
 				}
 				catch (AssertionFailedException | IndeterminateStateException e)
 				{
