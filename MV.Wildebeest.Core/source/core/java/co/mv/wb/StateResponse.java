@@ -16,21 +16,20 @@
 
 package co.mv.wb;
 
-import co.mv.wb.framework.ArgumentNullException;
+import java.util.Optional;
 
 public class StateResponse
 {
 	private final State state;
 
-	public StateResponse(final State state)
+	public StateResponse(
+		final State state)
 	{
-		if (state == null) throw new ArgumentNullException("state");
-
 		this.state = state;
 	}
 
-	public State getState()
+	public Optional<State> getState()
 	{
-		return this.state;
+		return Optional.of(this.state);
 	}
 }
