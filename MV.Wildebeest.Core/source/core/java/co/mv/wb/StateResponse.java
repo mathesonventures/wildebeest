@@ -30,6 +30,6 @@ public class StateResponse
 
 	public Optional<State> getState()
 	{
-		return Optional.of(this.state);
+		return Optional.ofNullable(this.state);
 	}
 }
