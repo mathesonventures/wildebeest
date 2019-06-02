@@ -346,6 +346,7 @@
             <xs:enumeration value="SqlServerCreateDatabase"/>
             <xs:enumeration value="SqlServerCreateSchema"/>
             <xs:enumeration value="SqlServerDropSchema"/>
+            <xs:enumeration value="External"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="uuid">
