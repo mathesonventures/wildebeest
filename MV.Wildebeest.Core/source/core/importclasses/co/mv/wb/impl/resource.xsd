@@ -334,6 +334,7 @@
                     <xs:element name="filename" type="xs:string" />
                     <xs:element name="target" type="xs:string" />
                 </xs:sequence>
+                <xs:attribute name="fromState" type="uuid" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
