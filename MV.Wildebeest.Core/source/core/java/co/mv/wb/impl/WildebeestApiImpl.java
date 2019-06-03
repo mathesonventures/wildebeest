@@ -458,7 +458,15 @@ public class WildebeestApiImpl implements WildebeestApi
 		{
 			List<List<Migration>> paths = WildebeestApiImpl.findPaths(resource, currentStateId, targetStateId);
 
-			if (paths.size() != 1)
+			if (paths.size() == 0)
+			{
+				throw new RuntimeException(String.format(
+					"No path found to migrate resource %s from current state %s to target state %s",
+					resource.getName(),
+					currentStateId == null ? "non-existant" : currentStateId.toString(),
+					targetStateId == null ? "non-existant" : targetStateId.toString()));
+			}
+			else if (paths.size() > 1)
 			{
 				throw new RuntimeException("multiple possible paths found");
 			}
