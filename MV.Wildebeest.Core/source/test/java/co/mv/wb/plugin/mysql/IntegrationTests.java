@@ -122,14 +122,16 @@ public class IntegrationTests
 			UUID.randomUUID(),
 			created.getStateId().toString(),
 			initialSchema.getStateId().toString(),
-			MySqlElementFixtures.productCatalogueDatabase()));
+			MySqlElementFixtures.productCatalogueDatabase(),
+			true));
 
 		// Migration: Initial Schema to Populated
 		resource.getMigrations().add(new SqlScriptMigration(
 			UUID.randomUUID(),
 			initialSchema.getStateId().toString(),
 			populated.getStateId().toString(),
-			MySqlElementFixtures.productTypeRows()));
+			MySqlElementFixtures.productTypeRows(),
+			true));
 
 		Map<Class, MigrationPlugin> migrationPlugins = new HashMap<>();
 		migrationPlugins.put(MySqlCreateDatabaseMigration.class, new MySqlCreateDatabaseMigrationPlugin());

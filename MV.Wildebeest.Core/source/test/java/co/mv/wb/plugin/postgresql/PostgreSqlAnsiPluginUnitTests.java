@@ -46,14 +46,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 	@Test
 	public void ansiSqlCreateDatabaseMigrationSucceeds() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
-			"127.0.0.1",
-			15432,
-			"postgres",
-			"Password123!",
-			"WildebeestTest",
-			null,
-			null);
+		PostgreSqlDatabaseInstance instance = PostgreSqlProperties.get().toInstance();
 
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
@@ -82,14 +75,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 	@Test
 	public void tableExistsForExistentTable() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
-			"127.0.0.1",
-			15432,
-			"postgres",
-			"Password123!",
-			"WildebeestTest",
-			null,
-			null);
+		PostgreSqlDatabaseInstance instance = PostgreSqlProperties.get().toInstance();
 
 		Migration createDatabase = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
@@ -102,7 +88,8 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 			UUID.randomUUID(),
 			UUID.randomUUID().toString(),
 			UUID.randomUUID().toString(),
-			"CREATE SCHEMA sch; CREATE TABLE sch.tbl ( tblId INTEGER );");
+			"CREATE SCHEMA sch; CREATE TABLE sch.tbl ( tblId INTEGER );",
+			true);
 
 		MigrationPlugin createTableRunner = new SqlScriptMigrationPlugin();
 
@@ -128,14 +115,7 @@ public class PostgreSqlAnsiPluginUnitTests extends BaseAnsiPluginUnitTests
 	@Test
 	public void tableExistsForNonExistentTable() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
-			"127.0.0.1",
-			15432,
-			"postgres",
-			"Password123!",
-			"WildebeestTest",
-			null,
-			null);
+		PostgreSqlDatabaseInstance instance = PostgreSqlProperties.get().toInstance();
 
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),

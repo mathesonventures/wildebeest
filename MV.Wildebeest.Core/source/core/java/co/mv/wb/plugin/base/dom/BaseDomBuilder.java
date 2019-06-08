@@ -148,4 +148,22 @@ public abstract class BaseDomBuilder implements DomBuilder
 
 		return result;
 	}
+
+	protected Optional<Boolean> tryGetBoolean(String xpath)
+	{
+		Optional<Boolean> result = null;
+		Optional<String> raw = this.tryGetString(xpath);
+
+		if (raw.isPresent())
+		{
+			boolean value = Boolean.parseBoolean(raw.get());
+			result = Optional.of(value);
+		}
+		else
+		{
+			result = Optional.empty();
+		}
+
+		return result;
+	}
 }
