@@ -80,6 +80,7 @@
 CREATE SCHEMA ProdCat;
 
 			]]></sql>
+			<split>false</split>
 		</migration>
 
 		<migration

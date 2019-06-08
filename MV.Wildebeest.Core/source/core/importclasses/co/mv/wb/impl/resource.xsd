@@ -277,6 +277,7 @@
             <xs:extension base="Migration">
                 <xs:sequence >
                     <xs:element name="sql" type="xs:string" />
+                    <xs:element name="split" type="xs:boolean" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="fromState" type="uuid" use="required" />
             </xs:extension>
