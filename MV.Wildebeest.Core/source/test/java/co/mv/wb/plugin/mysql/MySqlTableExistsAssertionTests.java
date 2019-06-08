@@ -108,7 +108,8 @@ public class MySqlTableExistsAssertionTests
 			UUID.randomUUID(),
 			created.getStateId().toString(),
 			schemaLoaded.getStateId().toString(),
-			MySqlElementFixtures.productCatalogueDatabase());
+			MySqlElementFixtures.productCatalogueDatabase(),
+			true);
 		resource.getMigrations().add(migration2);
 
 		String databaseName = DatabaseFixtureHelper.databaseName();

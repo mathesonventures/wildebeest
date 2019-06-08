@@ -16,12 +16,25 @@
 
 package co.mv.wb.plugin.mysql;
 
+import co.mv.wb.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.xml.bind.annotation.XmlType;
 
 public class MySqlProperties
 {
 	private static final Logger LOG = LoggerFactory.getLogger(MySqlProperties.class);
+
+	private static final String KEY_HOSTNAME = "mysql.hostName";
+	private static final String KEY_PORT = "mySql.port";
+	private static final String KEY_USERNAME = "mySql.username";
+	private static final String KEY_PASSWORD = "mySql.password";
+
+	private static final String DEFAULT_HOSTNAME = "127.0.0.1";
+	private static final int DEFAULT_PORT = 3306;
+	private static final String DEFAULT_USERNAME = "root";
+	private static final String DEFAULT_PASSWORD = "Password123!";
 
 	private String hostName;
 	private int port;
@@ -40,60 +53,10 @@ public class MySqlProperties
 	{
 		MySqlProperties result = new MySqlProperties();
 
-		// HostName
-		String hostName = System.getProperty("mySql.hostName");
-		if (hostName == null)
-		{
-			result.hostName = "127.0.0.1";
-		}
-		else
-		{
-			LOG.debug("System mySql.hostName: " + hostName);
-			result.hostName = hostName;
-		}
-
-		// Port
-		String portRaw = System.getProperty("mySql.port");
-		if (portRaw == null)
-		{
-			result.port = 13306;
-		}
-		else
-		{
-			LOG.debug("System mySql.port: " + portRaw);
-			result.port = Integer.parseInt(portRaw);
-		}
-
-		// Username
-		String username = System.getProperty("mySql.username");
-		if (username == null)
-		{
-			result.username = "root";
-		}
-		else
-		{
-			LOG.debug("System mySql.username: " + username);
-			result.username = username;
-		}
-
-		// Password
-		String password = System.getProperty("mySql.password");
-		if (password == null)
-		{
-			result.password = "Password123!";
-		}
-		else
-		{
-			LOG.debug("System mySql.password: " + password);
-			result.password = password;
-		}
-
-		LOG.debug(String.format(
-			"MySqlProperties { hostName: %s; port: %d; username: %s; password: %s; }",
-			result.getHostName(),
-			result.getPort(),
-			result.getUsername(),
-			result.getPassword()));
+		result.hostName = Config.getSettingString(KEY_HOSTNAME, DEFAULT_HOSTNAME);
+		result.port = Config.getSettingInt(KEY_PORT, DEFAULT_PORT);
+		result.username = Config.getSettingString(KEY_USERNAME, DEFAULT_USERNAME);
+		result.password = Config.getSettingString(KEY_PASSWORD, DEFAULT_PASSWORD);
 
 		return result;
 	}

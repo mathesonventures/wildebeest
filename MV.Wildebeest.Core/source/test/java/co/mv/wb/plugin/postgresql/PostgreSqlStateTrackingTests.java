@@ -50,11 +50,7 @@ public class PostgreSqlStateTrackingTests
 
 		String databaseName = DatabaseFixtureHelper.databaseName().toLowerCase();
 
-		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
-			"127.0.0.1",
-			15432,
-			"postgres",
-			"Password123!",
+		PostgreSqlDatabaseInstance instance = PostgreSqlProperties.get().toInstance(
 			databaseName,
 			"wb",
 			"wb_state");

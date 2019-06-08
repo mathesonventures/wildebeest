@@ -65,7 +65,7 @@ public class SqlScriptMigrationPlugin implements MigrationPlugin
 			DatabaseHelper.execute(
 				instanceT.getAppDataSource(),
 				migrationT.getSql(),
-				true);
+				migrationT.getSplit());
 		}
 		catch (SQLException e)
 		{

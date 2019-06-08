@@ -44,14 +44,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 	@Test
 	public void databaseExistsAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
-			"127.0.0.1",
-			15432,
-			"postgres",
-			"Password123!",
-			"WildebeestTest",
-			null,
-			null);
+		PostgreSqlDatabaseInstance instance = PostgreSqlProperties.get().toInstance();
 
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
@@ -80,14 +73,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 	@Test
 	public void databaseExistsAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
-			"127.0.0.1",
-			15432,
-			"postgres",
-			"Password123!",
-			"WildebeestTest",
-			null,
-			null);
+		PostgreSqlDatabaseInstance instance = PostgreSqlProperties.get().toInstance();
 
 		this.databaseExistsAssertionForNonExistentDatabase(instance);
 	}
@@ -96,14 +82,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 	@Test
 	public void databaseDoesNotExistAssertionForExistentDatabase() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
-			"127.0.0.1",
-			15432,
-			"postgres",
-			"Password123!",
-			"WildebeestTest",
-			null,
-			null);
+		PostgreSqlDatabaseInstance instance = PostgreSqlProperties.get().toInstance();
 
 		Migration create = new AnsiSqlCreateDatabaseMigration(
 			UUID.randomUUID(),
@@ -132,14 +111,7 @@ public class PostgreSqlDatabasePluginUnitTests extends BaseDatabasePluginUnitTes
 	@Test
 	public void databaseDoesNotExistAssertionForNonExistentDatabase() throws MigrationFailedException
 	{
-		PostgreSqlDatabaseInstance instance = new PostgreSqlDatabaseInstance(
-			"127.0.0.1",
-			15432,
-			"postgres",
-			"Password123!",
-			"WildebeestTest",
-			null,
-			null);
+		PostgreSqlDatabaseInstance instance = PostgreSqlProperties.get().toInstance();
 
 		this.databaseDoesNotExistAssertionForNonExistentDatabase(instance);
 	}

@@ -48,7 +48,8 @@ public class SqlScriptMigrationTests
 			UUID.randomUUID(),
 			null,
 			UUID.randomUUID().toString(),
-			MySqlElementFixtures.productCatalogueDatabase());
+			MySqlElementFixtures.productCatalogueDatabase(),
+			true);
 
 		MigrationPlugin migrationPlugin = new SqlScriptMigrationPlugin();
 

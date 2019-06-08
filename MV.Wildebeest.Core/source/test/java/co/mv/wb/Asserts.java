@@ -22,6 +22,7 @@ import co.mv.wb.plugin.fake.SetTagMigration;
 import co.mv.wb.plugin.fake.TagAssertion;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlTableDoesNotExistAssertion;
 import co.mv.wb.plugin.generaldatabase.AnsiSqlTableExistsAssertion;
+import co.mv.wb.plugin.generaldatabase.SqlScriptMigration;
 import co.mv.wb.plugin.mysql.MySqlDatabaseInstance;
 import org.junit.Assert;
 
@@ -138,6 +139,28 @@ public class Asserts
 		{
 			assertEquals(name + ".toStateId", expectedToStateId, actual.getToState());
 		}
+	}
+
+	public static void assertSqlScriptMigration(
+		UUID expectedMigrationId,
+		Optional<String> expectedFromStateId,
+		Optional<String> expectedToStateId,
+		String expectedSql,
+		boolean expectedSplit,
+		SqlScriptMigration actual,
+		String name)
+	{
+		if (name == null) throw new ArgumentNullException("name");
+
+		Asserts.assertMigration(
+			expectedMigrationId,
+			expectedFromStateId,
+			expectedToStateId,
+			actual,
+			name);
+
+		Assert.assertEquals(name + ".sql", expectedSql, actual.getSql());
+		Assert.assertEquals(name + ".split", expectedSplit, actual.getSplit());
 	}
 
 	public static void assertAssertionResponse(

@@ -35,6 +35,8 @@ import java.util.UUID;
  */
 public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 {
+	private static final boolean DEFAULT_SPLIT = true;
+
 	@Override
 	public Migration build(
 		UUID migrationId,
@@ -46,6 +48,7 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 		Migration result;
 
 		Optional<String> sql = this.tryGetString("sql");
+		Optional<Boolean> split = this.tryGetBoolean("split");
 
 		// Validation
 		MessageList messages = new MessageList();
@@ -63,7 +66,8 @@ public class SqlScriptDomMigrationBuilder extends BaseDomMigrationBuilder
 			migrationId,
 			fromState,
 			toState,
-			sql.get());
+			sql.get(),
+			split.isPresent() ? split.get() : DEFAULT_SPLIT);
 
 		return result;
 	}

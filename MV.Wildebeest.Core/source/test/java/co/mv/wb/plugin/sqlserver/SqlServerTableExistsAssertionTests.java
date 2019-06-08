@@ -107,7 +107,8 @@ public class SqlServerTableExistsAssertionTests
 			UUID.randomUUID(),
 			created.getStateId().toString(),
 			schemaLoaded.getStateId().toString(),
-			SqlServerElementFixtures.productCatalogueDatabase());
+			SqlServerElementFixtures.productCatalogueDatabase(),
+			true);
 		resource.getMigrations().add(migration2);
 
 		String databaseName = DatabaseFixtureHelper.databaseName();

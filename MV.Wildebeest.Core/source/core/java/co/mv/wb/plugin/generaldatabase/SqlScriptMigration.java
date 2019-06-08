@@ -65,6 +65,7 @@ import java.util.UUID;
 public class SqlScriptMigration extends BaseMigration implements Migration
 {
 	private final String sql;
+	private final boolean split;
 
 	/**
 	 * Creates a new SqlScriptMigration.
@@ -76,23 +77,31 @@ public class SqlScriptMigration extends BaseMigration implements Migration
 	 *                    this migration transitions to the non-existent state.
 	 * @param sql         the SQL script that performs the migration from the fron-state to the
 	 *                    to-state.
+	 * @param split       indicates that statements should be split up and executed individually
 	 */
 	public SqlScriptMigration(
 		UUID migrationId,
 		String fromState,
 		String toState,
-		String sql)
+		String sql,
+		boolean split)
 	{
 		super(migrationId, fromState, toState);
 
 		if (sql == null) throw new ArgumentNullException("sql");
 
 		this.sql = sql;
+		this.split = split;
 	}
 
 	public String getSql()
 	{
 		return sql;
+	}
+
+	public boolean getSplit()
+	{
+		return split;
 	}
 
 	@Override public List<ResourceType> getApplicableTypes()
